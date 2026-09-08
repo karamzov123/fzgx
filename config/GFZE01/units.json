@@ -2926,7 +2926,7 @@
       "fn_1_5300"
     ],
     "status": "nonmatching",
-    "mw_version": null,
+    "mw_version": "GC/1.3",
     "extra_cflags": []
   },
   {
@@ -5005,7 +5005,7 @@
     "symbols": [
       "fn_1_B03A8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
