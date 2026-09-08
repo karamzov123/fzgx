@@ -369,9 +369,16 @@ def dol_library_at(addr: int) -> str:
         if a > addr:
             break
         name = n
-    m = re.match(r"^_{0,2}([A-Z][A-Za-z]*?)(?=[A-Z][a-z]|_|$)", name)
-    lib = (m.group(1) if m else name.split("_")[0]).lower() or "runtime"
-    return lib if lib not in ("fn", "lbl") else "runtime"
+    # known Dolphin SDK / MetroTRK prefixes; everything else is MSL runtime or engine code
+    sdk = ("PSMTX", "ARQ", "CARD", "DVD", "DSP", "EXI", "OSDB", "THP", "TRK", "DDH", "MTX", "PPC", "PAD",
+           "AX", "AR", "AI", "DB", "DC", "GD", "GX", "IC", "LC", "OS", "SI", "VI")
+    n = name.lstrip("_")
+    for pfx in sdk:
+        if n.startswith(pfx) and (len(n) == len(pfx) or not n[len(pfx)].islower() or pfx in ("OS", "GX", "VI", "SI")):
+            return {"OSDB": "os", "PSMTX": "mtx"}.get(pfx, pfx.lower())
+    if n[:1].islower():
+        return "msl"  # strlen, memcpy, vprintf, wcstombs, usr_put_initialize ...
+    return "engine"
 
 
 def name_auto_units_by_tu() -> None:
