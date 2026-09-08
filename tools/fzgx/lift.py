@@ -931,6 +931,8 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             ptr_globals.add(key); pfields.setdefault(key, {})[o] = t; return f"{key}->unk_{o:X}"
         return None
 
+    carried_until: Dict[str, int] = {}
+
     def promote_written(i0: int, region_end: int) -> None:
         """Every register the region (i0, region_end) writes and code after it may read is a
         local: its writes become statements inside the branches, reads after use the local."""
@@ -964,6 +966,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             if init is not None:
                 stmts.append(f"{tn} = {init};")
             regs[rw] = tn; carried[rw] = tn
+            carried_until[rw] = max(carried_until.get(rw, 0), region_end)
 
     def loop_locals(b_: int, t_: int, k_: int) -> None:
         """Registers written inside the loop and read inside before written, or read by its
@@ -995,6 +998,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             temps.append(f"{rtype.get(r_, 'u32')} {tn};")
             stmts.append(f"{tn} = {init};")
             regs[r_] = tn; carried[r_] = tn
+    def_idx: Dict[str, int] = {}
     for i, (mn, a) in enumerate(ins):
         try:
             # a value used more than once (before its register is redefined) lives in a local: the
@@ -1034,8 +1038,15 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                             t2 = f"v{len(temps)}"; temps.append(f"{rtype.get(r2, 'u32')} {t2};")
                             stmts.append(f"{t2} = {e2};"); regs[r2] = t2
                     stmts.append(f"{tn} = {e_};"); regs[r_] = tn
+            # a register an if-region carried is its own again after the region: a later reuse
+            # of the register is not an assignment to the local (the region's last write was
+            # materialised just above)
+            for rw_ in [r_ for r_, u_ in carried_until.items() if u_ <= i]:
+                carried_until.pop(rw_, None)
+                if rw_ in carried and not in_loop:
+                    carried.pop(rw_, None)
             if a and mn not in STORE_T and not mn.startswith(("st", "cmp", "b")) and mn not in ("mtlr", "mtspr"):
-                temps_written.append((a[0], i)); written_since_call.add(a[0])
+                temps_written.append((a[0], i)); written_since_call.add(a[0]); def_idx[a[0]] = i
             if mn == "bl":
                 pass  # cleared after the call is processed (see the bl branch)
             # the previous instruction wrote a callee-saved register with a computed value that a
@@ -1615,13 +1626,23 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 elif mn == "mulli": regs[d] = f"({use(a[1])} * {_imm(a[2])})"; rtype[d] = "s32"
                 elif mn == "mullw": regs[d] = f"({use(a[1])} * {use(a[2])})"; rtype[d] = "s32"
                 elif mn == "neg": regs[d] = f"(-{use(a[1])})"; rtype[d] = "s32"
-                elif mn == "or": regs[d] = f"({use(a[1])} | {use(a[2])})"; rtype[d] = "u32"
+                elif mn == "or":
+                    x_, y_ = use(a[1]), use(a[2])
+                    if def_idx.get(a[2], -1) < def_idx.get(a[1], -1):
+                        x_, y_ = y_, x_  # the operand computed first is written first
+                    regs[d] = f"({x_} | {y_})"; rtype[d] = "u32"
                 elif mn == "and":
                     x_, y_ = use(a[1]), use(a[2])
+                    if def_idx.get(a[2], -1) < def_idx.get(a[1], -1):
+                        x_, y_ = y_, x_
                     if rtype.get(a[1]) == "void *" or x_.startswith(("((u8 *)", "(u8 *)", "&")): x_ = f"(u32){x_}"
                     if rtype.get(a[2]) == "void *" or y_.startswith(("((u8 *)", "(u8 *)", "&")): y_ = f"(u32){y_}"
                     regs[d] = f"({x_} & {y_})"; rtype[d] = "u32"
-                elif mn == "xor": regs[d] = f"({use(a[1])} ^ {use(a[2])})"; rtype[d] = "u32"
+                elif mn == "xor":
+                    x_, y_ = use(a[1]), use(a[2])
+                    if def_idx.get(a[2], -1) < def_idx.get(a[1], -1):
+                        x_, y_ = y_, x_
+                    regs[d] = f"({x_} ^ {y_})"; rtype[d] = "u32"
                 elif mn == "ori": regs[d] = f"({use(a[1])} | {_imm(a[2])})"; rtype[d] = "u32"
                 elif mn == "andi.":
                     x_ = use(a[1])
