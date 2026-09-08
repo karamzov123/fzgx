@@ -1024,3 +1024,6 @@ dol/SIBusy.c:
 
 dol/fn_8004B974.c:
 	.text       start:0x8004B974 end:0x8004B9A4 align:4
+
+dol/fn_80019C48.c:
+	.text       start:0x80019C48 end:0x80019C50 align:4
