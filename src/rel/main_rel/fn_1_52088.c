@@ -1,4 +1,9 @@
 #include "types.h"
 
-// fn_1_52088: main_rel .text:0x00052088 size 0x18
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u32 lbl_1_bss_4E6A8;
+extern u32 lbl_1_bss_4E6AC;
+
+void fn_1_52088(void) {
+    lbl_1_bss_4E6A8 = 0;
+    lbl_1_bss_4E6AC = 0;
+}
