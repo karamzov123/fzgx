@@ -3575,7 +3575,7 @@
     "symbols": [
       "fn_1_EB080"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
