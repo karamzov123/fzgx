@@ -27,6 +27,9 @@ rel/car_colchg/car_colchg/fn_9_534.c:
 rel/car_colchg/car_colchg/fn_9_6F0.c:
 	.text       start:0x000006F0 end:0x0000072C
 
+rel/car_colchg/car_colchg/fn_9_7DC.c:
+	.text       start:0x000007DC end:0x00000A18
+
 rel/car_colchg/car_colchg/fn_9_A18.c:
 	.text       start:0x00000A18 end:0x00000A8C
 

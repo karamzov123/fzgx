@@ -153,6 +153,106 @@ void fn_9_6F0(void) {
 }
 /* fzgx:end fn_9_6F0 */
 
+/* fzgx:begin fn_9_7DC noprologue */
+#include "types.h"
+#include "rel/car_colchg/globals.h"
+
+extern u32 lbl_9_bss_E0;
+extern s16 lbl_1_bss_96A;
+extern u32 lbl_801A66A0;
+extern struct Struct_lbl_1_bss_D58 lbl_1_bss_D58;
+s32 fn_1_4C10(void);
+extern struct Entry *lbl_1_data_1FB6C[];
+
+struct InputState {
+    u8 pad[8];
+    u16 buttons;
+    u8 pad2[6];
+    u16 buttons2;
+    u16 buttons3;
+};
+
+struct Entry {
+    s16 id;
+    s16 pad;
+    s32 unk;
+    void *data;
+};
+
+struct ColorState {
+    s16 unk0;
+    s16 selected_id;
+    s16 selected;
+};
+
+void fn_9_7DC(void) {
+    struct Entry *entries;
+    s8 change;
+    s16 count;
+    s32 index;
+
+    entries = lbl_1_data_1FB6C[((struct ColorState *)lbl_9_bss_8)->unk0];
+    if (fn_1_4C10() == 0) {
+        if ((((struct InputState *)&lbl_1_bss_D58)->buttons >> 8) & 1) {
+            lbl_1_bss_96A = 0x77;
+        }
+        if ((((struct InputState *)&lbl_1_bss_D58)->buttons >> 9) & 1) {
+            lbl_1_bss_96A = 0x73;
+        }
+
+        change = 0;
+        // Direct polling preserves the button-edge reads.
+        if ((((volatile struct InputState *)&lbl_1_bss_D58)->buttons2 & 1) ||
+            // Direct polling preserves the second button-edge source.
+            (((volatile struct InputState *)&lbl_1_bss_D58)->buttons3 & 1)) {
+            change = -1;
+        }
+        // Direct polling preserves the button-edge reads.
+        if (((((volatile struct InputState *)&lbl_1_bss_D58)->buttons2 >> 1) & 1) ||
+            // Direct polling preserves the second button-edge source.
+            ((((volatile struct InputState *)&lbl_1_bss_D58)->buttons3 >> 1) & 1)) {
+            change++;
+        }
+
+        if (change != 0) {
+            count = 0;
+            while (lbl_1_data_1FB6C[((struct ColorState *)lbl_9_bss_8)->unk0][count].id != -1) {
+                count++;
+            }
+
+            entries[((struct ColorState *)lbl_9_bss_8)->selected].data =
+                (void *)lbl_9_bss_E0;
+            index = ((struct ColorState *)lbl_9_bss_8)->selected + change;
+            if (index > count - 1) {
+                index = 0;
+            } else if (index < 0) {
+                index = count - 1;
+            }
+            ((struct ColorState *)lbl_9_bss_8)->selected = index;
+            if (entries[((struct ColorState *)lbl_9_bss_8)->selected].id == -1) {
+                index = ((struct ColorState *)lbl_9_bss_8)->selected - change;
+                if (index > count - 1) {
+                    index = 0;
+                } else if (index < 0) {
+                    index = count - 1;
+                }
+                ((struct ColorState *)lbl_9_bss_8)->selected = index;
+            }
+            ((struct ColorState *)lbl_9_bss_8)->selected_id =
+                entries[((struct ColorState *)lbl_9_bss_8)->selected].id;
+            lbl_9_bss_E0 =
+                (u32)entries[((struct ColorState *)lbl_9_bss_8)->selected].data;
+        }
+
+        if (lbl_801A66A0 & 1) {
+            entries[((struct ColorState *)lbl_9_bss_8)->selected].data = 0;
+        } else {
+            entries[((struct ColorState *)lbl_9_bss_8)->selected].data = (void *)-1;
+        }
+    }
+}
+/* fzgx:end fn_9_7DC */
+
 /* fzgx:begin fn_9_A18 */
 struct Entry {
     u32 unk0;

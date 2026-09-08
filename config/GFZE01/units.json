@@ -199,6 +199,17 @@
   },
   {
     "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/fn_9_7DC.c",
+    "symbols": [
+      "fn_9_7DC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
     "source": "rel/car_colchg/car_colchg/fn_9_A18.c",
     "symbols": [
       "fn_9_A18"
