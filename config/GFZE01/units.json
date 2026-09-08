@@ -2275,7 +2275,7 @@
     "symbols": [
       "fn_1_3CC4"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
