@@ -262,9 +262,6 @@ void fn_1_A8EF8(u16 arg0, u16 arg1) {
 /* fzgx:end fn_1_A8EF8 */
 
 /* fzgx:begin fn_1_A8F40 */
-extern void fn_1_A9420(u8 value);
-extern void fn_1_A942C(u8 value);
-
 // Reset the mode before forwarding the supplied value.
 void fn_1_A8F40(u8 arg0) {
     fn_1_A9420(0);
@@ -368,9 +365,6 @@ void fn_1_A983C(void) {
 /* fzgx:end fn_1_A983C */
 
 /* fzgx:begin fn_1_AA538 */
-extern u32 fn_1_A7024(f32, f32, f32, f32);
-extern u32 fn_80074918(u32, u32, u32);
-
 // Initialize the shared rendering state and submit the associated configuration.
 void fn_1_AA538(void) {
     Obj_1_bss_71690 *state = (Obj_1_bss_71690 *)&lbl_1_bss_71690;

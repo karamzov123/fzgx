@@ -83,6 +83,9 @@ extern void fn_1_565F4(void);
 extern void fn_80070D60(void *);
 extern u8 *lbl_801A66CC;
 extern void fn_80008BA8(void *, void *, u32);
+extern f64 lbl_1_rodata_2778[2];
+extern s8 fn_1_A5DC4(s32 value);
+extern f32 lbl_1_rodata_2788[6];
 
 /* fzgx:begin fn_1_494CC */
 void fn_1_494CC(u8 value) {
@@ -638,7 +641,6 @@ typedef struct FontParams {
 
 extern s32 fn_1_4EC74(FontParams *);
 extern s32 fn_1_4EB74(FontParams *);
-extern f64 lbl_1_rodata_2778[2];
 extern void *lbl_801A6D00;
 
 // Initialize the font system and return the selected font resource.
@@ -699,8 +701,6 @@ void fn_1_4F724(void) {
 typedef struct {
     u32 unk_0;
 } InputObject;
-
-extern const f64 lbl_1_rodata_2778[2];
 
 s32 fn_1_4FC50(InputObject *obj, u32 arg1, u16 arg2, u16 arg3, u32 arg4) {
     Obj_1_data_1C504_Target *entry;
@@ -797,10 +797,6 @@ void fn_1_520CC(void) {
 /* fzgx:end fn_1_520CC */
 
 /* fzgx:begin fn_1_521B8 */
-extern s8 fn_1_A5DC4(s32 value);
-extern f64 lbl_1_rodata_2778[2];
-extern f32 lbl_1_rodata_2788[6];
-
 // Convert a font value to its scaled coordinate when the font system is active.
 f32 fn_1_521B8(s32 value) {
     if (fn_1_A5DC4(value) && (s32)lbl_1_bss_4E6A8 != 0) {

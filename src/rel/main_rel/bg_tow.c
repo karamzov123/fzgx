@@ -10,6 +10,7 @@ extern s32 fn_1_BA144(Obj_1_bss_8EDA4 *arg0);
 extern void fn_1_1596DC(s32 arg0);
 extern void fn_1_484CC(s32 arg0);
 extern void fn_1_BC310(Obj_1_bss_8EDA4 *arg0);
+extern void fn_1_C0510(u32 *arg0, u32 arg1, u32 arg2);
 
 /* fzgx:begin fn_1_1548A8 */
 #include "types.h"
@@ -62,8 +63,6 @@ void fn_1_154930(void) {
 
 /* fzgx:begin fn_1_1549B8 */
 #include "types.h"
-
-extern void fn_1_C0510(u32 *arg0, u32 arg1, u32 arg2);
 
 // Copy the tow state into the active settings and advance the tow mode.
 void fn_1_1549B8(void) {

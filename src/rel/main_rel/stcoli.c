@@ -23,6 +23,8 @@ extern int fn_1_8C66C(short value);
 extern int fn_1_163BC(void *arg0, void *arg1, int mask, int value);
 extern void lbl_8006E1D8(void *arg0, f32 arg1, f32 arg2, f32 arg3);
 extern double lbl_1_rodata_910;
+extern void fn_1_18784();
+extern void lbl_8006DBE4(void);
 
 /* fzgx:begin fn_1_14CB4 */
 void fn_1_14CB4(void) {
@@ -91,11 +93,7 @@ struct StcoliNode {
     u8 rest[0x3c];
 };
 
-extern void fn_1_18784();
 extern void fn_1_18F28(StcoliNode *, StcoliVec *, void *, f32);
-extern void lbl_8006DAEC(void);
-extern void lbl_8006DB30(void);
-extern void lbl_8006DBE4(void);
 
 // Traverse the four-level collision hierarchy, preserving the input vector at each level.
 void fn_1_1902C(StcoliNode *root, StcoliVec *vec, void *arg3, f32 value) {

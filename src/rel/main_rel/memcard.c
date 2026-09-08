@@ -43,6 +43,10 @@ extern void *lbl_801A6410;
 extern void strncpy(void *arg0, void *arg1, int arg2);
 extern u32 lbl_1_bss_77310[28];
 extern u32 lbl_1_bss_7730C;
+extern u8 lbl_1_bss_772C8[66];
+extern u32 fn_1_4630(void *heap, u32 size, void *file, s32 line);
+extern s32 fn_8002FC14(s32 chan, void *fileName);
+extern s32 fn_80030338(s32 chan, void *oldName, void *newName);
 
 /* fzgx:begin fn_1_AB478 */
 #include "rel/main_rel/memcard.h"
@@ -674,7 +678,6 @@ void fn_1_ABF44(Fn1ABF44Object *arg) {
 /* fzgx:end fn_1_ABF44 */
 
 /* fzgx:begin fn_1_AC12C */
-extern void* lbl_801A6410;
 extern int fn_1_45D0(void *arg0, int arg1, Obj_1_data_3C7B8 *arg2, int arg3);
 extern void fn_1_AB45C(void);
 extern void CARDMountAsync(u8, u32, void (*)(void), s32);
@@ -709,7 +712,6 @@ extern void fn_1_F755C(u8 value);
 extern void fn_1_A6840(u8 value);
 extern void OSPanic(void *arg0, u32 arg1, ...);
 extern void fn_1_F79C8(void);
-extern void *lbl_801A6410;
 extern void strncpy(void *arg0, void *arg1, int arg2);
 extern u32 lbl_1_bss_77310[28];
 extern u32 lbl_1_bss_7730C;
@@ -1395,7 +1397,6 @@ void fn_1_AD168(Fn1AD168Obj *obj) {
 /* fzgx:end fn_1_AD168 */
 
 /* fzgx:begin fn_1_AD1AC */
-extern void* lbl_801A6410;
 extern int fn_1_45D0(void *arg0, int arg1, Obj_1_data_3C7B8 *arg2, int arg3);
 extern void fn_1_AB45C(void);
 extern void CARDMountAsync(u8, u32, void (*)(void), s32);
@@ -1430,7 +1431,6 @@ extern void fn_1_F755C(u8 value);
 extern void fn_1_A6840(u8 value);
 extern void OSPanic(void *arg0, u32 arg1, ...);
 extern void fn_1_F79C8(void);
-extern void *lbl_801A6410;
 extern void strncpy(void *arg0, void *arg1, int arg2);
 extern u32 lbl_1_bss_77310[28];
 extern u32 lbl_1_bss_7730C;
@@ -1909,14 +1909,9 @@ void fn_1_C36EC(void) {
 /* fzgx:end fn_1_C36EC */
 
 /* fzgx:begin fn_1_C37A0 */
-extern u8 lbl_1_bss_772C8[66];
-extern void *lbl_801A6410;
-extern u32 fn_1_4630(void *heap, u32 size, void *file, s32 line);
 extern void fn_1_46B4(void *heap, u32 ptr, void *file, s32 line);
 extern s32 CARDGetResultCode(s32 chan);
 extern s32 CARDUnmount(s32 chan);
-extern s32 fn_8002FC14(s32 chan, void *fileName);
-extern s32 fn_80030338(s32 chan, void *oldName, void *newName);
 
 typedef struct CARDFileInfo {
     s32 chan;

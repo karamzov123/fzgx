@@ -337,7 +337,6 @@ extern const f32 lbl_1_rodata_8840;
 extern const f32 lbl_1_rodata_87B4;
 extern const u32 lbl_1_rodata_8DC0;
 extern const f32 lbl_1_rodata_8818;
-extern const f32 lbl_1_rodata_86F8;
 extern const u32 lbl_1_rodata_8DC4;
 extern const f32 lbl_1_rodata_8DD0;
 extern const u32 lbl_1_rodata_8DC8;
