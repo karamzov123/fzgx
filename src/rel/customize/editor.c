@@ -1,4 +1,9 @@
 #include "types.h"
+extern struct Obj *fn_3_14074(void);
+extern u8 lbl_3_bss_A2408[8];
+extern void *fn_1_45D0(void *, u32, char *, u32);
+extern void fn_80008BEC(void *, u32, u32);
+extern void fn_3_17100(void);
 
 /* fzgx:begin fn_3_1552C */
 struct Obj {
@@ -80,8 +85,6 @@ void fn_3_156A8(void) {
 /* fzgx:end fn_3_156A8 */
 
 /* fzgx:begin fn_3_170E0 */
-extern void fn_3_17100(void);
-
 void fn_3_170E0(void) {
     fn_3_17100();
 }

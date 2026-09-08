@@ -1,50 +1,59 @@
 #include "types.h"
-
-/* fzgx:begin fn_3_19C50 */
 extern u32 lbl_3_bss_A2454;
 extern u8 lbl_3_data_3D14[60];
 extern u32 lbl_801A6410;
 extern void fn_1_46B4(u32, u32, u8 *, int);
+extern u8 lbl_3_bss_A2438[28];
+extern const f32 lbl_3_rodata_740;
+extern void fn_3_1ABD8(void *arg0, s16 x1, s16 y1, s16 x2, s16 y2, u32 *value);
+extern void fn_3_1B130(void *, s16, s16, u32 *);
+extern void fn_3_149AC(void);
+extern void fn_3_1BA20(void *target, s16 x, s16 y, s16 z, s16 w, s32 *value);
+extern void fn_3_1BF08(void *, s16, s16, s16, s16, u32 *);
+extern u8 lbl_3_bss_A2458[8];
+extern void fn_3_BD98(void);
+extern s32 lbl_3_bss_A179C;
+extern void fn_3_BEF0(void);
+extern void fn_3_BE88(void);
+extern void fn_3_156A8(void);
+extern s16 lbl_3_bss_A2460[4];
+extern void fn_80074188(s16, s16, s16, s16);
+extern s16 lbl_3_bss_A248C[21];
+extern void fn_1_5233C(void *, void *);
+extern u8 lbl_3_data_4648[1320];
 
+/* fzgx:begin fn_3_19C50 */
 void fn_3_19C50(void) {
     fn_1_46B4(lbl_801A6410, lbl_3_bss_A2454, lbl_3_data_3D14, 0x294);
 }
 /* fzgx:end fn_3_19C50 */
 
 /* fzgx:begin fn_3_19C94 */
-extern u8 lbl_3_bss_A2438[28];
-
 u8 fn_3_19C94(void) {
     return lbl_3_bss_A2438[0xe];
 }
 /* fzgx:end fn_3_19C94 */
 
 /* fzgx:begin fn_3_19CA4 */
-extern u8 lbl_3_bss_A2438[28];
-
 void fn_3_19CA4(void) {
     *(u32 *)(lbl_3_bss_A2438 + 4) = (u32)-2147483648;
 }
 /* fzgx:end fn_3_19CA4 */
 
 /* fzgx:begin fn_3_19CB8 */
-extern u8 lbl_3_bss_A2438[28];
-
 void fn_3_19CB8(void) {
     *(u32 *)(lbl_3_bss_A2438 + 4) = 0x20000000;
 }
 /* fzgx:end fn_3_19CB8 */
 
 /* fzgx:begin fn_3_19CCC */
-extern u8 lbl_3_bss_A2438[28];
-
 void fn_3_19CCC(void) {
     *(u32 *)(lbl_3_bss_A2438 + 4) = 0x40000000;
 }
 /* fzgx:end fn_3_19CCC */
 
 /* fzgx:begin fn_3_19D14 */
-typedef struct CustomizeData {
+typedef struct fn_3_19D14_CustomizeData {
     u8 _pad08[0x08];
     u32 value_08;
     u8 _pad0c[0x04];
@@ -52,28 +61,23 @@ typedef struct CustomizeData {
     s16 value_12;
     u8 _pad14[0x0c];
     void *value_20;
-} CustomizeData;
+} fn_3_19D14_CustomizeData;
 
 extern void fn_3_1AB34(void *, s16, s16, u32 *);
 
-void fn_3_19D14(CustomizeData *data) {
+void fn_3_19D14(fn_3_19D14_CustomizeData *data) {
     u32 value = data->value_08;
     fn_3_1AB34(data->value_20, data->value_10, data->value_12, &value);
 }
 /* fzgx:end fn_3_19D14 */
 
 /* fzgx:begin fn_3_19D50 */
-extern u8 lbl_3_bss_A2438[28];
-
 void fn_3_19D50(void) {
     lbl_3_bss_A2438[12] = (lbl_3_bss_A2438[12] + 1) % 5;
 }
 /* fzgx:end fn_3_19D50 */
 
 /* fzgx:begin fn_3_19D88 */
-extern const f32 lbl_3_rodata_740;
-extern void fn_3_1AB34(void *, s16, s16, const f32 *);
-
 typedef struct Fn319D88Object {
     u8 pad_00[0x10];
     s16 value_10;
@@ -90,7 +94,7 @@ void fn_3_19D88(Fn319D88Object *object) {
 /* fzgx:end fn_3_19D88 */
 
 /* fzgx:begin fn_3_19EB8 */
-typedef struct CustomizeData {
+typedef struct fn_3_19EB8_CustomizeData {
     u32 unk_00[2];
     u32 unk_08;
     s16 unk_0c;
@@ -99,20 +103,16 @@ typedef struct CustomizeData {
     s16 unk_12;
     u8 unk_14[0x0c];
     void *unk_20;
-} CustomizeData;
+} fn_3_19EB8_CustomizeData;
 
-extern void fn_3_1ABD8(void *, s16, s16, s16, s16, u32 *);
-
-void fn_3_19EB8(CustomizeData *self) {
+void fn_3_19EB8(fn_3_19EB8_CustomizeData *self) {
     u32 local = self->unk_08;
     fn_3_1ABD8(self->unk_20, self->unk_0c, self->unk_0e, self->unk_10, self->unk_12, &local);
 }
 /* fzgx:end fn_3_19EB8 */
 
 /* fzgx:begin fn_3_19EFC */
-extern void fn_3_1ACE4(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u32 *arg5);
-
-typedef struct CustomizeTool {
+typedef struct fn_3_19EFC_CustomizeTool {
     u8 unk00[8];
     u32 unk08;
     s16 unk0c;
@@ -121,9 +121,9 @@ typedef struct CustomizeTool {
     s16 unk12;
     u8 unk14[12];
     void *unk20;
-} CustomizeTool;
+} fn_3_19EFC_CustomizeTool;
 
-void fn_3_19EFC(CustomizeTool *self) {
+void fn_3_19EFC(fn_3_19EFC_CustomizeTool *self) {
     u32 value = self->unk08;
     fn_3_1ACE4(self->unk20, self->unk0c, self->unk0e, self->unk10, self->unk12, &value);
 }
@@ -140,8 +140,6 @@ typedef struct CustomizeObject {
     void *value20;
 } CustomizeObject;
 
-extern void fn_3_1B130(void *, s16, s16, u32 *);
-
 void fn_3_19F40(CustomizeObject *self) {
     u32 value;
     value = self->value08;
@@ -150,17 +148,13 @@ void fn_3_19F40(CustomizeObject *self) {
 /* fzgx:end fn_3_19F40 */
 
 /* fzgx:begin fn_3_19F7C */
-extern void fn_3_149AC(void);
-
 void fn_3_19F7C(void) {
     fn_3_149AC();
 }
 /* fzgx:end fn_3_19F7C */
 
 /* fzgx:begin fn_3_19F9C */
-extern void fn_3_1B4BC(void *, s16, s16, s16, s16, u32 *);
-
-typedef struct CustomizeTool {
+typedef struct fn_3_19F9C_CustomizeTool {
     u8 pad00[8];
     u32 value08;
     s16 value0c;
@@ -169,9 +163,9 @@ typedef struct CustomizeTool {
     s16 value12;
     u8 pad14[12];
     void *value20;
-} CustomizeTool;
+} fn_3_19F9C_CustomizeTool;
 
-void fn_3_19F9C(CustomizeTool *tool) {
+void fn_3_19F9C(fn_3_19F9C_CustomizeTool *tool) {
     u32 value;
 
     value = tool->value08;
@@ -192,8 +186,6 @@ typedef struct Fn319FE0Data {
     void *target;
 } Fn319FE0Data;
 
-extern void fn_3_1BA20(void *target, s16 x, s16 y, s16 z, s16 w, s32 *value);
-
 void fn_3_19FE0(Fn319FE0Data *data) {
     s32 value = data->value;
     fn_3_1BA20(data->target, data->x, data->y, data->z, data->w, &value);
@@ -201,8 +193,6 @@ void fn_3_19FE0(Fn319FE0Data *data) {
 /* fzgx:end fn_3_19FE0 */
 
 /* fzgx:begin fn_3_1A024 */
-extern void fn_3_1BF08(void *, s16, s16, s16, s16, u32 *);
-
 typedef struct Fn3_1A024Data {
     u8 pad_00[8];
     u32 value_08;
@@ -222,13 +212,6 @@ void fn_3_1A024(Fn3_1A024Data *data) {
 /* fzgx:end fn_3_1A024 */
 
 /* fzgx:begin fn_3_1A068 */
-extern u8 lbl_3_bss_A2458[8];
-extern void fn_3_BD98(void);
-extern s32 lbl_3_bss_A179C;
-extern void fn_3_BEF0(void);
-extern u8 lbl_3_bss_A2438[28];
-extern void fn_3_BE88(void);
-
 void fn_3_1A068(void) {
     if (lbl_3_bss_A2458[0] != 0) {
         fn_3_BD98();
@@ -246,8 +229,6 @@ void fn_3_1A068(void) {
 /* fzgx:end fn_3_1A068 */
 
 /* fzgx:begin fn_3_1A1B8 */
-extern void fn_3_156A8(void);
-
 void fn_3_1A1B8(void) {
     fn_3_156A8();
 }
@@ -319,9 +300,6 @@ void fn_3_1ACE4(void *data, s32 first_a, s32 second_a, s32 first_b, s32 second_b
 /* fzgx:end fn_3_1ACE4 */
 
 /* fzgx:begin fn_3_2406C */
-extern s16 lbl_3_bss_A2460[4];
-extern void fn_80074188(s16, s16, s16, s16);
-
 void fn_3_2406C(void) {
     fn_80074188(lbl_3_bss_A2460[0], lbl_3_bss_A2460[1],
                 lbl_3_bss_A2460[2], lbl_3_bss_A2460[3]);
@@ -329,9 +307,6 @@ void fn_3_2406C(void) {
 /* fzgx:end fn_3_2406C */
 
 /* fzgx:begin fn_3_240A4 */
-extern s16 lbl_3_bss_A248C[21];
-extern void fn_80074188(s16, s16, s16, s16);
-
 void fn_3_240A4(void) {
     fn_80074188(lbl_3_bss_A248C[0], lbl_3_bss_A248C[1],
                 lbl_3_bss_A248C[2], lbl_3_bss_A248C[3]);
@@ -339,10 +314,6 @@ void fn_3_240A4(void) {
 /* fzgx:end fn_3_240A4 */
 
 /* fzgx:begin fn_3_240DC */
-extern s16 lbl_3_bss_A2460[4];
-extern void fn_80074188(s16, s16, s16, s16);
-extern void fn_1_5233C(void *, void *);
-
 void fn_3_240DC(void *arg0, void *arg1) {
     fn_80074188(lbl_3_bss_A2460[0],
                 lbl_3_bss_A2460[1],
@@ -353,8 +324,6 @@ void fn_3_240DC(void *arg0, void *arg1) {
 /* fzgx:end fn_3_240DC */
 
 /* fzgx:begin fn_3_2B750 */
-extern u8 lbl_3_data_4648[1320];
-
 u32 fn_3_2B750(s16 arg0, s16 arg1) {
     return *(u32 *)(lbl_3_data_4648 + arg0 * 0x18 + arg1 * 4);
 }

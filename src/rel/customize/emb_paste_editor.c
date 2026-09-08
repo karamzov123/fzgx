@@ -1,4 +1,7 @@
 #include "types.h"
+extern u8 lbl_3_bss_8F200[];
+extern void fn_1_FC414(void *, int);
+extern u8 lbl_3_bss_A1778[12];
 
 /* fzgx:begin fn_3_11974 */
 extern u16 lbl_3_bss_7EDD8[52];
@@ -122,8 +125,6 @@ void fn_3_13078(void) {
 /* fzgx:end fn_3_13078 */
 
 /* fzgx:begin fn_3_1307C */
-extern u8 lbl_3_bss_A1778[12];
-
 u8 fn_3_1307C(void) {
     return lbl_3_bss_A1778[0];
 }

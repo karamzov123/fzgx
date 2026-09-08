@@ -1,6 +1,4 @@
 #include "types.h"
-
-/* fzgx:begin fn_3_B5FC */
 extern s32 lbl_3_bss_120;
 extern u32 lbl_3_bss_F0[12];
 extern s32 fn_1_4C10(void);
@@ -9,7 +7,28 @@ extern u16 lbl_1_bss_96A;
 extern u32 lbl_3_bss_20850;
 extern u32 lbl_3_bss_243A8[6];
 extern void fn_1_4A00(s32, s32, u32);
+extern u16 lbl_3_bss_20[104];
+extern u32 lbl_3_bss_2C7C0[66624];
+extern void fn_80008BEC(void *, s32, s32);
+extern void fn_1_FDFF4(void);
+extern void fn_1_FC4E0(void *, s32);
+extern u32 lbl_3_bss_7EBA4;
+extern u32 lbl_3_bss_7EBA8;
+extern u8 lbl_3_data_11DC[84];
+extern u32 lbl_801A6410;
+extern void fn_1_7F3AC(u32);
+extern void fn_1_46B4(u32, u32, u8 *, s32);
+extern void fn_1_BC29C(u32 *arg0);
+extern void fn_1_B9C0C(void);
+extern char lbl_3_data_1A1C[17];
+extern u8 fn_1_B7C00(void);
+extern s32 fn_1_B7CD4(void);
+extern s32 fn_1_B7C5C(void);
+extern void OSReport(const char *, ...);
+extern u32 lbl_3_bss_A179C;
+extern u32 lbl_3_data_1A14;
 
+/* fzgx:begin fn_3_B5FC */
 void fn_3_B5FC(void) {
     u32 flags;
     s32 ready;
@@ -44,14 +63,6 @@ void fn_3_B5FC(void) {
 /* fzgx:end fn_3_B5FC */
 
 /* fzgx:begin fn_3_B984 */
-extern u16 lbl_3_bss_F0[24];
-extern u16 lbl_3_bss_20[104];
-extern u32 lbl_3_bss_2C7C0[66624];
-
-extern void fn_80008BEC(void *, s32, s32);
-extern void fn_1_FDFF4(void);
-extern void fn_1_FC4E0(void *, s32);
-
 void fn_3_B984(void *entries, u8 *table) {
     u8 i;
     u8 j;
@@ -78,14 +89,6 @@ void fn_3_B984(void *entries, u8 *table) {
 /* fzgx:end fn_3_B984 */
 
 /* fzgx:begin fn_3_BC60 */
-extern u32 lbl_3_bss_7EBA4;
-extern u32 lbl_3_bss_7EBA8;
-extern u8 lbl_3_data_11DC[84];
-extern u32 lbl_801A6410;
-
-extern void fn_1_7F3AC(u32);
-extern void fn_1_46B4(u32, u32, u8 *, s32);
-
 void fn_3_BC60(void) {
     u32 *value;
 
