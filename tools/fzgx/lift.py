@@ -658,6 +658,206 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     ctr_expr: List[Optional[str]] = [None]
     fn_typedefs: List[str] = []
 
+    # ---- structured control flow, discovered up front ---------------------------------------
+    loop_branches = {k for _, _, k in loop_regions} | {k for _, _, k in dowhile_by_entry.values()} | {k for _, k in ctr_loops.values()}
+    BCOND_RE = re.compile(r"b(eq|ne|lt|gt|le|ge)$")
+
+    def _ranges_op(ranges, op, K, uns):
+        """Split value ranges by a compare with K: (taken, rest); None bounds are unbounded."""
+        def inter(r, lo, hi):
+            a_, b_ = r
+            lo2 = a_ if lo is None else (lo if a_ is None else max(a_, lo))
+            hi2 = b_ if hi is None else (hi if b_ is None else min(b_, hi))
+            if lo2 is not None and hi2 is not None and lo2 > hi2:
+                return None
+            return (lo2, hi2)
+        def cut(rs, lo, hi):
+            return [x for x in (inter(r, lo, hi) for r in rs) if x is not None]
+        if op == "eq":
+            taken = cut(ranges, K, K); rest = cut(ranges, None, K - 1) + cut(ranges, K + 1, None)
+        elif op == "ne":
+            rest = cut(ranges, K, K); taken = cut(ranges, None, K - 1) + cut(ranges, K + 1, None)
+        elif op == "lt":
+            taken = cut(ranges, None, K - 1); rest = cut(ranges, K, None)
+        elif op == "le":
+            taken = cut(ranges, None, K); rest = cut(ranges, K + 1, None)
+        elif op == "gt":
+            taken = cut(ranges, K + 1, None); rest = cut(ranges, None, K)
+        else:  # ge
+            taken = cut(ranges, K, None); rest = cut(ranges, None, K - 1)
+        if uns:
+            taken = cut(taken, 0, None); rest = cut(rest, 0, None)
+        return taken, rest
+
+    def switch_tree(j: int):
+        """A compare tree on one register with constant cases (MWCC's small switch): the tree's
+        instruction indices, {leaf index: ranges}, and whether the compares are unsigned."""
+        mn0, a0 = ins[j]
+        if mn0 not in ("cmpwi", "cmplwi") or not a0 or j + 1 >= len(ins) or not BCOND_RE.match(ins[j + 1][0]):
+            return None
+        reg = a0[0]; uns = mn0 == "cmplwi"
+        tree: set = set(); leaves: Dict[int, list] = {}
+        def walk(idx: int, ranges) -> bool:
+            guard = 0
+            while ranges and guard < 64:
+                guard += 1
+                if idx >= len(ins) or idx in tree and idx != j:
+                    return False
+                mn_, a_ = ins[idx]
+                if mn_ in ("cmpwi", "cmplwi") and a_ and a_[0] == reg and idx + 1 < len(ins) and BCOND_RE.match(ins[idx + 1][0]):
+                    if (mn_ == "cmplwi") != uns:
+                        return False
+                    K = _imm(a_[1]); tree.add(idx); idx += 1
+                    while idx < len(ins) and BCOND_RE.match(ins[idx][0]) and ins[idx][1] and ins[idx][1][-1].startswith(".L_"):
+                        op = ins[idx][0][1:]; tgt = labels.get(ins[idx][1][-1])
+                        if tgt is None or tgt <= idx:
+                            return False
+                        tree.add(idx); idx += 1
+                        taken, rest = _ranges_op(ranges, op, K, uns)
+                        if taken and not walk(tgt, taken):
+                            return False
+                        ranges = rest
+                        if not ranges:
+                            return True
+                    continue
+                if mn_ == "b" and a_ and a_[-1].startswith(".L_"):
+                    tgt = labels.get(a_[-1])
+                    if tgt is None or tgt <= idx:
+                        return False
+                    tree.add(idx); idx = tgt; continue
+                leaves.setdefault(idx, []).extend(ranges); return True
+            return not ranges
+        if not walk(j, [(None, None)]):
+            return None
+        if len(leaves) < 3 or len(tree) < 3:
+            return None
+        return tree, leaves, uns, reg
+
+    switch_at: Dict[int, dict] = {}
+    switch_tree_idx: set = set()
+    for j in range(len(ins)):
+        if j in switch_tree_idx or j in loop_branches:
+            continue
+        st = switch_tree(j)
+        if st is None:
+            continue
+        tree, leaves, uns, reg = st
+        tree_end = max(tree) + 1
+        labels_sorted = sorted(leaves)
+        if labels_sorted[0] < tree_end or any(x >= labels_sorted[0] for x in tree):
+            continue
+        # bodies are laid out one after another; the join is where the first `b` out of a body goes
+        join = None
+        bodies_ok = True
+        for bi, L in enumerate(labels_sorted):
+            end = labels_sorted[bi + 1] if bi + 1 < len(labels_sorted) else None
+            if end is None:
+                continue
+            last = ins[end - 1]
+            if last[0] == "b" and last[1] and last[1][-1].startswith(".L_"):
+                t_ = labels.get(last[1][-1], -1)
+                if join is None:
+                    join = t_
+                elif t_ != join:
+                    bodies_ok = False; break
+            elif last[0] not in ("blr",):
+                pass  # falls through into the next case (C allows it)
+        if not bodies_ok:
+            continue
+        last_label = labels_sorted[-1]
+        if join is None:
+            # every body returns or falls through: the join is the end of the last body
+            continue
+        if join <= last_label:
+            # the last leaf is the join itself: an empty default
+            if last_label != join:
+                continue
+        cases: Dict[int, List[int]] = {}
+        default = None
+        bad = False
+        for L, rs in leaves.items():
+            vals = []
+            for lo, hi in rs:
+                if lo is None or hi is None or hi - lo > 8:
+                    vals = None; break
+                vals += list(range(lo, hi + 1))
+            if vals is None:
+                if default is not None and default != L:
+                    bad = True; break
+                default = L
+            else:
+                cases[L] = sorted(set(cases.get(L, []) + vals))
+        if bad or not cases:
+            continue
+        if default is not None and default == join:
+            default = None
+        switch_at[j] = {"tree": tree, "cases": cases, "default": default, "join": join, "reg": reg, "uns": uns,
+                        "labels": labels_sorted}
+        switch_tree_idx |= tree
+
+    # short-circuit chains: consecutive conditional branches whose targets are one else label E
+    # or the then-block right after the run; `a && (b || c)` in the source
+    CHAIN_OK = ("cmpwi", "cmpw", "cmplwi", "cmplw", "extsb", "extsh", "lwz", "lhz", "lha", "lbz", "lfs", "lfd", "rlwinm", "rlwinm.",
+                "andi.", "clrlwi", "clrlwi.", "srwi", "srawi", "slwi", "mr", "mr.", "li", "lis", "addi", "and", "or", "xor", "not", "neg",
+                "extrwi", "extrwi.", "fcmpo", "fcmpu", "cntlzw", "subf", "add")
+    chain_mid: Dict[int, int] = {}    # branch index -> chain id
+    chain_last: Dict[int, dict] = {}  # last branch index -> {"id", "E", "then", "fall_b"}
+    bconds = [x for x in range(len(ins)) if BCOND_RE.match(ins[x][0]) and ins[x][1] and ins[x][1][-1].startswith(".L_")
+              and x not in switch_tree_idx and x not in loop_branches and labels.get(ins[x][1][-1], -1) > x]
+    used_in_chain: set = set()
+    cid = 0
+    for start in bconds:
+        if start in used_in_chain:
+            continue
+        run = [start]
+        x = start + 1
+        while x < len(ins):
+            if x in bconds and x not in used_in_chain:
+                run.append(x); x += 1; continue
+            if ins[x][0] in CHAIN_OK and ins[x][1] and not ins[x][1][-1].startswith(".L_"):
+                x += 1; continue
+            break
+        # the longest prefix of at least two branches that reads as one condition
+        best = None
+        for n in range(len(run), 1, -1):
+            br = run[:n]
+            after = br[-1] + 1
+            fall_b = None
+            then_idx = after
+            if after < len(ins) and ins[after][0] == "b" and ins[after][1] and ins[after][1][-1].startswith(".L_") and labels.get(ins[after][1][-1], -1) > after:
+                fall_b = after; then_idx = after + 1
+            targets = [labels[ins[b][1][-1]] for b in br]
+            E_cands = {t for t in targets if t != then_idx}
+            if fall_b is not None:
+                E_cands.add(labels[ins[fall_b][1][-1]])
+            if len(E_cands) != 1:
+                continue
+            E = next(iter(E_cands))
+            if E <= then_idx:
+                continue
+            if all(t == E for t in targets) and fall_b is None and n < 2:
+                continue
+            # the then block must not be jumped into from inside the run except at its start
+            best = (br, E, then_idx, fall_b); break
+        if best is None:
+            continue
+        br, E, then_idx, fall_b = best
+        cid += 1
+        for b in br[:-1]:
+            chain_mid[b] = cid
+        chain_last[br[-1]] = {"id": cid, "E": E, "then": then_idx, "fall_b": fall_b}
+        used_in_chain.update(br)
+        if fall_b is not None:
+            skip.add(fall_b)
+    chain_cmp_idx: set = set()
+    for b_last, ch in chain_last.items():
+        b_first = min([b for b, c in chain_mid.items() if c == ch["id"]] + [b_last])
+        chain_cmp_idx.update(range(b_first, b_last + 1))
+    chain_terms: Dict[int, list] = {}
+    case_labels: Dict[int, str] = {}
+    switch_breaks: set = set()
+    switch_state: Dict[int, Tuple[dict, dict]] = {}
+
     UNKNOWN = ("?", "?")
 
     def test_step(mn_x: str, a_x: List[str], cur_cond):
@@ -731,6 +931,40 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             ptr_globals.add(key); pfields.setdefault(key, {})[o] = t; return f"{key}->unk_{o:X}"
         return None
 
+    def promote_written(i0: int, region_end: int) -> None:
+        """Every register the region (i0, region_end) writes and code after it may read is a
+        local: its writes become statements inside the branches, reads after use the local."""
+        written = []
+        for x in range(i0 + 1, region_end):
+            mn_x, a_x = ins[x]
+            if a_x and mn_x not in STORE_T and not mn_x.startswith(("st", "cmp", "b")) and mn_x not in ("mtlr", "mtspr", "mtctr"):
+                if a_x[0] not in written:
+                    written.append(a_x[0])
+        for rw in written:
+            if rw in ("r0", "r1") or rw in carried or not re.fullmatch(r"r([3-9]|1\d|2\d|3[01])|f([1-9]|1\d|2\d|3[01])", rw):
+                continue
+            read_after = any(reads(x, rw) or (ins[x][0] == "bl" and re.fullmatch(r"r([3-9]|10)|f[1-8]", rw)) or (ins[x][0] == "blr" and rw in ("r3", "f1"))
+                             for x in range(region_end, len(ins)))
+            read_inside_first = False
+            for x in range(i0 + 1, region_end):
+                if reads(x, rw):
+                    read_inside_first = True; break
+                if ins[x][1] and ins[x][1][0] == rw and ins[x][0] not in STORE_T and not ins[x][0].startswith(("st", "cmp", "b")):
+                    break
+            if not (read_after or read_inside_first):
+                continue
+            init0 = regs.get(rw)
+            if init0 is not None and (re.fullmatch(r"&[A-Za-z_]\w*", init0) or init0.startswith("((u8 *)&") or init0.startswith("(struct ")):
+                continue  # MWCC rematerialises addresses: no local
+            tn = f"v{len(temps)}"
+            init = regs.get(rw)
+            if init is None and re.fullmatch(r"r([3-9]|10)|f[1-8]", rw) and rw in params:
+                init = use(rw)
+            temps.append(f"{rtype.get(rw, 'u32')} {tn};")
+            if init is not None:
+                stmts.append(f"{tn} = {init};")
+            regs[rw] = tn; carried[rw] = tn
+
     def loop_locals(b_: int, t_: int, k_: int) -> None:
         """Registers written inside the loop and read inside before written, or read by its
         test, are loop-carried: locals initialised from their pre-loop value."""
@@ -772,7 +1006,10 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     uses = 0
                     for x in range(i, len(ins)):
                         if reads(x, pd) or (ins[x][0] == "bl" and re.fullmatch(r"r([3-9]|10)|f[1-8]", pd)):
-                            uses += 1
+                            if x in chain_cmp_idx and reads(x, pd) and ins[x][0].startswith("cmp"):
+                                uses += 0.5  # compares of one short-circuit condition share the value
+                            else:
+                                uses += 1
                         if ins[x][0] == "blr" and pd in ("r3", "f1"):
                             uses += 1  # returned
                         if ins[x][0] == "bl" and re.fullmatch(r"r([0-9]|1[0-2])|f([0-9]|1[0-3])", pd):
@@ -790,6 +1027,12 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     e_ = regs.get(r_)
                     if e_.startswith(("((u8 *)", "(u8 *)", "&", "(struct ")):
                         e_ = f"(u32){e_}"  # a register reused for an address: the local is an integer
+                    # another register still holds an expression over the old value: that value
+                    # is a temporary of its own before the local changes
+                    for r2, e2 in list(regs.items()):
+                        if r2 != r_ and e2 and e2 != tn and re.search(rf"\b{re.escape(tn)}\b", e2) and read_later(i - 1, r2):
+                            t2 = f"v{len(temps)}"; temps.append(f"{rtype.get(r2, 'u32')} {t2};")
+                            stmts.append(f"{t2} = {e2};"); regs[r2] = t2
                     stmts.append(f"{tn} = {e_};"); regs[r_] = tn
             if a and mn not in STORE_T and not mn.startswith(("st", "cmp", "b")) and mn not in ("mtlr", "mtspr"):
                 temps_written.append((a[0], i)); written_since_call.add(a[0])
@@ -865,6 +1108,42 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     skip.add(x)
                 for r_ in (rD, rS, "r0", "r3"):
                     regs.pop(r_, None)
+                continue
+            if i in case_labels:
+                stmts.append(case_labels[i])
+                snap = switch_state.get(case_labels[i])
+                if snap:
+                    for r_ in list(regs):
+                        if r_ not in snap[0]:
+                            regs.pop(r_)
+                    regs.update(snap[0]); rtype.update(snap[1])
+            if i in switch_breaks:
+                stmts.append("break;"); continue
+            if i in switch_at:
+                sw = switch_at[i]
+                x_ = use(sw["reg"])
+                tt = rtype.get(sw["reg"], "u32")
+                if sw["uns"] and tt not in ("u32", "u16", "u8"):
+                    x_ = f"(u32){x_}"
+                elif not sw["uns"] and tt not in ("s32", "s16", "s8"):
+                    x_ = f"(s32){x_}"
+                promote_written(i, sw["join"])
+                stmts.append(f"switch ({x_}) {{")
+                for x in sw["tree"]:
+                    skip.add(x)
+                snap = (dict(regs), dict(rtype))
+                for L, vals in sw["cases"].items():
+                    case_labels[L] = "\n".join(f"case {v}:" for v in vals)
+                    switch_state[case_labels[L]] = snap
+                if sw["default"] is not None:
+                    case_labels[sw["default"]] = "default:"
+                    switch_state["default:"] = snap
+                for bi, L in enumerate(sw["labels"]):
+                    end = sw["labels"][bi + 1] if bi + 1 < len(sw["labels"]) else sw["join"]
+                    if end - 1 > L and ins[end - 1][0] == "b" and labels.get(ins[end - 1][1][-1], -1) == sw["join"]:
+                        switch_breaks.add(end - 1)
+                open_ifs.append((sw["join"], "}"))
+                open_ifs.sort(key=lambda x: -x[0])
                 continue
             if i in skip:
                 continue
@@ -1008,8 +1287,35 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 op = COND[m.group(1)]
                 inv = {"==": "!=", "!=": "==", "<": ">=", ">": "<=", "<=": ">", ">=": "<"}[op]  # branch taken = skip
                 l, r_, uns = cond
+                enter_text = f"{l} {inv} {r_}"   # the then block runs when the branch is not taken
+                skip_text = f"{l} {op} {r_}"
+                if i in chain_mid:
+                    ch = chain_last[next(b for b in chain_last if chain_last[b]["id"] == chain_mid[i])]
+                    chain_terms.setdefault(chain_mid[i], []).append(("E" if tgt == ch["E"] else "T", l, op, inv, r_))
+                    continue
+                if i in chain_last:
+                    ch = chain_last[i]
+                    terms = chain_terms.get(ch["id"], []) + [("E" if tgt == ch["E"] else "T", l, op, inv, r_)]
+                    # reaching the then block: R(k) = !e_k && R(k+1) for an else-branch, t_k || R(k+1) for a then-branch
+                    R = "0" if ch["fall_b"] is not None else None
+                    for kind, tl, top_, tinv, tr in reversed(terms):
+                        if kind == "E":
+                            term = f"{tl} {tinv} {tr}"
+                            if R is None or R == "0":
+                                R = term
+                            else:
+                                R = f"{term} && ({R})" if "||" in R else f"{term} && {R}"
+                        else:
+                            term = f"{tl} {top_} {tr}"
+                            if R is None or R == "0":
+                                R = term
+                            else:
+                                R = f"{term} || ({R})" if "&&" in R else f"{term} || {R}"
+                    enter_text = R
+                    skip_text = f"!({R})"
+                    tgt = ch["E"]
                 if ins[tgt][0] == "blr" or tgt == len(ins) - 1:
-                    stmts.append(f"if ({l} {op} {r_}) {{ return __RET__; }}")
+                    stmts.append(f"if ({skip_text}) {{ return __RET__; }}")
                 else:
                     # every register the region writes and code after it may read is a local: its
                     # writes become statements inside the branches, reads after use the local
@@ -1017,50 +1323,21 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     pm0, pa0 = ins[tgt - 1]
                     if pm0 == "b" and pa0 and pa0[-1].startswith(".L_") and labels.get(pa0[-1], -1) > tgt:
                         region_end = labels[pa0[-1]]
-                    written = []
-                    for x in range(i + 1, region_end):
-                        mn_x, a_x = ins[x]
-                        if a_x and mn_x not in STORE_T and not mn_x.startswith(("st", "cmp", "b")) and mn_x not in ("mtlr", "mtspr", "mtctr"):
-                            if a_x[0] not in written:
-                                written.append(a_x[0])
-                    for rw in written:
-                        if rw in ("r0", "r1") or rw in carried or not re.fullmatch(r"r([3-9]|1\d|2\d|3[01])|f([1-9]|1\d|2\d|3[01])", rw):
-                            continue
-                        read_after = any(reads(x, rw) or (ins[x][0] == "bl" and re.fullmatch(r"r([3-9]|10)|f[1-8]", rw)) or (ins[x][0] == "blr" and rw in ("r3", "f1"))
-                                         for x in range(region_end, len(ins)))
-                        read_inside_first = False
-                        for x in range(i + 1, region_end):
-                            if reads(x, rw):
-                                read_inside_first = True; break
-                            if ins[x][1] and ins[x][1][0] == rw and ins[x][0] not in STORE_T and not ins[x][0].startswith(("st", "cmp", "b")):
-                                break
-                        if not (read_after or read_inside_first):
-                            continue
-                        init0 = regs.get(rw)
-                        if init0 is not None and (re.fullmatch(r"&[A-Za-z_]\w*", init0) or init0.startswith("((u8 *)&") or init0.startswith("(struct ")):
-                            continue  # MWCC rematerialises addresses: no local
-                        tn = f"v{len(temps)}"
-                        init = regs.get(rw)
-                        if init is None and re.fullmatch(r"r([3-9]|10)|f[1-8]", rw) and rw in params:
-                            init = use(rw)
-                        temps.append(f"{rtype.get(rw, 'u32')} {tn};")
-                        if init is not None:
-                            stmts.append(f"{tn} = {init};")
-                        regs[rw] = tn; carried[rw] = tn
+                    promote_written(i, region_end)
                     # `if (c) { then } else { else }` when the then-block ends with a forward jump
                     # over the else-block; otherwise a plain if
                     pm, pa = ins[tgt - 1]
                     if pm == "b" and pa and pa[-1].startswith(".L_") and labels.get(pa[-1], -1) > tgt:
                         end = labels[pa[-1]]
                         skip.add(tgt - 1)
-                        stmts.append(f"if ({l} {inv} {r_}) {{")
+                        stmts.append(f"if ({enter_text}) {{")
                         # closers are pushed innermost-last: the stack pops the else first, then the end
                         open_ifs.append((end, "}")); open_ifs.append((tgt - 1, "} else {"))
                         # the else branch runs from the state at the branch (a call in the then
                         # branch clears argument registers the else branch still holds)
                         else_state[tgt - 1] = (dict(regs), dict(rtype))
                     else:
-                        stmts.append(f"if ({l} {inv} {r_}) {{"); open_ifs.append((tgt, "}"))
+                        stmts.append(f"if ({enter_text}) {{"); open_ifs.append((tgt, "}"))
                 open_ifs.sort(key=lambda x: -x[0])  # smallest index on top: every closer pops at its index
                 continue
             lr_slot = f"0x{frame_size + 4:x}(r1)" if frame_size else None
@@ -1603,6 +1880,9 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                         ptypes_.append("u32")
                 for k in range(1, ftop + 1):
                     ptypes_.append(rtype.get(f"f{k}", "f32"))
+                while top >= 3 and f"r{top}" not in regs and f"r{top}" in params:
+                    top -= 1  # a parameter register cleared by an earlier call: stale, not an argument
+                ptypes_ = ptypes_[:max(0, top - 2)] + ptypes_[len(ptypes_) - len(fargs):] if fargs else ptypes_[:max(0, top - 2)]
                 args = [use(f"r{k}") for k in range(3, top + 1)] + fargs  # after the casts
                 seen_args: Dict[str, int] = {}
                 for e in args:
