@@ -299,6 +299,14 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
     if reason:
         return {"ok": False, "error": reason, "percent": res.percent, "diff": res.diff}
 
+    # A shadow (A/B) trial parks matched units as stubs; relinking meanwhile would fail every hash.
+    for _ in range(90):
+        active = l.db.execute("SELECT COUNT(*) FROM functions WHERE prev_status IS NOT NULL").fetchone()[0]
+        if not active:
+            break
+        time.sleep(10)
+    else:
+        return {"ok": False, "error": "shadow trial still active after 15 min; retry submit later", "percent": res.percent}
     with oracle.build_lock():
         units = p.load_units()
         for u in units:
