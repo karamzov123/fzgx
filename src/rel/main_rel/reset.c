@@ -1,6 +1,37 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/reset.h"
 
-/* fzgx:begin fn_1_D3214 */
+extern s32 fn_1_B7E48(void);
+extern void fn_8001AF64(void);
+extern void fn_8001BDF0(int arg0);
+extern void fn_8006B224(void);
+extern void fn_8006FFCC(int arg0);
+extern void fn_8006FDEC(void);
+extern void fn_8006FEFC(void);
+extern void fn_8000EE50(void *arg0, void *arg1);
+extern void fn_1_C37A0(void);
+extern void fn_1_F7578(void);
+extern void fn_1_A0AA4(void);
+extern void fn_1_A02F0(void);
+extern void OSResetSystem(int reset, u32 reset_code, int force);
+extern int fn_8000C49C(void *arg0, int arg1, ...);
+extern void *memset(void *dest, int value, unsigned long size);
+extern void *memcpy(void *dest, const void *src, unsigned long size);
+extern u8 lbl_801A66B0[4];
+extern const f64 lbl_1_rodata_6160;
+extern const f64 lbl_1_rodata_6158;
+extern int fn_8000F5F0(void);
+extern int fn_1_A6F2C(void);
+extern int fn_80006AF4(void);
+extern int fn_1_A6F6C(void);
+extern int fn_1_A6FA0(void);
+extern void fn_80070F44(void);
+extern void fn_1_D3B6C(void);
+extern void fn_80071100(void);
+
+/* fzgx:begin fn_1_D3214 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/reset.h"
 
@@ -54,18 +85,6 @@ void fn_1_D3214(void) {
 /* fzgx:end fn_1_D3214 */
 
 /* fzgx:begin fn_1_D332C */
-#include "rel/main_rel/reset.h"
-
-extern const f64 lbl_1_rodata_6160;
-extern const f64 lbl_1_rodata_6158;
-extern Obj_1_bss_7AD48 lbl_1_bss_7AD48;
-
-extern int fn_8000F5F0(void);
-extern int fn_1_A6F2C(void);
-extern int fn_80006AF4(void);
-extern int fn_1_A6F6C(void);
-extern int fn_1_A6FA0(void);
-
 void fn_1_D332C(u16 *data) {
     u16 *entry;
     Obj_1_bss_7AD48 *state = &lbl_1_bss_7AD48;
@@ -113,22 +132,6 @@ void fn_1_D332C(u16 *data) {
 /* fzgx:end fn_1_D332C */
 
 /* fzgx:begin fn_1_D3474 */
-#include "rel/main_rel/reset.h"
-
-extern void fn_8001AF64(void);
-extern void fn_8001BDF0(int arg0);
-extern void fn_8006B224(void);
-extern void fn_8006FFCC(int arg0);
-extern void fn_8006FDEC(void);
-extern void fn_8006FEFC(void);
-extern void fn_8000EE50(void *arg0, void *arg1);
-extern int fn_8000C49C(void *arg0, int arg1, ...);
-extern void *memset(void *dest, int value, unsigned long size);
-extern void *memcpy(void *dest, const void *src, unsigned long size);
-extern void OSResetSystem(int reset, u32 reset_code, int force);
-
-extern u8 lbl_801A66B0[4];
-
 #define RESET_AREA ((u8 *)((u32)0x8070 << 16))
 
 void fn_1_D3474(void) {
@@ -168,17 +171,12 @@ void fn_1_D3474(void) {
 /* fzgx:end fn_1_D3474 */
 
 /* fzgx:begin fn_1_D357C */
-#include "rel/main_rel/reset.h"
-
 u8 fn_1_D357C(void) {
     return lbl_1_bss_7AD48.unk_0;
 }
 /* fzgx:end fn_1_D357C */
 
 /* fzgx:begin fn_1_D358C */
-extern void fn_80070F44(void);
-extern void fn_1_D3B6C(void);
-
 void fn_1_D358C(void) {
     fn_80070F44();
     fn_1_D3B6C();
@@ -186,9 +184,6 @@ void fn_1_D358C(void) {
 /* fzgx:end fn_1_D358C */
 
 /* fzgx:begin fn_1_D35B0 */
-extern void fn_80071100(void);
-extern void fn_1_D3B6C(void);
-
 // Wrapper that calls fn_80071100 followed by fn_1_D3B6C.
 void fn_1_D35B0(void) {
     fn_80071100();

@@ -1,6 +1,32 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/archive.h"
 
-/* fzgx:begin fn_1_12A2D0 */
+extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
+extern void fn_1_12A350(void *arg0, s32 arg1);
+extern s32 fn_8006A480(void *arg0, void *arg1, void *arg2);
+extern s32 fn_8006A998(void *arg0);
+extern void fn_8006A9AC(void *arg0);
+extern void fn_1_12AC28(void *arg0, s32 arg1, s32 arg2);
+extern void fn_1_12ADC8(void *arg0, void *arg1, s32 arg2, s32 arg3);
+extern void fn_1_12BB18(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4);
+extern void fn_1_8D168(void *arg);
+extern void fn_1_14DB48(void *arg0, void *arg1, u32 arg2);
+extern void fn_1_14DBCC(void *arg);
+extern u32 fn_1_95120(void *arg);
+extern const struct Table lbl_1_rodata_8230;
+extern u32 lbl_801A66A0;
+extern void fn_1_7B2E8(u8 value);
+extern void fn_1_13C1A0(void);
+extern void *fn_1_3F8C(void *table, void (*callback)(void), void *arg1, void *arg2);
+extern void fn_1_426C(s32 value);
+extern void fn_1_7B4C0(void);
+extern void fn_1_C2454(void);
+extern s32 fn_1_C24A4(void);
+extern u8 fn_1_B7C00(void);
+
+/* fzgx:begin fn_1_12A2D0 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/archive.h"
 
@@ -20,19 +46,12 @@ void fn_1_12A2D0(s32 value) {
 /* fzgx:end fn_1_12A2D0 */
 
 /* fzgx:begin fn_1_12A32C */
-extern void fn_1_12A350(void *arg0, s32 arg1);
-
 void fn_1_12A32C(void *arg0) {
     fn_1_12A350(arg0, 0);
 }
 /* fzgx:end fn_1_12A32C */
 
 /* fzgx:begin fn_1_12A6D8 */
-#include "rel/main_rel/archive.h"
-
-extern s32 fn_8006A480(void *arg0, void *arg1, void *arg2);
-extern s32 fn_8006A998(void *arg0);
-
 s32 fn_1_12A6D8(void *arg0) {
     u8 local[0x10];
     if (fn_8006A480((u8 *)&lbl_1_bss_897AC + lbl_1_bss_897A0 * 0x6c + 0x4c, arg0, local) != 0) {
@@ -42,24 +61,7 @@ s32 fn_1_12A6D8(void *arg0) {
 }
 /* fzgx:end fn_1_12A6D8 */
 
-/* fzgx:begin fn_1_12AAC8 noprologue */
-#include "types.h"
-
-extern u32 lbl_1_bss_897A0;
-extern u8 lbl_1_data_40608[0xA];
-typedef struct {
-    u32 unk_0;  // 1 loads, 0 stores
-    u8 pad_4[0x64];
-    u32 unk_68;  // 2 loads, 0 stores
-    u8 pad_6C[0x1AC8];
-} Obj_1_bss_897AC;
-extern Obj_1_bss_897AC lbl_1_bss_897AC;
-extern u8 lbl_1_data_4076C[0x28];
-
-extern s32 fn_8006A480(void *arg0, void *arg1, void *arg2);
-extern void fn_8006A9AC(void *arg0);
-extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
-
+/* fzgx:begin fn_1_12AAC8 */
 void fn_1_12AAC8(void *arg0) {
     u8 local_8[0x18];
     u8 *obj;
@@ -72,7 +74,8 @@ void fn_1_12AAC8(void *arg0) {
 }
 /* fzgx:end fn_1_12AAC8 */
 
-/* fzgx:begin fn_1_12ABB4 */
+/* fzgx:begin fn_1_12ABB4 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 
 extern s32 lbl_1_bss_897A4;
@@ -89,24 +92,18 @@ void fn_1_12ABB4(void *arg0) {
 /* fzgx:end fn_1_12ABB4 */
 
 /* fzgx:begin fn_1_12AC00 */
-extern void fn_1_12AC28(void *arg0, s32 arg1, s32 arg2);
-
 void fn_1_12AC00(void *arg0) {
     fn_1_12AC28(arg0, 0, 0);
 }
 /* fzgx:end fn_1_12AC00 */
 
 /* fzgx:begin fn_1_12ADA0 */
-extern void fn_1_12ADC8(void *arg0, void *arg1, s32 arg2, s32 arg3);
-
 void fn_1_12ADA0(void *arg0, void *arg1) {
     fn_1_12ADC8(arg0, arg1, 0, 0);
 }
 /* fzgx:end fn_1_12ADA0 */
 
 /* fzgx:begin fn_1_12AF50 */
-extern u32 lbl_1_data_40600;
-
 u32 fn_1_12AF50(u32 value) {
     u32 old_value = lbl_1_data_40600;
     lbl_1_data_40600 = value;
@@ -115,8 +112,6 @@ u32 fn_1_12AF50(u32 value) {
 /* fzgx:end fn_1_12AF50 */
 
 /* fzgx:begin fn_1_12AF64 */
-extern u32 lbl_1_data_40600;
-
 u32 fn_1_12AF64(void) {
     u32 value;
 
@@ -135,9 +130,6 @@ typedef struct {
     void *unk_1C;
 } FnObj;
 
-extern FnObj lbl_1_bss_8B3A0;
-extern void fn_1_12BB18(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4);
-
 void fn_1_12B3BC(FnObj *arg0, void *arg1, void *arg2, void *arg3,
                  void *arg4, void *arg5, void *arg6) {
     fn_1_12BB18(arg0->unk_4, arg0->unk_8, &lbl_1_bss_8B3A0,
@@ -146,8 +138,6 @@ void fn_1_12B3BC(FnObj *arg0, void *arg1, void *arg2, void *arg3,
 /* fzgx:end fn_1_12B3BC */
 
 /* fzgx:begin fn_1_12C000 */
-extern void fn_1_8D168(void *arg);
-
 void fn_1_12C000(void *arg, s16 count) {
     u8 *p;
     s16 i;
@@ -214,10 +204,6 @@ void fn_1_12C0EC(FnData *arg) {
 /* fzgx:end fn_1_12C0EC */
 
 /* fzgx:begin fn_1_12C47C */
-#include "rel/main_rel/archive.h"
-
-extern void fn_1_14DB48(void *arg0, void *arg1, u32 arg2);
-
 void fn_1_12C47C(void *arg0, void *arg1, s32 arg2) {
     void *entry;
     void *obj;
@@ -244,8 +230,6 @@ void fn_1_12C47C(void *arg0, void *arg1, s32 arg2) {
 /* fzgx:end fn_1_12C47C */
 
 /* fzgx:begin fn_1_12C6BC */
-extern void fn_1_14DBCC(void *arg);
-
 void fn_1_12C6BC(void *arg) {
     u8 *p;
     s16 i;
@@ -260,7 +244,9 @@ void fn_1_12C6BC(void *arg) {
 }
 /* fzgx:end fn_1_12C6BC */
 
-/* fzgx:begin fn_1_12D354 */
+/* fzgx:begin fn_1_12D354 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/archive.h"
 
 extern void fn_8000C49C(char *format, ...);
@@ -287,10 +273,6 @@ void fn_1_12D354(void *arg0, void *arg1, void *arg2) {
 /* fzgx:end fn_1_12D354 */
 
 /* fzgx:begin fn_1_12E424 */
-#include "rel/main_rel/globals.h"
-
-extern u32 fn_1_95120(void *arg);
-
 // Reports whether the archive state is active, otherwise querying the supplied entry.
 u8 fn_1_12E424(void *arg0, u8 *arg1) {
     if (lbl_1_bss_8B3A0.unk_94 & (1u << 31)) {
@@ -305,8 +287,6 @@ struct Table {
     s16 values[66];
 };
 
-extern const struct Table lbl_1_rodata_8230;
-
 s16 fn_1_12EF24(s16 row, s16 column) {
     struct Table table = lbl_1_rodata_8230;
     return *(s16 *)((u8 *)table.values + row * 12 + column * 2);
@@ -314,26 +294,18 @@ s16 fn_1_12EF24(s16 row, s16 column) {
 /* fzgx:end fn_1_12EF24 */
 
 /* fzgx:begin fn_1_12F10C */
-extern u32 lbl_1_bss_8B5EC;
-
 void fn_1_12F10C(u32 value) {
     lbl_1_bss_8B5EC = value;
 }
 /* fzgx:end fn_1_12F10C */
 
 /* fzgx:begin fn_1_12F118 */
-extern u32 lbl_1_bss_8B5EC;
-
 u32 fn_1_12F118(void) {
     return lbl_1_bss_8B5EC;
 }
 /* fzgx:end fn_1_12F118 */
 
 /* fzgx:begin fn_1_12F128 */
-#include "rel/main_rel/globals.h"
-
-extern u32 lbl_801A66A0;
-
 // Stores the current global value in the indexed archive slot.
 void fn_1_12F128(s16 index) {
     (&lbl_1_bss_8B3A0.unk_E0)[index] = lbl_801A66A0;
@@ -341,10 +313,6 @@ void fn_1_12F128(s16 index) {
 /* fzgx:end fn_1_12F128 */
 
 /* fzgx:begin fn_1_12F150 */
-#include "rel/main_rel/globals.h"
-
-extern u32 lbl_801A66A0;
-
 // Store the timestamp and two values for one archive entry.
 void fn_1_12F150(s16 index, u32 value_100, u32 value_110) {
     (&lbl_1_bss_8B3A0.unk_F0)[index] = lbl_801A66A0;
@@ -354,18 +322,12 @@ void fn_1_12F150(s16 index, u32 value_100, u32 value_110) {
 /* fzgx:end fn_1_12F150 */
 
 /* fzgx:begin fn_1_12F17C */
-#include "rel/main_rel/archive.h"
-
-extern u32 lbl_801A66A0;
-
 void fn_1_12F17C(void) {
     lbl_1_bss_8B3A0.unk_120 = lbl_801A66A0;
 }
 /* fzgx:end fn_1_12F17C */
 
 /* fzgx:begin fn_1_12F194 */
-#include "rel/main_rel/globals.h"
-
 // Reset the archived state counters and values.
 void fn_1_12F194(void) {
     lbl_1_bss_8B3A0.unk_120 = 0;
@@ -397,8 +359,6 @@ typedef struct {
     u8 unk_128;
 } FnState;
 
-extern FnState lbl_1_bss_8B3A0;
-
 void fn_1_12F1E8(s32 value) {
     if ((lbl_1_bss_8B3A0.unk_94 & 0x40000000) == 0) {
         return;
@@ -414,8 +374,6 @@ void fn_1_12F1E8(s32 value) {
 /* fzgx:end fn_1_12F1E8 */
 
 /* fzgx:begin fn_1_12F228 */
-#include "rel/main_rel/archive.h"
-
 u32 fn_1_12F228(void) {
     if ((lbl_1_bss_8B3A0.unk_94 & 0x40000000) == 0) {
         return 0;
@@ -425,15 +383,6 @@ u32 fn_1_12F228(void) {
 /* fzgx:end fn_1_12F228 */
 
 /* fzgx:begin fn_1_12F258 */
-typedef struct {
-    u8 pad_0[0x94];
-    u32 unk_94;
-    u8 pad_98[0x8C];
-    s32 unk_124;
-} Obj_1_bss_8B3A0;
-
-extern Obj_1_bss_8B3A0 lbl_1_bss_8B3A0;
-
 s32 fn_1_12F258(void) {
     s32 value = lbl_1_bss_8B3A0.unk_124;
 
@@ -448,11 +397,7 @@ s32 fn_1_12F258(void) {
 /* fzgx:end fn_1_12F258 */
 
 /* fzgx:begin fn_1_12F28C */
-extern void fn_1_7B2E8(u8 value);
 extern void fn_1_435C(void *value);
-extern char lbl_1_data_40BC0[19];
-extern void fn_1_13C1A0(void);
-extern void *fn_1_3F8C(void *table, void (*callback)(void), void *arg1, void *arg2);
 
 void fn_1_12F28C(void *arg0, void **result, void *arg2, u8 *arg3) {
     fn_1_7B2E8(*arg3);
@@ -468,15 +413,11 @@ void fn_1_12F308(void) {
 /* fzgx:end fn_1_12F308 */
 
 /* fzgx:begin fn_1_12F30C */
-#include "rel/main_rel/globals.h"
-
 typedef struct Fn1_12F30CState {
     s32 value;
 } Fn1_12F30CState;
 
 extern void fn_1_435C(void *arg0, Fn1_12F30CState *state);
-extern void fn_1_426C(s32 value);
-extern void fn_1_7B4C0(void);
 
 // Resets the active archive entry before advancing archive processing.
 void fn_1_12F30C(void *arg0, Fn1_12F30CState *state) {
@@ -489,7 +430,8 @@ void fn_1_12F30C(void *arg0, Fn1_12F30CState *state) {
 }
 /* fzgx:end fn_1_12F30C */
 
-/* fzgx:begin fn_1_130F98 */
+/* fzgx:begin fn_1_130F98 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 
 extern s32 lbl_1_bss_8CA44[10];
@@ -518,10 +460,7 @@ void fn_1_131000(void) {
 /* fzgx:end fn_1_131000 */
 
 /* fzgx:begin fn_1_131004 */
-#include "rel/main_rel/archive.h"
-
 extern void fn_1_435C();
-extern void fn_1_426C();
 
 struct Fn131004State {
     u8 pad_00[0x1C];
@@ -542,8 +481,6 @@ void fn_1_131004(void) {
 /* fzgx:end fn_1_131004 */
 
 /* fzgx:begin fn_1_131050 */
-extern u32 lbl_1_bss_8CA40;
-
 void fn_1_131050(u32 value, u32 state) {
     u32* data = &lbl_1_bss_8CA40;
     s32 previous;
@@ -564,17 +501,12 @@ void fn_1_131050(u32 value, u32 state) {
 /* fzgx:end fn_1_131050 */
 
 /* fzgx:begin fn_1_1310E0 */
-extern u32 lbl_1_bss_8CA40;
-
 s32 fn_1_1310E0(void) {
     return lbl_1_bss_8CA40 != -1;
 }
 /* fzgx:end fn_1_1310E0 */
 
 /* fzgx:begin fn_1_1310FC */
-extern u32 lbl_1_bss_8CA40;
-extern void fn_1_C2454(void);
-
 void fn_1_1310FC(void) {
     u8* ptr = (u8*)&lbl_1_bss_8CA40;
     
@@ -589,10 +521,6 @@ void fn_1_1310FC(void) {
 /* fzgx:end fn_1_1310FC */
 
 /* fzgx:begin fn_1_131154 */
-extern s32 fn_1_C24A4(void);
-extern u8 fn_1_B7C00(void);
-extern s32 lbl_1_bss_8CA40;
-
 void fn_1_131154(void) {
     if (fn_1_C24A4() == 0 && fn_1_B7C00() == 0) {
         lbl_1_bss_8CA40 = -1;

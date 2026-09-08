@@ -1,11 +1,41 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/phys.h"
 
-/* fzgx:begin fn_1_E50F0 */
 extern void lbl_8006DCA4(void *base, void *arg);
 extern void fn_1_A71AC(void);
 extern void fn_8006F828(void *base, f32 *out);
 extern void fn_1_E4A38(void *base, s32 x, s32 y, void *arg);
+extern void fn_80008BEC(void *dst, void *value, u32 size);
+extern void fn_80008BA8(void *dst, void *value, u32 size);
+extern f32 lbl_1_rodata_67A8;
+extern u32 lbl_1_rodata_6A8C[3];
+extern u32 fn_80083970(const u8* left, const char* right);
+extern u32 strlen(const char* string);
+extern void fn_1_8CED0(void* object, s32 value0, s32 value1);
+extern void fn_1_8D0A4(void* object);
+extern void fn_800734A8(u32, u32, u32, u32);
+extern void fn_80072EDC(u32, s32);
+extern void fn_800745A4(u32, s32, s32, u32, s32, s32);
+extern void fn_80073778(void *, u32);
+extern void fn_80015C1C(void *, f32, f32, f32, f32, f32, f32, f32, f32, f32);
+extern void lbl_8006DFFC(void *, void *, void *);
+extern void fn_80038D34(void *, u32, s32);
+extern f32 lbl_1_rodata_6780[236];
+extern f32 fn_1_A6FE8(void);
+extern void fn_1_E8938(void);
+extern void fn_1_8D1C8(void *object, void (*callback)(void), int arg);
+extern u32 fn_1_3F8C0(void);
+extern u32 fn_80008E84(u32 value);
+extern u32 lbl_1_bss_7C94C[67];
+extern void fn_1_EE530(void);
+extern u8 lbl_1_bss_7ECB4[72];
+extern void fn_1_BC29C(u8 *);
+extern void fn_1_B9C0C(void);
+extern void fn_1_1596DC(s32);
+extern void fn_1_484CC(s32);
 
+/* fzgx:begin fn_1_E50F0 */
 void fn_1_E50F0(void *base, void *arg) {
     struct {
         f32 values[2];
@@ -20,8 +50,6 @@ void fn_1_E50F0(void *base, void *arg) {
 /* fzgx:end fn_1_E50F0 */
 
 /* fzgx:begin fn_1_E5430 */
-#include "rel/main_rel/phys.h"
-
 s16 fn_1_E5430(s16 index) {
     Obj_1_bss_7AE88 *obj = &lbl_1_bss_7AE88;
 
@@ -45,8 +73,6 @@ s16 fn_1_E5430(s16 index) {
 /* fzgx:end fn_1_E5430 */
 
 /* fzgx:begin fn_1_E54A8 */
-#include "rel/main_rel/phys.h"
-
 void *fn_1_E54A8(s16 type, s16 index) {
     Obj_1_bss_7AE88 *base = &lbl_1_bss_7AE88;
 
@@ -202,8 +228,10 @@ void fn_1_E57F4(void *base, f32 value) {
 }
 /* fzgx:end fn_1_E57F4 */
 
-/* fzgx:begin fn_1_E57FC */
+/* fzgx:begin fn_1_E57FC noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/phys.h"
 
 extern void fn_80008BEC(void *dst, int value, int size);
 extern void fn_80008BA8(void *dst, const void *src, int size);
@@ -218,8 +246,10 @@ void fn_1_E57FC(void *base, const void *value) {
 }
 /* fzgx:end fn_1_E57FC */
 
-/* fzgx:begin fn_1_E5840 */
+/* fzgx:begin fn_1_E5840 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/phys.h"
 
 extern void fn_80008BEC(void *dst, int value, u32 size);
 extern void fn_80008BA8(void *dst, const void *src, u32 size);
@@ -234,8 +264,10 @@ void fn_1_E5840(void *base, const void *value) {
 }
 /* fzgx:end fn_1_E5840 */
 
-/* fzgx:begin fn_1_E5884 */
+/* fzgx:begin fn_1_E5884 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/phys.h"
 
 extern f32 lbl_1_rodata_67A8;
 extern void fn_80008BA8(void *dst, const void *src, u32 size);
@@ -254,8 +286,10 @@ void fn_1_E5884(void *base, const void *value) {
 }
 /* fzgx:end fn_1_E5884 */
 
-/* fzgx:begin fn_1_E58CC */
+/* fzgx:begin fn_1_E58CC noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/phys.h"
 
 extern u32 lbl_1_rodata_6A8C[3];
 extern void fn_80008BA8(void *dst, const void *src, u32 size);
@@ -304,9 +338,6 @@ void fn_1_E5980(void *base, f32 value) {
 /* fzgx:end fn_1_E5980 */
 
 /* fzgx:begin fn_1_E5988 */
-extern void fn_80008BEC(void *dst, void *value, u32 size);
-extern void fn_80008BA8(void *dst, void *value, u32 size);
-
 void fn_1_E5988(void *base, void *value) {
     if (value == NULL) {
         fn_80008BEC((void *)((char *)base + 0x54), NULL, 0xC);
@@ -323,9 +354,6 @@ void fn_1_E5988(void *base, void *value) {
 /* fzgx:end fn_1_E5988 */
 
 /* fzgx:begin fn_1_E5A0C */
-extern void fn_80008BEC(void *dst, void *value, u32 size);
-extern void fn_80008BA8(void *dst, void *value, u32 size);
-
 void fn_1_E5A0C(void *base, void *value) {
     if (value == NULL) {
         fn_80008BEC((void *)((char *)base + 0x2C), NULL, 0xC);
@@ -336,9 +364,6 @@ void fn_1_E5A0C(void *base, void *value) {
 /* fzgx:end fn_1_E5A0C */
 
 /* fzgx:begin fn_1_E5A50 */
-extern void fn_80008BEC(void *dst, void *value, u32 size);
-extern void fn_80008BA8(void *dst, void *value, u32 size);
-
 void fn_1_E5A50(void *base, void *value) {
     if (value == NULL) {
         fn_80008BEC((void *)((char *)base + 0x38), NULL, 0xC);
@@ -349,9 +374,6 @@ void fn_1_E5A50(void *base, void *value) {
 /* fzgx:end fn_1_E5A50 */
 
 /* fzgx:begin fn_1_E5A94 */
-extern void fn_80008BEC(void *dst, void *value, u32 size);
-extern void fn_80008BA8(void *dst, void *value, u32 size);
-
 void fn_1_E5A94(void *base, void *value) {
     if (value == NULL) {
         fn_80008BEC((void *)((char *)base + 0x6C), NULL, 0xC);
@@ -368,9 +390,6 @@ void fn_1_E5AD8(void *base, f32 value) {
 /* fzgx:end fn_1_E5AD8 */
 
 /* fzgx:begin fn_1_E86FC */
-extern u32 fn_80083970(const u8* left, const char* right);
-extern u32 strlen(const char* string);
-
 typedef struct StringValueEntry {
     u32 value;
     const u8* string;
@@ -420,11 +439,6 @@ u32 fn_1_E86FC(StringValueTable* table, const char* string) {
 /* fzgx:end fn_1_E86FC */
 
 /* fzgx:begin fn_1_E87A4 */
-#include "rel/main_rel/phys.h"
-
-extern void fn_1_8CED0(void* object, s32 value0, s32 value1);
-extern void fn_1_8D0A4(void* object);
-
 void fn_1_E87A4(f64 value0, f64 value1) {
     s32 converted0;
     s32 converted1;
@@ -439,8 +453,6 @@ void fn_1_E87A4(f64 value0, f64 value1) {
 /* fzgx:end fn_1_E87A4 */
 
 /* fzgx:begin fn_1_E87FC */
-#include "rel/main_rel/phys.h"
-
 typedef struct {
     u8 pad_0[0xC];
     u32 unk_C;
@@ -448,14 +460,6 @@ typedef struct {
     u32 unk_14;
     u32 unk_18;
 } PhysObj;
-
-extern void fn_800734A8(u32, u32, u32, u32);
-extern void fn_80072EDC(u32, s32);
-extern void fn_800745A4(u32, s32, s32, u32, s32, s32);
-extern void fn_80073778(void *, u32);
-extern void fn_80015C1C(void *, f32, f32, f32, f32, f32, f32, f32, f32, f32);
-extern void lbl_8006DFFC(void *, void *, void *);
-extern void fn_80038D34(void *, u32, s32);
 
 void fn_1_E87FC(PhysObj *obj) {
     u8 *entry;
@@ -490,19 +494,13 @@ void fn_1_E87FC(PhysObj *obj) {
 /* fzgx:end fn_1_E87FC */
 
 /* fzgx:begin fn_1_E95B4 */
-#include "rel/main_rel/phys.h"
-
 typedef struct {
     u8 pad_0[0x8];
     f32 unk_8;
     f32 unk_C;
 } Camera;
 
-extern f32 lbl_1_rodata_6780[236];
 extern Camera *game_camera_get(void);
-extern f32 fn_1_A6FE8(void);
-extern void fn_1_E8938(void);
-extern void fn_1_8D1C8(void *object, void (*callback)(void), int arg);
 
 void fn_1_E95B4(void) {
     f32 *table = lbl_1_rodata_6780;
@@ -537,12 +535,6 @@ void fn_1_E95B4(void) {
 /* fzgx:end fn_1_E95B4 */
 
 /* fzgx:begin fn_1_E9C68 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/phys.h"
-
-extern u32 fn_1_3F8C0(void);
-extern u32 fn_80008E84(u32 value);
-
 // Updates the active physics callback and refreshes its associated state.
 void fn_1_E9C68(void) {
     u32 value;
@@ -567,14 +559,15 @@ void fn_1_E9C68(void) {
 /* fzgx:end fn_1_E9C68 */
 
 /* fzgx:begin fn_1_EB074 */
-extern u32 lbl_1_bss_7C94C[67];
-
 void fn_1_EB074(u32 value) {
     lbl_1_bss_7C94C[0] = value;
 }
 /* fzgx:end fn_1_EB074 */
 
-/* fzgx:begin fn_1_EB080 */
+/* fzgx:begin fn_1_EB080 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
 extern u32 lbl_1_bss_7B188[2];
 extern u32 lbl_1_data_3E358[3];
 
@@ -595,9 +588,6 @@ void fn_1_EB080(int param) {
 /* fzgx:end fn_1_EB080 */
 
 /* fzgx:begin fn_1_EB200 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/phys.h"
-
 // Return whether the active state is one of the physics states.
 int fn_1_EB200(void) {
     if ((s32)lbl_1_bss_7B188 == 0) {
@@ -615,9 +605,6 @@ int fn_1_EB200(void) {
 /* fzgx:end fn_1_EB200 */
 
 /* fzgx:begin fn_1_EB248 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/phys.h"
-
 // Return whether the current state is one of the supported race states.
 int fn_1_EB248(void) {
     if ((s32)lbl_1_bss_7B188 == 0) {
@@ -639,15 +626,6 @@ int fn_1_EB248(void) {
 /* fzgx:end fn_1_EB248 */
 
 /* fzgx:begin fn_1_EF924 */
-extern void fn_1_EE530(void);
-extern u32 lbl_1_data_3E538;
-extern u32 lbl_1_data_3E52C;
-extern u8 lbl_1_bss_7ECB4[72];
-extern void fn_1_BC29C(u8 *);
-extern void fn_1_B9C0C(void);
-extern void fn_1_1596DC(s32);
-extern void fn_1_484CC(s32);
-
 void fn_1_EF924(void) {
     fn_1_EE530();
     lbl_1_data_3E52C = lbl_1_data_3E538;
@@ -659,17 +637,14 @@ void fn_1_EF924(void) {
 /* fzgx:end fn_1_EF924 */
 
 /* fzgx:begin fn_1_EFA1C */
-#include "rel/main_rel/phys.h"
-
-extern void fn_1_EE530(void);
-
 void fn_1_EFA1C(void) {
     fn_1_EE530();
     lbl_1_data_3E52C = lbl_1_data_3E538;
 }
 /* fzgx:end fn_1_EFA1C */
 
-/* fzgx:begin fn_1_F22E4 */
+/* fzgx:begin fn_1_F22E4 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 
 extern s32 lbl_1_data_3E53C[];
@@ -687,8 +662,6 @@ s16 fn_1_F22E4(s32 arg) {
 /* fzgx:end fn_1_F22E4 */
 
 /* fzgx:begin fn_1_F2740 */
-extern u8 lbl_1_data_3E5B4[120];
-
 u32 fn_1_F2740(u32 a, u32 b) {
     if (a >= 6) {
         return 0;

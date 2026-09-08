@@ -1,11 +1,36 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/enemy_ctrl.h"
 
-/* fzgx:begin fn_1_C47B4 */
 extern u32 lbl_1_bss_7AC48[5];
-extern u8 lbl_1_data_3D234[56];
 extern void *lbl_801A6410;
 extern void fn_1_46B4(void *, u32, void *, u32);
+extern void fn_1_C489C(void);
+extern u32 lbl_1_bss_7AC54[4];
+extern u8 lbl_1_bss_7AC90[12];
+extern u32 lbl_1_rodata_5D40[7];
+extern u32 fn_1_5910(void *);
+extern u8 fn_1_86810(void *);
+extern u32 fn_1_3F7E0(void);
+extern void fn_1_49410(void);
+extern void fn_1_494DC(u32);
+extern const f32 lbl_1_rodata_5C3C;
+extern const f32 lbl_1_rodata_5D18;
+extern void fn_1_496FC(f32, f32);
+extern void fn_1_495C8(u32);
+extern void fn_1_49728(u32);
+extern void fn_1_4AE0C(void *, ...);
+extern const f32 lbl_1_rodata_5D5C;
+extern const f32 lbl_1_rodata_5D60;
+extern f32 lbl_1_rodata_26F8[22];
+extern const f32 lbl_1_rodata_5D64;
+extern const f32 lbl_1_rodata_5D68;
+extern void fn_1_51E60(void *);
+extern const f32 lbl_1_rodata_5D6C;
+extern void fn_1_C8DC0(void);
+extern void fn_80008E84(u32);
 
+/* fzgx:begin fn_1_C47B4 */
 void fn_1_C47B4(void) {
     u32 *p = lbl_1_bss_7AC48;
 
@@ -23,8 +48,6 @@ void fn_1_C47B4(void) {
 /* fzgx:end fn_1_C47B4 */
 
 /* fzgx:begin fn_1_C487C */
-extern void fn_1_C489C(void);
-
 void fn_1_C487C(void) {
     fn_1_C489C();
 }
@@ -77,24 +100,18 @@ void fn_1_C6ED4(Fn1C6ED4Enemy *self) {
 /* fzgx:end fn_1_C6ED4 */
 
 /* fzgx:begin fn_1_C6F70 */
-extern u32 lbl_1_bss_7AC54[4];
-
 u32 fn_1_C6F70(void) {
     return lbl_1_bss_7AC54[0];
 }
 /* fzgx:end fn_1_C6F70 */
 
 /* fzgx:begin fn_1_C6F80 */
-extern u8 lbl_1_bss_7AC90[12];
-
 void fn_1_C6F80(u8 value) {
     lbl_1_bss_7AC90[0] = value;
 }
 /* fzgx:end fn_1_C6F80 */
 
 /* fzgx:begin fn_1_CA218 */
-extern u32 lbl_1_rodata_5D40[7];
-
 typedef struct EnemyCtrl_CA218 {
     u32 value;
     u8 pad4[2];
@@ -123,27 +140,6 @@ void fn_1_CA218(EnemyCtrl_CA218 *self) {
 /* fzgx:end fn_1_CA218 */
 
 /* fzgx:begin fn_1_CA2A4 */
-#include "rel/main_rel/enemy_ctrl.h"
-
-extern u32 fn_1_5910(void *);
-extern u8 fn_1_86810(void *);
-extern u32 fn_1_3F7E0(void);
-extern void fn_1_49410(void);
-extern void fn_1_494DC(u32);
-extern const f32 lbl_1_rodata_5C3C;
-extern const f32 lbl_1_rodata_5D18;
-extern void fn_1_496FC(f32, f32);
-extern void fn_1_495C8(u32);
-extern void fn_1_49728(u32);
-extern void fn_1_4AE0C(void *, ...);
-extern const f32 lbl_1_rodata_5D5C;
-extern const f32 lbl_1_rodata_5D60;
-extern f32 lbl_1_rodata_26F8[22];
-extern const f32 lbl_1_rodata_5D64;
-extern const f32 lbl_1_rodata_5D68;
-extern void fn_1_51E60(void *);
-extern const f32 lbl_1_rodata_5D6C;
-
 typedef struct {
     u32 x[22];
 } LocalData;
@@ -185,7 +181,10 @@ void fn_1_CA2A4(void *self) {
 }
 /* fzgx:end fn_1_CA2A4 */
 
-/* fzgx:begin fn_1_CB404 */
+/* fzgx:begin fn_1_CB404 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
 extern u8 lbl_1_bss_7ACA0[];
 
 void fn_1_CB404(u8 value) {
@@ -200,8 +199,6 @@ void fn_1_CC27C(void) {
 /* fzgx:end fn_1_CC27C */
 
 /* fzgx:begin fn_1_D0790 */
-#include "rel/main_rel/enemy_ctrl.h"
-
 void fn_1_D0790(void) {
     u32 *p = (u32 *)&lbl_1_data_3D544;
     *p++ = 0;
@@ -212,9 +209,6 @@ void fn_1_D0790(void) {
 /* fzgx:end fn_1_D0790 */
 
 /* fzgx:begin fn_1_D07AC */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/enemy_ctrl.h"
-
 // Stores a value in the indexed enemy-control slot.
 void fn_1_D07AC(u32 index, u32 value) {
     u32* slots = &lbl_1_bss_7ACA0.unk_0;
@@ -223,32 +217,24 @@ void fn_1_D07AC(u32 index, u32 value) {
 /* fzgx:end fn_1_D07AC */
 
 /* fzgx:begin fn_1_D0D68 */
-extern void fn_1_C8DC0(void);
-
 void fn_1_D0D68(void) {
     fn_1_C8DC0();
 }
 /* fzgx:end fn_1_D0D68 */
 
 /* fzgx:begin fn_1_D0D88 */
-#include "rel/main_rel/enemy_ctrl.h"
-
 u32 fn_1_D0D88(void) {
     return lbl_1_data_3D648.unk_0;
 }
 /* fzgx:end fn_1_D0D88 */
 
 /* fzgx:begin fn_1_D0D98 */
-#include "rel/main_rel/enemy_ctrl.h"
-
 u16* fn_1_D0D98(void) {
     return &lbl_1_data_3D648.unk_4;
 }
 /* fzgx:end fn_1_D0D98 */
 
 /* fzgx:begin fn_1_D0DA8 */
-#include "rel/main_rel/enemy_ctrl.h"
-
 // Return the address of the object's 16-bit field at offset 0x6.
 u8* fn_1_D0DA8(void) {
     return (u8*)&lbl_1_data_3D648.unk_6;
@@ -256,8 +242,6 @@ u8* fn_1_D0DA8(void) {
 /* fzgx:end fn_1_D0DA8 */
 
 /* fzgx:begin fn_1_D0DB8 */
-#include "rel/main_rel/enemy_ctrl.h"
-
 // Returns the byte address of the object's field at offset 0x8.
 u8* fn_1_D0DB8(void) {
     return (u8*)&lbl_1_data_3D648.unk_8;
@@ -265,16 +249,12 @@ u8* fn_1_D0DB8(void) {
 /* fzgx:end fn_1_D0DB8 */
 
 /* fzgx:begin fn_1_D0DC8 */
-#include "rel/main_rel/enemy_ctrl.h"
-
 u8* fn_1_D0DC8(void) {
     return (u8*)&lbl_1_data_3D648 + 0xc;
 }
 /* fzgx:end fn_1_D0DC8 */
 
 /* fzgx:begin fn_1_D0DD8 */
-#include "rel/main_rel/enemy_ctrl.h"
-
 // Return the address of the enemy-control value at offset 0x10.
 u8* fn_1_D0DD8(void) {
     return (u8*)&lbl_1_data_3D648.unk_10;
@@ -282,9 +262,6 @@ u8* fn_1_D0DD8(void) {
 /* fzgx:end fn_1_D0DD8 */
 
 /* fzgx:begin fn_1_D0DE8 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/enemy_ctrl.h"
-
 // Return the address of the object's field at offset 0x12.
 u8* fn_1_D0DE8(void) {
     return (u8*)&lbl_1_data_3D648.unk_12;
@@ -292,9 +269,6 @@ u8* fn_1_D0DE8(void) {
 /* fzgx:end fn_1_D0DE8 */
 
 /* fzgx:begin fn_1_D0DF8 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/enemy_ctrl.h"
-
 // Return the enemy-control field at offset 0x14.
 u16* fn_1_D0DF8(void) {
     return &lbl_1_data_3D648.unk_14;
@@ -302,9 +276,6 @@ u16* fn_1_D0DF8(void) {
 /* fzgx:end fn_1_D0DF8 */
 
 /* fzgx:begin fn_1_D0E08 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/enemy_ctrl.h"
-
 // Return the address of the enemy-control field at offset 0x16.
 u8* fn_1_D0E08(void) {
     return (u8*)&lbl_1_data_3D648.unk_16;
@@ -312,9 +283,6 @@ u8* fn_1_D0E08(void) {
 /* fzgx:end fn_1_D0E08 */
 
 /* fzgx:begin fn_1_D0E18 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/enemy_ctrl.h"
-
 // Return the address of the enemy-control field at offset 0x18.
 u16* fn_1_D0E18(void) {
     return &lbl_1_data_3D648.unk_18;
@@ -322,9 +290,6 @@ u16* fn_1_D0E18(void) {
 /* fzgx:end fn_1_D0E18 */
 
 /* fzgx:begin fn_1_D0E28 */
-#include "rel/main_rel/enemy_ctrl.h"
-#include "rel/main_rel/globals.h"
-
 // Return the enemy-control data block.
 Obj_1_data_3D648* fn_1_D0E28(void) {
     return &lbl_1_data_3D648;
@@ -332,8 +297,6 @@ Obj_1_data_3D648* fn_1_D0E28(void) {
 /* fzgx:end fn_1_D0E28 */
 
 /* fzgx:begin fn_1_D0E34 */
-#include "rel/main_rel/enemy_ctrl.h"
-
 // Returns the status-byte array beginning at the shared enemy data block.
 u8* fn_1_D0E34(void) {
     return &lbl_1_data_3D648.unk_20;
@@ -341,9 +304,6 @@ u8* fn_1_D0E34(void) {
 /* fzgx:end fn_1_D0E34 */
 
 /* fzgx:begin fn_1_D0E44 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/enemy_ctrl.h"
-
 // Return the address of the enemy controller's status byte.
 u8* fn_1_D0E44(void) {
     return &lbl_1_data_3D648.unk_21;
@@ -351,9 +311,6 @@ u8* fn_1_D0E44(void) {
 /* fzgx:end fn_1_D0E44 */
 
 /* fzgx:begin fn_1_D0E54 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/enemy_ctrl.h"
-
 // Returns the address of this object's byte flag.
 u8* fn_1_D0E54(void) {
     return &lbl_1_data_3D648.unk_22;
@@ -361,16 +318,15 @@ u8* fn_1_D0E54(void) {
 /* fzgx:end fn_1_D0E54 */
 
 /* fzgx:begin fn_1_D0E64 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/enemy_ctrl.h"
-
 // Returns the address of the enemy-control byte at offset 0x23.
 u8* fn_1_D0E64(void) {
     return &lbl_1_data_3D648.unk_23;
 }
 /* fzgx:end fn_1_D0E64 */
 
-/* fzgx:begin fn_1_D2F50 */
+/* fzgx:begin fn_1_D2F50 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/enemy_ctrl.h"
 
 extern u32 fn_80008E84(u32);
@@ -382,10 +338,6 @@ void fn_1_D2F50(void) {
 /* fzgx:end fn_1_D2F50 */
 
 /* fzgx:begin fn_1_D2F84 */
-#include "rel/main_rel/enemy_ctrl.h"
-
-extern void fn_80008E84(u32);
-
 void fn_1_D2F84(void) {
     fn_80008E84(lbl_1_data_3D928.unk_0);
 }
