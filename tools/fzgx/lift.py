@@ -62,6 +62,8 @@ def lift(p: Project, module: str, name: str) -> Optional[str]:
     for i, mn, a in branches:
         if mn.endswith("lr") and mn[1:-2] in COND:
             continue
+        if mn == "b" and a and a[-1].startswith(".L_") and labels.get(a[-1], -1) > i:
+            continue  # a forward jump: the end of a then-block (checked again when lifted)
         m = re.fullmatch(r"b(\w+)", mn)
         if not (m and m.group(1) in COND and a and a[-1].startswith(".L_")):
             return None
@@ -150,6 +152,23 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
 
 
     locals_: Dict[str, str] = {}  # local pointer name -> global symbol it points at
+    by_addr = sorted((sd.addr, sd) for sd in syms.values() if sd.kind == "object" and sd.size) if module == "main" else []
+
+    def symbol_at(addr: int):
+        """(symbol, offset) of the data object containing an absolute address, or None."""
+        import bisect
+        i = bisect.bisect_right([a for a, _ in by_addr], addr) - 1
+        if i >= 0:
+            sd = by_addr[i][1]
+            if sd.addr <= addr < sd.addr + sd.size:
+                return sd, addr - sd.addr
+        return None
+
+    def const_of(b: str) -> Optional[int]:
+        m = re.fullmatch(r"0x([0-9A-Fa-f]+)", b) or re.fullmatch(r"\((0x[0-9A-Fa-f]+) \+ (-?\d+)\)", b)
+        if not m:
+            return None
+        return int(m.group(1), 16) + (int(m.group(2)) if m.lastindex and m.lastindex >= 2 else 0)
 
     def field_base(b: str, base_reg: str):
         """Where a base+offset access lands: ("param", reg) / ("global", sym, k) / ("ptr", name) / None."""
@@ -165,6 +184,9 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
             return ("global", m.group(1), int(m.group(2)))
         if re.fullmatch(r"[A-Za-z_]\w*", b) and b in externs:
             return ("ptr", b, 0)
+        c = const_of(b)
+        if c is not None:
+            return ("abs", c, 0)
         return None
 
     hi: Dict[str, str] = {}  # register holding sym@ha
@@ -199,14 +221,19 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
                 return False  # r written again
         return False
     cond: Optional[Tuple[str, str, bool]] = None  # (lhs, rhs, unsigned) of the last compare
-    open_ifs: List[Tuple[int, str]] = []          # (instruction index where the if ends, condition)
+    open_ifs: List[Tuple[int, str]] = []          # (instruction index where a block closes, text to emit)
+    skip: set = set()                             # instruction indices consumed by the structure (the `b` of a then-block)
     i = -1
     temps_written: List[Tuple[str, int]] = []
     for i, (mn, a) in enumerate(ins):
         if a and mn not in STORE_T and not mn.startswith(("st", "cmp", "b")) and mn not in ("mtlr", "mtspr"):
             temps_written.append((a[0], i))
         while open_ifs and open_ifs[-1][0] == i:
-            open_ifs.pop(); stmts.append("}")
+            stmts.append(open_ifs.pop()[1])
+        if i in skip:
+            continue
+        if mn == "b":
+            raise Give()  # an unconditional jump that no if/else explained
         if mn == "blr":
             break
         if mn in ("cmpwi", "cmpw", "cmplwi", "cmplw"):
@@ -237,7 +264,17 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
             if ins[tgt][0] == "blr" or tgt == len(ins) - 1:
                 stmts.append(f"if ({l} {op} {r_}) {{ return __RET__; }}")
             else:
-                stmts.append(f"if ({l} {inv} {r_}) {{"); open_ifs.append((tgt, f"{l} {inv} {r_}"))
+                # `if (c) { then } else { else }` when the then-block ends with a forward jump
+                # over the else-block; otherwise a plain if
+                pm, pa = ins[tgt - 1]
+                if pm == "b" and pa and pa[-1].startswith(".L_") and labels.get(pa[-1], -1) > tgt:
+                    end = labels[pa[-1]]
+                    skip.add(tgt - 1)
+                    stmts.append(f"if ({l} {inv} {r_}) {{")
+                    # closers are pushed innermost-last: the stack pops the else first, then the end
+                    open_ifs.append((end, "}")); open_ifs.append((tgt - 1, "} else {"))
+                else:
+                    stmts.append(f"if ({l} {inv} {r_}) {{"); open_ifs.append((tgt, "}"))
             continue
         if mn in ("stwu", "mflr", "mtlr") or (mn in ("stw", "lwz") and a and (a[0] == "r0" or SAVE_RE.match(a[0])) and "(r1)" in a[1]) or (mn == "addi" and a and a[0] == "r1"):
             frame = True
@@ -311,6 +348,15 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
                     gfields.setdefault(key, {})[o] = t; regs[a[0]] = f"{b}->unk_{o:X}"
                 elif kind == "global":
                     declare(key, "struct", far_ref=True); gfields.setdefault(key, {})[o + k] = t; regs[a[0]] = f"{key}.unk_{o + k:X}"
+                elif kind == "abs":
+                    hit = symbol_at(key + o)
+                    if hit is None:
+                        raise Give()  # hardware or unnamed memory: nothing the lint would accept
+                    sd, so = hit
+                    if so == 0 and sd.size <= 8:
+                        declare(sd.name, t, far_ref=True); regs[a[0]] = ref(sd.name)
+                    else:
+                        declare(sd.name, "struct", far_ref=True); gfields.setdefault(sd.name, {})[so] = t; regs[a[0]] = f"{sd.name}.unk_{so:X}"
                 else:
                     ptr_globals.add(key); pfields.setdefault(key, {})[o] = t; regs[a[0]] = f"{key}->unk_{o:X}"
                 rtype[a[0]] = t
@@ -351,6 +397,15 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
                     gfields.setdefault(key, {})[o] = t; stmts.append(f"{b}->unk_{o:X} = {val};")
                 elif kind == "global":
                     declare(key, "struct", far_ref=True); gfields.setdefault(key, {})[o + k] = t; stmts.append(f"{key}.unk_{o + k:X} = {val};")
+                elif kind == "abs":
+                    hit = symbol_at(key + o)
+                    if hit is None:
+                        raise Give()
+                    sd, so = hit
+                    if so == 0 and sd.size <= 8:
+                        declare(sd.name, t, far_ref=True); stmts.append(f"{ref(sd.name)} = {val};")
+                    else:
+                        declare(sd.name, "struct", far_ref=True); gfields.setdefault(sd.name, {})[so] = t; stmts.append(f"{sd.name}.unk_{so:X} = {val};")
                 else:
                     ptr_globals.add(key); pfields.setdefault(key, {})[o] = t; stmts.append(f"{key}->unk_{o:X} = {val};")
             continue
