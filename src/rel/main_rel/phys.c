@@ -38,6 +38,12 @@ u8 *fn_1_E5750(u8 *self) {
 }
 /* fzgx:end fn_1_E5750 */
 
+/* fzgx:begin fn_1_E5758 */
+f32 fn_1_E5758(u8 *self) {
+    return *(f32 *)(self + 0x50);
+}
+/* fzgx:end fn_1_E5758 */
+
 /* fzgx:begin fn_1_E57A4 */
 f32 fn_1_E57A4(void *base) {
     return *(f32 *)((char *)base + 0x18);

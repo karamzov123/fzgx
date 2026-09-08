@@ -3,13 +3,15 @@
 #include "rel/main_rel/camera.h"
 
 /* fzgx:begin camera_get_state */
+// Return the camera state byte, or -1 when no camera state is active.
 s32 camera_get_state(void) {
-    // Return the camera state byte, or -1 when no camera state is active.
-    if (lbl_1_bss_F68 == 0) {
+    Obj_1_bss_F68_Target *camera = lbl_1_bss_F68;
+
+    if (camera == 0) {
         return -1;
     }
 
-    return lbl_1_bss_F68->unk_48;
+    return camera->unk_48;
 }
 /* fzgx:end camera_get_state */
 

@@ -35,6 +35,21 @@ void fn_1_13E054(void* arg0, void* arg1, void* arg2, int arg3) {
 }
 /* fzgx:end fn_1_13E054 */
 
+/* fzgx:begin fn_1_13F81C */
+extern u32 lbl_1_bss_8E3E4[8];
+
+void fn_1_13F81C(void) {
+    lbl_1_bss_8E3E4[0] = 0;
+    lbl_1_bss_8E3E4[1] = 0;
+    lbl_1_bss_8E3E4[2] = 0;
+    lbl_1_bss_8E3E4[3] = 0;
+    lbl_1_bss_8E3E4[4] = 0;
+    lbl_1_bss_8E3E4[5] = 0;
+    lbl_1_bss_8E3E4[6] = 0;
+    lbl_1_bss_8E3E4[7] = 0;
+}
+/* fzgx:end fn_1_13F81C */
+
 /* fzgx:begin fn_1_13F848 */
 extern u32 lbl_801A6410;
 extern char lbl_1_data_419E0[18];
