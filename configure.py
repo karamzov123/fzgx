@@ -401,13 +401,19 @@ def name_auto_units_by_tu() -> None:
     for tus_file in (Path("config") / config.version).glob("*/tus.json"):
         d = json.loads(tus_file.read_text())
         tu_maps[d["module"]] = d["tus"]
-    pat = re.compile(r"^(?P<module>[^/]+)/auto_\d+_(?P<addr>[0-9A-F]+)_(?P<section>text|init)$")
+    pat = re.compile(r"^(?P<module>[^/]+)/auto_\d+_(?P<addr>[0-9A-F]+)_(?P<section>\w+)$")
     renamed = 0
     for unit in data["units"]:
         m = pat.match(unit["name"])
         if not m or not unit.get("metadata", {}).get("auto_generated"):
             continue
-        module, addr = m.group("module"), int(m.group("addr"), 16)
+        module, addr, section = m.group("module"), int(m.group("addr"), 16), m.group("section")
+        if section not in ("text", "init"):
+            # data/bss remainder: group under the module (TU data ranges are only known for .data)
+            base = "main/dol" if module == "main" else f"{module}/rel/{module}"
+            unit["name"] = f"{base}/_data/_unmatched_{section}_{addr:X}"
+            renamed += 1
+            continue
         if module == "main":
             # DOL: no __FILE__ strings; group by the SDK library of the nearest preceding
             # signature-named function (OSInit -> os, GXBegin -> gx, __DVDFSInit -> dvd, ...)
