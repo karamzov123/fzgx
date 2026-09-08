@@ -488,13 +488,10 @@ u32 fn_1_F89E4(u8 value) {
 }
 /* fzgx:end fn_1_F89E4 */
 
-/* fzgx:begin fn_1_F8A04 noprologue */
-#include "types.h"
-
-extern u32 lbl_1_bss_7F0C0[5336];
-
+/* fzgx:begin fn_1_F8A04 */
+// Clears the spline object's reset flag.
 void fn_1_F8A04(void) {
-    lbl_1_bss_7F0C0[4672] = 0;
+    ((u32 *)&lbl_1_bss_7F0C0)[4672] = 0;
 }
 /* fzgx:end fn_1_F8A04 */
 
@@ -523,12 +520,10 @@ void fn_1_F8A58(u32 value) {
 }
 /* fzgx:end fn_1_F8A58 */
 
-/* fzgx:begin fn_1_F8A7C noprologue */
-#include "types.h"
-extern u32 lbl_1_bss_7F0C0[5336];
-
+/* fzgx:begin fn_1_F8A7C */
+// Clears the spline object's state field.
 void fn_1_F8A7C(void) {
-    lbl_1_bss_7F0C0[4673] = 0;
+    ((u32 *)&lbl_1_bss_7F0C0)[4673] = 0;
 }
 /* fzgx:end fn_1_F8A7C */
 
@@ -544,12 +539,12 @@ void fn_1_F8A90(void) {
 }
 /* fzgx:end fn_1_F8A90 */
 
-/* fzgx:begin fn_1_F8AD4 noprologue */
-#include "types.h"
-extern u32 lbl_1_bss_7F0C0[5336];
-
+/* fzgx:begin fn_1_F8AD4 */
+// Sets the spline state bit selected by the caller.
 void fn_1_F8AD4(u32 value) {
-    lbl_1_bss_7F0C0[4672] |= (0x8000u << 16) >> ((value & 0xff) + 0x10);
+    u32* state_word = (u32*)((u8*)&lbl_1_bss_7F0C0 + 0x4900);
+
+    *state_word |= 0x80000000u >> ((value & 0xff) + 0x10);
 }
 /* fzgx:end fn_1_F8AD4 */
 
@@ -612,14 +607,11 @@ void fn_1_F8BD4(void) {
 }
 /* fzgx:end fn_1_F8BD4 */
 
-/* fzgx:begin fn_1_F8C00 noprologue */
-#include "types.h"
-
-extern u32 lbl_1_bss_7F0C0[5336];
-
+/* fzgx:begin fn_1_F8C00 */
+// Sets the bit corresponding to the spline index.
 void fn_1_F8C00(s32 value) {
     value *= 2;
-    lbl_1_bss_7F0C0[4676] |= (((u32)1 << 31) >> (31 - value));
+    (&lbl_1_bss_7F0C0.unk_104)[4676 - 65] |= (((u32)1 << 31) >> (31 - value));
 }
 /* fzgx:end fn_1_F8C00 */
 
@@ -642,13 +634,11 @@ void fn_1_F8C74(s32 value) {
 }
 /* fzgx:end fn_1_F8C74 */
 
-/* fzgx:begin fn_1_F8CA0 noprologue */
-#include "types.h"
-extern u32 lbl_1_bss_7F0C0[5336];
-
+/* fzgx:begin fn_1_F8CA0 */
+// Clears the bit corresponding to the spline index.
 void fn_1_F8CA0(s32 value) {
     value *= 2;
-    lbl_1_bss_7F0C0[4676] &= ~(((u32)1 << 31) >> (31 - (value + 1)));
+    ((u32 *)&lbl_1_bss_7F0C0)[4676] &= ~(((u32)1 << 31) >> (31 - (value + 1)));
 }
 /* fzgx:end fn_1_F8CA0 */
 
@@ -659,30 +649,25 @@ void fn_1_F8CCC(s32 value) {
 }
 /* fzgx:end fn_1_F8CCC */
 
-/* fzgx:begin fn_1_F8D10 noprologue */
-#include "types.h"
-
-extern u32 lbl_1_bss_7F0C0[5336];
-
+/* fzgx:begin fn_1_F8D10 */
+// Clamps the spline counter to its maximum permitted value.
 u32 fn_1_F8D10(void) {
     u32 value = 99999;
-    if (lbl_1_bss_7F0C0[4670] > value) {
-        lbl_1_bss_7F0C0[4670] = value;
+
+    if (((u32 *)&lbl_1_bss_7F0C0)[4670] > value) {
+        ((u32 *)&lbl_1_bss_7F0C0)[4670] = value;
     }
-    return lbl_1_bss_7F0C0[4670];
+    return ((u32 *)&lbl_1_bss_7F0C0)[4670];
 }
 /* fzgx:end fn_1_F8D10 */
 
-/* fzgx:begin fn_1_F8D38 noprologue */
-#include "types.h"
-
-extern u32 lbl_1_bss_7F0C0[5336];
-
+/* fzgx:begin fn_1_F8D38 */
+// Clamps the spline limit and stores it in the shared spline state.
 void fn_1_F8D38(u32 value) {
     if (value > 0x1869F) {
         value = 0x1869F;
     }
-    lbl_1_bss_7F0C0[4670] = value;
+    ((u32 *)&lbl_1_bss_7F0C0)[4670] = value;
 }
 /* fzgx:end fn_1_F8D38 */
 

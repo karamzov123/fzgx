@@ -613,15 +613,12 @@ void camera_report_position(void) {
 }
 /* fzgx:end camera_report_position */
 
-/* fzgx:begin fn_1_C304 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/camera.h"
+/* fzgx:begin fn_1_C304 */
+extern void OSReport(const unsigned char *, ...);
 
-extern void OSReport(const char*, ...);
-
+// Reports the camera parameters and caller-supplied value for debugging.
 void fn_1_C304(s32 arg) {
-    OSReport((const char*)lbl_1_data_4198,
+    OSReport(lbl_1_data_4198,
              lbl_1_bss_10D8.unk_4, lbl_1_bss_10D8.unk_8,
              lbl_1_bss_10D8.unk_C, lbl_1_bss_10D8.unk_10,
              lbl_1_bss_10D8.unk_14, lbl_1_bss_10D8.unk_18,
@@ -648,30 +645,30 @@ typedef struct CameraGlobals {
     u8 pad_2C[0x10];
     u32 unk_3C;
     u8 pad_40[0x88];
-    u32 src_C8;
-    u32 src_CC;
-    u32 src_D0;
-    u32 src_D4;
-    u32 src_D8;
-    u32 src_DC;
-    u32 src_E0;
-    u32 src_E4;
-    u32 src_E8;
+    u32 unk_C8;
+    u32 unk_CC;
+    u32 unk_D0;
+    u32 unk_D4;
+    u32 unk_D8;
+    u32 unk_DC;
+    u32 unk_E0;
+    u32 unk_E4;
+    u32 unk_E8;
 } CameraGlobals;
 
 extern CameraGlobals lbl_1_bss_1010;
 
 // Copies the current camera state into the snapshot and clears its transient flag.
 void camera_snapshot(void) {
-    lbl_1_bss_1010.unk_08 = lbl_1_bss_1010.src_C8;
-    lbl_1_bss_1010.unk_0C = lbl_1_bss_1010.src_CC;
-    lbl_1_bss_1010.unk_10 = lbl_1_bss_1010.src_D0;
-    lbl_1_bss_1010.unk_14 = lbl_1_bss_1010.src_D4;
-    lbl_1_bss_1010.unk_18 = lbl_1_bss_1010.src_D8;
-    lbl_1_bss_1010.unk_1C = lbl_1_bss_1010.src_DC;
-    lbl_1_bss_1010.unk_20 = lbl_1_bss_1010.src_E0;
-    lbl_1_bss_1010.unk_24 = lbl_1_bss_1010.src_E4;
-    lbl_1_bss_1010.unk_28 = lbl_1_bss_1010.src_E8;
+    lbl_1_bss_1010.unk_08 = lbl_1_bss_1010.unk_C8;
+    lbl_1_bss_1010.unk_0C = lbl_1_bss_1010.unk_CC;
+    lbl_1_bss_1010.unk_10 = lbl_1_bss_1010.unk_D0;
+    lbl_1_bss_1010.unk_14 = lbl_1_bss_1010.unk_D4;
+    lbl_1_bss_1010.unk_18 = lbl_1_bss_1010.unk_D8;
+    lbl_1_bss_1010.unk_1C = lbl_1_bss_1010.unk_DC;
+    lbl_1_bss_1010.unk_20 = lbl_1_bss_1010.unk_E0;
+    lbl_1_bss_1010.unk_24 = lbl_1_bss_1010.unk_E4;
+    lbl_1_bss_1010.unk_28 = lbl_1_bss_1010.unk_E8;
     lbl_1_bss_1010.unk_3C = 0;
 }
 /* fzgx:end camera_snapshot */
@@ -739,7 +736,7 @@ u8* camera_get_state_storage(void) {
 
 extern u8 lbl_1_bss_108C[52];
 
-// Returns the camera state storage used by the surrounding camera code.
+// Returns the storage reserved for the camera's extended state.
 u8* camera_get_extended_state_storage(void) {
     return lbl_1_bss_108C;
 }
