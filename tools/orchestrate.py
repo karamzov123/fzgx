@@ -34,6 +34,8 @@ MATCHER_TOOLS = ["Read", "mcp__fzgx__claim", "mcp__fzgx__write_unit", "mcp__fzgx
                  "mcp__fzgx__submit", "mcp__fzgx__release"]
 # The user's defaults are Fable 5.1 (claude) and GPT-6 Astra (codex); matchers must never run on those.
 EXPECTED_MODEL = {"claude": "claude-haiku-4-5", "codex": "gpt-5.6-luna"}
+CODEX_DISABLE = ["plugins", "recommended_plugins", "plugin_sharing", "remote_plugin", "apps", "browser_use",
+                 "browser_use_external", "in_app_browser", "computer_use", "skill_search", "skill_mcp_dependency_install"]
 
 
 def select(p: Project, spec: str) -> List[str]:
@@ -58,8 +60,12 @@ def codex_cmd(symbol: str, agent_id: str, model: str) -> List[str]:
     prompt = (f"SYMBOL={symbol}  AGENT_ID={agent_id}. You are a Matcher: follow the Matcher "
               f"section of AGENTS.md exactly, using only the fzgx MCP tools. Finish with the RESULT line.")
     # --ignore-user-config: no user MCP servers/skills (480k -> 125k input tokens on a smoke test)
-    return ["codex", "exec", "--json", "--skip-git-repo-check", "--ignore-user-config", "-s", "read-only",
-            "-m", model,
+    cmd = ["codex", "exec", "--json", "--skip-git-repo-check", "--ignore-user-config", "-s", "read-only",
+           "-m", model]
+    # none of these belong in a matcher's context (each adds tool schemas or injected text every call)
+    for feat in CODEX_DISABLE:
+        cmd += ["--disable", feat]
+    return cmd + [
             "-c", 'mcp_servers.fzgx.command="uv"',
             "-c", 'mcp_servers.fzgx.args=["run","tools/fzgx_mcp.py"]',
             "-c", f'mcp_servers.fzgx.cwd="{ROOT}"',
