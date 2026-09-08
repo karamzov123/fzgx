@@ -12,6 +12,9 @@ rel/car_colchg/_prolog/fn_9_298.c:
 rel/car_colchg/_prolog/fn_9_2E0.c:
 	.text       start:0x000002E0 end:0x00000328
 
+rel/car_colchg/car_colchg/_epilog.c:
+	.text       start:0x00000328 end:0x000003F0
+
 rel/car_colchg/car_colchg/colchg_menu_init.c:
 	.text       start:0x000003F0 end:0x00000454
 

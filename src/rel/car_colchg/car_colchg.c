@@ -37,6 +37,50 @@ extern u16 lbl_1_bss_96A;
 extern u32 lbl_9_bss_0;
 extern struct Entry *lbl_1_data_1FB6C[];
 
+/* fzgx:begin _epilog */
+extern u32 lbl_9_bss_0;
+extern u8 lbl_9_data_4[40];
+extern u32 lbl_801A6410;
+
+void fn_1_7FA04(u32);
+void fn_1_8D168(u32);
+void fn_1_435C(u32);
+void fn_1_41A8(void);
+void fn_1_46B4(u32, u32, void *, s32);
+void fn_1_6400(void);
+
+struct CarColchgState {
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+    u32 unkC;
+    u32 unk10;
+    u8 entries[200];
+};
+
+void _epilog(void) {
+    struct CarColchgState *base = (struct CarColchgState *)&lbl_9_bss_0;
+    u8 *entry;
+    s16 i;
+
+    fn_1_7FA04(base->unk4);
+    entry = base->entries;
+    i = 0;
+    while (i < 2) {
+        fn_1_8D168((u32)entry);
+        entry += 100;
+        i++;
+    }
+    fn_1_435C(base->unkC);
+    fn_1_41A8();
+    fn_1_435C(base->unk10);
+    fn_1_41A8();
+    fn_1_46B4(lbl_801A6410, base->unk0, lbl_9_data_4, 0xDA);
+    fn_1_6400();
+    fn_1_46B4(lbl_801A6410, base->unk8, lbl_9_data_4, 0xDC);
+}
+/* fzgx:end _epilog */
+
 /* fzgx:begin colchg_menu_init */
 extern char lbl_9_data_2C[17];
 extern void colchg_menu_disp(void);

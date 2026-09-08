@@ -23,6 +23,17 @@
   },
   {
     "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/_epilog.c",
+    "symbols": [
+      "_epilog"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
     "source": "rel/car_colchg/car_colchg/colchg_ezsel_disp.c",
     "symbols": [
       "colchg_ezsel_disp"
