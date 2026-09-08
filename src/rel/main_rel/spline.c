@@ -259,19 +259,18 @@ void fn_1_F78D8(void *arg0) {
 }
 /* fzgx:end fn_1_F78D8 */
 
-/* fzgx:begin fn_1_F7904 noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_F7904 */
+#include "rel/main_rel/spline.h"
 
-extern u8 lbl_1_bss_718E0[];
-extern u8 lbl_1_bss_7F0C0[];
 extern void fn_1_F8918(u8 *, u8 *);
-extern int fn_8008023C(u8 *, u8 *, u32);
+extern s32 fn_8008023C(u8 *, Obj_1_bss_7F0C0 *, u32);
 
-int fn_1_F7904(void) {
+// Builds the spline workspace and reports whether its serialized data is valid.
+s32 fn_1_F7904(void) {
     u8 buffer[0x5360];
 
-    fn_1_F8918(&lbl_1_bss_718E0[0x1c0], buffer);
-    return fn_8008023C(buffer, lbl_1_bss_7F0C0, 0x5360) != 0;
+    fn_1_F8918(&lbl_1_bss_718E0.pad_1A2[0x1e], buffer);
+    return fn_8008023C(buffer, &lbl_1_bss_7F0C0, 0x5360) != 0;
 }
 /* fzgx:end fn_1_F7904 */
 
@@ -423,13 +422,11 @@ void fn_1_F7E88(void) {
 }
 /* fzgx:end fn_1_F7E88 */
 
-/* fzgx:begin fn_1_F8030 noprologue */
-#include "types.h"
-extern u32 lbl_1_bss_7F0C0[5336];
-
+/* fzgx:begin fn_1_F8030 */
+// Clears the spline state counters.
 void fn_1_F8030(void) {
-    lbl_1_bss_7F0C0[19] = 0;
-    lbl_1_bss_7F0C0[18] = 0;
+    lbl_1_bss_7F0C0.unk_4C = 0;
+    lbl_1_bss_7F0C0.unk_48 = 0;
 }
 /* fzgx:end fn_1_F8030 */
 
@@ -484,13 +481,10 @@ void fn_1_F89C0(void) {
 }
 /* fzgx:end fn_1_F89C0 */
 
-/* fzgx:begin fn_1_F89E4 noprologue */
-#include "types.h"
-
-extern u32 lbl_1_bss_7F0C0[5336];
-
+/* fzgx:begin fn_1_F89E4 */
+// Returns the selected bit from the rolling flag mask.
 u32 fn_1_F89E4(u8 value) {
-    return __rlwnm(lbl_1_bss_7F0C0[4672], (value + 1) & 0x1f, 31, 31);
+    return __rlwnm(((u32 *)&lbl_1_bss_7F0C0)[4672], (value + 1) & 0x1f, 31, 31);
 }
 /* fzgx:end fn_1_F89E4 */
 
@@ -512,13 +506,10 @@ void fn_1_F8A18(void) {
 }
 /* fzgx:end fn_1_F8A18 */
 
-/* fzgx:begin fn_1_F8A38 noprologue */
-#include "types.h"
-
-extern u32 lbl_1_bss_7F0C0[5336];
-
+/* fzgx:begin fn_1_F8A38 */
+// Tests the spline flag selected by the low byte of the input.
 u32 fn_1_F8A38(u32 value) {
-    return __rlwnm(lbl_1_bss_7F0C0[4673], ((value & 0xff) + 1) & 0x1f, 31, 31);
+    return __rlwnm(((u32 *)&lbl_1_bss_7F0C0)[4673], ((value & 0xff) + 1) & 0x1f, 31, 31);
 }
 /* fzgx:end fn_1_F8A38 */
 
@@ -576,12 +567,10 @@ void fn_1_F8B24(void) {
 }
 /* fzgx:end fn_1_F8B24 */
 
-/* fzgx:begin fn_1_F8B50 noprologue */
-#include "types.h"
-extern u32 lbl_1_bss_7F0C0[5336];
-
+/* fzgx:begin fn_1_F8B50 */
+// Mark the spline state as initialized.
 void fn_1_F8B50(void) {
-    lbl_1_bss_7F0C0[4676] = 1;
+    *(u32 *)((u8 *)&lbl_1_bss_7F0C0 + 0x4910) = 1;
 }
 /* fzgx:end fn_1_F8B50 */
 
@@ -645,13 +634,11 @@ void fn_1_F8C28(s32 value) {
 }
 /* fzgx:end fn_1_F8C28 */
 
-/* fzgx:begin fn_1_F8C74 noprologue */
-#include "types.h"
-extern u32 lbl_1_bss_7F0C0[5336];
-
+/* fzgx:begin fn_1_F8C74 */
+// Sets the bit corresponding to the supplied spline index.
 void fn_1_F8C74(s32 value) {
     value *= 2;
-    lbl_1_bss_7F0C0[4676] |= (((u32)1 << 31) >> (31 - (value + 1)));
+    *((u32*)((u8*)&lbl_1_bss_7F0C0 + 0x4910)) |= (((u32)1 << 31) >> (31 - (value + 1)));
 }
 /* fzgx:end fn_1_F8C74 */
 
@@ -665,13 +652,10 @@ void fn_1_F8CA0(s32 value) {
 }
 /* fzgx:end fn_1_F8CA0 */
 
-/* fzgx:begin fn_1_F8CCC noprologue */
-#include "types.h"
-
-extern u32 lbl_1_bss_7F0C0[5336];
-
+/* fzgx:begin fn_1_F8CCC */
+// Clears the bit selected by value from the spline state mask.
 void fn_1_F8CCC(s32 value) {
-    lbl_1_bss_7F0C0[4677] &= ~(((u32)1 << 31) >> (31 - value));
+    ((u32 *)&lbl_1_bss_7F0C0)[4677] &= ~(((u32)1 << 31) >> (31 - value));
 }
 /* fzgx:end fn_1_F8CCC */
 
@@ -728,24 +712,18 @@ void fn_1_F9C6C(void) {
 }
 /* fzgx:end fn_1_F9C6C */
 
-/* fzgx:begin fn_1_F9CD0 noprologue */
-#include "types.h"
-
-extern u16 lbl_1_bss_7F0C0[];
-
+/* fzgx:begin fn_1_F9CD0 */
+// Sets the requested flag in an indexed spline record.
 void fn_1_F9CD0(u8 index, u8 shift) {
-    u32 old = lbl_1_bss_7F0C0[index * 0x18 + 0x32];
-    lbl_1_bss_7F0C0[index * 0x18 + 0x32] = old | (0x8000 >> shift);
+    u16 *flags = &lbl_1_bss_7F0C0.unk_64;
+    flags[index * 0x18] |= 0x8000 >> shift;
 }
 /* fzgx:end fn_1_F9CD0 */
 
-/* fzgx:begin fn_1_F9D04 noprologue */
-#include "types.h"
-
-extern u16 lbl_1_bss_7F0C0[5336];
-
+/* fzgx:begin fn_1_F9D04 */
+// Clear the selected spline entry's status field.
 void fn_1_F9D04(u8 index) {
-    lbl_1_bss_7F0C0[index * 0x18 + 0x32] = 0;
+    (&lbl_1_bss_7F0C0.unk_64)[index * 0x18] = 0;
 }
 /* fzgx:end fn_1_F9D04 */
 
@@ -757,13 +735,14 @@ void fn_1_F9D24(void) {
 }
 /* fzgx:end fn_1_F9D24 */
 
-/* fzgx:begin fn_1_F9D44 noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_F9D44 */
+#include "rel/main_rel/spline.h"
 
-extern u16 lbl_1_bss_7F0C0[5336];
+extern Obj_1_bss_7F0C0 lbl_1_bss_7F0C0;
 
+// Tests the requested spline flag.
 u32 fn_1_F9D44(u32 arg) {
-    return lbl_1_bss_7F0C0[0x34] & (0x8000 >> (arg & 0xff));
+    return lbl_1_bss_7F0C0.unk_68 & (0x8000 >> (arg & 0xff));
 }
 /* fzgx:end fn_1_F9D44 */
 
@@ -777,12 +756,12 @@ void fn_1_F9D68(u32 arg) {
 }
 /* fzgx:end fn_1_F9D68 */
 
-/* fzgx:begin fn_1_F9D90 noprologue */
-#include "types.h"
-extern u16 lbl_1_bss_7F0C0[5336];
+/* fzgx:begin fn_1_F9D90 */
+#include "rel/main_rel/spline.h"
 
+// Clear the spline object's active flags.
 void fn_1_F9D90(void) {
-    lbl_1_bss_7F0C0[0x34] = 0;
+    lbl_1_bss_7F0C0.unk_68 = 0;
 }
 /* fzgx:end fn_1_F9D90 */
 
@@ -794,13 +773,12 @@ void fn_1_F9DA4(void) {
 }
 /* fzgx:end fn_1_F9DA4 */
 
-/* fzgx:begin fn_1_F9DC4 noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_F9DC4 */
+#include "rel/main_rel/spline.h"
 
-extern u16 lbl_1_bss_7F0C0[5336];
-
+// Return the bit selected by the low byte of the requested flag index.
 u32 fn_1_F9DC4(u32 arg) {
-    return lbl_1_bss_7F0C0[0x35] & (0x8000 >> (arg & 0xff));
+    return lbl_1_bss_7F0C0.unk_6A & (0x8000 >> (arg & 0xff));
 }
 /* fzgx:end fn_1_F9DC4 */
 
@@ -812,27 +790,19 @@ void fn_1_F9DE8(u32 param) {
 }
 /* fzgx:end fn_1_F9DE8 */
 
-/* fzgx:begin fn_1_F9E10 noprologue */
-#include "types.h"
-extern u16 lbl_1_bss_7F0C0[5336];
+/* fzgx:begin fn_1_F9E10 */
+#include "rel/main_rel/spline.h"
 
-// fn_1_F9E10: Clear bit from u16 at offset 0x6a based on shift amount in lower byte.
+// Clear the bit selected by the low byte of the shift amount.
 void fn_1_F9E10(u32 param) {
-    u16 *ptr = (u16*)((u8*)lbl_1_bss_7F0C0 + 0x6a);
-    u32 shift_bits = param & 0x000000FF;
-    s32 mask = 0x8000 >> shift_bits;
-    u32 value = *ptr;
-    *ptr = value & ~mask;
+    lbl_1_bss_7F0C0.unk_6A &= ~(0x8000 >> (param & 0xFF));
 }
 /* fzgx:end fn_1_F9E10 */
 
-/* fzgx:begin fn_1_F9E38 noprologue */
-#include "types.h"
-
-extern u16 lbl_1_bss_7F0C0[5336];
-
+/* fzgx:begin fn_1_F9E38 */
+// Clear the spline object's status field.
 void fn_1_F9E38(void) {
-    lbl_1_bss_7F0C0[53] = 0;
+    lbl_1_bss_7F0C0.unk_6A = 0;
 }
 /* fzgx:end fn_1_F9E38 */
 
@@ -912,23 +882,20 @@ u32 fn_1_FA1A8(s32 value) {
 }
 /* fzgx:end fn_1_FA1A8 */
 
-/* fzgx:begin fn_1_FA450 noprologue */
-#include "types.h"
-
-extern s16 lbl_1_bss_960;
-extern u8 *lbl_1_bss_84420;
+/* fzgx:begin fn_1_FA450 */
 extern void fn_1_3EF14(void *);
 
+// Store the value when initialization permits the update.
 void fn_1_FA450(u8 value) {
     u8 local[0x14c0];
 
-    if (lbl_1_bss_960 == 2) {
+    if (*(s16 *)&lbl_1_bss_960 == 2) {
         fn_1_3EF14(local);
         if ((*(u32 *)local & 0x800) == 0) {
-            lbl_1_bss_84420[8] = value;
+            *(u8 *)(*(u32 *)&lbl_1_bss_84420 + 8) = value;
         }
     } else {
-        lbl_1_bss_84420[8] = value;
+        *(u8 *)(*(u32 *)&lbl_1_bss_84420 + 8) = value;
     }
 }
 /* fzgx:end fn_1_FA450 */
@@ -940,49 +907,43 @@ u8 fn_1_FA4C0(void) {
 }
 /* fzgx:end fn_1_FA4C0 */
 
-/* fzgx:begin fn_1_FA61C noprologue */
-#include "types.h"
-
-extern u8 *lbl_1_bss_84420;
-
+/* fzgx:begin fn_1_FA61C */
+// Clears the low flag bit in the spline state.
 void fn_1_FA61C(void) {
-    lbl_1_bss_84420[0x85] &= 0xfe;
+    ((u8 *)lbl_1_bss_84420)[0x85] &= 0xfe;
 }
 /* fzgx:end fn_1_FA61C */
 
-/* fzgx:begin fn_1_FA638 noprologue */
-#include "types.h"
-
-extern u8 *lbl_1_bss_84420;
-
+/* fzgx:begin fn_1_FA638 */
+// Returns whether the spline state flag is enabled.
 u8 fn_1_FA638(void) {
-    return lbl_1_bss_84420[0x85] & 1;
+    return ((u8*)lbl_1_bss_84420)[0x85] & 1;
 }
 /* fzgx:end fn_1_FA638 */
 
-/* fzgx:begin fn_1_FA650 noprologue */
-#include "types.h"
-
-extern u8 *lbl_1_bss_84420;
-
+/* fzgx:begin fn_1_FA650 */
+// Toggle the enabled bit in the spline state.
 void fn_1_FA650(void) {
-    if (*(lbl_1_bss_84420 + 0x85) & 1) {
-        *(lbl_1_bss_84420 + 0x85) &= 0xfe;
+    u8* state = (u8*)lbl_1_bss_84420;
+
+    if (state[0x85] & 1) {
+        state[0x85] &= 0xfe;
     } else {
-        *(lbl_1_bss_84420 + 0x85) |= 1;
+        state[0x85] |= 1;
     }
 }
 /* fzgx:end fn_1_FA650 */
 
-/* fzgx:begin fn_1_FA69C noprologue */
-#include "types.h"
-extern u8 *lbl_1_bss_84420;
-
+/* fzgx:begin fn_1_FA69C */
+// Return the spline entry value for an in-range index.
 u8 fn_1_FA69C(s32 index) {
+    u8 *base;
+
     if (index >= 0x29) {
         return 0;
     }
-    return lbl_1_bss_84420[index + 0x5c];
+    base = (u8 *)lbl_1_bss_84420;
+    return base[index + 0x5c];
 }
 /* fzgx:end fn_1_FA69C */
 

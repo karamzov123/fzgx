@@ -137,22 +137,48 @@ void fn_1_4FEC(void) {
 }
 /* fzgx:end fn_1_4FEC */
 
-/* fzgx:begin fn_1_509C noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
+/* fzgx:begin fn_1_4FFC */
+extern u32 lbl_1_bss_F5C;
+extern u32 lbl_1_bss_F60[2];
 
-extern u32 lbl_1_bss_F58;
-extern u32 lbl_1_bss_7AC40[2];
-extern u32 lbl_1_bss_7AC20[8];
+s32 fn_1_3FC28(void);
+void fn_1_3EF14(u32 *);
 
-s32 fn_8008023C(u32 *, u32 *, u32);
+void fn_1_4FFC(void) {
+    u8 value[0x14ac];
+    u32 result;
 
+    lbl_1_bss_F5C &= ~0x20000000;
+    lbl_1_bss_F5C &= ~0x08000000;
+    lbl_1_bss_F5C &= 0x3fffffff;
+
+    if (lbl_1_bss_F60[0] != 0) {
+        lbl_1_bss_F60[0]--;
+    }
+
+    if (fn_1_3FC28() != 0) {
+        fn_1_3EF14((u32 *)value);
+        result = *(u32 *)value;
+        if ((result & 0x2) != 0) {
+            lbl_1_bss_7EFD8.unk_19 = 1;
+        } else {
+            lbl_1_bss_7EFD8.unk_19 = 0;
+        }
+    }
+}
+/* fzgx:end fn_1_4FFC */
+
+/* fzgx:begin fn_1_509C */
+extern s32 fn_8008023C(Obj_1_bss_7AC20 *, u32 *, u32);
+
+// Initialize the allocation state and report whether initialization succeeded.
 s32 fn_1_509C(void) {
-    lbl_1_bss_7AC40[0] = lbl_1_bss_F58;
-    if (fn_8008023C(lbl_1_bss_7AC20, lbl_1_bss_7AC40, 4) == 0) {
+    lbl_1_bss_7AC40 = lbl_1_bss_F58;
+    if (fn_8008023C(&lbl_1_bss_7AC20, &lbl_1_bss_7AC40, 4) == 0) {
         return 0;
     }
-    lbl_1_bss_7AC20[0] = lbl_1_bss_7AC40[0];
+
+    lbl_1_bss_7AC20.unk_0 = lbl_1_bss_7AC40;
     return 1;
 }
 /* fzgx:end fn_1_509C */
@@ -224,40 +250,25 @@ void fn_1_5124(u32 arg0, u32 arg1) {
 }
 /* fzgx:end fn_1_5124 */
 
-/* fzgx:begin fn_1_52E0 noprologue */
-#include "types.h"
-
-typedef struct {
-    u8 _pad[0x4b];
-    u8 field_4b;
-} Fn152E0State;
-
-extern Fn152E0State *lbl_1_bss_F68;
+/* fzgx:begin fn_1_52E0 */
 extern u8 lbl_1_bss_F76;
 
+// Update the shared flag and the live object state when it exists.
 void fn_1_52E0(u8 value) {
     lbl_1_bss_F76 = value;
     if (lbl_1_bss_F68 != 0) {
-        lbl_1_bss_F68->field_4b = value;
+        lbl_1_bss_F68->unk_4B = value;
     }
 }
 /* fzgx:end fn_1_52E0 */
 
-/* fzgx:begin fn_1_5300 noprologue */
-#include "types.h"
-
-typedef struct {
-    u8 _pad[0x4b];
-    u8 field_4b;
-} Fn15300State;
-
-extern Fn15300State *lbl_1_bss_F68;
-
+/* fzgx:begin fn_1_5300 */
+// Return the current state flag, or zero when the state object is unavailable.
 u8 fn_1_5300(void) {
     u32 value;
 
     if (lbl_1_bss_F68 != 0) {
-        value = lbl_1_bss_F68->field_4b;
+        value = lbl_1_bss_F68->unk_4B;
     } else {
         value = 0;
     }
@@ -265,40 +276,23 @@ u8 fn_1_5300(void) {
 }
 /* fzgx:end fn_1_5300 */
 
-/* fzgx:begin fn_1_5328 noprologue */
-#include "types.h"
-
-typedef struct {
-    u8 _pad[0x4c];
-    u8 field_4c;
-} Fn15328State;
-
-extern Fn15328State *lbl_1_bss_F68;
-extern u8 lbl_1_data_3314;
-
+/* fzgx:begin fn_1_5328 */
+// Copies the value to the shared state when it is available.
 void fn_1_5328(u8 value) {
     lbl_1_data_3314 = value;
     if (lbl_1_bss_F68 != 0) {
-        lbl_1_bss_F68->field_4c = value;
+        lbl_1_bss_F68->unk_4C = value;
     }
 }
 /* fzgx:end fn_1_5328 */
 
-/* fzgx:begin fn_1_5348 noprologue */
-#include "types.h"
-
-typedef struct {
-    u8 _pad[0x4c];
-    u8 field_4c;
-} Fn15348State;
-
-extern Fn15348State *lbl_1_bss_F68;
-
+/* fzgx:begin fn_1_5348 */
+// Return the current state flag, or zero when the state object is unavailable.
 u8 fn_1_5348(void) {
     u32 value;
 
     if (lbl_1_bss_F68 != 0) {
-        value = lbl_1_bss_F68->field_4c;
+        value = lbl_1_bss_F68->unk_4C;
     } else {
         value = 0;
     }
@@ -356,13 +350,10 @@ void fn_1_6394(void) {
 }
 /* fzgx:end fn_1_6394 */
 
-/* fzgx:begin fn_1_63D4 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
+/* fzgx:begin fn_1_63D4 */
+extern void fn_1_F3D0(LiveCamera *);
 
-extern u32 live_camera;
-void fn_1_F3D0(u32);
-
+ // Update the camera using the active camera object.
 void fn_1_63D4(void) {
     fn_1_F3D0(live_camera);
 }

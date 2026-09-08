@@ -1408,7 +1408,7 @@
     "symbols": [
       "fn_1_4CC0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/alloc.c"
@@ -1477,7 +1477,7 @@
     "symbols": [
       "fn_1_4FFC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/alloc.c"

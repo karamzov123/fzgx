@@ -1,13 +1,14 @@
 #include "types.h"
 #include "rel/main_rel/globals.h"
 
-/* fzgx:begin fn_1_DA7B8 noprologue */
-#include "types.h"
-extern u32 lbl_1_data_2A7E0[62];
-extern void fn_1_DAAFC(u32 value);
+/* fzgx:begin fn_1_DA7B8 */
+#include "rel/main_rel/bg_san.h"
 
+extern void fn_1_DAAFC(Obj_1_data_2A7E0_At3C *obj);
+
+// Pass the active background object to the next processing stage.
 void fn_1_DA7B8(void) {
-    fn_1_DAAFC(lbl_1_data_2A7E0[15]);
+    fn_1_DAAFC(lbl_1_data_2A7E0.unk_3C);
 }
 /* fzgx:end fn_1_DA7B8 */
 
@@ -36,29 +37,24 @@ void fn_1_DAA34(void) {
 }
 /* fzgx:end fn_1_DAA34 */
 
-/* fzgx:begin fn_1_DAA58 noprologue */
-#include "types.h"
-typedef struct {
-    u8 pad_0000[0xbd4];
-    u32 flag;
-    u8 state[1];
-} State;
+/* fzgx:begin fn_1_DAA58 */
+#include "rel/main_rel/bg_san.h"
 
-extern State *lbl_1_data_2A7E0[62];
 extern void fn_1_FB9C0(u32 value);
 extern void fn_1_103F10(void *state);
-extern void fn_1_DAB3C(State *state);
+extern void fn_1_DAB3C(Obj_1_data_2A7E0_At3C *state);
 
+// Initializes the background state and advances its active substate.
 void fn_1_DAA58(void) {
-    State *state = lbl_1_data_2A7E0[15];
+    Obj_1_data_2A7E0_At3C *state = lbl_1_data_2A7E0.unk_3C;
 
-    if (state->flag != 0) {
+    if (state->unk_BD4 != 0) {
         fn_1_FB9C0(0);
         fn_1_FB9C0(1);
         fn_1_FB9C0(2);
         fn_1_FB9C0(4);
     }
-    fn_1_103F10(&state->state[0]);
+    fn_1_103F10(&state->unk_BD8);
     fn_1_DAB3C(state);
 }
 /* fzgx:end fn_1_DAA58 */

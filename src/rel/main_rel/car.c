@@ -506,39 +506,38 @@ u32 fn_1_8627C(s32 index) {
 }
 /* fzgx:end fn_1_8627C */
 
-/* fzgx:begin fn_1_8636C noprologue */
-#include "types.h"
-extern u8 *lbl_1_bss_6D838;
+/* fzgx:begin fn_1_8636C */
+#include "rel/main_rel/car.h"
+
 extern int fn_80007D58(void *);
 extern void lbl_8006D784(void *);
 extern void lbl_8006DD14(void *, void *);
 
+// Dispatches the argument based on the indexed car entry's state.
 void fn_1_8636C(int index, void *arg) {
     int offset = index * 0x620;
 
-    if (fn_80007D58(lbl_1_bss_6D838 + offset + 0xec) != 0) {
+    if (fn_80007D58((u8 *)lbl_1_bss_6D838 + offset + 0xec) != 0) {
         lbl_8006D784(arg);
     } else {
-        lbl_8006DD14(lbl_1_bss_6D838 + offset + 0xec, arg);
+        lbl_8006DD14((u8 *)lbl_1_bss_6D838 + offset + 0xec, arg);
     }
 }
 /* fzgx:end fn_1_8636C */
 
-/* fzgx:begin fn_1_863E4 noprologue */
-#include "types.h"
-
-extern u8 *lbl_1_bss_6D838;
+/* fzgx:begin fn_1_863E4 */
 extern int fn_80007D58(void *);
 extern void lbl_8006D784(void *);
 extern void lbl_8006DD14(void *, void *);
 
+// Dispatches the indexed car record to the appropriate handler.
 void fn_1_863E4(int index, void *arg) {
     int offset = index * 0x620;
 
-    if (fn_80007D58(lbl_1_bss_6D838 + offset + 0x5e0) != 0) {
+    if (fn_80007D58((u8 *)lbl_1_bss_6D838 + offset + 0x5e0) != 0) {
         lbl_8006D784(arg);
     } else {
-        lbl_8006DD14(lbl_1_bss_6D838 + offset + 0x5e0, arg);
+        lbl_8006DD14((u8 *)lbl_1_bss_6D838 + offset + 0x5e0, arg);
     }
 }
 /* fzgx:end fn_1_863E4 */
@@ -558,17 +557,10 @@ u32 fn_1_86514(int index) {
 }
 /* fzgx:end fn_1_86514 */
 
-/* fzgx:begin fn_1_8655C noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_8655C */
+#include "rel/main_rel/car.h"
 
-typedef struct {
-    u8 pad_0[0x34];
-    f32 unk_34;
-    u8 pad_38[0x5E8];
-} CarRecord;
-
-extern CarRecord *lbl_1_bss_6D838;
-
+// Returns the requested car record's stored value.
 f32 fn_1_8655C(int index) {
     return lbl_1_bss_6D838[index].unk_34;
 }
@@ -653,38 +645,18 @@ u8 fn_1_8677C(int index) {
 }
 /* fzgx:end fn_1_8677C */
 
-/* fzgx:begin fn_1_867F8 noprologue */
-#include "types.h"
-typedef struct {
-    u8 pad[0x184];
-    f32 value;
-    u8 tail[0x498];
-} Entry;
-
-extern Entry *lbl_1_bss_6D838;
-
+/* fzgx:begin fn_1_867F8 */
+// Return the indexed car's stored float value.
 f32 fn_1_867F8(int index) {
-    return lbl_1_bss_6D838[index].value;
+    return lbl_1_bss_6D838[index].unk_184;
 }
 /* fzgx:end fn_1_867F8 */
 
-/* fzgx:begin fn_1_86810 noprologue */
-#include "types.h"
-typedef struct {
-    u8 pad_0[0x49c];
-    void *object;
-    u8 pad_4a0[0x180];
-} Entry;
-
-typedef struct {
-    u8 pad_0[0x115];
-    u8 value;
-} Object;
-
-extern Entry *lbl_1_bss_6D838;
-
+/* fzgx:begin fn_1_86810 */
+// Return the indexed car object's status byte.
 u8 fn_1_86810(int index) {
-    return ((Object *)(lbl_1_bss_6D838[index].object))->value;
+    u8 *object = (u8 *)lbl_1_bss_6D838[index].unk_49C;
+    return object[0x115];
 }
 /* fzgx:end fn_1_86810 */
 
@@ -696,18 +668,10 @@ u8 fn_1_8682C(int index) {
 }
 /* fzgx:end fn_1_8682C */
 
-/* fzgx:begin fn_1_8683C noprologue */
-#include "types.h"
-typedef struct {
-    u8 pad_0[0x188];
-    s16 value;
-    u8 pad_18a[0x496];
-} Entry;
-
-extern Entry *lbl_1_bss_6D838;
-
+/* fzgx:begin fn_1_8683C */
+// Return the indexed car object's stored halfword value.
 s16 fn_1_8683C(int index) {
-    return lbl_1_bss_6D838[index].value;
+    return lbl_1_bss_6D838[index].unk_188;
 }
 /* fzgx:end fn_1_8683C */
 
@@ -2638,11 +2602,8 @@ f32 fn_1_8C44C(void) {
 }
 /* fzgx:end fn_1_8C44C */
 
-/* fzgx:begin fn_1_8C48C noprologue */
-#include "types.h"
-
-extern void *lbl_1_bss_6D838;
-
+/* fzgx:begin fn_1_8C48C */
+// Return the selected car's handling value, or zero object's value when unavailable.
 f32 fn_1_8C48C(u32 index) {
     u32 base;
     u32 addr;
@@ -3092,41 +3053,35 @@ s32 fn_1_8C968(s32 index) {
 }
 /* fzgx:end fn_1_8C968 */
 
-/* fzgx:begin fn_1_8C994 noprologue */
-#include "types.h"
-
-extern u32 lbl_1_bss_6D838;
-
-u32 fn_1_8C994(void) {
+/* fzgx:begin fn_1_8C994 */
+// Return the shared car-state object.
+Obj_1_bss_6D838_Target *fn_1_8C994(void) {
     return lbl_1_bss_6D838;
 }
 /* fzgx:end fn_1_8C994 */
 
-/* fzgx:begin fn_1_8C9A4 noprologue */
-#include "types.h"
-extern u32 lbl_1_bss_6D838;
+/* fzgx:begin fn_1_8C9A4 */
+#include "rel/main_rel/car.h"
 
+// Returns the address of the object's field at offset 0x6.
 u32 fn_1_8C9A4(void) {
-    return lbl_1_bss_6D838 + 0x6;
+    return (u32)&lbl_1_bss_6D838->unk_6;
 }
 /* fzgx:end fn_1_8C9A4 */
 
-/* fzgx:begin fn_1_8C9B8 noprologue */
-#include "types.h"
-extern u32 lbl_1_bss_6D838;
-
+/* fzgx:begin fn_1_8C9B8 */
+// Return the address of the object's field at offset 0x7c.
 u32 fn_1_8C9B8(void) {
-    return lbl_1_bss_6D838 + 0x7c;
+    return (u32)&lbl_1_bss_6D838->unk_7C;
 }
 /* fzgx:end fn_1_8C9B8 */
 
-/* fzgx:begin fn_1_8C9CC noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_8C9CC */
+#include "rel/main_rel/car.h"
 
-extern u32 lbl_1_bss_6D838;
-
-u32 fn_1_8C9CC(void) {
-    return lbl_1_bss_6D838 + 0x80;
+// Return the address of the vehicle's field at offset 0x80.
+u32 *fn_1_8C9CC(void) {
+    return &lbl_1_bss_6D838->unk_80;
 }
 /* fzgx:end fn_1_8C9CC */
 

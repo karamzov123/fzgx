@@ -60,11 +60,10 @@ u8 fn_1_F2D30(u8 *value, u8 **cursor, u32 index) {
 }
 /* fzgx:end fn_1_F2D30 */
 
-/* fzgx:begin fn_1_F2EFC noprologue */
-#include "types.h"
-extern u8 lbl_1_bss_7EFD4;
-extern u8 lbl_1_bss_7EFD8[0x44];
+/* fzgx:begin fn_1_F2EFC */
+#include "rel/main_rel/replay.h"
 
+// Clears the active replay flag and marks the replay entry as ready.
 void fn_1_F2EFC(void) {
     u8 flags = lbl_1_bss_7EFD4;
 
@@ -76,7 +75,7 @@ void fn_1_F2EFC(void) {
     }
 
     lbl_1_bss_7EFD4 = flags & ~8;
-    lbl_1_bss_7EFD8[0x19] = 1;
+    lbl_1_bss_7EFD8.unk_19 = 1;
 }
 /* fzgx:end fn_1_F2EFC */
 

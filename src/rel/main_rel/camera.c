@@ -183,41 +183,26 @@ void camera_set_entry_field_0xa8(u8 index, s16 value) {
 }
 /* fzgx:end camera_set_entry_field_0xa8 */
 
-/* fzgx:begin fn_1_715C noprologue */
-#include "types.h"
-typedef struct {
-    u8 pad_0[0xa4];
-    s16 unk_A4;
-    u8 pad_A6[2];
-    s16 unk_A8;
-    u8 pad_AA[0x152];
-} GameCameraEntry;
-
-typedef struct {
-    u8 pad_0[8];
-    u16 unk_8;
-    u8 pad_A[0xa];
-} CameraTableEntry;
-
-extern GameCameraEntry *game_camera_entries;
+/* fzgx:begin fn_1_715C */
 extern s32 lbl_1_bss_F78;
-extern CameraTableEntry lbl_1_bss_6F1E4;
 extern void fn_1_A2DF4(u32, u32, u32);
 
 void fn_1_715C(u8 index, s16 value) {
+    // Toggle the camera effect associated with this entry before storing its state.
     if (game_camera_entries[index].unk_A8 == 0 && index < 4) {
         if (value == 0) {
             if (lbl_1_bss_F78 == 0) {
                 fn_1_A2DF4(index, 0xa5000000, 8);
                 lbl_1_bss_F78 = 1;
             }
-        } else if (game_camera_entries[index].unk_A4 == 0) {
-            if (lbl_1_bss_F78 != 0) {
-                fn_1_A2DF4(index, 0xa5000000, (&lbl_1_bss_6F1E4)[index].unk_8);
-                lbl_1_bss_F78 = 0;
-            }
+        } else if (game_camera_entries[index].unk_A4 == 0 &&
+                   lbl_1_bss_F78 != 0) {
+            fn_1_A2DF4(index, 0xa5000000,
+                       (&lbl_1_bss_6F1E4.unk_8)[index * 10]);
+            lbl_1_bss_F78 = 0;
         }
     }
+
     game_camera_entries[index].unk_A4 = value;
 }
 /* fzgx:end fn_1_715C */
@@ -253,32 +238,12 @@ s32 camera_compare_values(const u8 *lhs_index, const u8 *rhs_index) {
 }
 /* fzgx:end camera_compare_values */
 
-/* fzgx:begin fn_1_8298 noprologue */
-#include "types.h"
-typedef struct {
-    u8 pad[2];
-    s16 value;
-    u8 rest[0x1f8];
-} Entry;
-
-typedef struct {
-    u8 pad_0[0x48];
-    u8 mode;
-    u8 unk_49;
-    u8 unk_4A;
-    u8 unk_4B;
-    u8 unk_4C;
-    u8 rest[0x23];
-} CameraState;
-
+/* fzgx:begin fn_1_8298 */
 extern s8 fn_1_86624(void);
 extern s8 fn_1_86634(s32 index);
-extern Entry *game_camera_entries;
-extern CameraState *lbl_1_bss_F68;
-extern u8 lbl_1_data_3318[180];
-extern char lbl_1_data_35E8[19];
 extern void fn_8000C49C(...);
 
+// Initializes camera entry selections and updates the camera mode from the available entries.
 void fn_1_8298(void) {
     s8 found;
     s8 count;
@@ -288,14 +253,15 @@ void fn_1_8298(void) {
     count = fn_1_86624();
 
     for (i = 0; i < 4; i++) {
-        game_camera_entries[i].value = -1;
+        game_camera_entries[i].unk_2 = -1;
     }
 
     for (i = 0; i < count; i++) {
         s8 index = fn_1_86634(i);
+
         if (index != -1) {
             found++;
-            game_camera_entries[index].value = i;
+            game_camera_entries[index].unk_2 = i;
         }
     }
 
@@ -304,39 +270,39 @@ void fn_1_8298(void) {
         fn_8000C49C(lbl_1_data_3318, 0x7d2, lbl_1_data_35E8);
         break;
     case 1:
-        lbl_1_bss_F68->mode = 0;
+        lbl_1_bss_F68->unk_48 = 0;
         break;
     case 2:
         switch (lbl_1_bss_F68->unk_4B) {
         case 0:
-            lbl_1_bss_F68->mode = 1;
+            lbl_1_bss_F68->unk_48 = 1;
             break;
         case 1:
-            lbl_1_bss_F68->mode = 2;
+            lbl_1_bss_F68->unk_48 = 2;
             break;
         }
         break;
     case 3:
         switch (lbl_1_bss_F68->unk_4C) {
         case 0:
-            lbl_1_bss_F68->mode = 3;
+            lbl_1_bss_F68->unk_48 = 3;
             break;
         case 1:
-            lbl_1_bss_F68->mode = 4;
+            lbl_1_bss_F68->unk_48 = 4;
             break;
         case 2:
-            lbl_1_bss_F68->mode = 5;
+            lbl_1_bss_F68->unk_48 = 5;
             break;
         case 3:
-            lbl_1_bss_F68->mode = 6;
+            lbl_1_bss_F68->unk_48 = 6;
             break;
         case 4:
-            lbl_1_bss_F68->mode = 6;
+            lbl_1_bss_F68->unk_48 = 6;
             break;
         }
         break;
     case 4:
-        lbl_1_bss_F68->mode = 8;
+        lbl_1_bss_F68->unk_48 = 8;
         break;
     }
 }
@@ -560,6 +526,7 @@ void camera_update_transition(Camera *camera) {
 /* fzgx:begin camera_get_target_orientation noprologue */
 #include "types.h"
 #include "rel/main_rel/globals.h"
+
 typedef struct Transform {
     u8 pad_08[0x8];
     f32 unk_08;
@@ -672,6 +639,8 @@ void fn_1_C304(s32 arg) {
 
 /* fzgx:begin camera_snapshot noprologue */
 #include "types.h"
+#include "rel/main_rel/globals.h"
+
 typedef struct CameraGlobals {
     u8 pad_00[0x08];
     u32 unk_08;
@@ -699,7 +668,7 @@ typedef struct CameraGlobals {
 
 extern CameraGlobals lbl_1_bss_1010;
 
-// Snapshots the current camera values and resets the transient state.
+// Copies the current camera state into the snapshot and clears its transient flag.
 void camera_snapshot(void) {
     lbl_1_bss_1010.unk_08 = lbl_1_bss_1010.src_C8;
     lbl_1_bss_1010.unk_0C = lbl_1_bss_1010.src_CC;

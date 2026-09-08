@@ -301,13 +301,11 @@ void fn_1_4D274(u32 *object, f32 value) {
 }
 /* fzgx:end fn_1_4D274 */
 
-/* fzgx:begin fn_1_4DCB8 noprologue */
-#include "types.h"
-extern u32 lbl_1_bss_4B9CC[23];
-
+/* fzgx:begin fn_1_4DCB8 */
+// Replaces the stored font state value and returns its previous value.
 u32 fn_1_4DCB8(u32 value) {
-    u32 old_value = lbl_1_bss_4B9CC[22];
-    lbl_1_bss_4B9CC[22] = value;
+    u32 old_value = lbl_1_bss_4B9CC.unk_58;
+    lbl_1_bss_4B9CC.unk_58 = value;
     return old_value;
 }
 /* fzgx:end fn_1_4DCB8 */
@@ -407,27 +405,19 @@ u8 *fn_1_4DDB0(void) {
 }
 /* fzgx:end fn_1_4DDB0 */
 
-/* fzgx:begin fn_1_4DE44 noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_4DE44 */
 extern int fn_1_3F164(void);
-extern u32 lbl_1_bss_4C688[2048];
 
-typedef struct MainEntry {
-    int active;
-    u8 pad[0x74];
-    void (*callback)(struct MainEntry *);
-    u32 pad_end;
-} MainEntry;
-
+// Dispatch callbacks for each active font entry.
 void fn_1_4DE44(void) {
     int i;
-    MainEntry *entry;
+    u32 *entry;
 
     if (fn_1_3F164() == 0) {
-        entry = (MainEntry *)lbl_1_bss_4C688;
-        for (i = 0; i < 0x40; i++, entry++) {
-            if (entry->active != 0 && entry->callback != 0) {
-                entry->callback(entry);
+        entry = &lbl_1_bss_4C688.unk_0;
+        for (i = 0; i < 0x40; i++, entry += 0x20) {
+            if ((int)entry[0] != 0 && entry[0x1e] != 0) {
+                ((void (*)(u32 *))entry[0x1e])(entry);
             }
         }
     }
@@ -1100,15 +1090,16 @@ void fn_1_55678(void *value) {
 }
 /* fzgx:end fn_1_55678 */
 
-/* fzgx:begin fn_1_556B8 noprologue */
-#include "types.h"
-extern u8 lbl_1_bss_6C7A4[40];
-extern void fn_1_563E4(u8 *data);
+/* fzgx:begin fn_1_556B8 */
+#include "rel/main_rel/font.h"
+
+extern void fn_1_563E4(void *data);
 extern void fn_80077F8C(void *value);
 extern void fn_1_56530(void);
 
+/* Completes the font operation for the supplied value. */
 void fn_1_556B8(void *value) {
-    fn_1_563E4(lbl_1_bss_6C7A4);
+    fn_1_563E4(&lbl_1_bss_6C7A4);
     fn_80077F8C(value);
     fn_1_56530();
 }

@@ -833,26 +833,27 @@ void fn_1_14CA48(void) {
 }
 /* fzgx:end fn_1_14CA48 */
 
-/* fzgx:begin fn_1_14CA4C noprologue */
-#include "types.h"
-extern u8 lbl_1_bss_8E518[5];
-extern u8 lbl_1_bss_3C30[5308];
-extern void fn_1_A2D84(u32, u8 *);
+/* fzgx:begin fn_1_14CA4C */
+#include "rel/main_rel/sel_static_disp.h"
 
+// Initializes the static display state and triggers its update when the limit is exceeded.
 void fn_1_14CA4C(void) {
-    u8 *state = lbl_1_bss_8E518;
-    if (state[4] == 0) {
-        u8 limit;
+    u8 *state = (u8 *)&lbl_1_bss_8E518;
+    u8 limit;
 
-        state[4] = 1;
-        if (state[5] == 4) {
-            limit = lbl_1_bss_3C30[8];
-        } else {
-            limit = lbl_1_bss_3C30[9];
-        }
-        if (limit > state[0x30]) {
-            fn_1_A2D84(0xA9010400, state);
-        }
+    if (state[4] != 0) {
+        return;
+    }
+
+    state[4] = 1;
+    if (state[5] == 4) {
+        limit = lbl_1_bss_3C30.unk_8;
+    } else {
+        limit = lbl_1_bss_3C30.unk_9;
+    }
+
+    if (limit > state[0x30]) {
+        fn_1_A2D84(0xA9010400, state);
     }
 }
 /* fzgx:end fn_1_14CA4C */
@@ -1300,54 +1301,44 @@ void fn_1_150570(void) {
 }
 /* fzgx:end fn_1_150570 */
 
-/* fzgx:begin fn_1_150574 noprologue */
-#include "types.h"
-extern u32 lbl_1_data_2A7E0[62];
-extern void fn_1_150CEC(u32 arg);
-extern void fn_1_151668(u32 arg);
-
+/* fzgx:begin fn_1_150574 */
+// Initializes the static display object referenced by the main state.
 void fn_1_150574(void) {
-    u32 value = *(u32*)((u8*)lbl_1_data_2A7E0 + 0x3c);
-    fn_1_150CEC(value);
-    fn_1_151668(value);
+    Obj_1_data_2A7E0_At3C *display = lbl_1_data_2A7E0.unk_3C;
+
+    fn_1_150CEC(display);
+    fn_1_151668(display);
 }
 /* fzgx:end fn_1_150574 */
 
-/* fzgx:begin fn_1_1505B4 noprologue */
-#include "types.h"
-extern u32 lbl_1_data_2A7E0[62];
-extern u32 fn_1_9AD54(void);
+/* fzgx:begin fn_1_1505B4 */
+extern void fn_1_9AD54(void);
 extern u32 fn_1_9D260(void);
-extern void fn_1_150D3C(u32 arg0, u32 arg1);
+extern void fn_1_150D3C(Obj_1_data_2A7E0_At3C *arg0, u32 arg1);
 extern void fn_1_150654(void);
-extern void fn_1_151054(u32 arg);
+extern void fn_1_151054(Obj_1_data_2A7E0_At3C *arg);
 
+// Refreshes the static display state and applies the current object selection.
 void fn_1_1505B4(void) {
-    u32 value;
+    Obj_1_data_2A7E0_At3C *display_state;
     u32 result;
 
-    value = *(u32*)((u8*)lbl_1_data_2A7E0 + 0x3c);
+    display_state = lbl_1_data_2A7E0.unk_3C;
     fn_1_9AD54();
     result = fn_1_9D260();
-    fn_1_150D3C(value, result);
+    fn_1_150D3C(display_state, result);
     fn_1_150654();
-    fn_1_151054(value);
+    fn_1_151054(display_state);
 }
 /* fzgx:end fn_1_1505B4 */
 
-/* fzgx:begin fn_1_150608 noprologue */
-#include "types.h"
-extern u32 lbl_1_data_2A7E0[62];
-extern void fn_1_9AD88(void);
-extern u32 fn_1_9D260(void);
-extern void fn_1_150ED0(u32 arg0, u32 arg1);
-
-// fn_1_150608: Load data value, call two setup functions, then call main function with value and result
+/* fzgx:begin fn_1_150608 */
+// Prepare the static display state and pass it to the display routine.
 void fn_1_150608(void) {
-    u32 value;
+    Obj_1_data_2A7E0_At3C *value;
     u32 result;
-    
-    value = *(u32*)((u8*)lbl_1_data_2A7E0 + 0x3c);
+
+    value = lbl_1_data_2A7E0.unk_3C;
     fn_1_9AD88();
     result = fn_1_9D260();
     fn_1_150ED0(value, result);
