@@ -550,6 +550,109 @@ u32 fn_1_864E8(int index) {
 }
 /* fzgx:end fn_1_864E8 */
 
+/* fzgx:begin fn_1_86514 */
+#include "rel/main_rel/car.h"
+
+u32 fn_1_86514(int index) {
+    return lbl_1_bss_6D838[index].unk_218;
+}
+/* fzgx:end fn_1_86514 */
+
+/* fzgx:begin fn_1_8655C noprologue */
+#include "types.h"
+
+typedef struct {
+    u8 pad_0[0x34];
+    f32 unk_34;
+    u8 pad_38[0x5E8];
+} CarRecord;
+
+extern CarRecord *lbl_1_bss_6D838;
+
+f32 fn_1_8655C(int index) {
+    return lbl_1_bss_6D838[index].unk_34;
+}
+/* fzgx:end fn_1_8655C */
+
+/* fzgx:begin fn_1_86574 */
+#include "rel/main_rel/car.h"
+
+f32 fn_1_86574(int index) {
+    return lbl_1_bss_6D838[index].unk_38;
+}
+/* fzgx:end fn_1_86574 */
+
+/* fzgx:begin fn_1_86624 */
+#include "rel/main_rel/car.h"
+
+u8 fn_1_86624(void) {
+    return lbl_1_bss_6D84A;
+}
+/* fzgx:end fn_1_86624 */
+
+/* fzgx:begin fn_1_86634 */
+#include "rel/main_rel/car.h"
+
+u8 fn_1_86634(int index) {
+    return lbl_1_bss_6D838[index].unk_475;
+}
+/* fzgx:end fn_1_86634 */
+
+/* fzgx:begin fn_1_8664C */
+#include "rel/main_rel/car.h"
+
+u16 fn_1_8664C(int index) {
+    if (lbl_1_bss_6D838 != 0) {
+        return lbl_1_bss_6D838[index].unk_214;
+    }
+    return 0;
+}
+/* fzgx:end fn_1_8664C */
+
+/* fzgx:begin fn_1_86678 */
+#include "rel/main_rel/car.h"
+
+u8 fn_1_86678(int index) {
+    return lbl_1_bss_6D838[index].unk_474;
+}
+/* fzgx:end fn_1_86678 */
+
+/* fzgx:begin fn_1_86690 */
+#include "rel/main_rel/car.h"
+
+s8 fn_1_86690(s8 index) {
+    return lbl_1_bss_6D838[index].unk_6;
+}
+/* fzgx:end fn_1_86690 */
+
+/* fzgx:begin fn_1_8677C noprologue */
+#include "types.h"
+
+typedef struct {
+    u32 flags;
+    u8 pad[0x58];
+} EntryState;
+
+typedef struct {
+    u8 pad_0[0x244];
+    EntryState states[4];
+    u8 tail[0x26C];
+} Entry;
+
+extern Entry *lbl_1_bss_6D838;
+
+u8 fn_1_8677C(int index) {
+    u8 i;
+
+    for (i = 0; i < 4; i++) {
+        if (lbl_1_bss_6D838[index].states[i].flags & 4) {
+            return 1;
+        }
+    }
+    return 0;
+}
+/* fzgx:end fn_1_8677C */
+
 /* fzgx:begin fn_1_867F8 noprologue */
 #include "types.h"
 typedef struct {
@@ -607,6 +710,123 @@ s16 fn_1_8683C(int index) {
     return lbl_1_bss_6D838[index].value;
 }
 /* fzgx:end fn_1_8683C */
+
+/* fzgx:begin fn_1_868C0 */
+#include "rel/main_rel/car.h"
+
+void *fn_1_868C0(s8 index) {
+    if (index < (s8)lbl_1_bss_6D84A) {
+        if (lbl_1_bss_6D83C.unk_0 != 0) {
+            return (void *)((u8 *)lbl_1_bss_6D83C.unk_0 + index * 0x440);
+        }
+    }
+    return 0;
+}
+/* fzgx:end fn_1_868C0 */
+
+/* fzgx:begin fn_1_875EC */
+extern void fn_1_87448(void *arg0, void *arg1, void *arg2, int arg3);
+
+void fn_1_875EC(void *arg0, void *arg1, void *arg2) {
+    fn_1_87448(arg0, arg1, arg2, 1);
+}
+/* fzgx:end fn_1_875EC */
+
+/* fzgx:begin fn_1_87750 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn187750Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn187750Inner;
+
+typedef struct Fn187750Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn187750Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn187750Object;
+
+void fn_1_87750(Fn187750Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_87750 */
+
+/* fzgx:begin fn_1_877E8 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn1877E8Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn1877E8Inner;
+
+typedef struct Fn1877E8Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn1877E8Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn1877E8Object;
+
+void fn_1_877E8(Fn1877E8Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_877E8 */
 
 /* fzgx:begin fn_1_87880 */
 extern f32 lbl_1_rodata_3C2C[33];
@@ -752,6 +972,342 @@ void fn_1_87AD8(Fn187AD8Object *object) {
 }
 /* fzgx:end fn_1_87AD8 */
 
+/* fzgx:begin fn_1_87B70 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn187B70Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn187B70Inner;
+
+typedef struct Fn187B70Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn187B70Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn187B70Object;
+
+void fn_1_87B70(Fn187B70Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_87B70 */
+
+/* fzgx:begin fn_1_87C08 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn187C08Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn187C08Inner;
+
+typedef struct Fn187C08Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn187C08Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn187C08Object;
+
+void fn_1_87C08(Fn187C08Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_87C08 */
+
+/* fzgx:begin fn_1_87CA0 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn187CA0Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn187CA0Inner;
+
+typedef struct Fn187CA0Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn187CA0Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn187CA0Object;
+
+void fn_1_87CA0(Fn187CA0Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_87CA0 */
+
+/* fzgx:begin fn_1_87D38 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn187D38Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn187D38Inner;
+
+typedef struct Fn187D38Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn187D38Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn187D38Object;
+
+void fn_1_87D38(Fn187D38Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_87D38 */
+
+/* fzgx:begin fn_1_87DD0 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn187DD0Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn187DD0Inner;
+
+typedef struct Fn187DD0Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn187DD0Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn187DD0Object;
+
+void fn_1_87DD0(Fn187DD0Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_87DD0 */
+
+/* fzgx:begin fn_1_87E68 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn187E68Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn187E68Inner;
+
+typedef struct Fn187E68Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn187E68Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn187E68Object;
+
+void fn_1_87E68(Fn187E68Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_87E68 */
+
+/* fzgx:begin fn_1_87F00 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn187F00Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn187F00Inner;
+
+typedef struct Fn187F00Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn187F00Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn187F00Object;
+
+void fn_1_87F00(Fn187F00Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_87F00 */
+
 /* fzgx:begin fn_1_87F98 */
 extern f32 lbl_1_rodata_3C2C[33];
 
@@ -799,6 +1355,198 @@ void fn_1_87F98(Fn187F98Object *object) {
     lbl_8006DB74(object->field_330);
 }
 /* fzgx:end fn_1_87F98 */
+
+/* fzgx:begin fn_1_88030 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn188030Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn188030Inner;
+
+typedef struct Fn188030Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn188030Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn188030Object;
+
+void fn_1_88030(Fn188030Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_88030 */
+
+/* fzgx:begin fn_1_880C8 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn1880C8Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn1880C8Inner;
+
+typedef struct Fn1880C8Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn1880C8Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn1880C8Object;
+
+void fn_1_880C8(Fn1880C8Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_880C8 */
+
+/* fzgx:begin fn_1_88160 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn88160Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn88160Inner;
+
+typedef struct Fn88160Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn88160Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn88160Object;
+
+void fn_1_88160(Fn88160Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_88160 */
+
+/* fzgx:begin fn_1_881F8 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn881F8Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn881F8Inner;
+
+typedef struct Fn881F8Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn881F8Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn881F8Object;
+
+void fn_1_881F8(Fn881F8Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_881F8 */
 
 /* fzgx:begin fn_1_88328 */
 extern f32 lbl_1_rodata_3C2C[33];
@@ -896,6 +1644,58 @@ void fn_1_883C0(Fn883C0Object *object) {
 }
 /* fzgx:end fn_1_883C0 */
 
+/* fzgx:begin fn_1_88458 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn88458Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn88458Inner;
+
+typedef struct Fn88458Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn88458Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn88458Object;
+
+void fn_1_88458(Fn88458Object *object) {
+    u8 value_1[12];
+    u8 value_2[12];
+
+    if (object != 0 && object->field_3BA == 0 && object->field_002 - 1 >= 0) {
+        fn_80008BA8(value_1, object->field_208, 12);
+        lbl_8006D7DC(value_1);
+
+        if (object->field_32C != 0) {
+            fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+        }
+
+        lbl_8006DB74(object->field_330);
+    }
+
+    if (object != 0 && object->field_3BA == 0 && object->field_002 - 1 >= 1) {
+        fn_80008BA8(value_2, &object->field_208[0x14], 12);
+        lbl_8006D7DC(value_2);
+
+        if (object->field_32C != 0) {
+            fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+        }
+
+        lbl_8006DB74((u8 *)object->field_330 + 0x30);
+    }
+}
+/* fzgx:end fn_1_88458 */
+
 /* fzgx:begin fn_1_8856C */
 extern f32 lbl_1_rodata_3C2C[33];
 
@@ -944,6 +1744,342 @@ void fn_1_8856C(Fn8856CObject *object) {
 }
 /* fzgx:end fn_1_8856C */
 
+/* fzgx:begin fn_1_88604 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn88604Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn88604Inner;
+
+typedef struct Fn88604Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn88604Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn88604Object;
+
+void fn_1_88604(Fn88604Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_88604 */
+
+/* fzgx:begin fn_1_8869C */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn8869CInner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn8869CInner;
+
+typedef struct Fn8869CObject {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn8869CInner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn8869CObject;
+
+void fn_1_8869C(Fn8869CObject *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_8869C */
+
+/* fzgx:begin fn_1_88734 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn1_88734Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn1_88734Inner;
+
+typedef struct Fn1_88734Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn1_88734Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn1_88734Object;
+
+void fn_1_88734(Fn1_88734Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_88734 */
+
+/* fzgx:begin fn_1_887CC */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn1_887CCInner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn1_887CCInner;
+
+typedef struct Fn1_887CCObject {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn1_887CCInner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn1_887CCObject;
+
+void fn_1_887CC(Fn1_887CCObject *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_887CC */
+
+/* fzgx:begin fn_1_88864 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn1_88864Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn1_88864Inner;
+
+typedef struct Fn1_88864Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn1_88864Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn1_88864Object;
+
+void fn_1_88864(Fn1_88864Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_88864 */
+
+/* fzgx:begin fn_1_888FC */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn1_888FCInner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn1_888FCInner;
+
+typedef struct Fn1_888FCObject {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn1_888FCInner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn1_888FCObject;
+
+void fn_1_888FC(Fn1_888FCObject *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_888FC */
+
+/* fzgx:begin fn_1_88994 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn1_88994Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn1_88994Inner;
+
+typedef struct Fn1_88994Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn1_88994Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn1_88994Object;
+
+void fn_1_88994(Fn1_88994Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_88994 */
+
 /* fzgx:begin fn_1_88A2C */
 extern f32 lbl_1_rodata_3C2C[33];
 
@@ -991,6 +2127,246 @@ void fn_1_88A2C(Fn1_88A2CObject *object) {
     lbl_8006DB74(object->field_330);
 }
 /* fzgx:end fn_1_88A2C */
+
+/* fzgx:begin fn_1_88AC4 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn1_88AC4Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn1_88AC4Inner;
+
+typedef struct Fn1_88AC4Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn1_88AC4Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn1_88AC4Object;
+
+void fn_1_88AC4(Fn1_88AC4Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_88AC4 */
+
+/* fzgx:begin fn_1_88B5C */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn1_88B5CInner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn1_88B5CInner;
+
+typedef struct Fn1_88B5CObject {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn1_88B5CInner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn1_88B5CObject;
+
+void fn_1_88B5C(Fn1_88B5CObject *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_88B5C */
+
+/* fzgx:begin fn_1_88BF4 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn1_88BF4Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn1_88BF4Inner;
+
+typedef struct Fn1_88BF4Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn1_88BF4Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn1_88BF4Object;
+
+void fn_1_88BF4(Fn1_88BF4Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_88BF4 */
+
+/* fzgx:begin fn_1_88C8C */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn1_88C8CInner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn1_88C8CInner;
+
+typedef struct Fn1_88C8CObject {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn1_88C8CInner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn1_88C8CObject;
+
+void fn_1_88C8C(Fn1_88C8CObject *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_88C8C */
+
+/* fzgx:begin fn_1_88D24 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn1_88D24Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn1_88D24Inner;
+
+typedef struct Fn1_88D24Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn1_88D24Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn1_88D24Object;
+
+void fn_1_88D24(Fn1_88D24Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_88D24 */
 
 /* fzgx:begin fn_1_88DBC */
 extern f32 lbl_1_rodata_3C2C[33];
@@ -1136,6 +2512,54 @@ void fn_1_88EEC(Fn88EECObject *object) {
 }
 /* fzgx:end fn_1_88EEC */
 
+/* fzgx:begin fn_1_88F84 */
+extern f32 lbl_1_rodata_3C2C[33];
+
+extern void fn_80008BA8(void *dst, const void *src, int size);
+extern void lbl_8006D7DC(void *value);
+extern void fn_8006E424(int value);
+extern void lbl_8006DB74(void *value);
+
+typedef struct Fn1_88F84Inner {
+    u8 pad_000[0x1FC];
+    f32 value_1FC;
+} Fn1_88F84Inner;
+
+typedef struct Fn1_88F84Object {
+    u8 pad_000[2];
+    s8 field_002;
+    u8 pad_003[0x208 - 3];
+    u8 field_208[0x124];
+    Fn1_88F84Inner *field_32C;
+    void *field_330;
+    u8 pad_334[0x86];
+    s16 field_3BA;
+} Fn1_88F84Object;
+
+void fn_1_88F84(Fn1_88F84Object *object) {
+    u8 value[12];
+
+    if (object == 0) {
+        return;
+    }
+    if (object->field_3BA != 0) {
+        return;
+    }
+    if (object->field_002 - 1 < 0) {
+        return;
+    }
+
+    fn_80008BA8(value, object->field_208, 12);
+    lbl_8006D7DC(value);
+
+    if (object->field_32C != 0) {
+        fn_8006E424((int)(lbl_1_rodata_3C2C[0] * -object->field_32C->value_1FC));
+    }
+
+    lbl_8006DB74(object->field_330);
+}
+/* fzgx:end fn_1_88F84 */
+
 /* fzgx:begin fn_1_8A168 */
 extern void fn_1_892FC(void *arg0, int arg1, int arg2);
 
@@ -1143,6 +2567,22 @@ void fn_1_8A168(void *arg0) {
     fn_1_892FC(arg0, 0, 0);
 }
 /* fzgx:end fn_1_8A168 */
+
+/* fzgx:begin fn_1_8A190 */
+extern void fn_1_8A1B4(void *arg0, void *arg1, int arg2);
+
+void fn_1_8A190(void *arg0, void *arg1) {
+    fn_1_8A1B4(arg0, arg1, 0);
+}
+/* fzgx:end fn_1_8A190 */
+
+/* fzgx:begin fn_1_8B880 */
+extern void fn_1_8B8A4(s32 arg0);
+
+void fn_1_8B880(void) {
+    fn_1_8B8A4(0);
+}
+/* fzgx:end fn_1_8B880 */
 
 /* fzgx:begin fn_1_8C3EC */
 extern u8 lbl_1_bss_6DA7A;
@@ -1161,6 +2601,100 @@ u8 fn_1_8C3FC(void) {
     return lbl_1_bss_6DA7B[0];
 }
 /* fzgx:end fn_1_8C3FC */
+
+/* fzgx:begin fn_1_8C44C */
+#include "rel/main_rel/car.h"
+
+extern f32 lbl_1_rodata_3518[6];
+
+typedef struct Fn1844CValue {
+    char pad_0[0xf8];
+    f32 value;
+} Fn1844CValue;
+
+typedef struct Fn1844CEntry {
+    char pad_0[0x49c];
+    Fn1844CValue *value;
+    char pad_end[0x180];
+} Fn1844CEntry;
+
+typedef struct Fn1844CRoot {
+    char pad_0[0x18];
+    Fn1844CEntry *entries;
+    char pad_0x1c[0xe];
+    s8 threshold;
+    char pad_0x2b[0x232];
+    u8 index;
+} Fn1844CRoot;
+
+extern u8 lbl_1_bss_6D820;
+
+f32 fn_1_8C44C(void) {
+    Fn1844CRoot *root = (Fn1844CRoot *)&lbl_1_bss_6D820;
+    if (root->index >= root->threshold) {
+        return lbl_1_rodata_3518[0];
+    }
+    return root->entries[root->index].value->value;
+}
+/* fzgx:end fn_1_8C44C */
+
+/* fzgx:begin fn_1_8C48C noprologue */
+#include "types.h"
+
+extern void *lbl_1_bss_6D838;
+
+f32 fn_1_8C48C(u32 index) {
+    u32 base;
+    u32 addr;
+    u32 ptr;
+
+    base = (u32)lbl_1_bss_6D838;
+    if (base != 0) {
+        addr = base + index * 0x620;
+    } else {
+        addr = 0;
+    }
+
+    ptr = *(u32 *)(addr + 0x49c);
+    return *(f32 *)(ptr + 0x50);
+}
+/* fzgx:end fn_1_8C48C */
+
+/* fzgx:begin fn_1_8C4BC */
+f32 fn_1_8C4BC(u32 index) {
+    u32 base;
+    u32 addr;
+    u32 ptr;
+
+    base = (u32)lbl_1_bss_6D838;
+    if (base != 0) {
+        addr = base + index * 0x620;
+    } else {
+        addr = 0;
+    }
+
+    ptr = *(u32 *)(addr + 0x49c);
+    return *(f32 *)(ptr + 0x54);
+}
+/* fzgx:end fn_1_8C4BC */
+
+/* fzgx:begin fn_1_8C4EC */
+f32 fn_1_8C4EC(u32 index) {
+    u32 base;
+    u32 addr;
+    u32 ptr;
+
+    base = (u32)lbl_1_bss_6D838;
+    if (base != 0) {
+        addr = base + index * 0x620;
+    } else {
+        addr = 0;
+    }
+
+    ptr = *(u32 *)(addr + 0x49c);
+    return *(f32 *)(ptr + 0x58);
+}
+/* fzgx:end fn_1_8C4EC */
 
 /* fzgx:begin fn_1_8C51C */
  // Return the indexed car's float field, or zero-base fallback when the car table is absent.
@@ -1181,6 +2715,42 @@ f32 fn_1_8C51C(u32 index) {
 }
 /* fzgx:end fn_1_8C51C */
 
+/* fzgx:begin fn_1_8C54C */
+f32 fn_1_8C54C(u32 index) {
+    u32 base;
+    u32 addr;
+    u32 ptr;
+
+    base = (u32)lbl_1_bss_6D838;
+    if (base != 0) {
+        addr = base + index * 0x620;
+    } else {
+        addr = 0;
+    }
+
+    ptr = *(u32 *)(addr + 0x49c);
+    return *(f32 *)(ptr + 0x60);
+}
+/* fzgx:end fn_1_8C54C */
+
+/* fzgx:begin fn_1_8C57C */
+f32 fn_1_8C57C(u32 index) {
+    u32 base;
+    u32 addr;
+    u32 ptr;
+
+    base = (u32)lbl_1_bss_6D838;
+    if (base != 0) {
+        addr = base + index * 0x620;
+    } else {
+        addr = 0;
+    }
+
+    ptr = *(u32 *)(addr + 0x49c);
+    return *(f32 *)(ptr + 0x64);
+}
+/* fzgx:end fn_1_8C57C */
+
 /* fzgx:begin fn_1_8C5AC */
 // Return the indexed car's float value.
 f32 fn_1_8C5AC(u32 index) {
@@ -1199,6 +2769,61 @@ f32 fn_1_8C5AC(u32 index) {
     return *(f32 *)(ptr + 0x68);
 }
 /* fzgx:end fn_1_8C5AC */
+
+/* fzgx:begin fn_1_8C5DC */
+u32 fn_1_8C5DC(u32 index) {
+    u32 base;
+    u32 addr;
+    u32 ptr;
+
+    base = (u32)lbl_1_bss_6D838;
+    if (base != 0) {
+        addr = base + index * 0x620;
+    } else {
+        addr = 0;
+    }
+
+    ptr = *(u32 *)(addr + 0x49c);
+    return *(u32 *)(ptr + 0x118);
+}
+/* fzgx:end fn_1_8C5DC */
+
+/* fzgx:begin fn_1_8C60C */
+u32 fn_1_8C60C(u32 index) {
+    u32 base;
+    u32 addr;
+    u32 ptr;
+
+    base = (u32)lbl_1_bss_6D838;
+    if (base != 0) {
+        addr = base + index * 0x620;
+    } else {
+        addr = 0;
+    }
+
+    ptr = *(u32 *)(addr + 0x49c);
+    return *(u32 *)(ptr + 0x88);
+}
+/* fzgx:end fn_1_8C60C */
+
+/* fzgx:begin fn_1_8C63C */
+u32 fn_1_8C63C(u32 index) {
+    u32 base;
+    u32 addr;
+    u32 ptr;
+
+    base = (u32)lbl_1_bss_6D838;
+    if (base != 0) {
+        addr = base + index * 0x620;
+    } else {
+        addr = 0;
+    }
+
+    ptr = *(u32 *)(addr + 0x49c);
+    ptr = *(u32 *)(ptr + 0x8c);
+    return ptr;
+}
+/* fzgx:end fn_1_8C63C */
 
 /* fzgx:begin fn_1_8C66C */
 // Return the value stored in the indexed car's nested state object.
@@ -1219,6 +2844,25 @@ u32 fn_1_8C66C(u32 index) {
     return *(u32 *)ptr;
 }
 /* fzgx:end fn_1_8C66C */
+
+/* fzgx:begin fn_1_8C6A0 */
+f32 fn_1_8C6A0(u32 index) {
+    u32 base;
+    u32 car;
+    u32 state;
+
+    base = (u32)lbl_1_bss_6D838;
+    if (base != 0) {
+        car = base + index * 0x620;
+    } else {
+        car = 0;
+    }
+
+    state = *(u32 *)(car + 0x49c);
+    state = *(u32 *)(state + 0x94);
+    return *(f32 *)state;
+}
+/* fzgx:end fn_1_8C6A0 */
 
 /* fzgx:begin fn_1_8C6D4 */
 u32 fn_1_8C6D4(u32 index) {
@@ -1277,6 +2921,42 @@ f32 fn_1_8C734(u32 index) {
 }
 /* fzgx:end fn_1_8C734 */
 
+/* fzgx:begin fn_1_8C764 */
+f32 fn_1_8C764(u32 index) {
+    u32 base;
+    u32 addr;
+    u32 ptr;
+
+    base = (u32)lbl_1_bss_6D838;
+    if (base != 0) {
+        addr = base + index * 0x620;
+    } else {
+        addr = 0;
+    }
+
+    ptr = *(u32 *)(addr + 0x49c);
+    return *(f32 *)(ptr + 0xfc);
+}
+/* fzgx:end fn_1_8C764 */
+
+/* fzgx:begin fn_1_8C794 */
+f32 fn_1_8C794(u32 index) {
+    u32 base;
+    u32 addr;
+    u32 ptr;
+
+    base = (u32)lbl_1_bss_6D838;
+    if (base != 0) {
+        addr = base + index * 0x620;
+    } else {
+        addr = 0;
+    }
+
+    ptr = *(u32 *)(addr + 0x49c);
+    return *(f32 *)(ptr + 0x100);
+}
+/* fzgx:end fn_1_8C794 */
+
 /* fzgx:begin fn_1_8C7C4 */
 // Return the selected car's status byte, or the null-entry status when unavailable.
 u8 fn_1_8C7C4(u32 index) {
@@ -1296,6 +2976,132 @@ u8 fn_1_8C7C4(u32 index) {
 }
 /* fzgx:end fn_1_8C7C4 */
 
+/* fzgx:begin fn_1_8C7F4 */
+u8 fn_1_8C7F4(u32 index) {
+    u32 base;
+    u32 addr;
+    u32 ptr;
+
+    base = (u32)lbl_1_bss_6D838;
+    if (base != 0) {
+        addr = base + index * 0x620;
+    } else {
+        addr = 0;
+    }
+
+    ptr = *(u32 *)(addr + 0x49c);
+    return *(u8 *)(ptr + 0x116);
+}
+/* fzgx:end fn_1_8C7F4 */
+
+/* fzgx:begin fn_1_8C824 */
+u16 fn_1_8C824(u32 index) {
+    u32 base;
+    u32 addr;
+    u32 ptr;
+
+    base = (u32)lbl_1_bss_6D838;
+    if (base != 0) {
+        addr = base + index * 0x620;
+    } else {
+        addr = 0;
+    }
+
+    ptr = *(u32 *)(addr + 0x49c);
+    return *(u16 *)(ptr + 0x104);
+}
+/* fzgx:end fn_1_8C824 */
+
+/* fzgx:begin fn_1_8C854 */
+f32 fn_1_8C854(u32 index) {
+    u32 base;
+    u32 addr;
+    u32 ptr;
+
+    base = (u32)lbl_1_bss_6D838;
+    if (base != 0) {
+        addr = base + index * 0x620;
+    } else {
+        addr = 0;
+    }
+
+    ptr = *(u32 *)(addr + 0x49c);
+    return *(f32 *)(ptr + 0x108);
+}
+/* fzgx:end fn_1_8C854 */
+
+/* fzgx:begin fn_1_8C8DC */
+#include "rel/main_rel/car.h"
+
+f32 fn_1_8C8DC(u32 index) {
+    return lbl_1_bss_6D838[index].unk_1F8;
+}
+/* fzgx:end fn_1_8C8DC */
+
+/* fzgx:begin fn_1_8C8F4 */
+#include "rel/main_rel/car.h"
+
+f32 fn_1_8C8F4(u32 index) {
+    return lbl_1_bss_6D838[index].unk_1FC;
+}
+/* fzgx:end fn_1_8C8F4 */
+
+/* fzgx:begin fn_1_8C90C */
+#include "rel/main_rel/car.h"
+
+f32 fn_1_8C90C(s32 index) {
+    return lbl_1_bss_6D838[index].unk_200;
+}
+/* fzgx:end fn_1_8C90C */
+
+/* fzgx:begin fn_1_8C924 */
+#include "rel/main_rel/car.h"
+
+f32 fn_1_8C924(s32 index) {
+    return lbl_1_bss_6D838[index].unk_204;
+}
+/* fzgx:end fn_1_8C924 */
+
+/* fzgx:begin fn_1_8C93C */
+#include "rel/main_rel/car.h"
+
+typedef struct {
+    u32 unk_0;
+} CarRef;
+
+s32 fn_1_8C93C(s32 index) {
+    u32 ref = lbl_1_bss_6D838[index].unk_484;
+    if (ref != 0) {
+        return ((CarRef *)ref)->unk_0;
+    }
+    return -1;
+}
+/* fzgx:end fn_1_8C93C */
+
+/* fzgx:begin fn_1_8C968 */
+#include "rel/main_rel/car.h"
+
+s32 fn_1_8C968(s32 index) {
+    u8 *data;
+
+    data = (u8 *)lbl_1_bss_6D838[index].unk_484;
+    if (data != 0) {
+        return data[0x32];
+    }
+    return -1;
+}
+/* fzgx:end fn_1_8C968 */
+
+/* fzgx:begin fn_1_8C994 noprologue */
+#include "types.h"
+
+extern u32 lbl_1_bss_6D838;
+
+u32 fn_1_8C994(void) {
+    return lbl_1_bss_6D838;
+}
+/* fzgx:end fn_1_8C994 */
+
 /* fzgx:begin fn_1_8C9A4 noprologue */
 #include "types.h"
 extern u32 lbl_1_bss_6D838;
@@ -1314,6 +3120,40 @@ u32 fn_1_8C9B8(void) {
 }
 /* fzgx:end fn_1_8C9B8 */
 
+/* fzgx:begin fn_1_8C9CC noprologue */
+#include "types.h"
+
+extern u32 lbl_1_bss_6D838;
+
+u32 fn_1_8C9CC(void) {
+    return lbl_1_bss_6D838 + 0x80;
+}
+/* fzgx:end fn_1_8C9CC */
+
+/* fzgx:begin fn_1_8C9E0 */
+#include "rel/main_rel/car.h"
+
+u32 *fn_1_8C9E0(void) {
+    return &lbl_1_bss_6D838->unk_84;
+}
+/* fzgx:end fn_1_8C9E0 */
+
+/* fzgx:begin fn_1_8C9F4 */
+extern u8 lbl_1_bss_6D84A;
+
+u8 *fn_1_8C9F4(void) {
+    return &lbl_1_bss_6D84A;
+}
+/* fzgx:end fn_1_8C9F4 */
+
+/* fzgx:begin fn_1_8CA0C */
+#include "rel/main_rel/car.h"
+
+u32 fn_1_8CA0C(void) {
+    return lbl_1_bss_6D83C.unk_0 + 0x328;
+}
+/* fzgx:end fn_1_8CA0C */
+
 /* fzgx:begin fn_1_8CA20 */
 // fn_1_8CA20: Load value from BSS and return with offset applied
 
@@ -1324,6 +3164,60 @@ u32 fn_1_8CA20(void) {
 }
 /* fzgx:end fn_1_8CA20 */
 
+/* fzgx:begin fn_1_8CA34 */
+extern u32 lbl_1_bss_6D83C;
+
+u32 fn_1_8CA34(void) {
+    return lbl_1_bss_6D83C + 0x3ac;
+}
+/* fzgx:end fn_1_8CA34 */
+
+/* fzgx:begin fn_1_8CA48 */
+#include "rel/main_rel/car.h"
+
+u32 fn_1_8CA48(void) {
+    return lbl_1_bss_6D83C.unk_0 + 0x3b0;
+}
+/* fzgx:end fn_1_8CA48 */
+
+/* fzgx:begin fn_1_8CA5C */
+#include "rel/main_rel/car.h"
+
+u32 fn_1_8CA5C(void) {
+    return lbl_1_bss_6D83C.unk_0 + 0x3b4;
+}
+/* fzgx:end fn_1_8CA5C */
+
+/* fzgx:begin fn_1_8D168 */
+extern void fn_8006FDEC(void);
+extern void fn_8006FEFC(void);
+extern u32 lbl_801A6410;
+extern u8 lbl_1_data_1FFF0[12];
+extern void fn_1_46B4(u32 arg0, u32 arg1, u8 *arg2, u32 arg3);
+
+typedef struct Fn1_8D168State {
+    u8 pad[0x60];
+    u32 field_60;
+} Fn1_8D168State;
+
+void fn_1_8D168(Fn1_8D168State *state) {
+    fn_8006FDEC();
+    fn_8006FEFC();
+    if (state->field_60 != 0) {
+        fn_1_46B4(lbl_801A6410, state->field_60, lbl_1_data_1FFF0, 0x1c04);
+        state->field_60 = 0;
+    }
+}
+/* fzgx:end fn_1_8D168 */
+
+/* fzgx:begin fn_1_8D1C8 */
+extern void fn_1_8D210(u32 arg0, u32 arg1, u32 arg2, u32 arg3);
+
+void fn_1_8D1C8(u32 arg0, u32 arg1, u32 arg2) {
+    fn_1_8D210(arg0, arg1, arg2, 1);
+}
+/* fzgx:end fn_1_8D1C8 */
+
 /* fzgx:begin fn_1_8D1EC */
 extern void fn_1_8D210(u32 arg0, u32 arg1, u32 arg2, u32 arg3);
 
@@ -1332,6 +3226,65 @@ void fn_1_8D1EC(u32 arg0, u32 arg1, u32 arg2) {
 }
 /* fzgx:end fn_1_8D1EC */
 
+/* fzgx:begin fn_1_8D5F0 */
+extern u8 lbl_1_rodata_3D34[164];
+
+typedef struct {
+    u32 data[41];
+} Table;
+
+u32 fn_1_8D5F0(s16 index) {
+    Table table;
+
+    table = *(Table *)lbl_1_rodata_3D34;
+    return table.data[index];
+}
+/* fzgx:end fn_1_8D5F0 */
+
+/* fzgx:begin fn_1_8D640 */
+extern u8 lbl_1_rodata_3DD8[84];
+
+typedef struct {
+    s16 values[41];
+} Fn1_8D640Table;
+
+s16 fn_1_8D640(s16 index) {
+    Fn1_8D640Table table = *(Fn1_8D640Table *)lbl_1_rodata_3DD8;
+    return table.values[index];
+}
+/* fzgx:end fn_1_8D640 */
+
+/* fzgx:begin fn_1_8D690 */
+typedef struct {
+    u32 entries[41];
+} FnTable;
+
+extern int fn_1_F7BE4(s16 arg0);
+extern const FnTable lbl_1_rodata_3D34;
+
+u32 fn_1_8D690(s16 arg0) {
+    FnTable table;
+    u32 result;
+
+    result = 1;
+    if (!fn_1_F7BE4(arg0)) {
+        table = lbl_1_rodata_3D34;
+        if ((table.entries[(s32)arg0] & ~0x7fffffff) == 0) {
+            result = 0;
+        }
+    }
+    return result != 0;
+}
+/* fzgx:end fn_1_8D690 */
+
+/* fzgx:begin fn_1_8DB94 */
+extern u8 lbl_1_bss_6D820;
+
+u8 fn_1_8DB94(void) {
+    return lbl_1_bss_6D820;
+}
+/* fzgx:end fn_1_8DB94 */
+
 /* fzgx:begin fn_1_8DBA4 */
 extern u8 lbl_1_bss_6D820;
 
@@ -1339,6 +3292,20 @@ void fn_1_8DBA4(u8 value) {
     lbl_1_bss_6D820 = value;
 }
 /* fzgx:end fn_1_8DBA4 */
+
+/* fzgx:begin fn_1_8E188 */
+#include "rel/main_rel/car.h"
+
+extern u32 fn_1_12AC00(unsigned char *value);
+extern u32 fn_1_12ADA0(unsigned char *value, u32 arg);
+
+void fn_1_8E188(void) {
+    if (lbl_1_bss_6E958.unk_4 == 0) {
+        lbl_1_bss_6E958.unk_4 = fn_1_12AC00(lbl_1_data_20994);
+        lbl_1_bss_6E958.unk_0 = fn_1_12ADA0(lbl_1_data_209A8, lbl_1_bss_6E958.unk_4);
+    }
+}
+/* fzgx:end fn_1_8E188 */
 
 /* fzgx:begin fn_1_8E1E8 */
 extern u32 lbl_1_bss_6E958[2];
@@ -1365,6 +3332,48 @@ void fn_1_8E448(Object *obj, u32 value) {
     obj->value = value;
 }
 /* fzgx:end fn_1_8E448 */
+
+/* fzgx:begin fn_1_8E450 */
+#include "rel/main_rel/car.h"
+
+extern void fn_1_8E3A4(void);
+extern void fn_80074A7C(void (*func)(void));
+
+void fn_1_8E450(u32 value) {
+    lbl_1_bss_6D824 = value;
+    fn_80074A7C(fn_1_8E3A4);
+}
+/* fzgx:end fn_1_8E450 */
+
+/* fzgx:begin fn_1_8E480 */
+extern void fn_80074A7C(u32 value);
+
+void fn_1_8E480(void) {
+    fn_80074A7C(0);
+}
+/* fzgx:end fn_1_8E480 */
+
+/* fzgx:begin fn_1_8F45C */
+typedef struct {
+    u8 pad_0[0x4];
+    s32 field_4;
+    s32 field_8;
+    s32 field_c;
+    s32 field_10;
+    s32 field_14;
+} Fn1_8F45C_Object;
+
+extern void fn_1_8E7D0(Fn1_8F45C_Object *obj);
+
+void fn_1_8F45C(Fn1_8F45C_Object *obj) {
+    obj->field_4 = -1;
+    obj->field_8 = -1;
+    obj->field_c = -1;
+    obj->field_10 = -1;
+    obj->field_14 = -1;
+    fn_1_8E7D0(obj);
+}
+/* fzgx:end fn_1_8F45C */
 
 /* fzgx:begin fn_1_8F5A4 */
 typedef struct {
@@ -1395,6 +3404,14 @@ void fn_1_8F5A4(Fn1_8F5A4_Object *obj) {
 }
 /* fzgx:end fn_1_8F5A4 */
 
+/* fzgx:begin fn_1_900B4 */
+extern u32 lbl_1_bss_6E978[3];
+
+u32 fn_1_900B4(void) {
+    return lbl_1_bss_6E978[0];
+}
+/* fzgx:end fn_1_900B4 */
+
 /* fzgx:begin fn_1_924CC */
 extern s32 lbl_1_bss_6E984;
 extern u32 lbl_1_rodata_3FA0[28];
@@ -1409,6 +3426,22 @@ void fn_1_924CC(void) {
     }
 }
 /* fzgx:end fn_1_924CC */
+
+/* fzgx:begin fn_1_9250C */
+extern void fn_1_92554(void *arg0, s32 arg1);
+
+void fn_1_9250C(void *arg0) {
+    fn_1_92554(arg0, 0);
+}
+/* fzgx:end fn_1_9250C */
+
+/* fzgx:begin fn_1_92530 */
+extern void fn_1_92554(void *arg0, s32 arg1);
+
+void fn_1_92530(void *arg0) {
+    fn_1_92554(arg0, 1);
+}
+/* fzgx:end fn_1_92530 */
 
 /* fzgx:begin fn_1_95210 */
 extern void fn_80008BEC(void *arg0, s32 arg1, s32 arg2);

@@ -72,6 +72,9 @@ rel/main_rel/alloc/fn_1_4C24.c:
 rel/main_rel/alloc/fn_1_4CAC.c:
 	.text       start:0x00004CAC end:0x00004CC0
 
+rel/main_rel/alloc/fn_1_4CC0.c:
+	.text       start:0x00004CC0 end:0x00004CD8
+
 rel/main_rel/alloc/fn_1_4CD8.c:
 	.text       start:0x00004CD8 end:0x00004D14
 
@@ -141,11 +144,20 @@ rel/main_rel/camera/camera_update.c:
 rel/main_rel/camera/camera_update_state.c:
 	.text       start:0x0000666C end:0x000066B8
 
+rel/main_rel/camera/fn_1_6A0C.c:
+	.text       start:0x00006A0C end:0x00006A80
+
 rel/main_rel/camera/camera_get_mode.c:
 	.text       start:0x00006A80 end:0x00006AE4
 
 rel/main_rel/camera/camera_get_output.c:
 	.text       start:0x00006AE4 end:0x00006B48
+
+rel/main_rel/camera/fn_1_6B48.c:
+	.text       start:0x00006B48 end:0x00006BC0
+
+rel/main_rel/camera/fn_1_6BC0.c:
+	.text       start:0x00006BC0 end:0x00006CB4
 
 rel/main_rel/camera/camera_set_result.c:
 	.text       start:0x00006CB4 end:0x00006CD8
@@ -153,11 +165,17 @@ rel/main_rel/camera/camera_set_result.c:
 rel/main_rel/camera/camera_forward_status.c:
 	.text       start:0x00006CD8 end:0x00006D2C
 
+rel/main_rel/camera/fn_1_6D2C.c:
+	.text       start:0x00006D2C end:0x00006DD0
+
 rel/main_rel/camera/fn_1_6EC0.c:
 	.text       start:0x00006EC0 end:0x00006F3C
 
 rel/main_rel/camera/camera_is_mode_0x0b.c:
 	.text       start:0x00006F3C end:0x00006F84
+
+rel/main_rel/camera/fn_1_6F84.c:
+	.text       start:0x00006F84 end:0x00007000
 
 rel/main_rel/camera/fn_1_7000.c:
 	.text       start:0x00007000 end:0x0000707C
@@ -180,6 +198,9 @@ rel/main_rel/camera/camera_compare_values.c:
 rel/main_rel/camera/fn_1_8298.c:
 	.text       start:0x00008298 end:0x0000847C
 
+rel/main_rel/camera/fn_1_847C.c:
+	.text       start:0x0000847C end:0x0000857C
+
 rel/main_rel/camera/fn_1_857C.c:
 	.text       start:0x0000857C end:0x00008628
 
@@ -201,6 +222,9 @@ rel/main_rel/camera/live_camera_set_shake.c:
 rel/main_rel/camera/game_camera_set_shake.c:
 	.text       start:0x000088D8 end:0x00008A0C
 
+rel/main_rel/camera/fn_1_8A0C.c:
+	.text       start:0x00008A0C end:0x00008AC0
+
 rel/main_rel/camera/camera_init.c:
 	.text       start:0x00008AC0 end:0x00008AF0
 
@@ -212,6 +236,12 @@ rel/main_rel/camera/game_camera_get.c:
 
 rel/main_rel/camera/fn_1_8B10.c:
 	.text       start:0x00008B10 end:0x00008D08
+
+rel/main_rel/camera/fn_1_AA54.c:
+	.text       start:0x0000AA54 end:0x0000ABAC
+
+rel/main_rel/camera/fn_1_ABAC.c:
+	.text       start:0x0000ABAC end:0x0000AD94
 
 rel/main_rel/camera/camera_get_position_delta.c:
 	.text       start:0x0000AD94 end:0x0000AE10
@@ -231,6 +261,9 @@ rel/main_rel/camera/camera_save_parameters.c:
 rel/main_rel/camera/fn_1_BFA0.c:
 	.text       start:0x0000BFA0 end:0x0000C038
 
+rel/main_rel/camera/fn_1_C038.c:
+	.text       start:0x0000C038 end:0x0000C0A4
+
 rel/main_rel/camera/camera_save_slot.c:
 	.text       start:0x0000C0A4 end:0x0000C10C
 
@@ -239,6 +272,9 @@ rel/main_rel/camera/fn_1_C178.c:
 
 rel/main_rel/camera/camera_report_position.c:
 	.text       start:0x0000C228 end:0x0000C268
+
+rel/main_rel/camera/fn_1_C268.c:
+	.text       start:0x0000C268 end:0x0000C304
 
 rel/main_rel/camera/fn_1_C304.c:
 	.text       start:0x0000C304 end:0x0000C35C
@@ -864,6 +900,9 @@ rel/main_rel/game/fn_1_41418.c:
 rel/main_rel/game/fn_1_41488.c:
 	.text       start:0x00041488 end:0x00041518
 
+rel/main_rel/motasglist/fn_1_41B18.c:
+	.text       start:0x00041B18 end:0x00041BDC
+
 rel/main_rel/motasglist/fn_1_41BDC.c:
 	.text       start:0x00041BDC end:0x00041C18
 
@@ -926,6 +965,9 @@ rel/main_rel/load/fn_1_45850.c:
 
 rel/main_rel/load/fn_1_45890.c:
 	.text       start:0x00045890 end:0x000458A0
+
+rel/main_rel/load/fn_1_458A0.c:
+	.text       start:0x000458A0 end:0x00045964
 
 rel/main_rel/load/fn_1_45964.c:
 	.text       start:0x00045964 end:0x00045A58
@@ -1226,6 +1268,9 @@ rel/main_rel/font/fn_1_4B16C.c:
 rel/main_rel/font/fn_1_4B1A0.c:
 	.text       start:0x0004B1A0 end:0x0004B1D4
 
+rel/main_rel/font/fn_1_4B6D4.c:
+	.text       start:0x0004B6D4 end:0x0004B788
+
 rel/main_rel/font/fn_1_4B788.c:
 	.text       start:0x0004B788 end:0x0004B83C
 
@@ -1258,6 +1303,9 @@ rel/main_rel/font/fn_1_4CE48.c:
 
 rel/main_rel/font/fn_1_4CF3C.c:
 	.text       start:0x0004CF3C end:0x0004D0A0
+
+rel/main_rel/font/fn_1_4D0A0.c:
+	.text       start:0x0004D0A0 end:0x0004D0D4
 
 rel/main_rel/font/fn_1_4D0D4.c:
 	.text       start:0x0004D0D4 end:0x0004D10C
@@ -1932,6 +1980,9 @@ rel/main_rel/effect/fn_1_5EB08.c:
 rel/main_rel/effect/fn_1_5F5C4.c:
 	.text       start:0x0005F5C4 end:0x0005F5C8
 
+rel/main_rel/effect/fn_1_5F5C8.c:
+	.text       start:0x0005F5C8 end:0x0005F654
+
 rel/main_rel/effect/fn_1_5FE24.c:
 	.text       start:0x0005FE24 end:0x0005FE28
 
@@ -2357,6 +2408,9 @@ rel/main_rel/light/fn_1_7BEAC.c:
 
 rel/main_rel/light/fn_1_7BF9C.c:
 	.text       start:0x0007BF9C end:0x0007C13C
+
+rel/main_rel/car_test/fn_1_7C13C.c:
+	.text       start:0x0007C13C end:0x0007C1E8
 
 rel/main_rel/car_test/fn_1_7C1E8.c:
 	.text       start:0x0007C1E8 end:0x0007C2A0
@@ -2929,11 +2983,17 @@ rel/main_rel/car/fn_1_8CA5C.c:
 rel/main_rel/car/fn_1_8CA70.c:
 	.text       start:0x0008CA70 end:0x0008CAF4
 
+rel/main_rel/car/fn_1_8CAF4.c:
+	.text       start:0x0008CAF4 end:0x0008CB78
+
 rel/main_rel/car/fn_1_8CB78.c:
 	.text       start:0x0008CB78 end:0x0008CC04
 
 rel/main_rel/car/fn_1_8CED0.c:
 	.text       start:0x0008CED0 end:0x0008D0A4
+
+rel/main_rel/car/fn_1_8D0A4.c:
+	.text       start:0x0008D0A4 end:0x0008D168
 
 rel/main_rel/car/fn_1_8D168.c:
 	.text       start:0x0008D168 end:0x0008D1C8
@@ -3100,6 +3160,9 @@ rel/main_rel/car/fn_1_96BC0.c:
 rel/main_rel/rob/fn_1_97174.c:
 	.text       start:0x00097174 end:0x00097204
 
+rel/main_rel/rob/fn_1_97204.c:
+	.text       start:0x00097204 end:0x0009724C
+
 rel/main_rel/rob/fn_1_9724C.c:
 	.text       start:0x0009724C end:0x00097288
 
@@ -3151,6 +3214,9 @@ rel/main_rel/burner/fn_1_987D0.c:
 rel/main_rel/burner/fn_1_98840.c:
 	.text       start:0x00098840 end:0x0009885C
 
+rel/main_rel/burner/fn_1_9885C.c:
+	.text       start:0x0009885C end:0x000988D8
+
 rel/main_rel/burner/fn_1_988D8.c:
 	.text       start:0x000988D8 end:0x000988DC
 
@@ -3180,6 +3246,9 @@ rel/main_rel/burner/fn_1_9A7A8.c:
 
 rel/main_rel/burner/fn_1_9A864.c:
 	.text       start:0x0009A864 end:0x0009A958
+
+rel/main_rel/burner/fn_1_9A958.c:
+	.text       start:0x0009A958 end:0x0009AA2C
 
 rel/main_rel/burner/fn_1_9AA2C.c:
 	.text       start:0x0009AA2C end:0x0009AABC
@@ -3464,6 +3533,9 @@ rel/main_rel/relocation/fn_1_A67E8.c:
 rel/main_rel/relocation/fn_1_A6840.c:
 	.text       start:0x000A6840 end:0x000A6870
 
+rel/main_rel/prog/fn_1_A6E68.c:
+	.text       start:0x000A6E68 end:0x000A6F10
+
 rel/main_rel/prog/fn_1_A6F10.c:
 	.text       start:0x000A6F10 end:0x000A6F1C
 
@@ -3496,6 +3568,9 @@ rel/main_rel/prog/fn_1_A71BC.c:
 
 rel/main_rel/prog/fn_1_A71CC.c:
 	.text       start:0x000A71CC end:0x000A722C
+
+rel/main_rel/prog/fn_1_A722C.c:
+	.text       start:0x000A722C end:0x000A728C
 
 rel/main_rel/prog/fn_1_A728C.c:
 	.text       start:0x000A728C end:0x000A7294
@@ -4019,6 +4094,9 @@ rel/main_rel/enemy_ctrl/fn_1_C6F70.c:
 rel/main_rel/enemy_ctrl/fn_1_C6F80.c:
 	.text       start:0x000C6F80 end:0x000C6F8C
 
+rel/main_rel/enemy_ctrl/fn_1_C7224.c:
+	.text       start:0x000C7224 end:0x000C72D4
+
 rel/main_rel/enemy_ctrl/fn_1_C72D4.c:
 	.text       start:0x000C72D4 end:0x000C742C
 
@@ -4482,6 +4560,9 @@ rel/main_rel/bg_san/fn_1_DC454.c:
 rel/main_rel/bg_san/fn_1_DC5E8.c:
 	.text       start:0x000DC5E8 end:0x000DC648
 
+rel/main_rel/bg_san/fn_1_DC648.c:
+	.text       start:0x000DC648 end:0x000DC6FC
+
 rel/main_rel/bg_san/fn_1_DC6FC.c:
 	.text       start:0x000DC6FC end:0x000DC764
 
@@ -4658,6 +4739,9 @@ rel/main_rel/phys/fn_1_E95B4.c:
 
 rel/main_rel/phys/fn_1_E9680.c:
 	.text       start:0x000E9680 end:0x000E9770
+
+rel/main_rel/phys/fn_1_E9BA8.c:
+	.text       start:0x000E9BA8 end:0x000E9C68
 
 rel/main_rel/phys/fn_1_E9C68.c:
 	.text       start:0x000E9C68 end:0x000E9CFC
@@ -4848,6 +4932,9 @@ rel/main_rel/ghost/ghost_test_record_flag0.c:
 rel/main_rel/ghost/ghost_set_record_flag1.c:
 	.text       start:0x000F20B4 end:0x000F210C
 
+rel/main_rel/ghost/fn_1_F210C.c:
+	.text       start:0x000F210C end:0x000F2160
+
 rel/main_rel/ghost/ghost_set_record_flag2.c:
 	.text       start:0x000F2160 end:0x000F21B8
 
@@ -4871,6 +4958,9 @@ rel/main_rel/ghost/fn_1_F23D8.c:
 
 rel/main_rel/phys/fn_1_F2740.c:
 	.text       start:0x000F2740 end:0x000F2780
+
+rel/main_rel/replay/fn_1_F2780.c:
+	.text       start:0x000F2780 end:0x000F2820
 
 rel/main_rel/replay/fn_1_F2CD8.c:
 	.text       start:0x000F2CD8 end:0x000F2D30
@@ -5218,6 +5308,9 @@ rel/main_rel/spline/fn_1_F9E4C.c:
 rel/main_rel/spline/fn_1_F9E80.c:
 	.text       start:0x000F9E80 end:0x000F9EB0
 
+rel/main_rel/spline/fn_1_F9EE4.c:
+	.text       start:0x000F9EE4 end:0x000F9F2C
+
 rel/main_rel/spline/fn_1_F9F2C.c:
 	.text       start:0x000F9F2C end:0x000F9FB4
 
@@ -5230,6 +5323,9 @@ rel/main_rel/spline/fn_1_F9FEC.c:
 rel/main_rel/spline/fn_1_FA004.c:
 	.text       start:0x000FA004 end:0x000FA01C
 
+rel/main_rel/spline/fn_1_FA01C.c:
+	.text       start:0x000FA01C end:0x000FA038
+
 rel/main_rel/spline/fn_1_FA038.c:
 	.text       start:0x000FA038 end:0x000FA070
 
@@ -5238,6 +5334,9 @@ rel/main_rel/spline/fn_1_FA070.c:
 
 rel/main_rel/spline/fn_1_FA088.c:
 	.text       start:0x000FA088 end:0x000FA0A0
+
+rel/main_rel/spline/fn_1_FA0A0.c:
+	.text       start:0x000FA0A0 end:0x000FA0BC
 
 rel/main_rel/spline/fn_1_FA0BC.c:
 	.text       start:0x000FA0BC end:0x000FA154
@@ -5448,6 +5547,9 @@ rel/main_rel/bg_cas/fn_1_1014B4.c:
 
 rel/main_rel/cloth/fn_1_101AE8.c:
 	.text       start:0x00101AE8 end:0x00101BC4
+
+rel/main_rel/cloth/fn_1_1024C4.c:
+	.text       start:0x001024C4 end:0x001024F8
 
 rel/main_rel/cloth/fn_1_102FD0.c:
 	.text       start:0x00102FD0 end:0x0010302C
@@ -6230,6 +6332,9 @@ rel/main_rel/sel_static_disp/fn_1_14DC68.c:
 rel/main_rel/sel_static_disp/fn_1_14DD68.c:
 	.text       start:0x0014DD68 end:0x0014DDF4
 
+rel/main_rel/sel_static_disp/fn_1_14DDF4.c:
+	.text       start:0x0014DDF4 end:0x0014DE80
+
 rel/main_rel/sel_static_disp/fn_1_14DE80.c:
 	.text       start:0x0014DE80 end:0x0014DEA4
 
@@ -6296,6 +6401,9 @@ rel/main_rel/sel_static_disp/fn_1_14EE00.c:
 
 rel/main_rel/sel_static_disp/fn_1_14EEC4.c:
 	.text       start:0x0014EEC4 end:0x0014EF40
+
+rel/main_rel/sel_static_disp/fn_1_14EF40.c:
+	.text       start:0x0014EF40 end:0x0014F014
 
 rel/main_rel/sel_static_disp/fn_1_14F014.c:
 	.text       start:0x0014F014 end:0x0014F01C
@@ -6420,6 +6528,9 @@ rel/main_rel/bg_aur/fn_1_151E74.c:
 rel/main_rel/bg_aur/fn_1_152840.c:
 	.text       start:0x00152840 end:0x001528D0
 
+rel/main_rel/bg_aur/fn_1_1528D0.c:
+	.text       start:0x001528D0 end:0x00152970
+
 rel/main_rel/bg_aur/fn_1_152970.c:
 	.text       start:0x00152970 end:0x00152A28
 
@@ -6482,6 +6593,9 @@ rel/main_rel/bg_tow/fn_1_1549B8.c:
 
 rel/main_rel/rep_memcard/fn_1_154A08.c:
 	.text       start:0x00154A08 end:0x00154BE4
+
+rel/main_rel/rep_memcard/fn_1_154BE4.c:
+	.text       start:0x00154BE4 end:0x00154C84
 
 rel/main_rel/bg_tow/fn_1_154C84.c:
 	.text       start:0x00154C84 end:0x00154CC4
