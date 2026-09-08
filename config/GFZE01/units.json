@@ -45,7 +45,7 @@
     "symbols": [
       "fn_1_1310FC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
