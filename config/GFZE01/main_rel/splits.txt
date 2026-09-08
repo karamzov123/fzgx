@@ -1719,6 +1719,9 @@ rel/main_rel/objput/fn_1_566A0.c:
 rel/main_rel/objput/fn_1_566DC.c:
 	.text       start:0x000566DC end:0x000566EC
 
+rel/main_rel/objput/fn_1_566EC.c:
+	.text       start:0x000566EC end:0x00056724
+
 rel/main_rel/objput/fn_1_56724.c:
 	.text       start:0x00056724 end:0x0005672C
 

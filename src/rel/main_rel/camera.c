@@ -2,6 +2,33 @@
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/camera.h"
 
+extern void fn_1_BD54(void);
+extern void fn_1_B870(void);
+extern void camera_get_extended_state_storage(__typeof__(lbl_1_bss_F68));
+extern void lbl_8006DBAC(void);
+extern void fn_8006F038(void *, void *, s16);
+extern void lbl_8006DCDC(void);
+extern s16 fn_1_6B48(s16 value);
+extern void fn_1_6D2C(u32);
+extern s32 lbl_1_bss_F78;
+extern void fn_1_A2DF4(u32, u32, u32);
+extern s8 fn_1_86624(void);
+extern s8 fn_1_86634(s32 index);
+extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
+extern u8 lbl_1_bss_F74;
+extern u8 lbl_1_bss_F75;
+extern f32 lbl_1_rodata_188;
+extern s32 fn_1_8708(u8 mode, f32 *value0, f32 *value1);
+extern void fn_1_8A0C(s16 index);
+extern void fn_1_A6FE8(void);
+extern void fn_1_8D08(GameCameraEntry *value);
+extern f32 lbl_1_bss_1040;
+extern f32 lbl_1_bss_1044;
+extern void OSReport(const unsigned char *, ...);
+extern u8 lbl_1_bss_103C[4];
+extern u8 lbl_1_bss_108C[52];
+extern u8 lbl_1_bss_1014;
+
 /* fzgx:begin camera_get_state */
 // Return the camera state byte, or -1 when no camera state is active.
 s32 camera_get_state(void) {
@@ -48,8 +75,6 @@ u32 camera_get_flags(void) {
 
 /* fzgx:begin camera_update */
 __typeof__(lbl_1_bss_F68) camera_get_state_object(void);
-extern void fn_1_BD54(void);
-extern void fn_1_B870(void);
 
 // Dispatches to the camera update routine selected by the returned camera state.
 void camera_update(void) {
@@ -64,11 +89,6 @@ void camera_update(void) {
 /* fzgx:end camera_update */
 
 /* fzgx:begin camera_update_state */
-extern void camera_get_extended_state_storage(__typeof__(lbl_1_bss_F68));
-extern void lbl_8006DBAC(void);
-extern void fn_8006F038(void *, void *, s16);
-extern void lbl_8006DCDC(void);
-
 // Updates the camera state through the active or standard camera path.
 void camera_update_state(__typeof__(lbl_1_bss_F68) state) {
     if ((state->unk_0 >> 30) & 1) {
@@ -84,8 +104,6 @@ void camera_update_state(__typeof__(lbl_1_bss_F68) state) {
 /* fzgx:end camera_update_state */
 
 /* fzgx:begin camera_get_mode */
-extern s16 fn_1_6B48(s16 value);
-
 // Return the normalized camera status, treating inactive states as zero.
 s16 camera_get_mode(void) {
     Obj_1_bss_F68_Target *state = lbl_1_bss_F68;
@@ -142,8 +160,6 @@ void camera_set_result(s16 value) {
 /* fzgx:end camera_set_result */
 
 /* fzgx:begin camera_forward_status */
-extern void fn_1_6D2C(u32);
-
 // Forward the camera state's status to the next update stage.
 void camera_forward_status(void) {
     Obj_1_bss_F68_Target *state = lbl_1_bss_F68;
@@ -184,9 +200,6 @@ void camera_set_entry_field_0xa8(u8 index, s16 value) {
 /* fzgx:end camera_set_entry_field_0xa8 */
 
 /* fzgx:begin fn_1_715C */
-extern s32 lbl_1_bss_F78;
-extern void fn_1_A2DF4(u32, u32, u32);
-
 void fn_1_715C(u8 index, s16 value) {
     // Toggle the camera effect associated with this entry before storing its state.
     if (game_camera_entries[index].unk_A8 == 0 && index < 4) {
@@ -239,10 +252,6 @@ s32 camera_compare_values(const u8 *lhs_index, const u8 *rhs_index) {
 /* fzgx:end camera_compare_values */
 
 /* fzgx:begin fn_1_8298 */
-extern s8 fn_1_86624(void);
-extern s8 fn_1_86634(s32 index);
-extern void fn_8000C49C(...);
-
 // Initializes camera entry selections and updates the camera mode from the available entries.
 void fn_1_8298(void) {
     s8 found;
@@ -316,8 +325,6 @@ s16 camera_get_entry_field_0x2(u32 index) {
 /* fzgx:end camera_get_entry_field_0x2 */
 
 /* fzgx:begin camera_set_selected_value */
-extern u8 lbl_1_bss_F74;
-
 // Cache the selected camera value for subsequent camera processing.
 void camera_set_selected_value(u8 value) {
     lbl_1_bss_F74 = value;
@@ -325,8 +332,6 @@ void camera_set_selected_value(u8 value) {
 /* fzgx:end camera_set_selected_value */
 
 /* fzgx:begin camera_set_state_flag */
-extern u8 lbl_1_bss_F75;
-
 // Store the camera state flag used by subsequent camera updates.
 void camera_set_state_flag(u8 value) {
     lbl_1_bss_F75 = value;
@@ -334,9 +339,6 @@ void camera_set_state_flag(u8 value) {
 /* fzgx:end camera_set_state_flag */
 
 /* fzgx:begin camera_get_values */
-extern f32 lbl_1_rodata_188;
-extern s32 fn_1_8708(u8 mode, f32 *value0, f32 *value1);
-
 // Reads the camera values, falling back when the camera state cannot provide them.
 s32 camera_get_values(f32 *value0, f32 *value1) {
     f32 result0;
@@ -368,8 +370,6 @@ s32 camera_get_values(f32 *value0, f32 *value1) {
 /* fzgx:end camera_get_values */
 
 /* fzgx:begin live_camera_set_shake */
-extern void fn_8000C49C(u8 *arg0, ...);
-
 // Marks the camera state active, accumulates a position delta, and tracks the highest value.
 void live_camera_set_shake(s32 value, const f32 *delta) {
     LiveCamera *state;
@@ -393,9 +393,6 @@ void live_camera_set_shake(s32 value, const f32 *delta) {
 /* fzgx:end live_camera_set_shake */
 
 /* fzgx:begin game_camera_set_shake */
-extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
-extern void fn_1_8A0C(s16 index);
-
 // Updates the selected camera state with a movement delta and tracks its highest value.
 void game_camera_set_shake(s16 index, s16 mode, s32 value, const f32 *delta) {
     GameCameraEntry *camera;
@@ -431,9 +428,6 @@ void game_camera_set_shake(s16 index, s16 mode, s32 value, const f32 *delta) {
 /* fzgx:end game_camera_set_shake */
 
 /* fzgx:begin camera_init */
-extern void fn_1_A6FE8(void);
-extern void fn_1_8D08(GameCameraEntry *value);
-
 // Initialize camera state before passing the shared camera object onward.
 void camera_init(void) {
     fn_1_A6FE8();
@@ -575,9 +569,6 @@ f32 camera_get_target_orientation(CameraObject *camera) {
 /* fzgx:end camera_get_target_orientation */
 
 /* fzgx:begin camera_save_parameters */
-extern f32 lbl_1_bss_1040;
-extern f32 lbl_1_bss_1044;
-
 // Saves the two current camera parameters for later processing.
 void camera_save_parameters(f32 first_parameter, f32 second_parameter) {
     lbl_1_bss_1040 = first_parameter;
@@ -615,8 +606,6 @@ void camera_save_slot(u8 index) {
 /* fzgx:end camera_save_slot */
 
 /* fzgx:begin camera_report_position */
-extern void OSReport(const unsigned char *, ...);
-
 // Reports the camera's current position values for debugging.
 void camera_report_position(void) {
     OSReport(lbl_1_data_4128, lbl_1_bss_10D8.unk_10,
@@ -624,7 +613,11 @@ void camera_report_position(void) {
 }
 /* fzgx:end camera_report_position */
 
-/* fzgx:begin fn_1_C304 */
+/* fzgx:begin fn_1_C304 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/camera.h"
+
 extern void OSReport(const char*, ...);
 
 void fn_1_C304(s32 arg) {
@@ -733,15 +726,17 @@ u32* camera_get_state_field_0x18(void) {
 /* fzgx:end camera_get_state_field_0x18 */
 
 /* fzgx:begin camera_get_state_storage */
-extern u8 lbl_1_bss_103C[4];
-
 // Returns the camera state storage used by the surrounding camera code.
 u8* camera_get_state_storage(void) {
     return lbl_1_bss_103C;
 }
 /* fzgx:end camera_get_state_storage */
 
-/* fzgx:begin camera_get_extended_state_storage */
+/* fzgx:begin camera_get_extended_state_storage noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/camera.h"
+
 extern u8 lbl_1_bss_108C[52];
 
 // Returns the camera state storage used by the surrounding camera code.
@@ -751,8 +746,6 @@ u8* camera_get_extended_state_storage(void) {
 /* fzgx:end camera_get_extended_state_storage */
 
 /* fzgx:begin camera_get_state_flag */
-extern u8 lbl_1_bss_1014;
-
 // Returns the current camera state flag.
 u8 camera_get_state_flag(void) {
     return lbl_1_bss_1014;
