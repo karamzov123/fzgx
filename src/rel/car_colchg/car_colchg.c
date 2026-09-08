@@ -39,8 +39,6 @@ extern void fn_9_1BCC(void);
 extern void fn_9_1AC4(void);
 
 /* fzgx:begin _epilog */
-extern u32 lbl_801A6410;
-
 struct CarColchgState {
     u32 unk0;
     u32 unk4;
@@ -73,11 +71,6 @@ void _epilog(void) {
 /* fzgx:end _epilog */
 
 /* fzgx:begin colchg_menu_init */
-extern void colchg_menu_disp(void);
-void fn_1_435C(u32);
-u16 fn_1_3F8C(char *, void (*)(void), s32, s32);
-void fn_1_4A00(s32, s32, u32);
-
 void colchg_menu_init(void) {
     // Set up the menu callback and activate the initial collision-color selection.
     fn_1_435C(lbl_9_bss_10);
@@ -112,7 +105,6 @@ struct Struct_lbl_1_bss_970
   u8 pad0[4];
   u8 unk4;
 };
-extern struct Struct_lbl_1_bss_D58 lbl_1_bss_D58;
 void fn_9_454(void)
 {
   s32 value;
@@ -146,9 +138,6 @@ void fn_9_454(void)
 /* fzgx:end fn_9_454 */
 
 /* fzgx:begin fn_9_534 */
-extern u32 lbl_9_bss_10;
-extern s16 lbl_9_bss_DC;
-
 // Initialize the car color-change state and apply the current selection.
 void fn_9_534(void) {
     fn_1_435C(lbl_9_bss_10);
@@ -157,12 +146,6 @@ void fn_9_534(void) {
 /* fzgx:end fn_9_534 */
 
 /* fzgx:begin fn_9_6F0 */
-extern u32 lbl_9_bss_10;
-extern s16 lbl_9_bss_DC;
-
-void fn_1_435C(u32);
-void fn_1_426C(s16);
-
 // Apply the current car color-change configuration.
 void fn_9_6F0(void) {
     fn_1_435C(lbl_9_bss_10);
@@ -199,9 +182,6 @@ void fn_9_A18(void) {
 /* fzgx:end fn_9_A18 */
 
 /* fzgx:begin fn_9_DC0 */
-extern u32 lbl_9_bss_10;
-extern s16 lbl_9_bss_DC;
-
 // Refresh the collision-change state from the current global settings.
 void fn_9_DC0(void) {
     fn_1_435C(lbl_9_bss_10);
@@ -210,11 +190,6 @@ void fn_9_DC0(void) {
 /* fzgx:end fn_9_DC0 */
 
 /* fzgx:begin colchg_ezsel_init */
-extern char lbl_9_data_9C[18];
-extern void colchg_ezsel_disp(void);
-void fn_1_435C(u32);
-u16 fn_1_3F8C(char *, void (*)(void), s32, s32);
-
 // Register the easy-selection display callback and retain its menu handle.
 void colchg_ezsel_init(void) {
     fn_1_435C(lbl_9_bss_10);
@@ -223,9 +198,6 @@ void colchg_ezsel_init(void) {
 /* fzgx:end colchg_ezsel_init */
 
 /* fzgx:begin fn_9_F38 */
-extern u32 lbl_9_bss_10;
-extern s16 lbl_9_bss_DC;
-
 // Initialize the color-change subsystem and apply its current configuration.
 void fn_9_F38(void) {
     fn_1_435C(lbl_9_bss_10);
@@ -234,10 +206,6 @@ void fn_9_F38(void) {
 /* fzgx:end fn_9_F38 */
 
 /* fzgx:begin colchg_save_init */
-extern char lbl_9_data_B0[17];
-extern void colchg_save_disp(void);
-extern u16 lbl_1_bss_968;
-
 // Register the save-screen callback and reset the color-change save state.
 void colchg_save_init(void) {
     fn_1_435C(lbl_9_bss_10);
@@ -262,9 +230,6 @@ void fn_9_FD0(void) {
 /* fzgx:end fn_9_FD0 */
 
 /* fzgx:begin fn_9_1018 */
-extern u32 lbl_9_bss_10;
-extern s16 lbl_9_bss_DC;
-
 // Initializes the color-change subsystem from its configured state.
 void fn_9_1018(void) {
     fn_1_435C(lbl_9_bss_10);
@@ -273,12 +238,6 @@ void fn_9_1018(void) {
 /* fzgx:end fn_9_1018 */
 
 /* fzgx:begin fn_9_1054 */
-extern void fn_9_1BCC(void);
-extern void fn_9_1AC4(void);
-void fn_1_435C(u32);
-u16 fn_1_3F8C(char *, void (*)(void), s32, s32);
-void fn_1_4A00(s32, s32, u32);
-
 // Sets up the color-change display callback and selects the default palette.
 void fn_9_1054(void) {
     u16 display_mode;
@@ -309,7 +268,6 @@ struct Struct_lbl_1_bss_D58
   u8 pad[8];
   u16 unk8;
 };
-extern struct Struct_lbl_1_bss_D58 lbl_1_bss_D58;
 inline u16 *inline_fn(u16 *arg0)
 {
   return arg0;
@@ -339,11 +297,6 @@ void fn_9_10BC(void)
 /* fzgx:end fn_9_10BC */
 
 /* fzgx:begin fn_9_1124 */
-extern u32 lbl_9_bss_10;
-extern s16 lbl_9_bss_DC;
-void fn_1_435C(u32);
-void fn_1_426C(s16);
-
 void fn_9_1124(void)
 {
     // Apply the active color-change state before refreshing the selection display.
@@ -399,10 +352,6 @@ void fn_9_1BCC(void) {
 /* fzgx:end fn_9_1BCC */
 
 /* fzgx:begin fn_9_1C54 */
-extern s16 lbl_1_bss_962;
-extern u32 lbl_1_bss_71688;
-extern u32 lbl_1_bss_7168C;
-
 struct CarColchgEntry {
     u8 pad[0x20];
     void (*func)(void);
