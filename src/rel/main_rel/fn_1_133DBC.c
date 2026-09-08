@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_1_133DBC: main_rel .text:0x00133DBC size 0x24
-// Carved by fzgx. Replace this file's body with the matching C.
+extern void fn_1_133E04(void* arg0, s32 arg1);
+
+void fn_1_133DBC(void* arg0) {
+    fn_1_133E04(arg0, 0);
+}
