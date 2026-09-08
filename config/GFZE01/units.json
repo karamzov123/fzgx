@@ -175,7 +175,7 @@
     "symbols": [
       "fn_1_AB5CC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
