@@ -14,6 +14,7 @@ file) once the oracle accepts it, and `release` keeps the best copy under
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import subprocess
 import time
@@ -28,7 +29,7 @@ from .lint import lint_paths
 from .project import ROOT, STATE_DIR, Project
 
 DEFAULT_TTL = 1800
-MAX_ATTEMPTS = 3
+MAX_ATTEMPTS = int(os.environ.get("FZGX_MAX_ATTEMPTS", 3))  # a stronger-tier round raises it for its agents
 MAX_CHECKS = 8       # per attempt
 MAX_STALE = 2        # consecutive checks without improving the attempt's best %
 STUB = '#include "types.h"\n\n// {symbol}: carved by fzgx; {note}\n'
