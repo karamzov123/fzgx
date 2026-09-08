@@ -675,7 +675,7 @@ def sweep_attempts(p: Project, module: Optional[str] = None, min_percent: float 
         if res.ok and oracle.unit_fully_matches(res) is None:
             return key, ck, {"match": True, "body": text, "percent": 100.0}
         if res.ok:
-            fx = fixup.try_fix(p, key, text, budget_s=6.0)
+            fx = fixup.try_fix(p, key, text, budget_s=15.0)
             if fx.get("matched") and fx.get("body"):
                 return key, ck, {"match": True, "body": fx["body"], "label": fx.get("label"), "percent": 100.0}
             return key, ck, {"match": False, "percent": round(max(res.percent, fx.get("best") or 0.0), 1)}
