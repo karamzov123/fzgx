@@ -110,6 +110,37 @@ s32 fn_8_CF70(void) {
 }
 /* fzgx:end fn_8_CF70 */
 
+/* fzgx:begin fn_8_CF94 */
+extern u32 fn_1_5370(u32, u32);
+extern void fn_8_CF58(void);
+extern void fn_8_CF60(void);
+extern void fn_8_CF68(void);
+extern void fn_8_CF70(void);
+
+struct fn_8_CF94_Arg0 {
+    u32 unk_0;
+    u8 pad_4[0xA4];
+    u32 unk_A8;
+    u32 unk_AC;
+    u8 pad_B0[0x14];
+    u32 unk_C4;
+    u8 pad_C8[0x4];
+    u32 unk_CC;
+};
+
+void fn_8_CF94(struct fn_8_CF94_Arg0 *arg0) {
+    arg0->unk_A8 = (u32)fn_8_CF58;
+    arg0->unk_C4 = (u32)fn_8_CF68;
+    arg0->unk_CC = (u32)fn_8_CF60;
+    arg0->unk_AC = (u32)fn_8_CF70;
+    arg0->unk_0 = (arg0->unk_0 | 513);
+    arg0->unk_0 = ((arg0->unk_0 | 0x200000) | 256);
+    arg0->unk_0 = (arg0->unk_0 | 32768);
+    arg0->unk_0 = (arg0->unk_0 | 0x1000000);
+    fn_1_5370(1, 0);
+}
+/* fzgx:end fn_8_CF94 */
+
 /* fzgx:begin fn_8_D020 */
 // fn_8_D020: empty in retail (single blr).
 void fn_8_D020(void) {

@@ -81,6 +81,49 @@ void fn_14_645C(void) {
 }
 /* fzgx:end fn_14_645C */
 
+/* fzgx:begin fn_14_7E04 */
+extern struct fn_14_7E04_lbl_14_bss_20 lbl_14_bss_20;
+extern struct fn_14_7E04_lbl_14_bss_92C0 lbl_14_bss_92C0;
+extern struct fn_14_7E04_lbl_1_bss_6EAD0_T *lbl_1_bss_6EAD0;
+extern u32 fn_14_2590(void);
+extern u32 fn_14_2C80(void);
+extern u32 fn_1_12F1E8(u32);
+extern u32 fn_1_3F8C(u32, u32, u32, u32);
+extern u32 fn_1_435C(u32);
+extern u32 fn_1_A1588(u32, u32);
+extern u32 fn_1_A2D84(u32);
+extern u32 lbl_14_bss_92BC;
+extern u32 lbl_14_bss_92F8;
+extern u32 lbl_14_data_2F48;
+extern u32 lbl_14_data_3048;
+extern void fn_14_7584(void);
+
+struct fn_14_7E04_lbl_14_bss_20 {
+    u32 unk_0;
+};
+struct fn_14_7E04_lbl_14_bss_92C0 {
+    u32 unk_0;
+};
+struct fn_14_7E04_lbl_1_bss_6EAD0_T {
+    u32 unk_0;
+};
+
+void fn_14_7E04(void) {
+    u32 t4;
+    fn_14_2590();
+    fn_14_2C80();
+    fn_1_12F1E8(2400);
+    fn_1_435C(lbl_14_bss_20.unk_0);
+    t4 = fn_1_3F8C((u32)&lbl_14_data_3048, (u32)fn_14_7584, 0, 8);
+    lbl_14_data_2F48 = t4;
+    lbl_14_bss_92F8 = -1;
+    fn_1_A1588(lbl_1_bss_6EAD0->unk_0, 15);
+    lbl_14_bss_92C0.unk_0 = 1;
+    lbl_14_bss_92BC = 0;
+    fn_1_A2D84((0xA9070000 + 10752));
+}
+/* fzgx:end fn_14_7E04 */
+
 /* fzgx:begin fn_14_A1F4 */
 extern u32 fn_1_412A0(u32);
 extern u32 fn_1_48140(u32);
@@ -141,6 +184,35 @@ void fn_14_A398(void) {
     fn_1_426C(lbl_14_bss_9452.unk_0);
 }
 /* fzgx:end fn_14_A398 */
+
+/* fzgx:begin fn_14_B398 */
+extern struct fn_14_B398_lbl_14_bss_9460 lbl_14_bss_9460;
+extern struct fn_14_B398_lbl_1_bss_8B3A0 lbl_1_bss_8B3A0;
+extern u32 fn_1_128DD8(u32);
+extern u32 fn_1_128E8C(u32, u32);
+extern u32 fn_1_159AE0(void);
+extern u32 fn_1_A2D84(u32);
+extern u32 lbl_14_bss_0;
+extern u32 lbl_14_bss_9464;
+
+struct fn_14_B398_lbl_1_bss_8B3A0 {
+    u8 pad_0[0x90];
+    s16 unk_90;
+};
+struct fn_14_B398_lbl_14_bss_9460 {
+    u32 unk_0;
+};
+
+void fn_14_B398(void) {
+    u32 t0;
+    lbl_14_bss_9460.unk_0 = 0;
+    lbl_14_bss_0 = 480;
+    t0 = fn_1_128DD8((lbl_1_bss_8B3A0.unk_90 & 0xFF));
+    fn_1_128E8C(t0, (u32)&lbl_14_bss_9464);
+    fn_1_159AE0();
+    fn_1_A2D84((0xA9120000 + 10240));
+}
+/* fzgx:end fn_14_B398 */
 
 /* fzgx:begin fn_14_B480 */
 // fn_14_B480: empty in retail (single blr).

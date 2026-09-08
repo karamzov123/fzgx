@@ -59,3 +59,6 @@ rel/option/_prolog/fn_4_AD44.c:
 
 rel/option/_prolog/fn_4_ADB0.c:
 	.text       start:0x0000ADB0 end:0x0000ADF0 align:4
+
+rel/option/_prolog/fn_4_6678.c:
+	.text       start:0x00006678 end:0x00006720 align:4

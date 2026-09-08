@@ -764,6 +764,18 @@ void fn_1_F9E4C(void) {
 }
 /* fzgx:end fn_1_F9E4C */
 
+/* fzgx:begin fn_1_F9EE4 noprologue */
+#include "types.h"
+
+extern u32 fn_80008BEC(u32, u32, u32);
+extern u32 lbl_1_bss_7F0C0;
+
+void fn_1_F9EE4(u32 arg0) {
+    *(u16 *)((u8 *)((u8 *)&lbl_1_bss_7F0C0 + ((arg0 & 0xFF) * 48)) + 102) = 0;
+    fn_80008BEC((u32)((u8 *)((u8 *)&lbl_1_bss_7F0C0 + ((arg0 & 0xFF) * 48)) + 108), 0, 40);
+}
+/* fzgx:end fn_1_F9EE4 */
+
 /* fzgx:begin fn_1_F9FB4 */
 void fn_1_F9FB4(void) {
     u32 ptr = lbl_1_bss_84420;

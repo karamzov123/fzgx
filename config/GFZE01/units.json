@@ -298,6 +298,17 @@
   },
   {
     "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_3E58.c",
+    "symbols": [
+      "fn_3_3E58"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
     "source": "rel/customize/_prolog/fn_3_41B0.c",
     "symbols": [
       "fn_3_41B0"
@@ -5193,6 +5204,17 @@
     "source": "rel/main_rel/_prolog/fn_1_44A4.c",
     "symbols": [
       "fn_1_44A4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/_prolog.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/_prolog/fn_1_45D0.c",
+    "symbols": [
+      "fn_1_45D0"
     ],
     "status": "matching",
     "mw_version": null,
@@ -21406,6 +21428,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/spline/fn_1_F9EE4.c",
+    "symbols": [
+      "fn_1_F9EE4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/spline.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/spline/fn_1_F9FB4.c",
     "symbols": [
       "fn_1_F9FB4"
@@ -23970,6 +24003,16 @@
   },
   {
     "module": "movie_module",
+    "source": "rel/movie_module/fn_12_33874.c",
+    "symbols": [
+      "fn_12_33874"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
     "source": "rel/movie_module/fn_12_338C4.c",
     "symbols": [
       "fn_12_338C4"
@@ -24663,6 +24706,16 @@
     "source": "rel/movie_module/fn_12_35670.c",
     "symbols": [
       "fn_12_35670"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
+    "source": "rel/movie_module/fn_12_35694.c",
+    "symbols": [
+      "fn_12_35694"
     ],
     "status": "matching",
     "mw_version": null,
@@ -25770,6 +25823,16 @@
   },
   {
     "module": "movie_module",
+    "source": "rel/movie_module/fn_12_AB60.c",
+    "symbols": [
+      "fn_12_AB60"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
     "source": "rel/movie_module/fn_12_C218.c",
     "symbols": [
       "fn_12_C218"
@@ -25864,6 +25927,17 @@
     "source": "rel/option/_prolog/fn_4_4B10.c",
     "symbols": [
       "fn_4_4B10"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/option/_prolog.c"
+  },
+  {
+    "module": "option",
+    "source": "rel/option/_prolog/fn_4_6678.c",
+    "symbols": [
+      "fn_4_6678"
     ],
     "status": "matching",
     "mw_version": null,
@@ -26158,6 +26232,17 @@
   },
   {
     "module": "pilotpoint",
+    "source": "rel/pilotpoint/pilotpoint/fn_14_7E04.c",
+    "symbols": [
+      "fn_14_7E04"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/pilotpoint/pilotpoint.c"
+  },
+  {
+    "module": "pilotpoint",
     "source": "rel/pilotpoint/pilotpoint/fn_14_A1F4.c",
     "symbols": [
       "fn_14_A1F4"
@@ -26183,6 +26268,17 @@
     "source": "rel/pilotpoint/pilotpoint/fn_14_A398.c",
     "symbols": [
       "fn_14_A398"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/pilotpoint/pilotpoint.c"
+  },
+  {
+    "module": "pilotpoint",
+    "source": "rel/pilotpoint/pilotpoint/fn_14_B398.c",
+    "symbols": [
+      "fn_14_B398"
     ],
     "status": "matching",
     "mw_version": null,
@@ -27471,6 +27567,17 @@
   },
   {
     "module": "title",
+    "source": "rel/title/_prolog/fn_8_784.c",
+    "symbols": [
+      "fn_8_784"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/_prolog.c"
+  },
+  {
+    "module": "title",
     "source": "rel/title/fn_8_1C08.c",
     "symbols": [
       "fn_8_1C08"
@@ -27804,6 +27911,17 @@
     "source": "rel/title/operation/fn_8_CF70.c",
     "symbols": [
       "fn_8_CF70"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/operation.c"
+  },
+  {
+    "module": "title",
+    "source": "rel/title/operation/fn_8_CF94.c",
+    "symbols": [
+      "fn_8_CF94"
     ],
     "status": "matching",
     "mw_version": null,

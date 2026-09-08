@@ -4628,3 +4628,9 @@ rel/main_rel/effect/fn_1_5BFF0.c:
 
 rel/main_rel/sel_static_disp/fn_1_14BE30.c:
 	.text       start:0x0014BE30 end:0x0014BED0 align:4
+
+rel/main_rel/spline/fn_1_F9EE4.c:
+	.text       start:0x000F9EE4 end:0x000F9F2C align:4
+
+rel/main_rel/_prolog/fn_1_45D0.c:
+	.text       start:0x000045D0 end:0x00004630 align:4

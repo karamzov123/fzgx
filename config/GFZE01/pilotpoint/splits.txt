@@ -50,3 +50,9 @@ rel/pilotpoint/pilotpoint/fn_14_DC6C.c:
 
 rel/pilotpoint/pilotpoint/fn_14_A1F4.c:
 	.text       start:0x0000A1F4 end:0x0000A244 align:4
+
+rel/pilotpoint/pilotpoint/fn_14_B398.c:
+	.text       start:0x0000B398 end:0x0000B400 align:4
+
+rel/pilotpoint/pilotpoint/fn_14_7E04.c:
+	.text       start:0x00007E04 end:0x00007EAC align:4

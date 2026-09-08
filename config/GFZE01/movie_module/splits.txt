@@ -1175,3 +1175,12 @@ rel/movie_module/fn_12_215F4.c:
 
 rel/movie_module/fn_12_2D500.c:
 	.text       start:0x0002D500 end:0x0002D58C align:4
+
+rel/movie_module/fn_12_33874.c:
+	.text       start:0x00033874 end:0x000338C4 align:4
+
+rel/movie_module/fn_12_35694.c:
+	.text       start:0x00035694 end:0x000356E8 align:4
+
+rel/movie_module/fn_12_AB60.c:
+	.text       start:0x0000AB60 end:0x0000ABDC align:4

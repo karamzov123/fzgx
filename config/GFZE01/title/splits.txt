@@ -140,3 +140,9 @@ rel/title/title/fn_8_1F74.c:
 
 rel/title/title/fn_8_4E90.c:
 	.text       start:0x00004E90 end:0x00004F64 align:4
+
+rel/title/operation/fn_8_CF94.c:
+	.text       start:0x0000CF94 end:0x0000D020 align:4
+
+rel/title/_prolog/fn_8_784.c:
+	.text       start:0x00000784 end:0x0000082C align:4

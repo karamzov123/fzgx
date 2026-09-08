@@ -302,3 +302,6 @@ rel/customize/toolkit/fn_3_2B750.c:
 
 rel/customize/fn_3_2B774.c:
 	.text       start:0x0002B774 end:0x0002B778
+
+rel/customize/_prolog/fn_3_3E58.c:
+	.text       start:0x00003E58 end:0x00003F20 align:4
