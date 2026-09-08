@@ -68,7 +68,10 @@ class Verifier:
         return ok
 
     def matches(self, p: Project, name: str) -> bool:
-        u = next((x for x in p.load_units() if x["symbols"] and x["symbols"][0] == name), None)
+        with self.lock:
+            if not hasattr(self, "_units"):
+                self._units = {x["symbols"][0]: x for x in p.load_units() if x.get("symbols")}
+            u = self._units.get(name)
         if u is None:
             return False
         k = self._key(u, "match")
@@ -153,7 +156,35 @@ def finish(p: Project, module: str, workers: int = 12) -> Dict[str, object]:
             diag = {"failed_units": failed[:20], "errors": [l for l in out.splitlines() if l.startswith("#   ") and "Error" not in l][:12]}
             tmap = p.tu_map(module)
             units_by_src = {u["source"]: u for u in p.load_units()}
+            bad_units = [units_by_src[f + ".c"] for f in failed if f + ".c" in units_by_src and units_by_src[f + ".c"].get("tu")]
+            # first the fine-grained fix: only the failing blocks go back to their committed text
+            for u in bad_units:
+                tu_src = u["tu"]
+                cp3 = subprocess.run(["git", "show", f"HEAD:src/{tu_src}"], cwd=ROOT, text=True, capture_output=True)
+                if cp3.returncode != 0:
+                    continue
+                try:
+                    old_b = tufile.parse(cp3.stdout).get(u["symbols"][0])
+                except ValueError:
+                    old_b = None
+                tf = tufile.load(p, tu_src)
+                b = tf.get(u["symbols"][0])
+                if old_b is not None and b is not None:
+                    b.body, b.flags = old_b.body, list(old_b.flags)
+                    if "noprologue" not in b.flags:
+                        b.flags.append("noprologue")
+                    tufile._write_atomic(tufile.tu_path(p, tu_src), tf.render())
+                    tufile.write_gen(p, u, tf)
+            tufile.regenerate(p)
+            oracle.configure(p)
+            cp2 = oracle.relink(p, keep_going=True)
+            linked = cp2.returncode == 0
+            if linked:
+                restored = [u["symbols"][0] for u in bad_units]
+                diag["block_restored"] = restored
+            failed = [] if linked else re.findall(r"FAILED: \[code=\d+\] build/\S+/src/(\S+?)\.o", cp2.stdout + cp2.stderr)
             bad_tus = sorted({units_by_src[f + ".c"]["tu"] for f in failed if f + ".c" in units_by_src and units_by_src[f + ".c"].get("tu")})
+        if not linked:
             if not failed:  # the link ran: a hash mismatch, name it by function
                 diag = oracle.byte_diff(p, module)
                 bad_tus = sorted({f"{p.module_src_prefix(module)}/{tmap[f]}.c" for f, _ in diag.get("text_diffs", []) if f in tmap})

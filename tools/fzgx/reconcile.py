@@ -120,51 +120,85 @@ def reconcile_tu(p: Project, tu_source: str, v) -> Dict[str, object]:
 
     # 3. declarations, symbol by symbol
     definitions: Dict[str, str] = {}
+    definer: Dict[str, str] = {}
+    private_typed: Set[str] = set()  # defined with a block-private parameter type: never hoisted
     for b in tf.blocks:
+        private_types = set(TYPEDEF_NAME_RE.findall(b.body)) | set(TAG_RE.findall(b.body))
         for m in DEF_RE.finditer(b.body):
-            definitions[m.group(2)] = "extern " + m.group(1).strip() + ";"
+            definer[m.group(2)] = b.name
+            if _idents(m.group(1)) & private_types:
+                private_typed.add(m.group(2))
+            else:
+                definitions[m.group(2)] = "extern " + m.group(1).strip() + ";"
     variants: Dict[str, Counter] = OrderedDict()
     where: Dict[str, Set[str]] = {}
     for b in tf.blocks:
         private_types = set(TYPEDEF_NAME_RE.findall(b.body)) | set(TAG_RE.findall(b.body))
         for n, ln in _decls(b.body):
-            if _idents(ln) & private_types:
+            if _idents(ln) & private_types or n in private_typed:
                 continue  # names a block-private type: cannot leave the block
             variants.setdefault(n, Counter())[ln] += 1
             where.setdefault(n, set()).add(b.name)
+    # the block that defines a symbol must agree with whatever the prologue says about it
+    for n in list(variants):
+        if n in definer:
+            where[n].add(definer[n])
     prologue_decl_names = set(tufile._header_items(tufile.prologue_decls(tf)))
-    all_names = [b.name for b in tf.blocks]
-    for n, cnt in variants.items():
-        users = sorted(where[n])
+
+    def strip_decl(b, n):
+        b.body = "\n".join(ln for ln in b.body.splitlines()
+                           if not (tutidy.DECL_LINE_RE.match(ln) and tutidy._decl_name(ln) == n))
+        b.body = re.sub(r"\n{3,}", "\n\n", b.body).strip("\n") + "\n"
+
+    def candidates(n):
         cands: List[Optional[str]] = []
         if n in header_names or n in prologue_decl_names:
             cands.append(None)  # already declared for everyone: just drop the private copies
         if n in definitions:
             cands.append(definitions[n])
-        cands += [t for t, _ in sorted(cnt.items(), key=lambda kv: (-kv[1], -len(kv[0])))]
-        saved = {b.name: b.body for b in tf.blocks}
-        saved_pro = tf.prologue
-        done = False
-        for cand in cands:
-            for bname in users:
-                b = tf.get(bname)
-                b.body = "\n".join(ln for ln in b.body.splitlines()
-                                   if not (tutidy.DECL_LINE_RE.match(ln) and tutidy._decl_name(ln) == n))
-                b.body = re.sub(r"\n{3,}", "\n\n", b.body).strip("\n") + "\n"
-            if cand is not None:
-                tf.prologue = tf.prologue.rstrip("\n") + "\n" + cand + "\n"
-            # the prologue changed: every block of the file must still match, not only the users
-            if verify(all_names if cand is not None else users):
-                out["hoisted"].append(n)
-                done = True
-                break
-            for bname in users:
-                tf.get(bname).body = saved[bname]
-            tf.prologue = saved_pro
-        if not done:
-            out["contested"][n] = sorted(cnt)
-            restore_gens(all_names)
+        cands += [t for t, _ in sorted(variants[n].items(), key=lambda kv: (-kv[1], -len(kv[0])))]
+        return cands
 
+    # phase A: every symbol gets its best-guess declaration at once; one verification per block
+    chosen: Dict[str, Optional[str]] = {n: candidates(n)[0] for n in variants}
+    original = {b.name: b.body for b in tf.blocks}
+    base_prologue = tf.prologue
+    for b in tf.blocks:
+        for n in variants:
+            if b.name in where[n]:
+                strip_decl(b, n)
+    def render_prologue():
+        lines = [c for n, c in chosen.items() if c is not None]
+        return base_prologue.rstrip("\n") + ("\n" + "\n".join(lines) + "\n" if lines else "\n")
+    tf.prologue = render_prologue()
+    failing = [b.name for b in tf.blocks if not verify([b.name])]
+    # phase B: for a failing block, try the other candidates of the symbols it uses, one symbol at a time
+    for bname in failing:
+        b = tf.get(bname)
+        fixed = False
+        for n in [n for n in variants if bname in where[n]]:
+            for cand in candidates(n)[1:]:
+                prev = chosen[n]
+                chosen[n] = cand
+                tf.prologue = render_prologue()
+                # the change must keep every other user of the symbol matching too
+                if verify([bname]) and verify([u for u in sorted(where[n]) if u != bname]):
+                    fixed = True
+                    break
+                chosen[n] = prev
+                tf.prologue = render_prologue()
+            if fixed:
+                break
+        if not fixed:
+            # the block keeps its own declarations; the symbols it declares are contested
+            b.body = original[bname]
+            for n in [n for n in variants if bname in where[n]]:
+                out["contested"][n] = sorted(variants[n])
+                if chosen[n] is not None:
+                    chosen[n] = None  # no prologue declaration for a contested symbol
+            tf.prologue = render_prologue()
+    out["hoisted"] = [n for n, c in chosen.items() if n not in out["contested"]]
+    # every block is re-checked once more under the final prologue in step 4
     # 4. what still cannot live under the prologue
     for b in tf.blocks:
         u = units.get(b.name)
