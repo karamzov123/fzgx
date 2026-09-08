@@ -63,7 +63,7 @@ def lift(p: Project, module: str, name: str) -> Optional[str]:
         if mn.endswith("lr") and mn[1:-2] in COND:
             continue
         if mn == "b" and a and a[-1].startswith(".L_") and labels.get(a[-1], -1) > i:
-            continue  # a forward jump: the end of a then-block (checked again when lifted)
+            continue  # a forward jump: the end of a then-block or a loop entry (checked when lifted)
         m = re.fullmatch(r"b(\w+)", mn)
         if not (m and m.group(1) in COND and a and a[-1].startswith(".L_")):
             return None
@@ -266,6 +266,16 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             ent["w"] = w; ent["t"] = t
         return f"loc_{off:X}"
     temps: List[str] = []
+    variadic_next = [False]
+    pending_ptr: Dict[str, str] = {}
+
+    class _Stmts(list):
+        def append(self, st):
+            for ln_, asg in list(pending_ptr.items()):
+                if re.search(rf"\b{re.escape(ln_)}\b", st) and st != asg:
+                    del pending_ptr[ln_]; super().append(asg)
+            super().append(st)
+    stmts = _Stmts(stmts)
     fnames_seen: set = set()
     array_locals: set = set()
 
@@ -301,15 +311,136 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     skip: set = set()                             # instruction indices consumed by the structure (the `b` of a then-block)
     i = -1
     temps_written: List[Tuple[str, int]] = []
+    carried: Dict[str, str] = {}     # register -> local name while inside a loop region
+    loop_regions: List[Tuple[int, int, int]] = []  # (body_start, test_start, backbranch_index)
+    for j_, (mn_, a_) in enumerate(ins):
+        if mn_ == "b" and a_ and a_[-1].startswith(".L_"):
+            tst = labels.get(a_[-1], -1)
+            if tst > j_:
+                # the back branch: the first conditional branch at/after the test that targets j_+1
+                for k_ in range(tst, len(ins)):
+                    m_ = re.fullmatch(r"b(\w+)", ins[k_][0])
+                    if m_ and m_.group(1) in COND and ins[k_][1] and labels.get(ins[k_][1][-1]) == j_ + 1:
+                        loop_regions.append((j_ + 1, tst, k_)); break
+    loop_by_entry = {b - 1: (b, t, k) for b, t, k in loop_regions}
+    loop_end_by_index = {k: (b, t, k) for b, t, k in loop_regions}
+    in_loop: List[Tuple[int, int, int]] = []
     for i, (mn, a) in enumerate(ins):
+        # a value used more than once (before its register is redefined) lives in a local: the
+        # compiler would otherwise recompute or reschedule the expression at each use
+        if i > 0:
+            pm, pa = ins[i - 1]
+            pd = pa[0] if pa and pm not in STORE_T and not pm.startswith(("st", "cmp", "b")) and pm not in ("mtlr", "mtspr", "bl") else None
+            if pd and pd in regs and pd not in carried and not re.fullmatch(r"[A-Za-z_]\w*|-?\d+|&[A-Za-z_]\w*", regs[pd]) and not regs[pd].startswith(("(struct ", "__CALLRET__")):
+                uses = 0
+                for x in range(i, len(ins)):
+                    if reads(x, pd) or (ins[x][0] == "bl" and re.fullmatch(r"r([3-9]|10)|f[1-8]", pd)):
+                        uses += 1
+                    if ins[x][0] == "blr" and pd in ("r3", "f1"):
+                        uses += 1  # returned
+                    if ins[x][0] == "bl" and re.fullmatch(r"r([0-9]|1[0-2])|f([0-9]|1[0-3])", pd):
+                        break
+                    if ins[x][1] and ins[x][1][0] == pd and ins[x][0] not in STORE_T and not ins[x][0].startswith(("st", "cmp")):
+                        break
+                if uses >= 2:
+                    tn = f"v{len(temps)}"; temps.append(f"{rtype.get(pd, 'u32')} {tn};")
+                    stmts.append(f"{tn} = {regs[pd]};"); regs[pd] = tn
+        # a carried register that now holds a new expression: materialise the assignment
+        for r_, tn in list(carried.items()):
+            if regs.get(r_) is None:
+                regs[r_] = tn  # cleared by a call: the local still holds the value
+            elif regs.get(r_) != tn:
+                stmts.append(f"{tn} = {regs.get(r_)};"); regs[r_] = tn
         if a and mn not in STORE_T and not mn.startswith(("st", "cmp", "b")) and mn not in ("mtlr", "mtspr"):
             temps_written.append((a[0], i))
+        # the previous instruction wrote a callee-saved register with a computed value that a
+        # call will intervene before its use: the source kept it in a local
+        if i > 0:
+            pm, pa = ins[i - 1]
+            pd = pa[0] if pa and pm not in STORE_T and not pm.startswith(("st", "cmp", "b")) and pm not in ("mtlr", "mtspr") else None
+            if pd and SAVE_RE.match(pd) and pd not in carried and pd in regs and not re.fullmatch(r"[A-Za-z_]\w*|-?\d+|&[A-Za-z_]\w*", regs[pd]) and not regs[pd].startswith("(struct "):
+                call_before_use = False
+                for x in range(i, len(ins)):
+                    if ins[x][0] == "bl":
+                        call_before_use = True; break
+                    if reads(x, pd) or (ins[x][1] and ins[x][1][0] == pd and ins[x][0] not in STORE_T):
+                        break
+                if call_before_use:
+                    tn = f"v{len(temps)}"; temps.append(f"{rtype.get(pd, 'u32')} {tn};")
+                    stmts.append(f"{tn} = {regs[pd]};"); regs[pd] = tn
         while open_ifs and open_ifs[-1][0] == i:
             stmts.append(open_ifs.pop()[1])
         if i in skip:
             continue
+        if i in loop_by_entry:
+            b_, t_, k_ = loop_by_entry[i]
+            # loop-carried registers: written inside [b_, k_] and read inside before written, or read by the test
+            def writes(x):
+                mn_x, a_x = ins[x]
+                return a_x[0] if a_x and mn_x not in STORE_T and not mn_x.startswith(("st", "cmp", "b")) and mn_x not in ("mtlr", "mtspr") else None
+            def reads_of(x):
+                mn_x, a_x = ins[x]
+                srcs = a_x[1:] if mn_x not in STORE_T and not mn_x.startswith(("st", "cmp", "b")) else a_x
+                return set(re.findall(r"\b([rf]\d+)\b", " ".join(srcs)))
+            written_in = {writes(x) for x in range(b_, k_ + 1) if writes(x)}
+            live_in, seen_w = set(), set()
+            for x in range(b_, t_):
+                live_in |= (reads_of(x) - seen_w)
+                w_ = writes(x)
+                if w_:
+                    seen_w.add(w_)
+            test_reads = set()
+            for x in range(t_, k_ + 1):
+                test_reads |= reads_of(x)
+            for r_ in sorted((live_in | test_reads) & written_in):
+                if r_ in ("r1", "r0") or r_ in carried:
+                    continue
+                tn = f"v{len(temps)}"
+                init = regs.get(r_)
+                if init is None:
+                    init = use(r_) if re.fullmatch(r"r([3-9]|10)|f[1-8]", r_) else "0"
+                temps.append(f"{rtype.get(r_, 'u32')} {tn};")
+                stmts.append(f"{tn} = {init};")
+                regs[r_] = tn; carried[r_] = tn
+            # the test, evaluated on the pre-loop state, gives the condition
+            saved_regs, saved_rtype, saved_len = dict(regs), dict(rtype), len(stmts)
+            cond_expr = None
+            for x in range(t_, k_):
+                mn_x, a_x = ins[x]
+                if mn_x in ("cmpwi", "cmpw", "cmplwi", "cmplw"):
+                    lhs = use(a_x[0]); rhs = str(_imm(a_x[1])) if mn_x.endswith("i") else use(a_x[1])
+                    uns = mn_x.startswith("cmpl")
+                    def typed2(e: str, reg: str) -> str:
+                        tt = rtype.get(reg, "u32")
+                        if uns:
+                            return e if tt in ("u32", "u16", "u8") else f"(u32){e}"
+                        return e if tt in ("s32", "s16", "s8") else f"(s32){e}"
+                    lhs = typed2(lhs, a_x[0])
+                    if not mn_x.endswith("i"):
+                        rhs = typed2(rhs, a_x[1])
+                    cond_expr = (lhs, rhs)
+                elif mn_x == "extsb":
+                    regs[a_x[0]] = f"(s8){use(a_x[1])}"; rtype[a_x[0]] = "s8"
+                elif mn_x == "extsh":
+                    regs[a_x[0]] = f"(s16){use(a_x[1])}"; rtype[a_x[0]] = "s16"
+                elif mn_x in LOAD_T and a_x and not a_x[1].endswith("(r1)"):
+                    raise Give()  # a load in the test: keep the region out of the lifter for now
+                else:
+                    raise Give()
+            if cond_expr is None:
+                raise Give()
+            m_ = re.fullmatch(r"b(\w+)", ins[k_][0])
+            op = COND[m_.group(1)]
+            stmts.append(f"while ({cond_expr[0]} {op} {cond_expr[1]}) {{")
+            regs, rtype = saved_regs, saved_rtype
+            # the body runs next; the test instructions and the back branch are consumed
+            for x in range(t_, k_ + 1):
+                skip.add(x)
+            open_ifs.append((k_ + 1, "}"))
+            in_loop.append((b_, t_, k_))
+            continue
         if mn == "b":
-            raise Give()  # an unconditional jump that no if/else explained
+            raise Give()  # an unconditional jump that no if/else or loop explained
         if mn == "blr":
             break
         if mn in ("cmpwi", "cmpw", "cmplwi", "cmplw"):
@@ -333,7 +464,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         if m and m.group(1) in COND and a and a[-1].startswith(".L_") and cond is not None:
             tgt = labels.get(a[-1])
             if tgt is None or tgt <= i:
-                raise Give()
+                raise Give()  # a back edge no loop region explained
             op = COND[m.group(1)]
             inv = {"==": "!=", "!=": "==", "<": ">=", ">": "<=", "<=": ">", ">=": "<"}[op]  # branch taken = skip
             l, r_, uns = cond
@@ -377,7 +508,9 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             frame = True
             continue  # callee-saved float registers
         if mn in ("crclr", "crset") or mn == "nop":
-            continue  # condition-register housekeeping around varargs calls: no source
+            if mn == "crclr":
+                variadic_next[0] = True  # `crclr cr1eq`: the callee is variadic (no float varargs)
+            continue
         if mn == "lis" and sym_of(a[1]):
             hi[a[0]] = sym_of(a[1]); regs.pop(a[0], None); continue
         if mn == "lis":
@@ -396,8 +529,9 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 locals_[ln] = s
                 declare(s, "struct", far_ref=True); gfields.setdefault(s, {})
                 # the cast is what keeps the address in the register across calls: MWCC
-                # rematerialises a plain `&sym` after each call, but not a cast of it
-                stmts.append(f"{ln} = (struct {name}_{s} *)&{s};")
+                # rematerialises a plain `&sym` after each call, but not a cast of it.
+                # The assignment is emitted right before the first statement that uses it.
+                stmts.append(f"{ln} = (struct {name}_{s} *)&{s};")  # eager: retail places it early
                 regs[a[0]] = ln
             else:
                 regs[a[0]] = f"&{s}"
@@ -572,8 +706,47 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             n = _imm(a[2]); regs[a[0]] = f"({use(a[1])} & ~0x{(1 << n) - 1:X})"; rtype[a[0]] = "u32"; continue
         if mn == "clrlslwi":
             b, n = _imm(a[2]), _imm(a[3]); regs[a[0]] = f"(({use(a[1])} & 0x{(1 << (32 - b)) - 1:X}) << {n})"; rtype[a[0]] = "u32"; continue
-        if mn in ("lwzx", "lhzx", "lbzx", "lfsx"):
-            t = {"lwzx": "u32", "lhzx": "u16", "lbzx": "u8", "lfsx": "f32"}[mn]
+        if mn.endswith(".") and mn[:-1] in ("extrwi", "rlwinm", "andi", "extsb", "extsh", "clrlwi", "subic", "addic", "and", "or", "subf", "add", "neg", "srawi", "cntlzw", "xor", "mulli", "slwi", "srwi"):
+            # record form: the result is also compared with zero for the branch that follows
+            base_mn = mn[:-1]
+            ins_i = (base_mn, a)
+            handled = False
+            # evaluate through the plain op by recursion on a one-instruction list is awkward:
+            # replicate the few cases inline
+            if base_mn == "extrwi":
+                n, b = _imm(a[2]), _imm(a[3]); regs[a[0]] = f"(({use(a[1])} >> {32 - b - n}) & 0x{(1 << n) - 1:X})"; rtype[a[0]] = "u32"; handled = True
+            elif base_mn == "andi":
+                regs[a[0]] = f"({use(a[1])} & {_imm(a[2])})"; rtype[a[0]] = "u32"; handled = True
+            elif base_mn == "extsb":
+                regs[a[0]] = f"(s8){use(a[1])}"; rtype[a[0]] = "s8"; handled = True
+            elif base_mn == "extsh":
+                regs[a[0]] = f"(s16){use(a[1])}"; rtype[a[0]] = "s16"; handled = True
+            elif base_mn == "clrlwi":
+                n = 32 - _imm(a[2]); regs[a[0]] = f"({use(a[1])} & 0x{(1 << n) - 1:X})"; rtype[a[0]] = "u32"; handled = True
+            elif base_mn in ("subic", "addic"):
+                k = _imm(a[2]); regs[a[0]] = f"({use(a[1])} {'-' if base_mn == 'subic' else '+'} {k})"; rtype[a[0]] = rtype.get(a[1], "s32"); handled = True
+            elif base_mn == "and":
+                regs[a[0]] = f"({use(a[1])} & {use(a[2])})"; rtype[a[0]] = "u32"; handled = True
+            elif base_mn == "or":
+                regs[a[0]] = f"({use(a[1])} | {use(a[2])})"; rtype[a[0]] = "u32"; handled = True
+            elif base_mn == "subf":
+                regs[a[0]] = f"({use(a[2])} - {use(a[1])})"; rtype[a[0]] = "s32"; handled = True
+            elif base_mn == "add":
+                regs[a[0]] = f"({use(a[1])} + {use(a[2])})"; rtype[a[0]] = "s32"; handled = True
+            elif base_mn == "neg":
+                regs[a[0]] = f"(-{use(a[1])})"; rtype[a[0]] = "s32"; handled = True
+            elif base_mn == "rlwinm":
+                sh, mb, me = _imm(a[2]), _imm(a[3]), _imm(a[4])
+                if sh == 0 and mb == 0: regs[a[0]] = f"({use(a[1])} & 0x{(0xFFFFFFFF << (31 - me)) & 0xFFFFFFFF:X})"
+                elif sh == 0 and me == 31: regs[a[0]] = f"({use(a[1])} & 0x{(1 << (32 - mb)) - 1:X})"
+                else: raise Give()
+                rtype[a[0]] = "u32"; handled = True
+            if not handled:
+                raise Give()
+            signed = rtype.get(a[0]) in ("s8", "s16", "s32")
+            cond = (regs[a[0]], "0", not signed); continue
+        if mn in ("lwzx", "lhzx", "lbzx", "lfsx", "lhax"):
+            t = {"lwzx": "u32", "lhzx": "u16", "lbzx": "u8", "lfsx": "f32", "lhax": "s16"}[mn]
             b = use(a[1]); i2 = use(a[2])
             regs[a[0]] = f"*({t} *)((u8 *){b} + {i2})"; rtype[a[0]] = t; continue
         if mn in ("stwx", "sthx", "stbx", "stfsx"):
@@ -645,7 +818,15 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                         if regs[r_] == e:
                             regs[r_] = tn
             calls.append(callee)
-            externs.setdefault(callee, f"extern u32 {callee}({', '.join(ptypes_) or 'void'});")
+            if variadic_next[0]:
+                variadic_next[0] = False
+                proto = f"extern u32 {callee}({ptypes_[0] if ptypes_ else 'void *'}, ...);"
+                externs[callee] = proto
+            else:
+                proto = f"extern u32 {callee}({', '.join(ptypes_) or 'void'});"
+                prev = externs.get(callee)
+                if prev is None or prev.endswith("(void);") or (prev.count(",") < proto.count(",") and "..." not in prev):
+                    externs[callee] = proto
             stmts.append(f"__CALL__{len(calls) - 1}({', '.join(args)});")
             for r in list(regs):
                 if re.fullmatch(r"r([0-9]|1[0-2])|f([0-9]|1[0-3])", r):
@@ -653,6 +834,10 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             regs["r3"] = f"__CALLRET__{len(calls) - 1}"; rtype["r3"] = "u32"
             continue
         raise Give()
+    for ln_, asg in pending_ptr.items():
+        if any(re.search(rf"\b{re.escape(ln_)}\b", e) for e in regs.values()):
+            stmts.append(asg)
+    pending_ptr.clear()
     # return value: whatever r3 holds at blr, when this function wrote r3 (an untouched first
     # parameter is not a return value; a parameter copied back after a call is)
     wrote_r3 = any(a and a[0] == "r3" and mn not in ("stw", "sth", "stb", "stfs", "stfd", "cmpwi", "cmpw", "cmplwi", "cmplw") for mn, a in ins)
@@ -777,14 +962,21 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             cur = o + w
         lines.append("};")
         return "\n".join(lines)
+    empty_globals = [g for g, offs in gfields.items() if not offs]
     for g, offs in gfields.items():
         sname = f"{name}_{g}"
+        if not offs:
+            externs[g] = f"extern u8 {g}[];"
+            continue
         structs.append(struct_text(sname, offs))
         externs[g] = f"extern struct {sname} {g};"
     for g, offs in pfields.items():
         sname = f"{name}_{g}_T"
         structs.append(struct_text(sname, offs))
         externs[g] = re.sub(r"^extern \S+ ", f"extern struct {sname} *", externs[g]) if g in externs else f"extern struct {sname} *{g};"
+    for g in empty_globals:
+        sname = f"{name}_{g}"
+        body = [b.replace(f"struct {sname} *", "u8 *").replace(f"(struct {sname} *)", "(u8 *)") for b in body]
     text = ['#include "types.h"', ""]
     text += sorted(externs.values())
     if structs:
