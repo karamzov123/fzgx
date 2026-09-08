@@ -185,12 +185,14 @@ def header(p: Project, module: str, min_refs: int = 20, sections=(".data", ".bss
         tname = name.replace("lbl_", "Obj_")
         out.append(f"// {name}: {sd.section} size 0x{sd.size:X}, referenced by {n} functions, shape {info['shapes']}")
         nfields = info["fields"]
-        if sd.size <= 8 and len(nfields) <= 1 and 0 in nfields or (sd.size <= 8 and not nfields):
+        pointee0 = info.get("pointees", {}).get(0) or {}
+        if sd.size <= 8 and (len(nfields) <= 1 and 0 in nfields or not nfields):
             f = nfields.get(0, {"width": min(sd.size, 4) or 4, "float": False})
             ctype = {1: "u8", 2: "u16", 4: "f32" if f.get("float") else "u32", 8: "f64"}.get(f.get("width", 4), "u32")
-            if info["kind"] == "pointer" and info.get("pointees", {}).get(0):
+            # a 4-byte global whose loaded value is dereferenced is a pointer to a struct
+            if sd.size == 4 and sum(x["loads"] + x["stores"] for x in pointee0.values()) >= 3:
                 pt = f"{tname}_Target"
-                out.append(typedef(info, pt, info["pointees"][0]))
+                out.append(typedef(info, pt, pointee0))
                 out.append(f"extern {pt} *{name};")
             else:
                 out.append(f"extern {ctype} {name};")

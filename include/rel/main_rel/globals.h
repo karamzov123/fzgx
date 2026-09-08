@@ -294,7 +294,60 @@ typedef struct {
 extern Obj_1_bss_8B3A0 lbl_1_bss_8B3A0;
 
 // lbl_1_bss_3BE0: .bss size 0x4, referenced by 77 functions, shape {'object': 255, 'pointer': 56}
-extern u32 lbl_1_bss_3BE0;
+typedef struct {
+    u32 unk_0;  // 7 loads, 0 stores
+    f32 unk_4;  // 1 loads, 0 stores
+    u32 unk_8;  // 14 loads, 0 stores
+    u32 unk_C;  // 34 loads, 0 stores
+    u8 pad_10[0x4];
+    u32 unk_14;  // 2 loads, 1 stores
+    u32 unk_18;  // 8 loads, 0 stores
+    u32 unk_1C;  // 10 loads, 0 stores
+    u8 pad_20[0x4];
+    u32 unk_24;  // 2 loads, 1 stores
+    u8 pad_28[0x4];
+    u32 unk_2C;  // 1 loads, 1 stores
+    u8 pad_30[0xC];
+    u32 unk_3C;  // 1 loads, 1 stores
+    u8 pad_40[0x4];
+    u32 unk_44;  // 1 loads, 1 stores
+    u32 unk_48;  // 18 loads, 0 stores
+    u32 unk_4C;  // 1 loads, 0 stores
+    u32 unk_50;  // 1 loads, 0 stores
+    u32 unk_54;  // 31 loads, 0 stores
+    u8 pad_58[0x4];
+    u32 unk_5C;  // 1 loads, 0 stores
+    u32 unk_60;  // 1 loads, 1 stores
+    u32 unk_64;  // 3 loads, 0 stores
+    u32 unk_68;  // 5 loads, 1 stores
+    u32 unk_6C;  // 1 loads, 0 stores
+    u32 unk_70;  // 2 loads, 1 stores
+    u32 unk_74;  // 1 loads, 0 stores
+    u32 unk_78;  // 1 loads, 1 stores
+    u8 pad_7C[0x1];
+    u8 unk_7D;  // 7 loads, 0 stores
+    u8 pad_7E[0x2];
+    u32 unk_80;  // 4 loads, 1 stores
+    u32 unk_84;  // 1 loads, 1 stores
+    u32 unk_88;  // 1 loads, 0 stores
+    u32 unk_8C;  // 1 loads, 1 stores
+    u32 unk_90;  // 6 loads, 1 stores
+    u8 pad_94[0x4];
+    u32 unk_98;  // 1 loads, 1 stores
+    u8 pad_9C[0x4];
+    u32 unk_A0;  // 1 loads, 1 stores
+    u32 unk_A4;  // 7 loads, 0 stores
+    u32 unk_A8;  // 6 loads, 1 stores
+    u32 unk_AC;  // 1 loads, 0 stores
+    u32 unk_B0;  // 2 loads, 1 stores
+    u32 unk_B4;  // 5 loads, 0 stores
+    u32 unk_B8;  // 3 loads, 1 stores
+    u32 unk_BC;  // 4 loads, 1 stores
+    u8 pad_C0[0x10];
+    u32 unk_D0;  // 2 loads, 0 stores
+    u32 unk_D4;  // 2 loads, 0 stores
+} Obj_1_bss_3BE0_Target;
+extern Obj_1_bss_3BE0_Target *lbl_1_bss_3BE0;
 
 // lbl_1_bss_9F8: .bss size 0x50, referenced by 67 functions, shape {'object': 279}
 typedef struct {
@@ -362,10 +415,34 @@ extern u32 lbl_1_bss_6D838;
 extern u8 lbl_1_bss_3C00;
 
 // lbl_1_bss_38458: .bss size 0x4, referenced by 43 functions, shape {'object': 62, 'pointer': 9}
-extern u32 lbl_1_bss_38458;
+typedef struct {
+    u8 pad_0[0x8];
+    u32 unk_8;  // 49 loads, 0 stores
+} Obj_1_bss_38458_Target;
+extern Obj_1_bss_38458_Target *lbl_1_bss_38458;
 
 // lbl_1_bss_F68: .bss size 0x4, referenced by 42 functions, shape {'object': 140, 'pointer': 6}
-extern u32 lbl_1_bss_F68;
+typedef struct {
+    u32 unk_0;  // 9 loads, 1 stores
+    u8 pad_4[0x1E];
+    u16 unk_22;  // 3 loads, 3 stores
+    u16 unk_24;  // 0 loads, 1 stores
+    u8 pad_26[0x1E];
+    u16 unk_44;  // 1 loads, 1 stores
+    u16 unk_46;  // 0 loads, 1 stores
+    u8 unk_48;  // 29 loads, 13 stores
+    u8 unk_49;  // 2 loads, 1 stores
+    u8 unk_4A;  // 2 loads, 1 stores
+    u8 unk_4B;  // 2 loads, 1 stores
+    u8 unk_4C;  // 2 loads, 1 stores
+    u8 unk_4D;  // 1 loads, 1 stores
+    u8 pad_4E[0x2];
+    u32 unk_50;  // 5 loads, 1 stores
+    u32 unk_54;  // 2 loads, 1 stores
+    f32 unk_58;  // 0 loads, 1 stores
+    f32 unk_5C;  // 0 loads, 1 stores
+} Obj_1_bss_F68_Target;
+extern Obj_1_bss_F68_Target *lbl_1_bss_F68;
 
 // lbl_1_data_1D628: .data size 0x4, referenced by 41 functions, shape {'object': 185}
 extern u32 lbl_1_data_1D628;
