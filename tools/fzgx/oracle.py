@@ -188,6 +188,7 @@ def _diff(project: Project, module: str, symbol: str, unit: str, max_diff_lines:
     left, right = data.get("left", {}), data.get("right", {})
     res = CheckResult(True, symbol, unit)
     res._pool_pairs = []
+    res._rows = ([], [])  # objdiff's instruction rows (target, ours) for classifiers
     left_syms = {s["name"]: s for s in left.get("symbols", []) if s.get("kind") == "SYMBOL_FUNCTION"}
     right_syms = {s["name"]: s for s in right.get("symbols", []) if s.get("kind") == "SYMBOL_FUNCTION"}
     if target is not None:  # the retail auto object holds many functions; only ours is in question
@@ -206,6 +207,7 @@ def _diff(project: Project, module: str, symbol: str, unit: str, max_diff_lines:
     if not res.matched:
         lrows = left_syms.get(symbol, {}).get("instructions", [])
         rrows = right_syms.get(symbol, {}).get("instructions", [])
+        res._rows = (lrows, rrows)
         if symbol not in right_syms:
             res.diff = [f"(symbol {symbol} not present in our object: define it, check the name)"]
         else:

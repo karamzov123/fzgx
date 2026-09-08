@@ -48,6 +48,15 @@ def cmd_context(a, p):
     print(api.context(p, a.symbol, a.budget_tokens)); return 0
 
 
+def cmd_stuck(a, p):
+    from . import stuck
+    out = stuck.run(p, a.min_percent, a.module, a.workers)
+    if a.json:
+        print(json.dumps(out, indent=1))
+    else:
+        print(stuck.summary(out))
+
+
 def cmd_check(a, p):
     r = api.check(p, a.symbol, a.max_diff_lines, a.versions)
     _print(r if a.json else api.format_check(r), a.json)
@@ -422,6 +431,9 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--module"); s.add_argument("--max-size", type=int, default=1024); s.add_argument("--limit", type=int, default=20)
     s = sub.add_parser("sweep", help="re-check saved attempts of plateaued functions; submit matches and pool matches"); s.set_defaults(fn=cmd_sweep)
     s.add_argument("--module"); s.add_argument("--min-percent", type=float, default=90.0); s.add_argument("--limit", type=int, default=200)
+    s = sub.add_parser("stuck", help="classify plateaued attempts (>= N%) by failure mode from the object diff"); s.set_defaults(fn=cmd_stuck)
+    s.add_argument("--min-percent", type=float, default=80.0); s.add_argument("--module"); s.add_argument("--workers", type=int, default=12)
+    s.add_argument("--json", action="store_true")
     s = sub.add_parser("verify", help="relink once for all accepted units, verify hashes, commit; bisect on failure"); s.set_defaults(fn=cmd_verify)
     s.add_argument("--message")
     s = sub.add_parser("compare", help="A/B table for two agent-id prefixes (e.g. b3c-claude vs shadow-b3c-codex)"); s.set_defaults(fn=cmd_compare)
