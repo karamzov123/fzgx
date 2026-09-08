@@ -100,6 +100,16 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
     if fn.refs:
         header = ROOT / "include" / "rel" / module / "globals.h"
         hdr_text = header.read_text() if header.exists() else ""
+        tu_stem = None
+        tus_path = project.module_config_dir(module) / "tus.json"
+        if tus_path.exists():
+            for t in json.loads(tus_path.read_text())["tus"]:
+                if symbol in t["functions"]:
+                    tu_stem = t["file"].rsplit(".", 1)[0]
+                    break
+        tu_header = ROOT / "include" / "rel" / module / f"{tu_stem}.h" if tu_stem else None
+        tu_hdr_text = tu_header.read_text() if tu_header and tu_header.exists() else ""
+        hdr_text = hdr_text + "\n" + tu_hdr_text
         shown_from_header = []
         parts.append("\n## Referenced symbols (declare what you use; names are provisional)\n```c")
         for name in fn.refs:
@@ -112,8 +122,9 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
             parts.append(_decl_for(s))
         parts.append("```")
         if shown_from_header:
-            parts.append(f"\nThese are declared in `include/rel/{module}/globals.h` with recovered struct layouts; "
-                         f"`#include \"rel/{module}/globals.h\"` and use the typed fields (`unk_XX` names are offsets) "
+            inc = f"rel/{module}/{tu_stem}.h" if tu_hdr_text else f"rel/{module}/globals.h"
+            parts.append(f"\nThese are declared in `include/{inc}` with recovered struct layouts; "
+                         f"`#include \"{inc}\"` and use the typed fields (`unk_XX` names are offsets) "
                          f"instead of casts or your own extern:")
             parts.append("```c")
             for name in shown_from_header:

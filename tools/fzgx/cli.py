@@ -191,15 +191,15 @@ def cmd_oversize(a, p):
 
 
 def cmd_headers(a, p):
-    text = structs.header(p, a.module, a.min_refs)
+    text = structs.tu_header(p, a.module, a.tu) if a.tu else structs.header(p, a.module, a.min_refs)
     if a.write:
-        out = Path("include") / "rel" / a.module / "globals.h"
+        out = Path("include") / "rel" / a.module / (f"{a.tu.rsplit('.', 1)[0]}.h" if a.tu else "globals.h")
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(text); print("wrote", out, len(text), "bytes")
         # prove every field offset under the real compiler before anyone relies on it
         import subprocess
         chk = Path(".fzgx") / "header_selfcheck.c"
-        chk.write_text(structs.selfcheck(text, f"rel/{a.module}/globals.h"))
+        chk.write_text(structs.selfcheck(text, f"rel/{a.module}/{out.name}"))
         cp = subprocess.run(["build/tools/wibo", "build/compilers/GC/1.3.2/mwcceppc.exe", "-nodefaults", "-proc", "gekko",
                              "-i", "include", "-c", str(chk), "-o", str(chk.with_suffix(".o"))], text=True, capture_output=True)
         if cp.returncode != 0:
@@ -283,6 +283,7 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--module", default="main_rel"); s.add_argument("--min-refs", type=int, default=5)
     s = sub.add_parser("headers", help="generate include/rel/<module>/globals.h for the most-referenced globals"); s.set_defaults(fn=cmd_headers)
     s.add_argument("--module", default="main_rel"); s.add_argument("--min-refs", type=int, default=20); s.add_argument("--write", action="store_true")
+    s.add_argument("--tu", help="per-file header for this TU (e.g. camera.c) instead of globals.h")
     s = sub.add_parser("verify", help="relink once for all accepted units, verify hashes, commit; bisect on failure"); s.set_defaults(fn=cmd_verify)
     s.add_argument("--message")
     s = sub.add_parser("compare", help="A/B table for two agent-id prefixes (e.g. b3c-claude vs shadow-b3c-codex)"); s.set_defaults(fn=cmd_compare)
