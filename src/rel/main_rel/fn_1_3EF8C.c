@@ -1,4 +1,11 @@
 #include "types.h"
 
-// fn_1_3EF8C: main_rel .text:0x0003EF8C size 0x1C
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u8 lbl_1_bss_3C12[10];
+extern u8 lbl_1_data_5B7C;
+
+void fn_1_3EF8C(u8 value) {
+    if (lbl_1_bss_3C12[0] != 0) {
+        return;
+    }
+    lbl_1_data_5B7C = value;
+}
