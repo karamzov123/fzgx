@@ -1711,3 +1711,27 @@ dol/gdev_cc_initialize.c:
 
 dol/fn_80077E0C.c:
 	.text       start:0x80077E0C end:0x80077E7C align:4
+
+dol/fn_80039B0C.c:
+	.text       start:0x80039B0C end:0x80039B38 align:4
+
+dol/fn_80024E3C.c:
+	.text       start:0x80024E3C end:0x80024E6C align:4
+
+dol/VIGetDTVStatus.c:
+	.text       start:0x8001C084 end:0x8001C0C0 align:4
+
+dol/ARGetDMAStatus.c:
+	.text       start:0x8001E828 end:0x8001E864 align:4
+
+dol/GXInvalidateTexAll.c:
+	.text       start:0x80036544 end:0x8003658C align:4
+
+dol/DVDGetCommandBlockStatus.c:
+	.text       start:0x800197A4 end:0x800197F0 align:4
+
+dol/__DVDStoreErrorCode.c:
+	.text       start:0x8001A178 end:0x8001A1F4 align:4
+
+dol/fn_80020ABC.c:
+	.text       start:0x80020ABC end:0x80020B3C align:4

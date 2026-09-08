@@ -1689,6 +1689,16 @@
   },
   {
     "module": "main",
+    "source": "dol/ARGetDMAStatus.c",
+    "symbols": [
+      "ARGetDMAStatus"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/BlockReadCallback.c",
     "symbols": [
       "BlockReadCallback"
@@ -1732,6 +1742,16 @@
     "source": "dol/DVDClose.c",
     "symbols": [
       "DVDClose"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/DVDGetCommandBlockStatus.c",
+    "symbols": [
+      "DVDGetCommandBlockStatus"
     ],
     "status": "matching",
     "mw_version": null,
@@ -1802,6 +1822,16 @@
     "source": "dol/GXInitTlutRegion.c",
     "symbols": [
       "GXInitTlutRegion"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/GXInvalidateTexAll.c",
+    "symbols": [
+      "GXInvalidateTexAll"
     ],
     "status": "matching",
     "mw_version": null,
@@ -2079,6 +2109,16 @@
   },
   {
     "module": "main",
+    "source": "dol/VIGetDTVStatus.c",
+    "symbols": [
+      "VIGetDTVStatus"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/_ExitProcess.c",
     "symbols": [
       "_ExitProcess"
@@ -2162,6 +2202,16 @@
     "source": "dol/__DVDLowSetWAType.c",
     "symbols": [
       "__DVDLowSetWAType"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/__DVDStoreErrorCode.c",
+    "symbols": [
+      "__DVDStoreErrorCode"
     ],
     "status": "matching",
     "mw_version": null,
@@ -3129,6 +3179,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80020ABC.c",
+    "symbols": [
+      "fn_80020ABC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80020E3C.c",
     "symbols": [
       "fn_80020E3C"
@@ -3432,6 +3492,16 @@
     "source": "dol/fn_8002361C.c",
     "symbols": [
       "fn_8002361C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80024E3C.c",
+    "symbols": [
+      "fn_80024E3C"
     ],
     "status": "matching",
     "mw_version": null,
@@ -4022,6 +4092,16 @@
     "source": "dol/fn_80038F10.c",
     "symbols": [
       "fn_80038F10"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80039B0C.c",
+    "symbols": [
+      "fn_80039B0C"
     ],
     "status": "matching",
     "mw_version": null,
