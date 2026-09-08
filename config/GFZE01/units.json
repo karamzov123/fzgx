@@ -1086,7 +1086,7 @@
       "fn_1_131154"
     ],
     "status": "nonmatching",
-    "mw_version": null,
+    "mw_version": "GC/1.3.2",
     "extra_cflags": []
   },
   {
@@ -2565,7 +2565,7 @@
     "symbols": [
       "fn_1_61760"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
