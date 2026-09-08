@@ -15,8 +15,8 @@ extern void fn_80007AB4(u32 *arg0);
 extern void fn_1_9CC6C(void *arg0, s32 arg1);
 extern void lbl_8006D7B0(s32);
 extern s32 lbl_8006D24C(f32, f32);
-extern void fn_8006E324(s16);
-extern void fn_8006E398(s32);
+extern void mathutil_mtxA_rotate_x(s16);
+extern void mathutil_mtxA_rotate_y(s32);
 extern s32 strlen(const char *);
 extern s32 fn_8006FC5C(const char *, const char *, s32);
 extern s32 fn_8006FC1C(const char *, const char *);
@@ -399,12 +399,12 @@ void fn_1_9CCE8(s32 arg0) {
     case 2:
         fn_8006E294(&value);
         result = lbl_8006D24C(value.z, value.y);
-        fn_8006E324((s16)(result - 0x4000));
+        mathutil_mtxA_rotate_x((s16)(result - 0x4000));
         break;
     case 3:
         fn_8006E294(&value);
         result = lbl_8006D24C(value.x, value.z);
-        fn_8006E398(result);
+        mathutil_mtxA_rotate_y(result);
         break;
     default:
         break;

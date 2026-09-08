@@ -2,7 +2,7 @@
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/spline.h"
 
-extern void fn_8006E540(f32 *, f32 *, f32 *);
+extern void mathutil_quat_mult(f32 *, f32 *, f32 *);
 extern void fn_1_F56F8(f32 *out, f32 *in);
 extern const f32 lbl_1_rodata_6D78;
 extern void fn_1_F57A8(f32 *out, f32 *in);
@@ -70,8 +70,8 @@ void fn_1_F55C4(f32 *out, f32 *arg1, f32 *in, f32 *arg3) {
     temp[1] = -in[1];
     temp[2] = -in[2];
     temp[3] = in[3];
-    fn_8006E540(out, temp, arg1);
-    fn_8006E540(temp, temp, arg3);
+    mathutil_quat_mult(out, temp, arg1);
+    mathutil_quat_mult(temp, temp, arg3);
     fn_1_F56F8(out, out);
     fn_1_F56F8(temp, temp);
     out[0] += temp[0];
@@ -83,7 +83,7 @@ void fn_1_F55C4(f32 *out, f32 *arg1, f32 *in, f32 *arg3) {
     out[2] /= lbl_1_rodata_6D78;
     out[3] /= lbl_1_rodata_6D78;
     fn_1_F57A8(out, out);
-    fn_8006E540(out, in, out);
+    mathutil_quat_mult(out, in, out);
 }
 /* fzgx:end fn_1_F55C4 */
 

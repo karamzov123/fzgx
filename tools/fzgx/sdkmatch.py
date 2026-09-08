@@ -148,15 +148,16 @@ def run(p: Project, sdk: str = "build/tools/mkdd", mw: str = "GC/1.2.5n", min_si
     return out
 
 
-def apply_names(p: Project, sdks=("tww", "mkdd")) -> Dict[str, object]:
+def apply_names(p: Project, sdks=None) -> Dict[str, object]:
     """Name every unnamed DOL function the signature runs identified (first SDK wins);
     a static that several SDK files define gets its source file as a suffix. Names that
     dtk already assigned are never touched. Link-verified through rename_many."""
     import re
     from .tu import rename_many
     union: Dict[str, dict] = {}
-    for s in sdks:
-        path = ROOT / "state" / "seeds" / f"sdkmatch_{s}.json"
+    paths = ([ROOT / "state" / "seeds" / f"sdkmatch_{s}.json" for s in sdks] if sdks
+             else sorted((ROOT / "state" / "seeds").glob("sdkmatch_*.json")))
+    for path in paths:  # exact SDK sources first (tww, mkdd), engine vocabulary last
         if not path.exists():
             continue
         for r in json.loads(path.read_text())["hits"]:
