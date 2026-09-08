@@ -2165,7 +2165,7 @@
     "symbols": [
       "fn_1_55FD0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
