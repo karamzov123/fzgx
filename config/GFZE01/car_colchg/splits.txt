@@ -56,3 +56,6 @@ rel/car_colchg/car_colchg/fn_9_1AC4.c:
 
 rel/car_colchg/car_colchg/fn_9_1BCC.c:
 	.text       start:0x00001BCC end:0x00001C54
+
+rel/car_colchg/car_colchg/fn_9_1C54.c:
+	.text       start:0x00001C54 end:0x00001CB0

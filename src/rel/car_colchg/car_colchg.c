@@ -406,3 +406,30 @@ void fn_9_1BCC(void) {
     fn_1_80C18(lbl_9_bss_4, entries, 0x29);
 }
 /* fzgx:end fn_9_1BCC */
+
+/* fzgx:begin fn_9_1C54 */
+struct CarColchgEntry {
+    u8 pad[0x20];
+    void (*func)(void);
+    u32 value24;
+    u32 value28;
+};
+
+extern struct CarColchgEntry lbl_9_data_1B8[];
+extern s16 lbl_1_bss_962;
+extern u32 lbl_1_bss_71688;
+extern u32 lbl_1_bss_7168C;
+
+void fn_9_1C54(void) {
+    struct CarColchgEntry *entry;
+    s16 index;
+
+    entry = lbl_9_data_1B8;
+    index = lbl_1_bss_962;
+    entry += index - 0x71;
+
+    lbl_1_bss_71688 = entry->value24;
+    lbl_1_bss_7168C = entry->value28;
+    entry->func();
+}
+/* fzgx:end fn_9_1C54 */
