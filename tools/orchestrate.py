@@ -40,6 +40,7 @@ CODEX_PRICES = {"gpt-5.6-luna": (0.20, 0.02, 0.25, 1.20), "gpt-5.6-terra": (2.00
                 "gpt-5.6-sol": (4.00, 0.40, 5.00, 20.00), "gpt-6-astra": (10.00, 1.00, 12.50, 50.00)}
 FAST_MULTIPLIER = 2.0  # "Fast mode" (formerly priority processing) is 2x standard on every line
 CODEX_INSTRUCTIONS = ROOT / "tools" / "codex_matcher.md"  # replaces Codex's 17.7k-char default persona prompt
+CODEX_REVISE_INSTRUCTIONS = ROOT / "tools" / "codex_revise.md"
 CODEX_DISABLE = ["plugins", "recommended_plugins", "plugin_sharing", "remote_plugin", "apps", "browser_use",
                  "browser_use_external", "in_app_browser", "computer_use", "skill_search", "skill_mcp_dependency_install"]
 
@@ -62,8 +63,9 @@ def claude_cmd(symbol: str, agent_id: str, model: str) -> List[str]:
             "--allowedTools", ",".join(MATCHER_TOOLS)]
 
 
-def codex_cmd(symbol: str, agent_id: str, model: str, fast: bool = False) -> List[str]:
-    prompt = f"SYMBOL={symbol}  AGENT_ID={agent_id}. Match this function following your loop."
+def codex_cmd(symbol: str, agent_id: str, model: str, fast: bool = False, revise: bool = False) -> List[str]:
+    prompt = (f"SYMBOL={symbol}  AGENT_ID={agent_id}. Rewrite this matched function for readability following your loop."
+              if revise else f"SYMBOL={symbol}  AGENT_ID={agent_id}. Match this function following your loop.")
     # --ignore-user-config: no user MCP servers/skills (480k -> 125k input tokens on a smoke test)
     cmd = ["codex", "exec", "--json", "--skip-git-repo-check", "--ignore-user-config", "-s", "read-only",
            "-m", model]
@@ -73,7 +75,7 @@ def codex_cmd(symbol: str, agent_id: str, model: str, fast: bool = False) -> Lis
     if fast:
         cmd += ["-c", 'service_tier="fast"']
     # context trims measured on a smoke run: 13.3k -> ~8k tokens on the first call
-    cmd += ["-c", f'model_instructions_file="{CODEX_INSTRUCTIONS}"',   # our contract instead of the persona prompt
+    cmd += ["-c", f'model_instructions_file="{CODEX_REVISE_INSTRUCTIONS if revise else CODEX_INSTRUCTIONS}"',
             "-c", "skills.include_instructions=false",                 # no <skills_instructions> block
             "-c", "project_doc_max_bytes=0",                            # no AGENTS.md concatenation (global + repo)
             "-c", 'mcp_servers.fzgx.enabled_tools=["claim","write_unit","check","submit","release"]',
@@ -146,9 +148,12 @@ def parse_codex(out: str, fast: bool = False) -> Dict:
 
 
 def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout: int, batch: str,
-            shadow: bool = False, fast: bool = False) -> Dict:
-    agent_id = f"{'shadow-' if shadow else ''}{batch}-{harness}-{idx}"
-    cmd = claude_cmd(symbol, agent_id, model) if harness == "claude" else codex_cmd(symbol, agent_id, model, fast)
+            shadow: bool = False, fast: bool = False, revise: bool = False) -> Dict:
+    prefix = "revise-" if revise else ("shadow-" if shadow else "")
+    agent_id = f"{prefix}{batch}-{harness}-{idx}"
+    if harness == "claude" and revise:
+        raise SystemExit("--revise is implemented for the codex harness only")
+    cmd = claude_cmd(symbol, agent_id, model) if harness == "claude" else codex_cmd(symbol, agent_id, model, fast, revise)
     t0 = time.time()
     try:
         cp = subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, timeout=timeout,
@@ -196,6 +201,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--fast", action="store_true", help="codex: service_tier=fast (2x price, faster generation)")
     ap.add_argument("--shadow", action="store_true",
                     help="A/B trial: run on already-matched functions without relinking or committing")
+    ap.add_argument("--revise", action="store_true",
+                    help="rewrite already-matched functions for readability; kept only if still 100%")
     a = ap.parse_args(argv)
     model = a.model or ("haiku" if a.harness == "claude" else "gpt-5.6-luna")
     p = Project()
@@ -210,10 +217,10 @@ def main(argv: Optional[List[str]] = None) -> int:
     if a.dry_run:
         print(" ".join(symbols))
         return 0
-    if not a.no_trivial and not a.shadow:
+    if not a.no_trivial and not a.shadow and not a.revise:
         triv = trivial.apply(p)
         print(f"trivial pass: {triv.get('applied', 0)} matched mechanically")
-    if not a.shadow:
+    if not a.shadow and not a.revise:
         carved = api.carve_many(p, symbols)
         n_new = sum(1 for c in carved if c.get('created'))
         print(f"carved {n_new} new units")
@@ -230,7 +237,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         while queue or futs:
             while queue and len(futs) < a.parallel and (a.budget_usd is None or spent < a.budget_usd):
                 i, s = queue.pop(0)
-                futs[ex.submit(run_one, p, a.harness, model, s, i, a.timeout, a.batch, a.shadow, a.fast)] = s
+                futs[ex.submit(run_one, p, a.harness, model, s, i, a.timeout, a.batch, a.shadow, a.fast, a.revise)] = s
             if not futs:
                 break
             done = next(as_completed(list(futs)))
@@ -261,7 +268,7 @@ def main(argv: Optional[List[str]] = None) -> int:
                "released": len(released), "failed": len(other), "cost_usd": round(spent, 3),
                "wall_s": round(time.time() - t0, 1), "results": results}
     # report + snapshot
-    rep = ROOT / "docs" / "batches" / f"{a.batch}{'-shadow' if a.shadow else ''}.md"
+    rep = ROOT / "docs" / "batches" / f"{a.batch}{'-shadow' if a.shadow else ''}{'-revise' if a.revise else ''}.md"
     lines = [f"# Batch {a.batch}{' (shadow A/B trial)' if a.shadow else ''} — {a.harness}/{model}, {a.parallel} parallel",
              "", f"{len(results)} functions: {len(matched)} matched, {len(released)} released, {len(other)} failed; "
              f"${spent:.2f}; {summary['wall_s']} s wall.", "",
