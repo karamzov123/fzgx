@@ -277,7 +277,7 @@ def normalise(body: str) -> str:
 
 
 def search(p: Project, symbol: str, body: str, budget_s: float = 8.0, max_orders: int = 720,
-           top_k: int = 6, workers: int = WORKERS) -> Dict[str, object]:
+           top_k: int = 6, workers: int = WORKERS, mw_version: Optional[str] = None) -> Dict[str, object]:
     """Returns {"matched", "body", "tried", "best", "secs", "stage", "label"}."""
     t0 = time.time()
     body = normalise(body)
@@ -294,8 +294,10 @@ def search(p: Project, symbol: str, body: str, budget_s: float = 8.0, max_orders
     key = p.key(sym).replace(":", "__")
     root = STATE_DIR / "regalloc" / key
     root.mkdir(parents=True, exist_ok=True)
-    unit = p.unit_for_symbol(sym) if hasattr(p, "unit_for_symbol") else None
-    mw, extra = (unit.get("mw_version"), " ".join(unit.get("extra_cflags") or []) or None) if unit else (None, None)
+    base_src = root / "base.c"; base_src.write_text(body)
+    mw, extra = oracle.version_for(p, sym, base_src)
+    if mw_version:
+        mw = mw_version
 
     def evaluate(texts: List[str]) -> List[Optional[Tuple[float, List[Tuple[int, int, int]]]]]:
         """Batched compile in parallel, masked-word score each; None when it did not compile."""
@@ -335,7 +337,7 @@ def search(p: Project, symbol: str, body: str, budget_s: float = 8.0, max_orders
     def confirm(text: str) -> bool:
         scratch = root / "winner.c"
         scratch.write_text(text)
-        res = oracle.check(p, symbol, 0, source=scratch)
+        res = oracle.check(p, symbol, 0, source=scratch, mw_version=mw)
         return bool(res.ok and (res.matched or res.matched_pool))
 
     base = evaluate([body])[0]

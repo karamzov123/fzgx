@@ -129,7 +129,7 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
     # initializer splits) on a body that is already close; the type families come after
     if base.percent >= 85.0 and _depth == 0:
         from . import regalloc
-        ra = regalloc.search(p, symbol, body, budget_s=min(budget_s, 8.0))
+        ra = regalloc.search(p, symbol, body, budget_s=min(budget_s, 8.0), mw_version=base.mw_version)
         out["regalloc"] = {"tried": ra.get("tried"), "best": ra.get("best"), "secs": ra.get("secs")}
         if ra.get("matched") and ra.get("body"):
             out.update(matched=True, body=ra["body"], tried=ra.get("tried", 0), best=100.0,
@@ -406,7 +406,7 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
         srcs = []
         for i_, t_ in enumerate(texts):
             f = bdir / f"c{i_}.c"; f.write_text(t_); srcs.append(f)
-        objs = oracle.compile_many(p, sym.module, srcs, bdir / "obj") if target and tw else {}
+        objs = oracle.compile_many(p, sym.module, srcs, bdir / "obj", base.mw_version) if target and tw else {}
         res = []
         for i_, t_ in enumerate(texts):
             o = objs.get(srcs[i_])

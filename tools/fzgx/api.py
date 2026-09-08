@@ -434,6 +434,9 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
             cr = carve(p, symbol)
             unit_src = cr.source
             l.db.execute("UPDATE functions SET unit=? WHERE symbol=?", (unit_src, key))
+            # a version the oracle chose among the module's candidates is the unit's version
+            if not mw_version and res.mw_version and res.mw_version != oracle.module_flags(p, sym.module)[1]:
+                mw_version = res.mw_version
             if mw_version or extra_cflags:
                 _set_unit_opts(p, unit_src, mw_version, extra_cflags)
         except Exception as e:

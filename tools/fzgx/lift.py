@@ -1475,21 +1475,30 @@ def apply(p: Project, modules: Optional[List[str]] = None, max_size: int = 160, 
         srcs = []
         for s, size, t in items:
             src = out_dir / (s.replace(":", "__").replace("#", "__v") + ".c"); src.write_text(t); srcs.append(src)
-        objs = oracle.compile_many(p, mod, srcs, out_dir / "obj" / mod)
+        cands = oracle.version_candidates(p, mod)
+        per_ver = {ver: oracle.compile_many(p, mod, srcs, out_dir / "obj" / mod / ver.replace("/", "_"), ver) for ver in cands}
         for (s, size, t), src in zip(items, srcs):
-            o = objs.get(src)
             s = s.split("#")[0]  # a layout variant of the same function
             sym = p.resolve(s)
             target = p.target_object_for(sym) if sym else None
-            if o is None or target is None:
+            if target is None:
                 results.append((s, size, t, False, -1)); continue
-            tw_, ow_ = oracle.words(target, sym.name), oracle.words(o, sym.name)
-            if not tw_ or not ow_:
+            tw_ = oracle.words(target, sym.name)
+            best = None
+            for ver in cands:
+                o = per_ver[ver].get(src)
+                ow_ = oracle.words(o, sym.name) if o else None
+                if not tw_ or not ow_:
+                    continue
+                pct_, bad_ = oracle.word_score(tw_, ow_)
+                if best is None or pct_ > best[0]:
+                    best = (pct_, ver, bad_, ow_)
+            if best is None:
                 results.append((s, size, t, False, -1)); continue
-            pct, bad_ = oracle.word_score(tw_, ow_)
+            pct, ver, bad_, ow_ = best
             ok_ = not bad_ and len(ow_) == len(tw_)
             if ok_:
-                r = oracle.check(p, s, 4, source=src)
+                r = oracle.check(p, s, 4, source=src, mw_version=ver)
                 ok_ = r.ok and (r.matched or r.matched_pool) and oracle.unit_fully_matches(r) is None
             results.append((s, size, t, ok_, pct))
     # near misses get the deterministic fixup (type flips, symbol substitutions, layout edits)

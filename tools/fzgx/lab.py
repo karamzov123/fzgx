@@ -243,7 +243,8 @@ def run(p: Project, min_pct: float = 97.0, limit: int = 400, budget_s: float = 6
         for i, (fam, label, text) in enumerate(pert):
             f = bdir / f"c{i}.c"; f.write_text(text); srcs.append(f)
         base_src = bdir / "base.c"; base_src.write_text(body)
-        objs = oracle.compile_many(p, sym.module, [base_src] + srcs, bdir / "obj")
+        mw, extra = oracle.version_for(p, sym, base_src)
+        objs = oracle.compile_many(p, sym.module, [base_src] + srcs, bdir / "obj", mw, extra)
         tw = oracle.words(tgt, sym.name)
         bw = oracle.words(objs[base_src], sym.name) if objs.get(base_src) else None
         if not tw or not bw:

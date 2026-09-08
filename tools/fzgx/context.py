@@ -281,12 +281,13 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
                 srcs = []
                 for vi, vt in enumerate(variants):
                     f = ddir / f"{project.key(sym).replace(':', '__')}_{vi}.c"; f.write_text(vt); srcs.append(f)
-                objs = _oracle.compile_many(project, module, srcs, ddir / "obj")
-                for vt, f in zip(variants, srcs):
-                    o = objs.get(f)
-                    rows = _oracle.function_rows(project, symbol, tgt, o) if o else None
-                    if rows and (best is None or rows[2] > best[0]):
-                        best = (rows[2], vt, rows)
+                for ver in _oracle.version_candidates(project, module):
+                    objs = _oracle.compile_many(project, module, srcs, ddir / "obj" / ver.replace("/", "_"), ver)
+                    for vt, f in zip(variants, srcs):
+                        o = objs.get(f)
+                        rows = _oracle.function_rows(project, symbol, tgt, o) if o else None
+                        if rows and (best is None or rows[2] > best[0]):
+                            best = (rows[2], vt, rows)
             if best:
                 pct, vt, (lr, rr, _) = best
                 diffs = [(i, stuck._fmt(a), stuck._fmt(b)) for i, (a, b) in enumerate(zip(lr, rr)) if (a.get("diff_kind") or "DIFF_NONE") != "DIFF_NONE" or (b.get("diff_kind") or "DIFF_NONE") != "DIFF_NONE"]
