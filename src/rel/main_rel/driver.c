@@ -40,6 +40,8 @@ extern void fn_8008069C(void *buffer, char *format, ...);
 extern void fn_1_A5AA0(void *buffer, void *destination);
 extern u32 lbl_1_bss_71670;
 
+extern void (*lbl_1_bss_71684)(void);
+
 /* fzgx:begin fn_1_A7728 */
 typedef struct FnA7728Resource {
     u8 pad_104[0x104];
@@ -349,8 +351,6 @@ void fn_1_A97BC(void) {
 /* fzgx:end fn_1_A97BC */
 
 /* fzgx:begin fn_1_A97E4 */
-extern void (*lbl_1_bss_71684)(void);
-
 void fn_1_A97E4(void) {
     lbl_1_bss_71684();
 }
