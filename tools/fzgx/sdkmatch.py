@@ -62,8 +62,14 @@ def function_hashes(obj: Path, min_size: int) -> Dict[str, Tuple[str, int]]:
     return out
 
 
-def compile_sdk(sdk: Path, mw: str, out_dir: Path):
-    """Compile every SDK/runtime source; returns ([(source, object)], [failed sources])."""
+SMB_FLAGS = ["-O4,p", "-inline", "auto", "-nodefaults", "-proc", "gekko", "-fp", "hard", "-Cpp_exceptions", "off",
+             "-enum", "int", "-pragma", "cats off", "-maxerrors", "1", "-nosyspath"]
+FLAG_SETS = {"dolphin": DOLPHIN_FLAGS, "runtime": RUNTIME_FLAGS, "smb": SMB_FLAGS}
+
+
+def compile_sdk(sdk: Path, mw: str, out_dir: Path, roots=None):
+    """Compile every SDK/runtime source (or `roots`: [(relative dir, flag set name)]);
+    returns ([(source, object)], [failed sources])."""
     wibo = ROOT / "build/tools/wibo"
     mwcc = ROOT / "build/compilers" / mw / "mwcceppc.exe"
     incs = []
@@ -77,9 +83,11 @@ def compile_sdk(sdk: Path, mw: str, out_dir: Path):
         if rel not in incs:
             incs += ["-i", rel]
     jobs = []
-    for rel, flags in (("libs/dolphin", DOLPHIN_FLAGS), ("src/dolphin", DOLPHIN_FLAGS),
-                       ("libs/PowerPC_EABI_Support", RUNTIME_FLAGS), ("src/PowerPC_EABI_Support", RUNTIME_FLAGS),
-                       ("libs/runtime_libs", RUNTIME_FLAGS), ("src/MetroTRK", RUNTIME_FLAGS)):
+    plan = [(r, FLAG_SETS[f]) for r, f in roots] if roots else [
+        ("libs/dolphin", DOLPHIN_FLAGS), ("src/dolphin", DOLPHIN_FLAGS),
+        ("libs/PowerPC_EABI_Support", RUNTIME_FLAGS), ("src/PowerPC_EABI_Support", RUNTIME_FLAGS),
+        ("libs/runtime_libs", RUNTIME_FLAGS), ("src/MetroTRK", RUNTIME_FLAGS)]
+    for rel, flags in plan:
         root = sdk / rel
         if root.exists():
             jobs += [(src, flags) for src in sorted(root.rglob("*.c"))]
@@ -100,9 +108,10 @@ def compile_sdk(sdk: Path, mw: str, out_dir: Path):
     return done, failed
 
 
-def run(p: Project, sdk: str = "build/tools/mkdd", mw: str = "GC/1.2.5n", min_size: int = 16) -> Dict[str, object]:
+def run(p: Project, sdk: str = "build/tools/mkdd", mw: str = "GC/1.2.5n", min_size: int = 16,
+        roots=None) -> Dict[str, object]:
     sdk_dir = ROOT / sdk
-    done, failed = compile_sdk(sdk_dir, mw, p.build_dir / "sdkmatch" / Path(sdk).name)
+    done, failed = compile_sdk(sdk_dir, mw, p.build_dir / "sdkmatch" / Path(sdk).name, roots)
     sdk_hashes: Dict[str, List[tuple]] = defaultdict(list)
     for rel, obj in done:
         for name, (h, size) in function_hashes(obj, min_size).items():

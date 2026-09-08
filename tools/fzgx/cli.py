@@ -275,7 +275,8 @@ def cmd_sdkmatch(a, p):
     if a.apply:
         r = sdkmatch.apply_names(p)
         print(json.dumps(r, indent=1)); return 0 if r.get("ok") else 1
-    r = sdkmatch.run(p, a.sdk, a.mw, a.min_size)
+    roots = [tuple(x.split(":", 1)) for x in a.roots] if a.roots else None
+    r = sdkmatch.run(p, a.sdk, a.mw, a.min_size, roots)
     print(json.dumps({k: r[k] for k in ("compiled", "sdk_functions", "dol_functions", "summary")}, indent=1))
     print(f"failed to compile: {len(r['failed'])}", r["failed"][:8])
     return 0
@@ -405,6 +406,7 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("sdkmatch", help="identify SDK/runtime functions in the DOL by masked-byte signatures of a compiled public SDK decomp"); s.set_defaults(fn=cmd_sdkmatch)
     s.add_argument("--sdk", default="build/tools/mkdd"); s.add_argument("--mw", default="GC/1.2.5n"); s.add_argument("--min-size", type=int, default=16)
     s.add_argument("--apply", action="store_true", help="name the identified unnamed DOL functions from the saved runs (link-verified)")
+    s.add_argument("--roots", nargs="*", help="dir:flagset pairs to compile instead of the SDK layout, e.g. src:smb")
     s = sub.add_parser("gen", help="regenerate every per-function unit from the TU files"); s.set_defaults(fn=cmd_gen)
     s = sub.add_parser("permute", help="decomp-permuter on a plateaued attempt; submits on a byte-identical result"); s.set_defaults(fn=cmd_permute)
     s.add_argument("symbol", nargs="?"); s.add_argument("--threads", type=int, default=8); s.add_argument("--seconds", type=int, default=600)
