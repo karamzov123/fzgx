@@ -613,8 +613,7 @@ def sweep_attempts(p: Project, module: Optional[str] = None, min_percent: float 
         text = _attempt_text(p, key)
         if not text or sym.name not in text:
             continue
-        if not p.unit_of(sym):
-            carve_many(p, [key])
+        # no carve before a match: check diffs the saved body against the retail auto object
         work = p.work_path(key)
         work.parent.mkdir(parents=True, exist_ok=True)
         work.write_text(text)

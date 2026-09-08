@@ -74,9 +74,9 @@ def verify(p: Project, message: Optional[str] = None) -> Dict[str, object]:
                     "the tree is broken independently of them (byte-diff the REL); nothing changed",
                     "verified": [], "rejected": []}
         good, bad = _bisect(p, list(units.keys()), units)
-        # final state: good units Matching, bad units back to stubs/nonmatching; relink once more if we bisected
+        # final state: good units Matching, bad units uncarved (no unit without matched code); relink once more if we bisected
         if bad:
-            _set_status(p, [units[k] for k in bad], "nonmatching")
+            from .uncarve import uncarve
             for k in bad:
                 keep = STATE_DIR / "attempts" / f"{k}.linkfail.{int(time.time())}.c"
                 keep.parent.mkdir(parents=True, exist_ok=True)
@@ -85,11 +85,12 @@ def verify(p: Project, message: Optional[str] = None) -> Dict[str, object]:
                     keep.write_text(tufile.remove(p, rec) or "")
                 else:
                     src = ROOT / "src" / units[k]
-                    keep.write_bytes(src.read_bytes())
-                    src.write_text(STUB.format(symbol=p.resolve(k).name, note=f"link mismatch; body saved to {keep.name}"))
+                    if src.exists():
+                        keep.write_bytes(src.read_bytes())
                 l.db.execute("UPDATE functions SET status='unmatched', link_state=NULL, attempts=attempts+1 WHERE symbol=?", (k,))
                 l.db.execute("UPDATE attempts SET outcome='link-mismatch', notes=COALESCE(notes,'')||' [object matched but link differed]' "
                              "WHERE id=(SELECT id FROM attempts WHERE symbol=? ORDER BY id DESC LIMIT 1)", (k,))
+            uncarve(p, [units[k] for k in bad], split=False)  # the unit, its split range and gen stub
             _set_status(p, [units[k] for k in good], "matching")
             if not _relink(p):
                 return {"ok": False, "error": "relink failed even after bisect; tree left with all pending units nonmatching",

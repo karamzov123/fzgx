@@ -1,4 +1,0 @@
-#include "types.h"
-
-// fn_12_2A674: movie_module .text:0x0002A674 size 0x88
-// Carved by fzgx. Replace this file's body with the matching C.

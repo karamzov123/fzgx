@@ -57,6 +57,15 @@ def cmd_stuck(a, p):
         print(stuck.summary(out))
 
 
+def cmd_uncarve(a, p):
+    from . import uncarve
+    if a.stubs:
+        srcs = [u["source"] for u in uncarve.stubs(p)]
+    else:
+        srcs = a.sources
+    print(json.dumps(uncarve.uncarve(p, srcs)))
+
+
 def cmd_check(a, p):
     r = api.check(p, a.symbol, a.max_diff_lines, a.versions)
     _print(r if a.json else api.format_check(r), a.json)
@@ -434,6 +443,8 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("stuck", help="classify plateaued attempts (>= N%) by failure mode from the object diff"); s.set_defaults(fn=cmd_stuck)
     s.add_argument("--min-percent", type=float, default=80.0); s.add_argument("--module"); s.add_argument("--workers", type=int, default=12)
     s.add_argument("--json", action="store_true")
+    s = sub.add_parser("uncarve", help="drop units that have no matched code (rejected, or every stub with --stubs); re-splits"); s.set_defaults(fn=cmd_uncarve)
+    s.add_argument("sources", nargs="*"); s.add_argument("--stubs", action="store_true")
     s = sub.add_parser("verify", help="relink once for all accepted units, verify hashes, commit; bisect on failure"); s.set_defaults(fn=cmd_verify)
     s.add_argument("--message")
     s = sub.add_parser("compare", help="A/B table for two agent-id prefixes (e.g. b3c-claude vs shadow-b3c-codex)"); s.set_defaults(fn=cmd_compare)

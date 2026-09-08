@@ -58,6 +58,7 @@ Rules that hold for everyone:
   are objects in the link and split ranges in the config; 900 stub units of the DOL made a
   link run for 20 min (139 real units link in seconds, so it was the stubs' mis-sectioned
   `.init` range, not the count as such). Keep units at matched count regardless.
+  `fzgx uncarve --stubs` removes any unit without matched code (verify uncarves what it rejects).
 - `fzgx trivial` matches single-`blr` and `li r3,N; blr` functions mechanically
   (419 landed on 2026-09-08); run it before spending agents on tiny functions.
 - Readability tooling: `fzgx tu-organize` (TU directories from `tus.json`),
