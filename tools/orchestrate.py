@@ -206,6 +206,60 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
             "secs": round(time.time() - t0, 1), "rc": rc}
 
 
+def fan_out(p: Project, a, model: str, symbols: List[str], batch: str, revise: bool) -> tuple:
+    """Run one agent per symbol, `a.parallel` at a time, within `a.budget_usd`."""
+    results: List[Dict] = []
+    spent = 0.0
+    with ThreadPoolExecutor(max_workers=a.parallel) as ex:
+        futs = {}
+        queue = list(enumerate(symbols, 1))
+        while queue or futs:
+            while queue and len(futs) < a.parallel and (a.budget_usd is None or spent < a.budget_usd):
+                i, s = queue.pop(0)
+                futs[ex.submit(run_one, p, a.harness, model, s, i, a.timeout, batch, a.shadow, a.fast, revise)] = s
+            if not futs:
+                break
+            done = next(as_completed(list(futs)))
+            futs.pop(done)
+            r = done.result()
+            results.append(r)
+            spent += r["cost"] or 0.0
+            if r["outcome"].startswith("WRONG-MODEL"):
+                print(f"ABORT: {r['symbol']} ran on {r['outcome']}; expected {EXPECTED_MODEL[a.harness]}", flush=True)
+                queue.clear()
+            print(f"  {r['outcome']:16s} {r['symbol']:14s} {'' if r['percent'] is None else f'{r['percent']:.1f}%':7s} "
+                  f"checks={r['checks'] if r['checks'] is not None else '-'} turns={r['turns'] or '-'} "
+                  f"${r['cost']:.3f} {r['secs']}s", flush=True)
+    return results, spent
+
+
+def finish_round(p: Project, a, model: str, module: str) -> Dict:
+    """The TU-finish pass, a revise round on its queue, the pass again. No hands."""
+    from fzgx import finish  # scoped: only when --finish is used
+    from fzgx.ledger import Ledger  # scoped: same
+    out = {"passes": [], "revise": None}
+    r = finish.finish(p, module)
+    out["passes"].append({k: r[k] for k in ("ok", "tus", "tidied", "hoisted", "flagged", "unflagged", "collapsed", "queue")})
+    print(f"tu-finish {module}: ok={r['ok']} tidied={r['tidied']} hoisted={r['hoisted']} flagged={r['flagged']} "
+          f"unflagged={r['unflagged']} collapsed={r['collapsed']} queue={len(r['queue'])}", flush=True)
+    queue = r["queue"]
+    if queue and a.harness == "codex":
+        l = Ledger()  # blocks released twice by revise agents are the librarian's, not the loop's
+        capped = {row[0] for row in l.db.execute("SELECT symbol FROM attempts WHERE agent LIKE 'revise-%' AND outcome='released' "
+                                                  "GROUP BY symbol HAVING COUNT(*) >= 2")}
+        todo = [s for s in queue if s not in capped]
+        print(f"revise round: {len(todo)} blocks ({len(queue) - len(todo)} at the revise cap)", flush=True)
+        if todo:
+            results, spent = fan_out(p, a, model, todo, f"{a.batch}-revise", True)
+            api.verify_links(p, f"batch {a.batch}: revise round link-verified")
+            out["revise"] = {"n": len(results), "kept": sum(1 for x in results if x["outcome"] == "matched"), "cost_usd": round(spent, 3)}
+            print(f"revise round: {out['revise']['kept']}/{len(results)} kept, ${spent:.2f}", flush=True)
+            r = finish.finish(p, module)
+            out["passes"].append({k: r[k] for k in ("ok", "tus", "tidied", "hoisted", "flagged", "unflagged", "collapsed", "queue")})
+            print(f"tu-finish {module}: ok={r['ok']} collapsed={r['collapsed']} queue={len(r['queue'])}", flush=True)
+    return out
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--harness", choices=["claude", "codex"], default="claude")
@@ -225,12 +279,18 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--fast", action="store_true", help="codex: service_tier=fast (2x price, faster generation)")
     ap.add_argument("--shadow", action="store_true",
                     help="A/B trial: run on already-matched functions without relinking or committing")
+    ap.add_argument("--finish", action="store_true", help="after the batch: TU-finish pass, revise round on its queue, pass again")
+    ap.add_argument("--finish-only", action="store_true", help="no matching batch: just the TU-finish round for --module")
     ap.add_argument("--revise", action="store_true",
                     help="rewrite already-matched functions for readability; kept only if still 100%%")
     a = ap.parse_args(argv)
     model = a.model or ("haiku" if a.harness == "claude" else "gpt-5.6-luna")
     p = Project()
 
+    if a.finish_only:
+        fr = finish_round(p, a, model, a.module)
+        print(json.dumps(fr, indent=1))
+        return 0 if all(x["ok"] for x in fr["passes"]) else 1
     symbols = list(a.symbols)
     if a.select:
         symbols += select(p, a.select)
@@ -254,29 +314,8 @@ def main(argv: Optional[List[str]] = None) -> int:
             subprocess.run(["git", "add", "src", "config"], cwd=ROOT, capture_output=True)
             subprocess.run(["git", "commit", "-q", "-m", f"carve: {n_new} units for batch {a.batch}"], cwd=ROOT, capture_output=True)
 
-    results: List[Dict] = []
-    spent = 0.0
     t0 = time.time()
-    with ThreadPoolExecutor(max_workers=a.parallel) as ex:
-        futs = {}
-        queue = list(enumerate(symbols, 1))
-        while queue or futs:
-            while queue and len(futs) < a.parallel and (a.budget_usd is None or spent < a.budget_usd):
-                i, s = queue.pop(0)
-                futs[ex.submit(run_one, p, a.harness, model, s, i, a.timeout, a.batch, a.shadow, a.fast, a.revise)] = s
-            if not futs:
-                break
-            done = next(as_completed(list(futs)))
-            futs.pop(done)
-            r = done.result()
-            results.append(r)
-            spent += r["cost"] or 0.0
-            if r["outcome"].startswith("WRONG-MODEL"):
-                print(f"ABORT: {r['symbol']} ran on {r['outcome']}; expected {EXPECTED_MODEL[a.harness]}", flush=True)
-                queue.clear()
-            print(f"  {r['outcome']:16s} {r['symbol']:14s} {'' if r['percent'] is None else f'{r['percent']:.1f}%':7s} "
-                  f"checks={r['checks'] if r['checks'] is not None else '-'} turns={r['turns'] or '-'} "
-                  f"${r['cost']:.3f} {r['secs']}s", flush=True)
+    results, spent = fan_out(p, a, model, symbols, a.batch, a.revise)
     ver = {"verified": [], "rejected": []}
     if not a.shadow:
         ver = api.verify_links(p, f"batch {a.batch}: link-verified matches")
@@ -285,6 +324,9 @@ def main(argv: Optional[List[str]] = None) -> int:
         for r in results:
             if r["outcome"] == "matched" and r["symbol"] in ver.get("rejected", []):
                 r["outcome"] = "link-mismatch"
+    finish_result = None
+    if a.finish and not a.shadow:
+        finish_result = finish_round(p, a, model, a.module)
     matched = [r for r in results if r["outcome"] == "matched"]
     released = [r for r in results if r["outcome"].startswith("released")]
     other = [r for r in results if r not in matched and r not in released]
@@ -292,7 +334,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     summary = {"batch": a.batch, "harness": a.harness, "model": model + (" (fast)" if a.fast else ""), "models_seen": models, "n": len(results), "matched": len(matched),
                "link_rejected": len(ver.get("rejected", [])),
                "released": len(released), "failed": len(other), "cost_usd": round(spent, 3),
-               "wall_s": round(time.time() - t0, 1), "results": results}
+               "wall_s": round(time.time() - t0, 1), "finish": finish_result, "results": results}
     # report + snapshot
     rep = ROOT / "docs" / "batches" / f"{a.batch}{'-shadow' if a.shadow else ''}{'-revise' if a.revise else ''}.md"
     lines = [f"# Batch {a.batch}{' (shadow A/B trial)' if a.shadow else ''} — {a.harness}/{model}, {a.parallel} parallel",

@@ -263,6 +263,13 @@ def cmd_tu_reflag(a, p):
     _print({"tus": len(tus), "flagged": tot_f, "unflagged": tot_u}, a.json); return 0
 
 
+def cmd_tu_finish(a, p):
+    from . import finish  # scoped: the whole pass only when asked
+    r = finish.finish(p, a.module)
+    r.pop("results", None) if not a.verbose else None
+    _print(r, a.json); return 0 if r.get("ok") else 1
+
+
 def cmd_gen(a, p):
     from . import tufile  # scoped: same
     print(f"{tufile.regenerate(p)} generated units")
@@ -382,6 +389,8 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("tu"); s.add_argument("--plan", action="store_true", help="compute the ranges only"); s.add_argument("--keep", action="store_true", help="keep the collapsed config even if the hash fails")
     s = sub.add_parser("tu-reflag", help="after a header change: flag blocks that stopped compiling under the prologue, unflag those that compile again"); s.set_defaults(fn=cmd_tu_reflag)
     s.add_argument("tu", nargs="?")
+    s = sub.add_parser("tu-finish", help="one pass over every TU of a module: include, tidy, hoist, reflag, collapse complete TUs; prints the revise queue"); s.set_defaults(fn=cmd_tu_finish)
+    s.add_argument("--module", default="main_rel"); s.add_argument("-v", "--verbose", action="store_true")
     s = sub.add_parser("gen", help="regenerate every per-function unit from the TU files"); s.set_defaults(fn=cmd_gen)
     s = sub.add_parser("permute", help="decomp-permuter on a plateaued attempt; submits on a byte-identical result"); s.set_defaults(fn=cmd_permute)
     s.add_argument("symbol", nargs="?"); s.add_argument("--threads", type=int, default=8); s.add_argument("--seconds", type=int, default=600)
