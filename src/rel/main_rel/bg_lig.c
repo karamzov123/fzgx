@@ -136,6 +136,57 @@ void fn_1_D744C(void) {
 }
 /* fzgx:end fn_1_D744C */
 
+/* fzgx:begin fn_1_D74C4 noprologue */
+#include "rel/main_rel/bg_lig.h"
+
+extern Obj_1_data_2A7E0_At3C *fn_1_9D260(void);
+extern void fn_1_9AD54(void);
+extern s32 fn_1_58C4(void);
+extern void fn_1_5948(s32 index);
+extern void fn_1_D83E4(Obj_1_data_2A7E0_At3C *obj, s32 index);
+extern void fn_1_627C(s32 index);
+extern void fn_1_D7A10(Obj_1_data_2A7E0_At3C *obj);
+extern void fn_1_D8D58(Obj_1_data_2A7E0_At3C *obj, Obj_1_data_2A7E0_At3C *arg);
+extern void fn_1_D9D8C(Obj_1_bss_7AD78 *obj, u32 arg, s32 index);
+extern void fn_1_DA3A0(Obj_1_bss_7AD78 *obj);
+extern void fn_1_E87FC(void);
+
+void fn_1_D74C4(void)
+{
+  Obj_1_data_2A7E0_At3C *obj;
+  Obj_1_data_2A7E0_At3C *arg;
+  s32 count;
+  s32 i;
+  obj = lbl_1_data_2A7E0.unk_3C;
+  arg = fn_1_9D260();
+  fn_1_9AD54();
+  count = fn_1_58C4();
+  i = 0;
+  while (i < count)
+  {
+    fn_1_5948(i);
+    fn_1_D83E4(obj, i);
+    fn_1_627C(i);
+    i++;
+  }
+
+  fn_1_D7A10(obj);
+  fn_1_D8D58(obj, arg);
+  if (obj->unk_1C58 != 0)
+  {
+    fn_1_D9D8C(&lbl_1_bss_7AD78, obj->unk_1C58, 0);
+    fn_1_DA3A0(&lbl_1_bss_7AD78);
+  }
+  if (obj->unk_1C5C != 0)
+  {
+    Obj_1_bss_7AD78 *tmp;
+    fn_1_D9D8C((Obj_1_bss_7AD78 *) (((u8 *) (&lbl_1_bss_7AD78)) + 0x20), obj->unk_1C5C, 1);
+    fn_1_DA3A0((Obj_1_bss_7AD78 *) (((u8 *) (&lbl_1_bss_7AD78)) + 0x20));
+  }
+  lbl_1_data_2A7E0.unk_2C = (u32) fn_1_E87FC;
+}
+/* fzgx:end fn_1_D74C4 */
+
 /* fzgx:begin fn_1_D7688 */
 extern void fn_1_D8784(Obj_1_data_2A7E0_At3C *obj);
 extern void fn_1_D8EEC(Obj_1_data_2A7E0_At3C *obj, void *value);

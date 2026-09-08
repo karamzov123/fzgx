@@ -326,6 +326,32 @@ void fn_1_5B6F0(void) {
 }
 /* fzgx:end fn_1_5B6F0 */
 
+/* fzgx:begin fn_1_5B780 */
+extern const f32 lbl_1_rodata_29A4;
+
+typedef struct Fn15B780 {
+    u8 state;
+    u8 _pad01[0x0f];
+    int current;
+    int maximum;
+    u8 _pad18[0x94];
+    s16 step;
+    u8 _padAE[0x04];
+    f32 result;
+} Fn15B780;
+
+void fn_1_5B780(Fn15B780 *effect) {
+    effect->state = 2;
+    if (effect->current <= effect->maximum) {
+        effect->step += 2;
+        if (effect->step >= 14) {
+            effect->step = 14;
+        }
+    }
+    effect->result = lbl_1_rodata_29A4 * (f32)effect->current;
+}
+/* fzgx:end fn_1_5B780 */
+
 /* fzgx:begin fn_1_5BF6C */
 // fn_1_5BF6C: empty in retail (single blr).
 void fn_1_5BF6C(void) {

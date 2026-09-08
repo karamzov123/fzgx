@@ -1259,6 +1259,17 @@ s32 fn_1_14FD6C(s32 *arg0, s32 *arg1) {
 }
 /* fzgx:end fn_1_14FD6C */
 
+/* fzgx:begin fn_1_14FD7C noprologue */
+#include "types.h"
+
+extern void fn_1_14FD6C(void);
+extern void fn_8008279C(void* arg0, s32 arg1, s32 arg2, void* callback);
+
+void fn_1_14FD7C(void* arg0, s16 arg1) {
+    fn_8008279C(arg0, arg1, 4, fn_1_14FD6C);
+}
+/* fzgx:end fn_1_14FD7C */
+
 /* fzgx:begin fn_1_150500 */
 void fn_1_150500(void) {
     lbl_1_data_2A7E0.unk_3C->unk_0 = 0;

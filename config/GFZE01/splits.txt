@@ -233,6 +233,9 @@ dol/fn_80047834.c:
 dol/fn_8004A550.c:
 	.text       start:0x8004A550 end:0x8004A560
 
+dol/fn_8004B0EC.c:
+	.text       start:0x8004B0EC end:0x8004B180
+
 dol/fn_8004B79C.c:
 	.text       start:0x8004B79C end:0x8004B7A0
 
@@ -245,11 +248,17 @@ dol/fn_8004BBC8.c:
 dol/fn_8004E190.c:
 	.text       start:0x8004E190 end:0x8004E198
 
+dol/fn_8004E238.c:
+	.text       start:0x8004E238 end:0x8004E270
+
 dol/fn_8004E2B0.c:
 	.text       start:0x8004E2B0 end:0x8004E2CC
 
 dol/fn_8004E300.c:
 	.text       start:0x8004E300 end:0x8004E324
+
+dol/fn_8004E8A0.c:
+	.text       start:0x8004E8A0 end:0x8004E8F8
 
 dol/fn_8004ED80.c:
 	.text       start:0x8004ED80 end:0x8004ED84
@@ -293,6 +302,9 @@ dol/fn_8006A9AC.c:
 dol/fn_8006CD2C.c:
 	.text       start:0x8006CD2C end:0x8006CD40
 
+dol/fn_8006FEFC.c:
+	.text       start:0x8006FEFC end:0x8006FF8C
+
 dol/fn_8006FF8C.c:
 	.text       start:0x8006FF8C end:0x8006FFBC
 
@@ -322,6 +334,9 @@ dol/__begin_critical_region.c:
 
 dol/__kill_critical_regions.c:
 	.text       start:0x8007ED8C end:0x8007ED90
+
+dol/fn_8007ED90.c:
+	.text       start:0x8007ED90 end:0x8007EDB4
 
 dol/fn_80083CF4.c:
 	.text       start:0x80083CF4 end:0x80083D40

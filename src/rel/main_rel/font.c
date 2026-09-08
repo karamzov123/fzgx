@@ -204,6 +204,37 @@ void fn_1_4966C(f32 value1, f32 value2) {
 }
 /* fzgx:end fn_1_4966C */
 
+/* fzgx:begin fn_1_49680 noprologue */
+#include "types.h"
+
+extern u32 lbl_1_bss_4B9CC[23];
+extern u32 lbl_1_data_1AEA8[616];
+extern f64 lbl_1_rodata_10E0[3];
+
+typedef struct {
+    u8 pad0[4];
+    u8 value1;
+    u8 value2;
+    u8 pad6[0x2e];
+    f32 scale;
+} TableEntry;
+
+void fn_1_49680(f32 value1, f32 value2) {
+    TableEntry *entry;
+    s16 index;
+    f32 result1;
+    f32 result2;
+
+    index = *(s16 *)((u8 *)lbl_1_bss_4B9CC + 0xc);
+    entry = (TableEntry *)((u8 *)lbl_1_data_1AEA8 + index * 0x38);
+    result1 = entry->scale * (value1 * (f32)entry->value1);
+    result2 = entry->scale * (value2 * (f32)entry->value2);
+    *(f32 *)((u8 *)lbl_1_bss_4B9CC + 0x4) = result1;
+    *(f32 *)((u8 *)lbl_1_bss_4B9CC + 0x0) = result1;
+    *(f32 *)((u8 *)lbl_1_bss_4B9CC + 0x8) = result2;
+}
+/* fzgx:end fn_1_49680 */
+
 /* fzgx:begin fn_1_496FC */
  // Store the two font coordinates in the shared state.
 void fn_1_496FC(f32 value1, f32 value2) {
@@ -538,12 +569,135 @@ void fn_1_4E6F4(void) {
 }
 /* fzgx:end fn_1_4E6F4 */
 
+/* fzgx:begin fn_1_4E724 noprologue */
+#include "types.h"
+#include "rel/main_rel/font.h"
+
+typedef struct FontParams {
+    u8 unk_00[0x30];
+    u32 unk_30;
+    f32 unk_34;
+    u8 unk_38[0x58 - 0x38];
+} FontParams;
+
+extern void fn_1_A71CC(void);
+extern void fn_800724C8(void);
+extern void fn_8007245C(u32);
+extern void fn_80074788(u32);
+extern void fn_80074660(u32);
+extern void fn_80073678(u32);
+extern void fn_80073898(u32);
+extern void fn_80073C6C(u32);
+extern void fn_800745A4(u32, u32, u32, u32, u32, u32);
+extern void fn_800734A8(u32, u32, u32, u32);
+extern void fn_80072AB0(u32, u32, u32);
+extern void fn_80072C24(u32, u32, u32, u32, u32);
+extern void fn_80072D64(u32, u32, u32, u32, u32, u32);
+extern void fn_80072CC4(u32, u32, u32, u32, u32);
+extern void fn_80072E20(u32, u32, u32, u32, u32, u32);
+extern void fn_80074918(u32, u32, u32);
+extern void fn_800728A8(u32, u32, u32, u32);
+extern void fn_800720B0(u32);
+extern void fn_80072864(u32);
+extern void lbl_8006D758(void);
+extern void fn_80072558(void);
+
+extern s32 fn_1_4EC74(FontParams *);
+extern s32 fn_1_4EB74(FontParams *);
+extern void fn_1_A722C(void);
+
+extern u8 *lbl_801A6D00;
+
+s32 fn_1_4E724(FontParams *arg) {
+    FontParams local = *arg;
+    s32 ret;
+
+    fn_1_A71CC();
+    fn_800724C8();
+    fn_8007245C(0x2200);
+    fn_80074788(0);
+    fn_80074660(1);
+    fn_80073678(1);
+    fn_80073898(0);
+    fn_80073C6C(0);
+    fn_800745A4(0, 1, 4, 0x3c, 0, 0x7d);
+    fn_800734A8(0, 0, 0, 0xff);
+    fn_80072AB0(0, 0, 0);
+    fn_80072C24(0, 0xf, 2, 8, 4);
+    fn_80072D64(0, 0, 0, 0, 1, 0);
+    fn_80072CC4(0, 7, 1, 4, 2);
+    fn_80072E20(0, 0, 0, 0, 1, 0);
+    fn_80074918(1, 7, 0);
+    fn_800728A8(1, 4, 5, 0);
+    fn_800720B0(0);
+    fn_80072864(2);
+    lbl_8006D758();
+    fn_80072558();
+
+    if ((s32)lbl_1_bss_4E6A8 != 0) {
+        local.unk_30 |= 0x08000000;
+        local.unk_34 = (f32)(s32)lbl_1_bss_4E6AC;
+    }
+
+    lbl_801A6D00[0x197] = 0xff;
+
+    if (local.unk_30 & 0x00800000) {
+        ret = fn_1_4EC74(&local);
+    } else {
+        ret = fn_1_4EB74(&local);
+    }
+
+    fn_1_A722C();
+    fn_80074918(1, 3, 1);
+
+    return ret;
+}
+/* fzgx:end fn_1_4E724 */
+
 /* fzgx:begin fn_1_4F724 */
 // Clear the font state value before the next initialization.
 void fn_1_4F724(void) {
     lbl_1_bss_646D2.unk_0 = 0;
 }
 /* fzgx:end fn_1_4F724 */
+
+/* fzgx:begin fn_1_4FC50 */
+typedef struct {
+    u32 unk_0;
+} InputObject;
+
+extern void fn_80008BA8(void *, void *, u32);
+extern const f64 lbl_1_rodata_2778[2];
+
+s32 fn_1_4FC50(InputObject *obj, u32 arg1, u16 arg2, u16 arg3, u32 arg4) {
+    Obj_1_data_1C504_Target *entry;
+    u16 index;
+
+    if (obj->unk_0 >= 0xffff0000) {
+        return 0;
+    }
+    index = lbl_1_bss_646D2.unk_0;
+    if (index >= lbl_1_data_1C500) {
+        return 0;
+    }
+
+    entry = (Obj_1_data_1C504_Target *)((u8 *)lbl_1_data_1C504 + index * 0x58);
+    fn_80008BA8(entry, obj, 0x58);
+    entry->unk_30 |= (u32)1 << 23;
+    entry->unk_40 = arg1;
+    entry->unk_44 = arg2;
+    entry->unk_46 = arg3;
+    entry->unk_48 = arg4;
+
+    if ((s32)lbl_1_bss_4E6A8 != 0) {
+        entry->unk_30 |= (u32)1 << 27;
+        entry->unk_34 = (f32)(s32)lbl_1_bss_4E6AC;
+    }
+
+    lbl_1_bss_646D2.unk_0++;
+    return 1;
+}
+/* fzgx:end fn_1_4FC50 */
 
 /* fzgx:begin fn_1_50164 */
 void fn_1_50164(f32 a, f32 b, f32 c, f32 d) {
@@ -608,6 +762,28 @@ void fn_1_520CC(void) {
     lbl_1_bss_4E6AC = value_b;
 }
 /* fzgx:end fn_1_520CC */
+
+/* fzgx:begin fn_1_520F8 noprologue */
+#include "types.h"
+
+extern s8 fn_1_A5DC4(s32 value);
+extern s32 lbl_1_bss_4E6A8;
+extern s32 lbl_1_bss_4E6AC;
+extern f64 lbl_1_rodata_2778[2];
+extern f32 lbl_1_rodata_2788[6];
+
+f32 fn_1_520F8(s32 value) {
+    s32 base;
+    f32 scaled;
+
+    if (fn_1_A5DC4(value) && lbl_1_bss_4E6A8 != 0) {
+        base = lbl_1_bss_4E6AC;
+        scaled = (f32)(value - base) * lbl_1_rodata_2788[0];
+        return (f32)base + scaled;
+    }
+    return (f32)value;
+}
+/* fzgx:end fn_1_520F8 */
 
 /* fzgx:begin fn_1_52B68 */
 void fn_1_52B68(void *arg0, void *arg1) {

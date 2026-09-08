@@ -380,6 +380,17 @@ void fn_3_7688(void) {
 }
 /* fzgx:end fn_3_7688 */
 
+/* fzgx:begin fn_3_7770 */
+extern u32 lbl_3_bss_20850;
+extern s16 lbl_3_data_A8[6];
+extern void fn_1_4A00(s32, s32, u32);
+
+void fn_3_7770(void) {
+    fn_1_4A00(1, 0xf, lbl_3_bss_20850);
+    lbl_3_data_A8[0] = (u16)-1;
+}
+/* fzgx:end fn_3_7770 */
+
 /* fzgx:begin fn_3_7864 */
 // fn_3_7864: empty in retail (single blr).
 void fn_3_7864(void) {

@@ -145,6 +145,26 @@ void fn_3_BEF0(void) {
 }
 /* fzgx:end fn_3_BEF0 */
 
+/* fzgx:begin fn_3_C128 */
+extern u32 lbl_3_bss_7ED58[18];
+extern u32 lbl_3_bss_A179C;
+extern u32 lbl_3_data_1A18;
+
+extern s8 fn_1_BA144(u32 *);
+
+void fn_3_C128(void) {
+    s16 result;
+
+    lbl_3_bss_A179C = 0;
+    result = fn_1_BA144(lbl_3_bss_7ED58);
+    if (result == 0) {
+        lbl_3_data_1A18 = 1;
+    } else if (result == 1) {
+        lbl_3_bss_A179C = 1;
+    }
+}
+/* fzgx:end fn_3_C128 */
+
 /* fzgx:begin fn_3_C188 */
 extern u32 lbl_3_bss_7ED58[18];
 extern u32 lbl_3_data_1A10;

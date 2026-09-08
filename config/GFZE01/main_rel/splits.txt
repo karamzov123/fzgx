@@ -315,6 +315,9 @@ rel/main_rel/stcoli/fn_1_21C5C.c:
 rel/main_rel/stcoli/fn_1_21CA0.c:
 	.text       start:0x00021CA0 end:0x00021CFC
 
+rel/main_rel/stcoli/fn_1_22E8C.c:
+	.text       start:0x00022E8C end:0x00022F90
+
 rel/main_rel/stcoli/fn_1_235C8.c:
 	.text       start:0x000235C8 end:0x00023610
 
@@ -750,6 +753,9 @@ rel/main_rel/font/fn_1_4965C.c:
 rel/main_rel/font/fn_1_4966C.c:
 	.text       start:0x0004966C end:0x00049680
 
+rel/main_rel/font/fn_1_49680.c:
+	.text       start:0x00049680 end:0x000496FC
+
 rel/main_rel/font/fn_1_496FC.c:
 	.text       start:0x000496FC end:0x00049714
 
@@ -876,8 +882,14 @@ rel/main_rel/font/fn_1_4E638.c:
 rel/main_rel/font/fn_1_4E6F4.c:
 	.text       start:0x0004E6F4 end:0x0004E724
 
+rel/main_rel/font/fn_1_4E724.c:
+	.text       start:0x0004E724 end:0x0004E92C
+
 rel/main_rel/font/fn_1_4F724.c:
 	.text       start:0x0004F724 end:0x0004F734
+
+rel/main_rel/font/fn_1_4FC50.c:
+	.text       start:0x0004FC50 end:0x0004FD64
 
 rel/main_rel/font/fn_1_50164.c:
 	.text       start:0x00050164 end:0x00050190
@@ -899,6 +911,9 @@ rel/main_rel/font/fn_1_520A0.c:
 
 rel/main_rel/font/fn_1_520CC.c:
 	.text       start:0x000520CC end:0x000520F8
+
+rel/main_rel/font/fn_1_520F8.c:
+	.text       start:0x000520F8 end:0x000521B8
 
 rel/main_rel/font/fn_1_52B68.c:
 	.text       start:0x00052B68 end:0x00052B8C
@@ -1154,6 +1169,9 @@ rel/main_rel/effect/fn_1_5B3CC.c:
 
 rel/main_rel/effect/fn_1_5B6F0.c:
 	.text       start:0x0005B6F0 end:0x0005B6F4
+
+rel/main_rel/effect/fn_1_5B780.c:
+	.text       start:0x0005B780 end:0x0005B7F8
 
 rel/main_rel/effect/fn_1_5BF6C.c:
 	.text       start:0x0005BF6C end:0x0005BF70
@@ -2820,6 +2838,9 @@ rel/main_rel/bg_lig/fn_1_D720C.c:
 rel/main_rel/bg_lig/fn_1_D744C.c:
 	.text       start:0x000D744C end:0x000D74C4
 
+rel/main_rel/bg_lig/fn_1_D74C4.c:
+	.text       start:0x000D74C4 end:0x000D75CC
+
 rel/main_rel/bg_lig/fn_1_D7688.c:
 	.text       start:0x000D7688 end:0x000D76EC
 
@@ -4125,6 +4146,9 @@ rel/main_rel/sel_static_disp/fn_1_14FCE4.c:
 rel/main_rel/sel_static_disp/fn_1_14FD6C.c:
 	.text       start:0x0014FD6C end:0x0014FD7C
 
+rel/main_rel/sel_static_disp/fn_1_14FD7C.c:
+	.text       start:0x0014FD7C end:0x0014FDAC
+
 rel/main_rel/sel_static_disp/fn_1_150500.c:
 	.text       start:0x00150500 end:0x00150518
 
@@ -4214,6 +4238,9 @@ rel/main_rel/bg_aur/fn_1_153D48.c:
 
 rel/main_rel/bg_aur/fn_1_1543E8.c:
 	.text       start:0x001543E8 end:0x00154410
+
+rel/main_rel/bg_tow/fn_1_154708.c:
+	.text       start:0x00154708 end:0x00154798
 
 rel/main_rel/bg_tow/fn_1_1548A8.c:
 	.text       start:0x001548A8 end:0x00154930
@@ -4391,6 +4418,9 @@ rel/main_rel/ranking/fn_1_159478.c:
 
 rel/main_rel/ranking/fn_1_1594AC.c:
 	.text       start:0x001594AC end:0x00159588
+
+rel/main_rel/ranking/fn_1_159588.c:
+	.text       start:0x00159588 end:0x001596DC
 
 rel/main_rel/ranking/fn_1_15AC00.c:
 	.text       start:0x0015AC00 end:0x0015AC10

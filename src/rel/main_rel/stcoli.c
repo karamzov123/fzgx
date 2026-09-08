@@ -258,6 +258,100 @@ void fn_1_21CA0(Fn_1_21CA0 *self, void *arg) {
 }
 /* fzgx:end fn_1_21CA0 */
 
+/* fzgx:begin fn_1_22E8C */
+extern double lbl_1_rodata_910;
+
+typedef struct Fn_1_22E8CInput {
+    unsigned char pad00[0x04];
+    float field04;
+    float field08;
+    float field0c;
+    float field10;
+    float field14;
+    float field18;
+    float field1c;
+    float field20;
+    float field24;
+    float field28;
+    float field2c;
+    float field30;
+    float field34;
+    float field38;
+    float field3c;
+    float field40;
+    float field44;
+    unsigned char field48;
+    unsigned char field49;
+    unsigned char pad4a[0x02];
+    float field4c;
+    float field50;
+} Fn_1_22E8CInput;
+
+typedef struct Fn_1_22E8COutput {
+    unsigned int flags;
+    unsigned char pad04[0x04];
+    float field08;
+    float field0c;
+    float field10;
+    float field14;
+    float field18;
+    float field1c;
+    float field20;
+    float field24;
+    float field28;
+    float field2c;
+    float field30;
+    float field34;
+    float field38;
+    unsigned char pad3c[0x1e4];
+    float field220;
+    unsigned char pad224[0x08];
+    float field22c;
+    float field230;
+    float field234;
+    float field238;
+    float field23c;
+    unsigned char pad240[0x237];
+    unsigned char field477;
+} Fn_1_22E8COutput;
+
+void fn_1_22E8C(Fn_1_22E8COutput *self, Fn_1_22E8CInput *source) {
+    float first = source->field04;
+    double scale = lbl_1_rodata_910;
+
+    self->field08 = first;
+    self->field0c = source->field10;
+    self->field28 = source->field14;
+    self->field14 = source->field20;
+    self->field1c = source->field28;
+    self->field20 = source->field2c;
+    self->field24 = source->field30;
+    self->field30 = source->field44;
+    self->field10 = source->field18;
+    self->field2c = source->field1c;
+    self->field477 = source->field48;
+    self->field34 = source->field4c;
+    self->field38 = source->field50;
+    self->field18 = source->field24;
+    self->field220 = source->field08;
+    self->field22c = source->field0c;
+    self->field230 = (float)(scale * source->field34);
+    self->field234 = source->field38;
+    self->field238 = source->field3c;
+    self->field23c = source->field40;
+    if (source->field49 & 1) {
+        self->flags |= 0x100;
+    } else {
+        self->flags &= ~0x100;
+    }
+    if (source->field49 & 2) {
+        self->flags |= (1u << 31);
+    } else {
+        self->flags &= 0x7fffffff;
+    }
+}
+/* fzgx:end fn_1_22E8C */
+
 /* fzgx:begin fn_1_235C8 */
 typedef struct Fn_1_235C8 {
     unsigned char *field00;

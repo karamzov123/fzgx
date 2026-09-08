@@ -72,6 +72,9 @@ rel/movie_module/fn_12_30E8.c:
 rel/movie_module/fn_12_33BC.c:
 	.text       start:0x000033BC end:0x000033D0
 
+rel/movie_module/fn_12_33D0.c:
+	.text       start:0x000033D0 end:0x0000341C
+
 rel/movie_module/fn_12_34A8.c:
 	.text       start:0x000034A8 end:0x000034C4
 
@@ -774,6 +777,9 @@ rel/movie_module/fn_12_3310C.c:
 rel/movie_module/fn_12_335A4.c:
 	.text       start:0x000335A4 end:0x000335B8
 
+rel/movie_module/fn_12_3379C.c:
+	.text       start:0x0003379C end:0x00033874
+
 rel/movie_module/fn_12_338C4.c:
 	.text       start:0x000338C4 end:0x0003391C
 
@@ -1013,6 +1019,9 @@ rel/movie_module/fn_12_39A18.c:
 
 rel/movie_module/fn_12_39DA0.c:
 	.text       start:0x00039DA0 end:0x00039E00
+
+rel/movie_module/fn_12_39E54.c:
+	.text       start:0x00039E54 end:0x00039EA4
 
 rel/movie_module/fn_12_39F48.c:
 	.text       start:0x00039F48 end:0x0003A018
