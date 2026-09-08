@@ -658,9 +658,11 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     ctr_expr: List[Optional[str]] = [None]
     fn_typedefs: List[str] = []
 
+    UNKNOWN = ("?", "?")
+
     def test_step(mn_x: str, a_x: List[str], cur_cond):
         """One instruction of a loop test: compares set the condition, the rest update regs.
-        Returns the condition (lhs, rhs) or the previous one; None when the shape is unknown."""
+        Returns the condition (lhs, rhs) or the previous one; UNKNOWN when the shape is unknown."""
         if mn_x in ("cmpwi", "cmpw", "cmplwi", "cmplw"):
             lhs = use(a_x[0]); rhs = str(_imm(a_x[1])) if mn_x.endswith("i") else use(a_x[1])
             uns = mn_x.startswith("cmpl")
@@ -695,9 +697,9 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         if mn_x in LOAD_T and a_x and not a_x[1].endswith("(r1)") and not mn_x.endswith("u"):
             e_ = load_expr(mn_x, a_x)
             if e_ is None:
-                return None
+                return UNKNOWN
             regs[a_x[0]] = e_; rtype[a_x[0]] = LOAD_T[mn_x]; return cur_cond
-        return None
+        return UNKNOWN
 
     def load_expr(mn_x: str, a_x: List[str]) -> Optional[str]:
         """The value of a plain load as an expression (fields registered), for loop tests."""
@@ -892,9 +894,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 for x in range(t_, k_):
                     mn_x, a_x = ins[x]
                     cond_expr = test_step(mn_x, a_x, cond_expr)
-                    if cond_expr is None and mn_x in ("cmpwi", "cmpw", "cmplwi", "cmplw"):
-                        raise Give("do-while test")
-                    if cond_expr is None:
+                    if cond_expr is UNKNOWN:
                         raise Give("do-while test shape")
                 if cond_expr is None:
                     raise Give("do-while test")
@@ -941,7 +941,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 for x in range(t_, k_):
                     mn_x, a_x = ins[x]
                     nxt_ = test_step(mn_x, a_x, cond_expr)
-                    if nxt_ is None:
+                    if nxt_ is UNKNOWN:
                         raise Give("loop test shape")
                     cond_expr = nxt_
                 if cond_expr is None:
