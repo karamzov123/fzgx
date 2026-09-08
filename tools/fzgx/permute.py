@@ -197,8 +197,8 @@ def run(p: Project, symbol: str, threads: int = 8, seconds: int = 600, submit: b
         out = (e.stdout or b"").decode(errors="replace") if isinstance(e.stdout, bytes) else (e.stdout or "")
         out += (e.stderr or b"").decode(errors="replace") if isinstance(e.stderr, bytes) else (e.stderr or "")
     elapsed = round(time.time() - t0, 1)
-    scores = [int(s) for s in re.findall(r"found new best score:? (\d+)", out)]
-    base = re.search(r"base score:? (\d+)", out)
+    scores = [int(s) for s in re.findall(r"found new best score! \((\d+) vs", out)]
+    base = re.search(r"base score = (\d+)", out)
     zero = sorted(d.glob("output-0-*/source.c"))
     result: Dict[str, object] = {"ok": True, "symbol": symbol, "secs": elapsed,
                                  "base_score": int(base.group(1)) if base else None,

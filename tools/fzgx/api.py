@@ -509,6 +509,20 @@ def release(p: Project, symbol: str, reason: str, harness: Optional[str] = None,
     best = STATE_DIR / "attempts" / f"{key}.best.c"
     src = best if best.exists() else (work if work.exists() else None)
     if src is not None and src.read_text().strip() != STUB.format(symbol=p.resolve(symbol).name, note="write the complete unit with write_unit").strip():
+        # last resort, a few seconds: the deterministic repairs on the best body (type flips for
+        # compare/sign-extension diffs); a match is submitted in the agent's name instead of released
+        from . import fixup
+        fx = fixup.try_fix(p, symbol, src.read_text(), budget_s=6.0)
+        if fx.get("matched") and fx.get("body"):
+            work.parent.mkdir(parents=True, exist_ok=True)
+            work.write_text(fx["body"])
+            best.unlink(missing_ok=True)
+            r = submit(p, symbol, agent=agent or row["claimed_by"], message=f"fixup: {fx.get('label')}; agent released: {reason}",
+                       harness=harness, model=model)
+            if r.get("ok"):
+                r["fixup"] = fx.get("label")
+                r["fixup_secs"] = fx["secs"]
+                return r
         dest = STATE_DIR / "attempts" / f"{key}.{'shadow.' if shadow else ''}{int(time.time())}.c"
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(src, dest)  # the best-scoring body, not necessarily the last one written
@@ -624,6 +638,15 @@ def sweep_attempts(p: Project, module: Optional[str] = None, min_percent: float 
             if r.get("ok"):
                 (out["pool"] if r.get("pool") else out["submitted"]).append(key)
                 continue
+        elif res.ok:
+            from . import fixup  # the same last-resort repairs an agent's release runs
+            fx = fixup.try_fix(p, key, text, budget_s=6.0)
+            if fx.get("matched") and fx.get("body"):
+                work.write_text(fx["body"])
+                r = submit(p, key, agent="sweep", message=f"saved attempt repaired: {fx.get('label')}")
+                if r.get("ok"):
+                    out.setdefault("fixed", []).append((key, fx.get("label")))
+                    continue
         work.unlink(missing_ok=True)
         out["still"].append((key, round(res.percent, 1) if res.ok else res.error[:80]))
     return out

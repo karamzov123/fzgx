@@ -249,10 +249,14 @@ def _pool_rows(project: Project, module: str, left: dict, right: dict,
         except (IndexError, KeyError, TypeError):
             continue
         s = syms.get(lname)
-        if not s or s.kind != "object" or s.section not in (".rodata", ".sdata2") or s.size not in (4, 8):
+        if not s or s.kind != "object" or s.section not in (".rodata", ".sdata2"):
             continue
-        retail = project.bytes_at(module, lname)
+        # dtk often merges a run of pooled literals into one symbol (0x18, 0x1C, even 5504 bytes):
+        # the constant is the retail bytes at the relocation's addend, whatever the symbol's size
+        addend = int(lrel.get("addend") or 0)
         ours = b"".join(base64.b64decode(d.get("data", "")) for d in rsym.get("data_diff", []))
+        whole = project.bytes_at(module, lname) or b""
+        retail = whole[addend:addend + len(ours)] if ours and len(ours) in (4, 8) else b""
         if not retail or ours != retail or not rsym.get("name", "").startswith("@"):
             continue
         v = struct.unpack(">d", retail)[0] if len(retail) == 8 else struct.unpack(">f", retail)[0]
