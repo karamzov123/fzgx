@@ -3495,7 +3495,7 @@
     "symbols": [
       "fn_1_61E60"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
