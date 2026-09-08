@@ -115,7 +115,7 @@
     "symbols": [
       "fn_1_68B68"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
