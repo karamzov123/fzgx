@@ -22,6 +22,171 @@
     "tu": "rel/car_colchg/_prolog.c"
   },
   {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/fn_9_1018.c",
+    "symbols": [
+      "fn_9_1018"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/fn_9_1054.c",
+    "symbols": [
+      "fn_9_1054"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/fn_9_1124.c",
+    "symbols": [
+      "fn_9_1124"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/fn_9_1A20.c",
+    "symbols": [
+      "fn_9_1A20"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/fn_9_1A8C.c",
+    "symbols": [
+      "fn_9_1A8C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/fn_9_1AC4.c",
+    "symbols": [
+      "fn_9_1AC4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/fn_9_1BCC.c",
+    "symbols": [
+      "fn_9_1BCC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/fn_9_3F0.c",
+    "symbols": [
+      "fn_9_3F0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/fn_9_534.c",
+    "symbols": [
+      "fn_9_534"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/fn_9_6F0.c",
+    "symbols": [
+      "fn_9_6F0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/fn_9_DC0.c",
+    "symbols": [
+      "fn_9_DC0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/fn_9_DFC.c",
+    "symbols": [
+      "fn_9_DFC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/fn_9_F38.c",
+    "symbols": [
+      "fn_9_F38"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/fn_9_F74.c",
+    "symbols": [
+      "fn_9_F74"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/fn_9_FD0.c",
+    "symbols": [
+      "fn_9_FD0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
     "module": "customize",
     "source": "rel/customize/_prolog/fn_3_14C4.c",
     "symbols": [
