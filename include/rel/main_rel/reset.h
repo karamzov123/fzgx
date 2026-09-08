@@ -22,7 +22,7 @@ typedef struct {
 extern Obj_1_bss_7AD48 lbl_1_bss_7AD48;
 
 // lbl_1_data_3DBC0: .data size 0x8, 2 refs from reset.c (own data block)
-extern u32 lbl_1_data_3DBC0;
+extern u32 lbl_1_data_3DBC0[2];
 
 // lbl_1_data_3DBC8: .data size 0xE, 2 refs from reset.c (own data block)
 extern u8 lbl_1_data_3DBC8[0xE];

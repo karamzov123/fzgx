@@ -30,17 +30,10 @@ typedef struct {
 extern Obj_1_data_2D7B8 lbl_1_data_2D7B8;
 
 // lbl_1_data_33F1C: .data size 0x8, 4 refs from sound.c (own data block)
-extern u32 lbl_1_data_33F1C;
+extern u32 lbl_1_data_33F1C[2];
 
 // lbl_1_bss_962: .bss size 0x2, 3 refs from sound.c
 extern s16 lbl_1_bss_962;
-
-// lbl_1_bss_6EAC6: .bss size 0xA, 3 refs from sound.c
-typedef struct {
-    u8 unk_0;  // 6 loads, 0 stores
-    u8 pad_1[0x9];
-} Obj_1_bss_6EAC6;
-extern Obj_1_bss_6EAC6 lbl_1_bss_6EAC6;
 
 // lbl_1_bss_6F1E0: .bss size 0x1, 3 refs from sound.c
 extern u8 lbl_1_bss_6F1E0;
@@ -54,8 +47,15 @@ extern u8 lbl_1_bss_8B5F0;
 // lbl_1_bss_8B5F1: .bss size 0x1, 3 refs from sound.c
 extern u8 lbl_1_bss_8B5F1;
 
+// lbl_1_bss_6EAC6: .bss size 0xA, 3 refs from sound.c
+typedef struct {
+    u8 unk_0;  // 6 loads, 0 stores
+    u8 pad_1[0x9];
+} Obj_1_bss_6EAC6;
+extern Obj_1_bss_6EAC6 lbl_1_bss_6EAC6;
+
 // lbl_1_bss_6EA9C: .bss size 0x8, 2 refs from sound.c
-extern u32 lbl_1_bss_6EA9C;
+extern u32 lbl_1_bss_6EA9C[2];
 
 // lbl_1_bss_6EAD0: .bss size 0x708, 2 refs from sound.c
 typedef struct {

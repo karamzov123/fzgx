@@ -10,10 +10,10 @@
 // lbl_1_data_5188: .data size 0x6, 1 refs from som.c (own data block)
 extern u32 lbl_1_data_5188;
 
-// lbl_1_data_5190: .data size 0x1, 1 refs from som.c (own data block)
-extern u8 lbl_1_data_5190;
-
 // lbl_1_data_5194: .data size 0x34, 1 refs from som.c (own data block)
 extern u8 lbl_1_data_5194[0x34];
+
+// lbl_1_data_5190: .data size 0x1, 1 refs from som.c (own data block)
+extern u8 lbl_1_data_5190;
 
 #endif  // REL_MAIN_REL_SOM_H

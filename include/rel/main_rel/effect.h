@@ -8,7 +8,7 @@
 // functions or living in its .data block), layouts recovered from every access in the module.
 
 // lbl_1_bss_6C848: .bss size 0x2, 12 refs from effect.c
-extern u8 lbl_1_bss_6C848;
+extern u8 lbl_1_bss_6C848[2];
 
 // lbl_1_data_1D1D8: .data size 0x114, 7 refs from effect.c
 extern u8 lbl_1_data_1D1D8[0x114];
@@ -51,6 +51,9 @@ extern u32 lbl_1_bss_6C860;
 // lbl_1_bss_6C86C: .bss size 0x4, 2 refs from effect.c
 extern u32 lbl_1_bss_6C86C;
 
+// lbl_1_data_1D8A4: .data size 0x4, 1 refs from effect.c (own data block)
+extern f32 lbl_1_data_1D8A4;
+
 // lbl_1_data_1D730: .data size 0x174, 1 refs from effect.c (own data block)
 typedef struct {
     u8 pad_0[0x8];
@@ -59,9 +62,6 @@ typedef struct {
     u8 pad_10[0x164];
 } Obj_1_data_1D730;
 extern Obj_1_data_1D730 lbl_1_data_1D730;
-
-// lbl_1_data_1D8A4: .data size 0x4, 1 refs from effect.c (own data block)
-extern f32 lbl_1_data_1D8A4;
 
 // lbl_1_data_1D6C0: .data size 0x70, 1 refs from effect.c (own data block)
 typedef struct {

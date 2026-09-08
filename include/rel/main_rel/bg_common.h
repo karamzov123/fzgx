@@ -10,16 +10,6 @@
 // lbl_1_bss_85290: .bss size 0x4, 4 refs from bg_common.c
 extern f32 lbl_1_bss_85290;
 
-// lbl_1_bss_85280: .bss size 0x8, 3 refs from bg_common.c
-typedef struct {
-    u32 unk_0;  // 3 loads, 2 stores
-    u32 unk_4;  // 5 loads, 2 stores
-} Obj_1_bss_85280;
-extern Obj_1_bss_85280 lbl_1_bss_85280;
-
-// lbl_1_data_3F510: .data size 0x68, 3 refs from bg_common.c (own data block)
-extern u8 lbl_1_data_3F510[0x68];
-
 // lbl_1_bss_854B8: .bss size 0x1A08, 3 refs from bg_common.c
 typedef struct {
     u8 pad_0[0x8];
@@ -44,6 +34,16 @@ extern Obj_1_bss_854B8 lbl_1_bss_854B8;
 // lbl_1_bss_86EC0: .bss size 0x4, 3 refs from bg_common.c
 extern u32 lbl_1_bss_86EC0;
 
+// lbl_1_bss_85280: .bss size 0x8, 3 refs from bg_common.c
+typedef struct {
+    u32 unk_0;  // 3 loads, 2 stores
+    u32 unk_4;  // 5 loads, 2 stores
+} Obj_1_bss_85280;
+extern Obj_1_bss_85280 lbl_1_bss_85280;
+
+// lbl_1_data_3F510: .data size 0x68, 3 refs from bg_common.c (own data block)
+extern u8 lbl_1_data_3F510[0x68];
+
 // lbl_1_bss_86ED0: .bss size 0x1C70, 3 refs from bg_common.c
 typedef struct {
     u8 pad_0[0x8];
@@ -60,17 +60,11 @@ extern u8 lbl_1_data_3FCAC[0x310];
 // lbl_1_data_3F34C: .data size 0xC, 2 refs from bg_common.c (own data block)
 extern u8 lbl_1_data_3F34C[0xC];
 
-// lbl_1_data_3F358: .data size 0xB0, 1 refs from bg_common.c (own data block)
-extern u8 lbl_1_data_3F358[0xB0];
-
-// jumptable_1_data_3F408: .data size 0x1C, 1 refs from bg_common.c (own data block)
-extern u8 jumptable_1_data_3F408[0x1C];
-
 // lbl_1_data_3F9E0: .data size 0xF, 1 refs from bg_common.c (own data block)
 extern u8 lbl_1_data_3F9E0[0xF];
 
-// lbl_1_data_3F9CC: .data size 0x13, 1 refs from bg_common.c (own data block)
-extern u8 lbl_1_data_3F9CC[0x13];
+// jumptable_1_data_3F408: .data size 0x1C, 1 refs from bg_common.c (own data block)
+extern u8 jumptable_1_data_3F408[0x1C];
 
 // lbl_1_data_3F428: .data size 0xE8, 1 refs from bg_common.c (own data block)
 typedef struct {
@@ -78,5 +72,11 @@ typedef struct {
     u8 pad_2[0xE6];
 } Obj_1_data_3F428;
 extern Obj_1_data_3F428 lbl_1_data_3F428;
+
+// lbl_1_data_3F9CC: .data size 0x13, 1 refs from bg_common.c (own data block)
+extern u8 lbl_1_data_3F9CC[0x13];
+
+// lbl_1_data_3F358: .data size 0xB0, 1 refs from bg_common.c (own data block)
+extern u8 lbl_1_data_3F358[0xB0];
 
 #endif  // REL_MAIN_REL_BG_COMMON_H

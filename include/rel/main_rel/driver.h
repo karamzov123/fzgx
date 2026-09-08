@@ -33,12 +33,6 @@ typedef struct {
 } Obj_1_bss_71690;
 extern Obj_1_bss_71690 lbl_1_bss_71690;
 
-// lbl_1_data_34354: .data size 0x48, 4 refs from driver.c (own data block)
-extern u8 lbl_1_data_34354[0x48];
-
-// lbl_1_bss_6F638: .bss size 0x8, 4 refs from driver.c
-extern u32 lbl_1_bss_6F638;
-
 // lbl_1_data_34348: .data size 0xC, 4 refs from driver.c
 typedef struct {
     u8 unk_0;  // 2 loads, 0 stores
@@ -55,11 +49,23 @@ typedef struct {
 } Obj_1_data_34348;
 extern Obj_1_data_34348 lbl_1_data_34348;
 
-// lbl_1_bss_6F640: .bss size 0x8, 3 refs from driver.c
-extern u32 lbl_1_bss_6F640;
+// lbl_1_bss_716C0: .bss size 0x8, 4 refs from driver.c
+extern u8 lbl_1_bss_716C0[8];
 
-// lbl_1_data_20D1C: .data size 0xB4, 2 refs from driver.c
-extern u8 lbl_1_data_20D1C[0xB4];
+// lbl_1_data_34354: .data size 0x48, 4 refs from driver.c (own data block)
+extern u8 lbl_1_data_34354[0x48];
+
+// lbl_1_bss_6F638: .bss size 0x8, 4 refs from driver.c
+extern u32 lbl_1_bss_6F638[2];
+
+// lbl_1_bss_6F640: .bss size 0x8, 3 refs from driver.c
+extern u32 lbl_1_bss_6F640[2];
+
+// lbl_1_bss_71674: .bss size 0x8, 2 refs from driver.c
+extern u32 lbl_1_bss_71674[2];
+
+// lbl_1_data_35990: .data size 0xC, 2 refs from driver.c (own data block)
+extern u8 lbl_1_data_35990[0xC];
 
 // lbl_1_data_3599C: .data size 0x3C, 2 refs from driver.c (own data block)
 typedef struct {
@@ -68,33 +74,29 @@ typedef struct {
 } Obj_1_data_3599C;
 extern Obj_1_data_3599C lbl_1_data_3599C;
 
+// lbl_1_data_20D1C: .data size 0xB4, 2 refs from driver.c
+extern u8 lbl_1_data_20D1C[0xB4];
+
 // lbl_1_data_35864: .data size 0x12C, 2 refs from driver.c (own data block)
 extern u8 lbl_1_data_35864[0x12C];
-
-// lbl_1_data_35990: .data size 0xC, 2 refs from driver.c (own data block)
-extern u8 lbl_1_data_35990[0xC];
-
-// lbl_1_bss_71674: .bss size 0x8, 2 refs from driver.c
-extern u32 lbl_1_bss_71674;
-
-// jumptable_1_data_3439C: .data size 0x28, 1 refs from driver.c (own data block)
-extern u8 jumptable_1_data_3439C[0x28];
-
-// lbl_1_data_3B74C: .data size 0xA98, 1 refs from driver.c (own data block)
-typedef struct {
-    u32 unk_0;  // 4 loads, 0 stores
-    u8 pad_4[0xA94];
-} Obj_1_data_3B74C;
-extern Obj_1_data_3B74C lbl_1_data_3B74C;
-
-// lbl_1_data_3C1E4: .data size 0x4, 1 refs from driver.c (own data block)
-extern u32 lbl_1_data_3C1E4;
 
 // lbl_1_data_35A70: .data size 0x48, 1 refs from driver.c (own data block)
 extern u8 lbl_1_data_35A70[0x48];
 
 // lbl_1_data_35AB8: .data size 0xB, 1 refs from driver.c (own data block)
 extern u8 lbl_1_data_35AB8[0xB];
+
+// jumptable_1_data_3439C: .data size 0x28, 1 refs from driver.c (own data block)
+extern u8 jumptable_1_data_3439C[0x28];
+
+// lbl_1_data_35654: .data size 0x210, 1 refs from driver.c (own data block)
+extern u8 lbl_1_data_35654[0x210];
+
+// lbl_1_data_355A4: .data size 0xB0, 1 refs from driver.c (own data block)
+extern u8 lbl_1_data_355A4[0xB0];
+
+// lbl_1_data_3C1E4: .data size 0x4, 1 refs from driver.c (own data block)
+extern u32 lbl_1_data_3C1E4;
 
 // lbl_1_data_343C4: .data size 0x210, 1 refs from driver.c (own data block)
 typedef struct {
@@ -117,10 +119,11 @@ typedef struct {
 } Obj_1_data_345D4;
 extern Obj_1_data_345D4 lbl_1_data_345D4;
 
-// lbl_1_data_35654: .data size 0x210, 1 refs from driver.c (own data block)
-extern u8 lbl_1_data_35654[0x210];
-
-// lbl_1_data_355A4: .data size 0xB0, 1 refs from driver.c (own data block)
-extern u8 lbl_1_data_355A4[0xB0];
+// lbl_1_data_3B74C: .data size 0xA98, 1 refs from driver.c (own data block)
+typedef struct {
+    u32 unk_0;  // 4 loads, 0 stores
+    u8 pad_4[0xA94];
+} Obj_1_data_3B74C;
+extern Obj_1_data_3B74C lbl_1_data_3B74C;
 
 #endif  // REL_MAIN_REL_DRIVER_H

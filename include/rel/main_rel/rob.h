@@ -8,7 +8,10 @@
 // functions or living in its .data block), layouts recovered from every access in the module.
 
 // lbl_1_data_209C0: .data size 0x8, 4 refs from rob.c
-extern u32 lbl_1_data_209C0;
+extern u32 lbl_1_data_209C0[2];
+
+// lbl_1_data_27C00: .data size 0xE0, 2 refs from rob.c (own data block)
+extern u8 lbl_1_data_27C00[0xE0];
 
 // lbl_1_bss_6EAD0: .bss size 0x708, 2 refs from rob.c
 typedef struct {
@@ -20,9 +23,6 @@ typedef struct {
     u8 pad_4[0x704];
 } Obj_1_bss_6EAD0;
 extern Obj_1_bss_6EAD0 lbl_1_bss_6EAD0;
-
-// lbl_1_data_27C00: .data size 0xE0, 2 refs from rob.c (own data block)
-extern u8 lbl_1_data_27C00[0xE0];
 
 // lbl_1_data_27D90: .data size 0x50, 1 refs from rob.c (own data block)
 extern u8 lbl_1_data_27D90[0x50];

@@ -600,7 +600,7 @@ typedef struct {
 extern Obj_1_bss_6D838_Target *lbl_1_bss_6D838;  // array of 0x620-byte records
 
 // lbl_1_bss_3C00: .bss size 0x4, referenced by 58 functions, shape {'object': 2442}
-extern u8 lbl_1_bss_3C00;
+extern u8 lbl_1_bss_3C00[4];
 
 // lbl_1_bss_38458: .bss size 0x4, referenced by 43 functions, shape {'object': 62, 'pointer': 9}
 typedef struct {
@@ -677,7 +677,7 @@ extern Obj_1_bss_4B9CC lbl_1_bss_4B9CC;
 extern u32 lbl_1_bss_6EA98;
 
 // lbl_1_bss_716C0: .bss size 0x8, referenced by 32 functions, shape {'object': 780}
-extern u8 lbl_1_bss_716C0;
+extern u8 lbl_1_bss_716C0[8];
 
 // lbl_1_data_3FFBC: .data size 0x574, referenced by 31 functions, shape {}
 typedef struct {
@@ -740,7 +740,7 @@ typedef struct {
 extern Obj_1_bss_6C7A4 lbl_1_bss_6C7A4;
 
 // lbl_1_bss_6D820: .bss size 0x4, referenced by 23 functions, shape {'object': 283}
-extern u8 lbl_1_bss_6D820;
+extern u8 lbl_1_bss_6D820[4];
 
 // lbl_1_bss_7EFD8: .bss size 0x44, referenced by 22 functions, shape {'object': 121}
 // object reached through lbl_1_bss_7EFD8.unk_40
@@ -833,6 +833,6 @@ typedef struct {
 extern Obj_1_data_3C7B8 lbl_1_data_3C7B8;
 
 // lbl_1_bss_84420: .bss size 0x8, referenced by 21 functions, shape {'object': 32, 'pointer': 10}
-extern u32 lbl_1_bss_84420;
+extern u32 lbl_1_bss_84420[2];
 
 #endif  // REL_MAIN_REL_GLOBALS_H

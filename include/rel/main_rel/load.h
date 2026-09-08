@@ -22,7 +22,10 @@ typedef struct {
 extern Obj_1_bss_384D8 lbl_1_bss_384D8;
 
 // lbl_1_bss_3DCDC: .bss size 0x8, 4 refs from load.c
-extern u32 lbl_1_bss_3DCDC;
+extern u32 lbl_1_bss_3DCDC[2];
+
+// lbl_1_bss_384D0: .bss size 0x8, 3 refs from load.c
+extern u32 lbl_1_bss_384D0[2];
 
 // lbl_1_bss_3DFF4: .bss size 0xC, 3 refs from load.c
 typedef struct {
@@ -30,9 +33,6 @@ typedef struct {
     u8 pad_4[0x8];
 } Obj_1_bss_3DFF4;
 extern Obj_1_bss_3DFF4 lbl_1_bss_3DFF4;
-
-// lbl_1_bss_384D0: .bss size 0x8, 3 refs from load.c
-extern u32 lbl_1_bss_384D0;
 
 // lbl_1_data_6730: .data size 0x4C, 3 refs from load.c (own data block)
 extern u8 lbl_1_data_6730[0x4C];
@@ -45,9 +45,6 @@ typedef struct {
 } Obj_1_data_67F0;
 extern Obj_1_data_67F0 lbl_1_data_67F0;
 
-// lbl_1_bss_384C8: .bss size 0x4, 2 refs from load.c
-extern u32 lbl_1_bss_384C8;
-
 // lbl_1_data_6CA0: .data size 0x24, 2 refs from load.c (own data block)
 typedef struct {
     u32 unk_0;  // 3 loads, 2 stores
@@ -57,14 +54,8 @@ typedef struct {
 } Obj_1_data_6CA0;
 extern Obj_1_data_6CA0 lbl_1_data_6CA0;
 
-// lbl_1_data_67D0: .data size 0x19, 1 refs from load.c (own data block)
-extern u8 lbl_1_data_67D0[0x19];
-
-// lbl_1_data_1A364: .data size 0x4, 1 refs from load.c (own data block)
-extern u32 lbl_1_data_1A364;
-
-// lbl_1_data_67CC: .data size 0x2, 1 refs from load.c (own data block)
-extern u16 lbl_1_data_67CC;
+// lbl_1_bss_384C8: .bss size 0x4, 2 refs from load.c
+extern u32 lbl_1_bss_384C8;
 
 // jumptable_1_data_677C: .data size 0x3C, 1 refs from load.c (own data block)
 extern u8 jumptable_1_data_677C[0x3C];
@@ -74,5 +65,14 @@ extern u8 lbl_1_data_19FC4[0x2F0];
 
 // lbl_1_data_19098: .data size 0x2F0, 1 refs from load.c (own data block)
 extern u8 lbl_1_data_19098[0x2F0];
+
+// lbl_1_data_67CC: .data size 0x2, 1 refs from load.c (own data block)
+extern u16 lbl_1_data_67CC;
+
+// lbl_1_data_1A364: .data size 0x4, 1 refs from load.c (own data block)
+extern u32 lbl_1_data_1A364;
+
+// lbl_1_data_67D0: .data size 0x19, 1 refs from load.c (own data block)
+extern u8 lbl_1_data_67D0[0x19];
 
 #endif  // REL_MAIN_REL_LOAD_H

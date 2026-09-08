@@ -104,8 +104,11 @@ typedef struct {
 } CameraParameters;
 extern CameraParameters lbl_1_bss_10D8;
 
+// lbl_1_data_4068: .data size 0x1, 3 refs from camera.c (own data block)
+extern u16 lbl_1_data_4068;
+
 // camera_transition_count: .bss size 0x8, 3 refs from camera.c
-extern s16 camera_transition_count;
+extern s16 camera_transition_count[4];
 
 // lbl_1_bss_D58: .bss size 0x18, 3 refs from camera.c
 typedef struct {
@@ -121,14 +124,19 @@ typedef struct {
 } Obj_1_bss_D58;
 extern Obj_1_bss_D58 lbl_1_bss_D58;
 
-// lbl_1_data_4068: .data size 0x1, 3 refs from camera.c (own data block)
-extern u16 lbl_1_data_4068;
-
 // camera_flag_1: .bss size 0x1, 3 refs from camera.c
 extern u8 camera_flag_1;
 
-// lbl_1_data_4198: .data size 0x220, 2 refs from camera.c (own data block)
-extern u8 lbl_1_data_4198[0x220];
+// lbl_1_bss_A48: .bss size 0x40, 2 refs from camera.c
+typedef struct {
+    u8 unk_0;  // 2 loads, 0 stores
+    u8 unk_1;  // 2 loads, 0 stores
+    u8 unk_2;  // 2 loads, 0 stores
+    u8 unk_3;  // 3 loads, 0 stores
+    u8 unk_4;  // 1 loads, 0 stores
+    u8 pad_5[0x3B];
+} Obj_1_bss_A48;
+extern Obj_1_bss_A48 lbl_1_bss_A48;
 
 // lbl_1_data_3654: .data size 0x23, 2 refs from camera.c (own data block)
 extern u8 lbl_1_data_3654[0x23];
@@ -157,13 +165,6 @@ typedef struct {
     u8 pad_3E[0x17];
 } Obj_1_bss_6F1E4;
 extern Obj_1_bss_6F1E4 lbl_1_bss_6F1E4;
-
-// lbl_1_data_35B0: .data size 0x18, 2 refs from camera.c (own data block)
-typedef struct {
-    u32 unk_0;  // 1 loads, 0 stores
-    u8 pad_4[0x14];
-} Obj_1_data_35B0;
-extern Obj_1_data_35B0 lbl_1_data_35B0;
 
 // lbl_1_data_3BD0: .data size 0x498, 2 refs from camera.c (own data block)
 extern u8 lbl_1_data_3BD0[0x498];
@@ -195,19 +196,15 @@ typedef struct {
 } Obj_1_data_3A2C;
 extern Obj_1_data_3A2C lbl_1_data_3A2C;
 
-// camera_flag_0: .bss size 0x1, 2 refs from camera.c
-extern u8 camera_flag_0;
-
-// lbl_1_bss_A48: .bss size 0x40, 2 refs from camera.c
+// lbl_1_data_35B0: .data size 0x18, 2 refs from camera.c (own data block)
 typedef struct {
-    u8 unk_0;  // 2 loads, 0 stores
-    u8 unk_1;  // 2 loads, 0 stores
-    u8 unk_2;  // 2 loads, 0 stores
-    u8 unk_3;  // 3 loads, 0 stores
-    u8 unk_4;  // 1 loads, 0 stores
-    u8 pad_5[0x3B];
-} Obj_1_bss_A48;
-extern Obj_1_bss_A48 lbl_1_bss_A48;
+    u32 unk_0;  // 1 loads, 0 stores
+    u8 pad_4[0x14];
+} Obj_1_data_35B0;
+extern Obj_1_data_35B0 lbl_1_data_35B0;
+
+// lbl_1_data_4198: .data size 0x220, 2 refs from camera.c (own data block)
+extern u8 lbl_1_data_4198[0x220];
 
 // lbl_1_bss_6F524: .bss size 0x78, 2 refs from camera.c
 typedef struct {
@@ -216,17 +213,8 @@ typedef struct {
 } Obj_1_bss_6F524;
 extern Obj_1_bss_6F524 lbl_1_bss_6F524;
 
-// lbl_1_data_4144: .data size 0x53, 1 refs from camera.c (own data block)
-extern u8 lbl_1_data_4144[0x53];
-
-// jumptable_1_data_3584: .data size 0x2C, 1 refs from camera.c (own data block)
-extern u8 jumptable_1_data_3584[0x2C];
-
-// jumptable_1_data_3558: .data size 0x2C, 1 refs from camera.c (own data block)
-extern u8 jumptable_1_data_3558[0x2C];
-
-// lbl_1_data_3630: .data size 0x24, 1 refs from camera.c (own data block)
-extern u8 lbl_1_data_3630[0x24];
+// camera_flag_0: .bss size 0x1, 2 refs from camera.c
+extern u8 camera_flag_0;
 
 // lbl_1_data_4128: .data size 0x1C, 1 refs from camera.c (own data block)
 extern u8 lbl_1_data_4128[0x1C];
@@ -237,17 +225,48 @@ extern u8 lbl_1_data_3678[0xC];
 // jumptable_1_data_39B8: .data size 0x1C, 1 refs from camera.c (own data block)
 extern u8 jumptable_1_data_39B8[0x1C];
 
+// lbl_1_data_3630: .data size 0x24, 1 refs from camera.c (own data block)
+extern u8 lbl_1_data_3630[0x24];
+
+// jumptable_1_data_3584: .data size 0x2C, 1 refs from camera.c (own data block)
+extern u8 jumptable_1_data_3584[0x2C];
+
+// jumptable_1_data_3558: .data size 0x2C, 1 refs from camera.c (own data block)
+extern u8 jumptable_1_data_3558[0x2C];
+
+// lbl_1_data_4144: .data size 0x53, 1 refs from camera.c (own data block)
+extern u8 lbl_1_data_4144[0x53];
+
+// lbl_1_data_35C8: .data size 0x20, 1 refs from camera.c (own data block)
+typedef struct {
+    f32 unk_0;  // 1 loads, 0 stores
+    u8 pad_4[0x1C];
+} Obj_1_data_35C8;
+extern Obj_1_data_35C8 lbl_1_data_35C8;
+
 // lbl_1_data_406C: .data size 0x5B, 1 refs from camera.c (own data block)
 extern u8 lbl_1_data_406C[0x5B];
 
 // lbl_1_data_40C8: .data size 0x60, 1 refs from camera.c (own data block)
 extern u8 lbl_1_data_40C8[0x60];
 
+// lbl_1_data_360C: .data size 0x23, 1 refs from camera.c (own data block)
+extern u8 lbl_1_data_360C[0x23];
+
 // jumptable_1_data_341C: .data size 0x30, 1 refs from camera.c (own data block)
 extern u8 jumptable_1_data_341C[0x30];
 
-// lbl_1_data_360C: .data size 0x23, 1 refs from camera.c (own data block)
-extern u8 lbl_1_data_360C[0x23];
+// lbl_1_data_35E8: .data size 0x13, 1 refs from camera.c (own data block)
+extern u8 lbl_1_data_35E8[0x13];
+
+// jumptable_1_data_33EC: .data size 0x30, 1 refs from camera.c (own data block)
+extern u8 jumptable_1_data_33EC[0x30];
+
+// lbl_1_data_33CC: .data size 0xF, 1 refs from camera.c (own data block)
+extern u8 lbl_1_data_33CC[0xF];
+
+// lbl_1_data_33DC: .data size 0xF, 1 refs from camera.c (own data block)
+extern u8 lbl_1_data_33DC[0xF];
 
 // lbl_1_data_36EC: .data size 0x2CC, 1 refs from camera.c (own data block)
 typedef struct {
@@ -265,25 +284,6 @@ typedef struct {
     u8 pad_22[0x2AA];
 } Obj_1_data_36EC;
 extern Obj_1_data_36EC lbl_1_data_36EC;
-
-// lbl_1_data_35C8: .data size 0x20, 1 refs from camera.c (own data block)
-typedef struct {
-    f32 unk_0;  // 1 loads, 0 stores
-    u8 pad_4[0x1C];
-} Obj_1_data_35C8;
-extern Obj_1_data_35C8 lbl_1_data_35C8;
-
-// jumptable_1_data_33EC: .data size 0x30, 1 refs from camera.c (own data block)
-extern u8 jumptable_1_data_33EC[0x30];
-
-// lbl_1_data_33CC: .data size 0xF, 1 refs from camera.c (own data block)
-extern u8 lbl_1_data_33CC[0xF];
-
-// lbl_1_data_33DC: .data size 0xF, 1 refs from camera.c (own data block)
-extern u8 lbl_1_data_33DC[0xF];
-
-// lbl_1_data_35E8: .data size 0x13, 1 refs from camera.c (own data block)
-extern u8 lbl_1_data_35E8[0x13];
 
 // lbl_1_data_35FC: .data size 0xE, 1 refs from camera.c (own data block)
 extern u8 lbl_1_data_35FC[0xE];

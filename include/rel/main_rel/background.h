@@ -18,17 +18,6 @@ typedef struct {
 } Obj_1_bss_6EA80_Target;
 extern Obj_1_bss_6EA80_Target *lbl_1_bss_6EA80;
 
-// lbl_1_data_2CC2C: .data size 0x4, 1 refs from background.c (own data block)
-extern u32 lbl_1_data_2CC2C;
-
-// lbl_1_data_2CC30: .data size 0x38, 1 refs from background.c (own data block)
-typedef struct {
-    u8 pad_0[0x8];
-    u32 unk_8;  // 1 loads, 0 stores
-    u8 pad_C[0x2C];
-} Obj_1_data_2CC30;
-extern Obj_1_data_2CC30 lbl_1_data_2CC30;
-
 // lbl_1_data_2CCBC: .data size 0x64, 1 refs from background.c (own data block)
 typedef struct {
     u8 pad_0[0x54];
@@ -39,5 +28,16 @@ extern Obj_1_data_2CCBC lbl_1_data_2CCBC;
 
 // lbl_1_data_2CB60: .data size 0x2C, 1 refs from background.c (own data block)
 extern u8 lbl_1_data_2CB60[0x2C];
+
+// lbl_1_data_2CC2C: .data size 0x4, 1 refs from background.c (own data block)
+extern u32 lbl_1_data_2CC2C;
+
+// lbl_1_data_2CC30: .data size 0x38, 1 refs from background.c (own data block)
+typedef struct {
+    u8 pad_0[0x8];
+    u32 unk_8;  // 1 loads, 0 stores
+    u8 pad_C[0x2C];
+} Obj_1_data_2CC30;
+extern Obj_1_data_2CC30 lbl_1_data_2CC30;
 
 #endif  // REL_MAIN_REL_BACKGROUND_H
