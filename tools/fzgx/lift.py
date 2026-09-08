@@ -20,6 +20,8 @@ LOAD_T = {"lwz": "u32", "lhz": "u16", "lha": "s16", "lbz": "u8", "lfs": "f32", "
           "lwzu": "u32", "lhzu": "u16", "lbzu": "u8", "lfsu": "f32", "lfdu": "f64"}
 STORE_T = {"stw": "u32", "sth": "u16", "stb": "u8", "stfs": "f32", "stfd": "f64"}
 LABELS: List[Dict[str, int]] = [{}]
+ARITY_HINT: List[Dict[str, int]] = [{}]        # callee -> widest integer-argument count (second run)
+ARITY_SEEN: List[Dict[str, List[int]]] = [{}]  # filled by a run: what each site passed
 LINE_RE = re.compile(r"^[0-9A-Fa-f]+:\s*(\S+)\s*(.*)$")
 MEM_RE = re.compile(r"^(-?0x[0-9a-f]+|-?\d+|[\w.]+@l|[\w.]+@sda21)\((r\d+)\)$")
 COND = {"eq": "==", "ne": "!=", "lt": "<", "gt": ">", "le": "<=", "ge": ">="}
@@ -73,7 +75,18 @@ def lift(p: Project, module: str, name: str) -> Optional[str]:
     if len(ins) > 160:
         return None
     try:
-        return _lift(p, module, name, ins)
+        ARITY_HINT[0] = {}; ARITY_SEEN[0] = {}
+        text = _lift(p, module, name, ins)
+        # a callee whose sites disagree on the argument count gets the widest prototype, and
+        # every narrower site passes what its argument register held (the source did)
+        hint = {c: max(v) for c, v in ARITY_SEEN[0].items() if len(set(v)) > 1}
+        if hint:
+            ARITY_HINT[0] = hint
+            try:
+                text = _lift(p, module, name, ins)
+            finally:
+                ARITY_HINT[0] = {}
+        return text
     except Give:
         return None
 
@@ -1159,6 +1172,10 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 temp_low = min((w for w in written if f"r{w}" not in params), default=None)
                 if temp_low is not None and temp_low - 1 > top:
                     top = temp_low - 1
+                want = ARITY_HINT[0].get(callee)
+                if want is not None and 2 + want > top and all(f"r{k}" in regs for k in range(top + 1, 3 + want)):
+                    top = 2 + want
+                ARITY_SEEN[0].setdefault(callee, []).append(top - 2)
                 fset = [k for k in range(1, 9) if f"f{k}" in regs and (f"f{k}" in written_since_call or f"f{k}" in params)]
                 ftop = max(fset) if fset else 0
                 fargs = [use(f"f{k}") for k in range(1, ftop + 1)]
