@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_1_A5330: main_rel .text:0x000A5330 size 0x14
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u8 lbl_1_bss_6F41C[260];
+
+void fn_1_A5330(u8 value, s16 index) {
+    lbl_1_bss_6F41C[index] = value;
+}
