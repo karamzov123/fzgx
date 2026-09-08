@@ -38,6 +38,8 @@ EXPECTED_MODEL = {"claude": "claude-haiku-4-5", "codex": "gpt-5.6-luna"}
 # Codex reports usage but no cost; Claude Code reports total_cost_usd itself.
 CODEX_PRICES = {"gpt-5.6-luna": (0.20, 0.02, 0.25, 1.20), "gpt-5.6-terra": (2.00, 0.20, 2.50, 12.00),
                 "gpt-5.6-sol": (4.00, 0.40, 5.00, 20.00), "gpt-6-astra": (10.00, 1.00, 12.50, 50.00)}
+FAST_MULTIPLIER = 2.0  # "Fast mode" (formerly priority processing) is 2x standard on every line
+CODEX_INSTRUCTIONS = ROOT / "tools" / "codex_matcher.md"  # replaces Codex's 17.7k-char default persona prompt
 CODEX_DISABLE = ["plugins", "recommended_plugins", "plugin_sharing", "remote_plugin", "apps", "browser_use",
                  "browser_use_external", "in_app_browser", "computer_use", "skill_search", "skill_mcp_dependency_install"]
 
@@ -60,15 +62,23 @@ def claude_cmd(symbol: str, agent_id: str, model: str) -> List[str]:
             "--allowedTools", ",".join(MATCHER_TOOLS)]
 
 
-def codex_cmd(symbol: str, agent_id: str, model: str) -> List[str]:
-    prompt = (f"SYMBOL={symbol}  AGENT_ID={agent_id}. You are a Matcher: follow the Matcher "
-              f"section of AGENTS.md exactly, using only the fzgx MCP tools. Finish with the RESULT line.")
+def codex_cmd(symbol: str, agent_id: str, model: str, fast: bool = False) -> List[str]:
+    prompt = f"SYMBOL={symbol}  AGENT_ID={agent_id}. Match this function following your loop."
     # --ignore-user-config: no user MCP servers/skills (480k -> 125k input tokens on a smoke test)
     cmd = ["codex", "exec", "--json", "--skip-git-repo-check", "--ignore-user-config", "-s", "read-only",
            "-m", model]
     # none of these belong in a matcher's context (each adds tool schemas or injected text every call)
     for feat in CODEX_DISABLE:
         cmd += ["--disable", feat]
+    if fast:
+        cmd += ["-c", 'service_tier="fast"']
+    # context trims measured on a smoke run: 13.3k -> ~8k tokens on the first call
+    cmd += ["-c", f'model_instructions_file="{CODEX_INSTRUCTIONS}"',   # our contract instead of the persona prompt
+            "-c", "skills.include_instructions=false",                 # no <skills_instructions> block
+            "-c", "project_doc_max_bytes=0",                            # no AGENTS.md concatenation (global + repo)
+            "-c", 'mcp_servers.fzgx.enabled_tools=["claim","write_unit","check","submit","release"]',
+            "-c", "tools.update_plan=false", "-c", "tools.web_search=false",
+            "--disable", "shell_tool", "--disable", "unified_exec", "--disable", "view_image"]
     return cmd + [
             "-c", 'mcp_servers.fzgx.command="uv"',
             "-c", 'mcp_servers.fzgx.args=["run","tools/fzgx_mcp.py"]',
@@ -105,7 +115,7 @@ def codex_session_model(thread_id: str) -> str:
     return ""
 
 
-def parse_codex(out: str) -> Dict:
+def parse_codex(out: str, fast: bool = False) -> Dict:
     text, tin, tout, model, thread = "", 0, 0, "", ""
     cached = cache_w = 0
     for line in out.splitlines():
@@ -130,15 +140,15 @@ def parse_codex(out: str) -> Dict:
         model = ev.get("model", model) or model
     model = model or codex_session_model(thread)
     pi, pc, pw, po = CODEX_PRICES.get(model, (0.0, 0.0, 0.0, 0.0))
-    cost = ((tin - cached) * pi + cached * pc + cache_w * pw + tout * po) / 1e6
+    cost = ((tin - cached) * pi + cached * pc + cache_w * pw + tout * po) / 1e6 * (FAST_MULTIPLIER if fast else 1.0)
     return {"text": text or out[-2000:], "cost": round(cost, 6), "turns": None, "tokens_in": tin,
             "tokens_out": tout, "model": model}
 
 
 def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout: int, batch: str,
-            shadow: bool = False) -> Dict:
+            shadow: bool = False, fast: bool = False) -> Dict:
     agent_id = f"{'shadow-' if shadow else ''}{batch}-{harness}-{idx}"
-    cmd = claude_cmd(symbol, agent_id, model) if harness == "claude" else codex_cmd(symbol, agent_id, model)
+    cmd = claude_cmd(symbol, agent_id, model) if harness == "claude" else codex_cmd(symbol, agent_id, model, fast)
     t0 = time.time()
     try:
         cp = subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, timeout=timeout,
@@ -146,7 +156,7 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
         out, rc = cp.stdout + "\n" + cp.stderr, cp.returncode
     except subprocess.TimeoutExpired as e:
         out, rc = (e.stdout or "") + "\n" + (e.stderr or ""), -9
-    info = parse_claude(out) if harness == "claude" else parse_codex(out)
+    info = parse_claude(out) if harness == "claude" else parse_codex(out, fast)
     m = RESULT_RE.search(info["text"] or "") or RESULT_RE.search(out)
     outcome = m.group(1) if m else ("timeout" if rc == -9 else "crash")
     if info["model"] and not info["model"].startswith(EXPECTED_MODEL[harness]):
@@ -183,6 +193,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--batch", default=time.strftime("b%Y%m%d-%H%M"))
     ap.add_argument("--no-trivial", action="store_true", help="skip the mechanical blr/li pass first")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--fast", action="store_true", help="codex: service_tier=fast (2x price, faster generation)")
     ap.add_argument("--shadow", action="store_true",
                     help="A/B trial: run on already-matched functions without relinking or committing")
     a = ap.parse_args(argv)
@@ -219,7 +230,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         while queue or futs:
             while queue and len(futs) < a.parallel and (a.budget_usd is None or spent < a.budget_usd):
                 i, s = queue.pop(0)
-                futs[ex.submit(run_one, p, a.harness, model, s, i, a.timeout, a.batch, a.shadow)] = s
+                futs[ex.submit(run_one, p, a.harness, model, s, i, a.timeout, a.batch, a.shadow, a.fast)] = s
             if not futs:
                 break
             done = next(as_completed(list(futs)))
@@ -245,7 +256,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     released = [r for r in results if r["outcome"].startswith("released")]
     other = [r for r in results if r not in matched and r not in released]
     models = sorted({r.get("model") for r in results if r.get("model")})
-    summary = {"batch": a.batch, "harness": a.harness, "model": model, "models_seen": models, "n": len(results), "matched": len(matched),
+    summary = {"batch": a.batch, "harness": a.harness, "model": model + (" (fast)" if a.fast else ""), "models_seen": models, "n": len(results), "matched": len(matched),
                "link_rejected": len(ver.get("rejected", [])),
                "released": len(released), "failed": len(other), "cost_usd": round(spent, 3),
                "wall_s": round(time.time() - t0, 1), "results": results}
