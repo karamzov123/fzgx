@@ -4335,7 +4335,7 @@
     "symbols": [
       "fn_1_FA69C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
