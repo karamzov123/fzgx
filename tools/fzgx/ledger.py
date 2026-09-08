@@ -55,6 +55,10 @@ class Ledger:
         for col, decl in (("stale_checks", "INTEGER DEFAULT 0"), ("best_in_attempt", "REAL DEFAULT 0")):
             if col not in cols:
                 self.db.execute(f"ALTER TABLE attempts ADD COLUMN {col} {decl}")
+        fcols = {r[1] for r in self.db.execute("PRAGMA table_info(functions)")}
+        if "prev_status" not in fcols:
+            # set while a shadow (A/B) claim is active; restored on finish
+            self.db.execute("ALTER TABLE functions ADD COLUMN prev_status TEXT")
 
     # ------------------------------------------------------------- inventory
     def sync_functions(self, rows: Iterable[dict]) -> int:
@@ -96,21 +100,24 @@ class Ledger:
                 "WHERE status='claimed' AND claimed_at + claim_ttl < ?", (now,))
         return cur.rowcount
 
-    def claim(self, symbol: str, agent: str, ttl: int, max_attempts: int) -> sqlite3.Row:
+    def claim(self, symbol: str, agent: str, ttl: int, max_attempts: int, shadow: bool = False) -> sqlite3.Row:
+        """Claim for matching. A shadow claim (A/B runs) is allowed on matched functions,
+        keeps the previous status to restore, and does not count toward the attempt cap."""
         self.expire_claims()
         with self.db:
             self.db.execute("BEGIN IMMEDIATE")
             row = self.get(symbol)
             if row is None:
                 raise LookupError(f"{symbol}: not in ledger (run `fzgx sync`)")
-            if row["status"] != "unmatched":
+            allowed = ("unmatched", "matched") if shadow else ("unmatched",)
+            if row["status"] not in allowed:
                 raise PermissionError(f"{symbol}: status is {row['status']}"
                                       + (f" (by {row['claimed_by']})" if row["claimed_by"] else ""))
-            if row["attempts"] >= max_attempts:
+            if not shadow and row["attempts"] >= max_attempts:
                 raise PermissionError(f"{symbol}: attempt cap {max_attempts} reached; needs triage")
             self.db.execute(
-                "UPDATE functions SET status='claimed', claimed_by=?, claimed_at=?, claim_ttl=? WHERE symbol=?",
-                (agent, int(time.time()), ttl, symbol))
+                "UPDATE functions SET status='claimed', claimed_by=?, claimed_at=?, claim_ttl=?, prev_status=? WHERE symbol=?",
+                (agent, int(time.time()), ttl, row["status"] if shadow else None, symbol))
             self.db.execute(
                 "INSERT INTO attempts(symbol, agent, started) VALUES(?,?,?)",
                 (symbol, agent, int(time.time())))
@@ -140,7 +147,21 @@ class Ledger:
     def finish(self, symbol: str, outcome: str, status: str, notes: str = "",
                commit: Optional[str] = None, body_path: Optional[str] = None,
                model: Optional[str] = None, harness: Optional[str] = None,
-               tokens_in: int = 0, tokens_out: int = 0, cost_usd: float = 0.0) -> None:
+               tokens_in: int = 0, tokens_out: int = 0, cost_usd: float = 0.0,
+               shadow: bool = False) -> None:
+        if shadow:
+            row = self.get(symbol)
+            with self.db:
+                self.db.execute(
+                    "UPDATE attempts SET ended=?, outcome=?, notes=?, best_body_path=?, model=COALESCE(?,model), "
+                    "harness=COALESCE(?,harness), tokens_in=tokens_in+?, tokens_out=tokens_out+?, cost_usd=cost_usd+? "
+                    "WHERE symbol=? AND ended IS NULL",
+                    (int(time.time()), "shadow-" + outcome, notes, body_path, model, harness, tokens_in, tokens_out,
+                     cost_usd, symbol))
+                self.db.execute(
+                    "UPDATE functions SET status=?, claimed_by=NULL, claimed_at=NULL, claim_ttl=NULL, prev_status=NULL "
+                    "WHERE symbol=?", ((row["prev_status"] if row else None) or "unmatched", symbol))
+            return
         with self.db:
             self.db.execute(
                 "UPDATE attempts SET ended=?, outcome=?, notes=?, best_body_path=?, model=COALESCE(?,model), "

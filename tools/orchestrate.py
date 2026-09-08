@@ -122,8 +122,9 @@ def parse_codex(out: str) -> Dict:
             "model": model or codex_session_model(thread)}
 
 
-def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout: int, batch: str) -> Dict:
-    agent_id = f"{batch}-{harness}-{idx}"
+def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout: int, batch: str,
+            shadow: bool = False) -> Dict:
+    agent_id = f"{'shadow-' if shadow else ''}{batch}-{harness}-{idx}"
     cmd = claude_cmd(symbol, agent_id, model) if harness == "claude" else codex_cmd(symbol, agent_id, model)
     t0 = time.time()
     try:
@@ -169,6 +170,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--batch", default=time.strftime("b%Y%m%d-%H%M"))
     ap.add_argument("--no-trivial", action="store_true", help="skip the mechanical blr/li pass first")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--shadow", action="store_true",
+                    help="A/B trial: run on already-matched functions without relinking or committing")
     a = ap.parse_args(argv)
     model = a.model or ("haiku" if a.harness == "claude" else "gpt-5.6-luna")
     p = Project()
@@ -183,15 +186,16 @@ def main(argv: Optional[List[str]] = None) -> int:
     if a.dry_run:
         print(" ".join(symbols))
         return 0
-    if not a.no_trivial:
+    if not a.no_trivial and not a.shadow:
         triv = trivial.apply(p)
         print(f"trivial pass: {triv.get('applied', 0)} matched mechanically")
-    carved = api.carve_many(p, symbols)
-    n_new = sum(1 for c in carved if c.get('created'))
-    print(f"carved {n_new} new units")
-    if n_new:
-        subprocess.run(["git", "add", "src", "config"], cwd=ROOT, capture_output=True)
-        subprocess.run(["git", "commit", "-q", "-m", f"carve: {n_new} units for batch {a.batch}"], cwd=ROOT, capture_output=True)
+    if not a.shadow:
+        carved = api.carve_many(p, symbols)
+        n_new = sum(1 for c in carved if c.get('created'))
+        print(f"carved {n_new} new units")
+        if n_new:
+            subprocess.run(["git", "add", "src", "config"], cwd=ROOT, capture_output=True)
+            subprocess.run(["git", "commit", "-q", "-m", f"carve: {n_new} units for batch {a.batch}"], cwd=ROOT, capture_output=True)
 
     results: List[Dict] = []
     spent = 0.0
@@ -202,7 +206,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         while queue or futs:
             while queue and len(futs) < a.parallel and (a.budget_usd is None or spent < a.budget_usd):
                 i, s = queue.pop(0)
-                futs[ex.submit(run_one, p, a.harness, model, s, i, a.timeout, a.batch)] = s
+                futs[ex.submit(run_one, p, a.harness, model, s, i, a.timeout, a.batch, a.shadow)] = s
             if not futs:
                 break
             done = next(as_completed(list(futs)))
@@ -224,8 +228,8 @@ def main(argv: Optional[List[str]] = None) -> int:
                "released": len(released), "failed": len(other), "cost_usd": round(spent, 3),
                "wall_s": round(time.time() - t0, 1), "results": results}
     # report + snapshot
-    rep = ROOT / "docs" / "batches" / f"{a.batch}.md"
-    lines = [f"# Batch {a.batch} — {a.harness}/{model}, {a.parallel} parallel",
+    rep = ROOT / "docs" / "batches" / f"{a.batch}{'-shadow' if a.shadow else ''}.md"
+    lines = [f"# Batch {a.batch}{' (shadow A/B trial)' if a.shadow else ''} — {a.harness}/{model}, {a.parallel} parallel",
              "", f"{len(results)} functions: {len(matched)} matched, {len(released)} released, {len(other)} failed; "
              f"${spent:.2f}; {summary['wall_s']} s wall.", "",
              "| Function | Outcome | % | Checks | Turns | $ | s |", "|---|---|---|---|---|---|---|"]

@@ -26,6 +26,28 @@ MAX_ATTEMPTS = 3
 MAX_CHECKS = 8       # per attempt
 MAX_STALE = 2        # consecutive checks without improving the attempt's best %
 STUB = '#include "types.h"\n\n// {symbol}: carved by fzgx; {note}\n'
+SHADOW_PREFIX = "shadow-"   # agent ids with this prefix run A/B trials that never relink or commit
+
+
+def _is_shadow(agent: Optional[str]) -> bool:
+    return bool(agent) and agent.startswith(SHADOW_PREFIX)
+
+
+def _shadow_park(p: Project, key: str, unit_src: str, symbol: str) -> None:
+    """Park the committed source and give the shadow agent a clean stub."""
+    park = STATE_DIR / "shadow" / f"{key}.c"
+    park.parent.mkdir(parents=True, exist_ok=True)
+    src = ROOT / "src" / unit_src
+    if src.exists():
+        shutil.copy(src, park)
+    src.write_text(STUB.format(symbol=symbol, note="shadow trial in progress"))
+
+
+def _shadow_restore(p: Project, key: str, unit_src: str) -> None:
+    park = STATE_DIR / "shadow" / f"{key}.c"
+    if park.exists():
+        shutil.copy(park, ROOT / "src" / unit_src)
+        park.unlink()
 
 
 def _git(*args: str) -> subprocess.CompletedProcess:
@@ -90,12 +112,19 @@ def claim(p: Project, symbol: str, agent: str, ttl: int = DEFAULT_TTL,
     if p.resolve(symbol) is None:
         return {"ok": False, "error": f"unknown or ambiguous symbol {symbol!r} (use module:name for _prolog/_epilog)"}
     key = _key(p, symbol)
+    shadow = _is_shadow(agent)
     try:
-        row = l.claim(key, agent, ttl, max_attempts)
+        row = l.claim(key, agent, ttl, max_attempts, shadow=shadow)
     except (LookupError, PermissionError) as e:
         return {"ok": False, "error": str(e)}
     res = None
-    if not no_carve:
+    if shadow:
+        unit_src = _unit_source(p, symbol)
+        if not unit_src:
+            l.finish(key, "carve-failed", "unmatched", notes="shadow claim on an uncarved function", shadow=True)
+            return {"ok": False, "error": "shadow claims need an already carved unit"}
+        _shadow_park(p, key, unit_src, p.resolve(symbol).name)
+    elif not no_carve:
         try:
             res = carve(p, symbol)
             if res.created:
@@ -103,7 +132,7 @@ def claim(p: Project, symbol: str, agent: str, ttl: int = DEFAULT_TTL,
         except Exception as e:  # release the claim so nobody is stuck
             l.finish(key, "carve-failed", "unmatched", notes=str(e))
             return {"ok": False, "error": f"carve failed: {e}"}
-    unit = res.source if res else row["unit"]
+    unit = res.source if res else (row["unit"] or _unit_source(p, symbol))
     out = {"ok": True, "symbol": symbol, "unit": unit, "path": f"src/{unit}" if unit else None,
            "ranges": res.ranges if res else [], "notes": res.notes if res else [],
            "attempt": row["attempts"] + 1, "max_attempts": max_attempts, "ttl": ttl,
@@ -250,6 +279,18 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
     findings = lint_paths([src_path])
     if findings:
         return {"ok": False, "error": "lint", "findings": findings}
+    if _is_shadow(agent):
+        res = oracle.check(p, symbol, max_diff_lines)
+        reason = oracle.unit_fully_matches(res)
+        _shadow_restore(p, key, unit_src)
+        if reason:
+            l.finish(key, "released", "unmatched", notes=f"shadow submit rejected: {reason}", model=model,
+                     harness=harness, tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd, shadow=True)
+            return {"ok": False, "error": reason, "percent": res.percent, "shadow": True}
+        l.finish(key, "matched", "matched", notes=message or "", model=model, harness=harness,
+                 tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd, shadow=True)
+        return {"ok": True, "symbol": symbol, "commit": None, "unit": unit_src, "shadow": True,
+                "note": "shadow trial: match recorded, nothing relinked or committed"}
     if mw_version or extra_cflags:
         _set_unit_opts(p, unit_src, mw_version, extra_cflags)
         _reconfigure_and_split(p)
@@ -314,6 +355,17 @@ def release(p: Project, symbol: str, reason: str, harness: Optional[str] = None,
         return {"ok": False, "error": f"claimed by {row['claimed_by']}, not {agent}"}
     body_path = None
     unit_src = _unit_source(p, symbol)
+    if _is_shadow(row["claimed_by"]):
+        best = STATE_DIR / "attempts" / f"{key}.best.c"
+        if best.exists():
+            dest = STATE_DIR / "attempts" / f"{key}.shadow.{int(time.time())}.c"
+            shutil.move(best, dest)
+            body_path = str(dest)
+        if unit_src:
+            _shadow_restore(p, key, unit_src)
+        l.finish(key, "released", "unmatched", notes=reason, body_path=body_path, model=model,
+                 harness=harness, tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd, shadow=True)
+        return {"ok": True, "symbol": symbol, "saved": body_path, "shadow": True}
     if unit_src and (ROOT / "src" / unit_src).exists():
         dest = STATE_DIR / "attempts" / f"{key}.{int(time.time())}.c"
         dest.parent.mkdir(parents=True, exist_ok=True)

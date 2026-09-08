@@ -116,6 +116,32 @@ def cmd_trivial(a, p):
     _print(trivial.apply(p, a.module.split(",") if a.module else None, a.limit, a.dry_run), a.json); return 0
 
 
+def cmd_compare(a, p):
+    """A/B: per-function outcome, checks, tokens and cost for two agent-id prefixes."""
+    from .ledger import Ledger
+    l = Ledger()
+    def rows(prefix):
+        out = {}
+        for r in l.db.execute("SELECT symbol, outcome, checks, final_percent, tokens_in, tokens_out, cost_usd, model "
+                              "FROM attempts WHERE agent LIKE ? ORDER BY id", (prefix + "%",)):
+            out[r["symbol"]] = dict(r)
+        return out
+    A, B = rows(a.a), rows(a.b)
+    syms = sorted(set(A) | set(B))
+    def fmt(r):
+        if not r: return "-"
+        o = (r["outcome"] or "?").replace("shadow-", "")
+        return f"{o[:8]:8s} {r['final_percent'] or 0:5.1f}% c={r['checks'] or 0} in={r['tokens_in'] or 0:>7} out={r['tokens_out'] or 0:>5} ${r['cost_usd'] or 0:.3f}"
+    print(f"{'symbol':14s} | A: {a.a:20s} | B: {a.b}")
+    for s in syms:
+        print(f"{s:14s} | {fmt(A.get(s))} | {fmt(B.get(s))}")
+    def tot(R):
+        m = sum(1 for r in R.values() if (r["outcome"] or "").endswith("matched"))
+        return f"matched {m}/{len(R)}, checks {sum(r['checks'] or 0 for r in R.values())}, tokens in {sum(r['tokens_in'] or 0 for r in R.values())} out {sum(r['tokens_out'] or 0 for r in R.values())}, ${sum(r['cost_usd'] or 0 for r in R.values()):.2f}"
+    print(f"A total: {tot(A)}"); print(f"B total: {tot(B)}")
+    return 0
+
+
 def cmd_names(a, p):
     _print(api.names(p), a.json); return 0
 
@@ -174,6 +200,8 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("restore", help="load state/ledger.json into the local ledger"); s.set_defaults(fn=cmd_restore)
     s = sub.add_parser("lint", help="shiftability/style lint"); s.set_defaults(fn=cmd_lint); s.add_argument("paths", nargs="*")
     s = sub.add_parser("names", help="pending name proposals for the librarian"); s.set_defaults(fn=cmd_names)
+    s = sub.add_parser("compare", help="A/B table for two agent-id prefixes (e.g. b3c-claude vs shadow-b3c-codex)"); s.set_defaults(fn=cmd_compare)
+    s.add_argument("--a", required=True); s.add_argument("--b", required=True)
     s = sub.add_parser("trivial", help="mechanically match single-blr and `li r3,N; blr` functions"); s.set_defaults(fn=cmd_trivial)
     s.add_argument("--module", help="comma list; default all"); s.add_argument("--limit", type=int); s.add_argument("--dry-run", action="store_true")
     return ap

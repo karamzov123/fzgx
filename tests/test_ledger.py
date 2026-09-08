@@ -72,3 +72,17 @@ def test_bump_checks_tracks_plateau(ledger):
     assert (s4["stale"], s5["stale"]) == (1, 2)
     assert s5["checks"] == 5
     assert ledger.get("fn_a")["best_percent"] == 60.0
+
+
+def test_shadow_claim_restores_status_and_keeps_attempts(ledger):
+    ledger.claim("fn_a", "a1", 1000, 3)
+    ledger.finish("fn_a", "matched", "matched", commit="abc")
+    assert ledger.get("fn_a")["attempts"] == 1
+    ledger.claim("fn_a", "shadow-x-1", 1000, 3, shadow=True)
+    assert ledger.get("fn_a")["status"] == "claimed"
+    ledger.bump_checks("fn_a", 80.0)
+    ledger.finish("fn_a", "released", "unmatched", shadow=True)
+    row = ledger.get("fn_a")
+    assert row["status"] == "matched" and row["attempts"] == 1 and row["prev_status"] is None
+    att = ledger.db.execute("SELECT outcome FROM attempts WHERE agent='shadow-x-1'").fetchone()
+    assert att["outcome"] == "shadow-released"

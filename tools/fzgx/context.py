@@ -63,7 +63,7 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
         f"size: {sym.size} bytes ({sym.size // 4} instructions)  scope: {sym.scope}"
     )
     parts.append(f"- unit: `src/{unit_src}`" if unit_src else "- unit: NOT CARVED (run `fzgx carve`)")
-    if row:
+    if row and not (row["claimed_by"] or "").startswith("shadow-"):
         parts.append(f"- attempts so far: {row['attempts']}  best: {row['best_percent']:.1f}%")
     parts.append(f"- hints: {_sig_hint(fn)}")
     mw = unit_cfg.get("mw_version") or ("GC/1.2.5n" if module == "main" else "GC/1.3.2")
@@ -88,7 +88,8 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
         parts.append(f"\n## Callers: {', '.join(f'`{c}`' for c in callers)}")
 
     # Neighbouring matched C in the same module, nearest first (cheap, high value).
-    matched_units = [u for u in project.load_units() if u["module"] == module and u["status"] == "matching"]
+    matched_units = [u for u in project.load_units()
+                     if u["module"] == module and u["status"] == "matching" and u["source"] != unit_src]
     neigh: List[str] = []
     for u in sorted(matched_units, key=lambda u: abs((project.find_symbol(u["symbols"][0]) or sym).addr - sym.addr))[:2]:
         p = ROOT / "src" / u["source"]
@@ -105,7 +106,7 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
         if p.exists():
             parts.append(f"\n## Current file `src/{unit_src}`\n```c\n{p.read_text()}\n```")
 
-    if ledger:
+    if ledger and not (row and (row["claimed_by"] or "").startswith("shadow-")):
         att = ledger.db.execute(
             "SELECT * FROM attempts WHERE symbol=? AND ended IS NOT NULL ORDER BY final_percent DESC, id DESC LIMIT 1",
             (symbol,)).fetchone()
