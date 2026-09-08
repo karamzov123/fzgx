@@ -246,6 +246,12 @@ def cmd_tu_hoist_decls(a, p):
     _print(r, a.json); return 0
 
 
+def cmd_tu_collapse(a, p):
+    from . import collapse  # scoped: collapse pulls the trial compiler; only when asked
+    r = collapse.plan(p, a.tu) if a.plan else collapse.collapse(p, a.tu, keep_on_failure=a.keep)
+    _print(r, a.json); return 0 if r.get("ok") else 1
+
+
 def cmd_gen(a, p):
     from . import tufile  # scoped: same
     print(f"{tufile.regenerate(p)} generated units")
@@ -361,6 +367,8 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("tu"); s.add_argument("include", help='e.g. rel/main_rel/alloc.h')
     s = sub.add_parser("tu-hoist-decls", help="move block extern declarations into the TU prologue (canonical per symbol); disagreeing blocks flagged"); s.set_defaults(fn=cmd_tu_hoist_decls)
     s.add_argument("tu")
+    s = sub.add_parser("tu-collapse", help="replace a complete TU's per-function units by one unit (hash-verified; reverts on failure)"); s.set_defaults(fn=cmd_tu_collapse)
+    s.add_argument("tu"); s.add_argument("--plan", action="store_true", help="compute the ranges only"); s.add_argument("--keep", action="store_true", help="keep the collapsed config even if the hash fails")
     s = sub.add_parser("gen", help="regenerate every per-function unit from the TU files"); s.set_defaults(fn=cmd_gen)
     s = sub.add_parser("permute", help="decomp-permuter on a plateaued attempt; submits on a byte-identical result"); s.set_defaults(fn=cmd_permute)
     s.add_argument("symbol", nargs="?"); s.add_argument("--threads", type=int, default=8); s.add_argument("--seconds", type=int, default=600)
