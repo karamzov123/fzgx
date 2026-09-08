@@ -3005,7 +3005,7 @@
     "symbols": [
       "fn_1_5638C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
