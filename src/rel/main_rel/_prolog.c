@@ -588,3 +588,49 @@ s32 fn_1_45D0(u32 arg0, u32 arg1) {
     return v0;
 }
 /* fzgx:end fn_1_45D0 */
+
+/* fzgx:begin fn_1_4730 */
+extern char lbl_1_data_2C9C[20];
+extern char lbl_1_data_2CB0[31];
+extern void OSPanic(const char *message, int line, const char *file, ...);
+extern void fn_80009AA8(u32 value, u32 count, const char *file, int line);
+
+typedef struct {
+    u32 unk_00;
+    u32 unk_04;
+    u32 unk_08;
+} Fn1_4730Entry;
+
+extern Fn1_4730Entry lbl_1_bss_DCC[32];
+
+void fn_1_4730(u32 value, u32 count, u32 size, const char *file, int line) {
+    s32 remaining;
+    Fn1_4730Entry *entry;
+
+    if (count == 0) {
+        OSPanic(file, line, lbl_1_data_2C9C);
+    }
+    if (size == 0) {
+        if (count == 0) {
+            OSPanic(file, line, lbl_1_data_2C9C);
+        }
+        fn_80009AA8(value, count, file, line);
+    }
+
+    entry = lbl_1_bss_DCC;
+    remaining = 0x20;
+    while (remaining > 0) {
+        if (entry->unk_08 == 0) {
+            break;
+        }
+        remaining--;
+        entry++;
+    }
+    if (remaining == 0) {
+        OSPanic(file, line, lbl_1_data_2CB0);
+    }
+    entry->unk_00 = value;
+    entry->unk_04 = size;
+    entry->unk_08 = count;
+}
+/* fzgx:end fn_1_4730 */
