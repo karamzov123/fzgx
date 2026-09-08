@@ -24,10 +24,13 @@ the caller has claimed; `submit` relinks all 16 targets and verifies every
 hash before committing. The same operations exist as CLI subcommands
 (`uv run tools/fzgx.py ...`) for humans and the orchestrator.
 
-Loop: `claim` → `context` → `write_unit` (complete file: `#include "types.h"`,
-externs, minimal structs, the function) → `check` (≤ 8; `versions="all"` to
-probe compiler versions) → `submit(..., names=[...])` or `release(reason)`.
-End the transcript with `RESULT: matched|released SYMBOL <percent>% checks=<n>`.
+Loop: `claim` (returns the context bundle) → `write_unit` (complete file:
+`#include "types.h"`, externs, minimal structs, the function; compiles and
+diffs immediately, one call per iteration) → `submit(..., names=[...])` or
+`release(reason)`. The server stops an attempt after 8 checks or 2
+consecutive checks without improvement. `check(symbol, versions="all")` only
+probes compiler versions. No messages, no summaries: the final line is exactly
+`RESULT: matched|released SYMBOL <percent>% checks=<n>`.
 
 Rules enforced by the tools, not by prose: no hardcoded addresses (lint A1/A2),
 no inline asm, no edits outside the claimed unit, no build or git access.

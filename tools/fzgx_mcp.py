@@ -52,7 +52,7 @@ async def _run(*args: str, as_json: bool = True):
 
 @mcp.tool()
 async def claim(symbol: str, agent: str) -> dict:
-    """Claim SYMBOL for AGENT and carve it into its own unit (src/<unit>.c). Fails if claimed, matched, blocked, or at the attempt cap."""
+    """Claim SYMBOL for AGENT, carve it into its own unit (src/<unit>.c) and return the full context bundle (retail asm, symbols, callers, nearby matched C, flags, idioms, rules) in `context`. Fails if claimed, matched, blocked, or at the attempt cap."""
     return await _run("claim", symbol, "--agent", agent)
 
 
@@ -70,7 +70,7 @@ async def read_unit(symbol: str) -> dict:
 
 @mcp.tool()
 async def write_unit(symbol: str, agent: str, source: str) -> dict:
-    """Replace the whole source of the unit AGENT has claimed for SYMBOL. Returns lint findings (A1/A2: hardcoded addresses; S1/S2: goto/volatile without justification). Inline asm is rejected."""
+    """Replace the whole source of the unit AGENT has claimed for SYMBOL, then compile and diff it against retail. Returns lint findings (A1/A2 hardcoded addresses, S1/S2 goto/volatile) and `check`: match % with a `target | ours` diff and the remaining budget. Refuses once the attempt's budget is exhausted (8 checks, or 2 consecutive checks without improvement): call release then."""
     def go():
         with tempfile.NamedTemporaryFile("w", suffix=".c", delete=False, dir=ROOT / ".fzgx") as f:
             f.write(source)

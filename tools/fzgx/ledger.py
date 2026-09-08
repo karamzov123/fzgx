@@ -51,6 +51,10 @@ class Ledger:
         self.db.execute("PRAGMA journal_mode=WAL")
         self.db.execute("PRAGMA busy_timeout=30000")
         self.db.executescript(SCHEMA)
+        cols = {r[1] for r in self.db.execute("PRAGMA table_info(attempts)")}
+        for col, decl in (("stale_checks", "INTEGER DEFAULT 0"), ("best_in_attempt", "REAL DEFAULT 0")):
+            if col not in cols:
+                self.db.execute(f"ALTER TABLE attempts ADD COLUMN {col} {decl}")
 
     # ------------------------------------------------------------- inventory
     def sync_functions(self, rows: Iterable[dict]) -> int:
@@ -117,13 +121,21 @@ class Ledger:
             "SELECT * FROM attempts WHERE symbol=? AND ended IS NULL ORDER BY id DESC LIMIT 1",
             (symbol,)).fetchone()
 
-    def bump_checks(self, symbol: str, percent: float) -> None:
+    def bump_checks(self, symbol: str, percent: float) -> Dict[str, float]:
+        """Record a check. Returns checks so far, consecutive non-improving checks, and bests."""
         with self.db:
+            att = self.current_attempt(symbol)
+            improved = att is not None and percent > (att["best_in_attempt"] or 0.0)
             self.db.execute(
-                "UPDATE attempts SET checks=checks+1, final_percent=? WHERE symbol=? AND ended IS NULL",
-                (percent, symbol))
+                "UPDATE attempts SET checks=checks+1, final_percent=?, "
+                "stale_checks=CASE WHEN ? THEN 0 ELSE stale_checks+1 END, "
+                "best_in_attempt=MAX(best_in_attempt, ?) WHERE symbol=? AND ended IS NULL",
+                (percent, improved, percent, symbol))
             self.db.execute(
                 "UPDATE functions SET best_percent=MAX(best_percent, ?) WHERE symbol=?", (percent, symbol))
+            att = self.current_attempt(symbol)
+        return {"checks": att["checks"] if att else 0, "stale": att["stale_checks"] if att else 0,
+                "best_in_attempt": att["best_in_attempt"] if att else percent, "improved": improved}
 
     def finish(self, symbol: str, outcome: str, status: str, notes: str = "",
                commit: Optional[str] = None, body_path: Optional[str] = None,

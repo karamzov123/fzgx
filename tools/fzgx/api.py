@@ -23,6 +23,8 @@ from .project import ROOT, STATE_DIR, Project
 
 DEFAULT_TTL = 1800
 MAX_ATTEMPTS = 3
+MAX_CHECKS = 8       # per attempt
+MAX_STALE = 2        # consecutive checks without improving the attempt's best %
 STUB = '#include "types.h"\n\n// {symbol}: carved by fzgx; {note}\n'
 
 
@@ -102,9 +104,15 @@ def claim(p: Project, symbol: str, agent: str, ttl: int = DEFAULT_TTL,
             l.finish(key, "carve-failed", "unmatched", notes=str(e))
             return {"ok": False, "error": f"carve failed: {e}"}
     unit = res.source if res else row["unit"]
-    return {"ok": True, "symbol": symbol, "unit": unit, "path": f"src/{unit}" if unit else None,
-            "ranges": res.ranges if res else [], "notes": res.notes if res else [],
-            "attempt": row["attempts"] + 1, "max_attempts": max_attempts, "ttl": ttl}
+    out = {"ok": True, "symbol": symbol, "unit": unit, "path": f"src/{unit}" if unit else None,
+           "ranges": res.ranges if res else [], "notes": res.notes if res else [],
+           "attempt": row["attempts"] + 1, "max_attempts": max_attempts, "ttl": ttl,
+           "budget": f"{MAX_CHECKS} checks per attempt; stop after {MAX_STALE} checks without improvement"}
+    try:
+        out["context"] = build_context(p, l, symbol)
+    except LookupError as e:
+        out["context"] = f"(no context: {e})"
+    return out
 
 
 def carve_many(p: Project, symbols: List[str], dry_run: bool = False) -> List[Dict[str, Any]]:
@@ -147,11 +155,27 @@ def write_unit(p: Project, symbol: str, agent: str, source: str) -> Dict[str, An
         return {"ok": False, "error": "not carved"}
     if "asm" in source and ("asm {" in source or "asm(" in source or "asm void" in source):
         return {"ok": False, "error": "inline asm is not allowed"}
+    att = l.current_attempt(_key(p, symbol))
+    stop = _budget_stop(att)
+    if stop:
+        return {"ok": False, "error": stop + "; call release(symbol, agent, reason) now"}
     path = ROOT / "src" / unit
     path.write_text(source if source.endswith("\n") else source + "\n")
     findings = lint_paths([path])
+    result = check(p, symbol)
     return {"ok": True, "path": f"src/{unit}", "bytes": len(source),
-            "lint": [{"rule": r, "line": ln, "msg": m} for _, r, ln, m in findings]}
+            "lint": [{"rule": r, "line": ln, "msg": m} for _, r, ln, m in findings],
+            "check": format_check(result)}
+
+
+def _budget_stop(att) -> Optional[str]:
+    if att is None:
+        return None
+    if (att["checks"] or 0) >= MAX_CHECKS:
+        return f"budget exhausted: {MAX_CHECKS} checks used"
+    if (att["stale_checks"] or 0) >= MAX_STALE and (att["best_in_attempt"] or 0) < 100.0:
+        return f"plateau: {MAX_STALE} consecutive checks without improvement (best {att['best_in_attempt']:.1f}%)"
+    return None
 
 
 # --------------------------------------------------------------------- oracle
@@ -162,9 +186,22 @@ def check(p: Project, symbol: str, max_diff_lines: int = 80, versions: Optional[
         return {"ok": True, "symbol": symbol, "versions": out,
                 "note": "-1 compiler missing, -2 compile error, -3 diff error"}
     res = oracle.check(p, symbol, max_diff_lines)
+    out = res.to_json()
     if res.ok:
-        Ledger().bump_checks(_key(p, symbol), res.percent)
-    return res.to_json()
+        key = _key(p, symbol)
+        stats = Ledger().bump_checks(key, res.percent)
+        out["budget"] = stats
+        if stats.get("improved"):
+            unit = _unit_source(p, symbol)
+            if unit:
+                best = STATE_DIR / "attempts" / f"{key}.best.c"
+                best.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy(ROOT / "src" / unit, best)
+        att = Ledger().current_attempt(key)
+        stop = _budget_stop(att)
+        if stop and not res.matched:
+            out["stop"] = stop
+    return out
 
 
 def format_check(res: Dict[str, Any]) -> str:
@@ -185,6 +222,11 @@ def format_check(res: Dict[str, Any]) -> str:
     if res["diff"]:
         lines.append("diff (target | ours):")
         lines.extend(res["diff"])
+    b = res.get("budget")
+    if b:
+        lines.append(f"budget: check {b['checks']}/{MAX_CHECKS}, {b['stale']}/{MAX_STALE} without improvement, best this attempt {b['best_in_attempt']:.1f}%")
+    if res.get("stop"):
+        lines.append(f"STOP: {res['stop']}. Do not write again; call release(symbol, agent, reason).")
     return "\n".join(lines)
 
 
@@ -273,9 +315,12 @@ def release(p: Project, symbol: str, reason: str, harness: Optional[str] = None,
     body_path = None
     unit_src = _unit_source(p, symbol)
     if unit_src and (ROOT / "src" / unit_src).exists():
-        dest = STATE_DIR / "attempts" / f"{symbol}.{int(time.time())}.c"
+        dest = STATE_DIR / "attempts" / f"{key}.{int(time.time())}.c"
         dest.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy(ROOT / "src" / unit_src, dest)
+        best = STATE_DIR / "attempts" / f"{key}.best.c"
+        # keep the best-scoring body, not necessarily the last one written
+        shutil.copy(best if best.exists() else ROOT / "src" / unit_src, dest)
+        best.unlink(missing_ok=True)
         body_path = str(dest)
         (ROOT / "src" / unit_src).write_text(STUB.format(symbol=symbol, note=f"best attempt saved to {dest.name}"))
     l.finish(key, "released", "unmatched", notes=reason, body_path=body_path, model=model,

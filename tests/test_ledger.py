@@ -57,3 +57,18 @@ def test_sync_never_downgrades_status(ledger):
     ledger.sync_functions([{"symbol": "fn_a", "module": "main_rel", "unit": "x.c", "addr": 0x100, "size": 32}])
     assert ledger.get("fn_a")["status"] == "matched"
     assert ledger.get("fn_a")["unit"] == "x.c"
+
+
+def test_bump_checks_tracks_plateau(ledger):
+    ledger.claim("fn_a", "a1", 1000, 3)
+    s1 = ledger.bump_checks("fn_a", 50.0)
+    s2 = ledger.bump_checks("fn_a", 50.0)
+    s3 = ledger.bump_checks("fn_a", 60.0)
+    s4 = ledger.bump_checks("fn_a", 55.0)
+    s5 = ledger.bump_checks("fn_a", 60.0)
+    assert (s1["improved"], s1["stale"]) == (True, 0)
+    assert (s2["improved"], s2["stale"]) == (False, 1)
+    assert (s3["improved"], s3["stale"], s3["best_in_attempt"]) == (True, 0, 60.0)
+    assert (s4["stale"], s5["stale"]) == (1, 2)
+    assert s5["checks"] == 5
+    assert ledger.get("fn_a")["best_percent"] == 60.0
