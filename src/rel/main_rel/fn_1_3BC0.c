@@ -1,4 +1,10 @@
 #include "types.h"
 
-// fn_1_3BC0: main_rel .text:0x00003BC0 size 0x1C
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u16 lbl_1_bss_990[28];
+
+void fn_1_3BC0(void) {
+    lbl_1_bss_990[0] = 0;
+    lbl_1_bss_990[1] = 0;
+    lbl_1_bss_990[2] = 0;
+    lbl_1_bss_990[3] = 0;
+}
