@@ -1160,3 +1160,18 @@ rel/movie_module/fn_12_68C.c:
 
 rel/movie_module/fn_12_330E0.c:
 	.text       start:0x000330E0 end:0x0003310C align:4
+
+rel/movie_module/fn_12_2B138.c:
+	.text       start:0x0002B138 end:0x0002B188 align:4
+
+rel/movie_module/fn_12_2A508.c:
+	.text       start:0x0002A508 end:0x0002A55C align:4
+
+rel/movie_module/fn_12_2AD88.c:
+	.text       start:0x0002AD88 end:0x0002ADDC align:4
+
+rel/movie_module/fn_12_215F4.c:
+	.text       start:0x000215F4 end:0x0002166C align:4
+
+rel/movie_module/fn_12_2D500.c:
+	.text       start:0x0002D500 end:0x0002D58C align:4

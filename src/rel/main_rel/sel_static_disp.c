@@ -802,6 +802,55 @@ void fn_1_14BD74(void) {
 }
 /* fzgx:end fn_1_14BD74 */
 
+/* fzgx:begin fn_1_14BE30 noprologue */
+#include "types.h"
+
+extern s16 lbl_1_bss_960;
+extern struct fn_1_14BE30_lbl_1_bss_8E518 lbl_1_bss_8E518;
+extern u32 fn_1_1556B4(u32, u32);
+extern u32 fn_1_A2D84(u32);
+extern u32 lbl_801A66A4;
+
+struct fn_1_14BE30_lbl_1_bss_8E518 {
+    u8 pad_0[0x10];
+    u32 unk_10;
+    u8 pad_14[0x14];
+    u32 unk_28;
+    u8 pad_2C[0x14];
+    u8 unk_40;
+    u8 unk_41;
+};
+
+u32 fn_1_14BE30(void) {
+    struct fn_1_14BE30_lbl_1_bss_8E518 *p_lbl_1_bss_8E518;
+    u32 v0;
+    u32 v1;
+    u32 t1;
+    p_lbl_1_bss_8E518 = (struct fn_1_14BE30_lbl_1_bss_8E518 *)&lbl_1_bss_8E518;
+    p_lbl_1_bss_8E518->unk_40 = 42;
+    p_lbl_1_bss_8E518->unk_41 = 0;
+    fn_1_1556B4(42, 0);
+    p_lbl_1_bss_8E518->unk_10 = lbl_801A66A4;
+    v0 = lbl_801A66A4;
+    if (lbl_1_bss_960 == 2) {
+    v0 = 0xA9070000;
+    v0 += 8192;
+    t1 = fn_1_A2D84(v0);
+    v0 = t1;
+    }
+    v1 = p_lbl_1_bss_8E518->unk_28;
+    if ((s32)v1 != 0) {
+    v0 = (u32)&lbl_801A66A4;
+    v0 = *(u32 *)((u8 *)v0 + 0);
+    p_lbl_1_bss_8E518->unk_10 = (v0 - 190);
+    }
+    if ((s32)v1 == 0) {
+    p_lbl_1_bss_8E518->unk_28 = 1;
+    }
+    return v0;
+}
+/* fzgx:end fn_1_14BE30 */
+
 /* fzgx:begin fn_1_14BFB8 */
 void fn_1_14BFB8(void) {
     if (lbl_1_bss_8E51D != 0) {

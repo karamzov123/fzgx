@@ -358,6 +358,30 @@ void fn_1_5BF6C(void) {
 }
 /* fzgx:end fn_1_5BF6C */
 
+/* fzgx:begin fn_1_5BFF0 */
+extern f32 lbl_1_rodata_29A4;
+extern f64 lbl_1_rodata_2988;
+
+struct fn_1_5BFF0_Arg0 {
+    u8 unk_0;
+    u8 pad_1[0xF];
+    u32 unk_10;
+    u8 pad_14[0x98];
+    s16 unk_AC;
+    u8 pad_AE[0x6];
+    f32 unk_B4;
+};
+
+void fn_1_5BFF0(struct fn_1_5BFF0_Arg0 *arg0) {
+    arg0->unk_0 = 2;
+    arg0->unk_AC += 2;
+    if (arg0->unk_AC >= 15) {
+    arg0->unk_AC = 15;
+    }
+    arg0->unk_B4 = (lbl_1_rodata_29A4 * (f32)(s32)arg0->unk_10);
+}
+/* fzgx:end fn_1_5BFF0 */
+
 /* fzgx:begin fn_1_5C780 */
 // fn_1_5C780: empty in retail (single blr).
 void fn_1_5C780(void) {

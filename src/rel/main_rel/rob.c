@@ -190,3 +190,23 @@ s32 fn_1_98104(Fn198104Obj *obj) {
     return 1;
 }
 /* fzgx:end fn_1_98104 */
+
+/* fzgx:begin fn_1_9818C */
+extern u32 fn_1_12A734(u32);
+
+s32 fn_1_9818C(u32 arg0) {
+    s16 v0;
+    s32 v1;
+    u32 t0;
+    v0 = (s16)arg0;
+    v1 = v0;
+    if (v0 != -1) {
+    t0 = fn_1_12A734(v1);
+    v1 = t0;
+    v1 = 1;
+    } else {
+    v1 = 0;
+    }
+    return v1;
+}
+/* fzgx:end fn_1_9818C */
