@@ -239,9 +239,9 @@ def finish_round(p: Project, a, model: str, module: str) -> Dict:
     from fzgx.ledger import Ledger  # scoped: same
     out = {"passes": [], "revise": None}
     r = finish.finish(p, module)
-    out["passes"].append({k: r[k] for k in ("ok", "tus", "tidied", "hoisted", "flagged", "unflagged", "collapsed", "queue")})
-    print(f"tu-finish {module}: ok={r['ok']} tidied={r['tidied']} hoisted={r['hoisted']} flagged={r['flagged']} "
-          f"unflagged={r['unflagged']} collapsed={r['collapsed']} queue={len(r['queue'])}", flush=True)
+    out["passes"].append({k: r[k] for k in ("ok", "tus", "hoisted", "renamed", "contested", "collapsed", "queue")})
+    print(f"tu-finish {module}: ok={r['ok']} hoisted={r['hoisted']} renamed={r['renamed']} contested={r['contested']} "
+          f"collapsed={r['collapsed']} unresolved={len(r['queue'])} ({r.get('secs')}s)", flush=True)
     queue = r["queue"]
     if queue and a.harness == "codex":
         l = Ledger()  # blocks released twice by revise agents are the librarian's, not the loop's
@@ -255,8 +255,8 @@ def finish_round(p: Project, a, model: str, module: str) -> Dict:
             out["revise"] = {"n": len(results), "kept": sum(1 for x in results if x["outcome"] == "matched"), "cost_usd": round(spent, 3)}
             print(f"revise round: {out['revise']['kept']}/{len(results)} kept, ${spent:.2f}", flush=True)
             r = finish.finish(p, module)
-            out["passes"].append({k: r[k] for k in ("ok", "tus", "tidied", "hoisted", "flagged", "unflagged", "collapsed", "queue")})
-            print(f"tu-finish {module}: ok={r['ok']} collapsed={r['collapsed']} queue={len(r['queue'])}", flush=True)
+            out["passes"].append({k: r[k] for k in ("ok", "tus", "hoisted", "renamed", "contested", "collapsed", "queue")})
+            print(f"tu-finish {module}: ok={r['ok']} collapsed={r['collapsed']} unresolved={len(r['queue'])}", flush=True)
     return out
 
 

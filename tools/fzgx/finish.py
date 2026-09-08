@@ -26,7 +26,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from . import collapse, oracle, tufile, tutidy, tutrial
+from . import collapse, oracle, reconcile, tufile, tutrial
 from .project import ROOT, STATE_DIR, Project
 
 
@@ -99,25 +99,12 @@ def _all_matched(p: Project, tu_source: str) -> bool:
 
 
 def finish_tu(p: Project, tu_source: str, do_collapse: bool = True, v: Optional[Verifier] = None) -> Dict[str, object]:
-    module = tu_source.split("/")[1] if tu_source.startswith("rel/") else "main"
-    stem = Path(tu_source).stem
     v = v or Verifier(p)
-    ok = v.compiles
-    out: Dict[str, object] = {"tu": tu_source}
-    for h in (f"rel/{module}/globals.h", f"rel/{module}/{stem}.h"):
-        if (ROOT / "include" / h).exists():
-            r = tufile.add_include(p, tu_source, h, ok)
-            if r.get("added"):
-                out.setdefault("included", []).append(h)
-    t = tutidy.tidy(p, tu_source, check_fn=v.matches)
-    out["tidied"] = len(t["tidied"])
-    h = tutidy.hoist_decls(p, tu_source, check_fn=v.matches)
-    out["hoisted"] = len(h["hoisted"])
-    out["conflicts"] = len(h.get("conflicts", {}))
-    r = tufile.reflag(p, tu_source, ok)
-    out["flagged"], out["unflagged"] = len(r["flagged"]), len(r["unflagged"])
+    r = reconcile.reconcile_tu(p, tu_source, v)
+    out: Dict[str, object] = {"tu": tu_source, "renamed": r["renamed"], "hoisted": len(r["hoisted"]),
+                              "contested": len(r["contested"]), "queue": list(r["unresolved"]),
+                              "included": r["included"]}
     tf = tufile.load(p, tu_source)
-    out["queue"] = [b.name for b in tf.blocks if "noprologue" in b.flags]
     out["blocks"] = len(tf.blocks)
     # a tidied block may renumber its private literals: keep the pool mappings current
     for u in p.load_units():
@@ -193,14 +180,14 @@ def finish(p: Project, module: str, workers: int = 12) -> Dict[str, object]:
     if linked:
         files = [str(ROOT / "src" / tu) for tu in tus] + [str(p.units_path), str(p.module_config_dir(module) / "splits.txt")]
         subprocess.run(["git", "add", *files], cwd=ROOT, capture_output=True)
-        msg = f"tu-finish {module}: {sum(r['tidied'] for r in results)} tidied, {sum(r['hoisted'] for r in results)} hoisted, " \
-              f"{len(queue)} queued for revise" + (f", collapsed {', '.join(Path(t).stem for t in collapsed)}" if collapsed else "")
+        msg = f"tu-finish {module}: {sum(r['hoisted'] for r in results)} declarations hoisted, {sum(r['renamed'] for r in results)} typedefs isolated, " \
+              f"{sum(r['contested'] for r in results)} contested, {len(queue)} unresolved" + (f", collapsed {', '.join(Path(t).stem for t in collapsed)}" if collapsed else "")
         subprocess.run(["git", "commit", "-q", "-m", msg], cwd=ROOT, capture_output=True)
     return {"ok": linked, "module": module, "tus": len(tus), "queue": queue, "collapsed": collapsed,
             "secs": round(time.time() - t0, 1), "cache_hits": v.hits, "cache_misses": v.misses,
             "restored": restored, "diag": diag,
             "trials": {r["tu"]: r.get("trial") for r in results if r.get("trial")},
             "collapse_errors": {r["tu"]: r["collapse_error"] for r in results if r.get("collapse_error")},
-            "tidied": sum(r["tidied"] for r in results), "hoisted": sum(r["hoisted"] for r in results),
-            "flagged": sum(r["flagged"] for r in results), "unflagged": sum(r["unflagged"] for r in results),
+            "hoisted": sum(r["hoisted"] for r in results), "renamed": sum(r["renamed"] for r in results),
+            "contested": sum(r["contested"] for r in results),
             "results": results}
