@@ -248,6 +248,43 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             return ("abs", c, 0)
         return None
 
+    def indexed_field(b: str, o: int, t: str) -> Optional[str]:
+        """`(base + (idx << k))` / `(base + (idx * n))` with a displacement is an array field of the
+        struct the base points to: `base->unk_off[idx]` (elements of the access width), or, when
+        the stride is wider, an array of element structs `base->unk_off[idx].unk_0`. MWCC then
+        emits the retail `add; load disp(r)` instead of an indexed load."""
+        m = re.fullmatch(r"\((arg\d+|p_[A-Za-z_]\w*) \+ \((.+?) (<<|\*) (\d+)\)\)", b) or \
+            re.fullmatch(r"\(\((.+?) (<<|\*) (\d+)\) \+ (arg\d+|p_[A-Za-z_]\w*)\)", b)
+        if not m:
+            return None
+        g = m.groups()
+        if g[0].startswith(("arg", "p_")):
+            bexpr, idx, op, n = g
+        else:
+            idx, op, n, bexpr = g
+        stride = (1 << int(n)) if op == "<<" else int(n)
+        w = {"u8": 1, "s8": 1, "u16": 2, "s16": 2, "u32": 4, "f32": 4, "f64": 8}[t]
+        if stride < w or o < 0:
+            return None
+        if bexpr.startswith("arg"):
+            k = int(bexpr[3:])
+            if k >= len(params):
+                return None
+            key = params[k]
+            tab = fields.setdefault(key, {})
+        elif bexpr in locals_:
+            tab = gfields.setdefault(locals_[bexpr], {})
+        else:
+            return None
+        if stride == w:
+            tab[o] = f"arr:{t}:{stride}"
+            return f"{bexpr}->unk_{o:X}[{idx}]"
+        tab[o] = f"arr:struct {name}_E{stride}_{t}:{stride}"
+        elem_structs[(stride, t)] = f"struct {name}_E{stride}_{t} {{ {t} unk_0; u8 pad_{w:X}[0x{stride - w:X}]; }};"
+        return f"{bexpr}->unk_{o:X}[{idx}].unk_0"
+
+    elem_structs: Dict[Tuple[int, str], str] = {}
+
     hi: Dict[str, str] = {}  # register holding sym@ha
     labels = LABELS[0]
     frame_size = 0
@@ -378,6 +415,23 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             return False
         srcs = a_[1:] if mn_ not in STORE_T and not mn_.startswith(("st", "cmp")) else a_
         return any(re.search(rf"\b{r}\b", x) for x in srcs)
+
+    def read_later(idx: int, r: str) -> bool:
+        """Is r read after instruction idx before being written again (a call reads r3..r10)?"""
+        for j in range(idx + 1, len(ins)):
+            mn_, a_ = ins[j]
+            if reads(j, r):
+                return True
+            if mn_ == "bl":
+                if re.fullmatch(r"r([3-9]|10)|f([1-8])", r):
+                    return True
+                if re.fullmatch(r"r([0-9]|1[0-2])|f(\d|1[0-3])", r):
+                    return False
+            if mn_ == "blr":
+                return r in ("r3", "f1")
+            if a_ and a_[0] == r and mn_ not in STORE_T and not mn_.startswith(("st", "cmp")):
+                return False
+        return False
 
     def reused_after_store(idx: int, r: str, mem: str) -> bool:
         """After instruction idx, is there a store to `mem` followed by a read of r, with no
@@ -763,8 +817,15 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 else:
                     o = _imm(off)
                     b = use(base)
-                    fb = field_base(b, base)
+                    fb = field_base(b, base) if o >= 0 else None
                     if fb is None:
+                        ax = indexed_field(b, o, t)
+                        if ax is not None and not mn.endswith("u"):
+                            regs[a[0]] = ax; rtype[a[0]] = t
+                            if reused_after_store(i, a[0], a[1]):
+                                tn = f"v{len(temps)}"; temps.append(f"{t} {tn};")
+                                stmts.append(f"{tn} = {regs[a[0]]};"); regs[a[0]] = tn
+                            continue
                         # a computed address (array element, pointer arithmetic): a plain typed access
                         regs[a[0]] = f"*({t} *)((u8 *){b} + {o})"; rtype[a[0]] = t
                         if mn.endswith("u"):
@@ -803,6 +864,17 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     raise Give()
                 off, base = m.group(1), m.group(2)
                 t = STORE_T[mn]
+                # a value loaded before this store and read after it was a local in the source
+                # (the swap idiom: `old = p->x; p->x = v; return old;`); left pending, the read
+                # would be emitted after the store and see the new value
+                for r_ in list(regs):
+                    e_ = regs[r_]
+                    if r_ == a[0] or not e_ or not re.search(r"\*\(|->|\.unk_|(?<![\w])[A-Za-z_]\w*\[", e_) or re.fullmatch(r"[A-Za-z_]\w*", e_):
+                        continue
+                    if not read_later(i, r_):
+                        continue
+                    tn = f"v{len(temps)}"; temps.append(f"{rtype.get(r_, 'u32')} {tn};")
+                    stmts.append(f"{tn} = {e_};"); regs[r_] = tn
                 val = use(a[0])
                 if off.endswith("@l") and base in hi:
                     s = hi[base]; so = sym_off(off)
@@ -818,8 +890,11 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                         declare(s, t); stmts.append(f"{s} = {val};")
                 else:
                     o = _imm(off); b = use(base)
-                    fb = field_base(b, base)
+                    fb = field_base(b, base) if o >= 0 else None
                     if fb is None:
+                        ax = indexed_field(b, o, t)
+                        if ax is not None:
+                            stmts.append(f"{ax} = {val};"); continue
                         stmts.append(f"*({t} *)((u8 *){b} + {o}) = {val};"); continue
                     kind, key, k = fb
                     if kind == "param":
@@ -1259,6 +1334,8 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     rtype_c = "void"
     if any(b.startswith("return ") for b in body):
         rtype_c = rtype.get("r3", "u32")
+        if rtype_c == "void *":
+            rtype_c = "u32"
     if rtype_c == "void":
         body = [b.replace("return __RET__;", "return;") for b in body]
     else:
@@ -1267,6 +1344,19 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     if "f1" in regs and any(a and a[0] == "f1" for mn, a in ins if mn != "blr") and not any(b.startswith("return ") for b in body):
         body.append(f"return {regs['f1']};"); rtype_c = rtype.get("f1", "f32")
         if rtype_c in ("s8", "s16"): rtype_c = "s32"
+    def field_width(t: str) -> int:
+        if t.startswith("arr:"):
+            return int(t.rsplit(":", 1)[1])  # one element: enough for the padding that follows
+        return {"u8": 1, "s8": 1, "u16": 2, "s16": 2, "u32": 4, "f32": 4, "f64": 8}[t]
+
+    def field_decl(t: str, o: int) -> str:
+        if t.startswith("arr:"):
+            _, et, _ = t.split(":", 2) if t.count(":") == 2 else (None, t[4:t.rfind(":")], None)
+            et = t[4:t.rfind(":")]
+            return f"{et} unk_{o:X}[1];"
+        return f"{t} unk_{o:X};"
+
+    structs.extend(elem_structs.values())
     # parameters and struct parameters
     decl_params = []
     for i, r in enumerate(params):
@@ -1278,9 +1368,8 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             for o in sorted(offs):
                 if o > cur:
                     lines.append(f"    u8 pad_{cur:X}[0x{o - cur:X}];")
-                w = {"u8": 1, "s8": 1, "u16": 2, "s16": 2, "u32": 4, "f32": 4, "f64": 8}[offs[o]]
-                lines.append(f"    {offs[o]} unk_{o:X};")
-                cur = o + w
+                lines.append("    " + field_decl(offs[o], o))
+                cur = o + field_width(offs[o])
             lines.append("};")
             structs.append("\n".join(lines))
             decl_params.append(f"struct {sname} *arg{i}")
@@ -1294,9 +1383,8 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         for o in sorted(offs):
             if o > cur:
                 lines.append(f"    u8 pad_{cur:X}[0x{o - cur:X}];")
-            w = {"u8": 1, "s8": 1, "u16": 2, "s16": 2, "u32": 4, "f32": 4, "f64": 8}[offs[o]]
-            lines.append(f"    {offs[o]} unk_{o:X};")
-            cur = o + w
+            lines.append("    " + field_decl(offs[o], o))
+            cur = o + field_width(offs[o])
         lines.append("};")
         return "\n".join(lines)
     empty_globals = [g for g, offs in gfields.items() if not offs]
@@ -1316,6 +1404,11 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     for g in empty_globals:
         sname = f"{name}_{g}"
         body = [b.replace(f"struct {sname} *", "u8 *").replace(f"(struct {sname} *)", "(u8 *)") for b in body]
+    ptr_names = [f"arg{i}" for i, r in enumerate(params) if r in fields] + [ln for ln in locals_ if ln.startswith("p_")] + list(pfields)
+    decl_line = re.compile(r"^\s*(struct\s+\w+\s*\*+|[A-Za-z_]\w*\s*\*+|[A-Za-z_]\w*\s+)\s*[A-Za-z_]\w*(\[[^\]]*\])*;$")
+    for pn in ptr_names:
+        body = [re.sub(rf"(?<![\w>.*])({re.escape(pn)})\b(?!\s*->|\s*=\s*\(struct)", r"(u32)\1", b)
+                if not (b.startswith(f"{pn} = ") or decl_line.match(b)) else b for b in body]
     text = ['#include "types.h"', ""]
     text += sorted(externs.values())
     if structs:
