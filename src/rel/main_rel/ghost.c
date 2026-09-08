@@ -441,21 +441,20 @@ void ghost_set_record_flag1(s32 arg) {
 }
 /* fzgx:end ghost_set_record_flag1 */
 
-/* fzgx:begin ghost_set_record_flag2 noprologue */
-#include "types.h"
-
+/* fzgx:begin ghost_set_record_flag2 */
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
-extern u8 lbl_1_bss_7F0C0[];
 
 // Set the second flag on the record selected by the argument.
 void ghost_set_record_flag2(s32 arg) {
     s16 record_group;
     s16 record_index;
     s32 flag_index;
+    u8 *flags;
 
     fn_1_12EF80((s16)arg, &record_group, &record_index);
     flag_index = (record_group - 1) * 6 + record_index;
-    lbl_1_bss_7F0C0[0x4938 + flag_index] |= 4;
+    flags = (u8 *)&lbl_1_bss_7F0C0;
+    flags[0x4938 + flag_index] |= 4;
 }
 /* fzgx:end ghost_set_record_flag2 */
 

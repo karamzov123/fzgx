@@ -53,23 +53,20 @@ extern void *lbl_801A6410;
 extern void *fn_80008E84();
 extern void fn_1_44A4(void);
 
-/* fzgx:begin fn_1_9FE74 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/sound.h"
-
-extern u32 lbl_801A6410;
-extern u32 fn_1_44A4(void);
-extern u32 fn_80008E84(u32 arg);
-extern u32 fn_1_45D0(u32 sound_system, void *resource, u32 *resource_data, int size);
+/* fzgx:begin fn_1_9FE74 */
+extern void *lbl_801A6410;
+extern void fn_1_44A4(void);
+extern void *fn_80008E84();
+extern u32 fn_1_45D0(void *arg0, void *arg1, u32 *arg2, int arg3);
 
 // Initialize the sound resource and register it with the sound system.
 u32 fn_1_9FE74(void *arg) {
     u32 result;
 
-    lbl_1_bss_6EA9C = fn_80008E84(fn_1_44A4());
+    fn_1_44A4();
+    lbl_1_bss_6EA9C = (u32)fn_80008E84();
     result = fn_1_45D0(lbl_801A6410, arg, &lbl_1_data_33F1C, 0x94);
-    fn_80008E84(lbl_1_bss_6EA9C);
+    fn_80008E84((void *)lbl_1_bss_6EA9C);
     return result;
 }
 /* fzgx:end fn_1_9FE74 */

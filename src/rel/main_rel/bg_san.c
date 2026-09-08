@@ -6,7 +6,7 @@
 
 extern void fn_1_DAAFC(Obj_1_data_2A7E0_At3C *obj);
 
-// Passes the active background state to the next processing stage.
+// Forwards the active background state to the next processing stage.
 void fn_1_DA7B8(void) {
     fn_1_DAAFC(lbl_1_data_2A7E0.unk_3C);
 }
@@ -18,7 +18,7 @@ void fn_1_DA7B8(void) {
 extern u32 fn_1_58C4(void);
 extern void fn_1_DAB1C(Obj_1_data_2A7E0_At3C *state);
 
-// Runs the transition handler once the scene is ready.
+// Applies the background transition after the scene reports readiness.
 void fn_1_DA9F0(void) {
     Obj_1_data_2A7E0_At3C *background_state = lbl_1_data_2A7E0.unk_3C;
 
@@ -45,7 +45,7 @@ extern void fn_1_FB9C0(u32 value);
 extern void fn_1_103F10(void *state);
 extern void fn_1_DAB3C(Obj_1_data_2A7E0_At3C *state);
 
-// Loads the background resources when needed, then advances the active state.
+// Loads pending background resources before advancing the scene state.
 void fn_1_DAA58(void) {
     Obj_1_data_2A7E0_At3C *state = lbl_1_data_2A7E0.unk_3C;
 

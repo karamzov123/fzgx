@@ -76,7 +76,7 @@ void fn_1_109114(AccessoryObject *self) {
 /* fzgx:begin fn_1_10B7D8 */
 #include "rel/main_rel/globals.h"
 
-// Initializes the accessory object when a caller supplies one.
+// Initializes the accessory data when an object is available.
 void fn_1_10B7D8(void *accessory) {
     if (accessory != 0) {
         fn_1_10846C(accessory);

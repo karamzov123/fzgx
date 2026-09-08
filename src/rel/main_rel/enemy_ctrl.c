@@ -320,15 +320,11 @@ u8* fn_1_D0E64(void) {
 }
 /* fzgx:end fn_1_D0E64 */
 
-/* fzgx:begin fn_1_D2F50 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/enemy_ctrl.h"
-
-extern u32 fn_80008E84(u32);
-
-// Initializes the shared enemy-control state from its configured source.
+/* fzgx:begin fn_1_D2F50 */
+// Stores the initialized enemy-control handle for later subsystem updates.
 void fn_1_D2F50(void) {
+    u32 fn_80008E84(u32);
+
     lbl_1_data_3D928.unk_0 = fn_80008E84(lbl_1_data_3D924);
 }
 /* fzgx:end fn_1_D2F50 */

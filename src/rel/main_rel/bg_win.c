@@ -80,32 +80,22 @@ void fn_1_15E3E0(s32 index, u32 value) {
 }
 /* fzgx:end fn_1_15E3E0 */
 
-/* fzgx:begin fn_1_15E540 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
-typedef struct {
-    u8 unk_0;
-    u8 unk_1;
-    u8 pad_2[0x2e];
-    f32 unk_30;
-} WinEntry;
-
+/* fzgx:begin fn_1_15E540 */
 extern void *fn_1_435C(void *);
 extern unsigned char lbl_1_data_4C994[12];
 extern void fn_1_15E220(u8 *);
 extern void fn_1_3F8C(void *, void *, u8 *, s32);
-extern WinEntry lbl_1_bss_8FDA8[];
 
-// Initializes a window entry once and marks it ready for reuse.
+// Initializes a background-window entry once, then marks it ready for reuse.
 void fn_1_15E540(s32 index, void *arg) {
-    if (!(lbl_1_bss_8FDA8[index].unk_0 & 1)) {
+    if (!((&lbl_1_bss_8FDA8.unk_0)[index * 0x34] & 1)) {
         void *value = fn_1_435C(arg);
+
         fn_1_3F8C(lbl_1_data_4C994, fn_1_15E220,
-                  &lbl_1_bss_8FDA8[index].unk_1, 13);
-        lbl_1_bss_8FDA8[index].unk_1 = 0xff;
+                  &lbl_1_bss_8FDA8.unk_1 + index * 0x34, 13);
+        (&lbl_1_bss_8FDA8.unk_1)[index * 0x34] = 0xff;
         fn_1_435C(value);
-        lbl_1_bss_8FDA8[index].unk_0 |= 1;
+        (&lbl_1_bss_8FDA8.unk_0)[index * 0x34] |= 1;
     }
 }
 /* fzgx:end fn_1_15E540 */

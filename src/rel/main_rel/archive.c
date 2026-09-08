@@ -30,12 +30,8 @@ extern void *lbl_801A6410;
 extern void fn_1_46B4(void *arg0, void *arg1, unsigned char *arg2, s32 arg3);
 extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
 
-/* fzgx:begin fn_1_12A2D0 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/archive.h"
-
-extern void fn_8000C49C(char *arg0, s32 arg1, ...);
+/* fzgx:begin fn_1_12A2D0 */
+extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
 
 // Store the selected entry when it is valid; otherwise report an invalid entry.
 void fn_1_12A2D0(s32 value) {
@@ -45,6 +41,8 @@ void fn_1_12A2D0(s32 value) {
     if ((s32)entry->unk_0 == 1) {
         lbl_1_bss_897A0 = value;
     } else {
+        extern void fn_8000C49C(char *arg0, s32 arg1, ...);
+
         fn_8000C49C((char *)lbl_1_data_40608, 0x5d, lbl_1_data_40614);
     }
 }
@@ -421,25 +419,24 @@ void fn_1_12F30C(void *arg0, Fn1_12F30CState *state) {
 }
 /* fzgx:end fn_1_12F30C */
 
-/* fzgx:begin fn_1_130F98 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
+/* fzgx:begin fn_1_130F98 */
 extern s32 lbl_1_bss_8CA44[10];
-extern s32 lbl_1_bss_8CA40;
-extern void (*lbl_1_data_40D50[8])(void);
 
-// Promote a pending archive operation and dispatch the selected handler.
+// Promote a pending archive operation, then invoke its selected handler.
 void fn_1_130F98(void) {
     if (lbl_1_bss_8CA44[0] >= 0) {
-        s32 value = lbl_1_bss_8CA44[0];
+        s32 pending_operation = lbl_1_bss_8CA44[0];
 
         lbl_1_bss_8CA44[0] = -1;
-        lbl_1_bss_8CA40 = value;
+        lbl_1_bss_8CA40 = pending_operation;
     }
 
-    if (lbl_1_bss_8CA40 >= 0) {
-        lbl_1_data_40D50[lbl_1_bss_8CA40]();
+    {
+        s32 operation = lbl_1_bss_8CA40;
+
+        if (operation >= 0) {
+            ((void (**)(void))lbl_1_data_40D50)[operation]();
+        }
     }
 }
 /* fzgx:end fn_1_130F98 */

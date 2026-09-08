@@ -300,42 +300,38 @@ extern u32 lbl_1_bss_8E3E4[8];
 extern u32 fn_1_45D0(u32 arg0, int arg1, void* arg2, int arg3);
 extern void fn_1_FC414(u32 arg0, int arg1);
 
-// Loads a display resource and registers it for the selected slot.
+// Loads a display resource and activates the handle assigned to the selected slot.
 void fn_1_13F848(u32 arg0) {
-    u32 index = arg0 & 0xFF;
+    u32 slot = arg0 & 0xFF;
 
-    lbl_1_bss_8E3E4[index] =
+    lbl_1_bss_8E3E4[slot] =
         fn_1_45D0(lbl_801A6410, 0x10440, lbl_1_data_419E0, 0x14F9);
-    fn_1_FC414(lbl_1_bss_8E3E4[index], 1);
+    fn_1_FC414(lbl_1_bss_8E3E4[slot], 1);
 }
 /* fzgx:end fn_1_13F848 */
 
 /* fzgx:begin fn_1_13F8B0 */
 extern u32 lbl_1_bss_8E3E4[8];
 
-// Return the display handle stored in the slot selected by the key's low byte.
+// Return the cached display handle for the key's low-byte slot.
 u32 fn_1_13F8B0(u32 key) {
-    u32 slot = key & 0xFF;
-
-    return lbl_1_bss_8E3E4[slot];
+    return lbl_1_bss_8E3E4[key & 0xFF];
 }
 /* fzgx:end fn_1_13F8B0 */
 
 /* fzgx:begin fn_1_13F948 */
 extern u32 lbl_1_bss_8E404[8];
 
-// Clear every static-display resource handle before initialization.
+// Reset all static-display resource handles before initialization.
 void fn_1_13F948(void) {
-    u32* handles = lbl_1_bss_8E404;
-
-    handles[0] = 0;
-    handles[1] = 0;
-    handles[2] = 0;
-    handles[3] = 0;
-    handles[4] = 0;
-    handles[5] = 0;
-    handles[6] = 0;
-    handles[7] = 0;
+    lbl_1_bss_8E404[0] = 0;
+    lbl_1_bss_8E404[1] = 0;
+    lbl_1_bss_8E404[2] = 0;
+    lbl_1_bss_8E404[3] = 0;
+    lbl_1_bss_8E404[4] = 0;
+    lbl_1_bss_8E404[5] = 0;
+    lbl_1_bss_8E404[6] = 0;
+    lbl_1_bss_8E404[7] = 0;
 }
 /* fzgx:end fn_1_13F948 */
 
@@ -346,7 +342,7 @@ extern u32 fn_1_45D0(u32 arg0, int arg1, void* arg2, int arg3);
 extern u32 lbl_1_bss_8E404[8];
 extern u32 fn_80008BEC(u32 arg0, int arg1, int arg2);
 
-// Builds and initializes the selected static display entry.
+// Allocate a static-display resource for the selected byte-sized slot and initialize it.
 u32 fn_1_13F974(u32 arg0) {
     u32 slot = arg0 & 0xFF;
 
@@ -377,7 +373,7 @@ typedef struct {
     u32 unk_3A4;
 } FnObject;
 
-// Releases active objects and clears all static-display slots.
+// Releases each active static-display object before clearing its slot.
 void fn_1_13F9F0(void) {
     u8 slot;
 
@@ -438,8 +434,8 @@ extern u32 fn_1_A5D88(void);
 extern void fn_80074188(u32 arg0, u32 arg1, u32 arg2, u32 arg3);
 extern void fn_1_149C2C(void* arg0, void* arg1);
 
-// Refresh static-display state and publish the current display identifiers.
-void fn_1_149B64(void* arg0, void* arg1) {
+// Refresh the display state before publishing the current display and effect IDs.
+void fn_1_149B64(void* display_state, void* display_context) {
     u32 display_id;
     u32 effect_id;
 
@@ -447,13 +443,13 @@ void fn_1_149B64(void* arg0, void* arg1) {
                  *(u32*)((u8*)&lbl_1_bss_8E428 + 0x14),
                  lbl_1_bss_8E428.unk_10,
                  *(u32*)((u8*)&lbl_1_bss_8E428 + 0x18));
-    fn_1_5233C(arg0, arg1);
+    fn_1_5233C(display_state, display_context);
 
     display_id = fn_1_A5DB0() & 0xffff;
     effect_id = fn_1_A5D88() & 0xffff;
     fn_80074188(0, 0, effect_id, display_id);
 
-    fn_1_149C2C(arg0, arg1);
+    fn_1_149C2C(display_state, display_context);
 }
 /* fzgx:end fn_1_149B64 */
 
@@ -852,23 +848,23 @@ void fn_1_14CA48(void) {
 /* fzgx:begin fn_1_14CA4C */
 #include "rel/main_rel/sel_static_disp.h"
 
-// Enables the display update once and refreshes it when the current value exceeds its limit.
+extern void fn_1_A2D84(u32, u8 *);
+
+// Arms the display update and refreshes it when the selected value exceeds the current one.
 void fn_1_14CA4C(void) {
     u8 *display_state = (u8 *)&lbl_1_bss_8E518;
-    u8 update_limit;
+    u8 selected_limit;
 
     if (lbl_1_bss_8E518.unk_4 != 0) {
         return;
     }
 
     lbl_1_bss_8E518.unk_4 = 1;
-    if (display_state[5] == 4) {
-        update_limit = lbl_1_bss_3C30.unk_8;
-    } else {
-        update_limit = lbl_1_bss_3C30.unk_9;
-    }
+    selected_limit = display_state[5] == 4
+        ? lbl_1_bss_3C30.unk_8
+        : lbl_1_bss_3C30.unk_9;
 
-    if (update_limit > display_state[0x30]) {
+    if (selected_limit > display_state[0x30]) {
         fn_1_A2D84(0xA9010400, display_state);
     }
 }
@@ -1187,7 +1183,7 @@ s16 fn_1_14F090(s16 value, s16 occurrence) {
 extern s16 fn_1_14F090(void *table, s16 index);
 extern s16 fn_1_14F01C(void *table);
 
-// Finds the position of the first table entry matching the requested value.
+// Returns the index of the first table entry matching the requested value.
 s16 fn_1_14F118(s16 value, void *table) {
     s16 index;
 
@@ -1209,26 +1205,25 @@ typedef struct {
     u32 values[75];
 } FlagTable;
 
-// Returns the ordinal of the matching enabled entry, or -1 when none is enabled.
+// Returns the ordinal among enabled entries for the requested value, or -1 if absent.
 s16 fn_1_14F19C(s16 wanted, void *arg, u32 mask) {
     FlagTable table;
-    s16 table_index;
-    s16 enabled_index;
+    s16 entry_index;
+    s16 enabled_ordinal;
 
-    table_index = 0;
-    enabled_index = 0;
-    while (table_index < fn_1_14F01C(arg)) {
+    entry_index = 0;
+    enabled_ordinal = 0;
+    for (; entry_index < fn_1_14F01C(arg); entry_index++) {
         s16 value;
 
-        value = fn_1_14F090(arg, table_index);
+        value = fn_1_14F090(arg, entry_index);
         table = *(FlagTable *)lbl_1_rodata_99D8;
         if (mask & table.values[value]) {
             if (value == wanted) {
-                return enabled_index;
+                return enabled_ordinal;
             }
-            enabled_index++;
+            enabled_ordinal++;
         }
-        table_index++;
     }
     return -1;
 }
