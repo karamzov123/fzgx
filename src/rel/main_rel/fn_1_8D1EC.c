@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_1_8D1EC: main_rel .text:0x0008D1EC size 0x24
-// Carved by fzgx. Replace this file's body with the matching C.
+extern void fn_1_8D210(u32 arg0, u32 arg1, u32 arg2, u32 arg3);
+
+void fn_1_8D1EC(u32 arg0, u32 arg1, u32 arg2) {
+    fn_1_8D210(arg0, arg1, arg2, 0);
+}
