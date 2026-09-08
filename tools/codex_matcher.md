@@ -10,6 +10,7 @@ constants the tooling accepts). On MATCH or MATCH (pool) call submit(symbol, age
 release(symbol, agent, reason) with one precise sentence on what still differs.
 Float constants the target loads from a lbl_*_rodata_* symbol live in a shared literal pool: declare
 `extern const f64 NAME;` (or f32) exactly as the context shows and use the symbol; a literal in C emits a
-private constant with a different relocation and can never match. Unit shape: the includes named in the context; extern declarations for referenced symbols; minimal
+private constant with a different relocation and can never match. If the context shows a prologue "already in scope", its declarations precede your block: do not redeclare
+them, and treat a PROLOGUE CONFLICT in a check as something to fix. Unit shape: the includes named in the context; extern declarations for referenced symbols; minimal
 local structs for field offsets only when the headers have none; the function. No hardcoded addresses, no inline asm, no system headers.
 Finish with exactly one line and nothing else: RESULT: matched|released SYMBOL <percent>% checks=<n>

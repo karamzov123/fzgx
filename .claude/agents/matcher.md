@@ -51,6 +51,8 @@ reaches 100%, pass it as `mw_version` to submit.
   becomes a private constant with a different relocation and never matches.
 - `lwz r, OFF(base)` is a struct field at OFF: declare a minimal struct.
 - The register a value lands in before a `bl` is its argument position.
+- If the context shows a prologue "already in scope", do not redeclare what it
+  declares; a PROLOGUE CONFLICT in a check must be fixed before submit.
 - If a compiler error is not in your own file, release with the error text.
 
 Your final message must be exactly one line and nothing else:

@@ -102,6 +102,12 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
     )
     if unit_src and unit_cfg.get("tu"):
         parts.append(f"- unit: block `{symbol}` of `src/{unit_cfg['tu']}` (you write the unit; the tooling splices it in)")
+        tf = tufile.load(project, unit_cfg["tu"])
+        if tf.prologue.strip():
+            parts.append(f"\n## Already in scope: the prologue of `src/{unit_cfg['tu']}`\n"
+                         "Every block of the file is compiled after these lines. Do not redeclare what they declare; "
+                         "if one of them is wrong for the retail bytes of your function, say so in your release reason.\n"
+                         "```c\n" + tf.prologue.strip() + "\n```")
     else:
         parts.append(f"- unit: `src/{unit_src}`" if unit_src else "- unit: NOT CARVED (run `fzgx carve`)")
     if row and not (row["claimed_by"] or "").startswith("shadow-"):

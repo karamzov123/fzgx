@@ -83,12 +83,34 @@ def _canonical_text(p: Project, unit_src: str) -> str:
 
 
 def _work_source(p: Project, key: str, unit_src: str) -> Optional[Path]:
-    """The file to compile for a check: the agent's work copy, exactly as written.
-
-    The unit an agent writes is complete on its own. Whether it also compiles under
-    the TU prologue is decided at splice time (`_install`), never during a check."""
+    """The file to compile for a check: the agent's work copy, exactly as written."""
     work = p.work_path(key)
     return work if work.exists() else None
+
+
+def _prologue_conflict(p: Project, key: str, unit_src: str) -> Optional[str]:
+    """For a block unit: does the work copy also compile under its TU prologue? The compiler's
+    complaint if not (the block would be spliced `noprologue` and queued for revision)."""
+    u = p.unit_record(unit_src)
+    work = p.work_path(key)
+    if not u or not u.get("tu") or not work.exists():
+        return None
+    tf = tufile.load(p, u["tu"])
+    if not tf.prologue.strip():
+        return None
+    inc, body = tufile.split_includes(work.read_text())
+    have = {ln.strip() for ln in tf.prologue.splitlines()}
+    extra = [ln for ln in inc if ln.strip() not in have]
+    probe = work.with_suffix(".prologue.c")
+    probe.write_text(tf.prologue + "\n" + ("\n".join(extra) + "\n\n" if extra else "") + body)
+    unit = p.objdiff_unit_name(u["module"], unit_src)
+    obj = oracle._base_object(p, unit)
+    cp = oracle.compile_unit(p, unit, unit_src, probe)
+    probe.unlink(missing_ok=True)
+    if cp.returncode == 0:
+        return None
+    err = [l for l in (cp.stdout + cp.stderr).splitlines() if l.startswith("#") and "File" not in l and "---" not in l]
+    return "\n".join(err[:6])[:900]
 
 
 # ------------------------------------------------------------------ inventory
@@ -252,6 +274,10 @@ def check(p: Project, symbol: str, max_diff_lines: int = 80, versions: Optional[
     res = oracle.check(p, symbol, max_diff_lines, source=src)
     out = res.to_json()
     if res.ok and src is not None:
+        conflict = _prologue_conflict(p, key, unit)
+        if conflict:
+            out["prologue_conflict"] = conflict
+            oracle.compile_unit(p, res.unit, unit, src)  # the probe overwrote the object; restore ours
         stats = Ledger().bump_checks(key, res.percent_adjusted if res.pool_rows else res.percent)
         out["budget"] = stats
         if stats.get("improved"):
@@ -293,6 +319,10 @@ def format_check(res: Dict[str, Any]) -> str:
     if res["diff"] and not res.get("matched_pool"):
         lines.append("diff (target | ours):")
         lines.extend(res["diff"])
+    if res.get("prologue_conflict"):
+        lines.append("PROLOGUE CONFLICT: your unit matches on its own but does not compile under the file's prologue "
+                     "(shown in the context as 'already in scope'), so it would be queued for revision. "
+                     "Drop or align the declaration named below:\n" + res["prologue_conflict"])
     b = res.get("budget")
     if b:
         lines.append(f"budget: check {b['checks']}/{MAX_CHECKS}, {b['stale']}/{MAX_STALE} without improvement, best this attempt {b['best_in_attempt']:.1f}%")
