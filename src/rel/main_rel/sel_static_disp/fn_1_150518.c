@@ -1,25 +1,18 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
 
-extern u32 lbl_1_data_2A7E0[62];
-extern void fn_1_9A508(u32 arg);
-extern void fn_1_150C8C(u32 arg);
-extern void fn_1_150F30(u32 arg);
+extern void fn_1_9A508(Obj_1_data_2A7E0 *state);
+extern void fn_1_150C8C(Obj_1_data_2A7E0_At3C *obj);
+extern void fn_1_150F30(Obj_1_data_2A7E0_At3C *obj);
 
-typedef struct {
-    u32 field_00;
-    u8 pad_04[0x80];
-    u32 field_84;
-    u8 pad_88[0x269c];
-    u32 field_2724;
-} MainObject;
-
+// Reset the active object's counters and re-run its two setup passes.
 void fn_1_150518(void) {
-    MainObject *object = (MainObject *)*(u32 *)((u8 *)lbl_1_data_2A7E0 + 0x3c);
+    Obj_1_data_2A7E0_At3C *obj = lbl_1_data_2A7E0.unk_3C;
 
-    object->field_84 = 0;
-    object->field_2724 = 0;
-    fn_1_9A508((u32)lbl_1_data_2A7E0);
-    fn_1_150C8C((u32)object);
-    fn_1_150F30((u32)object);
-    object->field_00 = 1;
+    obj->unk_84 = 0;
+    obj->unk_2724 = 0;
+    fn_1_9A508(&lbl_1_data_2A7E0);
+    fn_1_150C8C(obj);
+    fn_1_150F30(obj);
+    obj->unk_0 = 1;
 }
