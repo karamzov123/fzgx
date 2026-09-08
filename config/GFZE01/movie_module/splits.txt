@@ -1187,3 +1187,21 @@ rel/movie_module/fn_12_AB60.c:
 
 rel/movie_module/fn_12_23120.c:
 	.text       start:0x00023120 end:0x000231A0 align:4
+
+rel/movie_module/fn_12_24990.c:
+	.text       start:0x00024990 end:0x000249BC align:4
+
+rel/movie_module/fn_12_342B8.c:
+	.text       start:0x000342B8 end:0x000342E4 align:4
+
+rel/movie_module/fn_12_34FD0.c:
+	.text       start:0x00034FD0 end:0x00034FFC align:4
+
+rel/movie_module/fn_12_6C78.c:
+	.text       start:0x00006C78 end:0x00006CA8 align:4
+
+rel/movie_module/fn_12_CAB4.c:
+	.text       start:0x0000CAB4 end:0x0000CAE4 align:4
+
+rel/movie_module/fn_12_23250.c:
+	.text       start:0x00023250 end:0x00023280 align:4

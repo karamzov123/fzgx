@@ -1012,3 +1012,15 @@ dol/fn_8001036C.c:
 
 dol/GXInitTexCacheRegion.c:
 	.text       start:0x800363DC end:0x800364FC align:4
+
+dol/fn_800454E4.c:
+	.text       start:0x800454E4 end:0x800454FC align:4
+
+dol/fn_8005BE68.c:
+	.text       start:0x8005BE68 end:0x8005BE80 align:4
+
+dol/SIBusy.c:
+	.text       start:0x8001191C end:0x8001193C align:4
+
+dol/fn_8004B974.c:
+	.text       start:0x8004B974 end:0x8004B9A4 align:4

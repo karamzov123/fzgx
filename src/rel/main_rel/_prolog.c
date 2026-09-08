@@ -305,6 +305,32 @@ u32 fn_1_4010(u32 arg0, u32 arg1) {
 }
 /* fzgx:end fn_1_4010 */
 
+/* fzgx:begin fn_1_4030 noprologue */
+#include "types.h"
+
+extern struct fn_1_4030_lbl_1_bss_DA8 lbl_1_bss_DA8;
+
+struct fn_1_4030_lbl_1_bss_DA8 {
+    u32 unk_0;
+};
+
+u32 fn_1_4030(u32 arg0) {
+    u32 v0;
+    u32 v1;
+    u32 v2;
+    v0 = *(u32 *)((u8 *)lbl_1_bss_DA8.unk_0 + 8);
+    v1 = *(u32 *)((u8 *)v0 + 0);
+    v2 = arg0;
+    if (v1 == 0) {
+    v2 = 0;
+    return v2;
+    }
+    *(u32 *)((u8 *)v0 + 0) = v2;
+    v2 = v1;
+    return v2;
+}
+/* fzgx:end fn_1_4030 */
+
 /* fzgx:begin fn_1_4060 */
 extern u32 lbl_1_bss_DA8;
 

@@ -1816,6 +1816,16 @@
   },
   {
     "module": "main",
+    "source": "dol/SIBusy.c",
+    "symbols": [
+      "SIBusy"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/SIProbe.c",
     "symbols": [
       "SIProbe"
@@ -3466,6 +3476,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_800454E4.c",
+    "symbols": [
+      "fn_800454E4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_800454FC.c",
     "symbols": [
       "fn_800454FC"
@@ -3739,6 +3759,16 @@
     "source": "dol/fn_8004B79C.c",
     "symbols": [
       "fn_8004B79C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8004B974.c",
+    "symbols": [
+      "fn_8004B974"
     ],
     "status": "matching",
     "mw_version": null,
@@ -4119,6 +4149,16 @@
     "source": "dol/fn_8005A94C.c",
     "symbols": [
       "fn_8005A94C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8005BE68.c",
+    "symbols": [
+      "fn_8005BE68"
     ],
     "status": "matching",
     "mw_version": null,
@@ -5071,6 +5111,17 @@
     "source": "rel/main_rel/_prolog/fn_1_4010.c",
     "symbols": [
       "fn_1_4010"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/_prolog.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/_prolog/fn_1_4030.c",
+    "symbols": [
+      "fn_1_4030"
     ],
     "status": "matching",
     "mw_version": null,
@@ -18749,6 +18800,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/replay/fn_1_F2F34.c",
+    "symbols": [
+      "fn_1_F2F34"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/replay.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/replay/fn_1_F2F58.c",
     "symbols": [
       "fn_1_F2F58"
@@ -21736,6 +21798,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/spline/fn_1_FA1A8.c",
+    "symbols": [
+      "fn_1_FA1A8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/spline.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/spline/fn_1_FA450.c",
     "symbols": [
       "fn_1_FA450"
@@ -22803,6 +22876,16 @@
   },
   {
     "module": "movie_module",
+    "source": "rel/movie_module/fn_12_23250.c",
+    "symbols": [
+      "fn_12_23250"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
     "source": "rel/movie_module/fn_12_23280.c",
     "symbols": [
       "fn_12_23280"
@@ -22916,6 +22999,16 @@
     "source": "rel/movie_module/fn_12_24970.c",
     "symbols": [
       "fn_12_24970"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
+    "source": "rel/movie_module/fn_12_24990.c",
+    "symbols": [
+      "fn_12_24990"
     ],
     "status": "matching",
     "mw_version": null,
@@ -24403,6 +24496,16 @@
   },
   {
     "module": "movie_module",
+    "source": "rel/movie_module/fn_12_342B8.c",
+    "symbols": [
+      "fn_12_342B8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
     "source": "rel/movie_module/fn_12_342E4.c",
     "symbols": [
       "fn_12_342E4"
@@ -24696,6 +24799,16 @@
     "source": "rel/movie_module/fn_12_34FA8.c",
     "symbols": [
       "fn_12_34FA8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
+    "source": "rel/movie_module/fn_12_34FD0.c",
+    "symbols": [
+      "fn_12_34FD0"
     ],
     "status": "matching",
     "mw_version": null,
@@ -25813,6 +25926,16 @@
   },
   {
     "module": "movie_module",
+    "source": "rel/movie_module/fn_12_6C78.c",
+    "symbols": [
+      "fn_12_6C78"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
     "source": "rel/movie_module/fn_12_6D5C.c",
     "symbols": [
       "fn_12_6D5C"
@@ -26096,6 +26219,16 @@
     "source": "rel/movie_module/fn_12_CA98.c",
     "symbols": [
       "fn_12_CA98"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
+    "source": "rel/movie_module/fn_12_CAB4.c",
+    "symbols": [
+      "fn_12_CAB4"
     ],
     "status": "matching",
     "mw_version": null,
@@ -28105,6 +28238,17 @@
   },
   {
     "module": "title",
+    "source": "rel/title/operation/fn_8_68F4.c",
+    "symbols": [
+      "fn_8_68F4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/operation.c"
+  },
+  {
+    "module": "title",
     "source": "rel/title/operation/fn_8_69D8.c",
     "symbols": [
       "fn_8_69D8"
@@ -28361,6 +28505,17 @@
     "source": "rel/winning/winning/fn_15_1EE0.c",
     "symbols": [
       "fn_15_1EE0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/winning/winning.c"
+  },
+  {
+    "module": "winning",
+    "source": "rel/winning/winning/fn_15_3A14.c",
+    "symbols": [
+      "fn_15_3A14"
     ],
     "status": "matching",
     "mw_version": null,

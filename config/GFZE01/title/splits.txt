@@ -146,3 +146,6 @@ rel/title/operation/fn_8_CF94.c:
 
 rel/title/_prolog/fn_8_784.c:
 	.text       start:0x00000784 end:0x0000082C align:4
+
+rel/title/operation/fn_8_68F4.c:
+	.text       start:0x000068F4 end:0x000069D8 align:4

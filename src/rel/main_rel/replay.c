@@ -78,6 +78,27 @@ void fn_1_F2EFC(void) {
 }
 /* fzgx:end fn_1_F2EFC */
 
+/* fzgx:begin fn_1_F2F34 noprologue */
+#include "types.h"
+
+extern struct fn_1_F2F34_lbl_1_bss_7EFD4 lbl_1_bss_7EFD4;
+
+struct fn_1_F2F34_lbl_1_bss_7EFD4 {
+    u8 unk_0;
+};
+
+u32 fn_1_F2F34(void) {
+    u8 v0;
+    v0 = lbl_1_bss_7EFD4.unk_0;
+    if ((lbl_1_bss_7EFD4.unk_0 & 0x1) == 0) {
+    v0 = 0;
+    return v0;
+    }
+    v0 = ((v0 >> 2) & 0x1);
+    return v0;
+}
+/* fzgx:end fn_1_F2F34 */
+
 /* fzgx:begin fn_1_F2F58 */
 u32 fn_1_F2F58(void) {
     u8 flags = lbl_1_bss_7EFD4;

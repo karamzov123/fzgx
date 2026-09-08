@@ -990,30 +990,27 @@ void fn_1_542C4(void *arg0, void *arg1, f32 arg2, f32 arg3, f32 arg4) {
 }
 /* fzgx:end fn_1_542C4 */
 
-/* fzgx:begin fn_1_54320 */
-typedef struct fn_1_54320_FontState {
-    u8 unk_0[0x30];
-    u8 *unk_30;
-    s32 unk_34;
-    u8 unk_38[0x0C];
-    void *unk_44;
-    void *unk_48;
-} fn_1_54320_FontState;
+/* fzgx:begin fn_1_54320 noprologue */
+#include "types.h"
 
-extern u8 *lbl_801A66CC;
-extern void fn_1_54668(u8 *, s32, s32);
+extern struct fn_1_54320_lbl_801A66CC lbl_801A66CC;
+extern u32 fn_1_54668(u32, u32, u32);
 
-// Initializes the font buffer and records its current and end positions.
-void fn_1_54320(void) {
-    fn_1_54320_FontState *state;
+struct fn_1_54320_lbl_801A66CC {
+    u32 unk_0;
+};
 
-    state = (fn_1_54320_FontState *)lbl_801A66CC;
-    fn_1_54668(state->unk_30, state->unk_34, 1);
-    ((fn_1_54320_FontState *)lbl_801A66CC)->unk_44 =
-        ((fn_1_54320_FontState *)lbl_801A66CC)->unk_30 +
-        ((((fn_1_54320_FontState *)lbl_801A66CC)->unk_34 - 1) << 3);
-    ((fn_1_54320_FontState *)lbl_801A66CC)->unk_48 =
-        ((fn_1_54320_FontState *)lbl_801A66CC)->unk_30;
+u32 fn_1_54320(void) {
+    u32 v0;
+    u32 v1;
+    u32 v2;
+    v0 = lbl_801A66CC.unk_0;
+    fn_1_54668(*(u32 *)((u8 *)v0 + 48), *(u32 *)((u8 *)v0 + 52), 1);
+    v1 = lbl_801A66CC.unk_0;
+    *(u32 *)((u8 *)v1 + 68) = (*(u32 *)((u8 *)v1 + 48) + ((*(u32 *)((u8 *)v1 + 52) - 1) << 3));
+    v2 = lbl_801A66CC.unk_0;
+    *(u32 *)((u8 *)v2 + 72) = *(u32 *)((u8 *)v2 + 48);
+    return v2;
 }
 /* fzgx:end fn_1_54320 */
 
