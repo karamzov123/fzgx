@@ -185,7 +185,7 @@
     "symbols": [
       "fn_1_B2770"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
