@@ -32,6 +32,10 @@ extern struct CarColchgEntry lbl_9_data_1B8[];
 extern s16 lbl_1_bss_962;
 extern u32 lbl_1_bss_71688;
 extern u32 lbl_1_bss_7168C;
+extern struct Struct_lbl_1_bss_970 lbl_1_bss_970;
+extern u16 lbl_1_bss_96A;
+extern u32 lbl_9_bss_0;
+extern struct Entry *lbl_1_data_1FB6C[];
 
 /* fzgx:begin colchg_menu_init */
 extern char lbl_9_data_2C[17];
@@ -96,9 +100,6 @@ struct Struct_lbl_1_bss_970
   u8 unk4;
 };
 extern struct Struct_lbl_1_bss_D58 lbl_1_bss_D58;
-extern struct Struct_lbl_1_bss_970 lbl_1_bss_970;
-extern u16 lbl_1_bss_96A;
-s32 fn_1_4C10(void);
 void fn_9_454(void)
 {
   s32 value;
@@ -189,15 +190,12 @@ void fn_9_6F0(void) {
 /* fzgx:end fn_9_6F0 */
 
 /* fzgx:begin fn_9_A18 */
-extern u32 lbl_9_bss_0;
 struct Entry {
     u32 unk0;
     u32 unk4;
     u32 unk8;
 };
-extern struct Entry *lbl_1_data_1FB6C[];
 void fn_1_435C(u32);
-void fn_1_426C(s16);
 
 struct CarColchgState {
     u8 pad0[8];
@@ -378,8 +376,6 @@ struct Struct_lbl_1_bss_D58
   u16 unk8;
 };
 extern struct Struct_lbl_1_bss_D58 lbl_1_bss_D58;
-extern u16 lbl_1_bss_96A;
-s32 fn_1_4C10(void);
 inline u16 *inline_fn(u16 *arg0)
 {
   return arg0;
