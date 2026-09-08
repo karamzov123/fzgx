@@ -1491,7 +1491,9 @@ def generate_build_ninja(
     n.comment("Split DOL into relocatable objects")
     n.rule(
         name="split",
-        command=f"{dtk} dol split $in $out_dir",
+        # --no-update: the split never rewrites symbols.txt/splits.txt (they are ours; dtk's
+        # rewrite dropped `force_active` and other attributes the tooling sets)
+        command=f"{dtk} dol split --no-update $in $out_dir",
         description="SPLIT $in",
         depfile="$out_dir/dep",
         deps="gcc",

@@ -8,6 +8,7 @@ source file, and register the unit in config/<VERSION>/units.json as
 
 from __future__ import annotations
 
+import re
 from collections import defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -97,6 +98,17 @@ def carve(project: Project, symbol: str, dry_run: bool = False) -> CarveResult:
         f.write(f"\n{source}:\n")
         for section, start, end, align in res.ranges:
             f.write(f"\t{section:<11} start:0x{start:08X} end:0x{end:08X} align:{align}\n")
+    if module == "main" and not project.callers(sym.name, limit=1):
+        # inside its auto object a callerless function survives the link with its neighbours;
+        # alone in its own object mwld drops it and the DOL comes out short. dtk lists a
+        # `force_active` symbol in the link script's FORCEACTIVE block, as retail's link kept it.
+        sp = project.module_config_dir(module) / "symbols.txt"
+        text = sp.read_text()
+        new_text, k = re.subn(rf"^({re.escape(sym.name)} = [^\n]*?)(\s*)$", lambda m: m.group(1) + (" force_active" if "force_active" not in m.group(1) else ""), text, count=1, flags=re.M)
+        if k and new_text != text:
+            sp.write_text(new_text)
+            project._symbols.pop(module, None)
+            res.notes.append("force_active: no callers")
 
     tu_src = tufile.tu_source_for(project, sym)
     with oracle.build_lock("units.lock"):  # submits flip statuses concurrently

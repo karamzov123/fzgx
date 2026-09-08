@@ -22,6 +22,7 @@ from typing import Dict, List, Optional, Tuple
 from . import oracle, stuck
 from .project import STATE_DIR, Project
 
+BRANCH_INV = {("beq", "bne"), ("bne", "beq"), ("blt", "bge"), ("bge", "blt"), ("bgt", "ble"), ("ble", "bgt")}
 FLOAT_PAIRS = {"fsubs", "fsub", "fadds", "fadd", "fmuls", "fmul", "fdivs", "fdiv", "fmadds", "fmadd", "fmsubs", "fmsub", "frsp"}
 
 INT_TYPES = ["s8", "u8", "s16", "u16", "s32", "u32", "int", "unsigned int", "unsigned", "char", "unsigned char",
@@ -98,7 +99,7 @@ def _tu_of(p: Project, sym) -> Optional[str]:
     return None
 
 
-def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_candidates: int = 80) -> Dict[str, object]:
+def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_candidates: int = 80, _depth: int = 0) -> Dict[str, object]:
     """Search the cheap repairs; returns {"matched": bool, "body": text or None, "tried": n, "best": %, "secs": s}."""
     t0 = time.time()
     sym = p.resolve(symbol)
@@ -208,6 +209,69 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
         litf = list(re.finditer(r"(?<![\w.])(\d+\.\d*(?:[eE][-+]?\d+)?)f\b", body))
         if litf:
             candidates.append(("float literals lose f", re.sub(r"(?<![\w.])(\d+\.\d*(?:[eE][-+]?\d+)?)f\b", r"\1", body)))
+    # struct layout: every field offset off by the same delta means padding is missing or extra
+    # at the front of the block-private struct; two deltas mean two fields are in the wrong order
+    deltas = set()
+    for t, o in diffs:
+        if not t or not o or t.split()[0] != o.split()[0]:
+            continue
+        mt = re.search(r"(-?0x[0-9a-f]+|-?\d+)\((r\d+)\)", t); mo = re.search(r"(-?0x[0-9a-f]+|-?\d+)\((r\d+)\)", o)
+        if mt and mo and mt.group(2) == mo.group(2) and mt.group(2) != "r1" and mt.group(1) != mo.group(1):
+            deltas.add(int(mt.group(1), 0) - int(mo.group(1), 0))
+    struct_spans = [(m.start(), m.end(), m.group(1)) for m in re.finditer(r"(?:typedef\s+)?struct\s+\w*\s*\{([^}]*)\}", body)]
+    if len(deltas) == 1 and struct_spans:
+        delta = next(iter(deltas))
+        for s0, e0, inner in struct_spans:
+            if delta > 0:
+                new_inner = f"\n    u8 _pad_pre[0x{delta:X}];" + inner
+                candidates.append((f"struct +{delta} front padding", body[:s0] + body[s0:e0].replace(inner, new_inner, 1) + body[e0:]))
+            else:
+                m = re.match(r"\s*u8\s+(\w+)\[(0x[0-9A-Fa-f]+|\d+)\];", inner)
+                if m and int(m.group(2), 0) + delta >= 0:
+                    n = int(m.group(2), 0) + delta
+                    rep = "" if n == 0 else f"\n    u8 {m.group(1)}[0x{n:X}];"
+                    candidates.append((f"struct {delta} front padding", body[:s0] + body[s0:e0].replace(inner, re.sub(r"^\s*u8\s+\w+\[[^\]]+\];", rep, inner, count=1), 1) + body[e0:]))
+    if len(deltas) >= 2 and struct_spans:
+        for s0, e0, inner in struct_spans:
+            lines = inner.split("\n")
+            fl = [i for i, ln in enumerate(lines) if re.match(r"\s*[A-Za-z_][\w ]*\*?\s*\w+(\[[^\]]*\])?;", ln)]
+            for a, b in zip(fl, fl[1:]):
+                sw = list(lines); sw[a], sw[b] = sw[b], sw[a]
+                candidates.append((f"swap fields {lines[a].strip()} <-> {lines[b].strip()}", body[:s0] + body[s0:e0].replace(inner, "\n".join(sw), 1) + body[e0:]))
+                if len(candidates) > max_candidates:
+                    break
+    # inverted branch: negate one `if` condition and swap its then/else blocks
+    if any(t and o and (t.split()[0], o.split()[0]) in BRANCH_INV for t, o in diffs):
+        for m in list(re.finditer(r"\bif\s*\(", body))[:16]:
+            depth, i = 1, m.end()
+            while i < len(body) and depth:
+                depth += body[i] == "("; depth -= body[i] == ")"; i += 1
+            cond = body[m.end():i - 1]
+            j = i
+            while j < len(body) and body[j] in " \t\r\n": j += 1
+            if j >= len(body) or body[j] != "{":
+                continue
+            d2, k = 1, j + 1
+            while k < len(body) and d2:
+                d2 += body[k] == "{"; d2 -= body[k] == "}"; k += 1
+            then_blk = body[j:k]
+            rest = body[k:]
+            me = re.match(r"\s*else\s*(\{)", rest)
+            if me:
+                d3, e = 1, k + me.end()
+                while e < len(body) and d3:
+                    d3 += body[e] == "{"; d3 -= body[e] == "}"; e += 1
+                else_blk = body[k + me.end() - 1:e]
+                neg = f"!({cond})" if not re.fullmatch(r"\s*!\((.*)\)\s*", cond) else re.fullmatch(r"\s*!\((.*)\)\s*", cond).group(1)
+                text = body[:m.end()] + neg + ") " + else_blk + " else " + then_blk + body[e:]
+                candidates.append((f"invert if at {m.start()}", text))
+            else:
+                # `if (c) { return A; } ... return B;` is equivalent to `if (!c) { rest } return A;` only in
+                # simple shapes; the cheap variant that changes codegen: swap == / != in the condition
+                if "==" in cond or "!=" in cond:
+                    c2 = cond.replace("==", "\0").replace("!=", "==").replace("\0", "!=")
+                    candidates.append((f"flip ==/!= at {m.start()}", body[:m.end()] + c2 + body[i - 1:]))
+    best_text = None
     for label, text in candidates[:max_candidates]:
         if time.time() - t0 > budget_s:
             out["timeout"] = True
@@ -220,8 +284,21 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
         if pct > out["best"]:
             out["best"] = pct
             out["best_label"] = label
+            best_text = text
         if r.matched or r.matched_pool:
             out.update(matched=True, body=text, label=label)
             break
+    # a plateau usually has more than one cause: when a repair improved the body without
+    # matching, search again from the improved body (greedy, bounded by the budget)
+    if not out["matched"] and best_text is not None and out["best"] > out["base"] + 0.05 and _depth < 3:
+        left = budget_s - (time.time() - t0)
+        if left > 2:
+            nxt = try_fix(p, symbol, best_text, budget_s=left, max_candidates=max_candidates, _depth=_depth + 1)
+            out["tried"] += nxt["tried"]
+            if nxt["best"] > out["best"]:
+                out["best"] = nxt["best"]; out["best_label"] = f"{label} + {nxt.get('best_label')}"
+            if nxt.get("matched"):
+                out.update(matched=True, body=nxt["body"], label=f"{out.get('best_label')} + {nxt.get('label')}")
+            out["rounds"] = 1 + nxt.get("rounds", 0)
     out["secs"] = round(time.time() - t0, 1)
     return out
