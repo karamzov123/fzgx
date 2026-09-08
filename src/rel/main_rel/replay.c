@@ -101,6 +101,14 @@ u32 fn_1_F45A4(void) {
 }
 /* fzgx:end fn_1_F45A4 */
 
+/* fzgx:begin fn_1_F45B4 */
+extern u8 lbl_1_bss_7EFD4;
+
+u32 fn_1_F45B4(void) {
+    return ((__cntlzw(((lbl_1_bss_7EFD4 >> 4) & 0x1)) >> 5) & 0xFF);
+}
+/* fzgx:end fn_1_F45B4 */
+
 /* fzgx:begin fn_1_F4794 */
 void fn_1_F4794(u16 value) {
     lbl_1_bss_7F01C = value;

@@ -14,3 +14,33 @@ rel/option/fn_4_ADF0.c:
 
 rel/option/name_entry/fn_4_D878.c:
 	.text       start:0x0000D878 end:0x0000D888
+
+rel/option/_prolog/fn_4_AB90.c:
+	.text       start:0x0000AB90 end:0x0000ABB0 align:4
+
+rel/option/name_entry/fn_4_D848.c:
+	.text       start:0x0000D848 end:0x0000D878 align:4
+
+rel/option/_prolog/fn_4_AD78.c:
+	.text       start:0x0000AD78 end:0x0000ADAC align:4
+
+rel/option/_prolog/fn_4_894.c:
+	.text       start:0x00000894 end:0x000008DC align:4
+
+rel/option/_prolog/fn_4_D10.c:
+	.text       start:0x00000D10 end:0x00000D7C align:4
+
+rel/option/_prolog/fn_4_7C38.c:
+	.text       start:0x00007C38 end:0x00007CA4 align:4
+
+rel/option/_prolog/fn_4_80EC.c:
+	.text       start:0x000080EC end:0x00008158 align:4
+
+rel/option/_prolog/fn_4_89E4.c:
+	.text       start:0x000089E4 end:0x00008A54 align:4
+
+rel/option/_prolog/fn_4_8DC0.c:
+	.text       start:0x00008DC0 end:0x00008E38 align:4
+
+rel/option/_prolog/fn_4_869C.c:
+	.text       start:0x0000869C end:0x00008720 align:4

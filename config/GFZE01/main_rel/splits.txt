@@ -4517,3 +4517,42 @@ rel/main_rel/bg_win/fn_1_15E540.c:
 
 rel/main_rel/bg_win/fn_1_15F618.c:
 	.text       start:0x0015F618 end:0x0015F62C
+
+rel/main_rel/_prolog/fn_1_904.c:
+	.text       start:0x00000904 end:0x00000914 align:4
+
+rel/main_rel/_prolog/fn_1_914.c:
+	.text       start:0x00000914 end:0x00000924 align:4
+
+rel/main_rel/_prolog/fn_1_3BB0.c:
+	.text       start:0x00003BB0 end:0x00003BC0 align:4
+
+rel/main_rel/_prolog/fn_1_434C.c:
+	.text       start:0x0000434C end:0x0000435C align:4
+
+rel/main_rel/_prolog/fn_1_44A4.c:
+	.text       start:0x000044A4 end:0x000044B4 align:4
+
+rel/main_rel/replay/fn_1_F45B4.c:
+	.text       start:0x000F45B4 end:0x000F45CC align:4
+
+rel/main_rel/_prolog/fn_1_8D4.c:
+	.text       start:0x000008D4 end:0x00000904 align:4
+
+rel/main_rel/_prolog/fn_1_634.c:
+	.text       start:0x00000634 end:0x00000668 align:4
+
+rel/main_rel/_prolog/fn_1_4404.c:
+	.text       start:0x00004404 end:0x00004438 align:4
+
+rel/main_rel/_prolog/fn_1_4438.c:
+	.text       start:0x00004438 end:0x0000446C align:4
+
+rel/main_rel/_prolog/fn_1_3BDC.c:
+	.text       start:0x00003BDC end:0x00003C18 align:4
+
+rel/main_rel/sel_static_disp/fn_1_149C64.c:
+	.text       start:0x00149C64 end:0x00149CA4 align:4
+
+rel/main_rel/ranking/fn_1_1577D0.c:
+	.text       start:0x001577D0 end:0x00157820 align:4

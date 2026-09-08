@@ -16,6 +16,26 @@ void fn_8_8C44(void) {
 }
 /* fzgx:end fn_8_8C44 */
 
+/* fzgx:begin fn_8_9B04 */
+extern struct fn_8_9B04_lbl_8_bss_2A8 lbl_8_bss_2A8;
+extern u32 fn_80008BA8(u32, u32, u32);
+extern u32 fn_8_5C54(u32);
+
+struct fn_8_9B04_lbl_8_bss_2A8 {
+    u8 pad_0[0x8];
+    u32 unk_8;
+    u8 pad_C[0x130];
+    u32 unk_13C;
+    u8 pad_140[0x11C];
+    u32 unk_25C;
+};
+
+void fn_8_9B04(void) {
+    fn_80008BA8(lbl_8_bss_2A8.unk_8, lbl_8_bss_2A8.unk_13C, lbl_8_bss_2A8.unk_25C);
+    fn_8_5C54(1);
+}
+/* fzgx:end fn_8_9B04 */
+
 /* fzgx:begin fn_8_9B40 */
 // fn_8_9B40: empty in retail (single blr).
 void fn_8_9B40(void) {
@@ -43,6 +63,15 @@ int fn_8_CF68(void) {
 }
 /* fzgx:end fn_8_CF68 */
 
+/* fzgx:begin fn_8_CF70 */
+extern u32 fn_1_D0790(void);
+
+s32 fn_8_CF70(void) {
+    fn_1_D0790();
+    return 0;
+}
+/* fzgx:end fn_8_CF70 */
+
 /* fzgx:begin fn_8_D020 */
 // fn_8_D020: empty in retail (single blr).
 void fn_8_D020(void) {
@@ -56,3 +85,18 @@ void fn_8_D024(void) {
     lbl_8_bss_544 = 4;
 }
 /* fzgx:end fn_8_D024 */
+
+/* fzgx:begin fn_8_D5F4 */
+extern u32 fn_1_14BD74(u32);
+extern u32 fn_1_15555C(u32);
+extern u32 fn_1_48140(u32);
+
+void fn_8_D5F4(void) {
+    u32 t2, t3;
+    fn_1_48140(149);
+    fn_1_48140(152);
+    t2 = fn_1_48140(151);
+    t3 = fn_1_15555C(t2);
+    fn_1_14BD74(t3);
+}
+/* fzgx:end fn_8_D5F4 */

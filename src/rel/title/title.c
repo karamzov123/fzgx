@@ -1,5 +1,29 @@
 #include "types.h"
 
+/* fzgx:begin fn_8_AA8 */
+extern struct fn_8_AA8_lbl_8_bss_234 lbl_8_bss_234;
+extern struct fn_8_AA8_lbl_8_bss_238 lbl_8_bss_238;
+extern u32 fn_1_3CC4(u32);
+extern u32 fn_1_407C(u32);
+extern u32 fn_1_435C(u32);
+
+struct fn_8_AA8_lbl_8_bss_234 {
+    u32 unk_0;
+};
+struct fn_8_AA8_lbl_8_bss_238 {
+    u32 unk_0;
+};
+
+void fn_8_AA8(void) {
+    u32 t0, t1, t3;
+    t0 = fn_1_435C(lbl_8_bss_234.unk_0);
+    t1 = fn_1_407C(t0);
+    fn_1_3CC4(t1);
+    t3 = fn_1_435C(lbl_8_bss_238.unk_0);
+    fn_1_407C(t3);
+}
+/* fzgx:end fn_8_AA8 */
+
 /* fzgx:begin fn_8_BD8 */
 // fn_8_BD8: empty in retail (single blr).
 void fn_8_BD8(void) {
@@ -17,6 +41,23 @@ void fn_8_BDC(void) {
 void fn_8_BE0(void) {
 }
 /* fzgx:end fn_8_BE0 */
+
+/* fzgx:begin fn_8_1304 */
+extern u32 fn_1_48140(u32);
+extern u32 fn_1_A1364(u32);
+extern u32 fn_1_A8F78(void);
+extern u8 lbl_8_bss_241;
+extern u8 lbl_8_bss_2;
+
+void fn_8_1304(void) {
+    u32 t1;
+    lbl_8_bss_2 = 0;
+    lbl_8_bss_241 = 0;
+    fn_1_A8F78();
+    t1 = fn_1_48140(142);
+    fn_1_A1364(t1);
+}
+/* fzgx:end fn_8_1304 */
 
 /* fzgx:begin fn_8_1C08 */
 // fn_8_1C08: empty in retail (single blr).
@@ -112,3 +153,28 @@ int fn_8_6568(void) {
     return 2;
 }
 /* fzgx:end fn_8_6568 */
+
+/* fzgx:begin fn_8_6570 */
+extern u32 fn_1_D0790(void);
+
+s32 fn_8_6570(void) {
+    fn_1_D0790();
+    return 0;
+}
+/* fzgx:end fn_8_6570 */
+
+/* fzgx:begin fn_8_67B0 */
+extern u32 fn_1_3F8C0(void);
+extern u32 fn_1_48140(u32);
+extern u32 fn_80008E84(u32);
+extern u32 fn_8_8C80(u32);
+
+void fn_8_67B0(void) {
+    u32 t0, t1, t3;
+    t0 = fn_1_3F8C0();
+    t1 = fn_80008E84(t0);
+    fn_1_48140(148);
+    t3 = fn_80008E84(t1);
+    fn_8_8C80(t3);
+}
+/* fzgx:end fn_8_67B0 */

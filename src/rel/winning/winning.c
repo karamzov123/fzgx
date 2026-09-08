@@ -18,6 +18,17 @@ void fn_15_3AFC(void) {
 }
 /* fzgx:end fn_15_3AFC */
 
+/* fzgx:begin fn_15_3B00 */
+extern u32 fn_1_79100(void);
+extern u32 fn_1_7EAE8(u32);
+
+void fn_15_3B00(void) {
+    u32 t0;
+    t0 = fn_1_79100();
+    fn_1_7EAE8(t0);
+}
+/* fzgx:end fn_15_3B00 */
+
 /* fzgx:begin fn_15_405C */
 // fn_15_405C: empty in retail (single blr).
 void fn_15_405C(void) {

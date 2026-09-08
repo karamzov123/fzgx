@@ -74,3 +74,9 @@ rel/car_colchg/car_colchg/fn_9_1BCC.c:
 
 rel/car_colchg/car_colchg/fn_9_1C54.c:
 	.text       start:0x00001C54 end:0x00001CB0
+
+rel/car_colchg/car_colchg/colchg_chgcol_init.c:
+	.text       start:0x00000A8C end:0x00000AF0 align:4
+
+rel/car_colchg/car_colchg/colchg_selcar_init.c:
+	.text       start:0x00000570 end:0x000005D8 align:4

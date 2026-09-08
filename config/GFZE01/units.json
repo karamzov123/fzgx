@@ -34,6 +34,17 @@
   },
   {
     "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/colchg_chgcol_init.c",
+    "symbols": [
+      "colchg_chgcol_init"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
     "source": "rel/car_colchg/car_colchg/colchg_ezsel_disp.c",
     "symbols": [
       "colchg_ezsel_disp"
@@ -81,6 +92,17 @@
     "source": "rel/car_colchg/car_colchg/colchg_save_init.c",
     "symbols": [
       "colchg_save_init"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/colchg_selcar_init.c",
+    "symbols": [
+      "colchg_selcar_init"
     ],
     "status": "matching",
     "mw_version": null,
@@ -1792,6 +1814,26 @@
   },
   {
     "module": "main",
+    "source": "dol/TRKTargetSetStopped.c",
+    "symbols": [
+      "TRKTargetSetStopped"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/TRKTargetStopped.c",
+    "symbols": [
+      "TRKTargetStopped"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/TRKUARTInterruptHandler.c",
     "symbols": [
       "TRKUARTInterruptHandler"
@@ -1825,6 +1867,16 @@
     "source": "dol/__CARDExtHandler.c",
     "symbols": [
       "__CARDExtHandler"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/__DBIsExceptionMarked.c",
+    "symbols": [
+      "__DBIsExceptionMarked"
     ],
     "status": "matching",
     "mw_version": null,
@@ -1885,6 +1937,16 @@
     "source": "dol/__OSReadROM.c",
     "symbols": [
       "__OSReadROM"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/__OSSyncSram.c",
+    "symbols": [
+      "__OSSyncSram"
     ],
     "status": "matching",
     "mw_version": null,
@@ -2092,6 +2154,26 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80009FA4.c",
+    "symbols": [
+      "fn_80009FA4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8000D55C.c",
+    "symbols": [
+      "fn_8000D55C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8000DD60.c",
     "symbols": [
       "fn_8000DD60"
@@ -2255,6 +2337,36 @@
     "source": "dol/fn_80017EA8.c",
     "symbols": [
       "fn_80017EA8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80018108.c",
+    "symbols": [
+      "fn_80018108"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8001813C.c",
+    "symbols": [
+      "fn_8001813C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_800186C0.c",
+    "symbols": [
+      "fn_800186C0"
     ],
     "status": "matching",
     "mw_version": null,
@@ -2872,6 +2984,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80035690.c",
+    "symbols": [
+      "fn_80035690"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_800356AC.c",
     "symbols": [
       "fn_800356AC"
@@ -2892,9 +3014,29 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80036058.c",
+    "symbols": [
+      "fn_80036058"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80036070.c",
     "symbols": [
       "fn_80036070"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_800360D8.c",
+    "symbols": [
+      "fn_800360D8"
     ],
     "status": "matching",
     "mw_version": null,
@@ -3492,6 +3634,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_8004E580.c",
+    "symbols": [
+      "fn_8004E580"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8004E8A0.c",
     "symbols": [
       "fn_8004E8A0"
@@ -3535,6 +3687,16 @@
     "source": "dol/fn_80050F6C.c",
     "symbols": [
       "fn_80050F6C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_800510C4.c",
+    "symbols": [
+      "fn_800510C4"
     ],
     "status": "matching",
     "mw_version": null,
@@ -3732,9 +3894,29 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80065890.c",
+    "symbols": [
+      "fn_80065890"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8006589C.c",
     "symbols": [
       "fn_8006589C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_800658A8.c",
+    "symbols": [
+      "fn_800658A8"
     ],
     "status": "matching",
     "mw_version": null,
@@ -3762,6 +3944,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_8006C17C.c",
+    "symbols": [
+      "fn_8006C17C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8006CD20.c",
     "symbols": [
       "fn_8006CD20"
@@ -3775,6 +3967,16 @@
     "source": "dol/fn_8006CD2C.c",
     "symbols": [
       "fn_8006CD2C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8006F774.c",
+    "symbols": [
+      "fn_8006F774"
     ],
     "status": "matching",
     "mw_version": null,
@@ -3912,9 +4114,29 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80074D18.c",
+    "symbols": [
+      "fn_80074D18"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80074D68.c",
     "symbols": [
       "fn_80074D68"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80074D78.c",
+    "symbols": [
+      "fn_80074D78"
     ],
     "status": "matching",
     "mw_version": null,
@@ -4042,6 +4264,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_8008A754.c",
+    "symbols": [
+      "fn_8008A754"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8008AF40.c",
     "symbols": [
       "fn_8008AF40"
@@ -4065,6 +4297,26 @@
     "source": "dol/fn_8008AF50.c",
     "symbols": [
       "fn_8008AF50"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8008B6BC.c",
+    "symbols": [
+      "fn_8008B6BC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8008D7B0.c",
+    "symbols": [
+      "fn_8008D7B0"
     ],
     "status": "matching",
     "mw_version": null,
@@ -4366,9 +4618,31 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/_prolog/fn_1_3BB0.c",
+    "symbols": [
+      "fn_1_3BB0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/_prolog.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/_prolog/fn_1_3BC0.c",
     "symbols": [
       "fn_1_3BC0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/_prolog.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/_prolog/fn_1_3BDC.c",
+    "symbols": [
+      "fn_1_3BDC"
     ],
     "status": "matching",
     "mw_version": null,
@@ -4402,6 +4676,17 @@
     "source": "rel/main_rel/_prolog/fn_1_41A8.c",
     "symbols": [
       "fn_1_41A8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/_prolog.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/_prolog/fn_1_434C.c",
+    "symbols": [
+      "fn_1_434C"
     ],
     "status": "matching",
     "mw_version": null,
@@ -4454,6 +4739,28 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/_prolog/fn_1_4404.c",
+    "symbols": [
+      "fn_1_4404"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/_prolog.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/_prolog/fn_1_4438.c",
+    "symbols": [
+      "fn_1_4438"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/_prolog.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/_prolog/fn_1_446C.c",
     "symbols": [
       "fn_1_446C"
@@ -4465,9 +4772,64 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/_prolog/fn_1_44A4.c",
+    "symbols": [
+      "fn_1_44A4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/_prolog.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/_prolog/fn_1_634.c",
+    "symbols": [
+      "fn_1_634"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/_prolog.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/_prolog/fn_1_668.c",
     "symbols": [
       "fn_1_668"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/_prolog.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/_prolog/fn_1_8D4.c",
+    "symbols": [
+      "fn_1_8D4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/_prolog.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/_prolog/fn_1_904.c",
+    "symbols": [
+      "fn_1_904"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/_prolog.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/_prolog/fn_1_914.c",
+    "symbols": [
+      "fn_1_914"
     ],
     "status": "matching",
     "mw_version": null,
@@ -17039,6 +17401,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/ranking/fn_1_1577D0.c",
+    "symbols": [
+      "fn_1_1577D0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/ranking.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/ranking/fn_1_157920.c",
     "symbols": [
       "fn_1_157920"
@@ -17636,6 +18009,17 @@
     "source": "rel/main_rel/replay/fn_1_F45A4.c",
     "symbols": [
       "fn_1_F45A4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/replay.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/replay/fn_1_F45B4.c",
+    "symbols": [
+      "fn_1_F45B4"
     ],
     "status": "matching",
     "mw_version": null,
@@ -18467,6 +18851,17 @@
     "source": "rel/main_rel/sel_static_disp/fn_1_149C2C.c",
     "symbols": [
       "fn_1_149C2C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/sel_static_disp.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/sel_static_disp/fn_1_149C64.c",
+    "symbols": [
+      "fn_1_149C64"
     ],
     "status": "matching",
     "mw_version": null,
@@ -20907,6 +21302,28 @@
     "tu": "rel/main_rel/stcoli.c"
   },
   {
+    "module": "movie",
+    "source": "rel/movie/_prolog/fn_5_220.c",
+    "symbols": [
+      "fn_5_220"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/movie/_prolog.c"
+  },
+  {
+    "module": "movie",
+    "source": "rel/movie/movie/fn_5_3E54.c",
+    "symbols": [
+      "fn_5_3E54"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/movie/movie.c"
+  },
+  {
     "module": "movie_module",
     "source": "rel/movie_module/_epilog.c",
     "symbols": [
@@ -21121,6 +21538,16 @@
     "source": "rel/movie_module/fn_12_21420.c",
     "symbols": [
       "fn_12_21420"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
+    "source": "rel/movie_module/fn_12_2145C.c",
+    "symbols": [
+      "fn_12_2145C"
     ],
     "status": "matching",
     "mw_version": null,
@@ -23151,6 +23578,16 @@
   },
   {
     "module": "movie_module",
+    "source": "rel/movie_module/fn_12_34CEC.c",
+    "symbols": [
+      "fn_12_34CEC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
     "source": "rel/movie_module/fn_12_34D1C.c",
     "symbols": [
       "fn_12_34D1C"
@@ -23161,9 +23598,29 @@
   },
   {
     "module": "movie_module",
+    "source": "rel/movie_module/fn_12_34D50.c",
+    "symbols": [
+      "fn_12_34D50"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
     "source": "rel/movie_module/fn_12_34D80.c",
     "symbols": [
       "fn_12_34D80"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
+    "source": "rel/movie_module/fn_12_34DB4.c",
+    "symbols": [
+      "fn_12_34DB4"
     ],
     "status": "matching",
     "mw_version": null,
@@ -23204,6 +23661,16 @@
     "source": "rel/movie_module/fn_12_34E4.c",
     "symbols": [
       "fn_12_34E4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
+    "source": "rel/movie_module/fn_12_34E4C.c",
+    "symbols": [
+      "fn_12_34E4C"
     ],
     "status": "matching",
     "mw_version": null,
@@ -23364,6 +23831,16 @@
     "source": "rel/movie_module/fn_12_35084.c",
     "symbols": [
       "fn_12_35084"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
+    "source": "rel/movie_module/fn_12_35108.c",
+    "symbols": [
+      "fn_12_35108"
     ],
     "status": "matching",
     "mw_version": null,
@@ -24631,6 +25108,105 @@
   },
   {
     "module": "option",
+    "source": "rel/option/_prolog/fn_4_7C38.c",
+    "symbols": [
+      "fn_4_7C38"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/option/_prolog.c"
+  },
+  {
+    "module": "option",
+    "source": "rel/option/_prolog/fn_4_80EC.c",
+    "symbols": [
+      "fn_4_80EC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/option/_prolog.c"
+  },
+  {
+    "module": "option",
+    "source": "rel/option/_prolog/fn_4_869C.c",
+    "symbols": [
+      "fn_4_869C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/option/_prolog.c"
+  },
+  {
+    "module": "option",
+    "source": "rel/option/_prolog/fn_4_894.c",
+    "symbols": [
+      "fn_4_894"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/option/_prolog.c"
+  },
+  {
+    "module": "option",
+    "source": "rel/option/_prolog/fn_4_89E4.c",
+    "symbols": [
+      "fn_4_89E4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/option/_prolog.c"
+  },
+  {
+    "module": "option",
+    "source": "rel/option/_prolog/fn_4_8DC0.c",
+    "symbols": [
+      "fn_4_8DC0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/option/_prolog.c"
+  },
+  {
+    "module": "option",
+    "source": "rel/option/_prolog/fn_4_AB90.c",
+    "symbols": [
+      "fn_4_AB90"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/option/_prolog.c"
+  },
+  {
+    "module": "option",
+    "source": "rel/option/_prolog/fn_4_AD78.c",
+    "symbols": [
+      "fn_4_AD78"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/option/_prolog.c"
+  },
+  {
+    "module": "option",
+    "source": "rel/option/_prolog/fn_4_D10.c",
+    "symbols": [
+      "fn_4_D10"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/option/_prolog.c"
+  },
+  {
+    "module": "option",
     "source": "rel/option/fn_4_ADAC.c",
     "symbols": [
       "fn_4_ADAC"
@@ -24650,6 +25226,17 @@
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/option/_prolog.c"
+  },
+  {
+    "module": "option",
+    "source": "rel/option/name_entry/fn_4_D848.c",
+    "symbols": [
+      "fn_4_D848"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/option/name_entry.c"
   },
   {
     "module": "option",
@@ -24730,6 +25317,72 @@
   },
   {
     "module": "pilotpoint",
+    "source": "rel/pilotpoint/pilotpoint/fn_14_220.c",
+    "symbols": [
+      "fn_14_220"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/pilotpoint/pilotpoint.c"
+  },
+  {
+    "module": "pilotpoint",
+    "source": "rel/pilotpoint/pilotpoint/fn_14_315C.c",
+    "symbols": [
+      "fn_14_315C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/pilotpoint/pilotpoint.c"
+  },
+  {
+    "module": "pilotpoint",
+    "source": "rel/pilotpoint/pilotpoint/fn_14_600C.c",
+    "symbols": [
+      "fn_14_600C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/pilotpoint/pilotpoint.c"
+  },
+  {
+    "module": "pilotpoint",
+    "source": "rel/pilotpoint/pilotpoint/fn_14_645C.c",
+    "symbols": [
+      "fn_14_645C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/pilotpoint/pilotpoint.c"
+  },
+  {
+    "module": "pilotpoint",
+    "source": "rel/pilotpoint/pilotpoint/fn_14_A244.c",
+    "symbols": [
+      "fn_14_A244"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/pilotpoint/pilotpoint.c"
+  },
+  {
+    "module": "pilotpoint",
+    "source": "rel/pilotpoint/pilotpoint/fn_14_A398.c",
+    "symbols": [
+      "fn_14_A398"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/pilotpoint/pilotpoint.c"
+  },
+  {
+    "module": "pilotpoint",
     "source": "rel/pilotpoint/pilotpoint/fn_14_BCDC.c",
     "symbols": [
       "fn_14_BCDC"
@@ -24741,9 +25394,49 @@
   },
   {
     "module": "profile",
+    "source": "rel/profile/fn_16_2328.c",
+    "symbols": [
+      "fn_16_2328"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "profile",
+    "source": "rel/profile/fn_16_2528.c",
+    "symbols": [
+      "fn_16_2528"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "profile",
+    "source": "rel/profile/fn_16_9EC.c",
+    "symbols": [
+      "fn_16_9EC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "profile",
     "source": "rel/profile/fn_16_A34.c",
     "symbols": [
       "fn_16_A34"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "profile",
+    "source": "rel/profile/fn_16_B10.c",
+    "symbols": [
+      "fn_16_B10"
     ],
     "status": "matching",
     "mw_version": null,
@@ -24762,9 +25455,31 @@
   },
   {
     "module": "replay",
+    "source": "rel/replay/_prolog/fn_13_A48.c",
+    "symbols": [
+      "fn_13_A48"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/replay/_prolog.c"
+  },
+  {
+    "module": "replay",
     "source": "rel/replay/_prolog/fn_13_A6C.c",
     "symbols": [
       "fn_13_A6C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/replay/_prolog.c"
+  },
+  {
+    "module": "replay",
+    "source": "rel/replay/_prolog/fn_13_B64.c",
+    "symbols": [
+      "fn_13_B64"
     ],
     "status": "matching",
     "mw_version": null,
@@ -24820,6 +25535,17 @@
     "source": "rel/replay/fn_13_FA8.c",
     "symbols": [
       "fn_13_FA8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/replay/replay_mode.c"
+  },
+  {
+    "module": "replay",
+    "source": "rel/replay/replay_mode/fn_13_E8C.c",
+    "symbols": [
+      "fn_13_E8C"
     ],
     "status": "matching",
     "mw_version": null,
@@ -25750,6 +26476,72 @@
   },
   {
     "module": "story",
+    "source": "rel/story/story_mode/fn_7_1398.c",
+    "symbols": [
+      "fn_7_1398"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/story/story_mode.c"
+  },
+  {
+    "module": "story",
+    "source": "rel/story/story_mode/fn_7_13CC.c",
+    "symbols": [
+      "fn_7_13CC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/story/story_mode.c"
+  },
+  {
+    "module": "story",
+    "source": "rel/story/story_mode/fn_7_16FC.c",
+    "symbols": [
+      "fn_7_16FC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/story/story_mode.c"
+  },
+  {
+    "module": "story",
+    "source": "rel/story/story_mode/fn_7_1C0C.c",
+    "symbols": [
+      "fn_7_1C0C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/story/story_mode.c"
+  },
+  {
+    "module": "story",
+    "source": "rel/story/story_mode/fn_7_20E4.c",
+    "symbols": [
+      "fn_7_20E4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/story/story_mode.c"
+  },
+  {
+    "module": "story",
+    "source": "rel/story/story_mode/fn_7_2100.c",
+    "symbols": [
+      "fn_7_2100"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/story/story_mode.c"
+  },
+  {
+    "module": "story",
     "source": "rel/story/story_mode/fn_7_2514.c",
     "symbols": [
       "fn_7_2514"
@@ -25758,6 +26550,39 @@
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/story/story_mode.c"
+  },
+  {
+    "module": "story",
+    "source": "rel/story/story_mode/fn_7_50C.c",
+    "symbols": [
+      "fn_7_50C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/story/story_mode.c"
+  },
+  {
+    "module": "story",
+    "source": "rel/story/story_mode/fn_7_E50.c",
+    "symbols": [
+      "fn_7_E50"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/story/story_mode.c"
+  },
+  {
+    "module": "title",
+    "source": "rel/title/_prolog/fn_8_754.c",
+    "symbols": [
+      "fn_8_754"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/_prolog.c"
   },
   {
     "module": "title",
@@ -26025,6 +26850,17 @@
   },
   {
     "module": "title",
+    "source": "rel/title/name_entry/fn_8_10084.c",
+    "symbols": [
+      "fn_8_10084"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/name_entry.c"
+  },
+  {
+    "module": "title",
     "source": "rel/title/name_entry/fn_8_100B4.c",
     "symbols": [
       "fn_8_100B4"
@@ -26047,6 +26883,28 @@
   },
   {
     "module": "title",
+    "source": "rel/title/operation/fn_8_9B04.c",
+    "symbols": [
+      "fn_8_9B04"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/operation.c"
+  },
+  {
+    "module": "title",
+    "source": "rel/title/operation/fn_8_CF70.c",
+    "symbols": [
+      "fn_8_CF70"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/operation.c"
+  },
+  {
+    "module": "title",
     "source": "rel/title/operation/fn_8_D024.c",
     "symbols": [
       "fn_8_D024"
@@ -26058,9 +26916,64 @@
   },
   {
     "module": "title",
+    "source": "rel/title/operation/fn_8_D5F4.c",
+    "symbols": [
+      "fn_8_D5F4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/operation.c"
+  },
+  {
+    "module": "title",
+    "source": "rel/title/title/fn_8_1304.c",
+    "symbols": [
+      "fn_8_1304"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/title.c"
+  },
+  {
+    "module": "title",
     "source": "rel/title/title/fn_8_1F64.c",
     "symbols": [
       "fn_8_1F64"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/title.c"
+  },
+  {
+    "module": "title",
+    "source": "rel/title/title/fn_8_6570.c",
+    "symbols": [
+      "fn_8_6570"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/title.c"
+  },
+  {
+    "module": "title",
+    "source": "rel/title/title/fn_8_67B0.c",
+    "symbols": [
+      "fn_8_67B0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/title.c"
+  },
+  {
+    "module": "title",
+    "source": "rel/title/title/fn_8_AA8.c",
+    "symbols": [
+      "fn_8_AA8"
     ],
     "status": "matching",
     "mw_version": null,
@@ -26116,6 +27029,17 @@
     "source": "rel/winning/fn_15_B8C.c",
     "symbols": [
       "fn_15_B8C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/winning/winning.c"
+  },
+  {
+    "module": "winning",
+    "source": "rel/winning/winning/fn_15_3B00.c",
+    "symbols": [
+      "fn_15_3B00"
     ],
     "status": "matching",
     "mw_version": null,

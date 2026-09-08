@@ -1121,3 +1121,21 @@ rel/movie_module/fn_12_3DCEC.c:
 
 rel/movie_module/fn_12_3E394.c:
 	.text       start:0x0003E394 end:0x0003E500
+
+rel/movie_module/fn_12_34CEC.c:
+	.text       start:0x00034CEC end:0x00034D1C align:4
+
+rel/movie_module/fn_12_34D50.c:
+	.text       start:0x00034D50 end:0x00034D80 align:4
+
+rel/movie_module/fn_12_34DB4.c:
+	.text       start:0x00034DB4 end:0x00034DE4 align:4
+
+rel/movie_module/fn_12_35108.c:
+	.text       start:0x00035108 end:0x00035138 align:4
+
+rel/movie_module/fn_12_34E4C.c:
+	.text       start:0x00034E4C end:0x00034E90 align:4
+
+rel/movie_module/fn_12_2145C.c:
+	.text       start:0x0002145C end:0x000214B0 align:4

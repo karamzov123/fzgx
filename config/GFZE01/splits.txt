@@ -841,3 +841,72 @@ dol/fn_8003D690.c:
 
 dol/fn_8004115C.c:
 	.text       start:0x8004115C end:0x80041164 align:4
+
+dol/fn_800360D8.c:
+	.text       start:0x800360D8 end:0x800360E4 align:4
+
+dol/fn_80065890.c:
+	.text       start:0x80065890 end:0x8006589C align:4
+
+dol/fn_800658A8.c:
+	.text       start:0x800658A8 end:0x800658B4 align:4
+
+dol/fn_80009FA4.c:
+	.text       start:0x80009FA4 end:0x80009FB4 align:4
+
+dol/__OSSyncSram.c:
+	.text       start:0x8000FCC4 end:0x8000FCD4 align:4
+
+dol/fn_80074D18.c:
+	.text       start:0x80074D18 end:0x80074D28 align:4
+
+dol/fn_80074D78.c:
+	.text       start:0x80074D78 end:0x80074D88 align:4
+
+dol/fn_8008A754.c:
+	.text       start:0x8008A754 end:0x8008A764 align:4
+
+dol/TRKTargetSetStopped.c:
+	.text       start:0x8008B49C end:0x8008B4AC align:4
+
+dol/TRKTargetStopped.c:
+	.text       start:0x8008B4AC end:0x8008B4BC align:4
+
+dol/fn_8008B6BC.c:
+	.text       start:0x8008B6BC end:0x8008B6CC align:4
+
+dol/fn_8008D7B0.c:
+	.text       start:0x8008D7B0 end:0x8008D7C0 align:4
+
+dol/fn_8000D55C.c:
+	.text       start:0x8000D55C end:0x8000D570 align:4
+
+dol/fn_800510C4.c:
+	.text       start:0x800510C4 end:0x800510D8 align:4
+
+dol/fn_8006C17C.c:
+	.text       start:0x8006C17C end:0x8006C190 align:4
+
+dol/fn_80036058.c:
+	.text       start:0x80036058 end:0x80036070 align:4
+
+dol/fn_8006F774.c:
+	.text       start:0x8006F774 end:0x8006F78C align:4
+
+dol/__DBIsExceptionMarked.c:
+	.text       start:0x80015AB8 end:0x80015AD4 align:4
+
+dol/fn_80035690.c:
+	.text       start:0x80035690 end:0x800356AC align:4
+
+dol/fn_8004E580.c:
+	.text       start:0x8004E580 end:0x8004E59C align:4
+
+dol/fn_800186C0.c:
+	.text       start:0x800186C0 end:0x800186E8 align:4
+
+dol/fn_80018108.c:
+	.text       start:0x80018108 end:0x8001813C align:4
+
+dol/fn_8001813C.c:
+	.text       start:0x8001813C end:0x80018170 align:4

@@ -8,3 +8,15 @@ Sections:
 
 rel/profile/fn_16_A34.c:
 	.text       start:0x00000A34 end:0x00000A38
+
+rel/profile/fn_16_B10.c:
+	.text       start:0x00000B10 end:0x00000B24 align:4
+
+rel/profile/fn_16_2528.c:
+	.text       start:0x00002528 end:0x00002560 align:4
+
+rel/profile/fn_16_9EC.c:
+	.text       start:0x000009EC end:0x00000A34 align:4
+
+rel/profile/fn_16_2328.c:
+	.text       start:0x00002328 end:0x000023A8 align:4

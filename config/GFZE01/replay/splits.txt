@@ -29,3 +29,12 @@ rel/replay/replay_mode/fn_13_EF0.c:
 
 rel/replay/fn_13_FA8.c:
 	.text       start:0x00000FA8 end:0x00000FAC
+
+rel/replay/_prolog/fn_13_B64.c:
+	.text       start:0x00000B64 end:0x00000B78 align:4
+
+rel/replay/_prolog/fn_13_A48.c:
+	.text       start:0x00000A48 end:0x00000A6C align:4
+
+rel/replay/replay_mode/fn_13_E8C.c:
+	.text       start:0x00000E8C end:0x00000EF0 align:4

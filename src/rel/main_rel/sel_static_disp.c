@@ -556,6 +556,25 @@ void fn_1_149C2C(void) {
 }
 /* fzgx:end fn_1_149C2C */
 
+/* fzgx:begin fn_1_149C64 noprologue */
+#include "types.h"
+
+extern struct fn_1_149C64_lbl_1_bss_8E43C lbl_1_bss_8E43C;
+extern struct fn_1_149C64_lbl_1_bss_8E440 lbl_1_bss_8E440;
+extern u32 fn_1_149CA4(u32, u32, u32, u32);
+
+struct fn_1_149C64_lbl_1_bss_8E43C {
+    u32 unk_0;
+};
+struct fn_1_149C64_lbl_1_bss_8E440 {
+    u32 unk_0;
+};
+
+void fn_1_149C64(void) {
+    fn_1_149CA4(0, lbl_1_bss_8E43C.unk_0, 640, lbl_1_bss_8E440.unk_0);
+}
+/* fzgx:end fn_1_149C64 */
+
 /* fzgx:begin fn_1_149DA4 */
 void fn_1_149DA4(void) {
     if (lbl_1_bss_8E51D == lbl_1_bss_8E524) {

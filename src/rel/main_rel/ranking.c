@@ -386,6 +386,36 @@ void fn_1_156B18(fn_1_156B18_State *state) {
 }
 /* fzgx:end fn_1_156B18 */
 
+/* fzgx:begin fn_1_1577D0 noprologue */
+#include "types.h"
+
+extern f32 lbl_1_rodata_D920;
+extern struct fn_1_1577D0_lbl_1_bss_8F568 lbl_1_bss_8F568;
+extern u32 lbl_1_data_4C788;
+
+struct fn_1_1577D0_lbl_1_bss_8F568 {
+    u8 unk_0;
+    u8 pad_1[0x3];
+    f32 unk_4;
+    f32 unk_8;
+    u32 unk_C;
+    u32 unk_10;
+    u32 unk_14;
+    u32 unk_18;
+};
+
+f32 fn_1_1577D0(u32 arg0, u32 arg1, f32 arg2) {
+    lbl_1_bss_8F568.unk_0 = arg0;
+    lbl_1_bss_8F568.unk_4 = lbl_1_rodata_D920;
+    lbl_1_bss_8F568.unk_8 = arg2;
+    lbl_1_bss_8F568.unk_C = *(u32 *)((u8 *)&lbl_1_data_4C788 + ((s8)arg1 << 2));
+    lbl_1_bss_8F568.unk_10 = 1;
+    lbl_1_bss_8F568.unk_14 = 0;
+    lbl_1_bss_8F568.unk_18 = 600;
+    return arg2;
+}
+/* fzgx:end fn_1_1577D0 */
+
 /* fzgx:begin fn_1_157920 */
 // Return the current ranking value.
 u32 fn_1_157920(void) {

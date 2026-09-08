@@ -15,6 +15,20 @@ extern u32 lbl_1_data_2C70;
 extern void fn_80008E84(u32 value);
 extern u32 lbl_1_bss_DAC;
 
+/* fzgx:begin fn_1_634 */
+extern struct fn_1_634_lbl_1_bss_54 lbl_1_bss_54;
+extern u32 fn_8006FFC4(u32);
+
+struct fn_1_634_lbl_1_bss_54 {
+    u32 unk_0;
+};
+
+void * fn_1_634(void) {
+    fn_8006FFC4(lbl_1_bss_54.unk_0);
+    return &lbl_1_bss_54;
+}
+/* fzgx:end fn_1_634 */
+
 /* fzgx:begin fn_1_668 */
 struct ArenaData {
     u32 *arena_lo;
@@ -36,6 +50,41 @@ void fn_1_668(void) {
     OSSetArenaLo(aligned_lo);
 }
 /* fzgx:end fn_1_668 */
+
+/* fzgx:begin fn_1_8D4 */
+extern u32 fn_1_48780(void);
+extern u32 lbl_801A66B4;
+extern u32 lbl_801A66BC;
+
+void fn_1_8D4(void) {
+    lbl_801A66B4 = lbl_801A66BC;
+    fn_1_48780();
+}
+/* fzgx:end fn_1_8D4 */
+
+/* fzgx:begin fn_1_904 */
+extern struct fn_1_904_lbl_1_bss_4 lbl_1_bss_4;
+
+struct fn_1_904_lbl_1_bss_4 {
+    u32 unk_0;
+};
+
+u32 fn_1_904(void) {
+    return lbl_1_bss_4.unk_0;
+}
+/* fzgx:end fn_1_904 */
+
+/* fzgx:begin fn_1_914 */
+extern struct fn_1_914_lbl_1_bss_0 lbl_1_bss_0;
+
+struct fn_1_914_lbl_1_bss_0 {
+    u32 unk_0;
+};
+
+u32 fn_1_914(void) {
+    return lbl_1_bss_0.unk_0;
+}
+/* fzgx:end fn_1_914 */
 
 /* fzgx:begin fn_1_924 */
 extern u16 lbl_1_bss_96A;
@@ -107,6 +156,14 @@ void fn_1_1300(void) {
 }
 /* fzgx:end fn_1_1300 */
 
+/* fzgx:begin fn_1_3BB0 */
+extern u32 lbl_1_data_2B78;
+
+u8 fn_1_3BB0(u32 arg0) {
+    return *(u8 *)((u8 *)&lbl_1_data_2B78 + arg0);
+}
+/* fzgx:end fn_1_3BB0 */
+
 /* fzgx:begin fn_1_3BC0 */
 void fn_1_3BC0(void) {
     lbl_1_bss_990[0] = 0;
@@ -115,6 +172,17 @@ void fn_1_3BC0(void) {
     lbl_1_bss_990[3] = 0;
 }
 /* fzgx:end fn_1_3BC0 */
+
+/* fzgx:begin fn_1_3BDC */
+extern u32 OSGetTick(u32);
+extern u32 lbl_1_bss_D7C;
+
+void fn_1_3BDC(u32 arg0) {
+    u32 t0;
+    t0 = OSGetTick(arg0);
+    *(u32 *)((u8 *)&lbl_1_bss_D7C + (arg0 << 2)) = t0;
+}
+/* fzgx:end fn_1_3BDC */
 
 /* fzgx:begin fn_1_3CC4 */
 void fn_1_3CC4(void) {
@@ -246,6 +314,20 @@ void fn_1_41A8(void) {
 }
 /* fzgx:end fn_1_41A8 */
 
+/* fzgx:begin fn_1_434C noprologue */
+#include "types.h"
+
+extern struct fn_1_434C_lbl_1_bss_DAC lbl_1_bss_DAC;
+
+struct fn_1_434C_lbl_1_bss_DAC {
+    u32 unk_0;
+};
+
+u32 fn_1_434C(void) {
+    return lbl_1_bss_DAC.unk_0;
+}
+/* fzgx:end fn_1_434C */
+
 /* fzgx:begin fn_1_4370 */
 // fn_1_4370: empty in retail (single blr).
 void fn_1_4370(void) {
@@ -297,9 +379,57 @@ void fn_1_43F4(void) {
 }
 /* fzgx:end fn_1_43F4 */
 
+/* fzgx:begin fn_1_4404 noprologue */
+#include "types.h"
+
+extern struct fn_1_4404_lbl_1_bss_DC0 lbl_1_bss_DC0;
+extern u32 fn_80008E84(u32);
+extern u32 lbl_1_data_2C70;
+
+struct fn_1_4404_lbl_1_bss_DC0 {
+    u32 unk_0;
+};
+
+void fn_1_4404(void) {
+    u32 t0;
+    t0 = fn_80008E84(lbl_1_bss_DC0.unk_0);
+    lbl_1_data_2C70 = t0;
+}
+/* fzgx:end fn_1_4404 */
+
+/* fzgx:begin fn_1_4438 noprologue */
+#include "types.h"
+
+extern struct fn_1_4438_lbl_1_bss_DC4 lbl_1_bss_DC4;
+extern u32 fn_80008E84(u32);
+extern u32 lbl_1_data_2C70;
+
+struct fn_1_4438_lbl_1_bss_DC4 {
+    u32 unk_0;
+};
+
+void fn_1_4438(void) {
+    u32 t0;
+    t0 = fn_80008E84(lbl_1_bss_DC4.unk_0);
+    lbl_1_data_2C70 = t0;
+}
+/* fzgx:end fn_1_4438 */
+
 /* fzgx:begin fn_1_446C */
 void fn_1_446C(void) {
     fn_80008E84(lbl_1_data_2C70);
     lbl_1_data_2C70 = (u32)-1;
 }
 /* fzgx:end fn_1_446C */
+
+/* fzgx:begin fn_1_44A4 */
+extern struct fn_1_44A4_lbl_1_bss_DC4 lbl_1_bss_DC4;
+
+struct fn_1_44A4_lbl_1_bss_DC4 {
+    u32 unk_0;
+};
+
+u32 fn_1_44A4(void) {
+    return lbl_1_bss_DC4.unk_0;
+}
+/* fzgx:end fn_1_44A4 */

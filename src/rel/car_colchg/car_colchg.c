@@ -146,6 +146,38 @@ void fn_9_534(void) {
 }
 /* fzgx:end fn_9_534 */
 
+/* fzgx:begin colchg_selcar_init noprologue */
+#include "types.h"
+
+extern struct colchg_selcar_init_lbl_9_bss_0 lbl_9_bss_0;
+extern u32 fn_1_3F8C(u32, u32, u32, u32);
+extern u32 fn_1_435C(u32);
+extern u32 fn_1_4A00(u32, u32, u32);
+extern u32 fn_9_1BCC(void);
+extern u32 lbl_9_data_40;
+extern void colchg_selcar_disp(void);
+
+struct colchg_selcar_init_lbl_9_bss_0 {
+    u8 pad_0[0x4];
+    u32 unk_4;
+    u8 pad_8[0x8];
+    u32 unk_10;
+    u8 pad_14[0xC8];
+    u16 unk_DC;
+};
+
+void colchg_selcar_init(void) {
+    struct colchg_selcar_init_lbl_9_bss_0 *p_lbl_9_bss_0;
+    u32 t2;
+    p_lbl_9_bss_0 = (struct colchg_selcar_init_lbl_9_bss_0 *)&lbl_9_bss_0;
+    fn_9_1BCC();
+    fn_1_435C(p_lbl_9_bss_0->unk_10);
+    t2 = fn_1_3F8C((u32)&lbl_9_data_40, (u32)colchg_selcar_disp, p_lbl_9_bss_0->unk_4, 8);
+    p_lbl_9_bss_0->unk_DC = t2;
+    fn_1_4A00(1, 15, p_lbl_9_bss_0->unk_10);
+}
+/* fzgx:end colchg_selcar_init */
+
 /* fzgx:begin fn_9_6F0 */
 // Apply the current car color-change configuration.
 void fn_9_6F0(void) {
@@ -274,6 +306,36 @@ void fn_9_A18(void) {
     entry[state->selection[2]].unk8 = state->valueE0;
 }
 /* fzgx:end fn_9_A18 */
+
+/* fzgx:begin colchg_chgcol_init noprologue */
+#include "types.h"
+
+extern struct colchg_chgcol_init_lbl_9_bss_0 lbl_9_bss_0;
+extern u32 fn_1_3F8C(u32, u32, u32, u32);
+extern u32 fn_1_435C(u32);
+extern u32 fn_1_4A00(u32, u32, u32);
+extern u32 lbl_9_data_68;
+extern void colchg_chgcol_disp(void);
+
+struct colchg_chgcol_init_lbl_9_bss_0 {
+    u8 pad_0[0x4];
+    u32 unk_4;
+    u8 pad_8[0x8];
+    u32 unk_10;
+    u8 pad_14[0xC8];
+    u16 unk_DC;
+};
+
+void colchg_chgcol_init(void) {
+    struct colchg_chgcol_init_lbl_9_bss_0 *p_lbl_9_bss_0;
+    u32 t1;
+    p_lbl_9_bss_0 = (struct colchg_chgcol_init_lbl_9_bss_0 *)&lbl_9_bss_0;
+    fn_1_435C(p_lbl_9_bss_0->unk_10);
+    t1 = fn_1_3F8C((u32)&lbl_9_data_68, (u32)colchg_chgcol_disp, p_lbl_9_bss_0->unk_4, 8);
+    p_lbl_9_bss_0->unk_DC = t1;
+    fn_1_4A00(1, 15, p_lbl_9_bss_0->unk_10);
+}
+/* fzgx:end colchg_chgcol_init */
 
 /* fzgx:begin fn_9_DC0 */
 // Refresh the collision-change state from the current global settings.

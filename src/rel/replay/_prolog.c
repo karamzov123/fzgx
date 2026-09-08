@@ -7,6 +7,15 @@ int fn_13_A40(void) {
 }
 /* fzgx:end fn_13_A40 */
 
+/* fzgx:begin fn_13_A48 */
+extern u32 fn_1_D0790(void);
+
+s32 fn_13_A48(void) {
+    fn_1_D0790();
+    return 0;
+}
+/* fzgx:end fn_13_A48 */
+
 /* fzgx:begin fn_13_A6C */
 extern u32 lbl_13_bss_38;
 extern void fn_13_A40(void);
@@ -43,6 +52,15 @@ void fn_13_B00(void) {
 void _epilog(void) {
 }
 /* fzgx:end _epilog */
+
+/* fzgx:begin fn_13_B64 */
+extern u32 lbl_1_bss_26C60;
+extern void fn_13_3FC(void);
+
+void fn_13_B64(void) {
+    lbl_1_bss_26C60 = (u32)fn_13_3FC;
+}
+/* fzgx:end fn_13_B64 */
 
 /* fzgx:begin fn_13_B78 */
 // fn_13_B78: empty in retail (single blr).
