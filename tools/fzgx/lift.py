@@ -625,6 +625,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     dowhile_test: Dict[int, Tuple[int, int, int]] = {}
     ctr_loops: Dict[int, Tuple[int, int]] = {}  # mtctr index -> (body start, bdnz index)
     ctr_guarded: set = set()
+    else_state: Dict[int, Tuple[dict, dict]] = {}
     for k_, (mn_, a_) in enumerate(ins):
         m_ = re.fullmatch(r"b(\w+)", mn_)
         if mn_ == "bdnz" and a_ and a_[-1].startswith(".L_"):
@@ -765,7 +766,14 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                         tn = f"v{len(temps)}"; temps.append(f"{rtype.get(pd, 'u32')} {tn};")
                         stmts.append(f"{tn} = {regs[pd]};"); regs[pd] = tn
             while open_ifs and open_ifs[-1][0] == i:
-                stmts.append(open_ifs.pop()[1])
+                text_ = open_ifs.pop()[1]
+                stmts.append(text_)
+                if text_ == "} else {" and i in else_state:
+                    snap_r, snap_t = else_state.pop(i)
+                    for r_ in list(regs):
+                        if r_ not in snap_r:
+                            regs.pop(r_)
+                    regs.update(snap_r); rtype.update(snap_t)
             if i in pending_div:
                 d_, e_ = pending_div.pop(i)
                 regs[d_] = e_; rtype[d_] = "u32"
@@ -1022,6 +1030,9 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                         stmts.append(f"if ({l} {inv} {r_}) {{")
                         # closers are pushed innermost-last: the stack pops the else first, then the end
                         open_ifs.append((end, "}")); open_ifs.append((tgt - 1, "} else {"))
+                        # the else branch runs from the state at the branch (a call in the then
+                        # branch clears argument registers the else branch still holds)
+                        else_state[tgt - 1] = (dict(regs), dict(rtype))
                     else:
                         stmts.append(f"if ({l} {inv} {r_}) {{"); open_ifs.append((tgt, "}"))
                 open_ifs.sort(key=lambda x: -x[0])  # smallest index on top: every closer pops at its index
@@ -1501,6 +1512,10 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 regs[a[0]] = f"__FCTIWZ__({use(a[1])})"; rtype[a[0]] = "f64"; continue
             if mn == "cntlzw":
                 regs[a[0]] = f"__cntlzw({use(a[1])})"; rtype[a[0]] = "u32"; continue
+            if mn == "bl" and a and re.fullmatch(r"_(save|rest)(gpr|fpr)_\d+", a[0]):
+                frame = True; continue  # the callee-saved block save/restore helpers
+            if mn == "addi" and len(a) == 3 and a[0] == "r11" and a[1] == "r1":
+                frame = True; continue  # the helpers' frame pointer
             if mn == "mtctr" and i not in ctr_loops and i not in copies:
                 ctr_expr[0] = use(a[0]); continue
             if mn in ("bl", "bctrl"):
