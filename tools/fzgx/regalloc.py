@@ -277,7 +277,7 @@ def normalise(body: str) -> str:
 
 
 def search(p: Project, symbol: str, body: str, budget_s: float = 8.0, max_orders: int = 720,
-           top_k: int = 6) -> Dict[str, object]:
+           top_k: int = 6, workers: int = WORKERS) -> Dict[str, object]:
     """Returns {"matched", "body", "tried", "best", "secs", "stage", "label"}."""
     t0 = time.time()
     body = normalise(body)
@@ -302,7 +302,7 @@ def search(p: Project, symbol: str, body: str, budget_s: float = 8.0, max_orders
         n = len(texts)
         if n == 0:
             return []
-        per = max(8, (n + WORKERS - 1) // WORKERS)
+        per = max(8, (n + workers - 1) // workers)
         chunks = [list(range(i, min(i + per, n))) for i in range(0, n, per)]
 
         def run(ci: int):
@@ -322,7 +322,11 @@ def search(p: Project, symbol: str, body: str, budget_s: float = 8.0, max_orders
             return res
 
         results: List[Optional[Tuple[float, list]]] = [None] * n
-        with ThreadPoolExecutor(max_workers=WORKERS) as ex:
+        if len(chunks) == 1:
+            for j, r in run(0).items():
+                results[j] = r
+            return results
+        with ThreadPoolExecutor(max_workers=workers) as ex:
             for part in ex.map(run, range(len(chunks))):
                 for j, r in part.items():
                     results[j] = r
@@ -427,8 +431,11 @@ def run(p: Project, min_pct: float = 90.0, limit: int = 2000, submit: bool = Tru
     matched: List[Tuple[str, str]] = []
     improved = 0
     tried = 0
-    for s, body, pct, kind in items:
-        res = search(p, s, body, budget_s=8.0)
+    # bodies in parallel, each search single-threaded: a body's candidate sets are small, so
+    # the parallelism is across bodies (one mwcc process per stage per body)
+    with ThreadPoolExecutor(max_workers=WORKERS) as ex:
+        searched = list(ex.map(lambda it: (it, search(p, it[0], it[1], budget_s=8.0, workers=1)), items))
+    for (s, body, pct, kind), res in searched:
         tried += res.get("tried", 0)
         if res.get("matched") and res.get("body"):
             label = f"{res.get('stage')}: {res.get('label')}"

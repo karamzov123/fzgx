@@ -103,6 +103,12 @@ Rules that hold for everyone:
   generated-unit hash (`.fzgx/verify_cache.json`), so a pass over main.rel is ~30 s. The only
   agent task it emits is the fixed list of blocks that cannot compile under their prologue
   (one revise batch; a block that fails twice is blocked, never re-queued).
+- Build speed: units compile in groups of 48 per mwcc process (`tools/mwcc_batch.sh`, one depfile
+  per group, `mwcc_batch` rule); a full rebuild is ~8 s, of which ~5 s is the two-stage main_rel
+  link. `build.ninja` names the interpreter `python3` on purpose: a baked-in path changed with every
+  caller (uv venv vs homebrew) and rebuilt every unit. Candidate loops (lab, fixup, regalloc, lifter)
+  score by masked machine words (`oracle.words`/`word_score`), objdiff only on winners; batch passes
+  compile through `oracle.compile_many`/`check_many` (parallel chunks), never one process per body.
 - While a batch runs, never call `configure.py`, `ninja` or `dtk` by hand: go through
   `fzgx verify` or `oracle.build_lock()`. Two concurrent splits kill each other (exit 137)
   and a broken baseline makes a bisect blame every pending unit (verify now checks the

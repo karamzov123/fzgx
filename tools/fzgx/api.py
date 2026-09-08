@@ -698,15 +698,21 @@ def sweep_attempts(p: Project, module: Optional[str] = None, min_percent: float 
     scratch = STATE_DIR / "sweep"
     scratch.mkdir(parents=True, exist_ok=True)
 
-    def one(item):
-        key, text, ck = item
+    # one batched compile for every body, then the repairs in threads
+    srcs = {}
+    for key, text, ck in todo:
         src = scratch / (key.replace(":", "__") + ".c")
         src.write_text(text)
-        res = oracle.check(p, key, 20, source=src)
+        srcs[key] = src
+    first = oracle.check_many(p, [(key, srcs[key]) for key, _, _ in todo], 20)
+
+    def one(item):
+        key, text, ck = item
+        res = first.get(key) or oracle.check(p, key, 20, source=srcs[key])
         if res.ok and oracle.unit_fully_matches(res) is None:
             return key, ck, {"match": True, "body": text, "percent": 100.0}
         if res.ok:
-            fx = fixup.try_fix(p, key, text, budget_s=15.0)
+            fx = fixup.try_fix(p, key, text, budget_s=8.0, base=res)
             if fx.get("matched") and fx.get("body"):
                 return key, ck, {"match": True, "body": fx["body"], "label": fx.get("label"), "percent": 100.0}
             return key, ck, {"match": False, "percent": round(max(res.percent, fx.get("best") or 0.0), 1)}

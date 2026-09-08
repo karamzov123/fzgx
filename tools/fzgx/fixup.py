@@ -99,8 +99,10 @@ def _tu_of(p: Project, sym) -> Optional[str]:
     return None
 
 
-def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_candidates: int = 80, _depth: int = 0) -> Dict[str, object]:
-    """Search the cheap repairs; returns {"matched": bool, "body": text or None, "tried": n, "best": %, "secs": s}."""
+def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_candidates: int = 80, _depth: int = 0,
+            base: Optional[oracle.CheckResult] = None) -> Dict[str, object]:
+    """Search the cheap repairs; returns {"matched": bool, "body": text or None, "tried": n, "best": %, "secs": s}.
+    `base`: the body's check result when the caller already has it (saves one compile)."""
     t0 = time.time()
     sym = p.resolve(symbol)
     key = p.key(sym)
@@ -111,7 +113,8 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
         scratch.write_text(text)
         return oracle.check(p, symbol, 0, source=scratch)
 
-    base = check(body)
+    if base is None:
+        base = check(body)
     out: Dict[str, object] = {"matched": False, "body": None, "tried": 0, "best": base.percent if base.ok else 0.0,
                               "base": base.percent if base.ok else 0.0, "secs": 0.0, "kinds": {}}
     if not base.ok:
