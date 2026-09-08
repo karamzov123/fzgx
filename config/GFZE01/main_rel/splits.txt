@@ -1987,7 +1987,7 @@ rel/main_rel/phys/fn_1_EFA1C.c:
 rel/main_rel/ghost/fn_1_EFA4C.c:
 	.text       start:0x000EFA4C end:0x000EFA50
 
-rel/main_rel/ghost/fn_1_EFA50.c:
+rel/main_rel/ghost/ghost_reset.c:
 	.text       start:0x000EFA50 end:0x000EFA88
 
 rel/main_rel/ghost/fn_1_EFA88.c:
@@ -1999,7 +1999,7 @@ rel/main_rel/ghost/fn_1_F0164.c:
 rel/main_rel/ghost/fn_1_F17B4.c:
 	.text       start:0x000F17B4 end:0x000F1864
 
-rel/main_rel/ghost/fn_1_F1864.c:
+rel/main_rel/ghost/ghost_pack_bits.c:
 	.text       start:0x000F1864 end:0x000F18C0
 
 rel/main_rel/ghost/fn_1_F1950.c:
@@ -2011,22 +2011,22 @@ rel/main_rel/ghost/fn_1_F1D70.c:
 rel/main_rel/ghost/fn_1_F1E30.c:
 	.text       start:0x000F1E30 end:0x000F1ED0
 
-rel/main_rel/ghost/fn_1_F1F74.c:
+rel/main_rel/ghost/ghost_test_flag.c:
 	.text       start:0x000F1F74 end:0x000F2008
 
 rel/main_rel/ghost/fn_1_F2008.c:
 	.text       start:0x000F2008 end:0x000F2060
 
-rel/main_rel/ghost/fn_1_F2060.c:
+rel/main_rel/ghost/ghost_test_record_flag0.c:
 	.text       start:0x000F2060 end:0x000F20B4
 
-rel/main_rel/ghost/fn_1_F20B4.c:
+rel/main_rel/ghost/ghost_set_record_flag1.c:
 	.text       start:0x000F20B4 end:0x000F210C
 
 rel/main_rel/ghost/fn_1_F210C.c:
 	.text       start:0x000F210C end:0x000F2160
 
-rel/main_rel/ghost/fn_1_F2160.c:
+rel/main_rel/ghost/ghost_set_record_flag2.c:
 	.text       start:0x000F2160 end:0x000F21B8
 
 rel/main_rel/phys/fn_1_F2338.c:

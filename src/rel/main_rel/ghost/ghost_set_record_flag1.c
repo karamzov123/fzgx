@@ -3,7 +3,7 @@
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 extern u8 lbl_1_bss_7F0C0[];
 
-void fn_1_F20B4(s32 arg) {
+void ghost_set_record_flag1(s32 arg) {
     s16 a;
     s16 b;
     s32 index;

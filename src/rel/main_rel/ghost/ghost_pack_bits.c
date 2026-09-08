@@ -1,6 +1,6 @@
 #include "types.h"
 
-void fn_1_F1864(u32 *out, const u32 *x, const u32 *y, const u32 *z) {
+void ghost_pack_bits(u32 *out, const u32 *x, const u32 *y, const u32 *z) {
     out[0] = 0;
     out[1] = 0;
     out[0] += x[0] << 10;

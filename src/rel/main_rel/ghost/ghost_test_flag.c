@@ -2,7 +2,7 @@
 
 extern u32 lbl_1_bss_7E9E8[6];
 
-u32 fn_1_F1F74(s32 index) {
+u32 ghost_test_flag(s32 index) {
     if (index < 0x20) {
         return lbl_1_bss_7E9E8[0] & (1 << index);
     }

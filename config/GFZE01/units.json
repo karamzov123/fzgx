@@ -6561,16 +6561,6 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/ghost/fn_1_EFA50.c",
-    "symbols": [
-      "fn_1_EFA50"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
     "source": "rel/main_rel/ghost/fn_1_EFA88.c",
     "symbols": [
       "fn_1_EFA88"
@@ -6596,16 +6586,6 @@
       "fn_1_F17B4"
     ],
     "status": "nonmatching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/ghost/fn_1_F1864.c",
-    "symbols": [
-      "fn_1_F1864"
-    ],
-    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
@@ -6641,41 +6621,11 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/ghost/fn_1_F1F74.c",
-    "symbols": [
-      "fn_1_F1F74"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
     "source": "rel/main_rel/ghost/fn_1_F2008.c",
     "symbols": [
       "fn_1_F2008"
     ],
     "status": "nonmatching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/ghost/fn_1_F2060.c",
-    "symbols": [
-      "fn_1_F2060"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/ghost/fn_1_F20B4.c",
-    "symbols": [
-      "fn_1_F20B4"
-    ],
-    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
@@ -6691,9 +6641,59 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/ghost/fn_1_F2160.c",
+    "source": "rel/main_rel/ghost/ghost_pack_bits.c",
     "symbols": [
-      "fn_1_F2160"
+      "ghost_pack_bits"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/ghost/ghost_reset.c",
+    "symbols": [
+      "ghost_reset"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/ghost/ghost_set_record_flag1.c",
+    "symbols": [
+      "ghost_set_record_flag1"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/ghost/ghost_set_record_flag2.c",
+    "symbols": [
+      "ghost_set_record_flag2"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/ghost/ghost_test_flag.c",
+    "symbols": [
+      "ghost_test_flag"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/ghost/ghost_test_record_flag0.c",
+    "symbols": [
+      "ghost_test_record_flag0"
     ],
     "status": "matching",
     "mw_version": null,
