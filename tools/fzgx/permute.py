@@ -35,16 +35,20 @@ LINE_COMMENT_RE = re.compile(r"^/\* #line .*$", re.M)
 
 
 def _attempt_text(p: Project, key: str) -> Optional[str]:
-    """The best saved body: the live work copy, else .best.c, else the ledger's last attempt."""
+    """The best saved body: the live work copy of a claimed function, else the ledger's
+    best-scoring attempt (a stale work copy or .best.c of an unclaimed function is ignored)."""
+    l = Ledger()
+    row = l.get(key)
+    claimed = bool(row and row["status"] == "claimed")
     work = p.work_path(key)
-    if work.exists():
+    if claimed and work.exists():
         return work.read_text()
     best = STATE_DIR / "attempts" / f"{key}.best.c"
-    if best.exists():
+    if claimed and best.exists():
         return best.read_text()
-    row = Ledger().db.execute(
+    row = l.db.execute(
         "SELECT best_body_path FROM attempts WHERE symbol=? AND best_body_path IS NOT NULL "
-        "ORDER BY final_percent DESC, id DESC LIMIT 1", (key,)).fetchone()
+        "ORDER BY best_in_attempt DESC, final_percent DESC, id DESC LIMIT 1", (key,)).fetchone()
     if row and row[0]:
         path = Path(row[0])
         if not path.exists():  # the repository moved; the store did not
