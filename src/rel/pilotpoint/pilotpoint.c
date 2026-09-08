@@ -18,6 +18,16 @@ void fn_14_B480(void) {
 }
 /* fzgx:end fn_14_B480 */
 
+/* fzgx:begin fn_14_BCDC */
+extern u32 lbl_14_bss_0;
+extern u32 lbl_14_bss_9460;
+
+void fn_14_BCDC(void) {
+    lbl_14_bss_9460 = 0;
+    lbl_14_bss_0 = 366;
+}
+/* fzgx:end fn_14_BCDC */
+
 /* fzgx:begin fn_14_C4F4 */
 // fn_14_C4F4: empty in retail (single blr).
 void fn_14_C4F4(void) {

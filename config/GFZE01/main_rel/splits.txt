@@ -9,6 +9,9 @@ Sections:
 rel/main_rel/_prolog/fn_1_668.c:
 	.text       start:0x00000668 end:0x000006D4
 
+rel/main_rel/_prolog/fn_1_924.c:
+	.text       start:0x00000924 end:0x00000950
+
 rel/main_rel/_prolog/fn_1_950.c:
 	.text       start:0x00000950 end:0x00000954
 
@@ -17,6 +20,9 @@ rel/main_rel/_prolog/fn_1_954.c:
 
 rel/main_rel/_prolog/fn_1_958.c:
 	.text       start:0x00000958 end:0x0000095C
+
+rel/main_rel/_prolog/fn_1_1280.c:
+	.text       start:0x00001280 end:0x0000128C
 
 rel/main_rel/_prolog/fn_1_12FC.c:
 	.text       start:0x000012FC end:0x00001300
@@ -41,6 +47,12 @@ rel/main_rel/_prolog/fn_1_4370.c:
 
 rel/main_rel/_prolog/fn_1_4374.c:
 	.text       start:0x00004374 end:0x000043A4
+
+rel/main_rel/_prolog/fn_1_43E8.c:
+	.text       start:0x000043E8 end:0x000043F4
+
+rel/main_rel/_prolog/fn_1_43F4.c:
+	.text       start:0x000043F4 end:0x00004404
 
 rel/main_rel/_prolog/fn_1_446C.c:
 	.text       start:0x0000446C end:0x000044A4
@@ -2255,6 +2267,9 @@ rel/main_rel/driver/fn_1_A8EB0.c:
 
 rel/main_rel/driver/fn_1_A8EF8.c:
 	.text       start:0x000A8EF8 end:0x000A8F40
+
+rel/main_rel/driver/fn_1_A8F40.c:
+	.text       start:0x000A8F40 end:0x000A8F78
 
 rel/main_rel/driver/fn_1_A8F78.c:
 	.text       start:0x000A8F78 end:0x000A8FA0

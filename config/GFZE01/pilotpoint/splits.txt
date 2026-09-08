@@ -15,6 +15,9 @@ rel/pilotpoint/fn_14_258C.c:
 rel/pilotpoint/fn_14_B480.c:
 	.text       start:0x0000B480 end:0x0000B484
 
+rel/pilotpoint/pilotpoint/fn_14_BCDC.c:
+	.text       start:0x0000BCDC end:0x0000BCF8
+
 rel/pilotpoint/fn_14_C4F4.c:
 	.text       start:0x0000C4F4 end:0x0000C4F8
 

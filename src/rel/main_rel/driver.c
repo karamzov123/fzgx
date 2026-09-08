@@ -259,6 +259,18 @@ void fn_1_A8EF8(u16 arg0, u16 arg1) {
 }
 /* fzgx:end fn_1_A8EF8 */
 
+/* fzgx:begin fn_1_A8F40 noprologue */
+#include "types.h"
+
+extern u32 fn_1_A9420(u32);
+extern u32 fn_1_A942C(u32);
+
+u32 fn_1_A8F40(u32 arg0) {
+    fn_1_A9420(0);
+    return fn_1_A942C(arg0);
+}
+/* fzgx:end fn_1_A8F40 */
+
 /* fzgx:begin fn_1_A8F78 */
 void fn_1_A8F78(void) {
     fn_1_A9420(0);

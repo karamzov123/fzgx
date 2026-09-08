@@ -30,6 +30,9 @@ rel/title/fn_8_1C10.c:
 rel/title/fn_8_1C14.c:
 	.text       start:0x00001C14 end:0x00001C18
 
+rel/title/title/fn_8_1F64.c:
+	.text       start:0x00001F64 end:0x00001F74
+
 rel/title/fn_8_2120.c:
 	.text       start:0x00002120 end:0x00002124
 
@@ -60,6 +63,9 @@ rel/title/fn_8_6560.c:
 rel/title/fn_8_6568.c:
 	.text       start:0x00006568 end:0x00006570
 
+rel/title/operation/fn_8_68D8.c:
+	.text       start:0x000068D8 end:0x000068F4
+
 rel/title/fn_8_8C44.c:
 	.text       start:0x00008C44 end:0x00008C48
 
@@ -77,3 +83,9 @@ rel/title/fn_8_CF68.c:
 
 rel/title/fn_8_D020.c:
 	.text       start:0x0000D020 end:0x0000D024
+
+rel/title/operation/fn_8_D024.c:
+	.text       start:0x0000D024 end:0x0000D034
+
+rel/title/name_entry/fn_8_100B4.c:
+	.text       start:0x000100B4 end:0x000100C4

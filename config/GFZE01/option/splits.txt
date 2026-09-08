@@ -11,3 +11,6 @@ rel/option/fn_4_ADAC.c:
 
 rel/option/fn_4_ADF0.c:
 	.text       start:0x0000ADF0 end:0x0000ADF4
+
+rel/option/name_entry/fn_4_D878.c:
+	.text       start:0x0000D878 end:0x0000D888

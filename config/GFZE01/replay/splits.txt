@@ -21,5 +21,8 @@ rel/replay/_epilog.c:
 rel/replay/fn_13_B78.c:
 	.text       start:0x00000B78 end:0x00000B7C
 
+rel/replay/replay_mode/fn_13_EF0.c:
+	.text       start:0x00000EF0 end:0x00000F00
+
 rel/replay/fn_13_FA8.c:
 	.text       start:0x00000FA8 end:0x00000FAC

@@ -37,6 +37,16 @@ void fn_1_668(void) {
 }
 /* fzgx:end fn_1_668 */
 
+/* fzgx:begin fn_1_924 */
+extern u16 lbl_1_bss_96A;
+extern u32 fn_1_37E98(void);
+
+u32 fn_1_924(void) {
+    lbl_1_bss_96A = 36;
+    return fn_1_37E98();
+}
+/* fzgx:end fn_1_924 */
+
 /* fzgx:begin fn_1_950 */
 // fn_1_950: empty in retail (single blr).
 void fn_1_950(void) {
@@ -54,6 +64,14 @@ void fn_1_954(void) {
 void fn_1_958(void) {
 }
 /* fzgx:end fn_1_958 */
+
+/* fzgx:begin fn_1_1280 */
+extern u32 lbl_1_bss_96C;
+
+void fn_1_1280(u32 arg0) {
+    lbl_1_bss_96C = arg0;
+}
+/* fzgx:end fn_1_1280 */
 
 /* fzgx:begin fn_1_12FC */
 // fn_1_12FC: empty in retail (single blr).
@@ -236,6 +254,26 @@ void fn_1_4374(Node **list, Node *node) {
     *list = node;
 }
 /* fzgx:end fn_1_4374 */
+
+/* fzgx:begin fn_1_43E8 noprologue */
+#include "types.h"
+
+extern u32 lbl_1_bss_DB0;
+
+void fn_1_43E8(u32 arg0) {
+    lbl_1_bss_DB0 = arg0;
+}
+/* fzgx:end fn_1_43E8 */
+
+/* fzgx:begin fn_1_43F4 noprologue */
+#include "types.h"
+
+extern u32 lbl_1_bss_DB0;
+
+void fn_1_43F4(void) {
+    lbl_1_bss_DB0 = 0;
+}
+/* fzgx:end fn_1_43F4 */
 
 /* fzgx:begin fn_1_446C */
 void fn_1_446C(void) {

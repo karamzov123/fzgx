@@ -24,6 +24,14 @@ void fn_15_405C(void) {
 }
 /* fzgx:end fn_15_405C */
 
+/* fzgx:begin fn_15_4568 */
+extern u16 lbl_15_bss_154;
+
+void fn_15_4568(void) {
+    lbl_15_bss_154 = 0;
+}
+/* fzgx:end fn_15_4568 */
+
 /* fzgx:begin fn_15_545C */
 // fn_15_545C: empty in retail (single blr).
 void fn_15_545C(void) {

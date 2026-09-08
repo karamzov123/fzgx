@@ -1,5 +1,15 @@
 #include "types.h"
 
+/* fzgx:begin fn_8_68D8 */
+extern u32 lbl_8_bss_2A8;
+extern u32 lbl_8_bss_2C0;
+
+void fn_8_68D8(void) {
+    lbl_8_bss_2C0 = 4;
+    lbl_8_bss_2A8 = 0;
+}
+/* fzgx:end fn_8_68D8 */
+
 /* fzgx:begin fn_8_8C44 */
 // fn_8_8C44: empty in retail (single blr).
 void fn_8_8C44(void) {
@@ -38,3 +48,11 @@ int fn_8_CF68(void) {
 void fn_8_D020(void) {
 }
 /* fzgx:end fn_8_D020 */
+
+/* fzgx:begin fn_8_D024 */
+extern u32 lbl_8_bss_544;
+
+void fn_8_D024(void) {
+    lbl_8_bss_544 = 4;
+}
+/* fzgx:end fn_8_D024 */

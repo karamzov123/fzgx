@@ -56,3 +56,6 @@ rel/story/fn_7_2110.c:
 
 rel/story/fn_7_2324.c:
 	.text       start:0x00002324 end:0x0000232C
+
+rel/story/story_mode/fn_7_2514.c:
+	.text       start:0x00002514 end:0x00002538

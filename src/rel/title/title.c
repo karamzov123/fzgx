@@ -42,6 +42,14 @@ void fn_8_1C14(void) {
 }
 /* fzgx:end fn_8_1C14 */
 
+/* fzgx:begin fn_8_1F64 */
+extern u8 lbl_8_bss_2;
+
+void fn_8_1F64(void) {
+    lbl_8_bss_2 = 0;
+}
+/* fzgx:end fn_8_1F64 */
+
 /* fzgx:begin fn_8_2120 */
 // fn_8_2120: empty in retail (single blr).
 void fn_8_2120(void) {

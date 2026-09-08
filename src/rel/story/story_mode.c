@@ -102,3 +102,12 @@ int fn_7_2324(void) {
     return 0;
 }
 /* fzgx:end fn_7_2324 */
+
+/* fzgx:begin fn_7_2514 */
+extern u32 fn_7_3FCC(void);
+
+s32 fn_7_2514(void) {
+    fn_7_3FCC();
+    return 0;
+}
+/* fzgx:end fn_7_2514 */

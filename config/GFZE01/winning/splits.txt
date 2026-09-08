@@ -18,5 +18,8 @@ rel/winning/fn_15_3AFC.c:
 rel/winning/fn_15_405C.c:
 	.text       start:0x0000405C end:0x00004060
 
+rel/winning/winning/fn_15_4568.c:
+	.text       start:0x00004568 end:0x00004578
+
 rel/winning/fn_15_545C.c:
 	.text       start:0x0000545C end:0x00005460
