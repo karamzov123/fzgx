@@ -37,8 +37,16 @@ Rules that hold for everyone:
   `git clean/checkout/restore/reset/stash/rebase/push` and `ninja -t clean`
   for every agent in this repo. If the build looks broken, run
   `python3 configure.py && ninja build/GFZE01/ok` and report; do not "clean".
-- `fzgx submit` is the only path that flips a unit to `matching`; it relinks and
-  verifies every hash before committing.
+- `fzgx submit` is the only path that flips a unit to `matching`; `fzgx verify` relinks once
+  per batch and verifies every hash before committing. Literal-pool constants: retail pooled
+  literals per TU (e.g. the 2^52 int-to-double constant), so a per-function unit's private
+  `@N` literal never matches the relocation. When the only diffs are such relocations with
+  equal bytes, `check` retargets the private symbols to the retail ones in the object
+  (`tools/fzgx/poolfix.py`), the unit records the mapping (`pool` in units.json) and ninja
+  applies it after every compile (`mwcc_pool` rule from `configure.py`), so the function
+  matches and links from C. If the private rodata cannot be emptied the function is a
+  *pool match*: accepted and spliced, retail object still linked (`link_state=pool`).
+  `fzgx sweep` re-checks saved attempts after oracle/header changes.
 - Matchers edit only their own unit, and only through `write_unit`. Headers,
   names and splits belong to the librarian.
 - No hardcoded addresses (`fzgx lint`), no inline asm in `src/`.

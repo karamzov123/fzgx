@@ -1,0 +1,152 @@
+"""Retarget a compiled unit's private literal-pool constants to the retail pooled symbols.
+
+MWCC gives every literal it needs (an int-to-double conversion constant, a float
+written in the code) a private `@N` symbol in the unit's own .rodata. Retail
+compiled whole translation units, so those literals were pooled once per TU
+and functions reference the shared copy (`lbl_1_rodata_170`). A per-function
+unit can never express that in C. So after compiling, when a private literal
+has exactly the bytes of the pooled constant the retail code references at the
+same instruction, this rewrites the object:
+
+  - the `@N` symbol becomes a global undefined reference named after the pooled
+    symbol (the relocation keeps pointing at the same symbol index, so the code
+    now references the shared constant, exactly like retail);
+  - the private .rodata bytes it occupied are dropped by shrinking the section
+    when nothing else lives in it (otherwise the object is left alone and the
+    function stays a pool match).
+
+Minimal big-endian ELF32 surgery: the new name goes into a copy of .strtab
+appended at the end of the file; only that section header, the symbol entry
+and the .rodata size change.
+"""
+
+from __future__ import annotations
+
+import json
+import struct
+import sys
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple
+
+SHN_UNDEF = 0
+STB_GLOBAL = 1
+STT_NOTYPE = 0
+STT_OBJECT = 1
+SHT_SYMTAB = 2
+SHT_STRTAB = 3
+
+
+class Elf:
+    def __init__(self, data: bytes):
+        self.data = bytearray(data)
+        if data[:4] != b"\x7fELF" or data[4] != 1 or data[5] != 2:
+            raise ValueError("not a big-endian ELF32 object")
+        (self.shoff,) = struct.unpack(">I", data[32:36])
+        self.shentsize, self.shnum, self.shstrndx = struct.unpack(">HHH", data[46:52])
+        self.sections: List[dict] = []
+        for i in range(self.shnum):
+            off = self.shoff + i * self.shentsize
+            f = struct.unpack(">IIIIIIIIII", data[off:off + 40])
+            self.sections.append(dict(index=i, name_off=f[0], type=f[1], flags=f[2], addr=f[3], offset=f[4],
+                                      size=f[5], link=f[6], info=f[7], addralign=f[8], entsize=f[9]))
+        shstr = self.sections[self.shstrndx]
+        for s in self.sections:
+            s["name"] = self._cstr(shstr["offset"] + s["name_off"])
+
+    def _cstr(self, off: int) -> str:
+        end = self.data.index(b"\0", off)
+        return self.data[off:end].decode("ascii", "replace")
+
+    def section(self, name: str) -> Optional[dict]:
+        return next((s for s in self.sections if s["name"] == name), None)
+
+    def symbols(self) -> List[dict]:
+        symtab = next(s for s in self.sections if s["type"] == SHT_SYMTAB)
+        strtab = self.sections[symtab["link"]]
+        out = []
+        for i in range(symtab["size"] // 16):
+            off = symtab["offset"] + i * 16
+            name_off, value, size, info, other, shndx = struct.unpack(">IIIBBH", self.data[off:off + 16])
+            out.append(dict(index=i, off=off, name=self._cstr(strtab["offset"] + name_off), name_off=name_off,
+                            value=value, size=size, info=info, other=other, shndx=shndx))
+        return out
+
+    def _write_shdr(self, s: dict) -> None:
+        off = self.shoff + s["index"] * self.shentsize
+        self.data[off:off + 40] = struct.pack(">IIIIIIIIII", s["name_off"], s["type"], s["flags"], s["addr"],
+                                              s["offset"], s["size"], s["link"], s["info"], s["addralign"], s["entsize"])
+
+    def add_string(self, strtab: dict, text: str) -> int:
+        """Append `text` to a string table by moving the table to the end of the file."""
+        old = bytes(self.data[strtab["offset"]:strtab["offset"] + strtab["size"]])
+        new = old + text.encode("ascii") + b"\0"
+        end = max(len(self.data), self.shoff + self.shnum * self.shentsize)
+        self.data[end:] = b""
+        self.data += b"\0" * ((4 - end % 4) % 4)
+        strtab["offset"] = len(self.data)
+        strtab["size"] = len(new)
+        self.data += new
+        self._write_shdr(strtab)
+        return len(old)
+
+    def retarget(self, mapping: Dict[str, str]) -> Tuple[List[str], List[str]]:
+        """Rename private `@N` symbols to undefined globals; returns (done, skipped)."""
+        symtab = next(s for s in self.sections if s["type"] == SHT_SYMTAB)
+        strtab = self.sections[symtab["link"]]
+        done, skipped = [], []
+        by_name = {s["name"]: s for s in self.symbols()}
+        for private, pooled in mapping.items():
+            s = by_name.get(private)
+            if s is None:
+                skipped.append(f"{private}: no such symbol")
+                continue
+            name_off = self.add_string(strtab, pooled)
+            self.data[s["off"]:s["off"] + 16] = struct.pack(">IIIBBH", name_off, 0, 0,
+                                                            (STB_GLOBAL << 4) | STT_NOTYPE, 0, SHN_UNDEF)
+            done.append(f"{private}->{pooled}")
+            # locals must precede globals in a symbol table: sh_info is the first non-local index
+            if symtab["info"] > s["index"]:
+                symtab["info"] = s["index"]
+                self._write_shdr(symtab)
+        return done, skipped
+
+    def drop_private_rodata(self, private_names: List[str]) -> bool:
+        """Empty .rodata when every object symbol in it was retargeted; else leave it."""
+        ro = self.section(".rodata")
+        if ro is None:
+            return True
+        others = [s for s in self.symbols()
+                  if s["shndx"] == ro["index"] and (s["info"] & 0xF) == STT_OBJECT and s["name"] not in private_names]
+        if others:
+            return False
+        ro["size"] = 0
+        self._write_shdr(ro)
+        return True
+
+
+def apply(obj: Path, mapping: Dict[str, str]) -> Dict[str, object]:
+    """Rewrite `obj` in place. mapping: private literal symbol -> pooled retail symbol."""
+    elf = Elf(obj.read_bytes())
+    done, skipped = elf.retarget(mapping)
+    emptied = elf.drop_private_rodata(list(mapping))
+    obj.write_bytes(bytes(elf.data))
+    return {"retargeted": done, "skipped": skipped, "rodata_emptied": emptied}
+
+
+def parse_mapping(text: str) -> Dict[str, str]:
+    """`@17=lbl_1_rodata_170,@18=lbl_1_rodata_178` (ninja-friendly) or a JSON object."""
+    text = text.strip()
+    if text.startswith("{"):
+        return dict(json.loads(text))
+    return dict(item.split("=", 1) for item in text.split(",") if item)
+
+
+def format_mapping(mapping: Dict[str, str]) -> str:
+    return ",".join(f"{k}={v}" for k, v in sorted(mapping.items()))
+
+
+if __name__ == "__main__":
+    r = apply(Path(sys.argv[1]), parse_mapping(sys.argv[2]))
+    if r["skipped"] or not r["rodata_emptied"]:
+        print(json.dumps(r), file=sys.stderr)
+        sys.exit(1)

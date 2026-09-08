@@ -13,6 +13,7 @@
 ###
 
 import argparse
+import json
 import sys
 from pathlib import Path
 from typing import Any, Dict, List
@@ -359,6 +360,42 @@ load_generated_units()
 config.reconfig_deps = [Path("config") / config.version / "units.json"]
 
 
+def add_pool_rules() -> None:
+    """Units whose private literal-pool constants must be retargeted to the retail pooled
+    symbols (units.json `pool` mapping) compile through `mwcc_pool`: mwcc, then
+    tools/fzgx/poolfix.py on the object. See tools/fzgx/poolfix.py."""
+    path = Path("config") / config.version / "units.json"
+    if not path.exists():
+        return
+    pool = {u["source"]: u["pool"] for u in json.loads(path.read_text()) if isinstance(u.get("pool"), dict) and u["pool"]}
+    if not pool:
+        return
+    ninja_path = Path("build.ninja")
+    text = ninja_path.read_text()
+    rule = ("\n# MWCC build, then retarget private literal-pool constants to the retail pooled symbols\n"
+            "rule mwcc_pool\n"
+            "  command = build/tools/wibo build/compilers/$mw_version/mwcceppc.exe $cflags -MMD -c $in -o $basedir "
+            "&& $python tools/transform_dep.py $basefile.d $basefile.d && $python tools/fzgx/poolfix.py $out $poolmap\n"
+            "  description = MWCC+POOL $out\n  depfile = $basefile.d\n  deps = gcc\n")
+    if "rule mwcc_pool" not in text:
+        text = text.replace("\n# MWCC build (with UTF-8 to Shift JIS wrapper)", rule + "\n# MWCC build (with UTF-8 to Shift JIS wrapper)", 1)
+    n = 0
+    for source, mapping in pool.items():
+        stem = source.rsplit(".", 1)[0]
+        head = f"build build/{config.version}/src/{stem}.o: mwcc $"
+        if head in text:
+            poolmap = ",".join(f"{k}={v}" for k, v in sorted(mapping.items()))
+            text = text.replace(head, f"build build/{config.version}/src/{stem}.o: mwcc_pool $", 1)
+            marker = f"build build/{config.version}/src/{stem}.o: mwcc_pool $"
+            i = text.index(marker)
+            j = text.index("  mw_version = ", i)
+            text = text[:j] + f"  poolmap = {poolmap}\n" + text[j:]
+            n += 1
+    ninja_path.write_text(text)
+    if n:
+        print(f"build.ninja: {n} units compile through mwcc_pool (literal-pool retargeting)")
+
+
 _DOL_NAMED: List[Any] = []
 
 
@@ -478,6 +515,7 @@ config.progress_report_args = [
 if args.mode == "configure":
     # Write build.ninja and objdiff.json
     generate_build(config)
+    add_pool_rules()
     name_auto_units_by_tu()
 elif args.mode == "progress":
     # Print progress information

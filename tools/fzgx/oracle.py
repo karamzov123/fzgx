@@ -8,6 +8,7 @@ relink()       -> full `ninja`; the CHECK step fails unless every target in
 
 from __future__ import annotations
 
+import base64
 import fcntl
 import json
 import os
@@ -20,6 +21,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional
 
+from . import poolfix
 from .project import ROOT, STATE_DIR, Project
 
 OBJDIFF = ROOT / "build" / "tools" / "objdiff-cli"
@@ -43,9 +45,12 @@ class CheckResult:
     # per-function linking cannot express that; the TU's whole-unit compile will
     matched_pool: bool = False
     pool: List[str] = field(default_factory=list)
+    # private literal -> retail pooled symbol, applied to the object after compiling (poolfix);
+    # with this the function matches outright and links from C
+    pool_map: Dict[str, str] = field(default_factory=dict)
 
     def to_json(self) -> dict:
-        return self.__dict__
+        return {k: v for k, v in self.__dict__.items() if not k.startswith("_")}
 
 
 def run(cmd: List[str], cwd: Path = ROOT, timeout: int = 600) -> subprocess.CompletedProcess:
@@ -125,12 +130,28 @@ def check(project: Project, symbol: str, max_diff_lines: int = 80, source: Optio
         err = "\n".join(l for l in (cp.stdout + cp.stderr).splitlines() if "Usage Warning" not in l)
         return CheckResult(False, symbol, unit, error=err.strip()[-4000:])
 
+    res = _diff(project, sym.module, symbol, unit, max_diff_lines)
+    if res.ok and res.matched_pool:
+        # retarget the private literals to the pooled symbols and diff again
+        mapping = {private: pooled for private, pooled, _ in res._pool_pairs}
+        r = poolfix.apply(base_obj, mapping)
+        if not r["skipped"] and r["rodata_emptied"]:
+            res2 = _diff(project, sym.module, symbol, unit, max_diff_lines)
+            if res2.ok and res2.matched:
+                res2.pool_map = mapping
+                res2.pool = res.pool
+                return res2
+    return res
+
+
+def _diff(project: Project, module: str, symbol: str, unit: str, max_diff_lines: int) -> CheckResult:
     cp = run([str(OBJDIFF), "diff", "-p", str(ROOT), "-u", unit, "-o", "-", "--format", "json"])
     if cp.returncode != 0:
         return CheckResult(False, symbol, unit, error=(cp.stderr or cp.stdout).strip()[-4000:])
     data = json.loads(cp.stdout)
     left, right = data.get("left", {}), data.get("right", {})
     res = CheckResult(True, symbol, unit)
+    res._pool_pairs = []
     left_syms = {s["name"]: s for s in left.get("symbols", []) if s.get("kind") == "SYMBOL_FUNCTION"}
     right_syms = {s["name"]: s for s in right.get("symbols", []) if s.get("kind") == "SYMBOL_FUNCTION"}
     for name, s in left_syms.items():
@@ -149,21 +170,21 @@ def check(project: Project, symbol: str, max_diff_lines: int = 80, source: Optio
             res.diff = [f"(symbol {symbol} not present in our object: define it, check the name)"]
         else:
             res.diff = _render_diff(lrows, rrows, max_diff_lines)
-            res.pool = _pool_only(project, sym.module, left, right, lrows, rrows)
+            res._pool_pairs = _pool_only(project, module, left, right, lrows, rrows)
+            res.pool = [d for _, _, d in res._pool_pairs]
             res.matched_pool = bool(res.pool)
     return res
 
 
 def _pool_only(project: Project, module: str, left: dict, right: dict,
-               lrows: List[dict], rrows: List[dict]) -> List[str]:
+               lrows: List[dict], rrows: List[dict]) -> List[tuple]:
     """If every differing row is `same instruction, relocation to a pooled constant (retail)
-    vs. to our private literal with the same bytes`, describe those constants; else []."""
-    import base64
+    vs. to our private literal with the same bytes`, list (private, pooled, description); else []."""
     if len(lrows) != len(rrows):
         return []
     lsyms, rsyms = left.get("symbols", []), right.get("symbols", [])
     syms = project.symbols(module)
-    out: List[str] = []
+    out: List[tuple] = []
     for l, r in zip(lrows, rrows):
         if (l.get("diff_kind") or "DIFF_NONE") == "DIFF_NONE" and (r.get("diff_kind") or "DIFF_NONE") == "DIFF_NONE":
             continue
@@ -189,9 +210,9 @@ def _pool_only(project: Project, module: str, left: dict, right: dict,
         if not retail or ours != retail or not rsym.get("name", "").startswith("@"):
             return []
         v = struct.unpack(">d", retail)[0] if len(retail) == 8 else struct.unpack(">f", retail)[0]
-        desc = f"{lname}={v!r}"
-        if desc not in out:
-            out.append(desc)
+        pair = (rsym["name"], lname, f"{lname}={v!r}")
+        if pair not in out:
+            out.append(pair)
     return out
 
 

@@ -272,6 +272,8 @@ def format_check(res: Dict[str, Any]) -> str:
         return f"CHECK FAILED: {res['error']}"
     verdict = "MATCH" if res["matched"] else ("MATCH (pool)" if res.get("matched_pool") else "no match")
     lines = [f"{res['symbol']}: {res['percent']:.1f}%  unit={res['unit']}  {verdict}"]
+    if res["matched"] and res.get("pool_map"):
+        lines.append("literal pool: private constants retargeted to the shared retail symbols (" + ", ".join(res["pool"]) + ")")
     if res.get("matched_pool"):
         lines.append("pool: the only differences are relocations to shared literal-pool constants whose value "
                      "you reproduce (" + ", ".join(res["pool"]) + "); this counts as a match: call submit.")
@@ -382,11 +384,16 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
         for u in units:
             if u["source"] == unit_src:
                 if res.matched_pool:
-                    u["pool"] = True
+                    u["pool"] = True          # accepted, retail object linked (see CLAUDE.md)
                 else:
                     u["status"] = "matching"
-                    u.pop("pool", None)
+                    if res.pool_map:
+                        u["pool"] = dict(res.pool_map)  # ninja retargets the literals after compiling
+                    else:
+                        u.pop("pool", None)
         p.save_units(units)
+    if res.pool_map:
+        _reconfigure_and_split(p)  # build.ninja gains the mwcc_pool statement for this unit
     commit = None
     l.db.execute("UPDATE functions SET link_state=? WHERE symbol=?", ("pool" if res.matched_pool else "pending", key))
     if names:
@@ -398,7 +405,7 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
              notes=(message or "") + (f" [pool: {', '.join(res.pool)}]" if res.matched_pool else ""),
              model=model, harness=harness, tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd)
     return {"ok": True, "symbol": symbol, "commit": commit, "unit": unit_src,
-            "link": "pool" if res.matched_pool else "pending", "pool": res.pool}
+            "link": "pool" if res.matched_pool else "pending", "pool": res.pool, "pool_map": res.pool_map}
 
 
 def verify_links(p: Project, message: Optional[str] = None) -> Dict[str, Any]:
