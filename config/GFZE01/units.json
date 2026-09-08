@@ -4605,8 +4605,8 @@
     "symbols": [
       "fn_1_A66FC"
     ],
-    "status": "nonmatching",
-    "mw_version": null,
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
     "extra_cflags": []
   },
   {
