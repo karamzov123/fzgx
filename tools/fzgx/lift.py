@@ -1185,6 +1185,8 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     raise Give()
                 off, base = m.group(1), m.group(2)
                 t = STORE_T[mn]
+                def as_int(v: str) -> str:
+                    return f"(u32){v}" if v.startswith(("&", "((u8 *)", "(u8 *)", "(struct ")) else v
                 # a value loaded before this store and read after it was a local in the source
                 # (the swap idiom: `old = p->x; p->x = v; return old;`); left pending, the read
                 # would be emitted after the store and see the new value
@@ -1196,7 +1198,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                         continue
                     tn = f"v{len(temps)}"; temps.append(f"{rtype.get(r_, 'u32')} {tn};")
                     stmts.append(f"{tn} = {e_};"); regs[r_] = tn
-                val = use(a[0])
+                val = as_int(use(a[0]))
                 if off.endswith("@l") and base in hi:
                     s = hi[base]; so = sym_off(off)
                     if so or s in struct_syms:
@@ -1223,7 +1225,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     elif kind == "global" and b in locals_:
                         gfields.setdefault(key, {})[o] = t; stmts.append(f"{b}->unk_{o:X} = {val};")
                     elif kind == "global" and key in ptr_globals and o + k == 0 and t == "u32":
-                        stmts.append(f"{key} = {val};")
+                        stmts.append(f"{key} = (struct {name}_{key}_T *){val};")
                     elif kind == "global":
                         declare(key, "struct", far_ref=True); gfields.setdefault(key, {})[o + k] = t; stmts.append(f"{key}.unk_{o + k:X} = {val};")
                     elif kind == "abs":
@@ -1337,7 +1339,9 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             if mn == "subfic":
                 regs[a[0]] = f"({_imm(a[2])} - {use(a[1])})"; rtype[a[0]] = "s32"; continue
             if mn == "clrrwi":
-                n = _imm(a[2]); regs[a[0]] = f"({use(a[1])} & ~0x{(1 << n) - 1:X})"; rtype[a[0]] = "u32"; continue
+                n = _imm(a[2]); x_ = use(a[1])
+                if rtype.get(a[1]) == "void *" or x_.startswith(("((u8 *)", "(u8 *)", "&")): x_ = f"(u32){x_}"
+                regs[a[0]] = f"({x_} & ~0x{(1 << n) - 1:X})"; rtype[a[0]] = "u32"; continue
             if mn == "clrlslwi":
                 b, n = _imm(a[2]), _imm(a[3]); regs[a[0]] = f"(({use(a[1])} & 0x{(1 << (32 - b)) - 1:X}) << {n})"; rtype[a[0]] = "u32"; continue
             if mn.endswith(".") and mn[:-1] in ("extrwi", "rlwinm", "andi", "extsb", "extsh", "clrlwi", "clrrwi", "subic", "addic", "and", "or", "subf", "add", "neg", "srawi", "cntlzw", "xor", "mulli", "slwi", "srwi"):
