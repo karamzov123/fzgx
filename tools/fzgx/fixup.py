@@ -96,7 +96,7 @@ def _tu_of(p: Project, sym) -> Optional[str]:
     return None
 
 
-def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_candidates: int = 60) -> Dict[str, object]:
+def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_candidates: int = 80) -> Dict[str, object]:
     """Search the cheap repairs; returns {"matched": bool, "body": text or None, "tried": n, "best": %, "secs": s}."""
     t0 = time.time()
     sym = p.resolve(symbol)
@@ -172,6 +172,40 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
             for n, alts in variants.items():
                 for alt in alts[:4]:
                     candidates.append((f"{n}: {mine[n]} -> {alt}", body.replace(mine[n], alt, 1)))
+    # wrong callee / wrong data symbol: the same instruction with a different relocation target.
+    # The retail name is known; the body names ours verbatim, so the substitution is exact.
+    subs: Dict[str, str] = {}
+    for t, o in diffs:
+        if not t or not o or t.split()[0] != o.split()[0]:
+            continue
+        mt = re.findall(r"\b([A-Za-z_]\w*)(?=@|$|\b)", re.sub(r"^\S+\s+", "", t))
+        mo = re.findall(r"\b([A-Za-z_]\w*)(?=@|$|\b)", re.sub(r"^\S+\s+", "", o))
+        tn = [x for x in mt if not re.fullmatch(r"[rf]\d+|cr\d|lt|gt|eq|so|ha|l|sda21", x)]
+        on = [x for x in mo if not re.fullmatch(r"[rf]\d+|cr\d|lt|gt|eq|so|ha|l|sda21", x)]
+        if len(tn) == 1 and len(on) == 1 and tn[0] != on[0] and not on[0].startswith("@"):
+            if re.sub(r"\b" + re.escape(on[0]) + r"\b", tn[0], o) == t:
+                subs.setdefault(on[0], tn[0])
+    for ours, retail in subs.items():
+        if re.search(rf"\b{re.escape(ours)}\b", body) and not re.search(rf"\b{re.escape(retail)}\b", body):
+            candidates.append((f"symbol {ours} -> {retail}", re.sub(rf"\b{re.escape(ours)}\b", retail, body)))
+    if len(subs) > 1:
+        text = body
+        for ours, retail in subs.items():
+            text = re.sub(rf"\b{re.escape(ours)}\b", retail, text)
+        candidates.append(("all symbol substitutions", text))
+    # float vs double: fsubs/fsub, frsp rows come from f32/f64 declarations and literal suffixes
+    if any((t.split()[0] if t else "") in FLOAT_PAIRS or (o.split()[0] if o else "") in FLOAT_PAIRS or "frsp" in (t + o) for t, o in diffs):
+        for a, b in (("f64", "f32"), ("f32", "f64"), ("double", "float"), ("float", "double")):
+            if re.search(rf"\b{a}\b", body):
+                candidates.append((f"all {a}->{b}", re.sub(rf"\b{a}\b", b, body)))
+                for m in list(re.finditer(rf"\b{a}\b", body))[:12]:
+                    candidates.append((f"{a}->{b} at {m.start()}", body[:m.start()] + b + body[m.end():]))
+        lits = list(re.finditer(r"(?<![\w.])(\d+\.\d*(?:[eE][-+]?\d+)?)(?![\w.])", body))
+        if lits:
+            candidates.append(("float literals get f", re.sub(r"(?<![\w.])(\d+\.\d*(?:[eE][-+]?\d+)?)(?![\w.])", r"\1f", body)))
+        litf = list(re.finditer(r"(?<![\w.])(\d+\.\d*(?:[eE][-+]?\d+)?)f\b", body))
+        if litf:
+            candidates.append(("float literals lose f", re.sub(r"(?<![\w.])(\d+\.\d*(?:[eE][-+]?\d+)?)f\b", r"\1", body)))
     for label, text in candidates[:max_candidates]:
         if time.time() - t0 > budget_s:
             out["timeout"] = True

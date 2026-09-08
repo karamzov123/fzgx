@@ -170,17 +170,31 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
     if callers:
         parts.append(f"\n## Callers: {', '.join(f'`{c}`' for c in callers)}")
 
-    # Neighbouring matched C in the same module, nearest first (cheap, high value).
+    # Matched C in the same module: first the siblings that share callees and globals with this
+    # function (their declaration style is what the compiler wanted), then the nearest by address.
     matched_units = [u for u in project.load_units()
                      if u["module"] == module and u["status"] == "matching" and u["source"] != unit_src]
+    asm_index = project.function_asm(module)
+    my_refs = set(fn.refs)
+    def overlap(u):
+        f2 = asm_index.get(u["symbols"][0])
+        return len(my_refs & set(f2.refs)) if f2 else 0
+    by_overlap = sorted((u for u in matched_units if overlap(u) >= 2), key=lambda u: -overlap(u))[:2]
+    by_addr = sorted(matched_units, key=lambda u: abs((project.find_symbol(u["symbols"][0]) or sym).addr - sym.addr))
+    chosen, seen_src = [], set()
+    for u in by_overlap + by_addr:
+        if u["source"] not in seen_src and len(chosen) < 3:
+            chosen.append(u); seen_src.add(u["source"])
     neigh: List[str] = []
-    for u in sorted(matched_units, key=lambda u: abs((project.find_symbol(u["symbols"][0]) or sym).addr - sym.addr))[:2]:
+    for u in chosen:
         body = tufile.unit_text(project, u)
         if body and len(body) < 2500:
             label = f"src/{u['tu']}#{u['symbols'][0]}" if u.get("tu") else f"src/{u['source']}"
-            neigh.append(f"### {label}\n```c\n{body}\n```")
+            shared = sorted(my_refs & set((asm_index.get(u["symbols"][0]).refs if asm_index.get(u["symbols"][0]) else [])))
+            note = f"  (shares {', '.join(f'`{r}`' for r in shared[:6])}: declare and call these the same way)" if len(shared) >= 2 else ""
+            neigh.append(f"### {label}{note}\n```c\n{body}\n```")
     if neigh:
-        parts.append("\n## Nearby matched code (style and naming reference)")
+        parts.append("\n## Matched code in this module (siblings sharing symbols first; copy their declaration style)")
         parts.extend(neigh)
 
     if unit_src:
