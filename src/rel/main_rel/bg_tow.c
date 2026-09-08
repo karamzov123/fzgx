@@ -12,6 +12,54 @@ extern void fn_1_484CC(s32 arg0);
 extern void fn_1_BC310(Obj_1_bss_8EDA4 *arg0);
 extern void fn_1_C0510(u32 *arg0, u32 arg1, u32 arg2);
 
+/* fzgx:begin fn_1_154708 noprologue */
+#include "types.h"
+
+struct fn_1_154708_lbl_1_data_49A18 {
+    u8 pad_0[0x90];
+    u32 unk_90;
+    u32 unk_94;
+    u32 unk_98;
+    u32 unk_9C;
+};
+struct fn_1_154708_lbl_1_bss_8ED90 {
+    u32 unk_0;
+    u32 unk_4;
+    u32 unk_8;
+    u32 unk_C;
+    u8 unk_10;
+};
+
+extern struct fn_1_154708_lbl_1_bss_8ED90 lbl_1_bss_8ED90;
+extern struct fn_1_154708_lbl_1_data_49A18 lbl_1_data_49A18;
+extern u32 fn_1_3F8C(u32, u32, u32, u32);
+extern u32 fn_1_435C(u32);
+extern u32 fn_1_B9BE0(u32);
+extern void fn_1_154798(void);
+
+void fn_1_154708(u32 arg0) {
+    struct fn_1_154708_lbl_1_bss_8ED90 *p_lbl_1_bss_8ED90;
+    u32 t1;
+    p_lbl_1_bss_8ED90 = (struct fn_1_154708_lbl_1_bss_8ED90 *)&lbl_1_bss_8ED90;
+    p_lbl_1_bss_8ED90->unk_C = arg0;
+{
+    struct fn_1_154708_lbl_1_data_49A18 * p_lbl_1_data_49A18 = (struct fn_1_154708_lbl_1_data_49A18 *)&lbl_1_data_49A18;
+    p_lbl_1_data_49A18->unk_90 = -1;
+    fn_1_435C(arg0);
+    t1 = fn_1_3F8C((u32)((u8 *)(u32)p_lbl_1_data_49A18 + 160), (u32)fn_1_154798, 0, 18);
+    p_lbl_1_data_49A18->unk_90 = t1;
+    p_lbl_1_data_49A18->unk_94 = -1;
+    p_lbl_1_data_49A18->unk_98 = -1;
+    p_lbl_1_data_49A18->unk_9C = -1;
+}
+    p_lbl_1_bss_8ED90->unk_10 = 0;
+    p_lbl_1_bss_8ED90->unk_8 = 0;
+    p_lbl_1_bss_8ED90->unk_0 = 0;
+    p_lbl_1_bss_8ED90->unk_4 = 0;
+    fn_1_B9BE0(t1);
+}
+/* fzgx:end fn_1_154708 */
+
 /* fzgx:begin fn_1_1548A8 */
 #include "types.h"
 

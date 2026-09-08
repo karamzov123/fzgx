@@ -1031,6 +1031,33 @@ void fn_1_AC928(void) {
 }
 /* fzgx:end fn_1_AC928 */
 
+/* fzgx:begin fn_1_AC92C */
+struct fn_1_AC92C_Arg0 {
+    u8 pad_0[0x24];
+    u32 unk_24;
+    u8 pad_28[0x2];
+    u8 unk_2A;
+    u8 pad_2B[0x1];
+    u8 unk_2C;
+    u8 unk_2D;
+    u8 pad_2E[0xA];
+    f32 unk_38;
+};
+
+extern const f32 lbl_1_rodata_4CA8;
+
+u32 fn_1_AC92C(struct fn_1_AC92C_Arg0 *arg0) {
+    u32 v0;
+    arg0->unk_2C = 0;
+    arg0->unk_2D = 0;
+    arg0->unk_38 = lbl_1_rodata_4CA8;
+    arg0->unk_2A = (arg0->unk_2A | 2);
+    v0 = arg0->unk_24;
+    *(u16 *)((u8 *)v0 + 2) = 300;
+    return v0;
+}
+/* fzgx:end fn_1_AC92C */
+
 /* fzgx:begin fn_1_AC960 */
 struct MemcardData {
     u8 pad0[2];

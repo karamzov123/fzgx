@@ -6649,6 +6649,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80077E0C.c",
+    "symbols": [
+      "fn_80077E0C"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_800791A4.c",
     "symbols": [
       "fn_800791A4"
@@ -10057,7 +10067,7 @@
     "symbols": [
       "fn_1_154708"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/bg_tow.c"
@@ -18964,6 +18974,17 @@
     "source": "rel/main_rel/memcard/fn_1_AC928.c",
     "symbols": [
       "fn_1_AC928"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/memcard.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/memcard/fn_1_AC92C.c",
+    "symbols": [
+      "fn_1_AC92C"
     ],
     "status": "matching",
     "mw_version": null,
