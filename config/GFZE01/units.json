@@ -2701,6 +2701,16 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_5370.c",
+    "symbols": [
+      "fn_1_5370"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/camera/fn_1_6400.c",
     "symbols": [
       "fn_1_6400"
@@ -3181,6 +3191,16 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_8D08.c",
+    "symbols": [
+      "fn_1_8D08"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/camera/fn_1_A888.c",
     "symbols": [
       "fn_1_A888"
@@ -3251,11 +3271,31 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_AFC8.c",
+    "symbols": [
+      "fn_1_AFC8"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/camera/fn_1_B42C.c",
     "symbols": [
       "fn_1_B42C"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_B4D4.c",
+    "symbols": [
+      "fn_1_B4D4"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": []
   },
@@ -3286,6 +3326,26 @@
       "fn_1_B85C"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_B870.c",
+    "symbols": [
+      "fn_1_B870"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_BD54.c",
+    "symbols": [
+      "fn_1_BD54"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": []
   },
@@ -3376,6 +3436,26 @@
       "fn_1_C35C"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_C3B8.c",
+    "symbols": [
+      "fn_1_C3B8"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_C770.c",
+    "symbols": [
+      "fn_1_C770"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": []
   },
