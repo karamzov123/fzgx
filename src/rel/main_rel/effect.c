@@ -1,5 +1,136 @@
 #include "types.h"
 
+/* fzgx:begin fn_1_58D38 */
+typedef struct EffectEntry {
+    s8 unk_00;
+    u8 pad_01[7];
+    u32 unk_08;
+    s16 unk_0C;
+    u8 pad_0E[0x0C];
+    u16 unk_1A;
+    u8 pad_1C[0xCC];
+} EffectEntry;
+
+typedef struct EffectState {
+    EffectEntry *unk_00;
+    EffectEntry *unk_04;
+    u8 pad_08[8];
+    u32 unk_10;
+} EffectState;
+
+extern u8 lbl_1_bss_6C848;
+
+extern void fn_1_3BDC(s32 arg0);
+extern void fn_1_62360(EffectEntry *arg0);
+extern u32 fn_1_3C18(s32 arg0);
+
+void fn_1_58D38(void) {
+    EffectState *state;
+    s32 count;
+    EffectEntry *entry;
+    u32 max_count;
+
+    state = (EffectState *)&lbl_1_bss_6C848;
+    if (state->unk_00 != 0) {
+        fn_1_3BDC(9);
+
+        entry = state->unk_00;
+        count = 190;
+        do {
+            if (entry->unk_0C == 25 &&
+                (s32)entry->unk_00 != 0 &&
+                entry->unk_1A != (s16)0 &&
+                (entry->unk_08 & ~0x7fffffff) == 0) {
+                fn_1_62360(entry);
+            }
+            count--;
+            entry++;
+        } while (count > 0);
+
+        entry = state->unk_04;
+        count = 200;
+        do {
+            if (entry->unk_0C == 25 &&
+                (s32)entry->unk_00 != 0 &&
+                entry->unk_1A != (s16)0 &&
+                (entry->unk_08 & ~0x7fffffff) == 0) {
+                fn_1_62360(entry);
+            }
+            count--;
+            entry++;
+        } while (count > 0);
+
+        count = fn_1_3C18(9);
+        max_count = state->unk_10;
+        if (count > max_count) {
+            max_count = count;
+        }
+        state->unk_10 = max_count;
+    }
+}
+/* fzgx:end fn_1_58D38 */
+
+/* fzgx:begin fn_1_59290 */
+#include "rel/main_rel/effect.h"
+
+extern void fn_80008BEC(void *, int, int);
+extern void fn_80008BA8(void *, void *, int);
+
+void fn_1_59290(void) {
+    u8 buffer1[0xe8];
+    u8 buffer2[0xe8];
+    int count;
+    Obj_1_bss_6C84C_Target *effect;
+    Obj_1_bss_6C84C_Target *effects;
+
+    effects = *(Obj_1_bss_6C84C_Target **)(void *)&lbl_1_bss_6C848;
+    effect = effects;
+    count = 0xbe;
+    for (; count > 0; count--, effect++) {
+        if ((s8)effect->unk_0 != 0) {
+            if (effect->unk_C == 1) {
+                fn_80008BEC(buffer1, 0, 0xe8);
+                *(s16 *)(buffer1 + 0x4) = effect->unk_4;
+                buffer1[0] = effect->unk_0;
+                *(s16 *)(buffer1 + 0xc) = effect->unk_C;
+                *(u32 *)(buffer1 + 0x38) = effect->unk_38;
+                *(u32 *)(buffer1 + 0x34) = effect->unk_34;
+                *(u16 *)(buffer1 + 0x1a) = effect->unk_1A;
+                *(s16 *)(buffer1 + 0x18) = effect->unk_18;
+                fn_80008BEC(effect, 0, 0xe8);
+                fn_80008BA8(effect, buffer1, 0xe8);
+            } else if (effect->unk_C != 4) {
+                effect->unk_0 = 3;
+                effect->unk_8 |= (u32)1 << 31;
+            }
+        }
+    }
+
+    effects = lbl_1_bss_6C84C;
+    effect = effects;
+    count = 0xc8;
+    for (; count > 0; count--, effect++) {
+        if ((s8)effect->unk_0 != 0) {
+            if (effect->unk_C == 1) {
+                fn_80008BEC(buffer2, 0, 0xe8);
+                *(s16 *)(buffer2 + 0x4) = effect->unk_4;
+                buffer2[0] = effect->unk_0;
+                *(s16 *)(buffer2 + 0xc) = effect->unk_C;
+                *(u32 *)(buffer2 + 0x38) = effect->unk_38;
+                *(u32 *)(buffer2 + 0x34) = effect->unk_34;
+                *(u16 *)(buffer2 + 0x1a) = effect->unk_1A;
+                *(s16 *)(buffer2 + 0x18) = effect->unk_18;
+                fn_80008BEC(effect, 0, 0xe8);
+                fn_80008BA8(effect, buffer2, 0xe8);
+            } else if (effect->unk_C != 4) {
+                effect->unk_0 = 3;
+                effect->unk_8 |= (u32)1 << 31;
+            }
+        }
+    }
+}
+/* fzgx:end fn_1_59290 */
+
 /* fzgx:begin fn_1_5942C */
 extern void fn_1_680F8(void);
 
@@ -8,6 +139,46 @@ void fn_1_5942C(void) {
     fn_1_680F8();
 }
 /* fzgx:end fn_1_5942C */
+
+/* fzgx:begin fn_1_5944C */
+extern void fn_1_68284(void);
+
+void fn_1_5944C(void) {
+    fn_1_68284();
+}
+/* fzgx:end fn_1_5944C */
+
+/* fzgx:begin fn_1_5946C */
+extern void fn_1_68B68(void);
+
+void fn_1_5946C(void) {
+    fn_1_68B68();
+}
+/* fzgx:end fn_1_5946C */
+
+/* fzgx:begin fn_1_5948C */
+extern void fn_1_68248(void);
+
+void fn_1_5948C(void) {
+    fn_1_68248();
+}
+/* fzgx:end fn_1_5948C */
+
+/* fzgx:begin fn_1_594AC */
+extern void fn_1_69BBC(void);
+
+void fn_1_594AC(void) {
+    fn_1_69BBC();
+}
+/* fzgx:end fn_1_594AC */
+
+/* fzgx:begin fn_1_594CC */
+extern void fn_1_69BCC(void);
+
+void fn_1_594CC(void) {
+    fn_1_69BCC();
+}
+/* fzgx:end fn_1_594CC */
 
 /* fzgx:begin fn_1_594EC */
 // fn_1_594EC: empty in retail (single blr).
@@ -357,6 +528,19 @@ void fn_1_60C70(void) {
 }
 /* fzgx:end fn_1_60C70 */
 
+/* fzgx:begin fn_1_60C74 */
+extern f32 lbl_1_rodata_2A5C[5];
+
+struct Effect {
+    u8 _pad[0x28];
+    f32 field_28;
+};
+
+void fn_1_60C74(struct Effect *effect) {
+    effect->field_28 = lbl_1_rodata_2A5C[0];
+}
+/* fzgx:end fn_1_60C74 */
+
 /* fzgx:begin fn_1_60C84 */
 // fn_1_60C84: empty in retail (single blr).
 void fn_1_60C84(void) {
@@ -405,6 +589,30 @@ void fn_1_61C88(void) {
     fn_1_61D08();
 }
 /* fzgx:end fn_1_61C88 */
+
+/* fzgx:begin fn_1_61CA8 */
+extern void fn_1_61EF4(void);
+
+void fn_1_61CA8(void) {
+    fn_1_61EF4();
+}
+/* fzgx:end fn_1_61CA8 */
+
+/* fzgx:begin fn_1_61CC8 */
+extern void fn_1_620C4(void);
+
+void fn_1_61CC8(void) {
+    fn_1_620C4();
+}
+/* fzgx:end fn_1_61CC8 */
+
+/* fzgx:begin fn_1_61CE8 */
+extern void fn_1_61E60(void);
+
+void fn_1_61CE8(void) {
+    fn_1_61E60();
+}
+/* fzgx:end fn_1_61CE8 */
 
 /* fzgx:begin fn_1_61E60 */
 typedef struct {
@@ -516,6 +724,62 @@ void fn_1_63858(struct Object *object) {
 }
 /* fzgx:end fn_1_63858 */
 
+/* fzgx:begin fn_1_64098 */
+typedef struct Fn164098Object {
+    u8 pad[0xae];
+    u16 value;
+} Fn164098Object;
+
+void fn_1_64098(Fn164098Object *object) {
+    object->value = 0;
+}
+/* fzgx:end fn_1_64098 */
+
+/* fzgx:begin fn_1_642E8 */
+extern f32 lbl_1_rodata_2A70[12];
+extern void lbl_8006DCA4(void);
+extern s32 fn_1_54E34(void *, f32);
+extern void *fn_1_5448C(void *);
+extern void *fn_1_548AC(s32);
+extern void fn_1_64388(void);
+extern void fn_1_5489C(void *, void *);
+
+typedef struct EffectState {
+    char bytes[0x14];
+} EffectState;
+
+typedef struct EffectObject {
+    char pad0[0x28];
+    f32 value;
+    char pad2c[0x10];
+    EffectState state;
+} EffectObject;
+
+typedef struct EffectNode {
+    char pad0[4];
+    void (*callback)(void);
+    void *owner;
+} EffectNode;
+
+void fn_1_642E8(EffectObject *self) {
+    f32 value;
+    void *state;
+    EffectNode *node;
+
+    value = self->value / lbl_1_rodata_2A70[0];
+    lbl_8006DCA4();
+    if (fn_1_54E34(&self->state, value)) {
+        state = fn_1_5448C(&self->state);
+        node = fn_1_548AC(0xc);
+        if (node != 0) {
+            node->callback = fn_1_64388;
+            node->owner = self;
+            fn_1_5489C(state, node);
+        }
+    }
+}
+/* fzgx:end fn_1_642E8 */
+
 /* fzgx:begin fn_1_645C8 */
 // fn_1_645C8: empty in retail (single blr).
 void fn_1_645C8(void) {
@@ -545,6 +809,49 @@ void fn_1_648D4(void) {
 void fn_1_648D8(void) {
 }
 /* fzgx:end fn_1_648D8 */
+
+/* fzgx:begin fn_1_65268 */
+extern void fn_1_862D4(s16 value, void *result);
+extern void lbl_8006DCA4(void);
+extern s32 fn_1_54E34(void *object, f32 value);
+extern void *fn_1_5448C(void *object);
+extern void *fn_1_548AC(s32 size);
+extern void fn_1_652F4(void);
+extern void fn_1_5489C(void *object, void *event);
+
+typedef struct {
+    u32 pad_00;
+    void (*vtable)(void);
+    void *owner;
+} Event;
+
+typedef struct {
+    u8 pad_00[0x18];
+    s16 value;
+    u8 pad_1a[0xe];
+    f32 amount;
+    u8 pad_2c[0x10];
+    u8 embedded[1];
+} Object;
+
+void fn_1_65268(Object *object) {
+    u8 local[4];
+    void *result;
+    Event *event;
+
+    fn_1_862D4(object->value, local);
+    lbl_8006DCA4();
+    if (fn_1_54E34(&object->embedded[0], object->amount) != 0) {
+        result = fn_1_5448C(local);
+        event = (Event *)fn_1_548AC(0xc);
+        if (event != 0) {
+            event->vtable = fn_1_652F4;
+            event->owner = object;
+            fn_1_5489C(result, event);
+        }
+    }
+}
+/* fzgx:end fn_1_65268 */
 
 /* fzgx:begin fn_1_65420 */
 // fn_1_65420: empty in retail (single blr).
@@ -602,6 +909,23 @@ void fn_1_65B58(void) {
 }
 /* fzgx:end fn_1_65B58 */
 
+/* fzgx:begin fn_1_65E58 */
+extern void fn_1_8636C(s16, void *);
+
+typedef struct Effect {
+    u8 _pad_00[0x10];
+    int field_10;
+    u8 _pad_14[0x4];
+    s16 field_18;
+    u8 _pad_1a[0x9e];
+} Effect;
+
+void fn_1_65E58(Effect *effect) {
+    effect->field_10 = 10;
+    fn_1_8636C(effect->field_18, (u8 *)effect + 0xb8);
+}
+/* fzgx:end fn_1_65E58 */
+
 /* fzgx:begin fn_1_65E88 */
 // fn_1_65E88: empty in retail (single blr).
 void fn_1_65E88(void) {
@@ -620,11 +944,65 @@ void fn_1_6742C(void) {
 }
 /* fzgx:end fn_1_6742C */
 
+/* fzgx:begin fn_1_6766C */
+extern f32 lbl_1_rodata_2978[4];
+
+typedef struct {
+    u8 padding[0xb4];
+    f32 value;
+} Fn6766CObject;
+
+void fn_1_6766C(Fn6766CObject *object) {
+    object->value = lbl_1_rodata_2978[0];
+}
+/* fzgx:end fn_1_6766C */
+
 /* fzgx:begin fn_1_6767C */
 // fn_1_6767C: empty in retail (single blr).
 void fn_1_6767C(void) {
 }
 /* fzgx:end fn_1_6767C */
+
+/* fzgx:begin fn_1_68054 */
+extern const f32 lbl_1_rodata_2A70[12];
+extern void lbl_8006DCA4(void *object);
+extern int fn_1_54E34(void *object, f32 value);
+extern void *fn_1_5448C(void *object);
+extern void *fn_1_548AC(int size);
+extern void fn_1_64388(void);
+extern void fn_1_5489C(void *object, void *entry);
+
+typedef struct EffectObject {
+    u8 pad0[0x28];
+    f32 value;
+    u8 pad1[0x10];
+    u8 subobject;
+} EffectObject;
+
+typedef struct EffectEntry {
+    u8 pad0[4];
+    void (*callback)(void);
+    EffectObject *owner;
+} EffectEntry;
+
+void fn_1_68054(EffectObject *object) {
+    f32 value;
+    void *result;
+    EffectEntry *entry;
+
+    value = object->value / lbl_1_rodata_2A70[0];
+    lbl_8006DCA4(object);
+    if (fn_1_54E34(&object->subobject, value) != 0) {
+        result = fn_1_5448C(&object->subobject);
+        entry = (EffectEntry *)fn_1_548AC(0xc);
+        if (entry != 0) {
+            entry->callback = fn_1_64388;
+            entry->owner = object;
+            fn_1_5489C(result, entry);
+        }
+    }
+}
+/* fzgx:end fn_1_68054 */
 
 /* fzgx:begin fn_1_680F4 */
 // fn_1_680F4: empty in retail (single blr).

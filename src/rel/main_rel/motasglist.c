@@ -1,5 +1,128 @@
 #include "types.h"
 
+/* fzgx:begin fn_1_41BDC */
+typedef struct MotasglistData {
+    u8 pad_00[0x26];
+    u8 count;
+    u8 pad_27;
+    void *entries;
+    u8 pad_2c[0x08];
+    void *fallback;
+    u8 pad_38[0x14];
+    u8 fallback_base;
+} MotasglistData;
+
+void *fn_1_41BDC(MotasglistData *data, s32 index) {
+    if (index < data->count) {
+        return (u8 *)data->entries + index * 0xc;
+    }
+
+    if (data->fallback == 0) {
+        return data;
+    }
+
+    return (u8 *)data->fallback + (index - data->fallback_base) * 0xc;
+}
+/* fzgx:end fn_1_41BDC */
+
+/* fzgx:begin fn_1_41F58 */
+typedef u16 (*Fn41F58Callback)(void *arg, void *entry);
+
+typedef struct Fn41F58Entry {
+    u8 pad0[6];
+    u8 type;
+    u8 pad7;
+    u32 value;
+} Fn41F58Entry;
+
+typedef struct Fn41F58Data {
+    u8 pad0[0x14];
+    u32 first_base;
+    u8 pad18[8];
+    u32 first_data;
+    u16 first_count;
+    u8 pad26[0x16];
+    u32 second_data;
+    u32 second_base;
+    u8 pad44[6];
+    u16 second_count;
+} Fn41F58Data;
+
+void fn_1_41F58(Fn41F58Data *data, int type, Fn41F58Callback callback, void *arg) {
+    Fn41F58Entry *entry;
+    int i;
+
+    for (i = 0; i < data->first_count; i++) {
+        entry = (Fn41F58Entry *)(data->first_data + i * 0x10);
+        if (entry->type == type) {
+            entry->value = callback(arg, (void *)(data->first_base + entry->value));
+        }
+    }
+
+    for (i = 0; i < data->second_count; i++) {
+        entry = (Fn41F58Entry *)(data->second_data + i * 0x10);
+        if (entry->type == type) {
+            entry->value = callback(arg, (void *)(data->second_base + entry->value));
+        }
+    }
+}
+/* fzgx:end fn_1_41F58 */
+
+/* fzgx:begin fn_1_42458 */
+typedef struct Fn142458Data {
+    u16 value0;
+    u16 value2;
+    s16 value4;
+    u16 pad6;
+    u32 value8;
+} Fn142458Data;
+
+void fn_1_42458(Fn142458Data *dst, const Fn142458Data *src) {
+    dst->value0 = src->value0;
+    dst->value8 = src->value8;
+    dst->value2 = src->value2;
+    dst->value4 = src->value4;
+}
+/* fzgx:end fn_1_42458 */
+
+/* fzgx:begin fn_1_426AC */
+typedef struct Fn1426ACObject {
+    u16 count;
+    u8 pad2[6];
+    u8 *entries;
+    u8 padC[0x30];
+    void *value;
+} Fn1426ACObject;
+
+void fn_1_426AC(Fn1426ACObject *object, void *value) {
+    u32 offset;
+    s32 i;
+
+    object->value = value;
+    i = 0;
+    offset = 0;
+    for (; i < object->count; i++) {
+        *(void **)(object->entries + 0xd0 + offset) = value;
+        offset += 0x18c;
+        value = (u8 *)value + 8;
+    }
+}
+/* fzgx:end fn_1_426AC */
+
+/* fzgx:begin fn_1_426E4 */
+typedef struct Fn1426E4Object {
+    u8 pad0[0x24];
+    void *value;
+} Fn1426E4Object;
+
+extern void fn_1_41328(void *arg0);
+
+void fn_1_426E4(Fn1426E4Object *object, void *value) {
+    object->value = value;
+    fn_1_41328(value);
+}
+/* fzgx:end fn_1_426E4 */
+
 /* fzgx:begin fn_1_4300C */
 typedef struct Fn14300CObject {
     u8 pad0[2];
@@ -64,6 +187,46 @@ void fn_1_43058(Fn143058Object *object, void *arg2, void *arg3, f32 value) {
 }
 /* fzgx:end fn_1_43058 */
 
+/* fzgx:begin fn_1_43120 */
+typedef struct Fn143120Entry {
+    u8 pad0[0x88];
+    u8 value0[8];
+    f32 x;
+    u8 pad94[0x0c];
+    f32 y;
+    u8 padA4[0x0c];
+    f32 z;
+} Fn143120Entry;
+
+typedef struct Fn143120Object {
+    u8 pad0[8];
+    Fn143120Entry *entries;
+} Fn143120Object;
+
+extern void lbl_8006DAEC(void);
+extern void lbl_8006D668(void *vector);
+extern void lbl_8006DBAC(void *value);
+extern void fn_1_449A8(void *vector);
+extern void lbl_8006DB74(void *value);
+extern void lbl_8006DB30(void);
+
+void fn_1_43120(Fn143120Object *object, u32 index, f32 *vector) {
+    Fn143120Entry *entry;
+    f32 delta[3];
+
+    entry = (Fn143120Entry *)((u8 *)object->entries + (index & 0xffff) * 0x18c);
+    lbl_8006DAEC();
+    delta[0] = vector[0] - entry->x;
+    delta[1] = vector[1] - entry->y;
+    delta[2] = vector[2] - entry->z;
+    lbl_8006D668(delta);
+    lbl_8006DBAC(entry->value0);
+    fn_1_449A8(delta);
+    lbl_8006DB74(entry->value0);
+    lbl_8006DB30();
+}
+/* fzgx:end fn_1_43120 */
+
 /* fzgx:begin fn_1_431B8 */
 typedef enum Fn1431B8Index {
     FN1431B8_INVALID = -1
@@ -104,6 +267,28 @@ done:
     return 0;
 }
 /* fzgx:end fn_1_431B8 */
+
+/* fzgx:begin fn_1_433A4 */
+typedef struct Fn1433A4Object {
+    u16 value0;
+    u16 value1;
+    u16 value2;
+    u16 value3;
+    f32 value4;
+    f32 value5;
+    f32 value6;
+} Fn1433A4Object;
+
+void fn_1_433A4(Fn1433A4Object *dst, Fn1433A4Object *src) {
+    dst->value0 = src->value0;
+    dst->value5 = src->value5;
+    dst->value6 = src->value6;
+    dst->value4 = src->value4;
+    dst->value1 = src->value1;
+    dst->value3 = src->value3;
+    dst->value2 = src->value2;
+}
+/* fzgx:end fn_1_433A4 */
 
 /* fzgx:begin fn_1_451D4 */
 extern u32 lbl_1_bss_384CC;

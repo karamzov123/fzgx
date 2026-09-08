@@ -898,6 +898,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/_prolog/fn_1_426C.c",
+    "symbols": [
+      "fn_1_426C"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/_prolog.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/_prolog/fn_1_4370.c",
     "symbols": [
       "fn_1_4370"
@@ -914,6 +925,17 @@
       "fn_1_4374"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/_prolog.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/_prolog/fn_1_43A4.c",
+    "symbols": [
+      "fn_1_43A4"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/_prolog.c"
@@ -1390,6 +1412,20 @@
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/alloc.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/alloc/fn_1_4D14.c",
+    "symbols": [
+      "fn_1_4D14"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/alloc.c",
+    "pool": {
+      "@17": "lbl_1_rodata_170"
+    }
   },
   {
     "module": "main_rel",
@@ -2255,7 +2291,7 @@
     "symbols": [
       "fn_1_58114"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/avline.c"
@@ -2277,7 +2313,7 @@
     "symbols": [
       "fn_1_5819C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/avline.c"
@@ -2321,7 +2357,7 @@
     "symbols": [
       "fn_1_58854"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/avline.c"
@@ -2332,7 +2368,7 @@
     "symbols": [
       "fn_1_591A0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/avline.c"
@@ -4066,6 +4102,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/bg_san/fn_1_DAE24.c",
+    "symbols": [
+      "fn_1_DAE24"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/bg_san.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/bg_san/fn_1_DAEF8.c",
     "symbols": [
       "fn_1_DAEF8"
@@ -4407,6 +4454,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/bg_win/fn_1_15BA78.c",
+    "symbols": [
+      "fn_1_15BA78"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/bg_win.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/bg_win/fn_1_15BBC4.c",
     "symbols": [
       "fn_1_15BBC4"
@@ -4583,6 +4641,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/bg_win/fn_1_15E434.c",
+    "symbols": [
+      "fn_1_15E434"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/bg_win.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/bg_win/fn_1_15E44C.c",
     "symbols": [
       "fn_1_15E44C"
@@ -4686,7 +4755,7 @@
     "symbols": [
       "fn_1_4811C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/bitmap.c"
@@ -4697,7 +4766,7 @@
     "symbols": [
       "fn_1_48140"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/bitmap.c"
@@ -4708,7 +4777,7 @@
     "symbols": [
       "fn_1_48164"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/bitmap.c"
@@ -4719,7 +4788,7 @@
     "symbols": [
       "fn_1_481E8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/bitmap.c"
@@ -4730,7 +4799,7 @@
     "symbols": [
       "fn_1_48418"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/bitmap.c"
@@ -4741,7 +4810,7 @@
     "symbols": [
       "fn_1_484CC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/bitmap.c"
@@ -4752,7 +4821,7 @@
     "symbols": [
       "fn_1_485A8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/bitmap.c"
@@ -4785,7 +4854,7 @@
     "symbols": [
       "fn_1_486C4"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/bitmap.c"
@@ -4796,7 +4865,7 @@
     "symbols": [
       "fn_1_486F8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/bitmap.c"
@@ -4807,7 +4876,7 @@
     "symbols": [
       "fn_1_48730"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/bitmap.c"
@@ -4829,7 +4898,7 @@
     "symbols": [
       "fn_1_48780"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/bitmap.c"
@@ -4840,7 +4909,7 @@
     "symbols": [
       "fn_1_4AEE8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/bitmap.c"
@@ -5760,6 +5829,28 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_6EC0.c",
+    "symbols": [
+      "fn_1_6EC0"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/camera.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_7000.c",
+    "symbols": [
+      "fn_1_7000"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/camera.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/camera/fn_1_715C.c",
     "symbols": [
       "fn_1_715C"
@@ -5776,6 +5867,50 @@
       "fn_1_8298"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/camera.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_857C.c",
+    "symbols": [
+      "fn_1_857C"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/camera.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_8B10.c",
+    "symbols": [
+      "fn_1_8B10"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/camera.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_BFA0.c",
+    "symbols": [
+      "fn_1_BFA0"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/camera.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_C178.c",
+    "symbols": [
+      "fn_1_C178"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/camera.c"
@@ -5852,7 +5987,7 @@
     "symbols": [
       "fn_1_7F428"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -5903,11 +6038,22 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/car/fn_1_7FA04.c",
+    "symbols": [
+      "fn_1_7FA04"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/car.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/car/fn_1_7FFF0.c",
     "symbols": [
       "fn_1_7FFF0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -5918,7 +6064,7 @@
     "symbols": [
       "fn_1_8001C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -5940,7 +6086,7 @@
     "symbols": [
       "fn_1_800C4"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -5962,7 +6108,7 @@
     "symbols": [
       "fn_1_8019C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -5973,7 +6119,7 @@
     "symbols": [
       "fn_1_80270"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -5995,7 +6141,7 @@
     "symbols": [
       "fn_1_80F1C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -6005,6 +6151,17 @@
     "source": "rel/main_rel/car/fn_1_80F80.c",
     "symbols": [
       "fn_1_80F80"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/car.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/car/fn_1_810E4.c",
+    "symbols": [
+      "fn_1_810E4"
     ],
     "status": "nonmatching",
     "mw_version": null,
@@ -6028,7 +6185,7 @@
     "symbols": [
       "fn_1_8171C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -6039,7 +6196,7 @@
     "symbols": [
       "fn_1_8176C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -6050,7 +6207,7 @@
     "symbols": [
       "fn_1_81778"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -6061,7 +6218,7 @@
     "symbols": [
       "fn_1_817C0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -6072,7 +6229,7 @@
     "symbols": [
       "fn_1_81808"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -6083,7 +6240,7 @@
     "symbols": [
       "fn_1_81834"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -6105,7 +6262,7 @@
     "symbols": [
       "fn_1_818AC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -6127,7 +6284,7 @@
     "symbols": [
       "fn_1_835E0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -6138,7 +6295,7 @@
     "symbols": [
       "fn_1_8365C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -6182,7 +6339,7 @@
     "symbols": [
       "fn_1_84124"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -6215,7 +6372,7 @@
     "symbols": [
       "fn_1_8472C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -6225,6 +6382,17 @@
     "source": "rel/main_rel/car/fn_1_84794.c",
     "symbols": [
       "fn_1_84794"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/car.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/car/fn_1_847A8.c",
+    "symbols": [
+      "fn_1_847A8"
     ],
     "status": "nonmatching",
     "mw_version": null,
@@ -6259,7 +6427,7 @@
     "symbols": [
       "fn_1_85878"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -6270,7 +6438,7 @@
     "symbols": [
       "fn_1_8589C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -6314,7 +6482,7 @@
     "symbols": [
       "fn_1_8616C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -6358,7 +6526,7 @@
     "symbols": [
       "fn_1_86244"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -6369,7 +6537,7 @@
     "symbols": [
       "fn_1_86254"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -6380,7 +6548,7 @@
     "symbols": [
       "fn_1_8627C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -6424,7 +6592,7 @@
     "symbols": [
       "fn_1_863E4"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -7190,6 +7358,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/car/fn_1_892CC.c",
+    "symbols": [
+      "fn_1_892CC"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/car.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/car/fn_1_8A168.c",
     "symbols": [
       "fn_1_8A168"
@@ -7718,6 +7897,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/car/fn_1_8CB78.c",
+    "symbols": [
+      "fn_1_8CB78"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/car.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/car/fn_1_8CED0.c",
     "symbols": [
       "fn_1_8CED0"
@@ -7853,6 +8043,17 @@
     "source": "rel/main_rel/car/fn_1_8D988.c",
     "symbols": [
       "fn_1_8D988"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/car.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/car/fn_1_8DAB4.c",
+    "symbols": [
+      "fn_1_8DAB4"
     ],
     "status": "nonmatching",
     "mw_version": null,
@@ -8360,7 +8561,7 @@
     "symbols": [
       "fn_1_7F20C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car_test.c"
@@ -8382,7 +8583,7 @@
     "symbols": [
       "fn_1_7F254"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car_test.c"
@@ -8393,7 +8594,7 @@
     "symbols": [
       "fn_1_7F518"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car_test.c"
@@ -8415,7 +8616,7 @@
     "symbols": [
       "fn_1_8CA00"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car_test.c"
@@ -8625,6 +8826,17 @@
       "fn_1_1318D4"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/custom_memcard.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/custom_memcard/fn_1_131B90.c",
+    "symbols": [
+      "fn_1_131B90"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/custom_memcard.c"
@@ -9229,7 +9441,7 @@
     "symbols": [
       "fn_1_58D38"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect.c"
@@ -9273,7 +9485,7 @@
     "symbols": [
       "fn_1_59290"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect.c"
@@ -9295,7 +9507,7 @@
     "symbols": [
       "fn_1_5944C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect.c"
@@ -9306,7 +9518,7 @@
     "symbols": [
       "fn_1_5946C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect.c"
@@ -9317,7 +9529,7 @@
     "symbols": [
       "fn_1_5948C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect.c"
@@ -9328,7 +9540,7 @@
     "symbols": [
       "fn_1_594AC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect.c"
@@ -9339,7 +9551,7 @@
     "symbols": [
       "fn_1_594CC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect.c"
@@ -10076,7 +10288,7 @@
     "symbols": [
       "fn_1_60C74"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect.c"
@@ -10230,7 +10442,7 @@
     "symbols": [
       "fn_1_61CA8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect.c"
@@ -10241,7 +10453,7 @@
     "symbols": [
       "fn_1_61CC8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect.c"
@@ -10252,7 +10464,7 @@
     "symbols": [
       "fn_1_61CE8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect.c"
@@ -10347,6 +10559,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/effect/fn_1_632D4.c",
+    "symbols": [
+      "fn_1_632D4"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/effect.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/effect/fn_1_633BC.c",
     "symbols": [
       "fn_1_633BC"
@@ -10406,7 +10629,7 @@
     "symbols": [
       "fn_1_64098"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect.c"
@@ -10417,7 +10640,7 @@
     "symbols": [
       "fn_1_642E8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect.c"
@@ -10527,7 +10750,7 @@
     "symbols": [
       "fn_1_65268"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect.c"
@@ -10637,7 +10860,7 @@
     "symbols": [
       "fn_1_65E58"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect.c"
@@ -10725,7 +10948,7 @@
     "symbols": [
       "fn_1_6766C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect.c"
@@ -10780,7 +11003,7 @@
     "symbols": [
       "fn_1_68054"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect.c"
@@ -10813,7 +11036,7 @@
     "symbols": [
       "fn_1_68248"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect_car.c"
@@ -10835,7 +11058,7 @@
     "symbols": [
       "fn_1_69BBC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect_car.c"
@@ -10879,7 +11102,7 @@
     "symbols": [
       "fn_1_6F8D0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/effect_car.c"
@@ -11594,7 +11817,7 @@
     "symbols": [
       "fn_1_494CC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11605,7 +11828,7 @@
     "symbols": [
       "fn_1_494DC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11616,7 +11839,7 @@
     "symbols": [
       "fn_1_49514"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11627,7 +11850,7 @@
     "symbols": [
       "fn_1_49528"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11638,7 +11861,7 @@
     "symbols": [
       "fn_1_4953C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11649,7 +11872,7 @@
     "symbols": [
       "fn_1_4954C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11671,7 +11894,7 @@
     "symbols": [
       "fn_1_49590"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11682,7 +11905,7 @@
     "symbols": [
       "fn_1_495A0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11693,7 +11916,7 @@
     "symbols": [
       "fn_1_495B0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11715,7 +11938,7 @@
     "symbols": [
       "fn_1_495D8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11726,7 +11949,7 @@
     "symbols": [
       "fn_1_495FC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11737,7 +11960,7 @@
     "symbols": [
       "fn_1_49614"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11748,7 +11971,7 @@
     "symbols": [
       "fn_1_4962C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11759,7 +11982,7 @@
     "symbols": [
       "fn_1_49644"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11770,7 +11993,7 @@
     "symbols": [
       "fn_1_4965C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11782,6 +12005,17 @@
       "fn_1_4966C"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/font.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/font/fn_1_49680.c",
+    "symbols": [
+      "fn_1_49680"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11803,7 +12037,7 @@
     "symbols": [
       "fn_1_49714"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11814,7 +12048,7 @@
     "symbols": [
       "fn_1_49728"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11836,7 +12070,7 @@
     "symbols": [
       "fn_1_49748"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11847,7 +12081,7 @@
     "symbols": [
       "fn_1_49758"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11858,7 +12092,7 @@
     "symbols": [
       "fn_1_49768"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11869,7 +12103,7 @@
     "symbols": [
       "fn_1_49778"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11935,7 +12169,7 @@
     "symbols": [
       "fn_1_4AEC0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11968,7 +12202,7 @@
     "symbols": [
       "fn_1_4B040"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -11979,7 +12213,7 @@
     "symbols": [
       "fn_1_4B068"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12034,7 +12268,7 @@
     "symbols": [
       "fn_1_4B83C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12045,7 +12279,7 @@
     "symbols": [
       "fn_1_4B8BC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12144,7 +12378,7 @@
     "symbols": [
       "fn_1_4D0D4"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12166,7 +12400,7 @@
     "symbols": [
       "fn_1_4D274"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12243,7 +12477,7 @@
     "symbols": [
       "fn_1_4DCE0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12254,7 +12488,7 @@
     "symbols": [
       "fn_1_4DCF0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12265,7 +12499,7 @@
     "symbols": [
       "fn_1_4DD00"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12276,7 +12510,7 @@
     "symbols": [
       "fn_1_4DD10"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12287,7 +12521,7 @@
     "symbols": [
       "fn_1_4DD20"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12298,7 +12532,7 @@
     "symbols": [
       "fn_1_4DD30"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12309,7 +12543,7 @@
     "symbols": [
       "fn_1_4DD40"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12331,7 +12565,7 @@
     "symbols": [
       "fn_1_4DD60"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12342,7 +12576,7 @@
     "symbols": [
       "fn_1_4DD70"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12353,7 +12587,7 @@
     "symbols": [
       "fn_1_4DD80"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12364,7 +12598,7 @@
     "symbols": [
       "fn_1_4DD90"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12386,7 +12620,7 @@
     "symbols": [
       "fn_1_4DDB0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12463,7 +12697,7 @@
     "symbols": [
       "fn_1_4E0F4"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12474,7 +12708,7 @@
     "symbols": [
       "fn_1_4E500"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12485,7 +12719,7 @@
     "symbols": [
       "fn_1_4E638"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12551,7 +12785,7 @@
     "symbols": [
       "fn_1_50164"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12694,7 +12928,7 @@
     "symbols": [
       "fn_1_52070"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12716,7 +12950,7 @@
     "symbols": [
       "fn_1_520A0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12728,6 +12962,17 @@
       "fn_1_520CC"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/font.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/font/fn_1_520F8.c",
+    "symbols": [
+      "fn_1_520F8"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12793,7 +13038,7 @@
     "symbols": [
       "fn_1_52B8C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12804,7 +13049,7 @@
     "symbols": [
       "fn_1_52BB0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12815,7 +13060,7 @@
     "symbols": [
       "fn_1_52BD4"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12903,7 +13148,7 @@
     "symbols": [
       "fn_1_5415C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12936,7 +13181,7 @@
     "symbols": [
       "fn_1_54278"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12947,7 +13192,7 @@
     "symbols": [
       "fn_1_5428C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12980,7 +13225,7 @@
     "symbols": [
       "fn_1_542B8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -12991,7 +13236,7 @@
     "symbols": [
       "fn_1_542C4"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13002,7 +13247,7 @@
     "symbols": [
       "fn_1_54320"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13046,7 +13291,7 @@
     "symbols": [
       "fn_1_545B8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13057,7 +13302,7 @@
     "symbols": [
       "fn_1_54668"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13090,7 +13335,7 @@
     "symbols": [
       "fn_1_54868"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13101,7 +13346,7 @@
     "symbols": [
       "fn_1_5489C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13112,7 +13357,7 @@
     "symbols": [
       "fn_1_548AC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13134,7 +13379,7 @@
     "symbols": [
       "fn_1_54DCC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13145,7 +13390,7 @@
     "symbols": [
       "fn_1_54E00"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13233,7 +13478,7 @@
     "symbols": [
       "fn_1_5557C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13244,7 +13489,7 @@
     "symbols": [
       "fn_1_555D0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13255,7 +13500,7 @@
     "symbols": [
       "fn_1_55628"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13266,7 +13511,7 @@
     "symbols": [
       "fn_1_55678"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13299,7 +13544,7 @@
     "symbols": [
       "fn_1_5575C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13376,7 +13621,7 @@
     "symbols": [
       "fn_1_55FC4"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13398,7 +13643,7 @@
     "symbols": [
       "fn_1_55FF0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13409,7 +13654,7 @@
     "symbols": [
       "fn_1_56000"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13431,7 +13676,7 @@
     "symbols": [
       "fn_1_560F0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13464,7 +13709,7 @@
     "symbols": [
       "fn_1_56298"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13475,7 +13720,7 @@
     "symbols": [
       "fn_1_5634C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13486,7 +13731,7 @@
     "symbols": [
       "fn_1_5635C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13497,7 +13742,7 @@
     "symbols": [
       "fn_1_56374"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13519,7 +13764,7 @@
     "symbols": [
       "fn_1_563B8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13552,7 +13797,7 @@
     "symbols": [
       "fn_1_56530"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13574,7 +13819,7 @@
     "symbols": [
       "fn_1_565E8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13596,7 +13841,7 @@
     "symbols": [
       "fn_1_565F8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
@@ -13727,6 +13972,17 @@
     "source": "rel/main_rel/game/fn_1_36ADC.c",
     "symbols": [
       "fn_1_36ADC"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/game.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/game/fn_1_384E8.c",
+    "symbols": [
+      "fn_1_384E8"
     ],
     "status": "nonmatching",
     "mw_version": null,
@@ -14565,7 +14821,7 @@
       "fn_1_40D44"
     ],
     "status": "nonmatching",
-    "mw_version": null,
+    "mw_version": "GC/1.3.2",
     "extra_cflags": [],
     "tu": "rel/main_rel/game.c"
   },
@@ -14575,7 +14831,7 @@
     "symbols": [
       "fn_1_40E08"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/game.c"
@@ -14608,7 +14864,7 @@
     "symbols": [
       "fn_1_40F34"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/game.c"
@@ -14619,7 +14875,7 @@
     "symbols": [
       "fn_1_40F44"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/game.c"
@@ -14630,7 +14886,7 @@
     "symbols": [
       "fn_1_40F54"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/game.c"
@@ -14641,7 +14897,7 @@
     "symbols": [
       "fn_1_40F78"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/game.c"
@@ -14663,7 +14919,7 @@
     "symbols": [
       "fn_1_41048"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/game.c"
@@ -14674,7 +14930,7 @@
     "symbols": [
       "fn_1_410A0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/game.c"
@@ -14685,7 +14941,7 @@
     "symbols": [
       "fn_1_41104"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/game.c"
@@ -14762,7 +15018,7 @@
     "symbols": [
       "fn_1_41488"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/game.c"
@@ -15121,6 +15377,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/ghost/fn_1_F17B4.c",
+    "symbols": [
+      "fn_1_F17B4"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/ghost.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/ghost/fn_1_F18C0.c",
     "symbols": [
       "fn_1_F18C0"
@@ -15411,7 +15678,7 @@
     "symbols": [
       "fn_1_7BE94"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/light.c"
@@ -15433,7 +15700,7 @@
     "symbols": [
       "fn_1_7BF9C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/light.c"
@@ -15708,7 +15975,7 @@
     "symbols": [
       "fn_1_45AD4"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/load.c"
@@ -15730,7 +15997,7 @@
     "symbols": [
       "fn_1_45B68"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/load.c"
@@ -15741,7 +16008,7 @@
     "symbols": [
       "fn_1_45BA4"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/load.c"
@@ -15753,6 +16020,17 @@
       "fn_1_45BE0"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/load.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/load/fn_1_45BF0.c",
+    "symbols": [
+      "fn_1_45BF0"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/load.c"
@@ -15774,7 +16052,7 @@
     "symbols": [
       "fn_1_45D78"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/load.c"
@@ -15807,7 +16085,7 @@
     "symbols": [
       "fn_1_465D0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/load.c"
@@ -15829,7 +16107,7 @@
     "symbols": [
       "fn_1_467F4"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/load.c"
@@ -15851,7 +16129,7 @@
     "symbols": [
       "fn_1_469BC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/load.c"
@@ -15862,7 +16140,7 @@
     "symbols": [
       "fn_1_46A60"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/load.c"
@@ -15917,7 +16195,7 @@
     "symbols": [
       "fn_1_46C60"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/load.c"
@@ -15961,7 +16239,7 @@
     "symbols": [
       "fn_1_46EB4"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/load.c"
@@ -15983,7 +16261,7 @@
     "symbols": [
       "fn_1_46ED8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/load.c"
@@ -16016,6 +16294,17 @@
     "symbols": [
       "fn_1_47184"
     ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/load.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/load/fn_1_471A0.c",
+    "symbols": [
+      "fn_1_471A0"
+    ],
     "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
@@ -16027,7 +16316,7 @@
     "symbols": [
       "fn_1_479B0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/load.c"
@@ -16060,7 +16349,7 @@
     "symbols": [
       "fn_1_485E8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/load.c"
@@ -16169,6 +16458,17 @@
     "source": "rel/main_rel/mdlload/fn_1_D3C04.c",
     "symbols": [
       "fn_1_D3C04"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/mdlload.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/mdlload/fn_1_D3C58.c",
+    "symbols": [
+      "fn_1_D3C58"
     ],
     "status": "nonmatching",
     "mw_version": null,
@@ -17655,7 +17955,7 @@
     "symbols": [
       "fn_1_41BDC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/motasglist.c"
@@ -17688,7 +17988,7 @@
     "symbols": [
       "fn_1_41F58"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/motasglist.c"
@@ -17699,7 +17999,7 @@
     "symbols": [
       "fn_1_42458"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/motasglist.c"
@@ -17710,7 +18010,7 @@
     "symbols": [
       "fn_1_426AC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/motasglist.c"
@@ -17721,7 +18021,7 @@
     "symbols": [
       "fn_1_426E4"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/motasglist.c"
@@ -17765,7 +18065,7 @@
     "symbols": [
       "fn_1_43120"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/motasglist.c"
@@ -17798,7 +18098,7 @@
     "symbols": [
       "fn_1_433A4"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/motasglist.c"
@@ -17842,7 +18142,7 @@
     "symbols": [
       "fn_1_56664"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/objput.c"
@@ -17864,7 +18164,7 @@
     "symbols": [
       "fn_1_566DC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/objput.c"
@@ -20427,7 +20727,7 @@
     "symbols": [
       "fn_1_72648"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -20438,7 +20738,7 @@
     "symbols": [
       "fn_1_7269C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -20449,7 +20749,7 @@
     "symbols": [
       "fn_1_72714"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -20460,7 +20760,7 @@
     "symbols": [
       "fn_1_72768"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -20493,7 +20793,7 @@
     "symbols": [
       "fn_1_728B0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -20504,7 +20804,7 @@
     "symbols": [
       "fn_1_72980"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -20548,7 +20848,7 @@
     "symbols": [
       "fn_1_76650"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -20592,7 +20892,7 @@
     "symbols": [
       "fn_1_76BD0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -20603,7 +20903,7 @@
     "symbols": [
       "fn_1_76BF8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -20614,7 +20914,7 @@
     "symbols": [
       "fn_1_76C60"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -20658,7 +20958,7 @@
     "symbols": [
       "fn_1_77238"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -20669,7 +20969,7 @@
     "symbols": [
       "fn_1_772E0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -20746,7 +21046,7 @@
     "symbols": [
       "fn_1_789AC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -20812,7 +21112,7 @@
     "symbols": [
       "fn_1_7A648"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -20856,7 +21156,7 @@
     "symbols": [
       "fn_1_7B064"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -20867,7 +21167,7 @@
     "symbols": [
       "fn_1_7B074"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -20878,7 +21178,7 @@
     "symbols": [
       "fn_1_7B084"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -20889,7 +21189,7 @@
     "symbols": [
       "fn_1_7B184"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -20922,7 +21222,7 @@
     "symbols": [
       "fn_1_7B4C0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/screen_effect.c"
@@ -21325,6 +21625,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/sel_static_disp/fn_1_13EDDC.c",
+    "symbols": [
+      "fn_1_13EDDC"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/sel_static_disp.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/sel_static_disp/fn_1_13F81C.c",
     "symbols": [
       "fn_1_13F81C"
@@ -21581,6 +21892,17 @@
     "source": "rel/main_rel/sel_static_disp/fn_1_1490FC.c",
     "symbols": [
       "fn_1_1490FC"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/sel_static_disp.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/sel_static_disp/fn_1_149B24.c",
+    "symbols": [
+      "fn_1_149B24"
     ],
     "status": "nonmatching",
     "mw_version": null,
@@ -22869,7 +23191,7 @@
     "symbols": [
       "fn_1_56858"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/shadowmap.c"
@@ -22880,7 +23202,7 @@
     "symbols": [
       "fn_1_568EC"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/shadowmap.c"
@@ -22902,7 +23224,7 @@
     "symbols": [
       "fn_1_57720"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/shadowmap.c"
@@ -22953,11 +23275,22 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/shadowmap/fn_1_57CD0.c",
+    "symbols": [
+      "fn_1_57CD0"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/shadowmap.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/shadowmap/fn_1_57DC0.c",
     "symbols": [
       "fn_1_57DC0"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/shadowmap.c"
@@ -23360,6 +23693,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/sound/fn_1_A4BC8.c",
+    "symbols": [
+      "fn_1_A4BC8"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/sound.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/sound/fn_1_A4C9C.c",
     "symbols": [
       "fn_1_A4C9C"
@@ -23398,6 +23742,17 @@
       "fn_1_A50C8"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/sound.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/sound/fn_1_A514C.c",
+    "symbols": [
+      "fn_1_A514C"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/sound.c"
@@ -24416,6 +24771,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/spline/fn_1_F9CA0.c",
+    "symbols": [
+      "fn_1_F9CA0"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/spline.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/spline/fn_1_F9CD0.c",
     "symbols": [
       "fn_1_F9CD0"
@@ -24936,6 +25302,17 @@
     "source": "rel/main_rel/stcoli/fn_1_17B5C.c",
     "symbols": [
       "fn_1_17B5C"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/stcoli.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/stcoli/fn_1_17C6C.c",
+    "symbols": [
+      "fn_1_17C6C"
     ],
     "status": "nonmatching",
     "mw_version": null,

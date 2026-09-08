@@ -294,6 +294,51 @@ int fn_1_40224(void) {
 }
 /* fzgx:end fn_1_40224 */
 
+/* fzgx:begin fn_1_40E08 */
+typedef struct {
+    u32 unk_0;
+    u8 pad_4[0xA];
+} Obj_1_bss_3C1C;
+
+extern s16 lbl_1_bss_960;
+extern Obj_1_bss_3C1C lbl_1_bss_3C1C;
+extern u32 lbl_1_bss_38210;
+extern u32 lbl_1_bss_38214;
+extern u8 lbl_1_data_662C[13];
+extern u32 lbl_801A63C0;
+extern void fn_1_40BE4(void);
+extern void fn_1_3F8C(u8 *, void (*)(void), s32, s32);
+
+void fn_1_40E08(u32 arg0) {
+    u32 value;
+    u32 half;
+    u32 max;
+    u32 remainder;
+
+    if (lbl_1_bss_960 == 0x10) {
+        lbl_1_bss_3C1C.unk_0 = -1;
+    }
+
+    lbl_1_bss_38210 = arg0;
+    if (arg0 < 5) {
+        lbl_1_bss_38210 = 5;
+    }
+
+    value = lbl_801A63C0 * 0x676A4B6B + 0x33CB;
+    lbl_801A63C0 = value;
+
+    half = lbl_1_bss_38210 >> 1;
+    max = lbl_1_bss_38210 - 5;
+    remainder = ((value >> 16) & 0x7FFF) % half;
+    lbl_1_bss_38214 = half + remainder;
+    if (lbl_1_bss_38214 > max) {
+        lbl_1_bss_38214 = max;
+    }
+
+    fn_1_3F8C(lbl_1_data_662C, fn_1_40BE4, 0, 1);
+}
+/* fzgx:end fn_1_40E08 */
+
 /* fzgx:begin fn_1_40ED4 */
 extern u8 lbl_1_bss_3820C;
 
@@ -301,6 +346,58 @@ u8 fn_1_40ED4(void) {
     return lbl_1_bss_3820C;
 }
 /* fzgx:end fn_1_40ED4 */
+
+/* fzgx:begin fn_1_40F34 */
+extern u32 lbl_1_bss_26B4C;
+
+u32 fn_1_40F34(void) {
+    return lbl_1_bss_26B4C;
+}
+/* fzgx:end fn_1_40F34 */
+
+/* fzgx:begin fn_1_40F44 */
+extern u8 lbl_1_bss_25E90[8];
+
+u8 fn_1_40F44(void) {
+    return lbl_1_bss_25E90[0];
+}
+/* fzgx:end fn_1_40F44 */
+
+/* fzgx:begin fn_1_40F54 */
+extern void fn_1_48B0(void *arg0, int arg1);
+
+void fn_1_40F54(void *arg0) {
+    fn_1_48B0(arg0, 0x20);
+}
+/* fzgx:end fn_1_40F54 */
+
+/* fzgx:begin fn_1_40F78 */
+#include "rel/main_rel/game.h"
+
+extern u32 lbl_801A6CE0;
+extern u32 lbl_1_bss_38450;
+extern u32 lbl_1_bss_38454;
+extern u32 fn_80070DE0(void (*)(void));
+extern void fn_1_40F54(void);
+extern u32 fn_1_D3884(u8 *);
+extern u32 fn_1_D358C(u8 *, u32);
+
+void fn_1_40F78(void) {
+    u32 resource;
+    u32 data;
+
+    if ((lbl_801A6CE0 & 1) == 0) {
+        lbl_1_bss_38450 = 0;
+        lbl_1_bss_38454 = 0;
+    } else {
+        resource = fn_80070DE0(fn_1_40F54);
+        data = fn_1_D3884(lbl_1_data_66C0);
+        lbl_1_bss_38450 = data;
+        lbl_1_bss_38454 = fn_1_D358C(lbl_1_data_66D0, data);
+        fn_80070DE0((void (*)(void))resource);
+    }
+}
+/* fzgx:end fn_1_40F78 */
 
 /* fzgx:begin fn_1_4100C */
 extern char lbl_1_data_66E0[16];
@@ -312,6 +409,51 @@ void fn_1_4100C(void) {
     fn_1_465D0(lbl_1_data_66F0, 1);
 }
 /* fzgx:end fn_1_4100C */
+
+/* fzgx:begin fn_1_41048 */
+#include "rel/main_rel/game.h"
+
+extern void *fn_1_D3884(u8 *arg0);
+extern void *fn_1_D358C(u8 *arg0, void *arg1);
+
+void fn_1_41048(void) {
+    void *value;
+
+    if (lbl_1_bss_38458 == 0) {
+        value = fn_1_D3884(lbl_1_data_66E0);
+        lbl_1_bss_3845C = (u32)value;
+        lbl_1_bss_38458 = (Obj_1_bss_38458_Target *)fn_1_D358C(lbl_1_data_66F0, value);
+    }
+}
+/* fzgx:end fn_1_41048 */
+
+/* fzgx:begin fn_1_410A0 */
+#include "rel/main_rel/game.h"
+
+extern void fn_800711A8(Obj_1_bss_38458_Target *target);
+extern void fn_80071718(u32 value);
+
+void fn_1_410A0(void) {
+    if (lbl_1_bss_38458 != 0) {
+        fn_800711A8(lbl_1_bss_38458);
+        lbl_1_bss_38458 = 0;
+    }
+
+    if (lbl_1_bss_3845C != 0) {
+        fn_80071718(lbl_1_bss_3845C);
+        lbl_1_bss_3845C = 0;
+    }
+}
+/* fzgx:end fn_1_410A0 */
+
+/* fzgx:begin fn_1_41104 */
+extern char *lbl_1_data_66A0[8];
+extern void fn_1_41134(u32 index, char *value);
+
+void fn_1_41104(u32 index) {
+    fn_1_41134(index, lbl_1_data_66A0[index]);
+}
+/* fzgx:end fn_1_41104 */
 
 /* fzgx:begin fn_1_41134 */
 extern char lbl_1_data_6700[7];
@@ -391,3 +533,34 @@ char *fn_1_41418(Fn41418Data *data, u32 index) {
     return (char *)str;
 }
 /* fzgx:end fn_1_41418 */
+
+/* fzgx:begin fn_1_41488 */
+typedef struct Fn41488Data {
+    u32 count;
+    char *strings;
+} Fn41488Data;
+
+extern u32 strlen(const char *str);
+extern int fn_80083BCC(const char *left, const char *right);
+
+static inline u32 add_lengths(u32 length, u32 address) {
+    return length + address;
+}
+
+int fn_1_41488(Fn41488Data *data, const char *value) {
+    u32 count = data->count & 0x7fffffff;
+    u32 str = (u32)data->strings;
+    u32 index = 0;
+
+    while (index < count) {
+        if (fn_80083BCC(value, (const char *)str) == 0) {
+            return index;
+        }
+        str = add_lengths(strlen((const char *)str), str);
+        index += 1;
+        str += 1;
+    }
+
+    return -1;
+}
+/* fzgx:end fn_1_41488 */

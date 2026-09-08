@@ -1,6 +1,26 @@
 #include "types.h"
 #include "rel/main_rel/globals.h"
 
+/* fzgx:begin fn_1_7F428 */
+extern u32 lbl_1_bss_6D828;
+extern s32 fn_1_3F854(u32 arg0);
+
+u32 fn_1_7F428(u32 arg0) {
+    s32 index;
+
+    if (lbl_1_bss_6D828 == 0) {
+        return 0;
+    }
+
+    index = fn_1_3F854(arg0);
+    if ((u8)arg0 > index) {
+        return 0;
+    }
+
+    return lbl_1_bss_6D828 + (u8)arg0 * (0x10000 + 0x440);
+}
+/* fzgx:end fn_1_7F428 */
+
 /* fzgx:begin fn_1_7F934 */
 extern void fn_1_7F658(void);
 
@@ -8,6 +28,26 @@ void fn_1_7F934(void) {
     fn_1_7F658();
 }
 /* fzgx:end fn_1_7F934 */
+
+/* fzgx:begin fn_1_7FFF0 */
+extern char lbl_1_data_2057C[22];
+extern void fn_1_465D0(char *arg0, s32 arg1);
+
+void fn_1_7FFF0(void) {
+    fn_1_465D0(lbl_1_data_2057C, 1);
+}
+/* fzgx:end fn_1_7FFF0 */
+
+/* fzgx:begin fn_1_8001C */
+extern char lbl_1_data_20594[18];
+extern u8 lbl_1_data_205A8[180];
+extern void fn_1_465D0(void *arg0, s32 arg1);
+
+void fn_1_8001C(void) {
+    fn_1_465D0(lbl_1_data_20594, 1);
+    fn_1_465D0(lbl_1_data_205A8, 1);
+}
+/* fzgx:end fn_1_8001C */
 
 /* fzgx:begin fn_1_80058 */
 extern void fn_80008BEC(void *dst, s32 value, u32 size);
@@ -24,6 +64,22 @@ void fn_1_80058(s8 arg0, u8 *arg1) {
 }
 /* fzgx:end fn_1_80058 */
 
+/* fzgx:begin fn_1_800C4 */
+extern void fn_80008BEC(void *dst, s32 value, u32 size);
+extern u32 fn_1_8171C(s32 arg0);
+extern void fn_80008BA8(void *dst, const void *src, u32 size);
+
+void fn_1_800C4(u16 arg0, u8 *arg1) {
+    u8 data[0x20];
+
+    fn_80008BEC(data, 0, 0x20);
+    *(u32 *)(data + 4) = fn_1_8171C(1);
+    data[8] = 0x10;
+    fn_80008BA8(arg1, data, 0x20);
+    *(u16 *)(arg1 + 2) = arg0;
+}
+/* fzgx:end fn_1_800C4 */
+
 /* fzgx:begin fn_1_80130 */
 extern void fn_80008BEC(void *dst, s32 value, u32 size);
 extern u32 fn_1_8171C(s32 arg0);
@@ -39,6 +95,134 @@ void fn_1_80130(u16 arg0, u8 *arg1) {
     *(u16 *)(arg1 + 2) = arg0;
 }
 /* fzgx:end fn_1_80130 */
+
+/* fzgx:begin fn_1_8019C */
+#include "rel/main_rel/car.h"
+
+extern u8 lbl_1_rodata_3968[232];
+extern void fn_800712E4(void *arg0, u32 arg1, void *arg2);
+
+typedef struct {
+    u32 words[58];
+} InitData;
+
+void fn_1_8019C(void *arg0) {
+    InitData data;
+
+    data = *(InitData *)lbl_1_rodata_3968;
+    fn_800712E4(arg0, lbl_1_bss_6D82C.unk_0, &data);
+}
+/* fzgx:end fn_1_8019C */
+
+/* fzgx:begin fn_1_80270 */
+extern void fn_1_80294(void *arg0, void *arg1, s32 arg2);
+
+void fn_1_80270(void *arg0, void *arg1) {
+    fn_1_80294(arg0, arg1, 0);
+}
+/* fzgx:end fn_1_80270 */
+
+/* fzgx:begin fn_1_80F1C */
+#include "rel/main_rel/car.h"
+
+extern void fn_1_7F658(void *arg0);
+extern void fn_1_12A734(s16 arg0);
+extern void fn_80071718(void *arg0);
+
+void fn_1_80F1C(s32 arg0, void *arg1) {
+    fn_1_7F658(arg1);
+    if ((s16)arg0 != -1) {
+        fn_1_12A734((s16)arg0);
+    }
+    if (lbl_1_bss_6D82C.unk_0 != 0) {
+        fn_80071718((void *)lbl_1_bss_6D82C.unk_0);
+        lbl_1_bss_6D82C.unk_0 = 0;
+    }
+}
+/* fzgx:end fn_1_80F1C */
+
+/* fzgx:begin fn_1_8171C */
+s32 fn_1_8171C(s32 value) {
+    switch (value) {
+    case 0:
+        return 0xD;
+    case 1:
+        return 0xE;
+    case 2:
+        return 0xE;
+    case 3:
+        return 0xF;
+    default:
+        return -1;
+    }
+}
+/* fzgx:end fn_1_8171C */
+
+/* fzgx:begin fn_1_8176C */
+extern u32 lbl_1_bss_6D850;
+
+void fn_1_8176C(u32 value) {
+    lbl_1_bss_6D850 = value;
+}
+/* fzgx:end fn_1_8176C */
+
+/* fzgx:begin fn_1_81778 */
+#include "rel/main_rel/car.h"
+
+void fn_1_81778(void) {
+    s32 offset;
+    s32 i;
+    i = 0;
+    offset = 0;
+    while (i < *(s8 *)&lbl_1_bss_6D84A) {
+        *((u32 *)((u8 *)lbl_1_bss_6D838 + offset)) |= 0x8000;
+        i++;
+        offset += 0x620;
+    }
+}
+/* fzgx:end fn_1_81778 */
+
+/* fzgx:begin fn_1_817C0 */
+#include "rel/main_rel/car.h"
+
+extern Obj_1_bss_6D838_Target *lbl_1_bss_6D838;
+extern u8 lbl_1_bss_6D84A;
+
+void fn_1_817C0(void) {
+    s32 offset;
+    s32 i;
+
+    i = 0;
+    offset = 0;
+    while (i < (s8)lbl_1_bss_6D84A) {
+        u32 *value = (u32 *)((u8 *)lbl_1_bss_6D838 + offset);
+        *value &= 0xFFFF7FFF;
+        i++;
+        offset += 0x620;
+    }
+}
+/* fzgx:end fn_1_817C0 */
+
+/* fzgx:begin fn_1_81808 */
+#include "rel/main_rel/car.h"
+
+extern void fn_80008BA8(void *arg0, void *arg1, s32 arg2);
+
+void fn_1_81808(void *arg0) {
+    fn_80008BA8(arg0, &lbl_1_data_2065C, 4);
+}
+/* fzgx:end fn_1_81808 */
+
+/* fzgx:begin fn_1_81834 */
+#include "rel/main_rel/car.h"
+
+void fn_1_81834(u8 value, s8 index_a, s8 index_b) {
+    if (index_a != -1) {
+        *((u8 *)&lbl_1_data_2065C + index_a) = value;
+    }
+    *((u8 *)&lbl_1_data_20660 + index_b) = value;
+}
+/* fzgx:end fn_1_81834 */
 
 /* fzgx:begin fn_1_81860 */
 typedef struct {
@@ -59,6 +243,95 @@ s32 fn_1_81860(Obj *a, Obj *b) {
     return a->id - b->id;
 }
 /* fzgx:end fn_1_81860 */
+
+/* fzgx:begin fn_1_818AC */
+typedef struct {
+    u8 pad0[0x320];
+    s16 value;
+} Obj;
+
+s32 fn_1_818AC(Obj *a, Obj *b) {
+    return a->value - b->value;
+}
+/* fzgx:end fn_1_818AC */
+
+/* fzgx:begin fn_1_835E0 */
+extern void fn_1_435C(void *);
+extern u32 lbl_1_bss_6D970;
+extern void fn_1_43E8(s32);
+extern char lbl_1_data_20714[10];
+extern void fn_1_850C4(void);
+extern void fn_1_3F8C(char *, void (*)(void), void *, s32);
+extern void fn_1_8B8A4(void);
+extern u32 lbl_1_bss_6D974;
+extern void fn_1_43F4(void);
+
+void fn_1_835E0(void *arg0, void *arg1, void *arg2) {
+    fn_1_435C(arg1);
+    lbl_1_bss_6D970 = (u32)arg2;
+    fn_1_43E8(1);
+    fn_1_3F8C(lbl_1_data_20714, fn_1_850C4, arg0, 9);
+    lbl_1_bss_6D974 = (u32)fn_1_8B8A4;
+    fn_1_43F4();
+}
+/* fzgx:end fn_1_835E0 */
+
+/* fzgx:begin fn_1_8365C */
+extern u32 lbl_1_bss_6D97C;
+extern u32 lbl_1_bss_6D978;
+
+void fn_1_8365C(s32 enabled) {
+    u32 value;
+
+    if (enabled != 0) {
+        lbl_1_bss_6D97C = 0;
+        value = 0;
+    } else {
+        lbl_1_bss_6D97C = 1;
+        value = 1;
+    }
+    lbl_1_bss_6D978 = value;
+}
+/* fzgx:end fn_1_8365C */
+
+/* fzgx:begin fn_1_84124 */
+typedef struct {
+    u8 _pad[0x38c];
+    u8 flags;
+} Fn184124Object;
+
+s8 fn_1_84124(Fn184124Object *obj, s8 direction, s8 index, u8 *count) {
+    *count = 0;
+
+    if (index == 5) {
+        return index;
+    }
+
+    if (index < 0 || index > 5) {
+        return index < 0 ? 0 : (index > 5 ? 5 : index);
+    }
+
+    if (direction == 1) {
+        while (index < 5) {
+            if (obj->flags & (1 << index)) {
+                return index;
+            }
+            index++;
+            (*count)++;
+        }
+    } else if (direction == -1) {
+        while (index > -1) {
+            if (obj->flags & (1 << index)) {
+                return index;
+            }
+            index--;
+            (*count)++;
+        }
+    }
+
+    return -1;
+}
+/* fzgx:end fn_1_84124 */
 
 /* fzgx:begin fn_1_843BC */
 extern f32 lbl_1_rodata_3530[22];
@@ -82,6 +355,56 @@ f32 fn_1_843BC(Fn1843BCObject *obj) {
 }
 /* fzgx:end fn_1_843BC */
 
+/* fzgx:begin fn_1_8472C */
+extern void *fn_1_36AD0(void);
+
+typedef struct {
+    u8 _pad[0x6];
+    s16 field_6;
+} Fn18472CObject;
+
+void *fn_1_8472C(Fn18472CObject *obj) {
+    s16 index;
+
+    index = -1;
+    if (obj->field_6 >= 0x29) {
+        index = obj->field_6 - 0x32;
+    }
+
+    if (index == -1) {
+        return NULL;
+    }
+
+    return (u8 *)fn_1_36AD0() + (s32)index * 0x81c0;
+}
+/* fzgx:end fn_1_8472C */
+
+/* fzgx:begin fn_1_84794 */
+extern u8 lbl_1_bss_6D868;
+
+u8 fn_1_84794(s32 index) {
+    return (&lbl_1_bss_6D868)[(s16)index];
+}
+/* fzgx:end fn_1_84794 */
+
+/* fzgx:begin fn_1_85878 */
+extern void fn_1_85688(void);
+extern void fn_1_854D4(void);
+
+void fn_1_85878(void) {
+    fn_1_85688();
+    fn_1_854D4();
+}
+/* fzgx:end fn_1_85878 */
+
+/* fzgx:begin fn_1_8589C */
+extern u32 lbl_1_bss_6D864;
+
+void fn_1_8589C(u32 value) {
+    lbl_1_bss_6D864 = value;
+}
+/* fzgx:end fn_1_8589C */
+
 /* fzgx:begin fn_1_85F70 */
 extern void fn_1_23500(void);
 
@@ -89,6 +412,15 @@ void fn_1_85F70(void) {
     fn_1_23500();
 }
 /* fzgx:end fn_1_85F70 */
+
+/* fzgx:begin fn_1_8616C */
+extern f32 lbl_1_rodata_3518[6];
+extern void fn_1_85934(f32);
+
+void fn_1_8616C(void) {
+    fn_1_85934(lbl_1_rodata_3518[0]);
+}
+/* fzgx:end fn_1_8616C */
 
 /* fzgx:begin fn_1_86194 */
 extern void fn_1_85934(void);
@@ -133,6 +465,47 @@ int fn_1_8623C(void) {
 }
 /* fzgx:end fn_1_8623C */
 
+/* fzgx:begin fn_1_86244 */
+#include "rel/main_rel/car.h"
+
+u32 fn_1_86244(void) {
+    return *(u32 *)(void *)&lbl_1_bss_6D838;
+}
+/* fzgx:end fn_1_86244 */
+
+/* fzgx:begin fn_1_86254 */
+#include "rel/main_rel/car.h"
+
+extern Obj_1_bss_6D838_Target *lbl_1_bss_6D838;
+
+void *fn_1_86254(int index) {
+    if (lbl_1_bss_6D838 != 0) {
+        return (u8 *)lbl_1_bss_6D838 + index * 0x620;
+    }
+    return 0;
+}
+/* fzgx:end fn_1_86254 */
+
+/* fzgx:begin fn_1_8627C */
+#include "rel/main_rel/car.h"
+
+typedef struct {
+    u8 pad_0[0x49C];
+    u32 value;
+    u8 pad_4A0[0x180];
+} CarEntry_8627C;
+
+u32 fn_1_8627C(s32 index) {
+    CarEntry_8627C *cars;
+
+    cars = (CarEntry_8627C *)lbl_1_bss_6D838;
+    if (cars != 0) {
+        return cars[index].value;
+    }
+    return 0;
+}
+/* fzgx:end fn_1_8627C */
+
 /* fzgx:begin fn_1_8636C noprologue */
 #include "types.h"
 extern u8 *lbl_1_bss_6D838;
@@ -150,6 +523,25 @@ void fn_1_8636C(int index, void *arg) {
     }
 }
 /* fzgx:end fn_1_8636C */
+
+/* fzgx:begin fn_1_863E4 noprologue */
+#include "types.h"
+
+extern u8 *lbl_1_bss_6D838;
+extern int fn_80007D58(void *);
+extern void lbl_8006D784(void *);
+extern void lbl_8006DD14(void *, void *);
+
+void fn_1_863E4(int index, void *arg) {
+    int offset = index * 0x620;
+
+    if (fn_80007D58(lbl_1_bss_6D838 + offset + 0x5e0) != 0) {
+        lbl_8006D784(arg);
+    } else {
+        lbl_8006DD14(lbl_1_bss_6D838 + offset + 0x5e0, arg);
+    }
+}
+/* fzgx:end fn_1_863E4 */
 
 /* fzgx:begin fn_1_864E8 */
 // Returns the indexed car record from the shared car table.

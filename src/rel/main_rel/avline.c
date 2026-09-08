@@ -1,5 +1,16 @@
 #include "types.h"
 
+/* fzgx:begin fn_1_58114 */
+#include "rel/main_rel/avline.h"
+
+extern u32 lbl_801A6410;
+extern u32 fn_1_45D0(u32, u32, unsigned char *, u32);
+
+void fn_1_58114(void) {
+    lbl_1_bss_6C840 = fn_1_45D0(lbl_801A6410, 0x6590, lbl_1_data_1C68C, 0x39f);
+}
+/* fzgx:end fn_1_58114 */
+
 /* fzgx:begin fn_1_58158 */
 extern u32 lbl_801A6410;
 extern u32 lbl_1_bss_6C840;
@@ -14,6 +25,14 @@ void fn_1_58158(void) {
 }
 /* fzgx:end fn_1_58158 */
 
+/* fzgx:begin fn_1_5819C */
+extern u16 lbl_1_bss_6C844;
+
+void fn_1_5819C(void) {
+    lbl_1_bss_6C844 = 0;
+}
+/* fzgx:end fn_1_5819C */
+
 /* fzgx:begin fn_1_584AC */
 extern u32 lbl_1_data_1D628;
 
@@ -25,3 +44,119 @@ u32 fn_1_584AC(void) {
     return (next >> 16) & 0x7FFFu;
 }
 /* fzgx:end fn_1_584AC */
+
+/* fzgx:begin fn_1_58854 */
+#include "rel/main_rel/avline.h"
+
+typedef struct {
+    s8 unk_0;
+    u8 pad_1[0xb];
+    s16 unk_C;
+} AvlineObj;
+
+typedef void (*AvlineCallback)(void *);
+
+extern u8 lbl_1_data_1D514[276];
+extern u32 lbl_801A6410;
+extern u8 lbl_1_data_1D62C[148];
+extern void fn_1_9F870(void);
+extern void fn_1_58158(void);
+extern void fn_1_46B4(u32, u32, void *, u32);
+
+void fn_1_58854(void) {
+    s32 count;
+    AvlineObj *obj;
+    s32 index;
+    AvlineCallback callback;
+
+    fn_1_9F870();
+    fn_1_58158();
+
+    obj = *(AvlineObj **)&lbl_1_bss_6C848;
+    count = 0xbe;
+    index = 0;
+    while (count > 0) {
+        if (obj->unk_0 != 0) {
+            callback = ((AvlineCallback *)lbl_1_data_1D514)[obj->unk_C];
+            callback(obj);
+            obj->unk_0 = index;
+        }
+        count--;
+        obj = (AvlineObj *)((u8 *)obj + 0xe8);
+    }
+
+    obj = (AvlineObj *)lbl_1_bss_6C84C;
+    count = 0xc8;
+    index = 0;
+    while (count > 0) {
+        if (obj->unk_0 != 0) {
+            callback = ((AvlineCallback *)lbl_1_data_1D514)[obj->unk_C];
+            callback(obj);
+            obj->unk_0 = index;
+        }
+        count--;
+        obj = (AvlineObj *)((u8 *)obj + 0xe8);
+    }
+
+    fn_1_46B4(lbl_801A6410, *(u32 *)&lbl_1_bss_6C848,
+              lbl_1_data_1D62C, 0x156);
+    fn_1_46B4(lbl_801A6410, *(u32 *)&lbl_1_bss_6C84C,
+              lbl_1_data_1D62C, 0x157);
+
+    *(u32 *)&lbl_1_bss_6C848 = 0;
+    lbl_1_bss_6C84C = 0;
+}
+/* fzgx:end fn_1_58854 */
+
+/* fzgx:begin fn_1_591A0 */
+#include "rel/main_rel/avline.h"
+
+typedef struct {
+    s8 unk_0;
+    u8 pad_1[0x7];
+    u32 unk_8;
+    s16 unk_C;
+    u8 pad_E[0xDA];
+} Fn591A0Obj;
+
+extern u8 lbl_1_data_1D514[276];
+
+void fn_1_591A0(s32 id) {
+    {
+        Fn591A0Obj *obj;
+        void (**table)(void *);
+        s32 count;
+        s32 zero;
+
+        obj = *(Fn591A0Obj **)&lbl_1_bss_6C848;
+        table = (void (**)(void *))lbl_1_data_1D514;
+        zero = 0;
+        for (count = 0xbe; count > 0; count--) {
+            if (obj->unk_0 && obj->unk_C == id) {
+                table[obj->unk_C](obj);
+                obj->unk_8 |= (u32)0x8000 << 16;
+                obj->unk_0 = zero;
+            }
+            obj++;
+        }
+    }
+    {
+        s32 count;
+        Fn591A0Obj *obj;
+        void (**table)(void *);
+        s32 zero;
+
+        obj = (Fn591A0Obj *)lbl_1_bss_6C84C;
+        table = (void (**)(void *))lbl_1_data_1D514;
+        zero = 0;
+        for (count = 0xc8; count > 0; count--) {
+            if (obj->unk_0 && obj->unk_C == id) {
+                table[obj->unk_C](obj);
+                obj->unk_8 |= (u32)0x8000 << 16;
+                obj->unk_0 = zero;
+            }
+            obj++;
+        }
+    }
+}
+/* fzgx:end fn_1_591A0 */

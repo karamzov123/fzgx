@@ -1,6 +1,52 @@
 #include "types.h"
 #include "rel/main_rel/globals.h"
 
+/* fzgx:begin fn_1_494CC */
+void fn_1_494CC(u8 value) {
+    lbl_1_bss_4B9CC.unk_44 = value;
+}
+/* fzgx:end fn_1_494CC */
+
+/* fzgx:begin fn_1_494DC */
+#include "rel/main_rel/font.h"
+
+extern const f32 lbl_1_rodata_10D4;
+extern void fn_1_4955C(f32 value1, f32 value2);
+
+void fn_1_494DC(s16 index) {
+    lbl_1_bss_4B9CC.unk_C = index;
+    fn_1_4955C(lbl_1_rodata_10D4, lbl_1_rodata_10D4);
+}
+/* fzgx:end fn_1_494DC */
+
+/* fzgx:begin fn_1_49514 */
+void fn_1_49514(u32 *value) {
+    lbl_1_bss_4B9CC.unk_10 = *value;
+}
+/* fzgx:end fn_1_49514 */
+
+/* fzgx:begin fn_1_49528 */
+#include "rel/main_rel/font.h"
+
+void fn_1_49528(u32 *value) {
+    lbl_1_bss_4B9CC.unk_14 = *value;
+}
+/* fzgx:end fn_1_49528 */
+
+/* fzgx:begin fn_1_4953C */
+#include "rel/main_rel/font.h"
+
+void fn_1_4953C(s16 value) {
+    lbl_1_bss_4B9CC.unk_E = value;
+}
+/* fzgx:end fn_1_4953C */
+
+/* fzgx:begin fn_1_4954C */
+void fn_1_4954C(f32 value) {
+    lbl_1_bss_4B9CC.unk_18 = value;
+}
+/* fzgx:end fn_1_4954C */
+
 /* fzgx:begin fn_1_4955C */
 extern f32 lbl_1_data_1AEA8[616];
 
@@ -14,12 +60,69 @@ void fn_1_4955C(f32 value1, f32 value2) {
 }
 /* fzgx:end fn_1_4955C */
 
+/* fzgx:begin fn_1_49590 */
+void fn_1_49590(f32 value) {
+    lbl_1_bss_4B9CC.unk_24 = value;
+}
+/* fzgx:end fn_1_49590 */
+
+/* fzgx:begin fn_1_495A0 */
+void fn_1_495A0(f32 value) {
+    lbl_1_bss_4B9CC.unk_28 = value;
+}
+/* fzgx:end fn_1_495A0 */
+
+/* fzgx:begin fn_1_495B0 */
+void fn_1_495B0(u32 value) {
+    lbl_1_bss_4B9CC.unk_2C |= value;
+}
+/* fzgx:end fn_1_495B0 */
+
 /* fzgx:begin fn_1_495C8 */
 void fn_1_495C8(u8 value) {
     // Update the current font state flag.
     lbl_1_bss_4B9CC.unk_36 = value;
 }
 /* fzgx:end fn_1_495C8 */
+
+/* fzgx:begin fn_1_495D8 */
+void fn_1_495D8(u16 value1, u16 value2, f32 value3) {
+    lbl_1_bss_4B9CC.unk_32 = value1;
+    lbl_1_bss_4B9CC.unk_2C |= 0x40000000;
+    lbl_1_bss_4B9CC.unk_34 = value2;
+    lbl_1_bss_4B9CC.unk_38 = value3;
+}
+/* fzgx:end fn_1_495D8 */
+
+/* fzgx:begin fn_1_495FC */
+void fn_1_495FC(void) {
+    lbl_1_bss_4B9CC.unk_2C |= 0x40000000;
+}
+/* fzgx:end fn_1_495FC */
+
+/* fzgx:begin fn_1_49614 */
+void fn_1_49614(void) {
+    lbl_1_bss_4B9CC.unk_2C &= 0xBFFFFFFF;
+}
+/* fzgx:end fn_1_49614 */
+
+/* fzgx:begin fn_1_4962C */
+void fn_1_4962C(void) {
+    lbl_1_bss_4B9CC.unk_2C |= 0x20000000;
+}
+/* fzgx:end fn_1_4962C */
+
+/* fzgx:begin fn_1_49644 */
+void fn_1_49644(void) {
+    lbl_1_bss_4B9CC.unk_2C &= 0xDFFFFFFF;
+}
+/* fzgx:end fn_1_49644 */
+
+/* fzgx:begin fn_1_4965C */
+void fn_1_4965C(u8 value) {
+    lbl_1_bss_4B9CC.unk_37 = value;
+}
+/* fzgx:end fn_1_4965C */
 
 /* fzgx:begin fn_1_4966C */
 void fn_1_4966C(f32 value1, f32 value2) {
@@ -38,12 +141,53 @@ void fn_1_496FC(f32 value1, f32 value2) {
 }
 /* fzgx:end fn_1_496FC */
 
+/* fzgx:begin fn_1_49714 */
+void fn_1_49714(f32 value1, f32 value2, f32 value3) {
+    lbl_1_bss_4B9CC.unk_0 = value3;
+    lbl_1_bss_4B9CC.unk_4 = value1;
+    lbl_1_bss_4B9CC.unk_8 = value2;
+}
+/* fzgx:end fn_1_49714 */
+
+/* fzgx:begin fn_1_49728 */
+void fn_1_49728(u8 value) {
+    lbl_1_bss_4B9CC.unk_45 = value;
+}
+/* fzgx:end fn_1_49728 */
+
 /* fzgx:begin fn_1_49738 */
  // Store the supplied value in the font state used by subsequent rendering.
 void fn_1_49738(u32 value) {
     lbl_1_bss_4B9CC.unk_54 = value;
 }
 /* fzgx:end fn_1_49738 */
+
+/* fzgx:begin fn_1_49748 */
+void fn_1_49748(f32 value) {
+    lbl_1_bss_4B9CC.unk_50 = value;
+}
+/* fzgx:end fn_1_49748 */
+
+/* fzgx:begin fn_1_49758 */
+void fn_1_49758(u8 value) {
+    lbl_1_bss_4B9CC.unk_46 = value;
+}
+/* fzgx:end fn_1_49758 */
+
+/* fzgx:begin fn_1_49768 */
+void fn_1_49768(u8 value) {
+    lbl_1_bss_4B9CC.unk_47 = value;
+}
+/* fzgx:end fn_1_49768 */
+
+/* fzgx:begin fn_1_49778 */
+void fn_1_49778(s16 value1, s16 value2, s16 value3, s16 value4) {
+    lbl_1_bss_4B9CC.unk_48 = value1;
+    lbl_1_bss_4B9CC.unk_4A = value2;
+    lbl_1_bss_4B9CC.unk_4C = value3;
+    lbl_1_bss_4B9CC.unk_4E = value4;
+}
+/* fzgx:end fn_1_49778 */
 
 /* fzgx:begin fn_1_4AEB4 */
 extern f32 lbl_1_bss_3E05C;
@@ -52,6 +196,37 @@ void fn_1_4AEB4(f32 value) {
     lbl_1_bss_3E05C = value;
 }
 /* fzgx:end fn_1_4AEB4 */
+
+/* fzgx:begin fn_1_4AEC0 */
+#include "rel/main_rel/font.h"
+
+extern f32 lbl_1_rodata_10C0[5];
+
+u32 fn_1_4AEC0(u32 value) {
+    u32 previous = lbl_1_bss_3E058;
+
+    lbl_1_bss_3E05C = lbl_1_rodata_10C0[0];
+    lbl_1_bss_3E058 = value;
+
+    return previous;
+}
+/* fzgx:end fn_1_4AEC0 */
+
+/* fzgx:begin fn_1_4B040 */
+extern f32 fn_1_4B1D4(s32 mode, s32 value);
+
+void fn_1_4B040(s32 value) {
+    fn_1_4B1D4(0, value);
+}
+/* fzgx:end fn_1_4B040 */
+
+/* fzgx:begin fn_1_4B068 */
+extern void fn_1_4B1D4(s32 mode, s32 value);
+
+void fn_1_4B068(s32 value) {
+    fn_1_4B1D4(1, value);
+}
+/* fzgx:end fn_1_4B068 */
 
 /* fzgx:begin fn_1_4B16C */
 extern f32 fn_1_4B1D4(s32 mode, s32 value);
@@ -69,6 +244,29 @@ s32 fn_1_4B1A0(s32 value) {
 }
 /* fzgx:end fn_1_4B1A0 */
 
+/* fzgx:begin fn_1_4B83C */
+extern u32 strlen(const char *str);
+extern f32 fn_1_4B1D4(u32 arg0, u32 arg1);
+extern void fn_8008069C(void *arg0, void *arg1, u32 arg2, ...);
+
+void fn_1_4B83C(void *arg0, void *arg1, u32 arg2, const char *arg3) {
+    u32 length;
+    s32 converted;
+
+    length = strlen(arg3);
+    converted = (s32)fn_1_4B1D4(3, arg2 + length);
+    fn_8008069C(arg0, arg1, length + converted);
+}
+/* fzgx:end fn_1_4B83C */
+
+/* fzgx:begin fn_1_4B8BC */
+extern u32 lbl_1_bss_4BA58;
+
+void fn_1_4B8BC(void) {
+    lbl_1_bss_4BA58 = 0;
+}
+/* fzgx:end fn_1_4B8BC */
+
 /* fzgx:begin fn_1_4B8CC */
 extern u32 lbl_1_bss_4BA5C;
 
@@ -82,6 +280,26 @@ void fn_1_4B8CC(void) {
 void fn_1_4BD48(void) {
 }
 /* fzgx:end fn_1_4BD48 */
+
+/* fzgx:begin fn_1_4D0D4 */
+extern f32 lbl_1_rodata_26B8[16];
+extern void fn_1_4D10C(void *data, f32 scale, f32 value);
+
+void fn_1_4D0D4(u32 *object, f32 value) {
+    u32 data = *object;
+    fn_1_4D10C(&data, lbl_1_rodata_26B8[0], value);
+}
+/* fzgx:end fn_1_4D0D4 */
+
+/* fzgx:begin fn_1_4D274 */
+extern f32 lbl_1_rodata_26B8[16];
+extern void fn_1_4D2AC(void *data, f32 scale, f32 value);
+
+void fn_1_4D274(u32 *object, f32 value) {
+    u32 data = *object;
+    fn_1_4D2AC(&data, lbl_1_rodata_26B8[0], value);
+}
+/* fzgx:end fn_1_4D274 */
 
 /* fzgx:begin fn_1_4DCB8 noprologue */
 #include "types.h"
@@ -101,6 +319,50 @@ u8 *fn_1_4DCD0(void) {
 }
 /* fzgx:end fn_1_4DCD0 */
 
+/* fzgx:begin fn_1_4DCE0 */
+u8 *fn_1_4DCE0(void) {
+    return (u8 *)&lbl_1_bss_4C688 + 0x10;
+}
+/* fzgx:end fn_1_4DCE0 */
+
+/* fzgx:begin fn_1_4DCF0 */
+u8 *fn_1_4DCF0(void) {
+    return (u8 *)&lbl_1_bss_4C688 + 0x14;
+}
+/* fzgx:end fn_1_4DCF0 */
+
+/* fzgx:begin fn_1_4DD00 */
+u8 *fn_1_4DD00(void) {
+    return (u8 *)&lbl_1_bss_4C688 + 0x18;
+}
+/* fzgx:end fn_1_4DD00 */
+
+/* fzgx:begin fn_1_4DD10 */
+#include "rel/main_rel/font.h"
+
+u8 *fn_1_4DD10(void) {
+    return &lbl_1_bss_4C688.pad_10[0xc];
+}
+/* fzgx:end fn_1_4DD10 */
+
+/* fzgx:begin fn_1_4DD20 */
+u8 *fn_1_4DD20(void) {
+    return (u8 *)&lbl_1_bss_4C688 + 0x30;
+}
+/* fzgx:end fn_1_4DD20 */
+
+/* fzgx:begin fn_1_4DD30 */
+u8 *fn_1_4DD30(void) {
+    return &lbl_1_bss_4C688.pad_4[0x30];
+}
+/* fzgx:end fn_1_4DD30 */
+
+/* fzgx:begin fn_1_4DD40 */
+u8 *fn_1_4DD40(void) {
+    return (u8 *)&lbl_1_bss_4C688 + 0x40;
+}
+/* fzgx:end fn_1_4DD40 */
+
 /* fzgx:begin fn_1_4DD50 */
 u8 *fn_1_4DD50(void) {
     // Return the byte address used by the font data at offset 0x41.
@@ -108,12 +370,42 @@ u8 *fn_1_4DD50(void) {
 }
 /* fzgx:end fn_1_4DD50 */
 
+/* fzgx:begin fn_1_4DD60 */
+u8 *fn_1_4DD60(void) {
+    return &lbl_1_bss_4C688.pad_4[0x3e];
+}
+/* fzgx:end fn_1_4DD60 */
+
+/* fzgx:begin fn_1_4DD70 */
+u8 *fn_1_4DD70(void) {
+    return (u8 *)&lbl_1_bss_4C688 + 0x44;
+}
+/* fzgx:end fn_1_4DD70 */
+
+/* fzgx:begin fn_1_4DD80 */
+u8 *fn_1_4DD80(void) {
+    return &lbl_1_bss_4C688.pad_4[0x41];
+}
+/* fzgx:end fn_1_4DD80 */
+
+/* fzgx:begin fn_1_4DD90 */
+u8 *fn_1_4DD90(void) {
+    return &lbl_1_bss_4C688.pad_4[0x42];
+}
+/* fzgx:end fn_1_4DD90 */
+
 /* fzgx:begin fn_1_4DDA0 */
  // Return the byte address six bytes into the shared font state.
 u8 *fn_1_4DDA0(void) {
     return &lbl_1_bss_4C688.pad_4[2];
 }
 /* fzgx:end fn_1_4DDA0 */
+
+/* fzgx:begin fn_1_4DDB0 */
+u8 *fn_1_4DDB0(void) {
+    return &lbl_1_bss_4C688.pad_10[0x50];
+}
+/* fzgx:end fn_1_4DDB0 */
 
 /* fzgx:begin fn_1_4DE44 noprologue */
 #include "types.h"
@@ -142,6 +434,121 @@ void fn_1_4DE44(void) {
 }
 /* fzgx:end fn_1_4DE44 */
 
+/* fzgx:begin fn_1_4E0F4 */
+extern void fn_800724C8(void);
+extern void fn_8007245C(int);
+extern void fn_80074788(int);
+extern void fn_80074660(int);
+extern void fn_80073678(int);
+extern void fn_80073898(int);
+extern void fn_80073C6C(int);
+extern void fn_800745A4(int, int, int, int, int, int);
+extern void fn_800734A8(int, int, int, int);
+extern void fn_80072AB0(int, int, int);
+extern void fn_80072C24(int, int, int, int, int);
+extern void fn_80072D64(int, int, int, int, int, int);
+extern void fn_80072CC4(int, int, int, int, int);
+extern void fn_80072E20(int, int, int, int, int, int);
+extern void fn_80074918(int, int, int);
+extern void fn_800728A8(int, int, int, int);
+extern void fn_800720B0(int);
+extern void fn_80072864(int);
+
+void fn_1_4E0F4(void) {
+    fn_800724C8();
+    fn_8007245C(0x2200);
+    fn_80074788(0);
+    fn_80074660(1);
+    fn_80073678(1);
+    fn_80073898(0);
+    fn_80073C6C(0);
+    fn_800745A4(0, 1, 4, 0x3c, 0, 0x7d);
+    fn_800734A8(0, 0, 0, 0xff);
+    fn_80072AB0(0, 0, 0);
+    fn_80072C24(0, 0xf, 2, 8, 4);
+    fn_80072D64(0, 0, 0, 0, 1, 0);
+    fn_80072CC4(0, 7, 1, 4, 2);
+    fn_80072E20(0, 0, 0, 0, 1, 0);
+    fn_80074918(1, 7, 0);
+    fn_800728A8(1, 4, 5, 0);
+    fn_800720B0(0);
+    fn_80072864(2);
+}
+/* fzgx:end fn_1_4E0F4 */
+
+/* fzgx:begin fn_1_4E500 */
+extern void fn_1_A71CC(void);
+extern void fn_800724C8(void);
+extern void fn_8007245C(s32);
+extern void fn_80074788(s32);
+extern void fn_80074660(s32);
+extern void fn_80073678(s32);
+extern void fn_80073898(s32);
+extern void fn_80073C6C(s32);
+extern void fn_800745A4(s32, s32, s32, s32, s32, s32);
+extern void fn_800734A8(s32, s32, s32, s32);
+extern void fn_80072AB0(s32, s32, s32);
+extern void fn_80072C24(s32, s32, s32, s32, s32);
+extern void fn_80072D64(s32, s32, s32, s32, s32, s32);
+extern void fn_80072CC4(s32, s32, s32, s32, s32);
+extern void fn_80072E20(s32, s32, s32, s32, s32, s32);
+extern void fn_80074918(s32, s32, s32);
+extern void fn_800728A8(s32, s32, s32, s32);
+extern void fn_800720B0(s32);
+extern void fn_80072864(s32);
+extern void lbl_8006D758(void);
+extern void fn_80072558(void);
+
+void fn_1_4E500(void) {
+    fn_1_A71CC();
+    fn_800724C8();
+    fn_8007245C(0x2200);
+    fn_80074788(0);
+    fn_80074660(1);
+    fn_80073678(1);
+    fn_80073898(0);
+    fn_80073C6C(0);
+    fn_800745A4(0, 1, 4, 0x3c, 0, 0x7d);
+    fn_800734A8(0, 0, 0, 0xff);
+    fn_80072AB0(0, 0, 0);
+    fn_80072C24(0, 0xf, 2, 8, 4);
+    fn_80072D64(0, 0, 0, 0, 1, 0);
+    fn_80072CC4(0, 7, 1, 4, 2);
+    fn_80072E20(0, 0, 0, 0, 1, 0);
+    fn_80074918(1, 7, 0);
+    fn_800728A8(1, 4, 5, 0);
+    fn_800720B0(0);
+    fn_80072864(2);
+    lbl_8006D758();
+    fn_80072558();
+}
+/* fzgx:end fn_1_4E500 */
+
+/* fzgx:begin fn_1_4E638 */
+extern f32 lbl_1_rodata_26F8[22];
+extern f32 fn_1_A6FE8(void);
+extern void *lbl_801A6D00;
+extern void fn_80015E18(void *, f32, f32, f32, f32);
+extern void fn_80015EE8(void *, f32, f32, f32, f32, f32, f32);
+extern void fn_800737E4(void *, s32);
+
+void fn_1_4E638(s32 arg) {
+    f32 *values;
+
+    values = lbl_1_rodata_26F8;
+    if (arg != 0) {
+        fn_80015E18((u8 *)lbl_801A6D00 + 0xc8,
+                    values[26], fn_1_A6FE8(), values[27], values[28]);
+        fn_800737E4((u8 *)lbl_801A6D00 + 0xc8, 0);
+    } else {
+        fn_80015EE8((u8 *)lbl_801A6D00 + 0xc8,
+                    values[22], values[29], values[22], values[30],
+                    values[22], values[28]);
+        fn_800737E4((u8 *)lbl_801A6D00 + 0xc8, 1);
+    }
+}
+/* fzgx:end fn_1_4E638 */
+
 /* fzgx:begin fn_1_4E6F4 */
 extern void fn_1_A722C(void);
 extern void fn_80074918(s32, s32, s32);
@@ -160,6 +567,14 @@ void fn_1_4F724(void) {
     lbl_1_bss_646D2[0] = 0;
 }
 /* fzgx:end fn_1_4F724 */
+
+/* fzgx:begin fn_1_50164 */
+extern void fn_1_50190(f32 a, f32 b, f32 c, f32 d, f32 e, f32 f);
+
+void fn_1_50164(f32 a, f32 b, f32 c, f32 d) {
+    fn_1_50190(a, b, c, c, d, d);
+}
+/* fzgx:end fn_1_50164 */
 
 /* fzgx:begin fn_1_51564 */
 extern u16 lbl_1_bss_4C678[0xC033];
@@ -184,6 +599,16 @@ void fn_1_51990(void *obj) {
 }
 /* fzgx:end fn_1_51990 */
 
+/* fzgx:begin fn_1_52070 */
+extern u32 lbl_1_bss_4E6AC;
+extern u32 lbl_1_bss_4E6A8;
+
+void fn_1_52070(u32 value) {
+    lbl_1_bss_4E6A8 = 1;
+    lbl_1_bss_4E6AC = value;
+}
+/* fzgx:end fn_1_52070 */
+
 /* fzgx:begin fn_1_52088 */
 extern u32 lbl_1_bss_4E6A8;
 extern u32 lbl_1_bss_4E6AC;
@@ -193,6 +618,23 @@ void fn_1_52088(void) {
     lbl_1_bss_4E6AC = 0;
 }
 /* fzgx:end fn_1_52088 */
+
+/* fzgx:begin fn_1_520A0 */
+extern u32 lbl_1_bss_4E6A8;
+extern u32 lbl_1_bss_4E6AC;
+extern u32 lbl_1_bss_646E0;
+extern u32 lbl_1_bss_646E4;
+
+void fn_1_520A0(void) {
+    u32 value_a;
+    u32 value_b;
+
+    value_a = lbl_1_bss_4E6A8;
+    value_b = lbl_1_bss_4E6AC;
+    lbl_1_bss_646E0 = value_a;
+    lbl_1_bss_646E4 = value_b;
+}
+/* fzgx:end fn_1_520A0 */
 
 /* fzgx:begin fn_1_520CC */
 extern u32 lbl_1_bss_646E0;
@@ -218,6 +660,38 @@ void fn_1_52B68(void *arg0, void *arg1) {
     fn_1_52BF8(arg0, arg1, 0);
 }
 /* fzgx:end fn_1_52B68 */
+
+/* fzgx:begin fn_1_52B8C */
+extern void fn_1_52BF8(void *arg0, void *arg1, s32 arg2);
+
+void fn_1_52B8C(void *arg0, void *arg1) {
+    fn_1_52BF8(arg0, arg1, 0x1000);
+}
+/* fzgx:end fn_1_52B8C */
+
+/* fzgx:begin fn_1_52BB0 */
+extern void fn_1_52BF8(void *arg0, void *arg1, s32 arg2);
+
+void fn_1_52BB0(void *arg0, void *arg1) {
+    fn_1_52BF8(arg0, arg1, 0x2000);
+}
+/* fzgx:end fn_1_52BB0 */
+
+/* fzgx:begin fn_1_52BD4 */
+extern void fn_1_52BF8(void *arg0, void *arg1, s32 arg2);
+
+void fn_1_52BD4(void *arg0, void *arg1) {
+    fn_1_52BF8(arg0, arg1, 0x3000);
+}
+/* fzgx:end fn_1_52BD4 */
+
+/* fzgx:begin fn_1_5415C */
+extern void fn_1_541A8(void *arg, s32 value);
+
+void fn_1_5415C(void *arg, s32 value) {
+    fn_1_541A8(arg, value);
+}
+/* fzgx:end fn_1_5415C */
 
 /* fzgx:begin fn_1_5417C */
 extern u32 lbl_801A66B4;
@@ -267,6 +741,24 @@ void *fn_1_541A8(void *arg, s32 value) {
 }
 /* fzgx:end fn_1_541A8 */
 
+/* fzgx:begin fn_1_54278 */
+extern u32 lbl_1_bss_4C680;
+extern u32 lbl_1_bss_4C684;
+
+void fn_1_54278(u32 arg0, u32 arg1) {
+    lbl_1_bss_4C680 = arg0;
+    lbl_1_bss_4C684 = arg1;
+}
+/* fzgx:end fn_1_54278 */
+
+/* fzgx:begin fn_1_5428C */
+#include "rel/main_rel/font.h"
+
+void fn_1_5428C(f32 value) {
+    lbl_1_data_1C508.unk_0 = value;
+}
+/* fzgx:end fn_1_5428C */
+
 /* fzgx:begin fn_1_54298 */
 extern u32 lbl_1_bss_4C680;
 
@@ -283,6 +775,133 @@ u32 fn_1_542A8(void) {
 }
 /* fzgx:end fn_1_542A8 */
 
+/* fzgx:begin fn_1_542B8 */
+#include "rel/main_rel/font.h"
+
+f32 fn_1_542B8(void) {
+    return lbl_1_data_1C508.unk_0;
+}
+/* fzgx:end fn_1_542B8 */
+
+/* fzgx:begin fn_1_542C4 */
+typedef struct FontState {
+    u8 pad30[0x30];
+    void *field_30;
+    void *field_34;
+    f32 field_38;
+    f32 field_3C;
+    f32 field_40;
+    u8 pad44[8];
+    f32 field_4C;
+} FontState;
+
+// Volatile fields preserve the retail's repeated global-state accesses.
+extern volatile FontState *lbl_801A66CC;
+extern void fn_1_54320(void);
+
+void fn_1_542C4(void *arg0, void *arg1, f32 arg2, f32 arg3, f32 arg4) {
+    lbl_801A66CC->field_30 = arg0;
+    lbl_801A66CC->field_34 = arg1;
+    lbl_801A66CC->field_38 = arg2;
+    lbl_801A66CC->field_3C = arg3;
+    lbl_801A66CC->field_40 = arg4;
+    lbl_801A66CC->field_4C = arg4 - arg3;
+    fn_1_54320();
+}
+/* fzgx:end fn_1_542C4 */
+
+/* fzgx:begin fn_1_54320 */
+typedef struct FontState {
+    u8 unk_0[0x30];
+    u8 *unk_30;
+    s32 unk_34;
+    u8 unk_38[0x0C];
+    void *unk_44;
+    void *unk_48;
+} FontState;
+
+extern FontState *lbl_801A66CC;
+extern void fn_1_54668(u8 *, s32, s32);
+
+void fn_1_54320(void) {
+    FontState *state;
+
+    state = lbl_801A66CC;
+    fn_1_54668(state->unk_30, state->unk_34, 1);
+    lbl_801A66CC->unk_44 =
+        lbl_801A66CC->unk_30 + ((lbl_801A66CC->unk_34 - 1) << 3);
+    lbl_801A66CC->unk_48 = lbl_801A66CC->unk_30;
+}
+/* fzgx:end fn_1_54320 */
+
+/* fzgx:begin fn_1_545B8 */
+typedef struct fn_1_545B8_manager {
+    u8 unk_00[0x30];
+    void *unk_30;
+    u32 unk_34;
+    u8 unk_38[0x0C];
+    u32 *unk_44;
+    u32 *unk_48;
+} fn_1_545B8_manager;
+
+extern fn_1_545B8_manager *lbl_801A66CC;
+extern void fn_1_547F8(void *node);
+extern void fn_1_54668(void *arg0, u32 arg1, u32 arg2);
+extern void fn_1_9FA18(void);
+extern void fn_1_58248(void);
+
+void fn_1_545B8(void) {
+    if (lbl_801A66CC->unk_48 >= lbl_801A66CC->unk_44) {
+        if (lbl_801A66CC->unk_44 > (u32 *)lbl_801A66CC->unk_30) {
+            *(lbl_801A66CC->unk_44 - 2) = 0;
+        }
+        fn_1_547F8(lbl_801A66CC->unk_48);
+    }
+
+    fn_1_54668(lbl_801A66CC->unk_30, lbl_801A66CC->unk_34, 1);
+    lbl_801A66CC->unk_44 =
+        (u32 *)((u8 *)lbl_801A66CC->unk_30 + (lbl_801A66CC->unk_34 - 1) * 8);
+    lbl_801A66CC->unk_48 = (u32 *)lbl_801A66CC->unk_30;
+    fn_1_9FA18();
+    fn_1_58248();
+}
+/* fzgx:end fn_1_545B8 */
+
+/* fzgx:begin fn_1_54668 */
+typedef struct fn_1_54668_node {
+    struct fn_1_54668_node *next;
+    void *data;
+} fn_1_54668_node;
+
+extern void fn_1_54848(void);
+
+void fn_1_54668(fn_1_54668_node *node, s32 count, u32 reverse) {
+    s32 i;
+
+    if (reverse == 0) {
+        i = count - 1;
+        for (; i > 0; i--) {
+            node->next = node + 1;
+            node->data = 0;
+            node++;
+        }
+        node->next = 0;
+        node->data = 0;
+    } else {
+        i = count - 1;
+        node += i;
+        for (; i > 0; i--) {
+            node->next = node - 1;
+            node->data = 0;
+            node--;
+        }
+        node->next = 0;
+        node->data = 0;
+    }
+    fn_1_54848();
+}
+/* fzgx:end fn_1_54668 */
+
 /* fzgx:begin fn_1_547F8 */
 typedef struct fn_1_547F8_node {
     struct fn_1_547F8_node *next;
@@ -298,6 +917,79 @@ void fn_1_547F8(fn_1_547F8_node *node) {
     }
 }
 /* fzgx:end fn_1_547F8 */
+
+/* fzgx:begin fn_1_54868 */
+typedef struct FontState {
+    u8 pad1A0[0x1A0];
+    u32 field_1A0;
+    u32 field_1A4;
+    u32 field_1A8;
+    u32 field_1AC;
+} FontState;
+
+// Volatile preserves the retail's repeated global-state accesses.
+extern volatile FontState *lbl_801A66CC;
+
+void fn_1_54868(u32 arg0, u32 arg1) {
+    lbl_801A66CC->field_1A4 = arg0;
+    lbl_801A66CC->field_1A8 = arg1;
+    lbl_801A66CC->field_1A0 = lbl_801A66CC->field_1A4;
+    lbl_801A66CC->field_1AC = lbl_801A66CC->field_1A8;
+}
+/* fzgx:end fn_1_54868 */
+
+/* fzgx:begin fn_1_5489C */
+void fn_1_5489C(void **arg0, void **arg1) {
+    void *value = *arg0;
+    *arg1 = value;
+    *arg0 = (void *)arg1;
+}
+/* fzgx:end fn_1_5489C */
+
+/* fzgx:begin fn_1_548AC */
+typedef struct FontCounterState {
+    u8 pad_1a0[0x1a0];
+    u32 field_1a0;
+    u8 pad_1a4[8];
+    u32 field_1ac;
+} FontCounterState;
+
+extern FontCounterState *lbl_801A66CC;
+
+u32 fn_1_548AC(u32 amount) {
+    FontCounterState *state;
+    u32 old_value;
+
+    state = lbl_801A66CC;
+    if (state->field_1ac < amount) {
+        return 0;
+    }
+
+    old_value = state->field_1a0;
+    state->field_1a0 = old_value + amount;
+    state = lbl_801A66CC;
+    state->field_1ac -= amount;
+    return old_value;
+}
+/* fzgx:end fn_1_548AC */
+
+/* fzgx:begin fn_1_54DCC */
+extern void *lbl_801A66CC;
+extern void fn_800794F0(u8 *data, void *value, s32 size);
+
+void fn_1_54DCC(u8 *data) {
+    fn_800794F0(data, (u8 *)lbl_801A66CC + 0x50, 0x84);
+}
+/* fzgx:end fn_1_54DCC */
+
+/* fzgx:begin fn_1_54E00 */
+extern void *lbl_801A66CC;
+extern void fn_800794F0(void *data, void *value, s32 size);
+
+void fn_1_54E00(void *value) {
+    fn_800794F0((u8 *)lbl_801A66CC + 0x50, value, 0x84);
+}
+/* fzgx:end fn_1_54E00 */
 
 /* fzgx:begin fn_1_550A8 */
 extern u8 lbl_1_bss_6C710[136];
@@ -318,6 +1010,95 @@ void fn_1_550E0(void) {
     fn_800794F0((u8 *)lbl_801A66CC + 0x50, lbl_1_bss_6C710, 0x84);
 }
 /* fzgx:end fn_1_550E0 */
+
+/* fzgx:begin fn_1_5557C */
+#include "rel/main_rel/font.h"
+
+extern f32 lbl_1_bss_6C7A0;
+extern s32 fn_1_54F5C(u8 *data, f32 value, f32 scale);
+extern void fn_1_55210(void *value);
+extern void fn_1_56530(void);
+
+typedef struct {
+    u8 unk_00[8];
+    u32 unk_08;
+    u32 unk_0C;
+    u32 unk_10;
+    f32 unk_14;
+} Fn1_5557CObject;
+
+void fn_1_5557C(Fn1_5557CObject *value) {
+    if (fn_1_54F5C((u8 *)&value->unk_08, value->unk_14, lbl_1_bss_6C7A0)) {
+        fn_1_55210(value);
+        return;
+    }
+
+    fn_1_56530();
+}
+/* fzgx:end fn_1_5557C */
+
+/* fzgx:begin fn_1_555D0 */
+#include "rel/main_rel/font.h"
+
+extern f32 lbl_1_bss_6C7A0;
+extern s32 fn_1_54F5C(u8 *data, f32 value, f32 scale);
+extern void fn_80072558(void);
+extern void fn_1_55210(void *value);
+extern void fn_1_56530(void);
+
+typedef struct {
+    u8 unk_00[8];
+    u32 unk_08;
+    u32 unk_0C;
+    u32 unk_10;
+    f32 unk_14;
+} Fn1_555D0Object;
+
+void fn_1_555D0(Fn1_555D0Object *value) {
+    if (fn_1_54F5C((u8 *)&value->unk_08, value->unk_14, lbl_1_bss_6C7A0)) {
+        fn_80072558();
+        fn_1_55210(value);
+        return;
+    }
+
+    fn_1_56530();
+}
+/* fzgx:end fn_1_555D0 */
+
+/* fzgx:begin fn_1_55628 */
+#include "rel/main_rel/font.h"
+
+extern const f32 lbl_1_rodata_28A8;
+extern void fn_1_557C4(void *value);
+extern void fn_1_556B8(void *value);
+
+typedef struct {
+    u8 pad_00[0x1C];
+    u16 unk_1C;
+} Fn1_55628Object;
+
+void fn_1_55628(Fn1_55628Object *value) {
+    if (value->unk_1C != 0 || lbl_1_rodata_28A8 != lbl_1_bss_6C7A4.unk_8) {
+        fn_1_557C4(value);
+    } else {
+        fn_1_556B8(value);
+    }
+}
+/* fzgx:end fn_1_55628 */
+
+/* fzgx:begin fn_1_55678 */
+#include "rel/main_rel/font.h"
+
+extern void fn_1_563E4(void *data);
+extern void fn_80077E7C(void *value);
+extern void fn_1_56530(void);
+
+void fn_1_55678(void *value) {
+    fn_1_563E4(&lbl_1_bss_6C7A4);
+    fn_80077E7C(value);
+    fn_1_56530();
+}
+/* fzgx:end fn_1_55678 */
 
 /* fzgx:begin fn_1_556B8 noprologue */
 #include "types.h"
@@ -361,6 +1142,43 @@ void fn_1_556F8(Fn1_556F8Object *value) {
 }
 /* fzgx:end fn_1_556F8 */
 
+/* fzgx:begin fn_1_5575C */
+extern f32 lbl_1_bss_6C7A0;
+extern s32 fn_1_54F5C(u8 *data, f32 value, f32 scale);
+extern void fn_80072558(void);
+extern void fn_1_563E4(void *data);
+extern void fn_80077F8C(void *value);
+extern void fn_1_56530(void);
+
+typedef struct {
+    u8 unk_00[8];
+    u32 unk_08;
+    u32 unk_0C;
+    u32 unk_10;
+    f32 unk_14;
+} Fn1_5575CObject;
+
+void fn_1_5575C(Fn1_5575CObject *value) {
+    if (fn_1_54F5C((u8 *)&value->unk_08, value->unk_14, lbl_1_bss_6C7A0)) {
+        fn_80072558();
+        fn_1_563E4(&lbl_1_bss_6C7A4);
+        fn_80077F8C(value);
+        fn_1_56530();
+        return;
+    }
+
+    fn_1_56530();
+}
+/* fzgx:end fn_1_5575C */
+
+/* fzgx:begin fn_1_55FC4 */
+extern f32 lbl_1_bss_6C7A0;
+
+void fn_1_55FC4(f32 value) {
+    lbl_1_bss_6C7A0 = value;
+}
+/* fzgx:end fn_1_55FC4 */
+
 /* fzgx:begin fn_1_55FD0 */
 extern void fn_80074CF4(void);
 
@@ -368,6 +1186,85 @@ void fn_1_55FD0(void) {
     fn_80074CF4();
 }
 /* fzgx:end fn_1_55FD0 */
+
+/* fzgx:begin fn_1_55FF0 */
+#include "rel/main_rel/font.h"
+
+void fn_1_55FF0(f32 value) {
+    lbl_1_bss_6C7A4.unk_8 = value;
+}
+/* fzgx:end fn_1_55FF0 */
+
+/* fzgx:begin fn_1_56000 */
+#include "rel/main_rel/font.h"
+
+void fn_1_56000(u8 value0, u8 value1, u8 value2) {
+    lbl_1_bss_6C7A4.unk_C = value0;
+    lbl_1_bss_6C7A4.unk_D = value1;
+    lbl_1_bss_6C7A4.unk_E = value2;
+}
+/* fzgx:end fn_1_56000 */
+
+/* fzgx:begin fn_1_560F0 */
+#include "rel/main_rel/font.h"
+
+extern u8 *lbl_801A66CC;
+extern void lbl_8006DD14(void *arg0, void *arg1);
+extern void fn_800749B0(s32 arg0, void *arg1);
+
+void fn_1_560F0(s32 index, void *arg) {
+    if (arg != NULL) {
+        lbl_1_bss_6C7CC.unk_0 |= (1u << 31) >> index;
+        lbl_8006DD14(arg, lbl_801A66CC + index * 0x30 + 0xe0);
+    }
+    fn_800749B0(index, arg);
+}
+/* fzgx:end fn_1_560F0 */
+
+/* fzgx:begin fn_1_56298 */
+#include "rel/main_rel/font.h"
+
+extern const f32 lbl_1_rodata_28AC;
+extern void fn_80074C74(u8 *value);
+
+void fn_1_56298(f32 value0, f32 value1, f32 value2, f32 value3) {
+    f32 scale = lbl_1_rodata_28AC;
+
+    lbl_1_bss_6C7A4.unk_4 = (u8)(scale * value0);
+    lbl_1_bss_6C7A4.unk_5 = (u8)(scale * value1);
+    lbl_1_bss_6C7A4.unk_6 = (u8)(scale * value2);
+    lbl_1_bss_6C7A4.unk_7 = (u8)(scale * value3);
+    fn_80074C74(&lbl_1_bss_6C7A4.unk_4);
+}
+/* fzgx:end fn_1_56298 */
+
+/* fzgx:begin fn_1_5634C */
+#include "rel/main_rel/font.h"
+
+void fn_1_5634C(u8 value) {
+    lbl_1_bss_6C7A4.unk_12 = value;
+}
+/* fzgx:end fn_1_5634C */
+
+/* fzgx:begin fn_1_5635C */
+#include "rel/main_rel/font.h"
+
+void fn_1_5635C(u8 value, f32 value2, f32 value3) {
+    lbl_1_bss_6C7A4.unk_13 = value;
+    *(f32 *)&lbl_1_bss_6C7A4.unk_18 = value2;
+    *(f32 *)&lbl_1_bss_6C7A4.unk_1C = value3;
+}
+/* fzgx:end fn_1_5635C */
+
+/* fzgx:begin fn_1_56374 */
+#include "rel/main_rel/font.h"
+
+void fn_1_56374(u8 value1, u8 value2, u8 value3) {
+    lbl_1_bss_6C7A4.unk_14 = value1;
+    lbl_1_bss_6C7A4.unk_15 = value2;
+    lbl_1_bss_6C7A4.unk_16 = value3;
+}
+/* fzgx:end fn_1_56374 */
 
 /* fzgx:begin fn_1_5638C */
 extern void fn_80074A7C(void);
@@ -379,8 +1276,58 @@ void fn_1_5638C(u32 value) {
 }
 /* fzgx:end fn_1_5638C */
 
+/* fzgx:begin fn_1_563B8 */
+extern void fn_80077BAC(void);
+
+void fn_1_563B8(u32 value) {
+    lbl_1_bss_6C7A4.unk_24 = value;
+    fn_80077BAC();
+}
+/* fzgx:end fn_1_563B8 */
+
+/* fzgx:begin fn_1_56530 */
+#include "rel/main_rel/font.h"
+
+extern const f32 lbl_1_rodata_28A8;
+
+void fn_1_56530(void) {
+    lbl_1_bss_6C7A0 = lbl_1_rodata_28A8;
+    lbl_1_bss_6C7A4.unk_8 = lbl_1_rodata_28A8;
+}
+/* fzgx:end fn_1_56530 */
+
+/* fzgx:begin fn_1_565E8 */
+extern u8 lbl_1_bss_6C7DC[100];
+
+u8 *fn_1_565E8(void) {
+    return lbl_1_bss_6C7DC;
+}
+/* fzgx:end fn_1_565E8 */
+
 /* fzgx:begin fn_1_565F4 */
 // fn_1_565F4: empty in retail (single blr).
 void fn_1_565F4(void) {
 }
 /* fzgx:end fn_1_565F4 */
+
+/* fzgx:begin fn_1_565F8 */
+extern void fn_1_565E8(void);
+extern void fn_1_45730(void);
+extern void fn_1_45B2C(void);
+extern void fn_1_458A0(void);
+extern void fn_1_45850(void);
+extern void fn_1_565F4(void);
+extern void fn_80070D60(void *);
+
+void fn_1_565F8(void) {
+    void (*functions[6])(void);
+
+    functions[0] = fn_1_565E8;
+    functions[1] = fn_1_45730;
+    functions[2] = fn_1_45B2C;
+    functions[3] = fn_1_458A0;
+    functions[4] = fn_1_45850;
+    functions[5] = fn_1_565F4;
+    fn_80070D60(functions);
+}
+/* fzgx:end fn_1_565F8 */
