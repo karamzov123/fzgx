@@ -1,4 +1,11 @@
 #include "types.h"
 
-// fn_1_48690: main_rel .text:0x00048690 size 0x34
-// Carved by fzgx. Replace this file's body with the matching C.
+extern void *fn_1_48730(void);
+
+u16 fn_1_48690(void) {
+    void *value = fn_1_48730();
+    if (value != 0) {
+        return *(u16 *)((u8 *)value + 8);
+    }
+    return 8;
+}
