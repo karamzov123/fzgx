@@ -65,7 +65,7 @@ Rules that hold for everyone:
   same deterministic fixup (`tools/fzgx/fixup.py`, type flips for compare/sign-extension diffs,
   a few seconds) on an agent's best body and submits a match in the agent's name. A unit may carry
   its own `mw_version`/`extra_cflags` (an `-O` override replaces the module's); `check`/`submit`
-  honour them before the carve. The permuter is offline only (150 s, one hit in three).
+  honour them before the carve. The permuter is not used: over the whole project it closed one function and costs minutes per try.
 - `fzgx trivial` matches single-`blr` and `li r3,N; blr` functions mechanically (419 landed on
   2026-09-08) and then lifts straight-line functions from the disassembly (`tools/fzgx/lift.py`:
   getters, setters, one-call wrappers, short call-free bodies; 102 landed the same day). Run it
