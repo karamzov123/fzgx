@@ -319,6 +319,23 @@ s32 fn_7_2384(struct fn_7_2384_Arg0 *arg0) {
 }
 /* fzgx:end fn_7_2384 */
 
+/* fzgx:begin fn_7_24D8 */
+struct fn_7_24D8_lbl_7_bss_29C {
+    u32 unk_0;
+};
+
+extern struct fn_7_24D8_lbl_7_bss_29C lbl_7_bss_29C;
+extern u32 fn_7_3FCC(void);
+
+s32 fn_7_24D8(void) {
+    if ((s32)lbl_7_bss_29C.unk_0 == 0) {
+    lbl_7_bss_29C.unk_0 = 1;
+    fn_7_3FCC();
+    }
+    return 2;
+}
+/* fzgx:end fn_7_24D8 */
+
 /* fzgx:begin fn_7_2514 */
 extern u32 fn_7_3FCC(void);
 

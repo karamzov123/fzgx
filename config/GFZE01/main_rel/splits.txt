@@ -4766,3 +4766,6 @@ rel/main_rel/bg_tow/fn_1_154C84.c:
 
 rel/main_rel/sound/fn_1_A4DF4.c:
 	.text       start:0x000A4DF4 end:0x000A4F18 align:4
+
+rel/main_rel/sel_static_disp/fn_1_14BCBC.c:
+	.text       start:0x0014BCBC end:0x0014BD44 align:4

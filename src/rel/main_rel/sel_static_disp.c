@@ -797,6 +797,35 @@ void fn_1_14BC3C(void) {
 }
 /* fzgx:end fn_1_14BC3C */
 
+/* fzgx:begin fn_1_14BCBC noprologue */
+#include "types.h"
+
+struct fn_1_14BCBC_lbl_1_bss_9F8_0_E20 {
+    u8 pad_0[0x8];
+    u16 unk_8;
+    u8 pad_A[0xA];
+};
+struct fn_1_14BCBC_lbl_1_bss_9F8 {
+    struct fn_1_14BCBC_lbl_1_bss_9F8_0_E20 unk_0[1];
+};
+struct fn_1_14BCBC_lbl_1_bss_8E52C {
+    u8 unk_0;
+};
+
+extern struct fn_1_14BCBC_lbl_1_bss_8E52C lbl_1_bss_8E52C;
+extern struct fn_1_14BCBC_lbl_1_bss_9F8 lbl_1_bss_9F8;
+extern u32 fn_1_14A9D0(u32, u32, u32, u32, u32, u32);
+extern u32 fn_1_14BFD8(u32, u32, u32);
+
+void fn_1_14BCBC(u32 arg0, u32 arg1) {
+    fn_1_14BFD8(arg1, arg0, 1);
+    if (((lbl_1_bss_9F8.unk_0[(s16)arg1].unk_8 >> 4) & 0x1) != 0) {
+    lbl_1_bss_8E52C.unk_0 = (lbl_1_bss_8E52C.unk_0 ^ 1);
+    }
+    fn_1_14A9D0(10, 1, 30, 180, 0, 0);
+}
+/* fzgx:end fn_1_14BCBC */
+
 /* fzgx:begin fn_1_14BD44 */
 void fn_1_14BD44(void *arg0, void *arg1) {
     fn_1_14BFD8(arg1, arg0, 0);

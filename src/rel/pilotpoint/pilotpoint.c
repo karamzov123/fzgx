@@ -236,6 +236,21 @@ void fn_14_C4F4(void) {
 }
 /* fzgx:end fn_14_C4F4 */
 
+/* fzgx:begin fn_14_C4F8 */
+struct fn_14_C4F8_lbl_1_bss_6EAB4 {
+    u32 unk_0;
+};
+
+extern struct fn_14_C4F8_lbl_1_bss_6EAB4 lbl_1_bss_6EAB4;
+extern u32 lbl_14_bss_0;
+
+u32 fn_14_C4F8(void) {
+    lbl_14_bss_0 = 60;
+    lbl_1_bss_6EAB4.unk_0 = (lbl_1_bss_6EAB4.unk_0 | 44);
+    return (u32)&lbl_1_bss_6EAB4;
+}
+/* fzgx:end fn_14_C4F8 */
+
 /* fzgx:begin fn_14_C698 */
 // fn_14_C698: empty in retail (single blr).
 void fn_14_C698(void) {
