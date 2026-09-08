@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_1_D07AC: main_rel .text:0x000D07AC size 0x18
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u8 lbl_1_bss_7ACA0[48];
+
+void fn_1_D07AC(u32 index, u32 value) {
+    ((u32 *)lbl_1_bss_7ACA0)[(index & 0xff) * 3] = value;
+}
