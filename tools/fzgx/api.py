@@ -319,6 +319,27 @@ def format_check(res: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def _promote_referenced_locals(p: Project, key: str, unit_src: Optional[str], unit: str) -> List[str]:
+    """Symbols our compiled object references that the config marks scope:local get scope:global."""
+    obj = oracle._base_object(p, unit) if unit_src else STATE_DIR / "work" / (key.replace(":", "__") + ".o")
+    if not obj.exists():
+        return []
+    from .poolfix import Elf  # scoped: tiny ELF reader, only here
+    try:
+        und = [e["name"] for e in Elf(obj.read_bytes()).symbols() if e["shndx"] == 0 and e["name"]]
+    except (ValueError, IndexError):
+        return []
+    by_module: Dict[str, List[str]] = {}
+    for n in und:
+        sd = p.find_symbol(n)
+        if sd and sd.scope == "local":
+            by_module.setdefault(sd.module, []).append(n)
+    out: List[str] = []
+    for module, names in by_module.items():
+        out += p.promote_to_global(module, names)
+    return out
+
+
 def _install(p: Project, unit_src: str, text: str, pool: bool = False) -> None:
     """Make `text` the canonical source of the unit: a block of its TU file, or its own file.
 
@@ -366,6 +387,14 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
         _set_unit_opts(p, unit_src, mw_version, extra_cflags)
         _reconfigure_and_split(p)
     res = oracle.check(p, symbol, max_diff_lines, source=src)
+    if res.ok and not _is_shadow(agent):
+        # a symbol our object references that retail kept local to its TU must become global:
+        # our unit is a different object now. dtk exports such a local under a suffixed name
+        # (`__init_cpp_800118A8`), so a carved unit only diffs clean after the next split.
+        promoted = _promote_referenced_locals(p, key, unit_src, res.unit)
+        if promoted and unit_src:
+            _reconfigure_and_split(p)
+            res = oracle.check(p, symbol, max_diff_lines, source=src)
     reason = oracle.unit_fully_matches(res)
     if not reason and not unit_src and not _is_shadow(agent):
         # accepted: now it gets a unit (split range + entry); the batch verify does the one split+relink

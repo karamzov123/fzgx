@@ -12,6 +12,7 @@ import base64
 import fcntl
 import json
 import os
+import re
 import shlex
 import struct
 import subprocess
@@ -391,9 +392,9 @@ def byte_diff(project: Project, module: str) -> Dict[str, object]:
     import struct as _struct
     from collections import Counter
     cfg = (project.config_dir / "config.yml").read_text().splitlines()
-    obj = None
+    obj = "sys/main.dol" if module == "main" else None
     for i, line in enumerate(cfg):
-        if line.strip() == f"name: {module}":
+        if obj is None and line.strip() == f"name: {module}":
             obj = next(l.split(":", 1)[1].strip() for l in reversed(cfg[:i]) if l.startswith("- object:"))
             break
     if obj is None:
@@ -405,6 +406,36 @@ def byte_diff(project: Project, module: str) -> Dict[str, object]:
     ours = ours_path.read_bytes()
     out: Dict[str, object] = {"size_retail": len(retail), "size_ours": len(ours)}
     if module == "main":
+        # DOL header: 7 text + 11 data sections (file offset, load address, size)
+        offs = _struct.unpack(">18I", retail[0:72]); addrs = _struct.unpack(">18I", retail[72:144]); sizes = _struct.unpack(">18I", retail[144:216])
+        funcs = project.functions(module)
+        def fn_at(addr):
+            lo, hi = 0, len(funcs) - 1
+            while lo <= hi:
+                m = (lo + hi) // 2
+                f = funcs[m]
+                if f.addr <= addr < f.end:
+                    return f.name
+                if addr < f.addr:
+                    hi = m - 1
+                else:
+                    lo = m + 1
+            return None
+        c = Counter()
+        other = 0
+        for i in range(18):
+            if not sizes[i]:
+                continue
+            for k in range(sizes[i]):
+                o = offs[i] + k
+                if o < len(ours) and retail[o] != ours[o]:
+                    if i < 7:
+                        c[fn_at(addrs[i] + k)] += 1
+                    else:
+                        other += 1
+        out["text_diffs"] = c.most_common(12)
+        out["other_diffs"] = other
+        out["sections"] = []
         return out
     def secs(d):
         n, off = _struct.unpack(">II", d[12:20])
@@ -432,3 +463,54 @@ def byte_diff(project: Project, module: str) -> Dict[str, object]:
     out["text_diffs"] = c.most_common(12)
     out["other_diffs"] = sum(1 for i in range(min(len(retail), len(ours))) if retail[i] != ours[i]) - sum(c.values())
     return out
+
+def why_link(project: Project, symbol: str) -> Dict[str, object]:
+    """Link with just this function's unit flipped to Matching and name where the bytes
+    differ. The unit must exist (a rejected match keeps its split range). Restores the
+    status afterwards. Deterministic diagnosis for 'matched at the object, not at link'."""
+    from .ledger import Ledger  # scoped: avoid the ledger import at oracle load
+    sym = project.resolve(symbol)
+    unit_src = project.unit_of(sym) if sym else None
+    if not unit_src:
+        return {"ok": False, "error": "no unit for this function"}
+    key = project.key(sym)
+    body = None
+    for cand in sorted((STATE_DIR / "attempts").glob(f"{key}.linkfail.*.c"), reverse=True):
+        body = cand.read_text()
+        break
+    with build_lock():
+        rec = project.unit_record(unit_src)
+        src_path = unit_source_path(project, unit_src)
+        saved_src = src_path.read_text() if src_path.exists() else None
+        units = project.load_units()
+        for u in units:
+            if u["source"] == unit_src:
+                u["status"] = "matching"
+        project.save_units(units)
+        if body and rec and not rec.get("tu"):
+            src_path.write_text(body)
+        elif body and rec and rec.get("tu"):
+            from . import tufile  # scoped: same reason
+            tufile.splice(project, rec, body)
+        configure(project)
+        cp = relink(project, keep_going=True)
+        diag = byte_diff(project, sym.module)
+        diag["relink_rc"] = cp.returncode
+        text = cp.stdout + cp.stderr
+        diag["failed_units"] = re.findall(r"FAILED: \[code=\d+\] (\S+)", text)[:8]
+        diag["errors"] = [l for l in text.splitlines() if l.startswith("#") and "Usage" not in l and "---" not in l][:12]
+        diag["tail"] = text.strip().splitlines()[-4:]
+        # restore
+        units = project.load_units()
+        for u in units:
+            if u["source"] == unit_src:
+                u["status"] = "nonmatching"
+        project.save_units(units)
+        if saved_src is not None and rec and not rec.get("tu"):
+            src_path.write_text(saved_src)
+        elif rec and rec.get("tu"):
+            from . import tufile  # scoped
+            tufile.remove(project, rec)
+        configure(project)
+        relink(project)
+    return {"ok": True, "symbol": symbol, "unit": unit_src, "diag": diag}

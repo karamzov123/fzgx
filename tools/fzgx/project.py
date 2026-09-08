@@ -290,6 +290,22 @@ class Project:
         return out[:limit]
 
     # -------------------------------------------------------------------- units
+    def promote_to_global(self, module: str, names: List[str]) -> List[str]:
+        """Mark symbols global in symbols.txt (a reference from another unit needs it: retail
+        kept them file-local in a TU our per-function units split). Returns those changed."""
+        path = self.module_config_dir(module) / "symbols.txt"
+        text = path.read_text()
+        changed = []
+        for n in names:
+            new, k = re.subn(rf"^({re.escape(n)} = .*?)scope:local\b", r"\1scope:global", text, count=1, flags=re.M)
+            if k:
+                text = new
+                changed.append(n)
+        if changed:
+            path.write_text(text)
+            self._symbols.pop(module, None)
+        return changed
+
     # ------------------------------------------------------------ retail objects
     def target_object_for(self, sym: Symbol) -> Optional[Path]:
         """The retail split object (dtk output) that defines this function: its own unit's
