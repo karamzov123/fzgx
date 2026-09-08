@@ -78,15 +78,15 @@ typedef struct {
     u32 unk_A0;
     u8 pad_A4[0x24];
     u32 unk_C8;
-} ScreenEffectEntry;
+} fn_1_7269C_ScreenEffectEntry;
 
 void fn_1_7269C(u32 arg0, u32 arg1, void *arg2) {
-    ScreenEffectEntry *object;
+    fn_1_7269C_ScreenEffectEntry *object;
 
-    object = (ScreenEffectEntry *)((u8 *)&lbl_1_bss_6C8EC + (arg0 & 0xff) * 0x10c);
+    object = (fn_1_7269C_ScreenEffectEntry *)((u8 *)&lbl_1_bss_6C8EC + (arg0 & 0xff) * 0x10c);
     fn_1_727BC(arg0, arg1, arg2);
-    ((ScreenEffectEntry *)((u8 *)object + (arg1 & 0xff) * 4))->unk_A0 = (u32)arg2;
-    ((ScreenEffectEntry *)((u8 *)object + (arg1 & 0xff) * 4))->unk_C8 = 1;
+    ((fn_1_7269C_ScreenEffectEntry *)((u8 *)object + (arg1 & 0xff) * 4))->unk_A0 = (u32)arg2;
+    ((fn_1_7269C_ScreenEffectEntry *)((u8 *)object + (arg1 & 0xff) * 4))->unk_C8 = 1;
     fn_1_76A94(object, arg1);
     fn_1_76DBC();
 }
@@ -139,15 +139,15 @@ typedef struct {
     s32 unk_E0;
     u8 pad_E4[0x20];
     void (*unk_104)(void *);
-} ScreenEffectEntry;
+} fn_1_728B0_ScreenEffectEntry;
 
-extern void fn_1_72980(ScreenEffectEntry *);
-extern void *fn_1_729F8(ScreenEffectEntry *);
+extern void fn_1_72980(fn_1_728B0_ScreenEffectEntry *);
+extern void *fn_1_729F8(fn_1_728B0_ScreenEffectEntry *);
 
 void fn_1_728B0(void) {
     u8 i;
     u8 *base;
-    ScreenEffectEntry *obj;
+    fn_1_728B0_ScreenEffectEntry *obj;
     void *result;
 
     if (lbl_1_bss_6D14C.unk_0 == 0) {
@@ -155,7 +155,7 @@ void fn_1_728B0(void) {
         fn_1_4E638(0);
         base = (u8 *)&lbl_1_bss_6C8EC;
         for (i = 0; i < 8; i++) {
-            obj = (ScreenEffectEntry *)(base + i * 0x10c);
+            obj = (fn_1_728B0_ScreenEffectEntry *)(base + i * 0x10c);
             if (obj->unk_DC != 0) {
                 if (obj->unk_DC == 0xe && obj->unk_E0 == 0) {
                     obj->unk_E0 = obj->unk_E0 + 1;
@@ -197,7 +197,7 @@ void fn_1_72980(Fn_1_72980_Obj *arg0) {
 /* fzgx:end fn_1_72980 */
 
 /* fzgx:begin fn_1_76650 */
-typedef struct ScreenEffect {
+typedef struct fn_1_76650_ScreenEffect {
     u8 pad_00[0xa0];
     s32 field_a0;
     s32 field_a4;
@@ -228,9 +228,9 @@ typedef struct ScreenEffect {
     s16 field_102;
     s32 field_104;
     u8 field_108;
-} ScreenEffect;
+} fn_1_76650_ScreenEffect;
 
-void fn_1_76650(ScreenEffect *effect) {
+void fn_1_76650(fn_1_76650_ScreenEffect *effect) {
     s32 value;
 
     effect->field_f2 = 0;
@@ -283,15 +283,15 @@ typedef struct {
     u8 pad_0[0xDC];
     s32 unk_DC;
     u8 pad_E0[0x2C];
-} ScreenEffectEntry;
+} fn_1_76BF8_ScreenEffectEntry;
 
 void fn_1_76BF8(void) {
     u8 i;
-    ScreenEffectEntry *entry;
+    fn_1_76BF8_ScreenEffectEntry *entry;
 
-    entry = (ScreenEffectEntry *)&lbl_1_bss_6C8EC;
+    entry = (fn_1_76BF8_ScreenEffectEntry *)&lbl_1_bss_6C8EC;
     for (i = 0; i < 8; i++) {
-        entry = (ScreenEffectEntry *)((u8 *)&lbl_1_bss_6C8EC + i * 0x10C);
+        entry = (fn_1_76BF8_ScreenEffectEntry *)((u8 *)&lbl_1_bss_6C8EC + i * 0x10C);
         if (entry->unk_DC != 0) {
             fn_1_76C60();
         }
@@ -491,23 +491,23 @@ typedef struct {
     u8 pad_0[0xf4];
     void *resource;
     u8 pad_f8[0x4b0 - 0xf8];
-} ScreenEffect;
+} fn_1_7A9B8_ScreenEffect;
 
 typedef struct {
     u8 pad_0[0x2c];
     u8 reset_data[0x60];
     u8 load_data[0x14];
-} ScreenEffectEntry;
+} fn_1_7A9B8_ScreenEffectEntry;
 
 // Resets the active screen-effect entries and releases each attached resource.
 void fn_1_7A9B8(void) {
-    ScreenEffectEntry *entry;
-    ScreenEffect *effect;
+    fn_1_7A9B8_ScreenEffectEntry *entry;
+    fn_1_7A9B8_ScreenEffect *effect;
     s32 i;
 
     i = 0;
-    entry = (ScreenEffectEntry *)lbl_1_bss_3BE4.unk_0;
-    effect = (ScreenEffect *)lbl_1_bss_3BE0->unk_1C;
+    entry = (fn_1_7A9B8_ScreenEffectEntry *)lbl_1_bss_3BE4.unk_0;
+    effect = (fn_1_7A9B8_ScreenEffect *)lbl_1_bss_3BE0->unk_1C;
     while (i < (s32)lbl_1_bss_3BE0->unk_18) {
         if (effect->resource != 0) {
             lbl_8006DBAC(&entry->reset_data);

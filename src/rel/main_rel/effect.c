@@ -44,6 +44,7 @@ extern const f32 lbl_1_rodata_2A70[12];
 extern void fn_1_64388(void);
 extern void *fn_1_5448C(void *);
 extern void fn_1_61E60(void);
+extern void fn_1_5489C(void *, void *);
 
 /* fzgx:begin fn_1_58D38 */
 typedef struct fn_1_58D38_EffectEntry {
@@ -478,7 +479,15 @@ void fn_1_5FE2C(void) {
 }
 /* fzgx:end fn_1_5FE2C */
 
-/* fzgx:begin fn_1_5FE30 */
+/* fzgx:begin fn_1_5FE30 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/effect.h"
+
+extern void lbl_8006DCA4(void);
+extern s32 fn_1_54E34(void *object, f32 value);
+extern void fn_1_5FEBC(void);
+
 typedef struct {
     u8 unk[0x18];
     s16 value;
@@ -688,11 +697,6 @@ void fn_1_63514(void) {
 /* fzgx:end fn_1_63514 */
 
 /* fzgx:begin fn_1_63858 */
-extern void fn_1_862D4(s16, void *);
-extern void *fn_1_5448C(void *);
-extern void *fn_1_548AC(int);
-extern void fn_1_5489C(void *, void *);
-
 struct LocalData {
     u8 data[0x10];
 };

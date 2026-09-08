@@ -1,4 +1,18 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/accessory.h"
+extern void *fn_80077B14(void *);
+extern void lbl_8006DBAC(void *);
+extern void fn_8006E250(void *, void *);
+extern void fn_1_10846C(void);
+extern f32 lbl_1_rodata_7B1C;
+extern f32 lbl_1_rodata_7B20;
+extern s32 fn_1_14D670(void);
+extern u32 lbl_801A66A0;
+extern s32 fn_1_86678(s32 arg);
+extern u32 lbl_1_bss_897AC[1741];
+extern u32 lbl_1_bss_897A4;
+extern u32 lbl_1_bss_897A8;
 
 /* fzgx:begin fn_1_108870 */
 #include "rel/main_rel/accessory.h"
@@ -43,10 +57,6 @@ typedef struct {
     u8 *unk_24;
 } AccessoryObject;
 
-extern void *fn_80077B14(void *);
-extern void lbl_8006DBAC(void *);
-extern void fn_8006E250(void *, void *);
-
 void fn_1_109114(AccessoryObject *self) {
     void *base;
     u16 *item;
@@ -73,7 +83,7 @@ void fn_1_109114(AccessoryObject *self) {
 }
 /* fzgx:end fn_1_109114 */
 
-/* fzgx:begin fn_1_10B7D8 */
+/* fzgx:begin fn_1_10B7D8 noprologue */
 #include "rel/main_rel/globals.h"
 
 // Initializes the accessory data when an object is available.
@@ -85,10 +95,6 @@ void fn_1_10B7D8(void *accessory) {
 /* fzgx:end fn_1_10B7D8 */
 
 /* fzgx:begin fn_1_1154D0 */
-extern void fn_1_10846C(void);
-extern f32 lbl_1_rodata_7B1C;
-extern f32 lbl_1_rodata_7B20;
-
 typedef struct {
     u8 active;
     u8 _pad01[0x33];
@@ -132,10 +138,6 @@ void fn_1_1154D0(Fn1154D0Object *obj) {
 /* fzgx:end fn_1_1154D0 */
 
 /* fzgx:begin fn_1_115B58 */
-extern void fn_1_10846C(void);
-extern f32 lbl_1_rodata_7B1C;
-extern f32 lbl_1_rodata_7B20;
-
 typedef struct {
     u8 active;
     u8 _pad01[0x33];
@@ -179,10 +181,6 @@ void fn_1_115B58(Fn115B58Object *obj) {
 /* fzgx:end fn_1_115B58 */
 
 /* fzgx:begin fn_1_1166EC */
-extern void fn_1_10846C(void);
-extern f32 lbl_1_rodata_7B1C;
-extern f32 lbl_1_rodata_7B20;
-
 typedef struct {
     u8 active;
     u8 _pad01[0x33];
@@ -226,8 +224,6 @@ void fn_1_1166EC(Fn1166ECObject *obj) {
 /* fzgx:end fn_1_1166EC */
 
 /* fzgx:begin fn_1_128B00 */
-extern s32 fn_1_14D670(void);
-
 s32 fn_1_128B00(s16 value) {
     switch (value) {
     case 0:
@@ -242,7 +238,7 @@ s32 fn_1_128B00(s16 value) {
 }
 /* fzgx:end fn_1_128B00 */
 
-/* fzgx:begin fn_1_128DD8 */
+/* fzgx:begin fn_1_128DD8 noprologue */
 #include "rel/main_rel/globals.h"
 
 extern u8 lbl_1_data_405C0[8];
@@ -262,8 +258,6 @@ u8 fn_1_128DD8(u8 value) {
 /* fzgx:end fn_1_128DD8 */
 
 /* fzgx:begin fn_1_128E8C */
-extern u32 lbl_801A66A0;
-
 typedef struct {
     u8 field_0;
     u8 field_1;
@@ -302,8 +296,6 @@ void fn_1_128E8C(u32 unused, FnData *data) {
 /* fzgx:end fn_1_128E8C */
 
 /* fzgx:begin fn_1_12A24C */
-extern s32 fn_1_86678(s32 arg);
-
 s8 fn_1_12A24C(s8 arg) {
     if ((s8)fn_1_86678((s32)arg) == -1) {
         return -1;
@@ -313,8 +305,6 @@ s8 fn_1_12A24C(s8 arg) {
 /* fzgx:end fn_1_12A24C */
 
 /* fzgx:begin fn_1_12A290 */
-extern u32 lbl_1_bss_897AC[1741];
-
 u32 fn_1_12A290(s32 index) {
     if (index == -1) {
         return 0;
@@ -324,16 +314,12 @@ u32 fn_1_12A290(s32 index) {
 /* fzgx:end fn_1_12A290 */
 
 /* fzgx:begin fn_1_12A2B8 */
-extern u32 lbl_1_bss_897A4;
-
 void fn_1_12A2B8(u32 value) {
     lbl_1_bss_897A4 = value;
 }
 /* fzgx:end fn_1_12A2B8 */
 
 /* fzgx:begin fn_1_12A2C4 */
-extern u32 lbl_1_bss_897A8;
-
 void fn_1_12A2C4(u32 value) {
     lbl_1_bss_897A8 = value;
 }

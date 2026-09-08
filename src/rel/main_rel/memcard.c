@@ -1,4 +1,44 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/memcard.h"
+extern void* lbl_801A6410;
+extern int fn_1_45D0(void *arg0, int arg1, Obj_1_data_3C7B8 *arg2, int arg3);
+extern void fn_1_AB45C(void);
+extern void fn_8002DE40(u8, u32, void (*)(void), s32);
+extern int fn_80030690(u8 value, void *data);
+extern void fn_8002D634(u8 byte_val, int value);
+extern void fn_8002E90C(u8 byte, int value);
+extern const f32 lbl_1_rodata_4CA8;
+extern const f64 lbl_1_rodata_4CB0;
+extern const f32 lbl_1_rodata_4CAC;
+extern void fn_80083DB0(void *dst, void *src);
+extern void fn_80083D40(void *dst, void *src);
+extern void fn_8002FB04(u8 byte, void *data, int arg);
+extern s32 fn_8002A988(u8 byte_val, void *arg1, void *arg2);
+extern s32 fn_8002EBD4(u8 byte_val, void *arg1, void *arg2);
+extern void fn_8002F9D8(u8 byte_val, void *arg, s32 zero);
+extern void fn_8002EED8(u8 byte_val, void *arg1, void *arg2, void *arg3, u32 arg4);
+extern void fn_8002FF80(u8 id, void *arg, void *data, int zero);
+extern void fn_8003013C(u8 id, void *data1, void *data2, int zero);
+extern void fn_8002F428(void *arg0, void *arg1, void *arg2, int arg3, int arg4);
+extern const f64 lbl_1_rodata_4CC8;
+extern void fn_80030754(u8 value, void *data, int size, int mode);
+extern u8 lbl_1_bss_71810[161];
+extern u8 lbl_1_bss_718B8;
+extern u8 lbl_1_bss_718B9[7];
+extern int fn_8002A744(void);
+extern void fn_8002A74C(u16 value);
+extern int fn_8002DFE0(int arg0, u32 arg1, int arg2);
+extern int fn_8002D65C(int arg0);
+extern void fn_1_B9C38(s32 index);
+extern void fn_1_1596DC(u32);
+extern void fn_1_484CC(u32);
+extern void fn_80008BEC(void *dst, s32 value, s32 size);
+extern void fn_1_AA6D8(s32 arg0, u32 arg1, void *arg2);
+extern void fn_1_F755C(u8 value);
+extern void fn_1_A6840(u8 value);
+extern void fn_8000C49C(void *arg0, u32 arg1, ...);
+extern void fn_1_F79C8(void);
 
 /* fzgx:begin fn_1_AB478 */
 #include "rel/main_rel/memcard.h"
@@ -18,12 +58,6 @@ typedef struct {
     Fn1AB478Sub *unk_24;
 } Fn1AB478Obj;
 
-extern u32 lbl_801A6410;
-extern Obj_1_data_3C7B8 lbl_1_data_3C7B8;
-extern u32 fn_1_45D0(void *, s32, void *, s32);
-extern void fn_1_AB45C(void);
-extern void fn_8002DE40(u8, u32, void (*)(void), s32);
-
 void fn_1_AB478(Fn1AB478Obj *obj) {
     obj->unk_C = fn_1_45D0((void *)lbl_801A6410, 0xA000,
                            &lbl_1_data_3C7B8, 0x657);
@@ -34,9 +68,6 @@ void fn_1_AB478(Fn1AB478Obj *obj) {
 /* fzgx:end fn_1_AB478 */
 
 /* fzgx:begin fn_1_AB4F4 */
-extern int fn_8002A958(u8 value);
-extern int fn_80030690(u8 value, void *data);
-
 typedef struct {
     u8 pad[0x2];
     s16 field_0x2;
@@ -51,9 +82,9 @@ typedef struct {
     u8 pad2[0x70];
     int field_0x98;
     int field_0x9c;
-} ArgStruct;
+} fn_1_AB4F4_ArgStruct;
 
-void fn_1_AB4F4(ArgStruct *arg) {
+void fn_1_AB4F4(fn_1_AB4F4_ArgStruct *arg) {
     int status;
 
     status = fn_8002A958(arg->byte_0);
@@ -73,48 +104,44 @@ void fn_1_AB4F4(ArgStruct *arg) {
 /* fzgx:end fn_1_AB4F4 */
 
 /* fzgx:begin fn_1_AB598 */
-extern void fn_8002D634(u8 byte_val, int value);
-
 typedef struct {
     u8 pad[0x2];
     u16 field_0x2;
-} OffsetStruct;
+} fn_1_AB598_OffsetStruct;
 
 typedef struct {
     u8 byte_0;
     u8 pad[0x23];
-    OffsetStruct *ptr_0x24;
-} ArgStruct;
+    fn_1_AB598_OffsetStruct *ptr_0x24;
+} fn_1_AB598_ArgStruct;
 
-void fn_1_AB598(ArgStruct *arg) {
+void fn_1_AB598(fn_1_AB598_ArgStruct *arg) {
     arg->ptr_0x24->field_0x2 = 300;
     fn_8002D634(arg->byte_0, 0);
 }
 /* fzgx:end fn_1_AB598 */
 
 /* fzgx:begin fn_1_AB5CC */
-extern int fn_8002A958(u8 byte);
-
 typedef struct {
     u8 pad[0x2];
     u16 field_0x2;
     s32 field_0x4;
-} OffsetStruct;
+} fn_1_AB5CC_OffsetStruct;
 
 typedef struct {
     u8 byte_0;
     u8 pad[0x23];
-    OffsetStruct *ptr_0x24;
-} ArgStruct;
+    fn_1_AB5CC_OffsetStruct *ptr_0x24;
+} fn_1_AB5CC_ArgStruct;
 
 // fn_1_AB5CC: main_rel .text:0x000AB5CC size 0x50
 // Load byte from arg, call fn_8002A958, store result at struct offset 0x4, clear offset 0x2 if not -1.
 
-void fn_1_AB5CC(ArgStruct *arg) {
+void fn_1_AB5CC(fn_1_AB5CC_ArgStruct *arg) {
     u8 byte_val = arg->byte_0;
     int result = fn_8002A958(byte_val);
     
-    OffsetStruct *s = arg->ptr_0x24;
+    fn_1_AB5CC_OffsetStruct *s = arg->ptr_0x24;
     s->field_0x4 = result;
     
     s = arg->ptr_0x24;
@@ -128,17 +155,17 @@ void fn_1_AB5CC(ArgStruct *arg) {
 typedef struct {
     u8 pad[1];
     u8 field_0x1;
-} MemcardState;
+} fn_1_AB61C_MemcardState;
 
 typedef struct {
     u8 pad_0x24[0x24];
-    MemcardState *state;
+    fn_1_AB61C_MemcardState *state;
     u8 pad_0x2a[0x2];
     u8 field_0x2a;
-} MemcardArg;
+} fn_1_AB61C_MemcardArg;
 
-void fn_1_AB61C(MemcardArg *arg) {
-    MemcardState *state = arg->state;
+void fn_1_AB61C(fn_1_AB61C_MemcardArg *arg) {
+    fn_1_AB61C_MemcardState *state = arg->state;
     state->field_0x1 = 1;
     *(s16 *)((u8 *)arg + 0x8) = -1;
     *(s16 *)((u8 *)arg + 0xa) = -1;
@@ -148,29 +175,25 @@ void fn_1_AB61C(MemcardArg *arg) {
 /* fzgx:end fn_1_AB61C */
 
 /* fzgx:begin fn_1_AB75C */
-extern int fn_8002C0A0(u8 byte);
-extern void fn_8002E90C(u8 byte, int value);
-extern f32 lbl_1_rodata_4CA8;
-
 typedef struct {
     u8 pad[0x2];
     u16 field_0x2;
-} OffsetStruct;
+} fn_1_AB75C_OffsetStruct;
 
 typedef struct {
     u8 byte_0;
     u8 pad_0x1[0x23];
-    OffsetStruct *ptr_0x24;
+    fn_1_AB75C_OffsetStruct *ptr_0x24;
     u8 pad_0x28[0x2];
     u8 flags_0x2a;
     u8 pad_0x2b[0x5];
     s32 field_0x30;
     u8 pad_0x34[0x4];
     f32 field_0x38;
-} ArgStruct;
+} fn_1_AB75C_ArgStruct;
 
 // fn_1_AB75C: main_rel .text:0x000AB75C size 0x68
-void fn_1_AB75C(ArgStruct *arg) {
+void fn_1_AB75C(fn_1_AB75C_ArgStruct *arg) {
     arg->ptr_0x24->field_0x2 = 0x12c;
     arg->field_0x30 = fn_8002C0A0(arg->byte_0);
     arg->field_0x38 = lbl_1_rodata_4CA8;
@@ -180,30 +203,25 @@ void fn_1_AB75C(ArgStruct *arg) {
 /* fzgx:end fn_1_AB75C */
 
 /* fzgx:begin fn_1_AB7C4 */
-extern int fn_8002A958(u8 byte);
-extern int fn_8002C0A0(u8 byte);
-extern const f64 lbl_1_rodata_4CB0;
-extern const f32 lbl_1_rodata_4CAC;
-
 typedef struct {
     u8 pad[0x2];
     u16 field_0x2;
     s32 field_0x4;
-} OffsetStruct;
+} fn_1_AB7C4_OffsetStruct;
 
 typedef struct {
     u8 byte_0;
     u8 pad_0x1[0x23];
-    OffsetStruct *ptr_0x24;
+    fn_1_AB7C4_OffsetStruct *ptr_0x24;
     u8 pad_0x28[0x2];
     u8 flags_0x2a;
     u8 pad_0x2b[0x5];
     s32 field_0x30;
     u8 pad_0x34[0x4];
     f32 field_0x38;
-} ArgStruct;
+} fn_1_AB7C4_ArgStruct;
 
-void fn_1_AB7C4(ArgStruct *arg) {
+void fn_1_AB7C4(fn_1_AB7C4_ArgStruct *arg) {
     arg->ptr_0x24->field_0x4 = fn_8002A958(arg->byte_0);
     arg->field_0x38 = (fn_8002C0A0(arg->byte_0) - arg->field_0x30) / lbl_1_rodata_4CAC;
     if (arg->ptr_0x24->field_0x4 != -1) {
@@ -218,37 +236,35 @@ void fn_1_AB7C4(ArgStruct *arg) {
 typedef struct {
     u8 pad[0x2];
     u16 field_0x2;
-} OffsetStruct;
+} fn_1_AB870_OffsetStruct;
 
 typedef struct {
     u8 pad[0x24];
-    OffsetStruct *ptr_0x24;
-} ArgStruct;
+    fn_1_AB870_OffsetStruct *ptr_0x24;
+} fn_1_AB870_ArgStruct;
 
 // fn_1_AB870: main_rel .text:0x000AB870 size 0x10
-void fn_1_AB870(ArgStruct *arg) {
+void fn_1_AB870(fn_1_AB870_ArgStruct *arg) {
     arg->ptr_0x24->field_0x2 = 0x12c;
 }
 /* fzgx:end fn_1_AB870 */
 
 /* fzgx:begin fn_1_AB880 */
-extern int fn_80030690(u8 byte, void *ptr);
-
 typedef struct {
     u8 pad[0x2];
     u16 field_0x2;
     s32 field_0x4;
-} OffsetStruct;
+} fn_1_AB880_OffsetStruct;
 
 typedef struct {
     u8 byte_0;
     u8 pad[0x23];
-    OffsetStruct *ptr_0x24;
-} ArgStruct;
+    fn_1_AB880_OffsetStruct *ptr_0x24;
+} fn_1_AB880_ArgStruct;
 
 // fn_1_AB880: main_rel .text:0x000AB880 size 0x58
-void fn_1_AB880(ArgStruct *arg) {
-    OffsetStruct *s = arg->ptr_0x24;
+void fn_1_AB880(fn_1_AB880_ArgStruct *arg) {
+    fn_1_AB880_OffsetStruct *s = arg->ptr_0x24;
     int result = fn_80030690(arg->byte_0, (u8 *)s + 0x18);
 
     s = arg->ptr_0x24;
@@ -262,19 +278,13 @@ void fn_1_AB880(ArgStruct *arg) {
 /* fzgx:end fn_1_AB880 */
 
 /* fzgx:begin fn_1_AB8D8 */
-extern u8 lbl_1_data_3C89C[68];
-
-extern void fn_80083DB0(void *dest, const void *src);
-extern void fn_80083D40(void *dest, const void *src);
-extern void fn_8002FB04(u8 byte, void *data, int arg);
-
 typedef struct {
     u8 byte_0;
     u8 pad_0x1[0x23];
     void *ptr_0x24;
-} ArgStruct;
+} fn_1_AB8D8_ArgStruct;
 
-void fn_1_AB8D8(ArgStruct *arg) {
+void fn_1_AB8D8(fn_1_AB8D8_ArgStruct *arg) {
     u8 data[0x40];
 
     fn_80083DB0(data, (u8 *)arg->ptr_0x24 + 0x98);
@@ -285,26 +295,24 @@ void fn_1_AB8D8(ArgStruct *arg) {
 /* fzgx:end fn_1_AB8D8 */
 
 /* fzgx:begin fn_1_AB93C */
-extern int fn_8002A958(u8 byte);
-
 typedef struct {
     u8 pad[0x2];
     u16 field_0x2;
     s32 field_0x4;
-} OffsetStruct;
+} fn_1_AB93C_OffsetStruct;
 
 typedef struct {
     u8 byte_0;
     u8 pad[0x23];
-    OffsetStruct *ptr_0x24;
-} ArgStruct;
+    fn_1_AB93C_OffsetStruct *ptr_0x24;
+} fn_1_AB93C_ArgStruct;
 
 // fn_1_AB93C: main_rel .text:0x000AB93C size 0x50
-void fn_1_AB93C(ArgStruct *arg) {
+void fn_1_AB93C(fn_1_AB93C_ArgStruct *arg) {
     u8 byte_val = arg->byte_0;
     int result = fn_8002A958(byte_val);
 
-    OffsetStruct *s = arg->ptr_0x24;
+    fn_1_AB93C_OffsetStruct *s = arg->ptr_0x24;
     s->field_0x4 = result;
 
     s = arg->ptr_0x24;
@@ -318,21 +326,19 @@ void fn_1_AB93C(ArgStruct *arg) {
 typedef struct {
     u8 pad[0x2];
     u16 field_0x2;
-} OffsetStruct;
+} fn_1_AB98C_OffsetStruct;
 
 typedef struct {
     u8 pad[0x24];
-    OffsetStruct *ptr_0x24;
-} ArgStruct;
+    fn_1_AB98C_OffsetStruct *ptr_0x24;
+} fn_1_AB98C_ArgStruct;
 
-void fn_1_AB98C(ArgStruct *arg) {
+void fn_1_AB98C(fn_1_AB98C_ArgStruct *arg) {
     arg->ptr_0x24->field_0x2 = 300;
 }
 /* fzgx:end fn_1_AB98C */
 
 /* fzgx:begin fn_1_AB99C */
-extern s32 fn_8002A988(u8 byte_val, void *arg1, void *arg2);
-
 typedef struct {
     u8 pad[0x2];
     u16 field_0x2;
@@ -340,15 +346,15 @@ typedef struct {
     s32 field_0x8;
     u8 pad_0xc[0x4];
     u8 data[0x8];
-} OffsetStruct;
+} fn_1_AB99C_OffsetStruct;
 
 typedef struct {
     u8 byte_0;
     u8 pad[0x23];
-    OffsetStruct *ptr_0x24;
-} ArgStruct;
+    fn_1_AB99C_OffsetStruct *ptr_0x24;
+} fn_1_AB99C_ArgStruct;
 
-void fn_1_AB99C(ArgStruct *arg) {
+void fn_1_AB99C(fn_1_AB99C_ArgStruct *arg) {
     s32 result = fn_8002A988(arg->byte_0, arg->ptr_0x24->data,
         &arg->ptr_0x24->data[0x4]);
     arg->ptr_0x24->field_0x4 = result;
@@ -365,21 +371,19 @@ void fn_1_AB99C(ArgStruct *arg) {
 typedef struct {
     u8 pad[0x2];
     u16 field_0x2;
-} OffsetStruct;
+} fn_1_ABA14_OffsetStruct;
 
 typedef struct {
     u8 pad[0x24];
-    OffsetStruct *ptr_0x24;
-} ArgStruct;
+    fn_1_ABA14_OffsetStruct *ptr_0x24;
+} fn_1_ABA14_ArgStruct;
 
-void fn_1_ABA14(ArgStruct *arg) {
+void fn_1_ABA14(fn_1_ABA14_ArgStruct *arg) {
     arg->ptr_0x24->field_0x2 = 0x12c;
 }
 /* fzgx:end fn_1_ABA14 */
 
 /* fzgx:begin fn_1_ABA24 */
-extern s32 fn_8002A988(u8 byte_val, void *arg1, void *arg2);
-
 typedef struct {
     u8 pad[0x2];
     u16 field_0x2;
@@ -387,15 +391,15 @@ typedef struct {
     s32 field_0x8;
     u8 pad_0xc[0x4];
     u8 data[0x8];
-} OffsetStruct;
+} fn_1_ABA24_OffsetStruct;
 
 typedef struct {
     u8 byte_0;
     u8 pad[0x23];
-    OffsetStruct *ptr_0x24;
-} ArgStruct;
+    fn_1_ABA24_OffsetStruct *ptr_0x24;
+} fn_1_ABA24_ArgStruct;
 
-void fn_1_ABA24(ArgStruct *arg) {
+void fn_1_ABA24(fn_1_ABA24_ArgStruct *arg) {
     s32 result = fn_8002A988(arg->byte_0, arg->ptr_0x24->data,
         &arg->ptr_0x24->data[0x4]);
     arg->ptr_0x24->field_0x4 = result;
@@ -412,38 +416,33 @@ void fn_1_ABA24(ArgStruct *arg) {
 typedef struct {
     u8 pad[0x2];
     u16 field_0x2;
-} OffsetStruct;
+} fn_1_ABA9C_OffsetStruct;
 
 typedef struct {
     u8 pad[0x24];
-    OffsetStruct *ptr_0x24;
-} ArgStruct;
+    fn_1_ABA9C_OffsetStruct *ptr_0x24;
+} fn_1_ABA9C_ArgStruct;
 
-void fn_1_ABA9C(ArgStruct *arg) {
+void fn_1_ABA9C(fn_1_ABA9C_ArgStruct *arg) {
     arg->ptr_0x24->field_0x2 = 0x12c;
 }
 /* fzgx:end fn_1_ABA9C */
 
 /* fzgx:begin fn_1_ABAAC */
-extern void fn_80083DB0(void *dest, void *src);
-extern void fn_80083D40(void *arg, void *data);
-extern s32 fn_8002EBD4(u8 byte_val, void *arg1, void *arg2);
-extern u8 lbl_1_data_3C7C4[216];
-
 typedef struct {
     u8 pad[0x2];
     u16 field_0x2;
     s32 field_0x4;
-} ResultStruct;
+} fn_1_ABAAC_ResultStruct;
 
 typedef struct {
     u8 byte_0;
     u8 pad_0x1[0xf];
     u8 data_0x10[0x14];
-    ResultStruct *ptr_0x24;
-} ArgStruct;
+    fn_1_ABAAC_ResultStruct *ptr_0x24;
+} fn_1_ABAAC_ArgStruct;
 
-void fn_1_ABAAC(ArgStruct *arg) {
+void fn_1_ABAAC(fn_1_ABAAC_ArgStruct *arg) {
     u8 local[0x40];
 
     fn_80083DB0(local, (u8 *)arg->ptr_0x24 + 0x98);
@@ -463,19 +462,19 @@ typedef struct {
     u8 pad_0x2[0x6];
     s16 field_0x8;
     s16 field_0xa;
-} MemcardState;
+} fn_1_ABB24_MemcardState;
 
 typedef struct {
     u8 pad_0x0[0x8];
     s16 field_0x8;
     s16 field_0xa;
     u8 pad_0xc[0x18];
-    MemcardState *ptr_0x24;
+    fn_1_ABB24_MemcardState *ptr_0x24;
     u8 pad_0x28[0x2];
     u8 field_0x2a;
-} MemcardArg;
+} fn_1_ABB24_MemcardArg;
 
-void fn_1_ABB24(MemcardArg *arg) {
+void fn_1_ABB24(fn_1_ABB24_MemcardArg *arg) {
     arg->ptr_0x24->field_0x1 = 1;
     arg->field_0x8 = -1;
     arg->field_0xa = -1;
@@ -484,25 +483,23 @@ void fn_1_ABB24(MemcardArg *arg) {
 /* fzgx:end fn_1_ABB24 */
 
 /* fzgx:begin fn_1_ABC5C */
-extern void fn_8002F9D8(u8 byte_val, void *arg, s32 zero);
-
 typedef struct {
     u8 byte_0;
     u8 pad_0x1[0x13];
     void *field_0x14;
-} ArgStruct;
+} fn_1_ABC5C_ArgStruct;
 
 typedef struct {
     u8 pad[0x2];
     u16 field_0x2;
-} ResultStruct;
+} fn_1_ABC5C_ResultStruct;
 
 typedef struct {
     u8 pad[0x24];
-    ResultStruct *ptr_0x24;
+    fn_1_ABC5C_ResultStruct *ptr_0x24;
 } StateStruct;
 
-void fn_1_ABC5C(ArgStruct *arg) {
+void fn_1_ABC5C(fn_1_ABC5C_ArgStruct *arg) {
     StateStruct *state;
 
     state = (StateStruct *)arg;
@@ -512,21 +509,19 @@ void fn_1_ABC5C(ArgStruct *arg) {
 /* fzgx:end fn_1_ABC5C */
 
 /* fzgx:begin fn_1_ABC98 */
-extern s32 fn_8002A958(u8 byte_val);
-
 typedef struct {
     u8 pad[0x2];
     u16 field_0x2;
     s32 field_0x4;
-} ResultStruct;
+} fn_1_ABC98_ResultStruct;
 
 typedef struct {
     u8 byte_0;
     u8 pad_0x1[0x23];
-    ResultStruct *ptr_0x24;
-} ArgStruct;
+    fn_1_ABC98_ResultStruct *ptr_0x24;
+} fn_1_ABC98_ArgStruct;
 
-void fn_1_ABC98(ArgStruct *arg) {
+void fn_1_ABC98(fn_1_ABC98_ArgStruct *arg) {
     arg->ptr_0x24->field_0x4 = fn_8002A958(arg->byte_0);
     if (arg->ptr_0x24->field_0x4 != -1) {
         arg->ptr_0x24->field_0x2 = 0;
@@ -535,26 +530,21 @@ void fn_1_ABC98(ArgStruct *arg) {
 /* fzgx:end fn_1_ABC98 */
 
 /* fzgx:begin fn_1_ABCE8 */
-extern u8 lbl_1_data_3C89C[68];
-extern void fn_80083DB0(void *dest, void *src);
-extern void fn_80083D40(void *arg, void *data);
-extern void fn_8002EED8(u8 byte_val, void *arg1, void *arg2, void *arg3, u32 arg4);
-
 typedef struct {
     u8 pad[0x2];
     u16 field_0x2;
     u8 pad_0x4[0x8];
     void *ptr_0xc;
-} ResultStruct;
+} fn_1_ABCE8_ResultStruct;
 
 typedef struct {
     u8 byte_0;
     u8 pad_0x1[0xf];
     u8 data_0x10[0x14];
-    ResultStruct *ptr_0x24;
-} ArgStruct;
+    fn_1_ABCE8_ResultStruct *ptr_0x24;
+} fn_1_ABCE8_ArgStruct;
 
-void fn_1_ABCE8(ArgStruct *arg) {
+void fn_1_ABCE8(fn_1_ABCE8_ArgStruct *arg) {
     u8 local[0x40];
 
     fn_80083DB0(local, (u8 *)arg->ptr_0x24 + 0x98);
@@ -566,21 +556,19 @@ void fn_1_ABCE8(ArgStruct *arg) {
 /* fzgx:end fn_1_ABCE8 */
 
 /* fzgx:begin fn_1_ABD58 */
-extern s32 fn_8002A958(u8 byte_val);
-
 typedef struct {
     u8 pad[0x2];
     u16 field_0x2;
     s32 field_0x4;
-} ResultStruct;
+} fn_1_ABD58_ResultStruct;
 
 typedef struct {
     u8 byte_0;
     u8 pad_0x1[0x23];
-    ResultStruct *ptr_0x24;
-} ArgStruct;
+    fn_1_ABD58_ResultStruct *ptr_0x24;
+} fn_1_ABD58_ArgStruct;
 
-void fn_1_ABD58(ArgStruct *arg) {
+void fn_1_ABD58(fn_1_ABD58_ArgStruct *arg) {
     arg->ptr_0x24->field_0x4 = fn_8002A958(arg->byte_0);
     if (arg->ptr_0x24->field_0x4 != -1) {
         arg->ptr_0x24->field_0x2 = 0;
@@ -592,14 +580,14 @@ void fn_1_ABD58(ArgStruct *arg) {
 typedef struct {
     u8 pad[0x2];
     u16 field_0x2;
-} OffsetStruct;
+} fn_1_ABDA8_OffsetStruct;
 
 typedef struct {
     u8 pad[0x24];
-    OffsetStruct *ptr_0x24;
-} ArgStruct;
+    fn_1_ABDA8_OffsetStruct *ptr_0x24;
+} fn_1_ABDA8_ArgStruct;
 
-void fn_1_ABDA8(ArgStruct *arg) {
+void fn_1_ABDA8(fn_1_ABDA8_ArgStruct *arg) {
     arg->ptr_0x24->field_0x2 = 0x12c;
 }
 /* fzgx:end fn_1_ABDA8 */
@@ -615,18 +603,18 @@ typedef struct {
     s32 unk_0x4;
     u8 pad_0x8[0x18];
     u8 unk_0x20[1];
-} ResultStruct;
+} fn_1_ABDB8_ResultStruct;
 
 typedef struct {
     u8 byte_0x0;
     u8 pad_0x1[0x13];
     void *ptr_0x14;
     u8 pad_0x18[0xc];
-    ResultStruct *ptr_0x24;
-} ArgStruct;
+    fn_1_ABDB8_ResultStruct *ptr_0x24;
+} fn_1_ABDB8_ArgStruct;
 
 // Loads the payload into its result buffer and clears the stale offset on success.
-void fn_1_ABDB8(ArgStruct *arg) {
+void fn_1_ABDB8(fn_1_ABDB8_ArgStruct *arg) {
     arg->ptr_0x24->unk_0x4 =
         fn_8002FE54(arg->byte_0x0, arg->ptr_0x14, arg->ptr_0x24->unk_0x20);
     if (arg->ptr_0x24->unk_0x4 != -1) {
@@ -659,15 +647,6 @@ typedef struct {
     u8 pad_34[0x4];
     f32 value_0x38;
 } Fn1ABF44Object;
-
-extern u8 lbl_1_data_3C7C4[216];
-extern const f32 lbl_1_rodata_4CA8;
-
-extern void fn_80083DB0(void *dst, void *src);
-extern void fn_80083D40(void *dst, void *src);
-extern s32 fn_8002EBD4(u8 id, void *work, void *data);
-extern s32 fn_8002C0A0(u8 id);
-extern void fn_8002F7D8(void *data, s32 size, s32 aligned, s32 value, s32 zero);
 
 void fn_1_ABF44(Fn1ABF44Object *arg) {
     u8 work[0x40];
@@ -736,8 +715,6 @@ typedef struct Fn1AC294Target {
     Fn1AC294State *state;
 } Fn1AC294Target;
 
-extern void fn_8002FF80(u8 id, void *arg, void *data, int zero);
-
 void fn_1_AC294(Fn1AC294Target *target) {
     target->state->value = 300;
     fn_8002FF80(target->id, target->arg, (u8 *)target->state + 0x20, 0);
@@ -756,8 +733,6 @@ typedef struct Fn1AC2D8Target {
     u8 pad_01[0x23];
     Fn1AC2D8State *state;
 } Fn1AC2D8Target;
-
-extern s32 fn_8002A958(u8 id);
 
 void fn_1_AC2D8(Fn1AC2D8Target *target) {
     target->state->status = fn_8002A958(target->id);
@@ -779,12 +754,6 @@ typedef struct Fn1AC328Target {
     u8 pad_01[0x23];
     Fn1AC328State *state;
 } Fn1AC328Target;
-
-extern u8 lbl_1_data_3C7C4[216];
-
-extern void fn_80083DB0(void *dst, void *src);
-extern void fn_80083D40(void *dst, void *src);
-extern void fn_8002FB04(u8 id, void *data, int zero);
 
 void fn_1_AC328(Fn1AC328Target *target) {
     u8 data[0x40];
@@ -809,8 +778,6 @@ typedef struct Fn1AC38Target {
     Fn1AC38Data *data;
 } Fn1AC38Target;
 
-extern int fn_8002A958(u8 id);
-
 void fn_1_AC38C(Fn1AC38Target *target) {
     target->data->status = fn_8002A958(target->id);
     if (target->data->status != -1) {
@@ -831,13 +798,6 @@ typedef struct Fn1AC3DCTarget {
     u8 pad_01[0x23];
     Fn1AC3DCState *state;
 } Fn1AC3DCTarget;
-
-extern u8 lbl_1_data_3C89C[68];
-extern u8 lbl_1_data_3C7C4[216];
-
-extern void fn_80083DB0(void *dst, void *src);
-extern void fn_80083D40(void *dst, void *src);
-extern void fn_8003013C(u8 id, void *data1, void *data2, int zero);
 
 void fn_1_AC3DC(Fn1AC3DCTarget *target) {
     u8 data1[0x40];
@@ -864,8 +824,6 @@ typedef struct Fn1AC464Target {
     u8 pad_01[0x23];
     Fn1AC464State *state;
 } Fn1AC464Target;
-
-extern s32 fn_8002A958(u8 value);
 
 void fn_1_AC464(Fn1AC464Target *target) {
     target->state->result = fn_8002A958(target->value);
@@ -908,8 +866,6 @@ typedef struct Fn1AC4C4Target {
     Fn1AC4C4State *state;
 } Fn1AC4C4Target;
 
-extern s32 fn_8002A988(u8 value, void *arg1, void *arg2);
-
 void fn_1_AC4C4(Fn1AC4C4Target *target) {
     target->state->result =
         fn_8002A988(target->value, &target->state->data_10, &target->state->data_14);
@@ -951,12 +907,12 @@ void fn_1_AC6C8(void) {
 /* fzgx:end fn_1_AC6C8 */
 
 /* fzgx:begin fn_1_AC6CC */
-typedef struct MemCardState {
+typedef struct fn_1_AC6CC_MemCardState {
     u8 padding[0x2a];
     u8 flags;
-} MemCardState;
+} fn_1_AC6CC_MemCardState;
 
-void fn_1_AC6CC(MemCardState *self) {
+void fn_1_AC6CC(fn_1_AC6CC_MemCardState *self) {
     self->flags |= 4;
 }
 /* fzgx:end fn_1_AC6CC */
@@ -983,8 +939,6 @@ void fn_1_AC700(void) {
 /* fzgx:end fn_1_AC700 */
 
 /* fzgx:begin fn_1_AC704 */
-extern void fn_8002F428(void *arg0, void *arg1, void *arg2, int arg3, int arg4);
-
 void fn_1_AC704(void *r3) {
     *(u16 *)((u8 *)*(void **)((u8 *)r3 + 0x24) + 0x2) = 0x12c;
     fn_8002F428((u8 *)r3 + 0x10,
@@ -996,8 +950,6 @@ void fn_1_AC704(void *r3) {
 /* fzgx:end fn_1_AC704 */
 
 /* fzgx:begin fn_1_AC74C */
-extern s32 fn_8002A958(u8 value);
-
 void fn_1_AC74C(void *r3) {
     s32 result;
 
@@ -1038,9 +990,6 @@ void fn_1_AC928(void) {
 /* fzgx:end fn_1_AC928 */
 
 /* fzgx:begin fn_1_AC960 */
-extern const f64 lbl_1_rodata_4CC8;
-extern s32 fn_8002FE54(u8, u8, void *);
-
 struct MemcardData {
     u8 pad0[2];
     u16 status;
@@ -1101,17 +1050,15 @@ typedef struct MemCardData {
     u8 pad8[0x18];
 } MemCardData;
 
-typedef struct MemCardState {
+typedef struct fn_1_ACA1C_MemCardState {
     u8 id;
     u8 pad1[0x23];
     MemCardData *data;
     u8 pad28[4];
     u8 slot;
-} MemCardState;
+} fn_1_ACA1C_MemCardState;
 
-extern s32 fn_8002FE54(u8, u8, void *);
-
-void fn_1_ACA1C(MemCardState *state) {
+void fn_1_ACA1C(fn_1_ACA1C_MemCardState *state) {
     state->data->value = fn_8002FE54(state->id, state->slot,
         (u8 *)state->data + 0x20);
     if (state->slot == 0x7e) {
@@ -1230,31 +1177,27 @@ void fn_1_ACE7C(void) {
 /* fzgx:end fn_1_ACE7C */
 
 /* fzgx:begin fn_1_ACE80 */
-extern void fn_8002FB04(u8, void*, u32);
-
 typedef struct {
     u8 field_0;
     u8 pad_1[0x23];
     void* field_24;
-} SomeObject;
+} fn_1_ACE80_SomeObject;
 
 // fn_1_ACE80: writes 0x12c to pointed structure, then calls fn_8002FB04
-void fn_1_ACE80(SomeObject* obj) {
+void fn_1_ACE80(fn_1_ACE80_SomeObject* obj) {
     *(u16*)((u8*)obj->field_24 + 0x2) = 0x12c;
     fn_8002FB04(obj->field_0, (u8*)obj->field_24 + 0x98, 0);
 }
 /* fzgx:end fn_1_ACE80 */
 
 /* fzgx:begin fn_1_ACEBC */
-extern s32 fn_8002A958(u8);
-
 typedef struct {
     u8 field_0;
     u8 pad_1[0x23];
     void* field_24;
-} SomeObject;
+} fn_1_ACEBC_SomeObject;
 
-void fn_1_ACEBC(SomeObject* obj) {
+void fn_1_ACEBC(fn_1_ACEBC_SomeObject* obj) {
     s32 value;
     value = fn_8002A958(obj->field_0);
     *(s32*)((u8*)obj->field_24 + 0x4) = value;
@@ -1323,10 +1266,6 @@ struct MemcardState {
     u8 pad_98[0x44];
     void* value_DC;
 };
-
-extern void* lbl_801A6410;
-extern s32 fn_8002E0C4(u8 value);
-extern void fn_1_46B4(void* manager, void* value, Obj_1_data_3C7B8* data, s32 offset);
 
 // Cleans up pending card data, updates state values, and marks the object ready.
 void fn_1_ACF30(MemcardObject* obj) {
@@ -1411,8 +1350,6 @@ typedef struct Fn1AD168Obj {
     u8 _pad18[0xc];
     u8 *field24;
 } Fn1AD168Obj;
-
-extern void fn_80030754(u8 value, void *data, int size, int mode);
 
 void fn_1_AD168(Fn1AD168Obj *obj) {
     if (obj->field24[0] == 1) {
@@ -1590,8 +1527,6 @@ void fn_1_B5F00(B5F00Source *source, B5F00Dest *dest) {
 /* fzgx:begin fn_1_B7C00 */
 #include "rel/main_rel/memcard.h"
 
-extern u8 lbl_1_bss_71810[161];
-
 u8 fn_1_B7C00(void) {
     u8 result = 0;
 
@@ -1610,16 +1545,12 @@ u8 fn_1_B7C00(void) {
 /* fzgx:end fn_1_B7C00 */
 
 /* fzgx:begin fn_1_B7C5C */
-extern u32 lbl_1_bss_718B4;
-
 u32 fn_1_B7C5C(void) {
     return lbl_1_bss_718B4;
 }
 /* fzgx:end fn_1_B7C5C */
 
 /* fzgx:begin fn_1_B7CD4 */
-extern u8 lbl_1_bss_718B8;
-
 u8 fn_1_B7CD4(void) {
     return lbl_1_bss_718B8;
 }
@@ -1670,8 +1601,6 @@ int fn_1_B7E98(int index) {
 /* fzgx:end fn_1_B7E98 */
 
 /* fzgx:begin fn_1_B7EF8 */
-extern u8 lbl_1_bss_718B9[7];
-
 // fn_1_B7EF8: Load and return first byte from lbl_1_bss_718B9
 u8 fn_1_B7EF8(void) {
     return lbl_1_bss_718B9[0];
@@ -1679,14 +1608,12 @@ u8 fn_1_B7EF8(void) {
 /* fzgx:end fn_1_B7EF8 */
 
 /* fzgx:begin fn_1_B7F08 */
-extern u32 lbl_1_bss_718B4;
-
 u32 fn_1_B7F08(void) {
     return lbl_1_bss_718B4 != 0;
 }
 /* fzgx:end fn_1_B7F08 */
 
-/* fzgx:begin fn_1_B7F24 */
+/* fzgx:begin fn_1_B7F24 noprologue */
 #include "rel/main_rel/globals.h"
 
 typedef struct {
@@ -1724,9 +1651,6 @@ u32 fn_1_B7FC8(void) {
 /* fzgx:end fn_1_B7FC8 */
 
 /* fzgx:begin fn_1_B7FDC */
-extern int fn_8002A744(void);
-extern void fn_8002A74C(u16 value);
-
 // Toggles the low 16-bit status value and stores the result.
 void fn_1_B7FDC(void) {
     u16 value = (u16)fn_8002A744();
@@ -1738,12 +1662,6 @@ void fn_1_B7FDC(void) {
 /* fzgx:begin fn_1_B800C */
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/memcard.h"
-
-extern void *lbl_801A6410;
-extern int fn_1_45D0(void *arg0, int arg1, Obj_1_data_3C7B8 *arg2, int arg3);
-extern int fn_1_46B4(void *arg0, u32 arg1, Obj_1_data_3C7B8 *arg2, int arg3);
-extern int fn_8002DFE0(int arg0, u32 arg1, int arg2);
-extern int fn_8002D65C(int arg0);
 
 // Loads a memory-card slot, retrying transient operations and cleaning up failures.
 int fn_1_B800C(int index) {
@@ -1776,10 +1694,6 @@ int fn_1_B800C(int index) {
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/memcard.h"
 
-extern int fn_8002E0C4(int);
-extern void fn_1_46B4(void *arg0, u32 arg1, Obj_1_data_3C7B8 *arg2, u32 arg3);
-extern void *lbl_801A6410;
-
 // Wait for the card operation to finish, then release its temporary result.
 void fn_1_B80F0(int index) {
     Obj_1_bss_716C8 *entry =
@@ -1800,8 +1714,6 @@ void fn_1_B80F0(int index) {
 /* fzgx:end fn_1_B80F0 */
 
 /* fzgx:begin fn_1_B9BE0 */
-extern void fn_1_B9C38(s32);
-
 void fn_1_B9BE0(void) {
     fn_1_B9C38(0);
     fn_1_B9C38(1);
@@ -1809,8 +1721,6 @@ void fn_1_B9BE0(void) {
 /* fzgx:end fn_1_B9BE0 */
 
 /* fzgx:begin fn_1_B9C0C */
-extern void fn_1_B9C38(s32 value);
-
 void fn_1_B9C0C(void) {
     fn_1_B9C38(0);
     fn_1_B9C38(1);
@@ -1819,9 +1729,6 @@ void fn_1_B9C0C(void) {
 
 /* fzgx:begin fn_1_B9C38 */
 #include "rel/main_rel/memcard.h"
-
-extern u32 lbl_801A6410;
-extern void fn_1_46B4(u32, u32, Obj_1_data_3C7B8 *, u32);
 
 // Saves populated slots before resetting each slot for reuse.
 void fn_1_B9C38(s32 index) {
@@ -1849,11 +1756,6 @@ void fn_1_B9C38(s32 index) {
 /* fzgx:begin fn_1_BC29C */
 #include "rel/main_rel/memcard.h"
 
-extern void fn_1_46B4(u32, u32, Obj_1_data_3C7B8 *, u32);
-extern void fn_1_1596DC(u32);
-extern void fn_1_484CC(u32);
-extern u32 lbl_801A6410;
-
 // Completes the pending memory-card operation and resets the card state when needed.
 void fn_1_BC29C(void) {
     if (lbl_1_bss_7A380 != 0) {
@@ -1872,9 +1774,6 @@ typedef struct {
     u8 unk0[0x16];
     s16 unk16;
 } Fn1C132CObject;
-
-extern void fn_80008BEC(void *dst, s32 value, s32 size);
-extern void fn_1_AA6D8(s32 arg0, u32 arg1, void *arg2);
 
 void fn_1_C132C(Fn1C132CObject *object, u8 *data) {
     u8 local[0x24];
@@ -1895,18 +1794,6 @@ void fn_1_C17CC(void) {
 /* fzgx:begin fn_1_C34F0 */
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/memcard.h"
-
-extern void fn_1_F755C(u8 value);
-extern void fn_80008BA8(void *dst, const void *src, u32 size);
-extern void fn_1_A6840(u8 value);
-extern void fn_8000C49C(void *arg0, ...);
-extern void fn_1_F79C8(void);
-
-extern u8 lbl_1_data_2AC0[128];
-extern u8 lbl_1_data_2B40[16];
-extern u32 lbl_1_data_2B50;
-extern u32 lbl_1_data_2B58;
-extern u32 lbl_1_data_2B60;
 
 // Initializes the memory-card state and restores the persistent card data.
 void fn_1_C34F0(void) {
@@ -1941,9 +1828,6 @@ void fn_1_C34F0(void) {
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/memcard.h"
 
-extern void fn_80008BA8(void *dst, const void *src, u32 size);
-extern void fn_8000C49C(void *arg0, u32 arg1, ...);
-
 // Writes the in-memory card fields to the active serialized card buffer.
 void fn_1_C36EC(void) {
     u8 *serialized_data = &lbl_1_bss_718C0.unk_0->unk_4;
@@ -1960,8 +1844,6 @@ void fn_1_C36EC(void) {
 /* fzgx:end fn_1_C36EC */
 
 /* fzgx:begin fn_1_C39FC */
-extern u32 lbl_1_data_3D230;
-
 u32 fn_1_C39FC(void) {
     return lbl_1_data_3D230;
 }

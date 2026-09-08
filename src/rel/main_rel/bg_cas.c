@@ -1,8 +1,40 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/bg_cas.h"
+extern void fn_80008BEC(void *arg0, int arg1, int arg2);
+extern void fn_1_FCA10(void);
+extern int fn_1_FCF50(void);
+extern void *fn_1_563B8(void *);
+extern f32 lbl_1_rodata_761C[13];
+extern void fn_1_7EB8C(void *, f32);
+extern void fn_1_7F20C(void *, s32, f32);
+extern void lbl_8006DB74(void *);
+extern void lbl_8006DBAC(void *);
+extern void fn_1_FD3A8(void);
+extern void *memset(void *, int, u32);
+extern void fn_1_FE7D8(u8 *, s32);
+extern void fn_1_FF420(u8 *);
+extern void fn_80074788(int);
+extern void fn_80072864(int);
+extern void fn_800745A4(int, int, int, int, int, int);
+extern void fn_800734A8(int, int, int, int);
+extern void fn_80072AB0(int, int, int);
+extern void fn_800735C8(int, int);
+extern void fn_80073620(int, int);
+extern void fn_80073C6C(int);
+extern void fn_80072C24(int, int, int, int, int);
+extern void fn_80072D64(int, int, int, int, int, int);
+extern void fn_80072CC4(int, int, int, int, int);
+extern void fn_80072E20(int, int, int, int, int, int);
+extern void fn_80073678(int);
+extern void fn_80074660(int);
+extern void fn_80074918(int, int, int);
+extern void fn_800720B0(int);
+extern void fn_1_9A508(Obj_1_data_2A7E0 *arg0);
+extern void fn_1_9AD54(void);
+extern void fn_1_9AD88(void);
 
 /* fzgx:begin fn_1_FB870 */
-extern u8 lbl_1_bss_84450;
-
 u8 *fn_1_FB870(void) {
     return &lbl_1_bss_84450;
 }
@@ -89,8 +121,6 @@ void fn_1_FC410(void) {
 /* fzgx:end fn_1_FC410 */
 
 /* fzgx:begin fn_1_FC4E0 */
-extern void fn_80008BEC(void *arg0, int arg1, int arg2);
-
 void fn_1_FC4E0(void *arg0, int arg1) {
     if (arg0 != 0) {
         fn_80008BEC(arg0, 0, (arg1 & 0xff) * 0x10440);
@@ -99,8 +129,6 @@ void fn_1_FC4E0(void *arg0, int arg1) {
 /* fzgx:end fn_1_FC4E0 */
 
 /* fzgx:begin fn_1_FCF50 */
-extern void fn_1_FCA10(void);
-
 int fn_1_FCF50(void) {
     fn_1_FCA10();
     return 1;
@@ -108,9 +136,6 @@ int fn_1_FCF50(void) {
 /* fzgx:end fn_1_FCF50 */
 
 /* fzgx:begin fn_1_FCF74 */
-extern u32 lbl_1_data_3EFB0;
-extern void fn_80008BEC(void *arg0, int arg1, int arg2);
-
 void fn_1_FCF74(void) {
     fn_80008BEC(&lbl_1_data_3EFB0, 0, 4);
 }
@@ -125,14 +150,6 @@ typedef struct {
     u8 pad[0x40f0];
     void *value;
 } Fn1FD27CArg1;
-
-extern int fn_1_FCF50(void);
-extern void *fn_1_563B8(void *);
-extern f32 lbl_1_rodata_761C[13];
-extern void fn_1_7EB8C(void *, f32);
-extern void fn_1_7F20C(void *, s32, f32);
-extern void lbl_8006DB74(void *);
-extern void lbl_8006DBAC(void *);
 
 void fn_1_FD27C(Fn1FD27CArg0 *arg0, Fn1FD27CArg1 *arg1) {
     Fn1FD27CArg1 *persistent;
@@ -159,8 +176,6 @@ void fn_1_FD27C(Fn1FD27CArg0 *arg0, Fn1FD27CArg1 *arg1) {
 /* fzgx:end fn_1_FD27C */
 
 /* fzgx:begin fn_1_FD388 */
-extern void fn_1_FD3A8(void);
-
 void fn_1_FD388(void) {
     fn_1_FD3A8();
 }
@@ -213,7 +228,7 @@ void fn_1_FE780(void) {
 }
 /* fzgx:end fn_1_FE780 */
 
-/* fzgx:begin fn_1_FE784 */
+/* fzgx:begin fn_1_FE784 noprologue */
 #include "rel/main_rel/bg_cas.h"
 #include "rel/main_rel/globals.h"
 
@@ -237,10 +252,6 @@ void fn_1_FE7D4(void) {
 
 /* fzgx:begin fn_1_FEC7C */
 #include "rel/main_rel/bg_cas.h"
-
-extern void *memset(void *, int, u32);
-extern void fn_1_FE7D8(u8 *, s32);
-extern void fn_1_FF420(u8 *);
 
 void fn_1_FEC7C(void *object) {
     s32 count;
@@ -266,23 +277,6 @@ void fn_1_FEC7C(void *object) {
 /* fzgx:end fn_1_FEC7C */
 
 /* fzgx:begin fn_1_1011CC */
-extern void fn_80074788(int);
-extern void fn_80072864(int);
-extern void fn_800745A4(int, int, int, int, int, int);
-extern void fn_800734A8(int, int, int, int);
-extern void fn_80072AB0(int, int, int);
-extern void fn_800735C8(int, int);
-extern void fn_80073620(int, int);
-extern void fn_80073C6C(int);
-extern void fn_80072C24(int, int, int, int, int);
-extern void fn_80072D64(int, int, int, int, int, int);
-extern void fn_80072CC4(int, int, int, int, int);
-extern void fn_80072E20(int, int, int, int, int, int);
-extern void fn_80073678(int);
-extern void fn_80074660(int);
-extern void fn_80074918(int, int, int);
-extern void fn_800720B0(int);
-
 void fn_1_1011CC(int arg0, int arg1) {
     fn_80074788(0);
     fn_80072864(0);
@@ -344,9 +338,6 @@ void fn_1_1013C0(void) {
 /* fzgx:begin fn_1_1013C4 */
 #include "rel/main_rel/bg_cas.h"
 
-extern void fn_1_9A508(Obj_1_data_2A7E0 *arg0);
-extern Obj_1_data_2A7E0 lbl_1_data_2A7E0;
-
 void fn_1_1013C4(void) {
     Obj_1_data_2A7E0_At3C *ptr = lbl_1_data_2A7E0.unk_3C;
     fn_1_9A508(&lbl_1_data_2A7E0);
@@ -361,8 +352,6 @@ void fn_1_101400(void) {
 /* fzgx:end fn_1_101400 */
 
 /* fzgx:begin fn_1_101404 */
-extern void fn_1_9AD54(void);
-
 void fn_1_101404(void) {
     fn_1_9AD54();
 }
@@ -375,8 +364,6 @@ void fn_1_101424(void) {
 /* fzgx:end fn_1_101424 */
 
 /* fzgx:begin fn_1_101428 */
-extern void fn_1_9AD88(void);
-
 void fn_1_101428(void) {
     fn_1_9AD88();
 }

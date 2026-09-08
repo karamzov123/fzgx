@@ -3,6 +3,29 @@
 #include "rel/main_rel/bg_san.h"
 extern void fn_1_DC6FC(void *context);
 extern void fn_1_DC5E8(Obj_1_data_2A7E0_At3C *, s32);
+extern void fn_1_9AD54(void);
+extern void fn_1_FBEA8(void);
+extern void fn_1_103F58(void *arg);
+extern void fn_1_9AD88(void);
+extern void fn_1_9A508(void);
+extern void fn_1_DAF94(Obj_1_data_2A7E0_At3C *);
+extern s32 fn_1_5910(void);
+extern void *fn_1_9D260(Obj_1_data_2A7E0 *arg0);
+extern s16 fn_1_7B054(void);
+extern s16 fn_1_3F0C8(void);
+extern const f32 lbl_1_rodata_663C;
+extern void fn_1_1067A8(void *arg0, f32 arg1, f32 arg2);
+extern void fn_1_103D28(void *arg0, int arg1, f32 arg2);
+extern f32 lbl_1_rodata_66D0[30];
+extern void fn_1_72648(Obj_1_data_2A7E0 *);
+extern void fn_1_103090(void *);
+extern void fn_1_1030A4(void *);
+extern void *fn_1_54448(s32);
+extern void *fn_1_548AC(s32);
+extern void fn_1_DC764(void);
+extern void fn_1_5489C(void *, void *);
+extern const f64 lbl_1_rodata_6748;
+extern void fn_1_D6C10(void *, f32);
 
 /* fzgx:begin fn_1_DA7B8 */
 #include "rel/main_rel/bg_san.h"
@@ -32,9 +55,6 @@ void fn_1_DA9F0(void) {
 /* fzgx:end fn_1_DA9F0 */
 
 /* fzgx:begin fn_1_DAA34 */
-extern void fn_1_9AD54(void);
-extern void fn_1_FBEA8(void);
-
 void fn_1_DAA34(void) {
     fn_1_9AD54();
     fn_1_FBEA8();
@@ -67,9 +87,6 @@ void fn_1_DAA58(void) {
 /* fzgx:begin fn_1_DAAC4 */
 #include "rel/main_rel/bg_san.h"
 
-extern void fn_1_103F58(void *arg);
-extern void fn_1_9AD88(void);
-
 void fn_1_DAAC4(void) {
     fn_1_103F58(&lbl_1_data_2A7E0.unk_3C->unk_BD8);
     fn_1_9AD88();
@@ -83,8 +100,6 @@ void fn_1_DAAF8(void) {
 /* fzgx:end fn_1_DAAF8 */
 
 /* fzgx:begin fn_1_DAAFC */
-extern void fn_1_58C4(void);
-
 // Initialize the background-san subsystem through its shared setup routine.
 void fn_1_DAAFC(void) {
     fn_1_58C4();
@@ -92,8 +107,6 @@ void fn_1_DAAFC(void) {
 /* fzgx:end fn_1_DAAFC */
 
 /* fzgx:begin fn_1_DAB1C */
-extern void fn_1_58C4(void);
-
 // Runs the background sanitation update.
 void fn_1_DAB1C(void) {
     fn_1_58C4();
@@ -101,8 +114,6 @@ void fn_1_DAB1C(void) {
 /* fzgx:end fn_1_DAB1C */
 
 /* fzgx:begin fn_1_DAB3C */
-extern void fn_1_58C4(void);
-
 // Perform the background sanitation step.
 void fn_1_DAB3C(void) {
     fn_1_58C4();
@@ -117,9 +128,6 @@ void fn_1_DAD68(void) {
 
 /* fzgx:begin fn_1_DAD6C */
 #include "rel/main_rel/bg_san.h"
-
-extern void fn_1_9A508(void);
-extern void fn_1_DAF94(Obj_1_data_2A7E0_At3C *);
 
 void fn_1_DAD6C(void) {
     Obj_1_data_2A7E0_At3C *obj;
@@ -137,14 +145,7 @@ void fn_1_DAEF8(void) {
 /* fzgx:end fn_1_DAEF8 */
 
 /* fzgx:begin fn_1_DAEFC */
-extern s32 fn_1_5910(void);
-extern void *fn_1_9D260(Obj_1_data_2A7E0 *arg0);
 extern void fn_1_DB198(void *arg0, void *arg1);
-extern s16 fn_1_9AD88(void);
-extern s16 fn_1_7B054(void);
-extern s16 fn_1_3F0C8(void);
-extern const f32 lbl_1_rodata_663C;
-extern void fn_1_1067A8(void *arg0, f32 arg1, f32 arg2);
 
 // Initializes the current background object and updates it for the active state.
 void fn_1_DAEFC(void) {
@@ -199,7 +200,11 @@ void fn_1_DB138(BgSanContext *context) {
 }
 /* fzgx:end fn_1_DB138 */
 
-/* fzgx:begin fn_1_DB198 */
+/* fzgx:begin fn_1_DB198 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/bg_san.h"
+
 typedef struct BgSanObject {
     u8 unk_00[0x10];
     s32 unk_10;
@@ -268,10 +273,7 @@ void fn_1_DC204(void) {
 /* fzgx:begin fn_1_DC208 */
 #include "rel/main_rel/bg_san.h"
 
-extern void fn_1_9A508(void);
-extern void fn_1_103D28(void *arg0, int arg1, f32 arg2);
 extern void fn_1_DC3A4(Obj_1_data_2A7E0_At3C *arg0);
-extern f32 lbl_1_rodata_66D0[30];
 
 void fn_1_DC208(void) {
     Obj_1_data_2A7E0_At3C *obj = lbl_1_data_2A7E0.unk_3C;
@@ -289,7 +291,7 @@ void fn_1_DC264(void) {
 }
 /* fzgx:end fn_1_DC264 */
 
-/* fzgx:begin fn_1_DC268 */
+/* fzgx:begin fn_1_DC268 noprologue */
 #include "rel/main_rel/bg_san.h"
 
 void fn_1_9AD54(void);
@@ -325,10 +327,7 @@ void fn_1_DC268(void) {
 /* fzgx:begin fn_1_DC2F8 */
 #include "rel/main_rel/bg_san.h"
 
-extern void fn_1_72648(Obj_1_data_2A7E0 *);
 extern void fn_1_DC404(Obj_1_data_2A7E0_At3C *);
-extern void fn_1_103F10(void *);
-extern Obj_1_data_2A7E0 lbl_1_data_2A7E0;
 
 void fn_1_DC2F8(void) {
     Obj_1_data_2A7E0_At3C *obj;
@@ -340,7 +339,7 @@ void fn_1_DC2F8(void) {
 }
 /* fzgx:end fn_1_DC2F8 */
 
-/* fzgx:begin fn_1_DC33C */
+/* fzgx:begin fn_1_DC33C noprologue */
 #include "rel/main_rel/bg_san.h"
 
 // Refreshes the active background object and commits the generated scene data.
@@ -364,8 +363,6 @@ void fn_1_DC3A0(void) {
 /* fzgx:end fn_1_DC3A0 */
 
 /* fzgx:begin fn_1_DC3A4 */
-extern void fn_1_103090(void *);
-
 typedef struct fn_1_DC3A4_Entry {
     u8 unk00[0x68];
     s32 initialized;
@@ -394,8 +391,6 @@ void fn_1_DC3A4(fn_1_DC3A4_Container *container) {
 /* fzgx:end fn_1_DC3A4 */
 
 /* fzgx:begin fn_1_DC404 */
-extern void fn_1_1030A4(void *);
-
 // Calls the cleanup routine for each entry in the container.
 typedef struct fn_1_DC404_Entry {
     u8 data[0xac];
@@ -452,11 +447,6 @@ void fn_1_DC5E8(fn_1_DC5E8_Container *container, void *arg) {
 /* fzgx:end fn_1_DC5E8 */
 
 /* fzgx:begin fn_1_DC6FC */
-extern void *fn_1_54448(s32);
-extern void *fn_1_548AC(s32);
-extern void fn_1_DC764(void);
-extern void fn_1_5489C(void *, void *);
-
 typedef struct Handler {
     u8 unk_00[4];
     void (*unk_04)(void);
@@ -480,9 +470,6 @@ void fn_1_DC6FC(void *context) {
 
 /* fzgx:begin fn_1_DCB10 */
 #include "rel/main_rel/bg_san.h"
-
-extern const f64 lbl_1_rodata_6748;
-extern void fn_1_D6C10(void *, f32);
 
 typedef struct fn_1_DCB10_Entry {
     u8 pad_00[0x20];
