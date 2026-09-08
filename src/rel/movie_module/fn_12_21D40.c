@@ -1,4 +1,8 @@
 #include "types.h"
 
-// fn_12_21D40: movie_module .text:0x00021D40 size 0x10
-// Carved by fzgx. Replace this file's body with the matching C.
+void fn_12_21D40(void *base, int index, int value) {
+    u8 *p = (u8 *)base;
+    int offset = index * 0x74;
+    p += offset;
+    *(int *)(p + 0x114c) = value;
+}

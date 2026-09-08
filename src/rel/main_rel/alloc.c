@@ -3,7 +3,7 @@
 #include "rel/main_rel/alloc.h"
 
 extern char lbl_1_data_2C9C[20];
-extern void fn_8000C49C(const char *message, int line, const char *file, ...);
+extern void OSPanic(const char *message, int line, const char *file, ...);
 extern void fn_80009AA8(u32 value, u32 count, const char *file, int line);
 extern u32 fn_1_435C(u32 value);
 extern void fn_1_426C(s16 value);
@@ -51,7 +51,7 @@ void fn_1_4928(void) {
                 count = entry->unk_08;
                 value = entry->unk_00;
                 if (count == 0) {
-                    fn_8000C49C((const char *)&lbl_1_data_2CD0, 0x15b,
+                    OSPanic((const char *)&lbl_1_data_2CD0, 0x15b,
                                 lbl_1_data_2C9C);
                 }
                 fn_80009AA8(value, count, (const char *)&lbl_1_data_2CD0,
@@ -203,19 +203,19 @@ void fn_1_5124(u32 arg0, u32 arg1) {
     Obj_1_bss_F68_Target *allocated;
 
     if (state->unk_0 != 0) {
-        fn_8000C49C((const char *)(data + 0x70), 0x69, (const char *)(data + 0x7c));
+        OSPanic((const char *)(data + 0x70), 0x69, (const char *)(data + 0x7c));
     }
     state->unk_0 = fn_1_45D0(lbl_801A6410, 0x78, data + 0x70, 0x6b);
     fn_800793D4(state->unk_0, 0, 0x78);
 
     if (state->unk_4 != 0) {
-        fn_8000C49C((const char *)(data + 0x70), 0x70, (const char *)(data + 0xac));
+        OSPanic((const char *)(data + 0x70), 0x70, (const char *)(data + 0xac));
     }
     state->unk_4 = fn_1_45D0(lbl_801A6410, 0x7f0, data + 0x70, 0x72);
     fn_800793D4(state->unk_4, 0, 0x7f0);
 
     if (state->unk_8 != 0) {
-        fn_8000C49C((const char *)(data + 0x70), 0x78, (const char *)(data + 0xdc));
+        OSPanic((const char *)(data + 0x70), 0x78, (const char *)(data + 0xdc));
     }
     allocated = fn_1_45D0(lbl_801A6410, 0x1e0, data + 0x70, 0x7a);
     state->unk_8 = allocated;

@@ -6,8 +6,8 @@ extern u8 *lbl_801A6CF4;
 extern u32 lbl_1_bss_6F5F4;
 extern u8 lbl_801A66B0[];
 extern s32 OSGetResetCode(void);
-extern u32 fn_8000FE78(void);
-extern void fn_8000FEE8(s32);
+extern u32 OSGetProgressiveMode(void);
+extern void OSSetProgressiveMode(s32);
 extern void fn_1_A6870(u32 *);
 extern void fn_1_A5F44(void);
 extern s32 fn_1_A6480(void);
@@ -58,10 +58,10 @@ s32 fn_1_A66FC(s32 value) {
 
     lbl_1_bss_6F5F4 = value;
     if (((u32)__cntlzw((u32)((-2147483647 - 1) - OSGetResetCode())) >> 5) != 0) {
-        if (fn_8000FE78() != 0) {
+        if (OSGetProgressiveMode() != 0) {
             result = 1;
         } else {
-            fn_8000FEE8(0);
+            OSSetProgressiveMode(0);
             lbl_1_data_341B8->unk_0 = 0;
             result = 1;
         }
@@ -73,7 +73,7 @@ s32 fn_1_A66FC(s32 value) {
         fn_1_A5F44();
         result = fn_1_A6480();
     } else {
-        fn_8000FEE8(0);
+        OSSetProgressiveMode(0);
         lbl_1_data_341B8->unk_0 = 0;
         result = 1;
     }

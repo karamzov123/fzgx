@@ -1,4 +1,17 @@
 #include "types.h"
 
-// fn_12_2D664: movie_module .text:0x0002D664 size 0xD8
-// Carved by fzgx. Replace this file's body with the matching C.
+extern int fn_12_24990(u8 *base, u8 *out);
+extern int fn_12_24A88(int value, u32 code);
+
+typedef struct MovieData {
+    u32 values[16];
+} MovieData;
+
+int fn_12_2D664(u8 *base, u8 *out) {
+    if (fn_12_24990(base, out) != 0) {
+        return fn_12_24A88(0, 0xff000114);
+    } else {
+        *(MovieData *)out = *(MovieData *)(base + 0x90c);
+        return 0;
+    }
+}

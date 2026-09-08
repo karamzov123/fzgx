@@ -1,4 +1,15 @@
 #include "types.h"
 
-// fn_12_338C4: movie_module .text:0x000338C4 size 0x58
-// Carved by fzgx. Replace this file's body with the matching C.
+extern int fn_12_3A36C(void *);
+extern char lbl_12_rodata_114C[50];
+extern void fn_12_34B88(const char *, ...);
+extern int fn_12_3A7D8(void *);
+extern int fn_12_2A508(int);
+
+int fn_12_338C4(void *self) {
+    if (fn_12_3A36C(self) == 0) {
+        fn_12_34B88(lbl_12_rodata_114C);
+        return 0;
+    }
+    return fn_12_2A508(fn_12_3A7D8(self));
+}

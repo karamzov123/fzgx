@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_12_D60: movie_module .text:0x00000D60 size 0x28
-// Carved by fzgx. Replace this file's body with the matching C.
+extern void fn_12_C60(void *arg0, void *arg1, s32 arg2, void *arg3);
+
+void fn_12_D60(void *arg0, void *arg1, void *arg2) {
+    fn_12_C60(arg0, arg1, 16, arg2);
+}

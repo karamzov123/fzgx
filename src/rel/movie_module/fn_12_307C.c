@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_12_307C: movie_module .text:0x0000307C size 0x10
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u32 lbl_12_bss_C;
+
+u32 fn_12_307C(void) {
+    return lbl_12_bss_C;
+}

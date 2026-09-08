@@ -1,4 +1,15 @@
 #include "types.h"
 
-// fn_12_2F1E0: movie_module .text:0x0002F1E0 size 0x10
-// Carved by fzgx. Replace this file's body with the matching C.
+struct MovieSlot {
+    int value;
+    char pad[0x40];
+};
+
+struct Movie {
+    char pad[0x1aa4];
+    struct MovieSlot slots[1];
+};
+
+void fn_12_2F1E0(struct Movie *movie, int index, int value) {
+    movie->slots[index].value = value;
+}

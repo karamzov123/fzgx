@@ -1,4 +1,10 @@
 #include "types.h"
 
-// fn_12_49D8: movie_module .text:0x000049D8 size 0x14
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct MovieState {
+    u8 pad[0x58];
+    s32 value;
+} MovieState;
+
+int fn_12_49D8(MovieState *state) {
+    return state->value != 0;
+}

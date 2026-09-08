@@ -1,4 +1,10 @@
 #include "types.h"
 
-// fn_12_34DC: movie_module .text:0x000034DC size 0x8
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct MovieModuleObject {
+    int field_0;
+    int field_4;
+} MovieModuleObject;
+
+int fn_12_34DC(MovieModuleObject *module) {
+    return module->field_4;
+}

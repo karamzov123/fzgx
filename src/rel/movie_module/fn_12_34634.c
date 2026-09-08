@@ -1,4 +1,27 @@
 #include "types.h"
 
-// fn_12_34634: movie_module .text:0x00034634 size 0x88
-// Carved by fzgx. Replace this file's body with the matching C.
+struct MovieModule {
+    u8 pad_00[0x70];
+    char field_70;
+    char field_71;
+};
+
+extern int fn_12_3A36C(struct MovieModule *);
+extern const u8 lbl_12_rodata_1480[];
+extern const char lbl_12_rodata_12E0[];
+extern void fn_12_34B88(const char *, ...);
+
+void fn_12_34634(struct MovieModule *self) {
+    if (fn_12_3A36C(self) == 0) {
+        fn_12_34B88((const char *)lbl_12_rodata_1480);
+    } else {
+        if (fn_12_3A36C(self) == 0) {
+            fn_12_34B88(lbl_12_rodata_12E0);
+        } else {
+            if (self->field_70 == 1) {
+                self->field_71 = 1;
+            }
+            self->field_70 = 0;
+        }
+    }
+}

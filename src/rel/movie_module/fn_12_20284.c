@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_12_20284: movie_module .text:0x00020284 size 0x28
-// Carved by fzgx. Replace this file's body with the matching C.
+extern void fn_12_24A88(u32, u32);
+
+void fn_12_20284(u32 value) {
+    fn_12_24A88(value, 0xff000c03);
+}

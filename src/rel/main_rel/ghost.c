@@ -33,7 +33,7 @@ extern void fn_80008BEC(void *dst, int value, int size);
 extern void fn_1_F1950(void);
 extern u32 fn_8002071C(void *arg);
 extern void fn_800206FC(u32 arg);
-extern u32 fn_8001E828(void);
+extern u32 ARGetDMAStatus(void);
 extern void DCFlushRange(void *addr, u32 size);
 extern u32 lbl_1_bss_7C848[2];
 extern u8 lbl_1_bss_7C8CD;
@@ -294,7 +294,7 @@ void fn_1_F1960(void *arg0, void *arg1, u32 arg2) {
     result = fn_8002071C(arg0);
     fn_800206FC(arg2);
     lbl_1_bss_7ECFC.unk_0 = 0;
-    while (fn_8001E828() != 0) {
+    while (ARGetDMAStatus() != 0) {
     }
     DCFlushRange(arg1, arg2);
     fn_800205A0(temp, 1, 0, 1, arg1, arg0, arg2, fn_1_F1950);

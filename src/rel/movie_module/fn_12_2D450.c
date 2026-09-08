@@ -1,4 +1,15 @@
 #include "types.h"
 
-// fn_12_2D450: movie_module .text:0x0002D450 size 0x20
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct MovieModuleState {
+    s32 field_0;
+    s32 field_4;
+    s32 field_8;
+    s32 field_c;
+} MovieModuleState;
+
+void fn_12_2D450(MovieModuleState *state) {
+    state->field_0 = 0;
+    state->field_4 = 0;
+    state->field_8 = -3;
+    state->field_c = 1;
+}

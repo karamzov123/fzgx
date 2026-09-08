@@ -1,4 +1,10 @@
 #include "types.h"
 
-// fn_12_3A960: movie_module .text:0x0003A960 size 0x8
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct Fn12_3A960_Object {
+    u8 _pad[0x64];
+    u32 value;
+} Fn12_3A960_Object;
+
+void fn_12_3A960(Fn12_3A960_Object *object, u32 value) {
+    object->value = value;
+}

@@ -1,4 +1,12 @@
 #include "types.h"
 
-// fn_12_3503C: movie_module .text:0x0003503C size 0x24
-// Carved by fzgx. Replace this file's body with the matching C.
+extern void fn_12_4980(void *);
+
+struct Fn12_3503C_Context {
+    u8 pad_a8[0xa8];
+    void *field_a8;
+};
+
+void fn_12_3503C(struct Fn12_3503C_Context *self) {
+    fn_12_4980(self->field_a8);
+}

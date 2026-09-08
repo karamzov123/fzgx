@@ -2,14 +2,14 @@
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/live_camera.h"
 
-extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
+extern void OSPanic(u8 *file, int line, u8 *message, ...);
 extern u32 fn_80008E30(u32);
 extern u8 lbl_1_bss_17B4[12];
 extern void fn_80083DB0(Obj_1_bss_3B30 *, void *);
 extern u32 *fn_1_1304C(Obj_1_bss_3B30 *, u32);
 extern u8 lbl_1_bss_1810[8984];
 extern void fn_8000659C(void);
-extern u32 fn_800102B8(u8 *);
+extern u32 OSIsThreadTerminated(u8 *);
 
 extern void fn_1_6DD0(void *);
 extern u32 *fn_1_1289C(u32 *);
@@ -17,7 +17,7 @@ extern u32 *fn_1_1289C(u32 *);
 /* fzgx:begin fn_1_DA34 */
 // Reports the camera source location and message used by this routine.
 void fn_1_DA34(void) {
-    fn_8000C49C(lbl_1_data_4420, 0x34, lbl_1_data_4430);
+    OSPanic(lbl_1_data_4420, 0x34, lbl_1_data_4430);
 }
 /* fzgx:end fn_1_DA34 */
 
@@ -91,6 +91,6 @@ u32 fn_1_12F78(void *arg0, u32 arg1) {
 /* fzgx:begin fn_1_13018 */
 u32 fn_1_13018(void) {
     fn_8000659C();
-    return fn_800102B8(lbl_1_bss_1810) == 0;
+    return OSIsThreadTerminated(lbl_1_bss_1810) == 0;
 }
 /* fzgx:end fn_1_13018 */

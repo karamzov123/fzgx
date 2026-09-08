@@ -33,7 +33,7 @@ extern const f64 lbl_1_rodata_31A0;
 extern void lbl_8006D784(f32 *arg);
 extern void fn_80073A58(int arg0, f32 *arg1, int arg2);
 extern void fn_800739E0(int arg0, int arg1, int arg2);
-extern void fn_80038D34(f32 *arg0, int arg1, int arg2);
+extern void GXLoadTexMtxImm(f32 *arg0, int arg1, int arg2);
 extern void fn_8006FDEC(void);
 extern void fn_8006FEFC(void);
 extern void fn_8006FD1C(void);
@@ -418,7 +418,7 @@ void fn_1_772E0(void) {
     fn_80073A58(1, values, 1);
     fn_800739E0(0, 0, 0);
     lbl_8006D784(second);
-    fn_80038D34(second, 30, 1);
+    GXLoadTexMtxImm(second, 30, 1);
 }
 /* fzgx:end fn_1_772E0 */
 

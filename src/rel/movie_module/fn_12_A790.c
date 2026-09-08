@@ -1,4 +1,11 @@
 #include "types.h"
 
-// fn_12_A790: movie_module .text:0x0000A790 size 0x20
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u32 lbl_12_bss_4E60[6];
+
+void fn_12_A790(void) {
+    lbl_12_bss_4E60[0] = 0;
+    lbl_12_bss_4E60[1] = 0;
+    lbl_12_bss_4E60[2] = 0;
+    lbl_12_bss_4E60[3] = 0;
+    lbl_12_bss_4E60[4] = 0;
+}

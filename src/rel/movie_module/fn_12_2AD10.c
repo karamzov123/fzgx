@@ -1,4 +1,13 @@
 #include "types.h"
 
-// fn_12_2AD10: movie_module .text:0x0002AD10 size 0x68
-// Carved by fzgx. Replace this file's body with the matching C.
+extern int fn_12_24990(void *module);
+extern int fn_12_24A88(int value, int code);
+extern void fn_12_2D7DC(void *module, int value, int argument);
+
+int fn_12_2AD10(void *module, int argument) {
+    if (fn_12_24990(module)) {
+        return fn_12_24A88(0, 0xff000145);
+    }
+    fn_12_2D7DC(module, 0x1e, argument);
+    return 0;
+}

@@ -1,4 +1,26 @@
 #include "types.h"
 
-// fn_12_353C4: movie_module .text:0x000353C4 size 0x38
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct Movie Movie;
+typedef struct MovieVTable MovieVTable;
+
+struct MovieVTable {
+    u8 pad_00[0x14];
+    void (*method_14)(Movie *self);
+};
+
+struct Movie {
+    MovieVTable *vtable;
+};
+
+typedef struct MovieModuleState {
+    u8 pad_e8[0xe8];
+    Movie *movie;
+} MovieModuleState;
+
+void fn_12_353C4(MovieModuleState *self) {
+    Movie *movie = self->movie;
+
+    if (movie != 0) {
+        movie->vtable->method_14(movie);
+    }
+}

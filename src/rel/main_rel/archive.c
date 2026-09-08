@@ -2,7 +2,7 @@
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/archive.h"
 
-extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
+extern void OSPanic(u8 *arg0, s32 arg1, u8 *arg2, ...);
 extern void fn_1_12A350(void *arg0, s32 arg1);
 extern s32 fn_8006A480(void *arg0, void *arg1, void *arg2);
 extern s32 fn_8006A998(void *arg0);
@@ -28,16 +28,16 @@ extern u8 fn_1_B7C00(void);
 extern s32 lbl_1_bss_897A4;
 extern void *lbl_801A6410;
 extern void fn_1_46B4(void *arg0, void *arg1, unsigned char *arg2, s32 arg3);
-extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
+extern void OSPanic(u8 *arg0, s32 arg1, u8 *arg2, ...);
 
-extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
+extern void OSPanic(u8 *arg0, s32 arg1, u8 *arg2, ...);
 extern s32 lbl_1_bss_8CA44[10];
 
-extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
+extern void OSPanic(u8 *arg0, s32 arg1, u8 *arg2, ...);
 extern void fn_1_435C();
 
 /* fzgx:begin fn_1_12A2D0 */
-extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
+extern void OSPanic(u8 *arg0, s32 arg1, u8 *arg2, ...);
 
 // Store the selected entry when it is valid; otherwise report an invalid entry.
 void fn_1_12A2D0(s32 value) {
@@ -47,9 +47,9 @@ void fn_1_12A2D0(s32 value) {
     if ((s32)entry->unk_0 == 1) {
         lbl_1_bss_897A0 = value;
     } else {
-        extern void fn_8000C49C(char *arg0, s32 arg1, ...);
+        extern void OSPanic(char *arg0, s32 arg1, ...);
 
-        fn_8000C49C((char *)lbl_1_data_40608, 0x5d, lbl_1_data_40614);
+        OSPanic((char *)lbl_1_data_40608, 0x5d, lbl_1_data_40614);
     }
 }
 /* fzgx:end fn_1_12A2D0 */
@@ -77,7 +77,7 @@ void fn_1_12AAC8(void *arg0) {
 
     obj = (u8 *)&lbl_1_bss_897AC + lbl_1_bss_897A0 * 0x6C + 0x4C;
     if (fn_8006A480(obj, arg0, local_8) == 0) {
-        fn_8000C49C(lbl_1_data_40608, 0x1BE, lbl_1_data_4076C);
+        OSPanic(lbl_1_data_40608, 0x1BE, lbl_1_data_4076C);
     }
     fn_8006A9AC(local_8);
 }
@@ -252,7 +252,7 @@ void fn_1_12D354(void *arg0, void *arg1, void *arg2) {
     u32 slot;
 
     if (arg2 == 0) {
-        fn_8000C49C(archive_data + 0x358, 0x388, archive_data + 0x368);
+        OSPanic(archive_data + 0x358, 0x388, archive_data + 0x368);
     }
 
     for (slot = 0; slot < 12; slot++) {
@@ -263,7 +263,7 @@ void fn_1_12D354(void *arg0, void *arg1, void *arg2) {
         }
     }
 
-    fn_8000C49C(archive_data + 0x358, 0x394, archive_data + 0x390);
+    OSPanic(archive_data + 0x358, 0x394, archive_data + 0x390);
 }
 /* fzgx:end fn_1_12D354 */
 

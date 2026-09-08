@@ -1,4 +1,27 @@
 #include "types.h"
 
-// fn_12_3570C: movie_module .text:0x0003570C size 0xB0
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct MovieModuleState {
+    u8 pad_a8[0xa8];
+    void *movie;
+    u8 pad_ac[0x3c];
+    void *value_e8;
+} MovieModuleState;
+
+extern u8 lbl_12_rodata_15D0[];
+extern int fn_12_3A36C(void);
+extern void fn_12_34B88(const char *, ...);
+extern void fn_12_8DC(void *, int);
+
+void fn_12_3570C(MovieModuleState *self, int mode) {
+    const u8 *text = lbl_12_rodata_15D0;
+
+    if (fn_12_3A36C() == 0) {
+        fn_12_34B88((const char *)(text + 0x398));
+    } else if (self->value_e8 == 0 && mode == 0x101) {
+        fn_12_34B88((const char *)(text + 0x3cc));
+    } else if (self->value_e8 == 0 && mode == 0) {
+        fn_12_34B88((const char *)(text + 0x414));
+    } else {
+        fn_12_8DC(self->movie, mode);
+    }
+}

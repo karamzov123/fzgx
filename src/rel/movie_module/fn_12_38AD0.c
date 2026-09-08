@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_12_38AD0: movie_module .text:0x00038AD0 size 0x10
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u32 lbl_12_bss_1BAAC[1131];
+
+u32 fn_12_38AD0(void) {
+    return lbl_12_bss_1BAAC[15];
+}

@@ -1,4 +1,15 @@
 #include "types.h"
 
-// fn_12_21F38: movie_module .text:0x00021F38 size 0x10
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct MovieEntry {
+    int value;
+    u8 pad[0x70];
+} MovieEntry;
+
+typedef struct MovieModule {
+    u8 pad[0x115c];
+    MovieEntry entries[1];
+} MovieModule;
+
+int fn_12_21F38(MovieModule *module, int index) {
+    return module->entries[index].value;
+}

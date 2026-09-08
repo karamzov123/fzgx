@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_12_309C0: movie_module .text:0x000309C0 size 0x10
-// Carved by fzgx. Replace this file's body with the matching C.
+void fn_12_309C0(void* self, s32 value) {
+    if (value > 0) {
+        *(s32*)((u8*)self + 0x10) = value;
+    }
+}

@@ -1,4 +1,10 @@
 #include "types.h"
 
-// fn_12_2DAB4: movie_module .text:0x0002DAB4 size 0x8
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct MovieModule {
+    u8 pad_0[0xf28];
+    int value;
+} MovieModule;
+
+int fn_12_2DAB4(MovieModule *module) {
+    return module->value;
+}

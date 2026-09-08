@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_12_2025C: movie_module .text:0x0002025C size 0x28
-// Carved by fzgx. Replace this file's body with the matching C.
+extern void fn_12_24A88(void *arg0, u32 arg1);
+
+void fn_12_2025C(void *arg0) {
+    fn_12_24A88(arg0, 0xff000c03);
+}

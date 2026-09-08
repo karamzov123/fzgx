@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_12_5548: movie_module .text:0x00005548 size 0x28
-// Carved by fzgx. Replace this file's body with the matching C.
+extern void *memset(void *dst, int value, u32 size);
+
+void fn_12_5548(void *dst) {
+    memset(dst, 0, 0x54);
+}

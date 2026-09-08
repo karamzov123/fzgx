@@ -1,4 +1,29 @@
 #include "types.h"
 
-// fn_12_3A52C: movie_module .text:0x0003A52C size 0x6C
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct Fn12_3A52C_Object {
+    u8 _pad0[0x04];
+    u32 value;
+    u8 _pad8[0x38];
+    void *movie;
+} Fn12_3A52C_Object;
+
+extern char lbl_12_rodata_2C3C[45];
+extern void fn_12_34B88(const char *format, ...);
+extern int fn_12_2AD10(void *movie);
+extern char lbl_12_rodata_2C6C[40];
+
+void fn_12_3A52C(Fn12_3A52C_Object *object) {
+    int value;
+
+    if (object == 0) {
+        value = 0;
+    } else {
+        value = object->value;
+    }
+
+    if (value == 0) {
+        fn_12_34B88(lbl_12_rodata_2C3C);
+    } else if (fn_12_2AD10(object->movie) != 0) {
+        fn_12_34B88(lbl_12_rodata_2C6C);
+    }
+}

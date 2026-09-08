@@ -12,9 +12,9 @@ extern const f32 lbl_1_rodata_4CA8;
 extern const f64 lbl_1_rodata_4CB0;
 extern const f32 lbl_1_rodata_4CAC;
 extern void fn_80083DB0(void *dst, void *src);
-extern void fn_80083D40(void *dst, void *src);
+extern void strcat(void *dst, void *src);
 extern void fn_8002FB04(u8 byte, void *data, int arg);
-extern s32 fn_8002A988(u8 byte_val, void *arg1, void *arg2);
+extern s32 CARDFreeBlocks(u8 byte_val, void *arg1, void *arg2);
 extern s32 fn_8002EBD4(u8 byte_val, void *arg1, void *arg2);
 extern void fn_8002F9D8(u8 byte_val, void *arg, s32 zero);
 extern void fn_8002EED8(u8 byte_val, void *arg1, void *arg2, void *arg3, u32 arg4);
@@ -37,10 +37,10 @@ extern void fn_80008BEC(void *dst, s32 value, s32 size);
 extern void fn_1_AA6D8(s32 arg0, u32 arg1, void *arg2);
 extern void fn_1_F755C(u8 value);
 extern void fn_1_A6840(u8 value);
-extern void fn_8000C49C(void *arg0, u32 arg1, ...);
+extern void OSPanic(void *arg0, u32 arg1, ...);
 extern void fn_1_F79C8(void);
 extern void *lbl_801A6410;
-extern void fn_80083D6C(void *arg0, void *arg1, int arg2);
+extern void strncpy(void *arg0, void *arg1, int arg2);
 extern u32 lbl_1_bss_77310[28];
 extern u32 lbl_1_bss_7730C;
 
@@ -91,7 +91,7 @@ typedef struct {
 void fn_1_AB4F4(fn_1_AB4F4_ArgStruct *arg) {
     int status;
 
-    status = fn_8002A958(arg->byte_0);
+    status = CARDGetResultCode(arg->byte_0);
     arg->ptr_0x24->field_0x4 = status;
     if (arg->ptr_0x24->field_0x4 == -3 && arg->byte_1 == -2) {
         arg->ptr_0x24->field_0x4 = arg->byte_1;
@@ -139,11 +139,11 @@ typedef struct {
 } fn_1_AB5CC_ArgStruct;
 
 // fn_1_AB5CC: main_rel .text:0x000AB5CC size 0x50
-// Load byte from arg, call fn_8002A958, store result at struct offset 0x4, clear offset 0x2 if not -1.
+// Load byte from arg, call CARDGetResultCode, store result at struct offset 0x4, clear offset 0x2 if not -1.
 
 void fn_1_AB5CC(fn_1_AB5CC_ArgStruct *arg) {
     u8 byte_val = arg->byte_0;
-    int result = fn_8002A958(byte_val);
+    int result = CARDGetResultCode(byte_val);
     
     fn_1_AB5CC_OffsetStruct *s = arg->ptr_0x24;
     s->field_0x4 = result;
@@ -226,7 +226,7 @@ typedef struct {
 } fn_1_AB7C4_ArgStruct;
 
 void fn_1_AB7C4(fn_1_AB7C4_ArgStruct *arg) {
-    arg->ptr_0x24->field_0x4 = fn_8002A958(arg->byte_0);
+    arg->ptr_0x24->field_0x4 = CARDGetResultCode(arg->byte_0);
     arg->field_0x38 = (fn_8002C0A0(arg->byte_0) - arg->field_0x30) / lbl_1_rodata_4CAC;
     if (arg->ptr_0x24->field_0x4 != -1) {
         arg->flags_0x2a &= ~2;
@@ -292,7 +292,7 @@ void fn_1_AB8D8(fn_1_AB8D8_ArgStruct *arg) {
     u8 data[0x40];
 
     fn_80083DB0(data, (u8 *)arg->ptr_0x24 + 0x98);
-    fn_80083D40(data, lbl_1_data_3C89C);
+    strcat(data, lbl_1_data_3C89C);
     ((u16 *)arg->ptr_0x24)[1] = 0x12c;
     fn_8002FB04(arg->byte_0, data, 0);
 }
@@ -314,7 +314,7 @@ typedef struct {
 // fn_1_AB93C: main_rel .text:0x000AB93C size 0x50
 void fn_1_AB93C(fn_1_AB93C_ArgStruct *arg) {
     u8 byte_val = arg->byte_0;
-    int result = fn_8002A958(byte_val);
+    int result = CARDGetResultCode(byte_val);
 
     fn_1_AB93C_OffsetStruct *s = arg->ptr_0x24;
     s->field_0x4 = result;
@@ -359,7 +359,7 @@ typedef struct {
 } fn_1_AB99C_ArgStruct;
 
 void fn_1_AB99C(fn_1_AB99C_ArgStruct *arg) {
-    s32 result = fn_8002A988(arg->byte_0, arg->ptr_0x24->data,
+    s32 result = CARDFreeBlocks(arg->byte_0, arg->ptr_0x24->data,
         &arg->ptr_0x24->data[0x4]);
     arg->ptr_0x24->field_0x4 = result;
     if (arg->ptr_0x24->field_0x4 == 0) {
@@ -404,7 +404,7 @@ typedef struct {
 } fn_1_ABA24_ArgStruct;
 
 void fn_1_ABA24(fn_1_ABA24_ArgStruct *arg) {
-    s32 result = fn_8002A988(arg->byte_0, arg->ptr_0x24->data,
+    s32 result = CARDFreeBlocks(arg->byte_0, arg->ptr_0x24->data,
         &arg->ptr_0x24->data[0x4]);
     arg->ptr_0x24->field_0x4 = result;
     if (arg->ptr_0x24->field_0x4 == 0) {
@@ -450,7 +450,7 @@ void fn_1_ABAAC(fn_1_ABAAC_ArgStruct *arg) {
     u8 local[0x40];
 
     fn_80083DB0(local, (u8 *)arg->ptr_0x24 + 0x98);
-    fn_80083D40(local, lbl_1_data_3C7C4);
+    strcat(local, lbl_1_data_3C7C4);
     arg->ptr_0x24->field_0x4 =
         fn_8002EBD4(arg->byte_0, local, arg->data_0x10);
     if (arg->ptr_0x24->field_0x4 != -1) {
@@ -526,7 +526,7 @@ typedef struct {
 } fn_1_ABC98_ArgStruct;
 
 void fn_1_ABC98(fn_1_ABC98_ArgStruct *arg) {
-    arg->ptr_0x24->field_0x4 = fn_8002A958(arg->byte_0);
+    arg->ptr_0x24->field_0x4 = CARDGetResultCode(arg->byte_0);
     if (arg->ptr_0x24->field_0x4 != -1) {
         arg->ptr_0x24->field_0x2 = 0;
     }
@@ -552,7 +552,7 @@ void fn_1_ABCE8(fn_1_ABCE8_ArgStruct *arg) {
     u8 local[0x40];
 
     fn_80083DB0(local, (u8 *)arg->ptr_0x24 + 0x98);
-    fn_80083D40(local, lbl_1_data_3C89C);
+    strcat(local, lbl_1_data_3C89C);
     arg->ptr_0x24->field_0x2 = 0x12c;
     fn_8002EED8(arg->byte_0, local, arg->ptr_0x24->ptr_0xc,
         arg->data_0x10, 0);
@@ -573,7 +573,7 @@ typedef struct {
 } fn_1_ABD58_ArgStruct;
 
 void fn_1_ABD58(fn_1_ABD58_ArgStruct *arg) {
-    arg->ptr_0x24->field_0x4 = fn_8002A958(arg->byte_0);
+    arg->ptr_0x24->field_0x4 = CARDGetResultCode(arg->byte_0);
     if (arg->ptr_0x24->field_0x4 != -1) {
         arg->ptr_0x24->field_0x2 = 0;
     }
@@ -658,7 +658,7 @@ void fn_1_ABF44(Fn1ABF44Object *arg) {
 
     arg->state->field_0x2 = 300;
     fn_80083DB0(work, (u8 *)arg->state + 0x98);
-    fn_80083D40(work, lbl_1_data_3C7C4);
+    strcat(work, lbl_1_data_3C7C4);
     value = fn_8002EBD4(arg->id, work, arg->data_0x10);
     arg->state->field_0x4 = value;
     arg->value_0x30 = fn_8002C0A0(arg->id);
@@ -685,9 +685,9 @@ extern const f32 lbl_1_rodata_4CA8;
 extern const f64 lbl_1_rodata_4CB0;
 extern const f32 lbl_1_rodata_4CAC;
 extern void fn_80083DB0(void *dst, void *src);
-extern void fn_80083D40(void *dst, void *src);
+extern void strcat(void *dst, void *src);
 extern void fn_8002FB04(u8 byte, void *data, int arg);
-extern s32 fn_8002A988(u8 byte_val, void *arg1, void *arg2);
+extern s32 CARDFreeBlocks(u8 byte_val, void *arg1, void *arg2);
 extern s32 fn_8002EBD4(u8 byte_val, void *arg1, void *arg2);
 extern void fn_8002F9D8(u8 byte_val, void *arg, s32 zero);
 extern void fn_8002EED8(u8 byte_val, void *arg1, void *arg2, void *arg3, u32 arg4);
@@ -710,10 +710,10 @@ extern void fn_80008BEC(void *dst, s32 value, s32 size);
 extern void fn_1_AA6D8(s32 arg0, u32 arg1, void *arg2);
 extern void fn_1_F755C(u8 value);
 extern void fn_1_A6840(u8 value);
-extern void fn_8000C49C(void *arg0, u32 arg1, ...);
+extern void OSPanic(void *arg0, u32 arg1, ...);
 extern void fn_1_F79C8(void);
 extern void *lbl_801A6410;
-extern void fn_80083D6C(void *arg0, void *arg1, int arg2);
+extern void strncpy(void *arg0, void *arg1, int arg2);
 extern u32 lbl_1_bss_77310[28];
 extern u32 lbl_1_bss_7730C;
 
@@ -778,7 +778,7 @@ typedef struct Fn1AC2D8Target {
 } Fn1AC2D8Target;
 
 void fn_1_AC2D8(Fn1AC2D8Target *target) {
-    target->state->status = fn_8002A958(target->id);
+    target->state->status = CARDGetResultCode(target->id);
     if (target->state->status != -1) {
         target->state->value = 0;
     }
@@ -802,7 +802,7 @@ void fn_1_AC328(Fn1AC328Target *target) {
     u8 data[0x40];
 
     fn_80083DB0(data, (u8 *)target->state + 0x98);
-    fn_80083D40(data, lbl_1_data_3C7C4);
+    strcat(data, lbl_1_data_3C7C4);
     target->state->value = 300;
     fn_8002FB04(target->id, data, 0);
 }
@@ -822,7 +822,7 @@ typedef struct Fn1AC38Target {
 } Fn1AC38Target;
 
 void fn_1_AC38C(Fn1AC38Target *target) {
-    target->data->status = fn_8002A958(target->id);
+    target->data->status = CARDGetResultCode(target->id);
     if (target->data->status != -1) {
         target->data->value = 0;
     }
@@ -848,8 +848,8 @@ void fn_1_AC3DC(Fn1AC3DCTarget *target) {
 
     fn_80083DB0(data1, (u8 *)target->state + 0x98);
     fn_80083DB0(data2, (u8 *)target->state + 0x98);
-    fn_80083D40(data1, lbl_1_data_3C89C);
-    fn_80083D40(data2, lbl_1_data_3C7C4);
+    strcat(data1, lbl_1_data_3C89C);
+    strcat(data2, lbl_1_data_3C7C4);
     target->state->value = 300;
     fn_8003013C(target->id, data1, data2, 0);
 }
@@ -869,7 +869,7 @@ typedef struct Fn1AC464Target {
 } Fn1AC464Target;
 
 void fn_1_AC464(Fn1AC464Target *target) {
-    target->state->result = fn_8002A958(target->value);
+    target->state->result = CARDGetResultCode(target->value);
     if (target->state->result != -1) {
         target->state->value = 0;
     }
@@ -911,7 +911,7 @@ typedef struct Fn1AC4C4Target {
 
 void fn_1_AC4C4(Fn1AC4C4Target *target) {
     target->state->result =
-        fn_8002A988(target->value, &target->state->data_10, &target->state->data_14);
+        CARDFreeBlocks(target->value, &target->state->data_10, &target->state->data_14);
     if (target->state->result == 0) {
         target->state->flags |= 0x80;
     }
@@ -996,7 +996,7 @@ void fn_1_AC704(void *r3) {
 void fn_1_AC74C(void *r3) {
     s32 result;
 
-    result = fn_8002A958(*(u8 *)r3);
+    result = CARDGetResultCode(*(u8 *)r3);
     *(s32 *)((u8 *)*(void **)((u8 *)r3 + 0x24) + 0x4) = result;
     if (*(s32 *)((u8 *)*(void **)((u8 *)r3 + 0x24) + 0x4) != -1) {
         *(u16 *)((u8 *)*(void **)((u8 *)r3 + 0x24) + 0x2) = 0;
@@ -1238,7 +1238,7 @@ typedef struct {
 
 void fn_1_ACEBC(fn_1_ACEBC_SomeObject* obj) {
     s32 value;
-    value = fn_8002A958(obj->field_0);
+    value = CARDGetResultCode(obj->field_0);
     *(s32*)((u8*)obj->field_24 + 0x4) = value;
     if (*(s32*)((u8*)obj->field_24 + 0x4) != -1) {
         *(u16*)((u8*)obj->field_24 + 0x2) = 0;
@@ -1409,9 +1409,9 @@ extern const f32 lbl_1_rodata_4CA8;
 extern const f64 lbl_1_rodata_4CB0;
 extern const f32 lbl_1_rodata_4CAC;
 extern void fn_80083DB0(void *dst, void *src);
-extern void fn_80083D40(void *dst, void *src);
+extern void strcat(void *dst, void *src);
 extern void fn_8002FB04(u8 byte, void *data, int arg);
-extern s32 fn_8002A988(u8 byte_val, void *arg1, void *arg2);
+extern s32 CARDFreeBlocks(u8 byte_val, void *arg1, void *arg2);
 extern s32 fn_8002EBD4(u8 byte_val, void *arg1, void *arg2);
 extern void fn_8002F9D8(u8 byte_val, void *arg, s32 zero);
 extern void fn_8002EED8(u8 byte_val, void *arg1, void *arg2, void *arg3, u32 arg4);
@@ -1434,10 +1434,10 @@ extern void fn_80008BEC(void *dst, s32 value, s32 size);
 extern void fn_1_AA6D8(s32 arg0, u32 arg1, void *arg2);
 extern void fn_1_F755C(u8 value);
 extern void fn_1_A6840(u8 value);
-extern void fn_8000C49C(void *arg0, u32 arg1, ...);
+extern void OSPanic(void *arg0, u32 arg1, ...);
 extern void fn_1_F79C8(void);
 extern void *lbl_801A6410;
-extern void fn_80083D6C(void *arg0, void *arg1, int arg2);
+extern void strncpy(void *arg0, void *arg1, int arg2);
 extern u32 lbl_1_bss_77310[28];
 extern u32 lbl_1_bss_7730C;
 
@@ -1452,11 +1452,11 @@ typedef struct Fn1AD1ACObject {
     Fn1AD1ACOutput *unk_24;
 } Fn1AD1ACObject;
 
-extern void *fn_8002A958(u8 arg0);
+extern void *CARDGetResultCode(u8 arg0);
 
 // Store the generated value in the object's output record.
 void fn_1_AD1AC(Fn1AD1ACObject *object) {
-    object->unk_24->unk_04 = fn_8002A958(object->unk_00);
+    object->unk_24->unk_04 = CARDGetResultCode(object->unk_00);
 }
 /* fzgx:end fn_1_AD1AC */
 
@@ -1487,7 +1487,7 @@ typedef struct Fn1AD1E4Object {
 void fn_1_AD1E4(Fn1AD1E4State *state, Fn1AD1E4Object *object) {
     if ((object->unk_24->unk_08 & 0x20) == 0) {
         if (state->unk_08 != 0) {
-            fn_80083D6C((u8 *)object->unk_24->unk_94 + 0x24,
+            strncpy((u8 *)object->unk_24->unk_94 + 0x24,
                         state->unk_08, 0x20);
         }
         fn_80008BA8((u8 *)object->unk_24->unk_94 + 0x2060,
@@ -1524,7 +1524,7 @@ typedef struct Fn1AEC34B {
 void fn_1_AEC34(Fn1AEC34A *request, Fn1AEC34B *operation) {
     if ((operation->card->flags & 0x20) == 0) {
         if (request->payload != 0) {
-            fn_80083D6C((u8 *)operation->card->buffer + 0x24,
+            strncpy((u8 *)operation->card->buffer + 0x24,
                         request->payload, 0x20);
         }
         fn_80008BA8((u8 *)operation->card->buffer + 0x2060,
@@ -1635,7 +1635,7 @@ u8 fn_1_B7CD4(void) {
 // Save the current memory-card state in the global work buffer.
 
 void fn_1_B7E14(void *memory_card_state) {
-    fn_80083D6C(lbl_1_bss_716C8.pad_54, memory_card_state, 0x20);
+    strncpy(lbl_1_bss_716C8.pad_54, memory_card_state, 0x20);
 }
 /* fzgx:end fn_1_B7E14 */
 
@@ -1889,7 +1889,7 @@ void fn_1_C34F0(void) {
 
     if ((u32)(serialized_data + 0x8A -
               ((u8 *)lbl_1_bss_718C0.unk_0 + 0x4)) != 0x8A) {
-        fn_8000C49C(&lbl_1_data_3C7B8, 0x3532, lbl_1_data_3D124);
+        OSPanic(&lbl_1_data_3C7B8, 0x3532, lbl_1_data_3D124);
     }
     fn_1_F79C8();
 }
@@ -1909,7 +1909,7 @@ void fn_1_C36EC(void) {
 
     if ((u32)(serialized_data + 0x8A -
               ((u8 *)lbl_1_bss_718C0.unk_0 + 4)) != 0x8A) {
-        fn_8000C49C(&lbl_1_data_3C7B8, 0x3578, lbl_1_data_3D124);
+        OSPanic(&lbl_1_data_3C7B8, 0x3578, lbl_1_data_3D124);
     }
 }
 /* fzgx:end fn_1_C36EC */

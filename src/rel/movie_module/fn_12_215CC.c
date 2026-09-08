@@ -1,4 +1,12 @@
 #include "types.h"
 
-// fn_12_215CC: movie_module .text:0x000215CC size 0x28
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct MovieModule {
+    u8 pad_0[0x1b74];
+    void *field_1b74;
+} MovieModule;
+
+extern void fn_8004BFAC(void *);
+
+void fn_12_215CC(MovieModule *movie) {
+    fn_8004BFAC(*(void **)movie->field_1b74);
+}

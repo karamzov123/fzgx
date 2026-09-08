@@ -33,7 +33,7 @@ extern u8 lbl_1_bss_26B04[20];
 extern u8 lbl_1_bss_26314[2032];
 extern u32 fn_1_12EF24(u8 arg0, u8 arg1);
 extern u8 lbl_1_bss_523C[32];
-extern void fn_8000C49C(const void *, u32, const char *, ...);
+extern void OSPanic(const void *, u32, const char *, ...);
 extern void fn_1_451E4(void);
 extern void fn_1_D3214(void);
 extern void fn_8001AF64(void);
@@ -444,7 +444,7 @@ s32 fn_1_3F440(u8 index) {
     u8 *limits;
 
     if (index > 0x1d) {
-        fn_8000C49C(&lbl_1_data_62EC, 0x2654, (const char *)lbl_1_data_65E8);
+        OSPanic(&lbl_1_data_62EC, 0x2654, (const char *)lbl_1_data_65E8);
     }
 
     limits = (u8 *)&lbl_1_bss_3C30.unk_0;

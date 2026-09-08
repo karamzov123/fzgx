@@ -4,7 +4,7 @@
 
 extern s32 fn_1_B7E48(void);
 extern void fn_8001AF64(void);
-extern void fn_8001BDF0(int arg0);
+extern void VISetBlack(int arg0);
 extern void fn_8006B224(void);
 extern void fn_8006FFCC(int arg0);
 extern void fn_8006FDEC(void);
@@ -15,7 +15,7 @@ extern void fn_1_F7578(void);
 extern void fn_1_A0AA4(void);
 extern void fn_1_A02F0(void);
 extern void OSResetSystem(int reset, u32 reset_code, int force);
-extern int fn_8000C49C(void *arg0, int arg1, ...);
+extern int OSPanic(void *arg0, int arg1, ...);
 extern void *memset(void *dest, int value, unsigned long size);
 extern void *memcpy(void *dest, const void *src, unsigned long size);
 extern u8 lbl_801A66B0[4];
@@ -37,7 +37,7 @@ extern void fn_80071100(void);
 
 extern s32 fn_1_B7E48(void);
 extern void fn_8001AF64(void);
-extern void fn_8001BDF0(s32);
+extern void VISetBlack(s32);
 extern void fn_8006B224(void);
 extern void fn_8006FFCC(s32);
 extern void fn_8006FDEC(void);
@@ -48,7 +48,7 @@ extern void fn_1_F7578(void);
 extern void fn_1_A0AA4(void);
 extern void fn_1_A02F0(void);
 extern void OSResetSystem(s32, u32, u32);
-extern void fn_8000C49C(const char *, ...);
+extern void OSPanic(const char *, ...);
 extern void *memset(u32, s32, u32);
 extern void *memcpy(u32, u32, u32);
 extern u8 lbl_801A66B0[4];
@@ -61,7 +61,7 @@ void fn_1_D3214(void) {
         if (fn_1_B7E48() == 0 && state->unk_2 == 0) {
             state->unk_2 = 1;
             fn_8001AF64();
-            fn_8001BDF0(1);
+            VISetBlack(1);
             if (state->unk_4 == 0 || ((s32 (*)(void))state->unk_4)() != 0) {
                 fn_1_C37A0();
                 fn_1_F7578();
@@ -76,7 +76,7 @@ void fn_1_D3214(void) {
                 memcpy(0x80700000, (u32)lbl_801A66B0, 4); // fzgx-allow: A1 fixed MEM1 scratch address
                 state->unk_0 = 0;
                 OSResetSystem(0, state->unk_8, 0);
-                fn_8000C49C((const char *)&lbl_1_data_3DBC0, 0x76,
+                OSPanic((const char *)&lbl_1_data_3DBC0, 0x76,
                             (const char *)lbl_1_data_3DBC8);
             }
         }
@@ -144,7 +144,7 @@ void fn_1_D3474(void) {
     if (result == 0 && state->unk_2 == 0) {
         state->unk_2 = 1;
         fn_8001AF64();
-        fn_8001BDF0(1);
+        VISetBlack(1);
         callback = state->unk_4;
         if (callback != 0) {
             result = ((int (*)(void))callback)();
@@ -165,7 +165,7 @@ void fn_1_D3474(void) {
         memcpy(RESET_AREA, lbl_801A66B0, 4);
         state->unk_0 = 0;
         OSResetSystem(0, state->unk_8, 0);
-        fn_8000C49C(&lbl_1_data_3DBC0, 0x76, lbl_1_data_3DBC8);
+        OSPanic(&lbl_1_data_3DBC0, 0x76, lbl_1_data_3DBC8);
     }
 }
 /* fzgx:end fn_1_D3474 */

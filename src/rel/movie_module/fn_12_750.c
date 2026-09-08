@@ -1,4 +1,10 @@
 #include "types.h"
 
-// fn_12_750: movie_module .text:0x00000750 size 0x8
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct Fn12750Object {
+    u8 _pad30[0x30];
+    u32 value;
+} Fn12750Object;
+
+void fn_12_750(Fn12750Object *self, u32 value) {
+    self->value = value;
+}

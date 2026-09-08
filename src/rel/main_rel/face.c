@@ -14,7 +14,7 @@ extern void fn_800711A8(u32);
 extern void fn_1_D2F84(void);
 extern s16 fn_1_3F0C8(void *obj);
 extern u32 fn_1_864E8(u32 value);
-extern void fn_8000C49C(char*, ...);
+extern void OSPanic(char*, ...);
 extern u32 fn_1_86810(u32);
 extern void fn_8008279C(void*, u32, u32, void*);
 extern s32 fn_1_D2E18(u8*, u8*);
@@ -147,7 +147,7 @@ s32 fn_1_D2E44(u32 index) {
 
     if ((s32)lbl_1_bss_7ACE8 != 0) {
         if (index >= 4) {
-            fn_8000C49C((char*)lbl_1_data_3DA2C, 0x4f3, (char*)lbl_1_data_3DB2C);
+            OSPanic((char*)lbl_1_data_3DA2C, 0x4f3, (char*)lbl_1_data_3DB2C);
         }
         for (i = 0; (u8)i < lbl_1_bss_7ACE5; i++) {
             values[(u8)i] = fn_1_86810((u8)i);

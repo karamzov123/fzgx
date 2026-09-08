@@ -1,4 +1,19 @@
 #include "types.h"
 
-// fn_12_21E20: movie_module .text:0x00021E20 size 0x20
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct MovieEntry {
+    char unk00[0x2c];
+    int value;
+    char unk30[0x44];
+} MovieEntry;
+
+typedef struct MovieModule {
+    char unk0000[0x1148];
+    MovieEntry entries[1];
+} MovieModule;
+
+void fn_12_21E20(MovieModule *module, int index, int delta) {
+    if (module->entries[index].value < 0) {
+        return;
+    }
+    module->entries[index].value += delta;
+}

@@ -1,4 +1,22 @@
 #include "types.h"
 
-// fn_12_2B2E4: movie_module .text:0x0002B2E4 size 0x64
-// Carved by fzgx. Replace this file's body with the matching C.
+struct MovieModule {
+    char pad_44[0x44];
+    int value;
+    char pad_1ab4[0x1a6c];
+    int field_1ab4;
+};
+
+extern int fn_12_24990(struct MovieModule *module);
+extern int fn_12_24A88(int arg0, u32 arg1);
+extern void fn_12_21D40(struct MovieModule *module, int value, int arg2);
+
+int fn_12_2B2E4(struct MovieModule *module) {
+    if (fn_12_24990(module)) {
+        return fn_12_24A88(0, 0xff000135);
+    } else {
+        fn_12_21D40(module, module->field_1ab4, 1);
+        module->value = 1;
+        return 0;
+    }
+}

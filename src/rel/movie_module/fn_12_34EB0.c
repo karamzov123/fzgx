@@ -1,4 +1,9 @@
 #include "types.h"
 
-// fn_12_34EB0: movie_module .text:0x00034EB0 size 0x34
-// Carved by fzgx. Replace this file's body with the matching C.
+extern void fn_8004AD84(void);
+extern void fn_8004B0EC(void *);
+
+void fn_12_34EB0(void *arg) {
+    fn_8004AD84();
+    fn_8004B0EC(arg);
+}

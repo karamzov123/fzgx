@@ -1,4 +1,12 @@
 #include "types.h"
 
-// fn_12_8B4: movie_module .text:0x000008B4 size 0x14
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct Fn12_8B4Data {
+    u8 unk_00[8];
+    s32 value_08;
+    s32 value_0C;
+} Fn12_8B4Data;
+
+void fn_12_8B4(Fn12_8B4Data *data, s32 *value_08, s32 *value_0C) {
+    *value_08 = data->value_08;
+    *value_0C = data->value_0C;
+}

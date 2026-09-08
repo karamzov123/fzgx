@@ -1,4 +1,10 @@
 #include "types.h"
 
-// fn_12_309B8: movie_module .text:0x000309B8 size 0x8
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct Fn12_309B8_Object {
+    int unk0;
+    int field4;
+} Fn12_309B8_Object;
+
+void fn_12_309B8(Fn12_309B8_Object *object, int value) {
+    object->field4 = value;
+}

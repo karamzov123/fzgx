@@ -14,7 +14,7 @@ extern s32 lbl_1_bss_F78;
 extern void fn_1_A2DF4(u32, u32, u32);
 extern s8 fn_1_86624(void);
 extern s8 fn_1_86634(s32 index);
-extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
+extern void OSPanic(u8 *file, int line, u8 *message, ...);
 extern u8 lbl_1_bss_F74;
 extern u8 lbl_1_bss_F75;
 extern f32 lbl_1_rodata_188;
@@ -31,7 +31,7 @@ extern u8 lbl_1_bss_1014;
 
 extern s8 fn_1_86624(void);
 extern s8 fn_1_86634(s32 index);
-extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
+extern void OSPanic(u8 *file, int line, u8 *message, ...);
 extern void fn_1_8A0C(s16 index);
 extern void OSReport(const unsigned char *, ...);
 
@@ -286,7 +286,7 @@ void fn_1_8298(void) {
 
     switch (found) {
     case 0:
-        fn_8000C49C(lbl_1_data_3318, 0x7d2, lbl_1_data_35E8);
+        OSPanic(lbl_1_data_3318, 0x7d2, lbl_1_data_35E8);
         break;
     case 1:
         lbl_1_bss_F68->unk_48 = 0;
@@ -385,7 +385,7 @@ void live_camera_set_shake(s32 value, const f32 *delta) {
     LiveCamera *state;
 
     if (live_camera == 0) {
-        fn_8000C49C(lbl_1_data_3318, 0x89a, lbl_1_data_360C);
+        OSPanic(lbl_1_data_3318, 0x89a, lbl_1_data_360C);
     }
 
     state = live_camera;
@@ -414,7 +414,7 @@ void game_camera_set_shake(s16 index, s16 mode, s32 value, const f32 *delta) {
     }
 
     if (game_camera_entries + index == 0) {
-        fn_8000C49C(lbl_1_data_3318, 0x8d1, lbl_1_data_3654);
+        OSPanic(lbl_1_data_3318, 0x8d1, lbl_1_data_3654);
     }
 
     camera = game_camera_entries + index;

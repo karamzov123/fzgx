@@ -1,4 +1,11 @@
 #include "types.h"
 
-// fn_12_2E41C: movie_module .text:0x0002E41C size 0x10
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct MovieModuleEntry {
+    u8 padding[0xcc0];
+    s32 value;
+} MovieModuleEntry;
+
+void fn_12_2E41C(MovieModuleEntry *base, s32 value, s32 index) {
+    base = (MovieModuleEntry *)((u8 *)base + (index << 2));
+    base->value = value;
+}

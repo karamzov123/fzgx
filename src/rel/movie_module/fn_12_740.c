@@ -1,4 +1,10 @@
 #include "types.h"
 
-// fn_12_740: movie_module .text:0x00000740 size 0x8
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct MovieModule {
+    u8 pad[0x60];
+    int value;
+} MovieModule;
+
+int fn_12_740(MovieModule *self) {
+    return self->value;
+}

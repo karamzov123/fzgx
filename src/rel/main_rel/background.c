@@ -15,7 +15,7 @@ extern void fn_1_85C58(s32, f32);
 extern void lbl_8006DB74(void *);
 extern void fn_1_9DDA8(u32, u32, u32);
 extern void fn_1_9DFB8(u32, u32, u32, u32);
-extern void fn_80034350(u32, u32, void *);
+extern void GXPeekZ(u32, u32, void *);
 extern void fn_80034200(u32);
 extern void fn_8003432C(u32, u32, u32 *);
 
@@ -173,7 +173,7 @@ void fn_1_9E1D0(void) {
         count = node->unk_4;
         while (count > 0) {
             if (entry->unk_4 == 0) {
-                fn_80034350((u16)entry->unk_0, (u16)entry->unk_2, &entry->unk_4);
+                GXPeekZ((u16)entry->unk_0, (u16)entry->unk_2, &entry->unk_4);
                 fn_80034200(2);
                 fn_8003432C((u16)entry->unk_0, (u16)entry->unk_2, &result);
                 entry->unk_8 = (u8)(result >> 24);

@@ -6,7 +6,7 @@ extern void fn_1_48214(int index, int enabled);
 extern void fn_1_4DDC0(void);
 extern void fn_1_4F724(void);
 extern s32 lbl_801A6410;
-extern void fn_8000C49C(const unsigned char *, ...);
+extern void OSPanic(const unsigned char *, ...);
 extern int fn_1_45D0(int, int, const unsigned char *, int);
 extern int fn_80008F88(int, int);
 extern void fn_8006FDEC(void);
@@ -74,7 +74,7 @@ void fn_1_48418(int index) {
         valid = index >= 0;
     }
     if (valid == 0) {
-        fn_8000C49C(lbl_1_data_1A368, 0x248, lbl_1_data_1A390);
+        OSPanic(lbl_1_data_1A368, 0x248, lbl_1_data_1A390);
     }
     if (obj->unk_0 == -1) {
         obj->unk_4 = fn_1_45D0(lbl_801A6410, obj->unk_8, lbl_1_data_1A368, 0x250);

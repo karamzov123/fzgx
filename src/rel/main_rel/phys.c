@@ -20,7 +20,7 @@ extern void fn_800745A4(u32, s32, s32, u32, s32, s32);
 extern void fn_80073778(void *, u32);
 extern void fn_80015C1C(void *, f32, f32, f32, f32, f32, f32, f32, f32, f32);
 extern void lbl_8006DFFC(void *, void *, void *);
-extern void fn_80038D34(void *, u32, s32);
+extern void GXLoadTexMtxImm(void *, u32, s32);
 extern f32 lbl_1_rodata_6780[236];
 extern f32 fn_1_A6FE8(void);
 extern void fn_1_E8938(void);
@@ -461,7 +461,7 @@ void fn_1_E87FC(PhysObj *obj) {
                     global->unk_1F4, global->unk_1F8, global->unk_1FC,
                     global->unk_200, global->unk_204, global->unk_208, value);
         lbl_8006DFFC(work, entry + 4, work);
-        fn_80038D34(work, obj->unk_14, 0);
+        GXLoadTexMtxImm(work, obj->unk_14, 0);
         entry += 0x30;
         i++;
     }

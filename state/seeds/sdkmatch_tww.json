@@ -1,0 +1,825 @@
+{
+ "sdk": "build/tools/tww",
+ "mw": "GC/1.2.5n",
+ "compiled": 38,
+ "failed": [
+  "src/dolphin/ai/ai.c",
+  "src/dolphin/ar/ar.c",
+  "src/dolphin/ar/arq.c",
+  "src/dolphin/card/CARDBios.c",
+  "src/dolphin/card/CARDBlock.c",
+  "src/dolphin/card/CARDCheck.c",
+  "src/dolphin/card/CARDCreate.c",
+  "src/dolphin/card/CARDDir.c",
+  "src/dolphin/card/CARDFormat.c",
+  "src/dolphin/card/CARDMount.c",
+  "src/dolphin/card/CARDNet.c",
+  "src/dolphin/card/CARDOpen.c",
+  "src/dolphin/card/CARDRdwr.c",
+  "src/dolphin/card/CARDRead.c",
+  "src/dolphin/card/CARDStat.c",
+  "src/dolphin/card/CARDUnlock.c",
+  "src/dolphin/card/CARDWrite.c",
+  "src/dolphin/db/db.c",
+  "src/dolphin/dsp/dsp.c",
+  "src/dolphin/dsp/dsp_debug.c",
+  "src/dolphin/dsp/dsp_task.c",
+  "src/dolphin/dvd/dvd.c",
+  "src/dolphin/dvd/dvdFatal.c",
+  "src/dolphin/dvd/dvderror.c",
+  "src/dolphin/dvd/dvdfs.c",
+  "src/dolphin/dvd/dvdidutils.c",
+  "src/dolphin/dvd/dvdlow.c",
+  "src/dolphin/dvd/dvdqueue.c",
+  "src/dolphin/dvd/fstload.c",
+  "src/dolphin/exi/EXIBios.c",
+  "src/dolphin/exi/EXIUart.c",
+  "src/dolphin/gba/GBA.c",
+  "src/dolphin/gba/GBAGetProcessStatus.c",
+  "src/dolphin/gba/GBAJoyBoot.c",
+  "src/dolphin/gba/GBARead.c",
+  "src/dolphin/gba/GBAWrite.c",
+  "src/dolphin/gba/GBAXfer.c",
+  "src/dolphin/gd/GDBase.c",
+  "src/dolphin/gd/GDGeometry.c",
+  "src/dolphin/gx/GXDraw.c",
+  "src/dolphin/gx/GXFifo.c",
+  "src/dolphin/gx/GXInit.c",
+  "src/dolphin/gx/GXLight.c",
+  "src/dolphin/mtx/mtx.c",
+  "src/dolphin/mtx/mtx44.c",
+  "src/dolphin/mtx/mtxvec.c",
+  "src/dolphin/mtx/quat.c",
+  "src/dolphin/mtx/vec.c",
+  "src/dolphin/os/OS.c",
+  "src/dolphin/os/OSAlarm.c",
+  "src/dolphin/os/OSAlloc.c",
+  "src/dolphin/os/OSAudioSystem.c",
+  "src/dolphin/os/OSCache.c",
+  "src/dolphin/os/OSContext.c",
+  "src/dolphin/os/OSError.c",
+  "src/dolphin/os/OSFont.c",
+  "src/dolphin/os/OSInterrupt.c",
+  "src/dolphin/os/OSLink.c",
+  "src/dolphin/os/OSMemory.c",
+  "src/dolphin/os/OSMutex.c",
+  "src/dolphin/os/OSReboot.c",
+  "src/dolphin/os/OSReset.c",
+  "src/dolphin/os/OSResetSW.c",
+  "src/dolphin/os/OSSync.c",
+  "src/dolphin/os/OSThread.c",
+  "src/dolphin/os/OSTime.c",
+  "src/dolphin/os/__start.c",
+  "src/dolphin/pad/Pad.c",
+  "src/dolphin/si/SIBios.c",
+  "src/dolphin/si/SISamplingRate.c",
+  "src/dolphin/vi/gpioexi.c",
+  "src/dolphin/vi/i2c.c",
+  "src/dolphin/vi/vi.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/abort_exit.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/float.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/printf.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/e_acos.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/e_asin.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/e_atan2.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/e_fmod.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/e_pow.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/e_rem_pio2.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/k_cos.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/k_rem_pio2.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/k_sin.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/k_tan.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/s_atan.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/s_copysign.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/s_cos.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/s_floor.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/s_frexp.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/s_ldexp.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/s_modf.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/s_sin.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/s_tan.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/w_acos.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/w_asin.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/w_atan2.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Math/Double_precision/w_fmod.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common_Embedded/Src/ansi_fp.c",
+  "src/PowerPC_EABI_Support/MSL/MSL_C/PPC_EABI/Src/math_ppc.c",
+  "src/PowerPC_EABI_Support/Runtime/Src/GCN_mem_alloc.c",
+  "src/PowerPC_EABI_Support/Runtime/Src/__va_arg.c",
+  "src/PowerPC_EABI_Support/Runtime/Src/global_destructor_chain.c",
+  "src/PowerPC_EABI_Support/Runtime/Src/ptmf.c"
+ ],
+ "sdk_functions": 237,
+ "dol_functions": 1982,
+ "hits": [
+  {
+   "dol": "PPCHalt",
+   "size": 20,
+   "addr": 2147524604,
+   "sdk": [
+    "PPCHalt"
+   ],
+   "sources": [
+    "src/dolphin/base/PPCArch.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "PPCMffpscr",
+   "size": 32,
+   "addr": 2147524704,
+   "sdk": [
+    "PPCMffpscr"
+   ],
+   "sources": [
+    "src/dolphin/base/PPCArch.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "PPCMtfpscr",
+   "size": 40,
+   "addr": 2147524736,
+   "sdk": [
+    "PPCMtfpscr"
+   ],
+   "sources": [
+    "src/dolphin/base/PPCArch.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "PPCDisableSpeculation",
+   "size": 40,
+   "addr": 2147524812,
+   "sdk": [
+    "PPCDisableSpeculation"
+   ],
+   "sources": [
+    "src/dolphin/base/PPCArch.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "fn_8000F610",
+   "size": 96,
+   "addr": 2147546640,
+   "sdk": [
+    "WriteSramCallback"
+   ],
+   "sources": [
+    "src/dolphin/os/OSRtc.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_8000F670",
+   "size": 280,
+   "addr": 2147546736,
+   "sdk": [
+    "WriteSram"
+   ],
+   "sources": [
+    "src/dolphin/os/OSRtc.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "__OSInitSram",
+   "size": 308,
+   "addr": 2147547016,
+   "sdk": [
+    "__OSInitSram"
+   ],
+   "sources": [
+    "src/dolphin/os/OSRtc.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "__OSLockSram",
+   "size": 92,
+   "addr": 2147547324,
+   "sdk": [
+    "__OSLockSram"
+   ],
+   "sources": [
+    "src/dolphin/os/OSRtc.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "__OSLockSramEx",
+   "size": 92,
+   "addr": 2147547416,
+   "sdk": [
+    "__OSLockSramEx"
+   ],
+   "sources": [
+    "src/dolphin/os/OSRtc.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "fn_8000F974",
+   "size": 776,
+   "addr": 2147547508,
+   "sdk": [
+    "UnlockSram"
+   ],
+   "sources": [
+    "src/dolphin/os/OSRtc.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "__OSUnlockSram",
+   "size": 36,
+   "addr": 2147548284,
+   "sdk": [
+    "__OSUnlockSram"
+   ],
+   "sources": [
+    "src/dolphin/os/OSRtc.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "__OSUnlockSramEx",
+   "size": 36,
+   "addr": 2147548320,
+   "sdk": [
+    "__OSUnlockSramEx"
+   ],
+   "sources": [
+    "src/dolphin/os/OSRtc.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "__OSSyncSram",
+   "size": 16,
+   "addr": 2147548356,
+   "sdk": [
+    "__OSSyncSram"
+   ],
+   "sources": [
+    "src/dolphin/os/OSRtc.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "fn_8000FDF8",
+   "size": 128,
+   "addr": 2147548664,
+   "sdk": [
+    "OSGetSoundMode"
+   ],
+   "sources": [
+    "src/dolphin/os/OSRtc.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_8000FE78",
+   "size": 112,
+   "addr": 2147548792,
+   "sdk": [
+    "OSGetProgressiveMode"
+   ],
+   "sources": [
+    "src/dolphin/os/OSRtc.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_8000FEE8",
+   "size": 164,
+   "addr": 2147548904,
+   "sdk": [
+    "OSSetProgressiveMode"
+   ],
+   "sources": [
+    "src/dolphin/os/OSRtc.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_8000FF8C",
+   "size": 132,
+   "addr": 2147549068,
+   "sdk": [
+    "OSGetWirelessID"
+   ],
+   "sources": [
+    "src/dolphin/os/OSRtc.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_80010010",
+   "size": 172,
+   "addr": 2147549200,
+   "sdk": [
+    "OSSetWirelessID"
+   ],
+   "sources": [
+    "src/dolphin/os/OSRtc.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_8001C0C0",
+   "size": 304,
+   "addr": 2147598528,
+   "sdk": [
+    "ClampStick"
+   ],
+   "sources": [
+    "src/dolphin/pad/Padclamp.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_8001C1F0",
+   "size": 276,
+   "addr": 2147598832,
+   "sdk": [
+    "PADClamp"
+   ],
+   "sources": [
+    "src/dolphin/pad/Padclamp.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_8003396C",
+   "size": 116,
+   "addr": 2147694956,
+   "sdk": [
+    "GXGetVtxAttrFmtv"
+   ],
+   "sources": [
+    "src/dolphin/gx/GXAttr.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_80033A6C",
+   "size": 16,
+   "addr": 2147695212,
+   "sdk": [
+    "GXInvalidateVtxCache"
+   ],
+   "sources": [
+    "src/dolphin/gx/GXAttr.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_80034350",
+   "size": 40,
+   "addr": 2147697488,
+   "sdk": [
+    "GXPeekZ"
+   ],
+   "sources": [
+    "src/dolphin/gx/GXMisc.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_80035A2C",
+   "size": 348,
+   "addr": 2147703340,
+   "sdk": [
+    "GXGetTexBufferSize"
+   ],
+   "sources": [
+    "src/dolphin/gx/GXTexture.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_80035B88",
+   "size": 200,
+   "addr": 2147703688,
+   "sdk": [
+    "__GetImageTileCount"
+   ],
+   "sources": [
+    "src/dolphin/gx/GXTexture.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_800360E4",
+   "size": 16,
+   "addr": 2147705060,
+   "sdk": [
+    "GXGetTexObjWidth"
+   ],
+   "sources": [
+    "src/dolphin/gx/GXTexture.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_800360F4",
+   "size": 16,
+   "addr": 2147705076,
+   "sdk": [
+    "GXGetTexObjHeight"
+   ],
+   "sources": [
+    "src/dolphin/gx/GXTexture.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "GXInitTexCacheRegion",
+   "size": 288,
+   "addr": 2147705820,
+   "sdk": [
+    "GXInitTexCacheRegion"
+   ],
+   "sources": [
+    "src/dolphin/gx/GXTexture.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "GXInitTlutRegion",
+   "size": 72,
+   "addr": 2147706108,
+   "sdk": [
+    "GXInitTlutRegion"
+   ],
+   "sources": [
+    "src/dolphin/gx/GXTexture.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "fn_80036544",
+   "size": 72,
+   "addr": 2147706180,
+   "sdk": [
+    "GXInvalidateTexAll"
+   ],
+   "sources": [
+    "src/dolphin/gx/GXTexture.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "__GXSetTmemConfig",
+   "size": 576,
+   "addr": 2147706856,
+   "sdk": [
+    "__GXSetTmemConfig"
+   ],
+   "sources": [
+    "src/dolphin/gx/GXTexture.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "fn_80038C5C",
+   "size": 80,
+   "addr": 2147716188,
+   "sdk": [
+    "GXLoadPosMtxImm"
+   ],
+   "sources": [
+    "src/dolphin/gx/GXTransform.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_80038CAC",
+   "size": 80,
+   "addr": 2147716268,
+   "sdk": [
+    "GXLoadNrmMtxImm"
+   ],
+   "sources": [
+    "src/dolphin/gx/GXTransform.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_80038D34",
+   "size": 180,
+   "addr": 2147716404,
+   "sdk": [
+    "GXLoadTexMtxImm"
+   ],
+   "sources": [
+    "src/dolphin/gx/GXTransform.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_80079764",
+   "size": 92,
+   "addr": 2147981156,
+   "sdk": [
+    "__cvt_fp2unsigned"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/Runtime/Src/runtime.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "__save_fpr",
+   "size": 76,
+   "addr": 2147981248,
+   "sdk": [
+    "__save_fpr"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/Runtime/Src/runtime.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "__restore_fpr",
+   "size": 76,
+   "addr": 2147981324,
+   "sdk": [
+    "__restore_fpr"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/Runtime/Src/runtime.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "__save_gpr",
+   "size": 76,
+   "addr": 2147981400,
+   "sdk": [
+    "__save_gpr"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/Runtime/Src/runtime.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "__restore_gpr",
+   "size": 76,
+   "addr": 2147981476,
+   "sdk": [
+    "__restore_gpr"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/Runtime/Src/runtime.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "__div2u",
+   "size": 236,
+   "addr": 2147981552,
+   "sdk": [
+    "__div2u"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/Runtime/Src/runtime.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "fn_80079D04",
+   "size": 36,
+   "addr": 2147982596,
+   "sdk": [
+    "__shl2i"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/Runtime/Src/runtime.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_80079D28",
+   "size": 36,
+   "addr": 2147982632,
+   "sdk": [
+    "__shr2u"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/Runtime/Src/runtime.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_80079D4C",
+   "size": 40,
+   "addr": 2147982668,
+   "sdk": [
+    "__shr2i"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/Runtime/Src/runtime.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_80079E24",
+   "size": 204,
+   "addr": 2147982884,
+   "sdk": [
+    "__cvt_dbl_usll"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/Runtime/Src/runtime.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "__prep_buffer",
+   "size": 52,
+   "addr": 2148003152,
+   "sdk": [
+    "__prep_buffer"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/buffer_io.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "__memrchr",
+   "size": 44,
+   "addr": 2148008584,
+   "sdk": [
+    "__memrchr"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/mem.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "memchr",
+   "size": 44,
+   "addr": 2148008628,
+   "sdk": [
+    "memchr"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/mem.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "fn_80083B14",
+   "size": 72,
+   "addr": 2148023060,
+   "sdk": [
+    "strrchr"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/string.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "strchr",
+   "size": 48,
+   "addr": 2148023132,
+   "sdk": [
+    "strchr"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/string.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "fn_80083B8C",
+   "size": 64,
+   "addr": 2148023180,
+   "sdk": [
+    "strncmp"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/string.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_80083D40",
+   "size": 44,
+   "addr": 2148023616,
+   "sdk": [
+    "strcat"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/string.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_80083D6C",
+   "size": 68,
+   "addr": 2148023660,
+   "sdk": [
+    "strncpy"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/string.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fwide",
+   "size": 136,
+   "addr": 2148030692,
+   "sdk": [
+    "fwide"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/wchar_io.c"
+   ],
+   "named": true
+  }
+ ],
+ "ambiguous": [
+  {
+   "dol": "fn_80031FF4",
+   "size": 32,
+   "addr": 2147688436,
+   "sdk": [
+    "fseek",
+    "fwrite"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/FILE_POS.c",
+    "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/direct_io.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "__init_user",
+   "size": 32,
+   "addr": 2147555464,
+   "sdk": [
+    "fseek",
+    "fwrite"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/FILE_POS.c",
+    "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/direct_io.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "_ExitProcess",
+   "size": 32,
+   "addr": 2147555580,
+   "sdk": [
+    "fseek",
+    "fwrite"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/FILE_POS.c",
+    "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/direct_io.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "fn_8000F5F0",
+   "size": 32,
+   "addr": 2147546608,
+   "sdk": [
+    "fseek",
+    "fwrite"
+   ],
+   "sources": [
+    "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/FILE_POS.c",
+    "src/PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src/direct_io.c"
+   ],
+   "named": false
+  }
+ ],
+ "summary": {
+  "hits": 53,
+  "bytes": 6772,
+  "unnamed_hits": 30,
+  "unnamed_bytes": 4260,
+  "ambiguous": 4,
+  "by_lib": {
+   "os": 2440,
+   "gx": 2100,
+   "Runtime": 948,
+   "pad": 580,
+   "MSL": 572,
+   "base": 132
+  }
+ }
+}

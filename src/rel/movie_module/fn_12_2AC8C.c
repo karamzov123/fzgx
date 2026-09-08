@@ -1,4 +1,15 @@
 #include "types.h"
 
-// fn_12_2AC8C: movie_module .text:0x0002AC8C size 0xC
-// Carved by fzgx. Replace this file's body with the matching C.
+struct MovieModule {
+    char pad_1b30[0x1b30];
+    struct MovieState *state;
+};
+
+struct MovieState {
+    char pad_7c[0x7c];
+    int value;
+};
+
+int fn_12_2AC8C(struct MovieModule *module) {
+    return module->state->value;
+}

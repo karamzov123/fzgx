@@ -1,4 +1,9 @@
 #include "types.h"
 
-// fn_12_63C: movie_module .text:0x0000063C size 0x20
-// Carved by fzgx. Replace this file's body with the matching C.
+extern s32 lbl_12_bss_0;
+
+void fn_12_63C(void) {
+    if (lbl_12_bss_0 > 0) {
+        lbl_12_bss_0--;
+    }
+}
