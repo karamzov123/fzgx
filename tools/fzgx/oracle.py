@@ -300,15 +300,25 @@ def compile_many(project: Project, module: str, sources: List[Path], out_dir: Pa
     out_dir.mkdir(parents=True, exist_ok=True)
     out: Dict[Path, Path] = {}
     # mwcc names each object after its source in the -o directory; sources must have distinct stems
-    cmd = [str(ROOT / "build" / "tools" / "wibo"), str(ROOT / "build" / "compilers" / mw / "mwcceppc.exe")]
-    cmd += shlex.split(flags) + ["-c", "-o", str(out_dir)] + [str(s) for s in sources]
+    base_cmd = [str(ROOT / "build" / "tools" / "wibo"), str(ROOT / "build" / "compilers" / mw / "mwcceppc.exe")]
+    base_cmd += shlex.split(flags) + ["-c", "-o", str(out_dir)]
     for o in (out_dir / (s.stem + ".o") for s in sources):
         o.unlink(missing_ok=True)
-    subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, timeout=600)
-    for s_ in sources:
-        o = out_dir / (s_.stem + ".o")
-        if o.exists():
-            out[s_] = o
+    # mwcc stops at the first source that fails: the sources before it are done, the failing
+    # one is skipped, and the rest go into the next invocation
+    todo = list(sources)
+    while todo:
+        subprocess.run(base_cmd + [str(s) for s in todo], cwd=ROOT, text=True, capture_output=True, timeout=600)
+        k = None
+        for i, s_ in enumerate(todo):
+            o = out_dir / (s_.stem + ".o")
+            if o.exists():
+                out[s_] = o
+            elif k is None:
+                k = i
+        if k is None:
+            break
+        todo = todo[k + 1:]
     return out
 
 

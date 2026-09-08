@@ -272,22 +272,46 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
                     c2 = cond.replace("==", "\0").replace("!=", "==").replace("\0", "!=")
                     candidates.append((f"flip ==/!= at {m.start()}", body[:m.end()] + c2 + body[i - 1:]))
     best_text = None
-    for label, text in candidates[:max_candidates]:
-        if time.time() - t0 > budget_s:
-            out["timeout"] = True
-            break
-        r = check(text)
-        out["tried"] += 1
-        if not r.ok:
-            continue
-        pct = r.percent_adjusted or r.percent
-        if pct > out["best"]:
-            out["best"] = pct
-            out["best_label"] = label
-            best_text = text
-        if r.matched or r.matched_pool:
-            out.update(matched=True, body=text, label=label)
-            break
+    # every candidate compiles in one mwcc run (the process start dominates a single compile),
+    # then each object is scored; the winner alone goes through the full check (pool rows etc.)
+    cand = candidates[:max_candidates]
+    if cand and time.time() - t0 < budget_s:
+        bdir = STATE_DIR / "fixup" / "batch" / key.replace(":", "__")
+        bdir.mkdir(parents=True, exist_ok=True)
+        for old in bdir.glob("*.c"):
+            old.unlink()
+        srcs = []
+        for i, (label, text) in enumerate(cand):
+            f = bdir / f"c{i}.c"; f.write_text(text); srcs.append(f)
+        target = p.target_object_for(sym)
+        objs = oracle.compile_many(p, sym.module, srcs, bdir / "obj") if target else {}
+        out["tried"] = len(cand)
+        scored = []
+        for i, (label, text) in enumerate(cand):
+            o = objs.get(srcs[i])
+            if o is None:
+                continue
+            ok_, pct = oracle.function_score(p, sym.name, target, o)
+            scored.append((pct, i, label, text))
+        scored.sort(key=lambda x: -x[0])
+        if scored and scored[0][0] > out["best"]:
+            pct, i, label, text = scored[0]
+            r = check(text)  # the full verdict: pool rows, adjusted percent
+            if r.ok:
+                pct2 = r.percent_adjusted or r.percent
+                if pct2 > out["best"]:
+                    out["best"] = pct2; out["best_label"] = label; best_text = text
+                if r.matched or r.matched_pool:
+                    out.update(matched=True, body=text, label=label)
+        # a pool match can hide behind a lower positional score: check the next few too
+        if not out["matched"]:
+            for pct, i, label, text in scored[1:4]:
+                if pct < 90 or time.time() - t0 > budget_s:
+                    break
+                r = check(text)
+                if r.ok and (r.matched or r.matched_pool):
+                    out.update(matched=True, body=text, label=label, best=100.0)
+                    break
     # a plateau usually has more than one cause: when a repair improved the body without
     # matching, search again from the improved body (greedy, bounded by the budget)
     if not out["matched"] and best_text is not None and out["best"] > out["base"] + 0.05 and _depth < 3:

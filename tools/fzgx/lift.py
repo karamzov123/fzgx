@@ -18,8 +18,10 @@ WIDTH = {"lwz": 4, "lhz": 2, "lha": 2, "lbz": 1, "lfs": 4, "lfd": 8, "stw": 4, "
 LOAD_T = {"lwz": "u32", "lhz": "u16", "lha": "s16", "lbz": "u8", "lfs": "f32", "lfd": "f64",
           "lwzu": "u32", "lhzu": "u16", "lbzu": "u8", "lfsu": "f32", "lfdu": "f64"}
 STORE_T = {"stw": "u32", "sth": "u16", "stb": "u8", "stfs": "f32", "stfd": "f64"}
+LABELS: List[Dict[str, int]] = [{}]
 LINE_RE = re.compile(r"^[0-9A-Fa-f]+:\s*(\S+)\s*(.*)$")
 MEM_RE = re.compile(r"^(-?0x[0-9a-f]+|-?\d+|[\w.]+@l|[\w.]+@sda21)\((r\d+)\)$")
+COND = {"eq": "==", "ne": "!=", "lt": "<", "gt": ">", "le": "<=", "ge": ">="}
 SAVE_RE = re.compile(r"^r(1[4-9]|2\d|3[01])$")  # callee-saved: their save/restore is frame noise
 
 
@@ -39,17 +41,31 @@ def lift(p: Project, module: str, name: str) -> Optional[str]:
     if fa is None:
         return None
     ins: List[Tuple[str, List[str]]] = []
+    labels: Dict[str, int] = {}
     for ln in fa.asm:
-        m = LINE_RE.match(ln.strip())
+        t = ln.strip()
+        if t.startswith(".L_") and t.endswith(":"):
+            labels[t[:-1]] = len(ins)  # index of the next instruction
+            continue
+        m = LINE_RE.match(t)
         if not m:
             continue
         mn, args = m.group(1), [a.strip() for a in m.group(2).split(",")] if m.group(2) else []
         ins.append((mn, args))
+    LABELS[0] = labels
     if not ins or ins[-1][0] != "blr":
         return None
-    if any(mn.startswith("b") and mn not in ("bl", "blr") for mn, _ in ins):
-        return None  # one basic block only
-    if len(ins) > 40:
+    # control flow accepted: straight line, conditional returns (`beqlr` and friends), and
+    # forward conditional branches whose target is the final blr or a later point of the same
+    # straight-line body (an `if` block). Anything else (loops, several branches) is not lifted.
+    branches = [(i, mn, a) for i, (mn, a) in enumerate(ins) if mn.startswith("b") and mn not in ("bl", "blr")]
+    for i, mn, a in branches:
+        if mn.endswith("lr") and mn[1:-2] in COND:
+            continue
+        m = re.fullmatch(r"b(\w+)", mn)
+        if not (m and m.group(1) in COND and a and a[-1].startswith(".L_")):
+            return None
+    if len(ins) > 48:
         return None
     try:
         return _lift(p, module, name, ins)
@@ -152,9 +168,45 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
         return None
 
     hi: Dict[str, str] = {}  # register holding sym@ha
+    labels = LABELS[0]
+    cond: Optional[Tuple[str, str, bool]] = None  # (lhs, rhs, unsigned) of the last compare
+    open_ifs: List[Tuple[int, str]] = []          # (instruction index where the if ends, condition)
+    i = -1
     for i, (mn, a) in enumerate(ins):
+        while open_ifs and open_ifs[-1][0] == i:
+            open_ifs.pop(); stmts.append("}")
         if mn == "blr":
             break
+        if mn in ("cmpwi", "cmpw", "cmplwi", "cmplw"):
+            lhs = use(a[0]); rhs = str(_imm(a[1])) if mn.endswith("i") else use(a[1])
+            uns = mn.startswith("cmpl")
+            # the compare's signedness is the operands' type: cmpwi wants signed operands
+            def typed(e: str, reg: str) -> str:
+                t = rtype.get(reg, "u32")
+                if uns:
+                    return e if t in ("u32", "u16", "u8") else f"(u32){e}"
+                return e if t in ("s32", "s16", "s8") else f"(s32){e}"
+            lhs = typed(lhs, a[0])
+            if not mn.endswith("i"):
+                rhs = typed(rhs, a[1])
+            cond = (lhs, rhs, uns); continue
+        if mn.endswith("lr") and mn[1:-2] in COND and cond is not None:
+            op = COND[mn[1:-2]]
+            l, r_, uns = cond
+            stmts.append(f"if ({l} {op} {r_}) {{ return __RET__; }}"); continue
+        m = re.fullmatch(r"b(\w+)", mn)
+        if m and m.group(1) in COND and a and a[-1].startswith(".L_") and cond is not None:
+            tgt = labels.get(a[-1])
+            if tgt is None or tgt <= i:
+                raise Give()
+            op = COND[m.group(1)]
+            inv = {"==": "!=", "!=": "==", "<": ">=", ">": "<=", "<=": ">", ">=": "<"}[op]  # branch taken = skip
+            l, r_, uns = cond
+            if ins[tgt][0] == "blr" or tgt == len(ins) - 1:
+                stmts.append(f"if ({l} {op} {r_}) {{ return __RET__; }}")
+            else:
+                stmts.append(f"if ({l} {inv} {r_}) {{"); open_ifs.append((tgt, f"{l} {inv} {r_}"))
+            continue
         if mn in ("stwu", "mflr", "mtlr") or (mn in ("stw", "lwz") and a and (a[0] == "r0" or SAVE_RE.match(a[0])) and "(r1)" in a[1]) or (mn == "addi" and a and a[0] == "r1"):
             frame = True
             continue
@@ -414,6 +466,11 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
     rtype_c = "void"
     if any(b.startswith("return ") for b in body):
         rtype_c = rtype.get("r3", "u32")
+    if rtype_c == "void":
+        body = [b.replace("return __RET__;", "return;") for b in body]
+    else:
+        # r3 at an early return holds the first parameter unless something wrote it before
+        body = [b.replace("return __RET__;", f"return {'arg0' if params and params[0] == 'r3' else '0'};") for b in body]
     if "f1" in regs and any(a and a[0] == "f1" for mn, a in ins if mn != "blr") and not any(b.startswith("return ") for b in body):
         body.append(f"return {regs['f1']};"); rtype_c = rtype.get("f1", "f32")
         if rtype_c in ("s8", "s16"): rtype_c = "s32"
@@ -495,13 +552,28 @@ def apply(p: Project, modules: Optional[List[str]] = None, max_size: int = 160, 
             lifted.append((s, size, t))
     out_dir = STATE_DIR / "lift"; out_dir.mkdir(exist_ok=True)
 
-    def check(item):
-        s, size, t = item
-        src = out_dir / (s.replace(":", "__") + ".c"); src.write_text(t)
-        r = oracle.check(p, s, 4, source=src)
-        return s, size, t, (r.ok and (r.matched or r.matched_pool) and oracle.unit_fully_matches(r) is None), (r.percent if r.ok else -1)
-    with ThreadPoolExecutor(max_workers=workers) as ex:
-        results = list(ex.map(check, lifted))
+    # one mwcc run per module over every lifted body, one cheap score each, the full check only
+    # for the ones that score 100 (pool rows, data sections)
+    results = []
+    by_mod: Dict[str, list] = {}
+    for s, size, t in lifted:
+        by_mod.setdefault(s.split(":")[0] if ":" in s else p.resolve(s).module, []).append((s, size, t))
+    for mod, items in by_mod.items():
+        srcs = []
+        for s, size, t in items:
+            src = out_dir / (s.replace(":", "__") + ".c"); src.write_text(t); srcs.append(src)
+        objs = oracle.compile_many(p, mod, srcs, out_dir / "obj" / mod)
+        for (s, size, t), src in zip(items, srcs):
+            o = objs.get(src)
+            sym = p.resolve(s)
+            target = p.target_object_for(sym) if sym else None
+            if o is None or target is None:
+                results.append((s, size, t, False, -1)); continue
+            ok_, pct = oracle.function_score(p, sym.name, target, o)
+            if ok_:
+                r = oracle.check(p, s, 4, source=src)
+                ok_ = r.ok and (r.matched or r.matched_pool) and oracle.unit_fully_matches(r) is None
+            results.append((s, size, t, ok_, pct))
     matched = [(s, size, t) for s, size, t, ok, _ in results if ok]
     submitted, failed = [], []
     if submit:
