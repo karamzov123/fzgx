@@ -55,9 +55,10 @@ def select(p: Project, spec: str) -> List[str]:
     return [r["symbol"] for r in rows[::step][: int(n)]]
 
 
-def select_tu(p: Project, module: str, tu_files: List[str], max_size: int = 0, revise: bool = False) -> List[str]:
-    """Every unmatched, unattempted function of the given TUs (whole-file matching);
-    with revise=True, every matched one instead (whole-file readability rewrite)."""
+def select_tu(p: Project, module: str, tu_files: List[str], max_size: int = 0, revise: bool = False,
+              retry: int = 0) -> List[str]:
+    """Every unmatched, unattempted function of the given TUs (whole-file matching); with
+    retry=N also those with fewer than N attempts; with revise=True every matched one instead."""
     import json as _json
     d = _json.loads((p.module_config_dir(module) / "tus.json").read_text())
     want = {t["file"]: t["functions"] for t in d["tus"] if t["file"] in tu_files}
@@ -69,7 +70,7 @@ def select_tu(p: Project, module: str, tu_files: List[str], max_size: int = 0, r
             r = inv.get(fn)
             if not r or (max_size and r["size"] > max_size):
                 continue
-            if (fn in units) if revise else r["attempts"] == 0:
+            if (fn in units) if revise else (r["attempts"] == 0 or 0 < r["attempts"] < retry):
                 out.append(fn)
     return out
 
@@ -216,6 +217,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--select-tu", nargs="*", help="whole-file batches: TU names from tus.json, e.g. camera.c coli.c")
     ap.add_argument("--module", default="main_rel", help="module for --select-tu")
     ap.add_argument("--max-size", type=int, default=0, help="size cap for --select-tu")
+    ap.add_argument("--retry", type=int, default=0, help="--select-tu: also functions with fewer than N attempts")
     ap.add_argument("--budget-usd", type=float, help="stop launching new agents past this spend (claude only reports cost)")
     ap.add_argument("--batch", default=time.strftime("b%Y%m%d-%H%M"))
     ap.add_argument("--no-trivial", action="store_true", help="skip the mechanical blr/li pass first")
@@ -233,7 +235,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     if a.select:
         symbols += select(p, a.select)
     if a.select_tu:
-        symbols += select_tu(p, a.module, a.select_tu, a.max_size, a.revise)
+        symbols += select_tu(p, a.module, a.select_tu, a.max_size, a.revise, a.retry)
     if not symbols:
         print("nothing selected", file=sys.stderr)
         return 2
