@@ -5695,7 +5695,7 @@
     "symbols": [
       "fn_1_E9C68"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
