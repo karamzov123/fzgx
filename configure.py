@@ -322,10 +322,19 @@ def load_generated_units() -> None:
     if not path.exists():
         return
     by_module: Dict[str, List[Object]] = {}
-    for u in json.loads(path.read_text()):
+    units = json.loads(path.read_text())
+    if any(u.get("tu") for u in units):
+        # block units: their C is a block of src/<tu>.c; the compiled unit is generated from it
+        sys.path.insert(0, str(Path("tools")))
+        from fzgx.project import Project as _Project  # scoped: only when block units exist; tools/ on sys.path
+        from fzgx import tufile as _tufile  # scoped: same
+        _tufile.regenerate(_Project(config.version), units)
+    for u in units:
         opts: Dict[str, Any] = {"extra_cflags": u.get("extra_cflags") or []}
         if u.get("mw_version"):
             opts["mw_version"] = u["mw_version"]
+        if u.get("tu"):
+            opts["src_dir"] = str(Path("build") / config.version / "gen")
         src = u["source"]
         if u["module"] == "main":
             sdk = src.startswith(("dol/dolphin/", "dol/msl/", "dol/trk/", "dol/runtime/"))

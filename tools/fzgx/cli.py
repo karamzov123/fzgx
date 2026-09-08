@@ -200,6 +200,26 @@ def cmd_headers(a, p):
     return 0
 
 
+def cmd_tu_migrate(a, p):
+    r = tu.migrate(p, a.module, verify=not a.no_verify)
+    _print(r, a.json); return 0 if r.get("ok") else 1
+
+
+def cmd_tu_check(a, p):
+    from . import tufile  # scoped: keeps the CLI import graph light; tufile pulls the project only
+    ok, text = tufile.tu_check(p, a.tu)
+    print(("OK" if ok else "FAILED") + f": {a.tu}")
+    if text and (not ok or a.verbose):
+        print(text)
+    return 0 if ok else 1
+
+
+def cmd_gen(a, p):
+    from . import tufile  # scoped: same
+    print(f"{tufile.regenerate(p)} generated units")
+    return 0
+
+
 def cmd_names(a, p):
     _print(api.names(p), a.json); return 0
 
@@ -273,6 +293,11 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("headers", help="generate include/rel/<module>/globals.h for the most-referenced globals"); s.set_defaults(fn=cmd_headers)
     s.add_argument("--module", default="main_rel"); s.add_argument("--min-refs", type=int, default=20); s.add_argument("--write", action="store_true")
     s.add_argument("--tu", help="per-file header for this TU (e.g. camera.c) instead of globals.h")
+    s = sub.add_parser("tu-migrate", help="stitch a module's per-function units into TU files (blocks; objects generated)"); s.set_defaults(fn=cmd_tu_migrate)
+    s.add_argument("--module", default="main_rel"); s.add_argument("--no-verify", action="store_true")
+    s = sub.add_parser("tu-check", help="compile a whole TU file as one unit (the goal state)"); s.set_defaults(fn=cmd_tu_check)
+    s.add_argument("tu", help="e.g. rel/main_rel/camera.c"); s.add_argument("-v", "--verbose", action="store_true")
+    s = sub.add_parser("gen", help="regenerate every per-function unit from the TU files"); s.set_defaults(fn=cmd_gen)
     s = sub.add_parser("verify", help="relink once for all accepted units, verify hashes, commit; bisect on failure"); s.set_defaults(fn=cmd_verify)
     s.add_argument("--message")
     s = sub.add_parser("compare", help="A/B table for two agent-id prefixes (e.g. b3c-claude vs shadow-b3c-codex)"); s.set_defaults(fn=cmd_compare)

@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import List, Optional
 
 from .ledger import Ledger
+from . import tufile
 from .project import ROOT, Function, Project, Symbol
 
 RULES = ROOT / "docs" / "CODING_RULES.md"
@@ -84,7 +85,10 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
         f"- module: `{module}`  section: `{sym.section}`  address: `0x{sym.addr:08X}`  "
         f"size: {sym.size} bytes ({sym.size // 4} instructions)  scope: {sym.scope}"
     )
-    parts.append(f"- unit: `src/{unit_src}`" if unit_src else "- unit: NOT CARVED (run `fzgx carve`)")
+    if unit_src and unit_cfg.get("tu"):
+        parts.append(f"- unit: block `{symbol}` of `src/{unit_cfg['tu']}` (you write the unit; the tooling splices it in)")
+    else:
+        parts.append(f"- unit: `src/{unit_src}`" if unit_src else "- unit: NOT CARVED (run `fzgx carve`)")
     if row and not (row["claimed_by"] or "").startswith("shadow-"):
         parts.append(f"- attempts so far: {row['attempts']}  best: {row['best_percent']:.1f}%")
     parts.append(f"- hints: {_sig_hint(fn)}")
@@ -140,19 +144,19 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
                      if u["module"] == module and u["status"] == "matching" and u["source"] != unit_src]
     neigh: List[str] = []
     for u in sorted(matched_units, key=lambda u: abs((project.find_symbol(u["symbols"][0]) or sym).addr - sym.addr))[:2]:
-        p = ROOT / "src" / u["source"]
-        if p.exists():
-            body = p.read_text()
-            if len(body) < 2500:
-                neigh.append(f"### src/{u['source']}\n```c\n{body}\n```")
+        body = tufile.unit_text(project, u)
+        if body and len(body) < 2500:
+            label = f"src/{u['tu']}#{u['symbols'][0]}" if u.get("tu") else f"src/{u['source']}"
+            neigh.append(f"### {label}\n```c\n{body}\n```")
     if neigh:
         parts.append("\n## Nearby matched code (style and naming reference)")
         parts.extend(neigh)
 
     if unit_src:
-        p = ROOT / "src" / unit_src
-        if p.exists():
-            parts.append(f"\n## Current file `src/{unit_src}`\n```c\n{p.read_text()}\n```")
+        work = project.work_path(project.key(sym))
+        cur = work.read_text() if work.exists() else (tufile.unit_text(project, unit_cfg) if unit_cfg else "")
+        if cur.strip():
+            parts.append(f"\n## Current unit\n```c\n{cur}\n```")
 
     if ledger and not (row and (row["claimed_by"] or "").startswith("shadow-")):
         att = ledger.db.execute(

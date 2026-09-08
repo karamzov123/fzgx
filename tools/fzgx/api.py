@@ -3,6 +3,12 @@
 Every function takes plain arguments and returns JSON-serialisable data; no
 printing, no sys.exit. Each call opens its own Ledger (SQLite connections are
 per-thread) so the MCP server can run calls concurrently.
+
+An agent never edits the tree. `claim` gives it a private work copy under
+.fzgx/work/, `write_unit` rewrites that copy and checks it, `submit` splices the
+copy into the canonical source (a block of the TU file, or the standalone unit
+file) once the oracle accepts it, and `release` keeps the best copy under
+.fzgx/attempts/ and discards the rest.
 """
 
 from __future__ import annotations
@@ -14,7 +20,7 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from . import oracle, verify
+from . import oracle, tufile, verify
 from .carve import carve
 from .context import build_context
 from .ledger import Ledger
@@ -36,23 +42,6 @@ def _is_shadow(agent: Optional[str]) -> bool:
 
 def _is_revise(agent: Optional[str]) -> bool:
     return bool(agent) and agent.startswith(REVISE_PREFIX)
-
-
-def _shadow_park(p: Project, key: str, unit_src: str, symbol: str) -> None:
-    """Park the committed source and give the shadow agent a clean stub."""
-    park = STATE_DIR / "shadow" / f"{key}.c"
-    park.parent.mkdir(parents=True, exist_ok=True)
-    src = ROOT / "src" / unit_src
-    if src.exists():
-        shutil.copy(src, park)
-    src.write_text(STUB.format(symbol=symbol, note="shadow trial in progress"))
-
-
-def _shadow_restore(p: Project, key: str, unit_src: str) -> None:
-    park = STATE_DIR / "shadow" / f"{key}.c"
-    if park.exists():
-        shutil.copy(park, ROOT / "src" / unit_src)
-        park.unlink()
 
 
 def _git(*args: str) -> subprocess.CompletedProcess:
@@ -77,6 +66,36 @@ def _unit_source(p: Project, symbol: str) -> Optional[str]:
 def _key(p: Project, symbol: str) -> str:
     sym = p.resolve(symbol)
     return p.key(sym) if sym else symbol
+
+
+def _unit_label(p: Project, unit_src: str) -> str:
+    """Where the unit's C is shown to live: the TU file (block units) or its own file."""
+    u = p.unit_record(unit_src)
+    return f"src/{u['tu']}#{u['symbols'][0]}" if u and u.get("tu") else f"src/{unit_src}"
+
+
+def _canonical_text(p: Project, unit_src: str) -> str:
+    u = p.unit_record(unit_src)
+    if u:
+        return tufile.unit_text(p, u)
+    path = ROOT / "src" / unit_src
+    return path.read_text() if path.exists() else ""
+
+
+def _work_source(p: Project, key: str, unit_src: str) -> Optional[Path]:
+    """The file to compile for a check: the work copy assembled with its TU prologue, if any."""
+    work = p.work_path(key)
+    if not work.exists():
+        return None
+    u = p.unit_record(unit_src)
+    if u and u.get("tu"):
+        tf = tufile.load(p, u["tu"])
+        inc, body = tufile.split_includes(work.read_text())
+        pro = tufile.merge_prologue(tf.prologue, inc)
+        gen = work.with_suffix(".gen.c")
+        gen.write_text(pro + "\n" + body)
+        return gen
+    return work
 
 
 # ------------------------------------------------------------------ inventory
@@ -128,11 +147,6 @@ def claim(p: Project, symbol: str, agent: str, ttl: int = DEFAULT_TTL,
         if not unit_src:
             l.finish(key, "carve-failed", "unmatched", notes="shadow claim on an uncarved function", shadow=True)
             return {"ok": False, "error": "shadow claims need an already carved unit"}
-        _shadow_park(p, key, unit_src, p.resolve(symbol).name)
-        if _is_revise(agent):  # keep the current source visible: the task is to rewrite it
-            park = STATE_DIR / "shadow" / f"{key}.c"
-            if park.exists():
-                (ROOT / "src" / unit_src).write_text(park.read_text())
     elif not no_carve:
         try:
             res = carve(p, symbol)
@@ -143,7 +157,15 @@ def claim(p: Project, symbol: str, agent: str, ttl: int = DEFAULT_TTL,
             l.finish(key, "carve-failed", "unmatched", notes=str(e))
             return {"ok": False, "error": f"carve failed: {e}"}
     unit = res.source if res else (row["unit"] or _unit_source(p, symbol))
-    out = {"ok": True, "symbol": symbol, "unit": unit, "path": f"src/{unit}" if unit else None,
+    # the agent's private copy: the current source for a rewrite, a stub otherwise
+    work = p.work_path(key)
+    work.parent.mkdir(parents=True, exist_ok=True)
+    name = p.resolve(symbol).name
+    if _is_revise(agent) and unit:
+        work.write_text(_canonical_text(p, unit) or STUB.format(symbol=name, note="nothing to revise"))
+    else:
+        work.write_text(STUB.format(symbol=name, note="write the complete unit with write_unit"))
+    out = {"ok": True, "symbol": symbol, "unit": unit, "path": _unit_label(p, unit) if unit else None,
            "ranges": res.ranges if res else [], "notes": res.notes if res else [],
            "attempt": row["attempts"] + 1, "max_attempts": max_attempts, "ttl": ttl,
            "budget": f"{MAX_CHECKS} checks per attempt; stop after {MAX_STALE} checks without improvement"}
@@ -180,14 +202,16 @@ def read_unit(p: Project, symbol: str) -> Dict[str, Any]:
     unit = _unit_source(p, symbol)
     if not unit:
         return {"ok": False, "error": "not carved"}
-    path = ROOT / "src" / unit
-    return {"ok": True, "path": f"src/{unit}", "source": path.read_text() if path.exists() else ""}
+    work = p.work_path(_key(p, symbol))
+    text = work.read_text() if work.exists() else _canonical_text(p, unit)
+    return {"ok": True, "path": _unit_label(p, unit), "source": text}
 
 
 def write_unit(p: Project, symbol: str, agent: str, source: str) -> Dict[str, Any]:
-    """Replace the claimed unit's source. The only write path a matcher has."""
+    """Replace the claimed unit's work copy. The only write path a matcher has."""
     l = Ledger()
-    row = l.get(_key(p, symbol))
+    key = _key(p, symbol)
+    row = l.get(key)
     if row is None:
         return {"ok": False, "error": "unknown symbol"}
     if row["status"] != "claimed" or row["claimed_by"] != agent:
@@ -197,15 +221,16 @@ def write_unit(p: Project, symbol: str, agent: str, source: str) -> Dict[str, An
         return {"ok": False, "error": "not carved"}
     if "asm" in source and ("asm {" in source or "asm(" in source or "asm void" in source):
         return {"ok": False, "error": "inline asm is not allowed"}
-    att = l.current_attempt(_key(p, symbol))
+    att = l.current_attempt(key)
     stop = _budget_stop(att)
     if stop:
         return {"ok": False, "error": stop + "; call release(symbol, agent, reason) now"}
-    path = ROOT / "src" / unit
-    path.write_text(source if source.endswith("\n") else source + "\n")
-    findings = lint_paths([path])
+    work = p.work_path(key)
+    work.parent.mkdir(parents=True, exist_ok=True)
+    work.write_text(source if source.endswith("\n") else source + "\n")
+    findings = lint_paths([work])
     result = check(p, symbol)
-    return {"ok": True, "path": f"src/{unit}", "bytes": len(source),
+    return {"ok": True, "path": _unit_label(p, unit), "bytes": len(source),
             "lint": [{"rule": r, "line": ln, "msg": m} for _, r, ln, m in findings],
             "check": format_check(result)}
 
@@ -222,23 +247,24 @@ def _budget_stop(att) -> Optional[str]:
 
 # --------------------------------------------------------------------- oracle
 def check(p: Project, symbol: str, max_diff_lines: int = 80, versions: Optional[str] = None) -> Dict[str, Any]:
+    """Compile and diff the work copy if one exists, else the canonical unit."""
     if versions:
         vers = oracle.CANDIDATE_VERSIONS if versions == "all" else versions.split(",")
         out = oracle.check_versions(p, symbol, vers)
         return {"ok": True, "symbol": symbol, "versions": out,
                 "note": "-1 compiler missing, -2 compile error, -3 diff error"}
-    res = oracle.check(p, symbol, max_diff_lines)
+    key = _key(p, symbol)
+    unit = _unit_source(p, symbol)
+    src = _work_source(p, key, unit) if unit else None
+    res = oracle.check(p, symbol, max_diff_lines, source=src)
     out = res.to_json()
-    if res.ok:
-        key = _key(p, symbol)
+    if res.ok and src is not None:
         stats = Ledger().bump_checks(key, res.percent)
         out["budget"] = stats
         if stats.get("improved"):
-            unit = _unit_source(p, symbol)
-            if unit:
-                best = STATE_DIR / "attempts" / f"{key}.best.c"
-                best.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy(ROOT / "src" / unit, best)
+            best = STATE_DIR / "attempts" / f"{key}.best.c"
+            best.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy(p.work_path(key), best)
         att = Ledger().current_attempt(key)
         stop = _budget_stop(att)
         if stop and not res.matched:
@@ -272,6 +298,22 @@ def format_check(res: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def _install(p: Project, unit_src: str, text: str) -> None:
+    """Make `text` the canonical source of the unit: a block of its TU file, or its own file."""
+    u = p.unit_record(unit_src)
+    if u and u.get("tu"):
+        tufile.splice(p, u, text)
+    else:
+        path = ROOT / "src" / unit_src
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text)
+
+
+def _discard_work(p: Project, key: str) -> None:
+    for path in (p.work_path(key), p.work_path(key).with_suffix(".gen.c")):
+        path.unlink(missing_ok=True)
+
+
 def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
            harness: Optional[str] = None, model: Optional[str] = None,
            mw_version: Optional[str] = None, extra_cflags: Optional[str] = None,
@@ -288,28 +330,31 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
     row = l.get(key)
     if row and row["status"] == "claimed" and row["claimed_by"] not in (agent, None):
         return {"ok": False, "error": f"claimed by {row['claimed_by']}, not {agent}"}
-    src_path = ROOT / "src" / unit_src
-    findings = lint_paths([src_path])
+    work = p.work_path(key)
+    src = _work_source(p, key, unit_src)
+    findings = lint_paths([src or oracle.unit_source_path(p, unit_src)])
     if findings:
         return {"ok": False, "error": "lint", "findings": findings}
+    if mw_version or extra_cflags:
+        _set_unit_opts(p, unit_src, mw_version, extra_cflags)
+        _reconfigure_and_split(p)
+    res = oracle.check(p, symbol, max_diff_lines, source=src)
+    reason = oracle.unit_fully_matches(res)
     if _is_revise(agent):
-        res = oracle.check(p, symbol, max_diff_lines)
-        reason = oracle.unit_fully_matches(res)
         if reason:
-            _shadow_restore(p, key, unit_src)
+            _discard_work(p, key)
             l.finish(key, "released", "unmatched", notes=f"revise rejected: {reason}", model=model,
                      harness=harness, tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd, shadow=True)
             return {"ok": False, "error": reason, "percent": res.percent, "revise": True}
-        park = STATE_DIR / "shadow" / f"{key}.c"
-        park.unlink(missing_ok=True)  # the rewrite replaces the parked original
+        if work.exists():
+            _install(p, unit_src, work.read_text())
+        _discard_work(p, key)
         l.db.execute("UPDATE functions SET link_state='pending' WHERE symbol=?", (key,))
         l.finish(key, "matched", "matched", notes=f"revised: {message}", model=model, harness=harness,
                  tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd, shadow=True)
         return {"ok": True, "symbol": symbol, "unit": unit_src, "revise": True, "link": "pending"}
     if _is_shadow(agent):
-        res = oracle.check(p, symbol, max_diff_lines)
-        reason = oracle.unit_fully_matches(res)
-        _shadow_restore(p, key, unit_src)
+        _discard_work(p, key)
         if reason:
             l.finish(key, "released", "unmatched", notes=f"shadow submit rejected: {reason}", model=model,
                      harness=harness, tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd, shadow=True)
@@ -317,17 +362,15 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
         l.finish(key, "matched", "matched", notes=message or "", model=model, harness=harness,
                  tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd, shadow=True)
         return {"ok": True, "symbol": symbol, "commit": None, "unit": unit_src, "shadow": True,
-                "note": "shadow trial: match recorded, nothing relinked or committed"}
-    if mw_version or extra_cflags:
-        _set_unit_opts(p, unit_src, mw_version, extra_cflags)
-        _reconfigure_and_split(p)
-    res = oracle.check(p, symbol, max_diff_lines)
-    reason = oracle.unit_fully_matches(res)
+                "note": "shadow trial: match recorded, nothing installed, relinked or committed"}
     if reason:
         return {"ok": False, "error": reason, "percent": res.percent, "diff": res.diff}
 
     # Accept on the per-object oracle; the batch relink (`fzgx verify`) checks every hash
     # once for all accepted units and bisects the rare object that matches but does not link.
+    if work.exists():
+        _install(p, unit_src, work.read_text())
+    _discard_work(p, key)
     with oracle.build_lock("units.lock"):
         units = p.load_units()
         for u in units:
@@ -348,10 +391,6 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
 
 def verify_links(p: Project, message: Optional[str] = None) -> Dict[str, Any]:
     """Relink once for every accepted-but-unverified unit; commit; bisect on failure."""
-    for _ in range(90):  # a shadow trial parks units as stubs; wait it out
-        if not Ledger().db.execute("SELECT COUNT(*) FROM functions WHERE prev_status IS NOT NULL").fetchone()[0]:
-            break
-        time.sleep(10)
     return verify.verify(p, message)
 
 
@@ -369,6 +408,7 @@ def _set_unit_opts(p: Project, unit_src: str, mw_version: Optional[str], extra_c
 def release(p: Project, symbol: str, reason: str, harness: Optional[str] = None,
             model: Optional[str] = None, tokens_in: int = 0, tokens_out: int = 0,
             cost_usd: float = 0.0, agent: Optional[str] = None) -> Dict[str, Any]:
+    """Give the function up: keep the best work copy under .fzgx/attempts/, touch nothing in the tree."""
     l = Ledger()
     key = _key(p, symbol)
     row = l.get(key)
@@ -376,34 +416,26 @@ def release(p: Project, symbol: str, reason: str, harness: Optional[str] = None,
         return {"ok": False, "error": "not claimed"}
     if agent and row["claimed_by"] != agent:
         return {"ok": False, "error": f"claimed by {row['claimed_by']}, not {agent}"}
+    shadow = _is_shadow(row["claimed_by"])
     body_path = None
-    unit_src = _unit_source(p, symbol)
-    if _is_shadow(row["claimed_by"]):
-        best = STATE_DIR / "attempts" / f"{key}.best.c"
-        if best.exists():
-            dest = STATE_DIR / "attempts" / f"{key}.shadow.{int(time.time())}.c"
-            shutil.move(best, dest)
-            body_path = str(dest)
-        if unit_src:
-            _shadow_restore(p, key, unit_src)
-        l.finish(key, "released", "unmatched", notes=reason, body_path=body_path, model=model,
-                 harness=harness, tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd, shadow=True)
-        return {"ok": True, "symbol": symbol, "saved": body_path, "shadow": True}
-    if unit_src and (ROOT / "src" / unit_src).exists():
-        dest = STATE_DIR / "attempts" / f"{key}.{int(time.time())}.c"
+    work = p.work_path(key)
+    best = STATE_DIR / "attempts" / f"{key}.best.c"
+    src = best if best.exists() else (work if work.exists() else None)
+    if src is not None and src.read_text().strip() != STUB.format(symbol=p.resolve(symbol).name, note="write the complete unit with write_unit").strip():
+        dest = STATE_DIR / "attempts" / f"{key}.{'shadow.' if shadow else ''}{int(time.time())}.c"
         dest.parent.mkdir(parents=True, exist_ok=True)
-        best = STATE_DIR / "attempts" / f"{key}.best.c"
-        # keep the best-scoring body, not necessarily the last one written
-        shutil.copy(best if best.exists() else ROOT / "src" / unit_src, dest)
-        best.unlink(missing_ok=True)
+        shutil.copy(src, dest)  # the best-scoring body, not necessarily the last one written
         body_path = str(dest)
-        # restore the committed file (the carve stub) so a release never dirties the tree
-        cp = _git("show", f"HEAD:src/{unit_src}")
-        (ROOT / "src" / unit_src).write_text(cp.stdout if cp.returncode == 0 else
-                                             STUB.format(symbol=symbol, note=f"best attempt saved to {dest.name}"))
+    best.unlink(missing_ok=True)
+    _discard_work(p, key)
     l.finish(key, "released", "unmatched", notes=reason, body_path=body_path, model=model,
-             harness=harness, tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd)
-    return {"ok": True, "symbol": symbol, "saved": body_path, "attempts": row["attempts"] + 1}
+             harness=harness, tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd, shadow=shadow)
+    out = {"ok": True, "symbol": symbol, "saved": body_path}
+    if shadow:
+        out["shadow"] = True
+    else:
+        out["attempts"] = row["attempts"] + 1
+    return out
 
 
 # ---------------------------------------------------------------- bookkeeping

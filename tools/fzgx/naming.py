@@ -20,6 +20,7 @@ import subprocess
 import re
 from typing import Dict, List, Optional
 
+from . import tufile
 from .ledger import Ledger
 from .project import ROOT, Project
 from .tu import rename_many, tu_map, IDENT_RE
@@ -131,9 +132,9 @@ def bundle(p: Project, module: str, tu: str, only_matched: bool = True) -> str:
         for c in asserts.get(f.name, [])[:4]:
             parts.append(f"  assert at {c['file']}:{c['line']}: \"{c['msg']}\"")
         if u:
-            src = ROOT / "src" / u["source"]
-            if src.exists():
-                parts.append("```c\n" + src.read_text().strip() + "\n```")
+            text = tufile.unit_text(p, u)
+            if text.strip():
+                parts.append("```c\n" + text.strip() + "\n```")
         parts.append("")
     unmatched = [f.name for f in funcs if not (l.get(p.key(f)) or {"status": ""})["status"] == "matched"]
     if unmatched:

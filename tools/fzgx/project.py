@@ -289,6 +289,37 @@ class Project:
         return out[:limit]
 
     # -------------------------------------------------------------------- units
+    # -------------------------------------------------------------------- units
+    def unit_record(self, unit_source: str) -> Optional[dict]:
+        """units.json entry for a split unit name (the `source` field), if configured."""
+        for u in self.load_units():
+            if u["source"] == unit_source:
+                return u
+        return None
+
+    def tu_map(self, module: str) -> Dict[str, str]:
+        """function symbol -> TU file stem (e.g. 'camera'), from tus.json (cached per module)."""
+        if not hasattr(self, "_tu_maps"):
+            self._tu_maps: Dict[str, Dict[str, str]] = {}
+        if module in self._tu_maps:
+            return self._tu_maps[module]
+        path = self.module_config_dir(module) / "tus.json"
+        out: Dict[str, str] = {}
+        if path.exists():
+            d = json.loads(path.read_text())
+            for tu in d["tus"]:
+                stem = tu["file"].rsplit(".", 1)[0]
+                for f in tu["functions"]:
+                    out[f] = stem
+            for f in d.get("unassigned_prefix", []):
+                out[f] = "_prolog"
+        self._tu_maps[module] = out
+        return out
+
+    def work_path(self, key: str) -> Path:
+        """An agent's private working copy of a function's unit (never the tree)."""
+        return STATE_DIR / "work" / (key.replace(":", "__") + ".c")
+
     def load_units(self) -> List[dict]:
         if not self.units_path.exists():
             return []

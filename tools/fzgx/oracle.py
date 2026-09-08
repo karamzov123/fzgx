@@ -101,7 +101,8 @@ def _render_diff(left_rows: List[dict], right_rows: List[dict], max_lines: int) 
     return out
 
 
-def check(project: Project, symbol: str, max_diff_lines: int = 80) -> CheckResult:
+def check(project: Project, symbol: str, max_diff_lines: int = 80, source: Optional[Path] = None) -> CheckResult:
+    """Compile the unit (or `source`, an agent's work copy) into the unit's object and diff it."""
     sym = project.resolve(symbol)
     if sym is None:
         return CheckResult(False, symbol, "", error="unknown or ambiguous symbol (use module:name)")
@@ -113,7 +114,7 @@ def check(project: Project, symbol: str, max_diff_lines: int = 80) -> CheckResul
     base_obj = _base_object(project, unit)
 
     # Direct mwcc compile into this unit's own object: no ninja, no build lock.
-    cp = compile_unit(project, unit, unit_src)
+    cp = compile_unit(project, unit, unit_src, source)
     if cp.returncode != 0 or not base_obj.exists():
         err = "\n".join(l for l in (cp.stdout + cp.stderr).splitlines() if "Usage Warning" not in l)
         return CheckResult(False, symbol, unit, error=err.strip()[-4000:])
@@ -145,24 +146,34 @@ def check(project: Project, symbol: str, max_diff_lines: int = 80) -> CheckResul
     return res
 
 
-def compile_unit(project: Project, unit: str, unit_src: str) -> subprocess.CompletedProcess:
+def unit_source_path(project: Project, unit_src: str) -> Path:
+    """Where the unit's C lives: src/ for standalone units, build/<v>/gen/ for block units."""
+    u = project.unit_record(unit_src)
+    if u and u.get("tu"):
+        return project.build_dir / "gen" / unit_src
+    return ROOT / "src" / unit_src
+
+
+def compile_unit(project: Project, unit: str, unit_src: str,
+                 source: Optional[Path] = None) -> subprocess.CompletedProcess:
     """Compile one unit straight with mwcc (via wibo) into its objdiff base object.
 
     No ninja and no build lock: two agents compile two different files, so nothing
     is shared. The flags come from objdiff.json (the same ones ninja uses) plus the
     include dirs the ninja rule adds. ninja will still consider the object up to
-    date at relink time because the object is newer than its source.
+    date at relink time because the object is newer than its source. `source`
+    overrides the input (an agent's work copy, already assembled with the TU prologue).
     """
     meta = project.objdiff_units().get(unit, {})
     flags = meta.get("scratch", {}).get("c_flags", "").replace(" -lang=c", "")
     flags += f" -i include -i build/{project.version}/include"
-    units = {u["source"]: u for u in project.load_units()}
-    ucfg = units.get(unit_src, {})
+    ucfg = project.unit_record(unit_src) or {}
     mw = ucfg.get("mw_version") or ("GC/1.2.5n" if unit.startswith("main/") else "GC/1.3.2")
     obj = _base_object(project, unit)
     obj.parent.mkdir(parents=True, exist_ok=True)
+    src = source or unit_source_path(project, unit_src)
     cmd = [str(ROOT / "build" / "tools" / "wibo"), str(ROOT / "build" / "compilers" / mw / "mwcceppc.exe")]
-    cmd += shlex.split(flags) + ucfg.get("extra_cflags", []) + ["-c", f"src/{unit_src}", "-o", str(obj)]
+    cmd += shlex.split(flags) + ucfg.get("extra_cflags", []) + ["-c", str(src), "-o", str(obj)]
     return subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, timeout=120)
 
 
@@ -186,7 +197,7 @@ def check_versions(project: Project, symbol: str, versions: List[str]) -> Dict[s
     flags = meta.get("scratch", {}).get("c_flags", "").replace(" -lang=c", "")
     flags += f" -i include -i build/{project.version}/include"
     target = ROOT / meta.get("target_path", "")
-    src = ROOT / "src" / unit_src
+    src = unit_source_path(project, unit_src)
     wibo = ROOT / "build" / "tools" / "wibo"
     out: Dict[str, float] = {}
     tmp = STATE_DIR / "versions" / symbol

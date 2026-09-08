@@ -17,7 +17,7 @@ import subprocess
 import time
 from typing import Dict, List, Optional
 
-from . import oracle
+from . import oracle, tufile
 from .ledger import Ledger
 from .project import ROOT, STATE_DIR, Project
 
@@ -70,11 +70,15 @@ def verify(p: Project, message: Optional[str] = None) -> Dict[str, object]:
         if bad:
             _set_status(p, [units[k] for k in bad], "nonmatching")
             for k in bad:
-                src = ROOT / "src" / units[k]
                 keep = STATE_DIR / "attempts" / f"{k}.linkfail.{int(time.time())}.c"
                 keep.parent.mkdir(parents=True, exist_ok=True)
-                keep.write_bytes(src.read_bytes())
-                src.write_text(STUB.format(symbol=p.resolve(k).name, note=f"link mismatch; body saved to {keep.name}"))
+                rec = p.unit_record(units[k])
+                if rec and rec.get("tu"):
+                    keep.write_text(tufile.remove(p, rec) or "")
+                else:
+                    src = ROOT / "src" / units[k]
+                    keep.write_bytes(src.read_bytes())
+                    src.write_text(STUB.format(symbol=p.resolve(k).name, note=f"link mismatch; body saved to {keep.name}"))
                 l.db.execute("UPDATE functions SET status='unmatched', link_state=NULL, attempts=attempts+1 WHERE symbol=?", (k,))
                 l.db.execute("UPDATE attempts SET outcome='link-mismatch', notes=COALESCE(notes,'')||' [object matched but link differed]' "
                              "WHERE id=(SELECT id FROM attempts WHERE symbol=? ORDER BY id DESC LIMIT 1)", (k,))
@@ -84,7 +88,10 @@ def verify(p: Project, message: Optional[str] = None) -> Dict[str, object]:
                         "rejected": bad, "verified": []}
         commit = None
         if good:
-            files = [str(ROOT / "src" / units[k]) for k in good] + [str(p.units_path)]
+            files = [str(p.units_path)]
+            for k in good:
+                rec = p.unit_record(units[k])
+                files.append(str(ROOT / "src" / (rec["tu"] if rec and rec.get("tu") else units[k])))
             for mod in {p.resolve(k).module for k in good}:
                 d = p.module_config_dir(mod)
                 files += [str(d / "splits.txt"), str(d / "symbols.txt")]
