@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_1_4B16C: main_rel .text:0x0004B16C size 0x34
-// Carved by fzgx. Replace this file's body with the matching C.
+extern f32 fn_1_4B1D4(s32 mode, s32 value);
+
+s32 fn_1_4B16C(s32 value) {
+    return (s32)fn_1_4B1D4(2, value);
+}

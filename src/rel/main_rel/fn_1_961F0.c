@@ -1,4 +1,17 @@
 #include "types.h"
 
-// fn_1_961F0: main_rel .text:0x000961F0 size 0x40
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct Fn1961F0Owner Fn1961F0Owner;
+
+struct Fn1961F0Owner {
+    u8 unk_00[0x0C];
+    void *resource;
+};
+
+extern void fn_1_12ABB4(void *arg0);
+
+void fn_1_961F0(Fn1961F0Owner *owner) {
+    if (owner->resource != 0) {
+        fn_1_12ABB4(owner->resource);
+        owner->resource = 0;
+    }
+}

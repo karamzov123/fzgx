@@ -1,4 +1,10 @@
 #include "types.h"
 
-// fn_1_5D014: main_rel .text:0x0005D014 size 0xC
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct Fn1_5D014Object {
+    u8 pad[0xae];
+    s16 field_ae;
+} Fn1_5D014Object;
+
+void fn_1_5D014(Fn1_5D014Object *obj) {
+    obj->field_ae = 0;
+}

@@ -1,4 +1,10 @@
 #include "types.h"
 
-// fn_1_550E0: main_rel .text:0x000550E0 size 0x38
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u8 lbl_1_bss_6C710[136];
+extern void *lbl_801A66CC;
+extern void fn_800794F0(u8 *data, void *value, s32 size);
+
+void fn_1_550E0(void) {
+    fn_800794F0((u8 *)lbl_801A66CC + 0x50, lbl_1_bss_6C710, 0x84);
+}
+

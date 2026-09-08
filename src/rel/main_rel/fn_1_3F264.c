@@ -1,4 +1,20 @@
 #include "types.h"
 
-// fn_1_3F264: main_rel .text:0x0003F264 size 0x3C
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct {
+    u8 unk[0xb];
+    u8 value;
+} Entry;
+
+extern Entry *lbl_1_bss_53F8[34];
+extern s16 lbl_1_bss_25C48[46];
+
+u8 fn_1_3F264(u32 index) {
+    u32 masked = index & 0xff;
+    Entry *entry = lbl_1_bss_53F8[masked];
+
+    if (entry != 0) {
+        return entry->value;
+    }
+
+    return (u8)lbl_1_bss_25C48[masked];
+}

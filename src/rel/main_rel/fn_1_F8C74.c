@@ -1,4 +1,8 @@
 #include "types.h"
 
-// fn_1_F8C74: main_rel .text:0x000F8C74 size 0x2C
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u32 lbl_1_bss_7F0C0[5336];
+
+void fn_1_F8C74(s32 value) {
+    value *= 2;
+    lbl_1_bss_7F0C0[4676] |= (((u32)1 << 31) >> (31 - (value + 1)));
+}

@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_1_EC900: main_rel .text:0x000EC900 size 0x10
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u32 lbl_1_bss_7B1A4[2];
+
+u32 fn_1_EC900(void) {
+    return lbl_1_bss_7B1A4[0];
+}

@@ -1,4 +1,9 @@
 #include "types.h"
 
-// fn_1_3514C: main_rel .text:0x0003514C size 0x28
-// Carved by fzgx. Replace this file's body with the matching C.
+extern void fn_1_35174(void);
+
+void fn_1_3514C(void* arg0, int arg1) {
+    if (arg1 == 1) {
+        fn_1_35174();
+    }
+}
