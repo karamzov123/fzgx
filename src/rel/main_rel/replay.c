@@ -1,5 +1,8 @@
 #include "types.h"
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/replay.h"
+
+extern u32 OSGetTick(void);
 
 /* fzgx:begin fn_1_F2CD8 */
 void fn_1_F2CD8(u8 *value, u8 **cursor, u32 index) {
@@ -27,8 +30,6 @@ void fn_1_F2CD8(u8 *value, u8 **cursor, u32 index) {
 /* fzgx:end fn_1_F2CD8 */
 
 /* fzgx:begin fn_1_F2D30 */
-#include "rel/main_rel/replay.h"
-
 u8 fn_1_F2D30(u8 *value, u8 **cursor, u32 index) {
     u8 target;
     u32 step;
@@ -61,8 +62,6 @@ u8 fn_1_F2D30(u8 *value, u8 **cursor, u32 index) {
 /* fzgx:end fn_1_F2D30 */
 
 /* fzgx:begin fn_1_F2EFC */
-#include "rel/main_rel/replay.h"
-
 // Clears the active replay flag and marks the replay entry as ready.
 void fn_1_F2EFC(void) {
     u8 flags = lbl_1_bss_7EFD4;
@@ -80,8 +79,6 @@ void fn_1_F2EFC(void) {
 /* fzgx:end fn_1_F2EFC */
 
 /* fzgx:begin fn_1_F2F58 */
-extern u8 lbl_1_bss_7EFD4;
-
 u32 fn_1_F2F58(void) {
     u8 flags = lbl_1_bss_7EFD4;
 
@@ -93,42 +90,30 @@ u32 fn_1_F2F58(void) {
 /* fzgx:end fn_1_F2F58 */
 
 /* fzgx:begin fn_1_F4594 */
-#include "rel/main_rel/replay.h"
-
 u32 fn_1_F4594(void) {
     return lbl_1_bss_7EFD8.unk_4;
 }
 /* fzgx:end fn_1_F4594 */
 
 /* fzgx:begin fn_1_F45A4 */
-#include "rel/main_rel/replay.h"
-
 u32 fn_1_F45A4(void) {
     return lbl_1_bss_7EFD8.unk_8;
 }
 /* fzgx:end fn_1_F45A4 */
 
 /* fzgx:begin fn_1_F4794 */
-extern u16 lbl_1_bss_7F01C;
-
 void fn_1_F4794(u16 value) {
     lbl_1_bss_7F01C = value;
 }
 /* fzgx:end fn_1_F4794 */
 
 /* fzgx:begin fn_1_F47A0 */
-extern u32 lbl_1_bss_7F020;
-
 void fn_1_F47A0(u32 value) {
     lbl_1_bss_7F020 = value;
 }
 /* fzgx:end fn_1_F47A0 */
 
 /* fzgx:begin fn_1_F47AC */
-extern u8 lbl_1_bss_7EFD4;
-extern u32 lbl_1_bss_7F020;
-extern u32 OSGetTick(void);
-
 u32 fn_1_F47AC(void) {
     u32 tick;
     u8 flags;

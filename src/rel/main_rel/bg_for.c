@@ -1,4 +1,6 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/bg_for.h"
 
 /* fzgx:begin fn_1_DCF54 */
 typedef struct Vec3 {

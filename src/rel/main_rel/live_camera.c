@@ -1,19 +1,25 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/live_camera.h"
+
+extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
+extern u32 fn_80008E30(u32);
+extern u8 lbl_1_bss_17B4[12];
+extern void fn_80083DB0(Obj_1_bss_3B30 *, void *);
+extern u32 *fn_1_1304C(Obj_1_bss_3B30 *, u32);
+extern u8 lbl_1_bss_1810[8984];
+extern void fn_8000659C(void);
+extern u32 fn_800102B8(u8 *);
 
 /* fzgx:begin fn_1_DA34 */
-#include "rel/main_rel/globals.h"
-
-extern u8 lbl_1_data_4420[14];
-extern u8 lbl_1_data_4430[15];
-extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
-
 // Reports the camera source location and message used by this routine.
 void fn_1_DA34(void) {
     fn_8000C49C(lbl_1_data_4420, 0x34, lbl_1_data_4430);
 }
 /* fzgx:end fn_1_DA34 */
 
-/* fzgx:begin fn_1_EE04 */
+/* fzgx:begin fn_1_EE04 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 
 typedef struct {
@@ -34,10 +40,6 @@ void fn_1_EE04(Fn1EE04Context *context) {
 /* fzgx:end fn_1_EE04 */
 
 /* fzgx:begin fn_1_10138 */
-#include "rel/main_rel/live_camera.h"
-
-extern u32 fn_80008E30(u32);
-
 void fn_1_10138(void) {
     Obj_1_bss_17C4_At0 *obj;
     u32 i;
@@ -56,22 +58,19 @@ void fn_1_10138(void) {
 /* fzgx:end fn_1_10138 */
 
 /* fzgx:begin fn_1_101C0 */
-extern u32 lbl_1_bss_17B0;
-
 u32 fn_1_101C0(void) {
     return lbl_1_bss_17B0;
 }
 /* fzgx:end fn_1_101C0 */
 
 /* fzgx:begin fn_1_12850 */
-extern u8 lbl_1_bss_17B4[12];
-
 u8 fn_1_12850(void) {
     return lbl_1_bss_17B4[0];
 }
 /* fzgx:end fn_1_12850 */
 
-/* fzgx:begin fn_1_12860 */
+/* fzgx:begin fn_1_12860 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 
 extern u32 lbl_1_bss_1800[4];
@@ -87,11 +86,6 @@ u32 fn_1_12860(u32 arg0, u32 arg1) {
 /* fzgx:end fn_1_12860 */
 
 /* fzgx:begin fn_1_12F78 */
-#include "rel/main_rel/live_camera.h"
-
-extern void fn_80083DB0(Obj_1_bss_3B30 *, void *);
-extern u32 *fn_1_1304C(Obj_1_bss_3B30 *, u32);
-
 u32 fn_1_12F78(void *arg0, u32 arg1) {
     fn_80083DB0(&lbl_1_bss_3B30, arg0);
     lbl_1_bss_3B30.unk_80 = arg1;
@@ -101,10 +95,6 @@ u32 fn_1_12F78(void *arg0, u32 arg1) {
 /* fzgx:end fn_1_12F78 */
 
 /* fzgx:begin fn_1_13018 */
-extern u8 lbl_1_bss_1810[8984];
-extern void fn_8000659C(void);
-extern u32 fn_800102B8(u8 *);
-
 u32 fn_1_13018(void) {
     fn_8000659C();
     return fn_800102B8(lbl_1_bss_1810) == 0;

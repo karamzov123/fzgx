@@ -1,33 +1,36 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/relocation.h"
+
+extern u8 *lbl_801A6CF4;
+extern u32 lbl_1_bss_6F5F4;
+extern u8 lbl_801A66B0[];
+extern s32 OSGetResetCode(void);
+extern u32 fn_8000FE78(void);
+extern void fn_8000FEE8(s32);
+extern void fn_1_A6870(u32 *);
+extern void fn_1_A5F44(void);
+extern s32 fn_1_A6480(void);
 
 /* fzgx:begin fn_1_A5D88 */
-extern u8 *lbl_801A6CF4;
-
 u16 fn_1_A5D88(void) {
     return *(u16 *)(lbl_801A6CF4 + 4);
 }
 /* fzgx:end fn_1_A5D88 */
 
 /* fzgx:begin fn_1_A5D9C */
-extern u8 *lbl_801A6CF4;
-
 u16 fn_1_A5D9C(void) {
     return *(u16 *)(lbl_801A6CF4 + 6);
 }
 /* fzgx:end fn_1_A5D9C */
 
 /* fzgx:begin fn_1_A5DB0 */
-extern u8 *lbl_801A6CF4;
-
 u16 fn_1_A5DB0(void) {
     return *(u16 *)(lbl_801A6CF4 + 8);
 }
 /* fzgx:end fn_1_A5DB0 */
 
 /* fzgx:begin fn_1_A5DC4 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/relocation.h"
-
 // Return whether relocation processing is in one of the active states.
 s32 fn_1_A5DC4(void) {
     if ((s32)lbl_1_bss_6F5F0 == 1 || (s32)lbl_1_bss_6F5F0 == 2) {
@@ -38,8 +41,6 @@ s32 fn_1_A5DC4(void) {
 /* fzgx:end fn_1_A5DC4 */
 
 /* fzgx:begin fn_1_A5EFC */
-#include "rel/main_rel/relocation.h"
-
 void fn_1_A5EFC(void) {
     lbl_1_bss_6F5F0 = 0;
     if ((s32)lbl_1_data_341B8->unk_0 != 0) {
@@ -51,18 +52,6 @@ void fn_1_A5EFC(void) {
 /* fzgx:end fn_1_A5EFC */
 
 /* fzgx:begin fn_1_A66FC */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/relocation.h"
-
-extern u32 lbl_1_bss_6F5F4;
-extern u8 lbl_801A66B0[];
-extern s32 OSGetResetCode(void);
-extern u32 fn_8000FE78(void);
-extern void fn_8000FEE8(s32);
-extern void fn_1_A6870(u32 *);
-extern void fn_1_A5F44(void);
-extern s32 fn_1_A6480(void);
-
 // Records the reset state and performs the appropriate relocation startup or recovery.
 s32 fn_1_A66FC(s32 value) {
     s32 result;
@@ -93,9 +82,6 @@ s32 fn_1_A66FC(s32 value) {
 /* fzgx:end fn_1_A66FC */
 
 /* fzgx:begin fn_1_A6840 */
-extern u32 lbl_1_bss_6F5F0;
-extern void fn_1_A6870(u32 *);
-
 void fn_1_A6840(u32 value) {
     u32 *value_ptr;
 

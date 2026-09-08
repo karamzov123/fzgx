@@ -1,8 +1,12 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/som.h"
+
+extern u32 lbl_1_bss_3BBC;
+extern void fn_8008069C(char *, const char *, ...);
+extern void fn_1_465D0(char *, int);
 
 /* fzgx:begin fn_1_1383C */
-extern u32 lbl_1_bss_3BBC;
-
 void fn_1_1383C(void) {
     lbl_1_bss_3BBC = 1;
 }
@@ -84,10 +88,6 @@ void fn_1_13A28(Fn1_13A28 *arg0, s32 arg1) {
 /* fzgx:end fn_1_13A28 */
 
 /* fzgx:begin fn_1_14D5C */
-extern u8 lbl_1_data_5194[52];
-extern void fn_8008069C(char *, const char *, ...);
-extern void fn_1_465D0(char *, int);
-
 void fn_1_14D5C(char *arg0, int arg1) {
     char buffer[32];
 

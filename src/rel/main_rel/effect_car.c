@@ -1,6 +1,13 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/effect_car.h"
 
-/* fzgx:begin fn_1_68248 */
+extern void fn_1_6F90C(void *arg0, void *arg1);
+extern s16 fn_1_72318(void);
+extern void fn_1_71D0C(void *arg0, void *arg1);
+
+/* fzgx:begin fn_1_68248 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 
 extern char lbl_1_data_1D8A8[13];
@@ -36,8 +43,6 @@ void fn_1_69BBC(EffectCar *car) {
 /* fzgx:end fn_1_69BBC */
 
 /* fzgx:begin fn_1_6F8D0 */
-extern void fn_1_6F90C(void *arg0, void *arg1);
-
 void fn_1_6F8D0(void *arg0, void *arg1) {
     struct EffectData {
         u8 pad_000[0x58c];
@@ -58,9 +63,6 @@ void fn_1_6F8D0(void *arg0, void *arg1) {
 /* fzgx:end fn_1_6F8D0 */
 
 /* fzgx:begin fn_1_71CA0 */
-extern s16 fn_1_72318(void);
-extern void fn_1_71D0C(void *arg0, void *arg1);
-
 void fn_1_71CA0(void *arg0, void *arg1, u16 arg2) {
     if (arg2 == 0xb4) {
         ((struct {

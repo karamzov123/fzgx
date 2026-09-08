@@ -1,9 +1,24 @@
 #include "types.h"
-
-/* fzgx:begin fn_1_45890 */
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/load.h"
 
+extern u32 lbl_1_bss_3DCE4[17];
+extern void *fn_80006DFC(void *arg);
+extern void fn_1_D3214(void);
+extern s32 fn_8000700C(s32 arg0);
+extern void fn_1_3BDC(s32 arg0);
+extern void fn_8000659C(void);
+extern u32 lbl_1_bss_384C4;
+extern void fn_1_46A8C(u32 value);
+extern u32 lbl_1_bss_3DCD8;
+extern u32 lbl_1_bss_3DD28[179];
+extern void fn_1_47EE4(s32);
+extern void fn_1_485C8(s32);
+extern void fn_1_48140(s32 value);
+extern void fn_1_4DDC0(void);
+extern void fn_1_4F724(void);
+
+/* fzgx:begin fn_1_45890 */
 // Clear the load-state flag before starting a new load.
 void fn_1_45890(void) {
     lbl_1_bss_384D0 = 0;
@@ -11,10 +26,6 @@ void fn_1_45890(void) {
 /* fzgx:end fn_1_45890 */
 
 /* fzgx:begin fn_1_45AD4 */
-#include "rel/main_rel/load.h"
-
-extern u32 lbl_1_bss_3DCE4[17];
-
 // Reports whether loading is already active or any load slot is occupied.
 int fn_1_45AD4(void) {
     s8 i;
@@ -40,8 +51,6 @@ typedef struct Fn45B68Object {
     void *value;
 } Fn45B68Object;
 
-extern void *fn_80006DFC(void *arg);
-
 void *fn_1_45B68(Fn45B68Object *obj) {
     switch (obj->state) {
     case 1:
@@ -53,9 +62,6 @@ void *fn_1_45B68(Fn45B68Object *obj) {
 /* fzgx:end fn_1_45B68 */
 
 /* fzgx:begin fn_1_45BA4 */
-extern u32 lbl_1_bss_384C8;
-extern void fn_1_D3214(void);
-
 void fn_1_45BA4(s32 value) {
     fn_1_D3214();
     lbl_1_bss_384C8 = value & (value >> 31);
@@ -63,16 +69,12 @@ void fn_1_45BA4(s32 value) {
 /* fzgx:end fn_1_45BA4 */
 
 /* fzgx:begin fn_1_45BE0 */
-extern u32 lbl_1_bss_384C8;
-
 void fn_1_45BE0(void) {
     lbl_1_bss_384C8 = 0;
 }
 /* fzgx:end fn_1_45BE0 */
 
 /* fzgx:begin fn_1_45D78 */
-#include "rel/main_rel/load.h"
-
 typedef struct {
     u32 unk_0;
     u32 unk_4;
@@ -115,12 +117,6 @@ int fn_1_45D78(u32 start, u32 size, u32 *out_end, s32 mode) {
 /* fzgx:end fn_1_45D78 */
 
 /* fzgx:begin fn_1_465D0 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/load.h"
-
-extern s32 fn_8000700C(s32 arg0);
-extern void fn_1_3BDC(s32 arg0);
-
 // Queues a completed load operation in the circular load queue.
 s32 fn_1_465D0(s32 arg0, s32 arg1) {
     s32 *base = (s32 *)&lbl_1_bss_384C0;
@@ -168,10 +164,6 @@ s32 fn_1_465D0(s32 arg0, s32 arg1) {
 /* fzgx:end fn_1_465D0 */
 
 /* fzgx:begin fn_1_467F4 */
-extern void fn_8000659C(void);
-extern u32 lbl_1_bss_384C0;
-extern u32 lbl_1_bss_384C4;
-
 u32 fn_1_467F4(void) {
     u32 value;
 
@@ -181,7 +173,10 @@ u32 fn_1_467F4(void) {
 }
 /* fzgx:end fn_1_467F4 */
 
-/* fzgx:begin fn_1_469BC */
+/* fzgx:begin fn_1_469BC noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
 extern u32 lbl_1_bss_384C0[];
 
 // Clears invalid entries in the load table and mirrors its first value.
@@ -205,40 +200,24 @@ void fn_1_469BC(void) {
 /* fzgx:end fn_1_469BC */
 
 /* fzgx:begin fn_1_46A60 */
-extern void fn_1_46A8C(u32 value);
-extern u32 lbl_1_bss_3DCDC;
-
 void fn_1_46A60(void) {
     fn_1_46A8C(lbl_1_bss_3DCDC);
 }
 /* fzgx:end fn_1_46A60 */
 
 /* fzgx:begin fn_1_46C60 */
-extern u32 lbl_1_bss_3DCD8;
-
 u32 fn_1_46C60(void) {
     return lbl_1_bss_3DCD8;
 }
 /* fzgx:end fn_1_46C60 */
 
 /* fzgx:begin fn_1_46EA8 */
-extern u32 lbl_1_bss_3DD28[179];
-
 void fn_1_46EA8(u32 value) {
     lbl_1_bss_3DD28[0] = value;
 }
 /* fzgx:end fn_1_46EA8 */
 
 /* fzgx:begin fn_1_46EB4 */
-extern u32 lbl_1_bss_3DCDC;
-
-typedef struct {
-    u32 unk_0;
-    u8 pad_4[0x8];
-} Obj_1_bss_3DFF4;
-
-extern Obj_1_bss_3DFF4 lbl_1_bss_3DFF4;
-
 void fn_1_46EB4(u32 value, u32 value2) {
     lbl_1_bss_3DCDC = value;
     lbl_1_bss_3DFF4.unk_0 = value2;
@@ -246,8 +225,6 @@ void fn_1_46EB4(u32 value, u32 value2) {
 /* fzgx:end fn_1_46EB4 */
 
 /* fzgx:begin fn_1_46EC8 */
-#include "rel/main_rel/load.h"
-
 // Returns the current load-state value.
 u32 fn_1_46EC8(void) {
     return lbl_1_bss_3DCDC;
@@ -255,28 +232,18 @@ u32 fn_1_46EC8(void) {
 /* fzgx:end fn_1_46EC8 */
 
 /* fzgx:begin fn_1_46ED8 */
-#include "rel/main_rel/load.h"
-
 u32 fn_1_46ED8(void) {
     return lbl_1_bss_3DFF4.unk_0;
 }
 /* fzgx:end fn_1_46ED8 */
 
 /* fzgx:begin fn_1_47184 */
-#include "rel/main_rel/load.h"
-
 u32 fn_1_47184(void) {
     return lbl_1_bss_3DFF4.unk_0 - lbl_1_bss_3DCDC;
 }
 /* fzgx:end fn_1_47184 */
 
 /* fzgx:begin fn_1_479B0 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/load.h"
-
-extern void fn_1_47EE4(s32);
-extern void fn_1_485C8(s32);
-
 // Reset the loading state and clear the associated resource markers.
 void fn_1_479B0(void) {
     fn_1_47EE4(0);
@@ -288,12 +255,6 @@ void fn_1_479B0(void) {
 /* fzgx:end fn_1_479B0 */
 
 /* fzgx:begin fn_1_47A60 */
-#include "rel/main_rel/load.h"
-
-extern void fn_1_48140(s32 value);
-extern void fn_1_4DDC0(void);
-extern void fn_1_4F724(void);
-
 // Process the ten load entries associated with the selected index.
 void fn_1_47A60(s16 index) {
     s32 *entry;
@@ -312,7 +273,8 @@ void fn_1_47A60(s16 index) {
 }
 /* fzgx:end fn_1_47A60 */
 
-/* fzgx:begin fn_1_485E8 */
+/* fzgx:begin fn_1_485E8 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 
 extern s16 *lbl_1_data_19FC4[188];

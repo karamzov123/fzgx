@@ -1,4 +1,18 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+
+extern struct ArenaData lbl_1_data_8;
+extern u32 OSGetArenaLo(void);
+extern u32 OSGetArenaHi(void);
+extern void OSSetArenaLo(u32 arena_lo);
+extern u16 lbl_1_bss_990[28];
+extern u8 lbl_1_bss_D78;
+extern u8 lbl_1_bss_DA6;
+extern u32 lbl_1_bss_DB0[2];
+extern u32 lbl_1_bss_DA8;
+extern void fn_1_43A4(void);
+extern u32 lbl_1_data_2C70;
+extern void fn_80008E84(u32 value);
 
 /* fzgx:begin fn_1_668 */
 struct ArenaData {
@@ -7,12 +21,6 @@ struct ArenaData {
     u32 *aligned_lo;
     u32 aligned_lo_size;
 };
-
-extern struct ArenaData lbl_1_data_8;
-
-extern u32 OSGetArenaLo(void);
-extern u32 OSGetArenaHi(void);
-extern void OSSetArenaLo(u32 arena_lo);
 
 void fn_1_668(void) {
     u32 arena_lo;
@@ -59,8 +67,6 @@ void fn_1_1300(void) {
 /* fzgx:end fn_1_1300 */
 
 /* fzgx:begin fn_1_3BC0 */
-extern u16 lbl_1_bss_990[28];
-
 void fn_1_3BC0(void) {
     lbl_1_bss_990[0] = 0;
     lbl_1_bss_990[1] = 0;
@@ -70,9 +76,6 @@ void fn_1_3BC0(void) {
 /* fzgx:end fn_1_3BC0 */
 
 /* fzgx:begin fn_1_3CC4 */
-extern u8 lbl_1_bss_D78;
-extern u8 lbl_1_bss_DA6;
-
 void fn_1_3CC4(void) {
     if (lbl_1_bss_D78 == 0) {
         return;
@@ -84,8 +87,6 @@ void fn_1_3CC4(void) {
 /* fzgx:end fn_1_3CC4 */
 
 /* fzgx:begin fn_1_3F8C */
-#include "rel/main_rel/globals.h"
-
 typedef struct Fn1_3F8C_Entry Fn1_3F8C_Entry;
 
 struct Fn1_3F8C_Entry {
@@ -106,7 +107,6 @@ typedef struct Fn1_3F8C_Table {
 } Fn1_3F8C_Table;
 
 extern Fn1_3F8C_Table *lbl_1_bss_DAC;
-extern u32 lbl_1_bss_DB0[2];
 
 // Retrieves an entry from the free list and links it into the indexed list.
 s32 fn_1_3F8C(u32 arg3, u32 arg0, u32 arg1, u32 index) {
@@ -143,8 +143,6 @@ s32 fn_1_3F8C(u32 arg3, u32 arg0, u32 arg1, u32 index) {
 
 /* fzgx:begin fn_1_41A8 */
 extern u32 lbl_1_bss_DAC;
-extern u32 lbl_1_bss_DA8;
-extern void fn_1_43A4(void);
 
 typedef struct Node Node;
 struct Node {
@@ -243,9 +241,6 @@ void fn_1_4374(Node **list, Node *node) {
 /* fzgx:end fn_1_4374 */
 
 /* fzgx:begin fn_1_446C */
-extern u32 lbl_1_data_2C70;
-extern void fn_80008E84(u32 value);
-
 void fn_1_446C(void) {
     fn_80008E84(lbl_1_data_2C70);
     lbl_1_data_2C70 = (u32)-1;

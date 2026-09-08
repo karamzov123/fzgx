@@ -1,12 +1,18 @@
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/bg_tow.h"
-
-/* fzgx:begin fn_1_1548A8 */
-#include "types.h"
 
 extern void fn_1_B9BE0(void);
 extern void fn_1_B9DE8(Obj_1_bss_8EDA4 *arg0);
 extern void fn_1_48418(s32 arg0);
 extern void fn_1_159440(s32 arg0, s32 arg1);
+extern u8 lbl_1_bss_8EDA0;
+extern s32 fn_1_BA144(Obj_1_bss_8EDA4 *arg0);
+extern void fn_1_1596DC(s32 arg0);
+extern void fn_1_484CC(s32 arg0);
+extern void fn_1_BC310(Obj_1_bss_8EDA4 *arg0);
+
+/* fzgx:begin fn_1_1548A8 */
+#include "types.h"
 
 // Initialize the tow settings and select the mode-dependent input value.
 void fn_1_1548A8(void) {
@@ -37,12 +43,6 @@ void fn_1_1548A8(void) {
 /* fzgx:end fn_1_1548A8 */
 
 /* fzgx:begin fn_1_154930 */
-extern u8 lbl_1_bss_8EDA0;
-extern s32 fn_1_BA144(Obj_1_bss_8EDA4 *arg0);
-extern void fn_1_1596DC(s32 arg0);
-extern void fn_1_484CC(s32 arg0);
-extern void fn_1_BC310(Obj_1_bss_8EDA4 *arg0);
-
 void fn_1_154930(void) {
     s8 result;
 

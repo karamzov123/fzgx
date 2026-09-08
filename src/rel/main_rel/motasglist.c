@@ -1,4 +1,16 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/motasglist.h"
+
+extern void fn_1_41328(void *arg0);
+extern void fn_1_43264(void *arg0, f32 arg1);
+extern void lbl_8006DAEC(void);
+extern void lbl_8006DB30(void);
+extern void lbl_8006D668(void *vector);
+extern void lbl_8006DBAC(void *value);
+extern void fn_1_449A8(void *vector);
+extern void lbl_8006DB74(void *value);
+extern u32 lbl_1_bss_384CC;
 
 /* fzgx:begin fn_1_41BDC */
 typedef struct MotasglistData {
@@ -115,8 +127,6 @@ typedef struct Fn1426E4Object {
     void *value;
 } Fn1426E4Object;
 
-extern void fn_1_41328(void *arg0);
-
 void fn_1_426E4(Fn1426E4Object *object, void *value) {
     object->value = value;
     fn_1_41328(value);
@@ -130,8 +140,6 @@ typedef struct Fn14300CObject {
     f32 value;
     u8 pad1[0x38];
 } Fn14300CObject;
-
-extern void fn_1_43264(void *arg0, f32 arg1);
 
 void fn_1_4300C(Fn14300CObject *object) {
     fn_1_43264((u8 *)object + 0x40, object->value);
@@ -162,8 +170,6 @@ typedef struct Fn143058Object {
     f32 value2;
 } Fn143058Object;
 
-extern void lbl_8006DAEC(void);
-extern void lbl_8006DB30(void);
 extern void fn_1_43E08(Fn143058Object *object, u8 *entry, void *arg2, void *arg3, f32 value);
 extern void fn_1_433E0(Fn143058Object *object);
 
@@ -202,13 +208,6 @@ typedef struct Fn143120Object {
     u8 pad0[8];
     Fn143120Entry *entries;
 } Fn143120Object;
-
-extern void lbl_8006DAEC(void);
-extern void lbl_8006D668(void *vector);
-extern void lbl_8006DBAC(void *value);
-extern void fn_1_449A8(void *vector);
-extern void lbl_8006DB74(void *value);
-extern void lbl_8006DB30(void);
 
 void fn_1_43120(Fn143120Object *object, u32 index, f32 *vector) {
     Fn143120Entry *entry;
@@ -291,8 +290,6 @@ void fn_1_433A4(Fn1433A4Object *dst, Fn1433A4Object *src) {
 /* fzgx:end fn_1_433A4 */
 
 /* fzgx:begin fn_1_451D4 */
-extern u32 lbl_1_bss_384CC;
-
 void fn_1_451D4(void) {
     lbl_1_bss_384CC = 0;
 }

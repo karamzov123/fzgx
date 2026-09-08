@@ -1,13 +1,16 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/bg_win.h"
+
+extern u32 lbl_1_bss_8FD60[2];
+extern int fn_1_15BCDC(void *);
+extern void fn_1_4060(void);
 
 /* fzgx:begin fn_1_15BE38 */
 typedef struct {
     u32 count;
     void **items;
 } ItemList;
-
-extern u32 lbl_1_bss_8FD60[2];
-extern int fn_1_15BCDC(void *);
 
 u32 fn_1_15BE38(void) {
     u32 offset;
@@ -33,8 +36,6 @@ s32 fn_1_15C35C(s32 a, s32 b, s32 c, s32 d) {
 /* fzgx:end fn_1_15C35C */
 
 /* fzgx:begin fn_1_15E1E8 */
-extern void fn_1_4060(void);
-
 void fn_1_15E1E8(u8 *value) {
     u8 state = *value;
 
@@ -47,8 +48,6 @@ void fn_1_15E1E8(u8 *value) {
 /* fzgx:end fn_1_15E1E8 */
 
 /* fzgx:begin fn_1_15E220 */
-extern void fn_1_4060(void);
-
 void fn_1_15E220(u8 *value) {
     u8 state = *value;
 
@@ -61,15 +60,15 @@ void fn_1_15E220(u8 *value) {
 /* fzgx:end fn_1_15E220 */
 
 /* fzgx:begin fn_1_15E260 */
-#include "rel/main_rel/bg_win.h"
-
 // Marks the indexed background-window entry as active.
 void fn_1_15E260(s32 index) {
     (&lbl_1_bss_8FDA8.unk_0)[index * 0x34] |= 4;
 }
 /* fzgx:end fn_1_15E260 */
 
-/* fzgx:begin fn_1_15E3E0 */
+/* fzgx:begin fn_1_15E3E0 noprologue */
+#include "types.h"
+
 typedef struct {
     u8 pad[0x13f4];
     u8 unk_13F4;
@@ -95,7 +94,8 @@ void fn_1_15E3E0(s32 index, u32 value) {
 }
 /* fzgx:end fn_1_15E3E0 */
 
-/* fzgx:begin fn_1_15E540 */
+/* fzgx:begin fn_1_15E540 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 
 typedef struct {
@@ -125,8 +125,6 @@ void fn_1_15E540(s32 index, void *arg) {
 /* fzgx:end fn_1_15E540 */
 
 /* fzgx:begin fn_1_15F618 */
-#include "rel/main_rel/bg_win.h"
-
 void *fn_1_15F618(s32 index) {
     return (u8 *)&lbl_1_bss_8FDA8 + index * 0x34;
 }

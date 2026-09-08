@@ -1,18 +1,29 @@
 #include "types.h"
-
-/* fzgx:begin fn_1_D1780 */
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/face.h"
-
-extern u32 lbl_1_data_3D924;
-extern u8 lbl_1_data_3DA2C[0xD4];
-extern u32 lbl_1_bss_7ACF0;
 
 extern u32 lbl_801A6410;
 extern u32 lbl_1_bss_7ACEC;
-extern u8 lbl_1_data_3DA2C[212];
 extern u32 fn_1_45D0(u32, u32, void*, u32);
 extern u32 fn_80008F88(void*, u32);
+extern void fn_80009064(u32);
+extern void fn_1_46B4(u32, u32, u8*, int);
+extern void fn_1_D2F50(void);
+extern void fn_80071718(u32);
+extern void fn_800711A8(u32);
+extern void fn_1_D2F84(void);
+extern s16 fn_1_3F0C8(void *obj);
+extern u32 fn_1_864E8(u32 value);
+extern void fn_8000C49C(char*, ...);
+extern u32 fn_1_86810(u32);
+extern void fn_8008279C(void*, u32, u32, void*);
+extern s32 fn_1_D2E18(u8*, u8*);
+extern u32 lbl_1_bss_7AD00;
+extern u32 lbl_1_bss_7AD04;
+extern u32 lbl_1_bss_7AD08[7];
+extern u32 lbl_1_bss_7AD24[9];
 
+/* fzgx:begin fn_1_D1780 */
 void fn_1_D1780(void) {
     u32 result;
 
@@ -24,14 +35,6 @@ void fn_1_D1780(void) {
 /* fzgx:end fn_1_D1780 */
 
 /* fzgx:begin fn_1_D17E8 */
-extern u32 lbl_1_data_3D924;
-extern u32 lbl_1_bss_7ACF0;
-extern u32 lbl_801A6410;
-extern u8 lbl_1_data_3DA2C[212];
-
-extern void fn_80009064(u32);
-extern void fn_1_46B4(u32, u32, u8*, int);
-
 void fn_1_D17E8(void) {
     fn_80009064(lbl_1_data_3D924);
     fn_1_46B4(lbl_801A6410, lbl_1_bss_7ACF0, lbl_1_data_3DA2C, 0x152);
@@ -39,39 +42,7 @@ void fn_1_D17E8(void) {
 }
 /* fzgx:end fn_1_D17E8 */
 
-/* fzgx:begin fn_1_D1F88 noprologue */
-#include "types.h"
-
-typedef struct {
-    u32 unk_0;  // 8 loads, 8 stores
-    u32 unk_4;  // 13 loads, 4 stores
-    u32 unk_8;  // 0 loads, 3 stores
-    u8 pad_C[0x4];
-    u32 unk_10;  // 7 loads, 4 stores
-    u32 unk_14;  // 7 loads, 4 stores
-    u32 unk_18;  // 0 loads, 6 stores
-    u32 unk_1C;  // 2 loads, 5 stores
-    u8 pad_20[0xC];
-    u32 unk_2C;  // 0 loads, 1 stores
-    u32 unk_30;  // 0 loads, 1 stores
-    u32 unk_34;  // 0 loads, 1 stores
-    u32 unk_38;  // 3 loads, 5 stores
-    u32 unk_3C;  // 1 loads, 8 stores
-    u8 pad_40[0x20];
-    u32 unk_60;  // 4 loads, 2 stores
-} Obj_1_bss_7ACD8_Target;
-extern Obj_1_bss_7ACD8_Target *lbl_1_bss_7ACD8;
-extern u32 lbl_1_data_3D924;
-extern u8 lbl_1_data_3DA2C[0xD4];
-
-extern void fn_1_D2F50(void);
-extern void fn_1_46B4(u32, u32, u8*, s32);
-extern void fn_80071718(u32);
-extern void fn_800711A8(u32);
-extern void fn_1_D2F84(void);
-extern u32 lbl_801A6410;
-extern u8 lbl_1_data_3DA2C[212];
-
+/* fzgx:begin fn_1_D1F88 */
 void fn_1_D1F88(void) {
     Obj_1_bss_7ACD8_Target* state;
     s32 i;
@@ -118,35 +89,24 @@ void fn_1_D1F88(void) {
 /* fzgx:end fn_1_D1F88 */
 
 /* fzgx:begin fn_1_D2D24 */
-#include "rel/main_rel/face.h"
-
 Obj_1_bss_7ACD8_Target *fn_1_D2D24(s32 index) {
     return &lbl_1_bss_7ACD8[index];
 }
 /* fzgx:end fn_1_D2D24 */
 
 /* fzgx:begin fn_1_D2D38 */
-extern u32 lbl_1_bss_7ACE8;
-
 u32 fn_1_D2D38(void) {
     return lbl_1_bss_7ACE8;
 }
 /* fzgx:end fn_1_D2D38 */
 
 /* fzgx:begin fn_1_D2D48 */
-extern u8 lbl_1_bss_7ACE5;
-
 u8 fn_1_D2D48(void) {
     return lbl_1_bss_7ACE5;
 }
 /* fzgx:end fn_1_D2D48 */
 
 /* fzgx:begin fn_1_D2D58 */
-#include "rel/main_rel/face.h"
-
-extern s16 fn_1_3F0C8(void *obj);
-extern u32 fn_1_864E8(u32 value);
-
 Obj_1_bss_7ACD8_Target *fn_1_D2D58(void *obj) {
     s32 i;
 
@@ -180,13 +140,6 @@ s32 fn_1_D2E18(u8* a, u8* b) {
 /* fzgx:end fn_1_D2E18 */
 
 /* fzgx:begin fn_1_D2E44 */
-#include "rel/main_rel/face.h"
-
-extern void fn_8000C49C(char*, ...);
-extern u32 fn_1_86810(u32);
-extern void fn_8008279C(void*, u32, u32, void*);
-extern s32 fn_1_D2E18(u8*, u8*);
-
 s32 fn_1_D2E44(u32 index) {
     u8 values[4];
     u32 j;
@@ -212,16 +165,12 @@ s32 fn_1_D2E44(u32 index) {
 /* fzgx:end fn_1_D2E44 */
 
 /* fzgx:begin fn_1_D2FB0 */
-#include "rel/main_rel/face.h"
-
 u32 fn_1_D2FB0(void) {
     return lbl_1_data_3D924;
 }
 /* fzgx:end fn_1_D2FB0 */
 
 /* fzgx:begin fn_1_D3144 */
-extern u32 lbl_1_bss_7AD00;
-
 // fn_1_D3144: Conditionally call function pointer from BSS
 void fn_1_D3144(void) {
     u32 fn_ptr = lbl_1_bss_7AD00;
@@ -232,8 +181,6 @@ void fn_1_D3144(void) {
 /* fzgx:end fn_1_D3144 */
 
 /* fzgx:begin fn_1_D3178 */
-extern u32 lbl_1_bss_7AD04;
-
 void fn_1_D3178(void) {
     u32 fn_ptr = lbl_1_bss_7AD04;
     if (fn_ptr != 0) {
@@ -243,8 +190,6 @@ void fn_1_D3178(void) {
 /* fzgx:end fn_1_D3178 */
 
 /* fzgx:begin fn_1_D31AC */
-extern u32 lbl_1_bss_7AD08[7];
-
 void fn_1_D31AC(void) {
     u32 fn_ptr = lbl_1_bss_7AD08[0];
     if (fn_ptr != 0) {
@@ -254,8 +199,6 @@ void fn_1_D31AC(void) {
 /* fzgx:end fn_1_D31AC */
 
 /* fzgx:begin fn_1_D31E0 */
-extern u32 lbl_1_bss_7AD24[9];
-
 void fn_1_D31E0(void) {
     u32 fn_ptr = lbl_1_bss_7AD24[0];
     if (fn_ptr != 0) {

@@ -1,15 +1,17 @@
 #include "types.h"
-
-/* fzgx:begin fn_1_102FD0 */
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/cloth.h"
 
 extern void fn_1_105744(void);
-extern u8 lbl_1_data_3F244[64];
 extern void fn_1_106DB4(void);
 extern void fn_1_9D0EC(u32, u32, void*, void*);
 extern void fn_1_103AA8(void);
 extern u32 lbl_1_bss_85288[2];
+extern void fn_1_103AD4(void);
+extern void fn_1_105768(void);
+extern void fn_1_9E5B8(void *);
 
+/* fzgx:begin fn_1_102FD0 */
 // Initialize the cloth subsystem and reset its shared state.
 void fn_1_102FD0(void) {
     fn_1_105744();
@@ -28,9 +30,6 @@ void fn_1_10302C(void) {
 /* fzgx:end fn_1_10302C */
 
 /* fzgx:begin fn_1_103030 */
-extern void fn_1_103AD4(void);
-extern void fn_1_105768(void);
-
 void fn_1_103030(void) {
     fn_1_103AD4();
     fn_1_105768();
@@ -44,8 +43,6 @@ void fn_1_103054(void) {
 /* fzgx:end fn_1_103054 */
 
 /* fzgx:begin fn_1_103058 */
-#include "rel/main_rel/globals.h"
-
 // Runs the cloth update unless the global state is one of the inactive modes.
 void fn_1_103058(void) {
     s16 state = *(s16 *)(void *)&lbl_1_bss_960;
@@ -79,8 +76,6 @@ typedef struct Cloth {
     u8 field_6c[4];
     u8 field_70[1];
 } Cloth;
-
-extern void fn_1_9E5B8(void *);
 
 void fn_1_1030A4(Cloth *self) {
     if (self->field_68 != 0) {

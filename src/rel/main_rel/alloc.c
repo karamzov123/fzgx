@@ -190,8 +190,6 @@ void fn_1_5104(void) {
 /* fzgx:end fn_1_5104 */
 
 /* fzgx:begin fn_1_5124 */
-#include "rel/main_rel/alloc.h"
-
 typedef struct {
     Obj_1_bss_F68_Target *unk_0;
     Obj_1_bss_F68_Target *unk_4;

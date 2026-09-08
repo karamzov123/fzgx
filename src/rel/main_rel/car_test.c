@@ -1,6 +1,19 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/car_test.h"
 
-/* fzgx:begin fn_1_7D694 */
+extern void fn_1_5634C(u32 arg0);
+extern void fn_1_7ECB8(u32 arg0, u32 arg1, u32 arg2);
+extern void *lbl_801A6410;
+extern const f64 lbl_1_rodata_3588;
+extern void fn_1_12AB38(const char *);
+extern void *fn_1_45D0(void *, s32, const char *, s32);
+extern void fn_80008BEC(void *, s32, s32);
+extern void fn_1_80F80(void *, u8, void *);
+extern void fn_1_1502BC(void *, void *, void *);
+
+/* fzgx:begin fn_1_7D694 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 
 extern u32 lbl_1_bss_6D7E8[2];
@@ -35,47 +48,30 @@ void fn_1_7D694(Object *obj) {
 // fn_1_7EAE8: main_rel .text:0x0007EAE8 size 0x24
 // Wrapper that calls fn_1_5634C with argument 0.
 
-extern void fn_1_5634C(u32 arg0);
-
 void fn_1_7EAE8(void) {
     fn_1_5634C(0);
 }
 /* fzgx:end fn_1_7EAE8 */
 
 /* fzgx:begin fn_1_7F1E8 */
-extern void fn_1_7ECB8(u32 arg0, u32 arg1, u32 arg2);
-
 void fn_1_7F1E8(u32 arg0, u32 arg1) {
     fn_1_7ECB8(arg0, arg1, 0x80000000); // fzgx-allow: A1 retail sentinel
 }
 /* fzgx:end fn_1_7F1E8 */
 
 /* fzgx:begin fn_1_7F20C */
-extern void fn_1_7ECB8(u32 arg0, u32 arg1, u32 arg2);
-
 void fn_1_7F20C(u32 arg0, u32 arg1) {
     fn_1_7ECB8(arg0, arg1, 0x40000000); // fzgx-allow: A1 retail sentinel
 }
 /* fzgx:end fn_1_7F20C */
 
 /* fzgx:begin fn_1_7F230 */
-extern void fn_1_7ECB8(u32 arg0, u32 arg1, u32 arg2);
-
 void fn_1_7F230(u32 arg0, u32 arg1) {
     fn_1_7ECB8(arg0, arg1, 0);
 }
 /* fzgx:end fn_1_7F230 */
 
 /* fzgx:begin fn_1_7F254 */
-extern u32 lbl_1_data_1F1D8;
-extern void *lbl_801A6410;
-extern const f64 lbl_1_rodata_3588;
-extern void fn_1_12AB38(const char *);
-extern void *fn_1_45D0(void *, s32, const char *, s32);
-extern void fn_80008BEC(void *, s32, s32);
-extern void fn_1_80F80(void *, u8, void *);
-extern void fn_1_1502BC(void *, void *, void *);
-
 void *fn_1_7F254(void *arg0, void *arg1) {
     u8 kind = ((u8 *)arg0)[5];
     s16 type;
@@ -115,7 +111,8 @@ void *fn_1_7F254(void *arg0, void *arg1) {
 }
 /* fzgx:end fn_1_7F254 */
 
-/* fzgx:begin fn_1_7F518 */
+/* fzgx:begin fn_1_7F518 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 
 extern u32 lbl_1_data_1F4FC[41];
@@ -133,8 +130,6 @@ void* fn_1_7F518(s16 arg0, void* arg1, s32 arg2) {
 /* fzgx:end fn_1_7F518 */
 
 /* fzgx:begin fn_1_8CA00 */
-extern u32 lbl_1_data_1FFDC;
-
 u32 *fn_1_8CA00(void) {
     return &lbl_1_data_1FFDC;
 }

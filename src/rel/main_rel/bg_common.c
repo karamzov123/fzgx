@@ -1,11 +1,31 @@
 #include "types.h"
-
-/* fzgx:begin fn_1_103AA8 */
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/bg_common.h"
 
 extern f32 lbl_1_rodata_78E8[19];
 extern void fn_1_103B00(void);
+extern f32 lbl_1_rodata_7934[11];
+extern void fn_1_9E5B8(void *);
+extern void *fn_1_54448(s32 arg0);
+extern void fn_1_103FCC(void);
+extern void fn_1_10688C(void);
+extern void fn_1_106B68(void);
+extern s32 fn_1_5910(void);
+extern f32 lbl_1_rodata_7960[43];
+extern f32 lbl_1_rodata_7A40[2];
+extern s32 fn_1_58C4(void);
+extern void lbl_8006DCA4(void);
+extern void fn_1_57714(s32 arg0);
+extern void fn_1_57720(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
+extern void fn_1_57CD0(s32 arg0, void *arg1);
+extern u8 lbl_1_bss_86EC4;
+extern void fn_80008BEC(void *arg0, int arg1, int arg2);
+extern void fn_1_1088B8(void *arg);
+extern void lbl_8006DBAC(void *arg);
+extern void lbl_8006E1B0(void *arg0, void *arg1);
+extern void fn_1_107F74(void *arg0, int arg1);
 
+/* fzgx:begin fn_1_103AA8 */
 // Initializes the background-common state and its update callback.
 void fn_1_103AA8(void) {
     lbl_1_bss_85290 = lbl_1_rodata_78E8[0];
@@ -14,10 +34,6 @@ void fn_1_103AA8(void) {
 /* fzgx:end fn_1_103AA8 */
 
 /* fzgx:begin fn_1_103AD4 */
-extern f32 lbl_1_rodata_78E8[19];
-extern f32 lbl_1_rodata_7934[11];
-extern f32 lbl_1_bss_85290;
-
 void fn_1_103AD4(void) {
     f32 current = lbl_1_bss_85290;
 
@@ -28,8 +44,6 @@ void fn_1_103AD4(void) {
 /* fzgx:end fn_1_103AD4 */
 
 /* fzgx:begin fn_1_103F10 */
-extern void fn_1_9E5B8(void *);
-
 void fn_1_103F10(void *arg) {
     int count;
     u8 *entry;
@@ -53,9 +67,7 @@ typedef struct Fn1_103F58_Object {
     void *context;
 } Fn1_103F58_Object;
 
-extern void *fn_1_54448(s32 arg0);
 extern Fn1_103F58_Object *fn_1_548AC(s32 arg0);
-extern void fn_1_103FCC(void);
 extern void fn_1_5489C(void *arg0, Fn1_103F58_Object *arg1);
 
 void fn_1_103F58(void *arg0) {
@@ -75,16 +87,12 @@ void fn_1_103F58(void *arg0) {
 /* fzgx:end fn_1_103F58 */
 
 /* fzgx:begin fn_1_104710 */
-extern void fn_1_10688C(void);
-
 void fn_1_104710(void) {
     fn_1_10688C();
 }
 /* fzgx:end fn_1_104710 */
 
 /* fzgx:begin fn_1_105724 */
-extern void fn_1_106B68(void);
-
 // fn_1_105724: simple wrapper function calling fn_1_106B68
 void fn_1_105724(void) {
     fn_1_106B68();
@@ -92,9 +100,6 @@ void fn_1_105724(void) {
 /* fzgx:end fn_1_105724 */
 
 /* fzgx:begin fn_1_105744 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/bg_common.h"
-
 // Reset the shared background state to its initial sentinel and zero values.
 void fn_1_105744(void) {
     lbl_1_bss_854B8.unk_C = -1;
@@ -111,15 +116,6 @@ void fn_1_105768(void) {
 /* fzgx:end fn_1_105768 */
 
 /* fzgx:begin fn_1_1067A8 */
-extern s32 fn_1_5910(void);
-extern f32 lbl_1_rodata_7960[43];
-extern f32 lbl_1_rodata_7A40[2];
-extern s32 fn_1_58C4(void);
-extern void lbl_8006DCA4(void);
-extern void fn_1_57714(s32 arg0);
-extern void fn_1_57720(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
-extern void fn_1_57CD0(s32 arg0, void *arg1);
-
 void fn_1_1067A8(void *arg0, f32 arg1, f32 arg2) {
     s32 result;
     s32 value;
@@ -148,17 +144,12 @@ void fn_1_1067A8(void *arg0, f32 arg1, f32 arg2) {
 /* fzgx:end fn_1_1067A8 */
 
 /* fzgx:begin fn_1_106EA4 */
-extern f32 lbl_1_bss_85290;
-
 void fn_1_106EA4(f32 arg0) {
     lbl_1_bss_85290 = arg0;
 }
 /* fzgx:end fn_1_106EA4 */
 
 /* fzgx:begin fn_1_1071C0 */
-extern u8 lbl_1_bss_86EC4;
-extern u32 lbl_1_bss_86EC0;
-
 void fn_1_1071C0(void) {
     if (lbl_1_bss_86EC4 != 0) {
         lbl_1_bss_86EC4 = 0;
@@ -168,17 +159,12 @@ void fn_1_1071C0(void) {
 /* fzgx:end fn_1_1071C0 */
 
 /* fzgx:begin fn_1_107900 */
-extern u8 lbl_1_bss_86ED0;
-extern void fn_80008BEC(void *arg0, int arg1, int arg2);
-
 void fn_1_107900(void) {
     fn_80008BEC(&lbl_1_bss_86ED0, 0, 0x1c70);
 }
 /* fzgx:end fn_1_107900 */
 
 /* fzgx:begin fn_1_107C4C */
-extern void fn_1_1088B8(void *arg);
-
 void fn_1_107C4C(void *arg) {
     if (arg != 0) {
         fn_1_1088B8(arg);
@@ -187,11 +173,6 @@ void fn_1_107C4C(void *arg) {
 /* fzgx:end fn_1_107C4C */
 
 /* fzgx:begin fn_1_107E90 */
-#include "rel/main_rel/bg_common.h"
-
-extern void lbl_8006DBAC(void *arg);
-extern void lbl_8006E1B0(void *arg0, void *arg1);
-
 typedef struct {
     u8 unk_00[0x8];
     u32 unk_08;
@@ -223,16 +204,12 @@ void fn_1_107E90(Fn107E90Context *context) {
 /* fzgx:end fn_1_107E90 */
 
 /* fzgx:begin fn_1_107F2C */
-extern void fn_1_107F74(void *arg0, int arg1);
-
 void fn_1_107F2C(void *arg0) {
     fn_1_107F74(arg0, 0);
 }
 /* fzgx:end fn_1_107F2C */
 
 /* fzgx:begin fn_1_107F50 */
-extern void fn_1_107F74(void *arg0, int arg1);
-
 void fn_1_107F50(void *arg0) {
     fn_1_107F74(arg0, 1);
 }

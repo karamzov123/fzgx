@@ -1,14 +1,19 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/light.h"
 
-/* fzgx:begin fn_1_7BE94 */
 extern u16 lbl_1_bss_6D7C0[20];
 
+/* fzgx:begin fn_1_7BE94 */
 u16 fn_1_7BE94(void) {
     return lbl_1_bss_6D7C0[0] - 1;
 }
 /* fzgx:end fn_1_7BE94 */
 
-/* fzgx:begin fn_1_7BF9C */
+/* fzgx:begin fn_1_7BF9C noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
 typedef struct {
     void *unk_0;
     u8 unk_4;

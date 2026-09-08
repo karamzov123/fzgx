@@ -1,9 +1,48 @@
 #include "types.h"
-
-/* fzgx:begin fn_1_EC900 */
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/ghost.h"
 
+extern void fn_1_F23E8(void);
+extern void fn_1_EE530(void);
+extern u8 fn_1_B7C00(void);
+extern void fn_1_B9BE0(void);
+extern void fn_1_B9DE8(Obj_1_bss_7ECB4 *obj);
+extern u8 lbl_1_bss_7EA00[56];
+extern int fn_1_B7CD4(void);
+extern int fn_1_B7C5C(void);
+extern u32 lbl_1_bss_7B19C[2];
+extern u32 lbl_801A6410[];
+extern void fn_1_46B4(u32, u32, void *, u32);
+extern void fn_1_C1394(void);
+extern void OSReport(const char *, ...);
+extern void fn_1_49410(void);
+extern void fn_1_495FC(void);
+extern const f32 lbl_1_rodata_6D20;
+extern const f32 lbl_1_rodata_6D24;
+extern void fn_1_496FC(f32, f32);
+extern void fn_1_495C8(s32);
+extern s32 lbl_1_bss_7B198;
+extern void fn_1_4AE0C(void *, ...);
+extern u8 lbl_1_bss_7C8CE[70];
+extern void fn_1_F1D70(void);
+extern u32 lbl_1_bss_7EA38[159];
+extern const f64 lbl_1_rodata_6B68;
+extern const f32 lbl_1_rodata_6D10;
+extern const f32 lbl_1_rodata_6D44;
+extern void fn_80008BEC(void *dst, int value, int size);
+extern void fn_1_F1950(void);
+extern u32 fn_8002071C(void *arg);
+extern void fn_800206FC(u32 arg);
+extern u32 fn_8001E828(void);
+extern void DCFlushRange(void *addr, u32 size);
+extern u32 lbl_1_bss_7C848[2];
+extern u8 lbl_1_bss_7C8CD;
+extern u32 lbl_1_bss_7C948;
+extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
+extern u32 lbl_1_bss_7B190[2];
+extern u32 lbl_1_bss_7ED58[158];
+
+/* fzgx:begin fn_1_EC900 */
 // Return the current ghost state value.
 u32 fn_1_EC900(void) {
     return lbl_1_bss_7B1A4;
@@ -23,8 +62,6 @@ void fn_1_ECE00(void) {
 /* fzgx:end fn_1_ECE00 */
 
 /* fzgx:begin fn_1_ECF68 */
-extern void fn_1_F23E8(void);
-
 void fn_1_ECF68(void) {
     fn_1_F23E8();
 }
@@ -49,14 +86,6 @@ void fn_1_EF484(void) {
 /* fzgx:end fn_1_EF484 */
 
 /* fzgx:begin fn_1_EF488 */
-#include "rel/main_rel/ghost.h"
-
-extern void fn_1_EE530(void);
-extern u8 fn_1_B7C00(void);
-extern void fn_1_B9BE0(void);
-extern void fn_1_B9DE8(Obj_1_bss_7ECB4 *obj);
-extern u8 lbl_1_bss_7EA00[56];
-
 void fn_1_EF488(void) {
     fn_1_EE530();
     if (!fn_1_B7C00()) {
@@ -95,18 +124,6 @@ void fn_1_EF85C(void) {
 /* fzgx:end fn_1_EF85C */
 
 /* fzgx:begin fn_1_EF860 */
-#include "rel/main_rel/ghost.h"
-
-extern void fn_1_EE530(void);
-extern u8 fn_1_B7C00(void);
-extern int fn_1_B7CD4(void);
-extern int fn_1_B7C5C(void);
-extern u32 lbl_1_bss_7B19C[2];
-extern u32 lbl_801A6410[];
-extern void fn_1_46B4(u32, u32, void *, u32);
-extern void fn_1_C1394(void);
-extern void OSReport(const char *, ...);
-
 void fn_1_EF860(void) {
     u8 *base = lbl_1_data_3E358;
     u32 value;
@@ -145,18 +162,6 @@ void fn_1_EF978(void) {
 /* fzgx:end fn_1_EF978 */
 
 /* fzgx:begin fn_1_EF97C */
-#include "rel/main_rel/ghost.h"
-
-extern void fn_1_EE530(void);
-extern void fn_1_49410(void);
-extern void fn_1_495FC(void);
-extern const f32 lbl_1_rodata_6D20;
-extern const f32 lbl_1_rodata_6D24;
-extern void fn_1_496FC(f32, f32);
-extern void fn_1_495C8(s32);
-extern s32 lbl_1_bss_7B198;
-extern void fn_1_4AE0C(void *, ...);
-
 void fn_1_EF97C(void) {
     u8 *base = lbl_1_data_3E358;
 
@@ -192,10 +197,6 @@ void fn_1_EFA4C(void) {
 /* fzgx:end fn_1_EFA4C */
 
 /* fzgx:begin ghost_reset */
-extern u8 lbl_1_bss_7C8CE[70];
-extern u32 lbl_1_data_3E52C;
-extern void fn_1_F1D70(void);
-
 void ghost_reset(void) {
     lbl_1_bss_7C8CE[0] = 0;
     lbl_1_data_3E52C = -1;
@@ -216,11 +217,6 @@ void fn_1_F0164(void) {
 /* fzgx:end fn_1_F0164 */
 
 /* fzgx:begin fn_1_F1588 */
-extern u32 lbl_1_bss_7EA38[159];
-extern const f64 lbl_1_rodata_6B68;
-extern const f32 lbl_1_rodata_6D10;
-extern const f32 lbl_1_rodata_6D44;
-
 u32 fn_1_F1588(void) {
     u32 value = lbl_1_bss_7EA38[0];
 
@@ -262,10 +258,6 @@ void fn_1_F18C0(const u32 *in, u32 *x, u32 *y, u32 *z) {
 /* fzgx:end fn_1_F18C0 */
 
 /* fzgx:begin fn_1_F190C */
-#include "rel/main_rel/ghost.h"
-
-extern void fn_80008BEC(void *dst, int value, int size);
-
 void fn_1_F190C(void) {
     fn_80008BEC(&lbl_1_bss_7B1AC, 0, 0x13d8);
     fn_80008BEC(&lbl_1_bss_7C584, 0, 0x1fc);
@@ -273,9 +265,6 @@ void fn_1_F190C(void) {
 /* fzgx:end fn_1_F190C */
 
 /* fzgx:begin fn_1_F1950 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/ghost.h"
-
 // Set the transfer completion flag for the asynchronous callback.
 void fn_1_F1950(void) {
     lbl_1_bss_7ECFC.unk_0 = 1;
@@ -283,13 +272,6 @@ void fn_1_F1950(void) {
 /* fzgx:end fn_1_F1950 */
 
 /* fzgx:begin fn_1_F1960 */
-#include "rel/main_rel/ghost.h"
-
-extern void fn_1_F1950(void);
-extern u32 fn_8002071C(void *arg);
-extern void fn_800206FC(u32 arg);
-extern u32 fn_8001E828(void);
-extern void DCFlushRange(void *addr, u32 size);
 extern void fn_800205A0(void *arg0, u32 arg1, u32 arg2, u32 arg3,
                         void *arg4, void *arg5, u32 arg6,
                         void (*callback)(void));
@@ -315,32 +297,24 @@ void fn_1_F1960(void *arg0, void *arg1, u32 arg2) {
 /* fzgx:end fn_1_F1960 */
 
 /* fzgx:begin fn_1_F1B78 */
-extern u32 lbl_1_bss_7C848[2];
-
 void fn_1_F1B78(u32 value) {
     lbl_1_bss_7C848[0] = value;
 }
 /* fzgx:end fn_1_F1B78 */
 
 /* fzgx:begin fn_1_F1B84 */
-extern u8 lbl_1_bss_7C8CD;
-
 u8 fn_1_F1B84(void) {
     return lbl_1_bss_7C8CD;
 }
 /* fzgx:end fn_1_F1B84 */
 
 /* fzgx:begin fn_1_F1D60 */
-extern u32 lbl_1_bss_7C948;
-
 u32 fn_1_F1D60(void) {
     return lbl_1_bss_7C948;
 }
 /* fzgx:end fn_1_F1D60 */
 
 /* fzgx:begin fn_1_F1D70 */
-#include "rel/main_rel/ghost.h"
-
 void fn_1_F1D70(void) {
     lbl_1_bss_7E9E8.unk_0 = 0;
     lbl_1_bss_7E9E8.unk_4 = 0;
@@ -350,8 +324,6 @@ void fn_1_F1D70(void) {
 /* fzgx:end fn_1_F1D70 */
 
 /* fzgx:begin fn_1_F1D8C */
-#include "rel/main_rel/ghost.h"
-
 void fn_1_F1D8C(s32 index) {
     if (index < 0x20) {
         lbl_1_bss_7E9E8.unk_0 |= 1 << index;
@@ -370,8 +342,6 @@ void fn_1_F1D8C(s32 index) {
 /* fzgx:end fn_1_F1D8C */
 
 /* fzgx:begin fn_1_F1E30 */
-#include "rel/main_rel/ghost.h"
-
 void fn_1_F1E30(s32 index) {
     if (index < 0x20) {
         lbl_1_bss_7E9E8.unk_0 &= ~(1 << index);
@@ -386,8 +356,6 @@ void fn_1_F1E30(s32 index) {
 /* fzgx:end fn_1_F1E30 */
 
 /* fzgx:begin fn_1_F1ED0 */
-#include "rel/main_rel/ghost.h"
-
 void fn_1_F1ED0(s32 index) {
     if (index < 0x20) {
         lbl_1_bss_7E9E8.unk_0 ^= 1 << index;
@@ -406,8 +374,6 @@ void fn_1_F1ED0(s32 index) {
 /* fzgx:end fn_1_F1ED0 */
 
 /* fzgx:begin ghost_test_flag */
-#include "rel/main_rel/ghost.h"
-
 // Tests whether a ghost flag is set in the corresponding 32-bit flag word.
 u32 ghost_test_flag(s32 index) {
     if (index < 0x20) {
@@ -424,8 +390,6 @@ u32 ghost_test_flag(s32 index) {
 /* fzgx:end ghost_test_flag */
 
 /* fzgx:begin fn_1_F2008 */
-#include "rel/main_rel/ghost.h"
-
 // Records the flag for the ghost entry identified by the decoded pair.
 void fn_1_F2008(s32 arg) {
     s16 a;
@@ -440,7 +404,11 @@ void fn_1_F2008(s32 arg) {
 }
 /* fzgx:end fn_1_F2008 */
 
-/* fzgx:begin ghost_test_record_flag0 */
+/* fzgx:begin ghost_test_record_flag0 noprologue */
+#include "types.h"
+
+extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
+
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 extern u8 lbl_1_bss_7F0C0[];
 
@@ -457,10 +425,6 @@ u32 ghost_test_record_flag0(s32 arg) {
 /* fzgx:end ghost_test_record_flag0 */
 
 /* fzgx:begin ghost_set_record_flag1 */
-#include "rel/main_rel/globals.h"
-
-extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
-
 // Sets the second record flag for the record associated with arg.
 void ghost_set_record_flag1(s32 arg) {
     s16 a;
@@ -475,7 +439,11 @@ void ghost_set_record_flag1(s32 arg) {
 }
 /* fzgx:end ghost_set_record_flag1 */
 
-/* fzgx:begin ghost_set_record_flag2 */
+/* fzgx:begin ghost_set_record_flag2 noprologue */
+#include "types.h"
+
+extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
+
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 extern u8 lbl_1_bss_7F0C0[];
 
@@ -491,7 +459,11 @@ void ghost_set_record_flag2(s32 arg) {
 }
 /* fzgx:end ghost_set_record_flag2 */
 
-/* fzgx:begin fn_1_F21B8 */
+/* fzgx:begin fn_1_F21B8 noprologue */
+#include "types.h"
+
+extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
+
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 extern u8 lbl_1_bss_7F0C0[];
 
@@ -507,8 +479,12 @@ s32 fn_1_F21B8(s32 arg) {
 }
 /* fzgx:end fn_1_F21B8 */
 
-/* fzgx:begin fn_1_F220C */
+/* fzgx:begin fn_1_F220C noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
+
+extern void OSReport(const char *, ...);
+extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 extern char lbl_1_data_3E8A0[];
@@ -527,7 +503,11 @@ void fn_1_F220C(s32 arg) {
 }
 /* fzgx:end fn_1_F220C */
 
-/* fzgx:begin fn_1_F2280 */
+/* fzgx:begin fn_1_F2280 noprologue */
+#include "types.h"
+
+extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
+
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 extern u8 lbl_1_bss_7F0C0[];
 
@@ -544,16 +524,12 @@ s32 fn_1_F2280(s32 arg) {
 /* fzgx:end fn_1_F2280 */
 
 /* fzgx:begin fn_1_F22D4 */
-extern u32 lbl_1_bss_7B190[2];
-
 u32 fn_1_F22D4(void) {
     return lbl_1_bss_7B190[0];
 }
 /* fzgx:end fn_1_F22D4 */
 
 /* fzgx:begin fn_1_F23D8 */
-extern u32 lbl_1_bss_7ED58[158];
-
 void fn_1_F23D8(void) {
     lbl_1_bss_7ED58[0] = 0;
 }

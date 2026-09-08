@@ -1,12 +1,25 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/background.h"
 
-/* fzgx:begin fn_1_9D77C */
 extern u32 lbl_1_bss_6EA78;
 extern u32 lbl_1_bss_6EA7C;
-extern u8 lbl_1_data_2CB60[44];
 extern u32 lbl_801A6410;
 extern void fn_1_46B4(u32, u32, void *, s32);
+extern const f32 lbl_1_rodata_41FC;
+extern u8 fn_1_86624(void);
+extern void *fn_1_14F04(void);
+extern f32 lbl_1_rodata_4244[7];
+extern void fn_1_17920(s32, s32, f32);
+extern void fn_1_85C58(s32, f32);
+extern void lbl_8006DB74(void *);
+extern void fn_1_9DDA8(u32, u32, u32);
+extern void fn_1_9DFB8(u32, u32, u32, u32);
+extern void fn_80034350(u32, u32, void *);
+extern void fn_80034200(u32);
+extern void fn_8003432C(u32, u32, u32 *);
 
+/* fzgx:begin fn_1_9D77C */
 typedef struct {
     u32 flags;
     u8 _pad[0x34];
@@ -66,16 +79,6 @@ void fn_1_9D77C(Fn1_9D77C_Item *items, s32 count) {
 /* fzgx:end fn_1_9D77C */
 
 /* fzgx:begin fn_1_9D9E4 */
-#include "rel/main_rel/background.h"
-
-extern const f32 lbl_1_rodata_41FC;
-extern u8 fn_1_86624(void);
-extern void *fn_1_14F04(void);
-extern f32 lbl_1_rodata_4244[7];
-extern void fn_1_17920(s32, s32, f32);
-extern void fn_1_85C58(s32, f32);
-extern void lbl_8006DB74(void *);
-
 typedef struct {
     u8 pad[0x468];
     f32 value;
@@ -120,32 +123,24 @@ void fn_1_9D9E4(void) {
 /* fzgx:end fn_1_9D9E4 */
 
 /* fzgx:begin fn_1_9E14C */
-extern void fn_1_9DDA8(u32, u32, u32);
-
 void fn_1_9E14C(u32 arg0, u32 arg1) {
     fn_1_9DDA8(arg0, arg1, 0);
 }
 /* fzgx:end fn_1_9E14C */
 
 /* fzgx:begin fn_1_9E170 */
-extern void fn_1_9DFB8(u32, u32, u32, u32);
-
 void fn_1_9E170(u32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     fn_1_9DFB8(arg0, arg1, arg2, 0);
 }
 /* fzgx:end fn_1_9E170 */
 
 /* fzgx:begin fn_1_9E194 */
-extern void fn_1_9DDA8(u32, u32, u32);
-
 void fn_1_9E194(u32 arg0, u32 arg1) {
     fn_1_9DDA8(arg0, arg1, 1);
 }
 /* fzgx:end fn_1_9E194 */
 
 /* fzgx:begin fn_1_9E1B8 */
-#include "rel/main_rel/background.h"
-
 void fn_1_9E1B8(void) {
     lbl_1_bss_6EA80 = 0;
     lbl_1_bss_6EA84 = (u32)&lbl_1_bss_6EA80;
@@ -153,12 +148,6 @@ void fn_1_9E1B8(void) {
 /* fzgx:end fn_1_9E1B8 */
 
 /* fzgx:begin fn_1_9E1D0 */
-#include "rel/main_rel/background.h"
-
-extern void fn_80034350(u32, u32, void *);
-extern void fn_80034200(u32);
-extern void fn_8003432C(u32, u32, u32 *);
-
 typedef struct {
     s16 unk_0;
     s16 unk_2;
@@ -200,8 +189,6 @@ void fn_1_9E1D0(void) {
 /* fzgx:end fn_1_9E1D0 */
 
 /* fzgx:begin fn_1_9E598 */
-#include "rel/main_rel/background.h"
-
 typedef struct Node Node;
 struct Node {
     Node *next;
@@ -219,8 +206,6 @@ void fn_1_9E598(Node *node) {
 /* fzgx:end fn_1_9E598 */
 
 /* fzgx:begin fn_1_9E5B8 */
-#include "rel/main_rel/background.h"
-
 // Removes a node from the background-node chain and updates its tail link.
 void fn_1_9E5B8(Obj_1_bss_6EA80_Target *node) {
     u32 *link;

@@ -1,6 +1,22 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/shadowmap.h"
 
-/* fzgx:begin fn_1_56858 */
+extern void fn_800746A8(u32, u32);
+extern void fn_8007245C(u32);
+extern void fn_800728A8(u32, u32, u32, u32);
+extern void fn_800720B0(u32);
+extern void fn_800747D0(u32, u32, u32, u32, u32, u32, u32);
+extern void fn_800734A8(u32, u32, u32, u32);
+extern void fn_80072EDC(u32, u32);
+extern void fn_80073C6C(u32);
+extern void fn_80073678(u32);
+extern void fn_80074660(u32);
+extern void fn_80073898(u32);
+extern void fn_80074788(u32);
+
+/* fzgx:begin fn_1_56858 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 
 extern char lbl_1_data_1C660[12];
@@ -41,8 +57,6 @@ void fn_1_568EC(ShadowMap *map, u32 value0, u32 value1) {
 /* fzgx:end fn_1_568EC */
 
 /* fzgx:begin fn_1_57714 */
-#include "rel/main_rel/shadowmap.h"
-
 // Updates the shadow-map enable flag.
 void fn_1_57714(u8 value) {
     lbl_1_data_1C670.unk_0 = value;
@@ -50,8 +64,6 @@ void fn_1_57714(u8 value) {
 /* fzgx:end fn_1_57714 */
 
 /* fzgx:begin fn_1_57720 */
-#include "rel/main_rel/shadowmap.h"
-
 void fn_1_57720(u32 value_1, u32 value_2, u32 value_3, u32 value_4) {
     lbl_1_data_1C670.unk_4 = value_1;
     lbl_1_data_1C670.unk_8 = value_2;
@@ -61,21 +73,6 @@ void fn_1_57720(u32 value_1, u32 value_2, u32 value_3, u32 value_4) {
 /* fzgx:end fn_1_57720 */
 
 /* fzgx:begin fn_1_57DC0 */
-#include "rel/main_rel/shadowmap.h"
-
-extern void fn_800746A8(u32, u32);
-extern void fn_8007245C(u32);
-extern void fn_800728A8(u32, u32, u32, u32);
-extern void fn_800720B0(u32);
-extern void fn_800747D0(u32, u32, u32, u32, u32, u32, u32);
-extern void fn_800734A8(u32, u32, u32, u32);
-extern void fn_80072EDC(u32, u32);
-extern void fn_80073C6C(u32);
-extern void fn_80073678(u32);
-extern void fn_80074660(u32);
-extern void fn_80073898(u32);
-extern void fn_80074788(u32);
-
 void fn_1_57DC0(void) {
     fn_800746A8(lbl_1_data_1C670.unk_0, lbl_1_data_1C670.unk_14);
     fn_8007245C(0xa00);

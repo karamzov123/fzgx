@@ -1,25 +1,21 @@
 #include "types.h"
-
-/* fzgx:begin fn_1_58114 */
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/avline.h"
-
-extern u32 lbl_1_bss_6C840;
-extern u8 lbl_1_data_1C68C[0x9];
 
 extern u32 lbl_801A6410;
 extern u32 fn_1_45D0(u32, u32, unsigned char *, u32);
+extern void fn_1_46B4(u32, u32, void *, u32);
+extern u8 lbl_1_data_1D62C[148];
+extern void fn_1_9F870(void);
+extern void fn_1_58158(void);
 
+/* fzgx:begin fn_1_58114 */
 void fn_1_58114(void) {
     lbl_1_bss_6C840 = fn_1_45D0(lbl_801A6410, 0x6590, lbl_1_data_1C68C, 0x39f);
 }
 /* fzgx:end fn_1_58114 */
 
 /* fzgx:begin fn_1_58158 */
-extern u32 lbl_801A6410;
-extern u32 lbl_1_bss_6C840;
-extern char lbl_1_data_1C68C[9];
-extern void fn_1_46B4(u32, u32, void*, u32);
-
 // fn_1_58158: loads global values and calls fn_1_46B4.
 void fn_1_58158(void) {
     u32 v1 = lbl_801A6410;
@@ -29,16 +25,12 @@ void fn_1_58158(void) {
 /* fzgx:end fn_1_58158 */
 
 /* fzgx:begin fn_1_5819C */
-extern u16 lbl_1_bss_6C844;
-
 void fn_1_5819C(void) {
     lbl_1_bss_6C844 = 0;
 }
 /* fzgx:end fn_1_5819C */
 
 /* fzgx:begin fn_1_584AC */
-extern u32 lbl_1_data_1D628;
-
 // fn_1_584AC: linear congruential generator.
 u32 fn_1_584AC(void) {
     u32 state = lbl_1_data_1D628;
@@ -49,8 +41,6 @@ u32 fn_1_584AC(void) {
 /* fzgx:end fn_1_584AC */
 
 /* fzgx:begin fn_1_58854 */
-#include "rel/main_rel/avline.h"
-
 typedef struct {
     s8 unk_0;
     u8 pad_1[0xb];
@@ -58,13 +48,6 @@ typedef struct {
 } AvlineObj;
 
 typedef void (*AvlineCallback)(void *);
-
-extern u8 lbl_1_data_1D514[276];
-extern u32 lbl_801A6410;
-extern u8 lbl_1_data_1D62C[148];
-extern void fn_1_9F870(void);
-extern void fn_1_58158(void);
-extern void fn_1_46B4(u32, u32, void *, u32);
 
 void fn_1_58854(void) {
     s32 count;
@@ -112,8 +95,6 @@ void fn_1_58854(void) {
 /* fzgx:end fn_1_58854 */
 
 /* fzgx:begin fn_1_591A0 */
-#include "rel/main_rel/avline.h"
-
 typedef struct {
     s8 unk_0;
     u8 pad_1[0x7];
@@ -121,8 +102,6 @@ typedef struct {
     s16 unk_C;
     u8 pad_E[0xDA];
 } Fn591A0Obj;
-
-extern u8 lbl_1_data_1D514[276];
 
 void fn_1_591A0(s32 id) {
     {
