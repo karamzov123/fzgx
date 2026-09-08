@@ -45,6 +45,8 @@ extern void fn_1_64388(void);
 extern void *fn_1_5448C(void *);
 extern void fn_1_61E60(void);
 extern void fn_1_5489C(void *, void *);
+extern void fn_1_862D4(s16 value, void *result);
+extern void *fn_1_548AC(u32 size);
 
 /* fzgx:begin fn_1_58D38 */
 typedef struct fn_1_58D38_EffectEntry {
@@ -404,15 +406,10 @@ void fn_1_5D918(void) {
 }
 /* fzgx:end fn_1_5D918 */
 
-/* fzgx:begin fn_1_5EB08 noprologue */
+/* fzgx:begin fn_1_5EB08 */
 #include "types.h"
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/effect.h"
-
-extern void lbl_8006DCA4(void);
-extern f32 lbl_1_rodata_2AF4[14];
-extern s32 fn_1_54E34(void *object, f32 value);
-extern void fn_1_5EB98(void);
 
 typedef struct FnObj {
     u8 pad18[0x18];
@@ -430,11 +427,6 @@ typedef struct FnNode {
     void (*callback)(void);
     FnObj *object;
 } FnNode;
-
-extern s32 fn_1_862D4(s16 value, FnLocal *local);
-extern FnNode *fn_1_5448C(FnLocal *local);
-extern FnNode *fn_1_548AC(s32 size);
-extern void fn_1_5489C(FnNode *node, FnNode *other);
 
 void fn_1_5EB08(FnObj *object) {
     FnLocal local;
@@ -479,14 +471,10 @@ void fn_1_5FE2C(void) {
 }
 /* fzgx:end fn_1_5FE2C */
 
-/* fzgx:begin fn_1_5FE30 noprologue */
+/* fzgx:begin fn_1_5FE30 */
 #include "types.h"
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/effect.h"
-
-extern void lbl_8006DCA4(void);
-extern s32 fn_1_54E34(void *object, f32 value);
-extern void fn_1_5FEBC(void);
 
 typedef struct {
     u8 unk[0x18];
@@ -502,11 +490,6 @@ typedef struct {
     void (*callback)(void);
     fn_1_5FE30_FZeroObject *owner;
 } FZeroEvent;
-
-extern void fn_1_862D4(s16 value, void *result);
-extern void *fn_1_5448C(void *result);
-extern void *fn_1_548AC(u32 size);
-extern void fn_1_5489C(void *callback, FZeroEvent *event);
 
 void fn_1_5FE30(fn_1_5FE30_FZeroObject *object) {
     u8 result[8];
@@ -743,10 +726,6 @@ void fn_1_64098(Fn164098Object *object) {
 /* fzgx:end fn_1_64098 */
 
 /* fzgx:begin fn_1_642E8 */
-extern void *fn_1_5448C(void *);
-extern void *fn_1_548AC(s32);
-extern void fn_1_5489C(void *, void *);
-
 typedef struct fn_1_642E8_EffectState {
     char bytes[0x14];
 } fn_1_642E8_EffectState;

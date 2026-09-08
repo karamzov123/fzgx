@@ -39,6 +39,10 @@ extern void fn_1_F755C(u8 value);
 extern void fn_1_A6840(u8 value);
 extern void fn_8000C49C(void *arg0, u32 arg1, ...);
 extern void fn_1_F79C8(void);
+extern void *lbl_801A6410;
+extern void fn_80083D6C(void *arg0, void *arg1, int arg2);
+extern u32 lbl_1_bss_77310[28];
+extern u32 lbl_1_bss_7730C;
 
 /* fzgx:begin fn_1_AB478 */
 #include "rel/main_rel/memcard.h"
@@ -595,8 +599,6 @@ void fn_1_ABDA8(fn_1_ABDA8_ArgStruct *arg) {
 /* fzgx:begin fn_1_ABDB8 */
 #include "rel/main_rel/globals.h"
 
-extern s32 fn_8002FE54(u8 byte_val, void *arg1, void *arg2);
-
 typedef struct {
     u8 pad_0x0[0x2];
     u16 unk_0x2;
@@ -1109,10 +1111,6 @@ typedef struct {
     s32 unk_40;
 } Fn1Acd04Obj;
 
-extern int fn_8002E0C4(u8 value);
-extern void fn_1_46B4(void *arg0, void *arg1, void *arg2, int arg3);
-extern void *lbl_801A6410;
-
 // Reset completed card work and mark the operation ready for its next state.
 void fn_1_ACD04(Fn1Acd04Obj *obj) {
     int result;
@@ -1403,9 +1401,6 @@ typedef struct Fn1AD1E4Object {
     Fn1AD1E4Data *unk_24;
 } Fn1AD1E4Object;
 
-extern void fn_80083D6C(void *arg0, void *arg1, int arg2);
-extern void fn_80008BA8(void *arg0, void *arg1, void *arg2);
-
 // Copy pending data when the object is not already marked, then advance its state.
 void fn_1_AD1E4(Fn1AD1E4State *state, Fn1AD1E4Object *object) {
     if ((object->unk_24->unk_08 & 0x20) == 0) {
@@ -1442,11 +1437,6 @@ typedef struct Fn1AEC34B {
     u8 pad4[0x20];
     Fn1AEC34P *card;
 } Fn1AEC34B;
-
-extern u32 lbl_1_bss_77310[28];
-extern u32 lbl_1_bss_7730C;
-extern void fn_80083D6C(void *arg0, void *arg1, int arg2);
-extern void fn_80008BA8(void *arg0, void *arg1, void *arg2);
 
 // Finalize the card operation and publish its completion state.
 void fn_1_AEC34(Fn1AEC34A *request, Fn1AEC34B *operation) {
@@ -1561,7 +1551,6 @@ u8 fn_1_B7CD4(void) {
 #include "rel/main_rel/globals.h"
 
 // Save the current memory-card state in the global work buffer.
-void fn_80083D6C(void *dst, const void *src, int size);
 
 void fn_1_B7E14(void *memory_card_state) {
     fn_80083D6C(lbl_1_bss_716C8.pad_54, memory_card_state, 0x20);
