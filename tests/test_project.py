@@ -23,3 +23,19 @@ def test_refs_extraction():
         "0090: xori r0, r0, 0x2d2e",
     ]
     assert Project._refs(lines, syms) == ["lbl_18_section4_0", "fn_18_3FC", "memset"]
+
+
+def test_key_and_resolve_for_ambiguous_names(tmp_path, monkeypatch):
+    from fzgx.project import Symbol
+    p = Project.__new__(Project)
+    p._modules = ["main", "a", "b"]
+    p._symbols = {
+        "main": {"OSInit": Symbol("OSInit", "main", ".text", 0x80003100, "function", 4, "global")},
+        "a": {"_prolog": Symbol("_prolog", "a", ".text", 0, "function", 4, "global")},
+        "b": {"_prolog": Symbol("_prolog", "b", ".text", 0, "function", 4, "global")},
+    }
+    assert p.resolve("OSInit").module == "main"
+    assert p.resolve("_prolog") is None
+    assert p.resolve("b:_prolog").module == "b"
+    assert p.key(p.resolve("b:_prolog")) == "b:_prolog"
+    assert p.key(p.resolve("OSInit")) == "OSInit"

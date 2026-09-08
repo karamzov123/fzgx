@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 from typing import List, Optional
 
-from . import api
+from . import api, trivial
 from .project import Project
 
 
@@ -112,6 +112,10 @@ def cmd_lint(a, p):
     return 1 if findings else 0
 
 
+def cmd_trivial(a, p):
+    _print(trivial.apply(p, a.module.split(",") if a.module else None, a.limit, a.dry_run), a.json); return 0
+
+
 def cmd_names(a, p):
     _print(api.names(p), a.json); return 0
 
@@ -170,6 +174,8 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("restore", help="load state/ledger.json into the local ledger"); s.set_defaults(fn=cmd_restore)
     s = sub.add_parser("lint", help="shiftability/style lint"); s.set_defaults(fn=cmd_lint); s.add_argument("paths", nargs="*")
     s = sub.add_parser("names", help="pending name proposals for the librarian"); s.set_defaults(fn=cmd_names)
+    s = sub.add_parser("trivial", help="mechanically match single-blr and `li r3,N; blr` functions"); s.set_defaults(fn=cmd_trivial)
+    s.add_argument("--module", help="comma list; default all"); s.add_argument("--limit", type=int); s.add_argument("--dry-run", action="store_true")
     return ap
 
 

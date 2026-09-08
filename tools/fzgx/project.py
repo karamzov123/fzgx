@@ -132,6 +132,30 @@ class Project:
                 return s
         return None
 
+    def ambiguous_names(self) -> set:
+        """Function names present in more than one module (REL entry points `_prolog`/`_epilog`)."""
+        if not hasattr(self, "_ambiguous"):
+            seen: Dict[str, int] = {}
+            for m in self.modules:
+                for s in self.symbols(m).values():
+                    if s.kind == "function":
+                        seen[s.name] = seen.get(s.name, 0) + 1
+            self._ambiguous = {n for n, c in seen.items() if c > 1}
+        return self._ambiguous
+
+    def key(self, sym: Symbol) -> str:
+        """Ledger key: bare name, or `module:name` when the name exists in several modules."""
+        return f"{sym.module}:{sym.name}" if sym.name in self.ambiguous_names() else sym.name
+
+    def resolve(self, ref: str) -> Optional[Symbol]:
+        """Look up a function by bare name or `module:name`. Ambiguous bare names return None."""
+        if ":" in ref:
+            module, name = ref.split(":", 1)
+            return self.symbols(module).get(name) if module in self.modules else None
+        if ref in self.ambiguous_names():
+            return None
+        return self.find_symbol(ref)
+
     def functions(self, module: str) -> List[Symbol]:
         return sorted(
             (s for s in self.symbols(module).values() if s.kind == "function"),

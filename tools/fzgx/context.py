@@ -44,12 +44,14 @@ def _decl_for(sym: Symbol) -> str:
 
 def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
                   budget_tokens: int = 6000) -> str:
-    fn = project.function(symbol)
+    sym0 = project.resolve(symbol)
+    fn = project.function_asm(sym0.module).get(sym0.name) if sym0 else None
     if fn is None:
-        raise LookupError(f"{symbol}: no disassembly (is it a function? run ninja first)")
+        raise LookupError(f"{symbol}: no disassembly (is it a function? ambiguous? run ninja first)")
     sym = fn.symbol
     module = sym.module
-    row = ledger.get(symbol) if ledger else None
+    symbol = sym.name
+    row = ledger.get(project.key(sym)) if ledger else None
     unit_src = project.unit_of(sym)
     units = {u["source"]: u for u in project.load_units()}
     unit_cfg = units.get(unit_src or "", {})

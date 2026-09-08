@@ -42,6 +42,10 @@ Rules that hold for everyone:
 - Matchers edit only their own unit, and only through `write_unit`. Headers,
   names and splits belong to the librarian.
 - No hardcoded addresses (`fzgx lint`), no inline asm in `src/`.
+- Symbols are addressed by name; the REL entry points `_prolog`/`_epilog`
+  exist in every module and must be written `module:name` (e.g. `title:_epilog`).
+- `fzgx trivial` matches single-`blr` and `li r3,N; blr` functions mechanically
+  (419 landed on 2026-09-08); run it before spending agents on tiny functions.
 
 ## Layout
 

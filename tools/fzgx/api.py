@@ -41,8 +41,13 @@ def _reconfigure_and_split(p: Project) -> None:
 
 
 def _unit_source(p: Project, symbol: str) -> Optional[str]:
-    sym = p.find_symbol(symbol)
+    sym = p.resolve(symbol)
     return p.unit_of(sym) if sym else None
+
+
+def _key(p: Project, symbol: str) -> str:
+    sym = p.resolve(symbol)
+    return p.key(sym) if sym else symbol
 
 
 # ------------------------------------------------------------------ inventory
@@ -51,7 +56,7 @@ def sync(p: Project) -> Dict[str, int]:
     rows = []
     for module in p.modules:
         for s in p.functions(module):
-            rows.append({"symbol": s.name, "module": module, "unit": p.unit_of(s), "addr": s.addr, "size": s.size})
+            rows.append({"symbol": p.key(s), "module": module, "unit": p.unit_of(s), "addr": s.addr, "size": s.size})
     n = l.sync_functions(rows)
     matched = 0
     for u in p.load_units():
@@ -80,8 +85,11 @@ def inventory(p: Project, module: Optional[str] = None, status: Optional[str] = 
 def claim(p: Project, symbol: str, agent: str, ttl: int = DEFAULT_TTL,
           max_attempts: int = MAX_ATTEMPTS, no_carve: bool = False) -> Dict[str, Any]:
     l = Ledger()
+    if p.resolve(symbol) is None:
+        return {"ok": False, "error": f"unknown or ambiguous symbol {symbol!r} (use module:name for _prolog/_epilog)"}
+    key = _key(p, symbol)
     try:
-        row = l.claim(symbol, agent, ttl, max_attempts)
+        row = l.claim(key, agent, ttl, max_attempts)
     except (LookupError, PermissionError) as e:
         return {"ok": False, "error": str(e)}
     res = None
@@ -91,7 +99,7 @@ def claim(p: Project, symbol: str, agent: str, ttl: int = DEFAULT_TTL,
             if res.created:
                 _reconfigure_and_split(p)
         except Exception as e:  # release the claim so nobody is stuck
-            l.finish(symbol, "carve-failed", "unmatched", notes=str(e))
+            l.finish(key, "carve-failed", "unmatched", notes=str(e))
             return {"ok": False, "error": f"carve failed: {e}"}
     unit = res.source if res else row["unit"]
     return {"ok": True, "symbol": symbol, "unit": unit, "path": f"src/{unit}" if unit else None,
@@ -129,7 +137,7 @@ def read_unit(p: Project, symbol: str) -> Dict[str, Any]:
 def write_unit(p: Project, symbol: str, agent: str, source: str) -> Dict[str, Any]:
     """Replace the claimed unit's source. The only write path a matcher has."""
     l = Ledger()
-    row = l.get(symbol)
+    row = l.get(_key(p, symbol))
     if row is None:
         return {"ok": False, "error": "unknown symbol"}
     if row["status"] != "claimed" or row["claimed_by"] != agent:
@@ -155,7 +163,7 @@ def check(p: Project, symbol: str, max_diff_lines: int = 80, versions: Optional[
                 "note": "-1 compiler missing, -2 compile error, -3 diff error"}
     res = oracle.check(p, symbol, max_diff_lines)
     if res.ok:
-        Ledger().bump_checks(symbol, res.percent)
+        Ledger().bump_checks(_key(p, symbol), res.percent)
     return res.to_json()
 
 
@@ -186,13 +194,14 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
            names: Optional[List[Dict[str, str]]] = None, tokens_in: int = 0,
            tokens_out: int = 0, cost_usd: float = 0.0, max_diff_lines: int = 40) -> Dict[str, Any]:
     l = Ledger()
-    sym = p.find_symbol(symbol)
+    sym = p.resolve(symbol)
     if sym is None:
-        return {"ok": False, "error": "unknown symbol"}
+        return {"ok": False, "error": "unknown or ambiguous symbol"}
+    key = p.key(sym)
     unit_src = p.unit_of(sym)
     if not unit_src:
         return {"ok": False, "error": "not carved"}
-    row = l.get(symbol)
+    row = l.get(key)
     if row and row["status"] == "claimed" and row["claimed_by"] not in (agent, None):
         return {"ok": False, "error": f"claimed by {row['claimed_by']}, not {agent}"}
     src_path = ROOT / "src" / unit_src
@@ -227,15 +236,15 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
         module_cfg = p.module_config_dir(sym.module)
         files = [str(src_path), str(p.units_path), str(module_cfg / "splits.txt"), str(module_cfg / "symbols.txt")]
         _git("add", *files)
-        msg = f"match: {sym.module}/{symbol}" + (f" ({message})" if message else "")
+        msg = f"match: {sym.module}/{sym.name}" + (f" ({message})" if message else "")
         cp = _git("commit", "-q", "-m", msg, "--", *files)
         commit = _git("rev-parse", "--short", "HEAD").stdout.strip() if cp.returncode == 0 else None
     if names:
-        l.propose_names(symbol, agent, names)
+        l.propose_names(key, agent, names)
     if row and row["status"] != "claimed":
         # submitted without a live claim (e.g. after a ledger reset): open an attempt so accounting is complete
-        l.db.execute("INSERT INTO attempts(symbol, agent, started) VALUES(?,?,?)", (symbol, agent, int(time.time())))
-    l.finish(symbol, "matched", "matched", commit=commit, notes=message or "", model=model, harness=harness,
+        l.db.execute("INSERT INTO attempts(symbol, agent, started) VALUES(?,?,?)", (key, agent, int(time.time())))
+    l.finish(key, "matched", "matched", commit=commit, notes=message or "", model=model, harness=harness,
              tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd)
     return {"ok": True, "symbol": symbol, "commit": commit, "unit": unit_src}
 
@@ -255,7 +264,8 @@ def release(p: Project, symbol: str, reason: str, harness: Optional[str] = None,
             model: Optional[str] = None, tokens_in: int = 0, tokens_out: int = 0,
             cost_usd: float = 0.0, agent: Optional[str] = None) -> Dict[str, Any]:
     l = Ledger()
-    row = l.get(symbol)
+    key = _key(p, symbol)
+    row = l.get(key)
     if row is None or row["status"] != "claimed":
         return {"ok": False, "error": "not claimed"}
     if agent and row["claimed_by"] != agent:
@@ -268,7 +278,7 @@ def release(p: Project, symbol: str, reason: str, harness: Optional[str] = None,
         shutil.copy(ROOT / "src" / unit_src, dest)
         body_path = str(dest)
         (ROOT / "src" / unit_src).write_text(STUB.format(symbol=symbol, note=f"best attempt saved to {dest.name}"))
-    l.finish(symbol, "released", "unmatched", notes=reason, body_path=body_path, model=model,
+    l.finish(key, "released", "unmatched", notes=reason, body_path=body_path, model=model,
              harness=harness, tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd)
     return {"ok": True, "symbol": symbol, "saved": body_path, "attempts": row["attempts"] + 1}
 
@@ -277,6 +287,7 @@ def release(p: Project, symbol: str, reason: str, harness: Optional[str] = None,
 def block(p: Project, symbol: str, reason: str, open_issue: bool = False) -> Dict[str, Any]:
     l = Ledger()
     issue = None
+    symbol = _key(p, symbol)
     if open_issue:
         row = l.get(symbol)
         body = f"Function `{symbol}` exhausted {row['attempts'] if row else '?'} cheap-tier attempts.\n\n"
@@ -291,7 +302,7 @@ def block(p: Project, symbol: str, reason: str, open_issue: bool = False) -> Dic
 
 
 def unblock(p: Project, symbol: str) -> Dict[str, Any]:
-    Ledger().unblock(symbol)
+    Ledger().unblock(_key(p, symbol))
     return {"ok": True}
 
 

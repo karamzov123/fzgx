@@ -102,9 +102,10 @@ def _render_diff(left_rows: List[dict], right_rows: List[dict], max_lines: int) 
 
 
 def check(project: Project, symbol: str, max_diff_lines: int = 80) -> CheckResult:
-    sym = project.find_symbol(symbol)
+    sym = project.resolve(symbol)
     if sym is None:
-        return CheckResult(False, symbol, "", error="unknown symbol")
+        return CheckResult(False, symbol, "", error="unknown or ambiguous symbol (use module:name)")
+    symbol = sym.name  # objdiff symbol name is the bare C name
     unit_src = project.unit_of(sym)
     if not unit_src:
         return CheckResult(False, symbol, "", error="function is not carved into a unit (fzgx carve)")
@@ -156,10 +157,11 @@ def check_versions(project: Project, symbol: str, versions: List[str]) -> Dict[s
     Uses the unit's flags from objdiff.json, wibo + build/compilers/<ver>/mwcceppc.exe,
     and objdiff-cli in two-object mode. Never touches the ninja build.
     """
-    sym = project.find_symbol(symbol)
+    sym = project.resolve(symbol)
     unit_src = project.unit_of(sym) if sym else None
     if not sym or not unit_src:
         return {}
+    symbol = sym.name
     unit = project.objdiff_unit_name(sym.module, unit_src)
     meta = project.objdiff_units().get(unit, {})
     # objdiff's scratch flags omit the include dirs the ninja rule adds per unit

@@ -92,9 +92,9 @@ def add_force_active(project: Project, module: str, symbol: str) -> bool:
 
 
 def carve(project: Project, symbol: str, dry_run: bool = False) -> CarveResult:
-    sym = project.find_symbol(symbol)
+    sym = project.resolve(symbol)
     if sym is None or sym.kind != "function":
-        raise LookupError(f"{symbol}: not a known function symbol")
+        raise LookupError(f"{symbol}: not a known (or unambiguous) function symbol; use module:name for _prolog/_epilog")
     module = sym.module
     existing = project.unit_of(sym)
     prefix = project.module_src_prefix(module)
