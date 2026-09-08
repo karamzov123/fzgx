@@ -21,6 +21,20 @@ from typing import Dict, List, Optional, Tuple
 from . import lab, oracle, regalloc
 from .project import STATE_DIR, Project
 
+# which rewrite families the objdiff row kinds of a diff point at (fixup's targeting)
+KIND_FAMILIES = {
+    "regalloc": ("decl-order", "inner-scope", "regalloc", "inline-temp", "repeat-to-local", "stmt-swap", "commute", "ptr-local"),
+    "ins": ("inline-temp", "inner-scope", "void-return", "return-to-block", "local-type", "hoist-arg", "repeat-to-local"),
+    "ins:ext": ("local-type", "param-type", "field-type", "compare-cast"),
+    "ins:cmp": ("compare-cast", "local-type", "compare-form"),
+    "op": ("local-type", "compare-cast", "field-type", "param-type"),
+    "op:cmpw/cmplw": ("compare-cast", "local-type"), "op:cmplw/cmpw": ("compare-cast", "local-type"),
+    "op:cmpwi/cmplwi": ("compare-cast", "local-type"), "op:cmplwi/cmpwi": ("compare-cast", "local-type"),
+    "reloc": ("near-far", "address-form", "ptr-local"),
+    "imm": ("struct-pad", "field-type"),
+    "frame": ("decl-order", "inner-scope", "hoist-arg"),
+    "schedule": ("stmt-swap", "commute", "inline-temp", "decl-order"),
+}
 BEAM = 4
 LEVELS = 4
 MAX_CANDIDATES = 700
@@ -185,6 +199,21 @@ def search(p: Project, symbol: str, body: str, budget_s: float = 10.0, beam: int
     if base_fit is None:
         out["error"] = "base does not compile"
         return out
+    # the objdiff rows of the base, once: their kinds say which families are likely
+    weights: Dict[str, float] = {}
+    try:
+        from . import stuck  # scoped: stuck imports oracle; kept local to this optional seeding
+        o0 = root / "b" / "obj" / "c0.o"
+        rows = oracle.function_rows(p, sym.name, target, o0) if o0.exists() else None
+        if rows:
+            kinds = {k for k in stuck.row_kinds(rows[0], rows[1]) if k}
+            for k in kinds:
+                for fam in KIND_FAMILIES.get(k.split(":")[0], ()):
+                    weights[fam] = weights.get(fam, 0) + 1
+                for fam in KIND_FAMILIES.get(k, ()):
+                    weights[fam] = weights.get(fam, 0) + 2
+    except Exception:
+        weights = {}
     out["base"] = base_fit[1]
     seen[body] = base_fit
     if base_fit[1] >= 100.0 and confirm(body):
@@ -209,6 +238,9 @@ def search(p: Project, symbol: str, body: str, budget_s: float = 10.0, beam: int
                 break
         if not cands:
             break
+        if weights:
+            # the families the diff rows point at first: a budget cut keeps the likely ones
+            cands.sort(key=lambda c: -weights.get(c[1][-1].split(":")[0], 0))
         res = evaluate([t for t, _ in cands])
         tried += len(cands)
         scored: List[Tuple[Tuple[float, float], str, List[str]]] = []
@@ -229,15 +261,16 @@ def search(p: Project, symbol: str, body: str, budget_s: float = 10.0, beam: int
             break
     out.update(tried=tried, best=best[0][1], body=best[1] if best[1] != body else None, path=best[2],
                aligned=best[0][0], secs=round(time.time() - t0, 2))
+    if best[1] != body:
+        (root / "best.c").write_text(best[1])  # the next round starts here
     return out
 
 
 def run_drafts(p: Project, min_pct: float = 0.0, max_pct: float = 100.0, limit: int = 5000, workers: int = 3,
                budget_s: float = 10.0, submit: bool = True, only: Optional[List[str]] = None) -> Dict[str, object]:
     """The search over the lifter's current drafts (.fzgx/draftscan): every draft that compiles
-    and scores in [min_pct, max_pct). Matches are submitted as `spell`."""
-    from . import api  # scoped: api imports the search modules; importing it at load would be a cycle
-    t0 = time.time()
+    and scores in [min_pct, max_pct). A draft the last round improved starts from that body.
+    Matches are submitted as `spell`."""
     d = STATE_DIR / "draftscan"
     scores = json.loads((d / "scores.json").read_text())
     items = []
@@ -250,10 +283,33 @@ def run_drafts(p: Project, min_pct: float = 0.0, max_pct: float = 100.0, limit: 
         if sym is None or p.unit_of(sym):
             continue
         f = d / f"{m}__{s}.c"
+        best = STATE_DIR / "spell" / p.key(sym).replace(":", "__") / "best.c"
+        src = best if best.exists() and best.stat().st_mtime >= f.stat().st_mtime else f
         if f.exists():
-            items.append((s, m, size, pct, f.read_text()))
+            items.append((s, m, size, pct, src.read_text()))
     items.sort(key=lambda x: -x[3])
-    items = items[:limit]
+    return run_bodies(p, items[:limit], workers, budget_s, submit, agent="spell")
+
+
+def run_attempts(p: Project, min_pct: float = 60.0, limit: int = 5000, workers: int = 3, budget_s: float = 10.0,
+                 submit: bool = True, module: Optional[str] = None) -> Dict[str, object]:
+    """The search over the agents' saved plateau bodies (the ledger's best attempts)."""
+    import sqlite3  # scoped: only this reader touches the ledger directly
+    db = sqlite3.connect(str(STATE_DIR / "ledger.db"))
+    q = ("select f.symbol, f.module, f.size, a.best_body_path, max(a.best_in_attempt) from functions f join attempts a on a.symbol=f.symbol "
+         "where f.status='unmatched' and a.best_body_path is not null and a.best_in_attempt>=?" + (" and f.module=?" if module else "") + " group by f.symbol order by 5 desc")
+    rows = db.execute(q, [min_pct] + ([module] if module else [])).fetchall()
+    items = []
+    from pathlib import Path  # scoped: a single path test
+    for s, m, size, path, pct in rows:
+        if path and Path(path).exists():
+            items.append((s, m, size, pct or 0.0, Path(path).read_text()))
+    return run_bodies(p, items[:limit], workers, budget_s, submit, agent="spell")
+
+
+def run_bodies(p: Project, items, workers: int = 3, budget_s: float = 10.0, submit: bool = True, agent: str = "spell") -> Dict[str, object]:
+    from . import api  # scoped: api imports the search modules; importing it at load would be a cycle
+    t0 = time.time()
 
     def one(it):
         s, m, size, pct, text = it
@@ -276,7 +332,7 @@ def run_drafts(p: Project, min_pct: float = 0.0, max_pct: float = 100.0, limit: 
             if submit:
                 sym = p.resolve(s)
                 work = p.work_path(p.key(sym)); work.parent.mkdir(parents=True, exist_ok=True); work.write_text(r["body"])
-                sr = api.submit(p, s, agent="spell", message="spelling search: " + " + ".join(r.get("path", []))[:200], harness="fzgx", model="spell")
+                sr = api.submit(p, s, agent=agent, message="spelling search: " + " + ".join(r.get("path", []))[:200], harness="fzgx", model="spell")
                 if sr.get("ok"):
                     matched.append((s, pct, r.get("path")))
             else:

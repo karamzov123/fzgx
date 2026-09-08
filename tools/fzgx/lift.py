@@ -152,6 +152,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     regs: Dict[str, str] = {}          # register -> C expression
     rtype: Dict[str, str] = {}         # register -> C type of the expression
     params: List[str] = []             # r3.. read before written
+    def_idx: Dict[str, int] = {}       # register -> index of the instruction that last wrote it
     ptypes: Dict[str, str] = {}        # param register -> type
     fields: Dict[str, Dict[int, str]] = {}   # param register -> {offset: type} (struct parameter)
     stmts: List[str] = []
@@ -173,7 +174,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 if rk not in params:
                     params.append(rk)
                     ptypes[rk] = "f32" if rk.startswith("f") else "u32"
-                    if rk not in regs:
+                    if rk not in regs and rk not in def_idx:  # not already overwritten by this function
                         regs[rk] = f"arg{params.index(rk)}"
                         rtype[rk] = ptypes[rk]
             return regs[r]
@@ -1007,7 +1008,6 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             temps.append(f"{rtype.get(r_, 'u32')} {tn};")
             stmts.append(f"{tn} = {init};")
             regs[r_] = tn; carried[r_] = tn
-    def_idx: Dict[str, int] = {}
     for i, (mn, a) in enumerate(ins):
         try:
             # a value used more than once (before its register is redefined) lives in a local: the
