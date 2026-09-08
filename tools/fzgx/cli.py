@@ -351,6 +351,13 @@ def cmd_write_unit(a, p):
     _print(r, a.json); return 0 if r["ok"] else 2
 
 
+def cmd_lab(a, p):
+    from . import lab
+    out = lab.run(p, a.min_percent, a.limit, submit=not a.no_submit)
+    print(lab.summary(out))
+    return 0
+
+
 def cmd_exemplars(a, p):
     from . import exemplars
     ex = exemplars.mine(p)
@@ -388,6 +395,8 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("symbol"); s.add_argument("--agent", required=True); s.add_argument("--file", required=True)
     s = sub.add_parser("patch-unit", help="replace one unique span of a claimed unit's work copy, then check"); s.set_defaults(fn=cmd_patch_unit)
     s.add_argument("symbol"); s.add_argument("--agent", required=True); s.add_argument("--old-file", required=True); s.add_argument("--new-file", required=True)
+    s = sub.add_parser("lab", help="perturbation lab: which source rewrite closes a 97%+ body; submits matches"); s.set_defaults(fn=cmd_lab)
+    s.add_argument("--min-percent", type=float, default=97.0); s.add_argument("--limit", type=int, default=400); s.add_argument("--no-submit", action="store_true")
     s = sub.add_parser("exemplars", help="mine (plateau -> match) edit pairs from the check history"); s.set_defaults(fn=cmd_exemplars)
     s = sub.add_parser("check", help="compile + objdiff one function"); s.set_defaults(fn=cmd_check)
     s.add_argument("symbol"); s.add_argument("--max-diff-lines", type=int, default=80)

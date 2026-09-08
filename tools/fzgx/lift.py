@@ -9,6 +9,7 @@ parameter), the common integer arithmetic, one call. Anything else makes it give
 
 from __future__ import annotations
 
+import json
 import re
 from typing import Dict, List, Optional, Tuple
 
@@ -1333,6 +1334,15 @@ def apply(p: Project, modules: Optional[List[str]] = None, max_size: int = 160, 
         if s not in best or (ok, pct) > (best[s][3], best[s][4]):
             best[s] = (s, size, t, ok, pct)
     results = list(best.values())
+    # the per-function best draft and its score, for the lab and the context (no rescoring later)
+    scores_path = STATE_DIR / "lift" / "scores.json"
+    try:
+        prev = json.loads(scores_path.read_text()) if scores_path.exists() else {}
+    except ValueError:
+        prev = {}
+    for s, size, t, ok, pct in results:
+        prev[s] = {"percent": pct, "matched": bool(ok), "text": t}
+    scores_path.write_text(json.dumps(prev))
     matched = [(s, size, t) for s, size, t, ok, _ in results if ok]
     submitted, failed = [], []
     if submit:
