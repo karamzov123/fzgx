@@ -1185,7 +1185,7 @@
     "symbols": [
       "fn_1_1318D4"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
