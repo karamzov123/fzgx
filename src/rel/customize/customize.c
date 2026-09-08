@@ -134,6 +134,43 @@ void fn_3_BD98(void) {
 }
 /* fzgx:end fn_3_BD98 */
 
+/* fzgx:begin fn_3_BE10 */
+extern struct fn_3_BE10_lbl_3_bss_7ED58 lbl_3_bss_7ED58;
+extern struct fn_3_BE10_lbl_3_bss_A1784 lbl_3_bss_A1784;
+extern u32 fn_1_B9BE0(void);
+extern u32 fn_1_B9DE8(u32);
+extern u32 fn_3_1307C(void);
+extern u32 lbl_3_bss_7EDA0;
+extern u32 lbl_3_data_1A10;
+extern u32 lbl_3_data_1A18;
+
+struct fn_3_BE10_lbl_3_bss_7ED58 {
+    u32 unk_0;
+    u8 unk_4;
+};
+struct fn_3_BE10_lbl_3_bss_A1784 {
+    u32 unk_0;
+};
+
+void fn_3_BE10(void) {
+    u32 v0;
+    u32 v1;
+    u32 v2;
+    u32 t2;
+    fn_1_B9BE0();
+    fn_1_B9DE8((u32)&lbl_3_bss_7ED58);
+    v0 = lbl_3_bss_7ED58.unk_0;
+    v1 = (v0 | 16);
+    lbl_3_bss_7ED58.unk_4 = 10;
+    lbl_3_bss_7ED58.unk_0 = v1;
+    lbl_3_data_1A18 = 0;
+    t2 = fn_3_1307C();
+    v2 = lbl_3_bss_A1784.unk_0;
+    lbl_3_data_1A10 = (t2 & 0xFF);
+    lbl_3_bss_7EDA0 = v2;
+}
+/* fzgx:end fn_3_BE10 */
+
 /* fzgx:begin fn_3_BEF0 */
 extern u32 lbl_3_bss_7ED58[18];
 extern void fn_1_BC29C(u32 *);

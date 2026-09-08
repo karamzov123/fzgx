@@ -1468,3 +1468,6 @@ dol/fn_80077714.c:
 
 dol/fn_80051678.c:
 	.text       start:0x80051678 end:0x8005174C align:4
+
+dol/__OSSetInterruptHandler.c:
+	.text       start:0x8000D540 end:0x8000D55C align:4

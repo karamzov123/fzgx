@@ -573,6 +573,17 @@
   },
   {
     "module": "customize",
+    "source": "rel/customize/customize/fn_3_BE10.c",
+    "symbols": [
+      "fn_3_BE10"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/customize.c"
+  },
+  {
+    "module": "customize",
     "source": "rel/customize/customize/fn_3_BEF0.c",
     "symbols": [
       "fn_3_BEF0"
@@ -2059,6 +2070,16 @@
     "source": "dol/__OSReschedule.c",
     "symbols": [
       "__OSReschedule"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/__OSSetInterruptHandler.c",
+    "symbols": [
+      "__OSSetInterruptHandler"
     ],
     "status": "matching",
     "mw_version": null,
