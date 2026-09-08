@@ -111,6 +111,24 @@ void fn_17_3270(void *arg0, void *arg1) {
 }
 /* fzgx:end fn_17_3270 */
 
+/* fzgx:begin fn_17_4214 */
+extern u32 lbl_17_rodata_1B8;
+
+struct fn_17_4214_Arg0 {
+    u8 pad_0[0x88];
+    u32 unk_88;
+    u8 pad_8C[0x14];
+    u16 unk_A0;
+};
+struct fn_17_4214_Copy12 { u32 a[3]; };
+
+void fn_17_4214(struct fn_17_4214_Arg0 *arg0) {
+    if ((s32)arg0->unk_88 != 4) { return; }
+    *(struct fn_17_4214_Copy12 *)((u8 *)(u32)arg0 + 168) = *(struct fn_17_4214_Copy12 *)&lbl_17_rodata_1B8;
+    arg0->unk_A0 = 12288;
+}
+/* fzgx:end fn_17_4214 */
+
 /* fzgx:begin fn_17_4540 */
 typedef struct {
     u8 pad[0x88];

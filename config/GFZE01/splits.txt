@@ -1471,3 +1471,24 @@ dol/fn_80051678.c:
 
 dol/__OSSetInterruptHandler.c:
 	.text       start:0x8000D540 end:0x8000D55C align:4
+
+dol/fn_8002A7AC.c:
+	.text       start:0x8002A7AC end:0x8002A7C4 align:4
+
+dol/fn_8002C0A0.c:
+	.text       start:0x8002C0A0 end:0x8002C0B8 align:4
+
+dol/fn_80026E04.c:
+	.text       start:0x80026E04 end:0x80026E2C align:4
+
+dol/fn_80026E84.c:
+	.text       start:0x80026E84 end:0x80026EAC align:4
+
+dol/fn_80026DD4.c:
+	.text       start:0x80026DD4 end:0x80026E04 align:4
+
+dol/SIIsChanBusy.c:
+	.text       start:0x8001193C end:0x80011978 align:4
+
+dol/fn_800589BC.c:
+	.text       start:0x800589BC end:0x80058A20 align:4

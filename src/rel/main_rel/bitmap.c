@@ -119,6 +119,26 @@ u32 fn_1_485A8(s32 index) {
 }
 /* fzgx:end fn_1_485A8 */
 
+/* fzgx:begin fn_1_485C8 noprologue */
+#include "types.h"
+
+extern struct fn_1_485C8_lbl_1_data_FCD4 lbl_1_data_FCD4;
+extern u32 lbl_1_bss_3E020;
+
+struct fn_1_485C8_lbl_1_data_FCD4_0_E40 {
+    u8 pad_0[0x20];
+    u32 unk_20;
+    u8 pad_24[0x4];
+};
+struct fn_1_485C8_lbl_1_data_FCD4 {
+    struct fn_1_485C8_lbl_1_data_FCD4_0_E40 unk_0[1];
+};
+
+void fn_1_485C8(u32 arg0) {
+    lbl_1_bss_3E020 = lbl_1_data_FCD4.unk_0[arg0].unk_20;
+}
+/* fzgx:end fn_1_485C8 */
+
 /* fzgx:begin fn_1_48690 */
 // Return the current bitmap width, or the default width when no bitmap is active.
 u16 fn_1_48690(u32 unused) {

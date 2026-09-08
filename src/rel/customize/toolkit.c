@@ -279,6 +279,53 @@ void fn_3_1A1B8(void) {
 }
 /* fzgx:end fn_3_1A1B8 */
 
+/* fzgx:begin fn_3_1A1D8 noprologue */
+#include "types.h"
+
+extern struct fn_3_1A1D8_lbl_1_bss_9F8 lbl_1_bss_9F8;
+extern struct fn_3_1A1D8_lbl_3_bss_A2438 lbl_3_bss_A2438;
+extern u32 fn_3_141A8(u32);
+extern u32 fn_3_1441C(void);
+
+struct fn_3_1A1D8_lbl_1_bss_9F8_0_E20 {
+    u8 pad_0[0x10];
+    u16 unk_10;
+    u8 pad_12[0x2];
+};
+struct fn_3_1A1D8_lbl_3_bss_A2438 {
+    u8 unk_0;
+    u8 pad_1[0x3];
+    u32 unk_4;
+    u8 pad_8[0x6];
+    u8 unk_E;
+};
+struct fn_3_1A1D8_lbl_1_bss_9F8 {
+    struct fn_3_1A1D8_lbl_1_bss_9F8_0_E20 unk_0[1];
+};
+
+u32 fn_3_1A1D8(void) {
+    u32 v0;
+    u32 t0, t1;
+    if (((lbl_1_bss_9F8.unk_0[lbl_3_bss_A2438.unk_0].unk_10 >> 8) & 0x1) != 0) {
+    t0 = fn_3_1441C();
+    v0 = t0;
+    if ((t0 & 0xFF) == 0) {
+    v0 = 0x80000000;
+    t1 = fn_3_141A8(v0);
+    v0 = t1;
+    }
+    }
+    v0 = (u32)&lbl_1_bss_9F8;
+    v0 = (u32)((u8 *)v0 + (lbl_3_bss_A2438.unk_0 * 20));
+    if (((*(u16 *)((u8 *)v0 + 8) >> 9) & 0x1) != 0) {
+    v0 = 0x40000000;
+    lbl_3_bss_A2438.unk_4 = v0;
+    lbl_3_bss_A2438.unk_E = 0;
+    }
+    return v0;
+}
+/* fzgx:end fn_3_1A1D8 */
+
 /* fzgx:begin fn_3_1ABD8 */
 extern void fn_3_1B4BC(void *, s16, s16, s16, s16, u32 *);
 

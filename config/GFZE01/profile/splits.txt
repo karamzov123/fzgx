@@ -23,3 +23,6 @@ rel/profile/fn_16_2328.c:
 
 rel/profile/fn_16_6CD8.c:
 	.text       start:0x00006CD8 end:0x00006D48 align:4
+
+rel/profile/fn_16_24FC.c:
+	.text       start:0x000024FC end:0x00002528 align:4

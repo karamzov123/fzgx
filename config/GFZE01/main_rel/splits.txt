@@ -4706,3 +4706,15 @@ rel/main_rel/burner/fn_1_98804.c:
 
 rel/main_rel/screen_effect/fn_1_76448.c:
 	.text       start:0x00076448 end:0x00076504 align:4
+
+rel/main_rel/bitmap/fn_1_485C8.c:
+	.text       start:0x000485C8 end:0x000485E8 align:4
+
+rel/main_rel/spline/fn_1_F9CA0.c:
+	.text       start:0x000F9CA0 end:0x000F9CD0 align:4
+
+rel/main_rel/spline/fn_1_F9E80.c:
+	.text       start:0x000F9E80 end:0x000F9EB0 align:4
+
+rel/main_rel/spline/fn_1_F9EB0.c:
+	.text       start:0x000F9EB0 end:0x000F9EE4 align:4

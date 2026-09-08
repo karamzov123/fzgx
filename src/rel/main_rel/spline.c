@@ -727,6 +727,26 @@ void fn_1_F9C6C(void) {
 }
 /* fzgx:end fn_1_F9C6C */
 
+/* fzgx:begin fn_1_F9CA0 noprologue */
+#include "types.h"
+
+extern struct fn_1_F9CA0_lbl_1_bss_7F0C0 lbl_1_bss_7F0C0;
+
+struct fn_1_F9CA0_lbl_1_bss_7F0C0_60_E48 {
+    u8 pad_0[0x4];
+    u16 unk_4;
+    u8 pad_6[0x2A];
+};
+struct fn_1_F9CA0_lbl_1_bss_7F0C0 {
+    u8 pad_0[0x60];
+    struct fn_1_F9CA0_lbl_1_bss_7F0C0_60_E48 unk_60[1];
+};
+
+u32 fn_1_F9CA0(u32 arg0, u32 arg1) {
+    return (lbl_1_bss_7F0C0.unk_60[(arg0 & 0xFF)].unk_4 & ((s32)(0x10000 + -32768) >> (arg1 & 0xFF)));
+}
+/* fzgx:end fn_1_F9CA0 */
+
 /* fzgx:begin fn_1_F9CD0 */
 // Sets the requested flag in an indexed spline record.
 void fn_1_F9CD0(u8 index, u8 shift) {
@@ -808,6 +828,49 @@ void fn_1_F9E4C(void) {
     fn_1_F9EE4(2);
 }
 /* fzgx:end fn_1_F9E4C */
+
+/* fzgx:begin fn_1_F9E80 noprologue */
+#include "types.h"
+
+extern struct fn_1_F9E80_lbl_1_bss_7F0C0 lbl_1_bss_7F0C0;
+
+struct fn_1_F9E80_lbl_1_bss_7F0C0_60_E48 {
+    u8 pad_0[0x6];
+    u16 unk_6;
+    u8 pad_8[0x28];
+};
+struct fn_1_F9E80_lbl_1_bss_7F0C0 {
+    u8 pad_0[0x60];
+    struct fn_1_F9E80_lbl_1_bss_7F0C0_60_E48 unk_60[1];
+};
+
+u32 fn_1_F9E80(u32 arg0, u32 arg1) {
+    return (lbl_1_bss_7F0C0.unk_60[(arg0 & 0xFF)].unk_6 & ((s32)(0x10000 + -32768) >> (arg1 & 0xFF)));
+}
+/* fzgx:end fn_1_F9E80 */
+
+/* fzgx:begin fn_1_F9EB0 noprologue */
+#include "types.h"
+
+extern struct fn_1_F9EB0_lbl_1_bss_7F0C0 lbl_1_bss_7F0C0;
+
+struct fn_1_F9EB0_lbl_1_bss_7F0C0_60_E48 {
+    u8 pad_0[0x6];
+    u16 unk_6;
+    u8 pad_8[0x28];
+};
+struct fn_1_F9EB0_lbl_1_bss_7F0C0 {
+    u8 pad_0[0x60];
+    struct fn_1_F9EB0_lbl_1_bss_7F0C0_60_E48 unk_60[1];
+};
+
+u32 fn_1_F9EB0(u32 arg0, u32 arg1) {
+    u32 v0;
+    v0 = (0x10000 + -32768);
+    lbl_1_bss_7F0C0.unk_60[(arg0 & 0xFF)].unk_6 = (lbl_1_bss_7F0C0.unk_60[(arg0 & 0xFF)].unk_6 | ((s32)v0 >> (arg1 & 0xFF)));
+    return v0;
+}
+/* fzgx:end fn_1_F9EB0 */
 
 /* fzgx:begin fn_1_F9EE4 */
 // Reset one spline slot and clear its working buffer.
