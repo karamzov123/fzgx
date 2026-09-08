@@ -2845,7 +2845,7 @@
     "symbols": [
       "fn_1_77200"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
