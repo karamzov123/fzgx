@@ -196,6 +196,16 @@ def cmd_headers(a, p):
         out = Path("include") / "rel" / a.module / "globals.h"
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(text); print("wrote", out, len(text), "bytes")
+        # prove every field offset under the real compiler before anyone relies on it
+        import subprocess
+        chk = Path(".fzgx") / "header_selfcheck.c"
+        chk.write_text(structs.selfcheck(text, f"rel/{a.module}/globals.h"))
+        cp = subprocess.run(["build/tools/wibo", "build/compilers/GC/1.3.2/mwcceppc.exe", "-nodefaults", "-proc", "gekko",
+                             "-i", "include", "-c", str(chk), "-o", str(chk.with_suffix(".o"))], text=True, capture_output=True)
+        if cp.returncode != 0:
+            print("SELF-CHECK FAILED:\n" + "\n".join(l for l in (cp.stdout + cp.stderr).splitlines() if "check_" in l or "Error" in l)[:3000])
+            return 1
+        print("self-check: every field offset verified under MWCC")
     else:
         print(text)
     return 0

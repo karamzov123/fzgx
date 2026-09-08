@@ -27,10 +27,15 @@ MAX_CHECKS = 8       # per attempt
 MAX_STALE = 2        # consecutive checks without improving the attempt's best %
 STUB = '#include "types.h"\n\n// {symbol}: carved by fzgx; {note}\n'
 SHADOW_PREFIX = "shadow-"   # agent ids with this prefix run A/B trials that never relink or commit
+REVISE_PREFIX = "revise-"   # rewrite an already-matched unit for readability; kept only if still 100%
 
 
 def _is_shadow(agent: Optional[str]) -> bool:
-    return bool(agent) and agent.startswith(SHADOW_PREFIX)
+    return bool(agent) and (agent.startswith(SHADOW_PREFIX) or agent.startswith(REVISE_PREFIX))
+
+
+def _is_revise(agent: Optional[str]) -> bool:
+    return bool(agent) and agent.startswith(REVISE_PREFIX)
 
 
 def _shadow_park(p: Project, key: str, unit_src: str, symbol: str) -> None:
@@ -124,6 +129,10 @@ def claim(p: Project, symbol: str, agent: str, ttl: int = DEFAULT_TTL,
             l.finish(key, "carve-failed", "unmatched", notes="shadow claim on an uncarved function", shadow=True)
             return {"ok": False, "error": "shadow claims need an already carved unit"}
         _shadow_park(p, key, unit_src, p.resolve(symbol).name)
+        if _is_revise(agent):  # keep the current source visible: the task is to rewrite it
+            park = STATE_DIR / "shadow" / f"{key}.c"
+            if park.exists():
+                (ROOT / "src" / unit_src).write_text(park.read_text())
     elif not no_carve:
         try:
             res = carve(p, symbol)
@@ -283,6 +292,20 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
     findings = lint_paths([src_path])
     if findings:
         return {"ok": False, "error": "lint", "findings": findings}
+    if _is_revise(agent):
+        res = oracle.check(p, symbol, max_diff_lines)
+        reason = oracle.unit_fully_matches(res)
+        if reason:
+            _shadow_restore(p, key, unit_src)
+            l.finish(key, "released", "unmatched", notes=f"revise rejected: {reason}", model=model,
+                     harness=harness, tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd, shadow=True)
+            return {"ok": False, "error": reason, "percent": res.percent, "revise": True}
+        park = STATE_DIR / "shadow" / f"{key}.c"
+        park.unlink(missing_ok=True)  # the rewrite replaces the parked original
+        l.db.execute("UPDATE functions SET link_state='pending' WHERE symbol=?", (key,))
+        l.finish(key, "matched", "matched", notes=f"revised: {message}", model=model, harness=harness,
+                 tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd, shadow=True)
+        return {"ok": True, "symbol": symbol, "unit": unit_src, "revise": True, "link": "pending"}
     if _is_shadow(agent):
         res = oracle.check(p, symbol, max_diff_lines)
         reason = oracle.unit_fully_matches(res)

@@ -49,12 +49,19 @@ def _header_decl(hdr: str, name: str) -> str:
     if not m:
         return ""
     tname = m.group(1)
-    td = re.search(rf"^typedef struct \{{\n(?:.*\n)*?\}} {re.escape(tname)};", hdr, re.M)
-    body = td.group(0) if td else ""
-    if body.count("\n") > 40:  # keep bundles small: show the first fields and a count
-        lines = body.splitlines()
-        body = "\n".join(lines[:30]) + f"\n    /* ... {len(lines) - 31} more fields ... */\n" + lines[-1]
-    return (body + "\n" if body else "") + m.group(0)
+
+    def td_of(t: str) -> str:
+        td = re.search(rf"^typedef struct \{{\n(?:(?!typedef).*\n)*?\}} {re.escape(t)};", hdr, re.M)
+        body = td.group(0) if td else ""
+        if body.count("\n") > 40:  # keep bundles small: show the first fields and a count
+            lines = body.splitlines()
+            body = "\n".join(lines[:30]) + f"\n    /* ... {len(lines) - 31} more fields ... */\n" + lines[-1]
+        return body
+
+    body = td_of(tname)
+    # pointee typedefs referenced by pointer fields come first, as in the header
+    pointees = [td_of(t) for t in re.findall(r"^\s+(\w+) \*unk_", body, re.M)]
+    return "\n".join(x for x in pointees + [body] if x) + ("\n" if body else "") + m.group(0)
 
 
 def build_context(project: Project, ledger: Optional[Ledger], symbol: str,

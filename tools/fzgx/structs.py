@@ -142,8 +142,9 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
 
 
 def typedef(info: Dict[str, object], name: Optional[str] = None, fields: Optional[Dict[int, Dict]] = None,
-            ptr_types: Optional[Dict[int, str]] = None) -> str:
-    """C typedef skeleton. ptr_types maps a field offset to the typedef name its pointer targets."""
+            ptr_types: Optional[Dict[int, str]] = None, size: int = 0) -> str:
+    """C typedef skeleton. ptr_types maps a field offset to the typedef name its pointer targets;
+    size pads the object out to the symbol's size so arrays of it index correctly."""
     fields = fields if fields is not None else info["fields"]
     ptr_types = ptr_types or {}
     name = name or f"{info['symbol'].replace('lbl_', 'Struct_')}"
@@ -151,11 +152,15 @@ def typedef(info: Dict[str, object], name: Optional[str] = None, fields: Optiona
     cur = 0
     for off in sorted(fields):
         f = fields[off]
+        if off < cur:
+            continue  # overlaps the previous field: keep the earlier, wider view
         if off > cur:
             lines.append(f"    u8 pad_{cur:X}[0x{off - cur:X}];")
-        elif off < cur:
-            lines.append(f"    /* overlap at 0x{off:X} */")
         w = f["width"] or 4
+        # MWCC (-align powerpc) aligns each field naturally; a misaligned access is an
+        # unaligned load into a wider field or a packed byte run, so emit bytes instead.
+        if off % w:
+            w = 1
         ctype = {1: "u8", 2: "u16", 4: "f32" if f["float"] else "u32", 8: "f64"}[w]
         if off in ptr_types and w == 4:
             ctype = f"{ptr_types[off]} *"
@@ -163,6 +168,8 @@ def typedef(info: Dict[str, object], name: Optional[str] = None, fields: Optiona
         cur = off + w
     if len(lines) == 1:
         lines.append("    u8 unk_0;  // no field accesses recovered")
+    if size and cur < size:
+        lines.append(f"    u8 pad_{cur:X}[0x{size - cur:X}];")
     lines.append(f"}} {name};")
     return "\n".join(lines)
 
@@ -209,7 +216,7 @@ def header(p: Project, module: str, min_refs: int = 20, sections=(".data", ".bss
                     out.append(f"// object reached through {name}.unk_{poff:X}")
                     out.append(typedef(info, pt, fl))
                     ptr_types[poff] = pt
-            out.append(typedef(info, tname, None, ptr_types))
+            out.append(typedef(info, tname, None, ptr_types, sd.size))
             out.append(f"extern {tname} {name};")
         out.append("")
     out.append(f"#endif  // {guard}")
@@ -279,3 +286,22 @@ def _raw_object_offsets(p: Project, module: str, symbol: str) -> List[int]:
             if d and d.group(1) not in NO_DEF:
                 base.pop(f"r{d.group(2)}", None); pending.discard(f"r{d.group(2)}")
     return offs
+
+
+def selfcheck(header_text: str, include_path: str) -> str:
+    """C that fails to compile if any generated field is not at the offset its name claims."""
+    lines = ['#include "types.h"', f'#include "{include_path}"', "#define OFF(T, f) ((u32)&(((T *)0)->f))", ""]
+    cur = None
+    for line in header_text.splitlines():
+        m = re.match(r"^typedef struct \{", line)
+        if m:
+            fields = []
+        m = re.match(r"^\} (\w+);", line)
+        if m:
+            for f, off in fields:
+                lines.append(f"typedef char check_{m.group(1)}_{f}[OFF({m.group(1)}, {f}) == 0x{off:X} ? 1 : -1];")
+            continue
+        m = re.match(r"^\s+[\w ]+\*?\s*(unk_([0-9A-F]+));", line)
+        if m:
+            fields.append((m.group(1), int(m.group(2), 16)))
+    return "\n".join(lines) + "\n"
