@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_1_DAB1C: main_rel .text:0x000DAB1C size 0x20
-// Carved by fzgx. Replace this file's body with the matching C.
+extern void fn_1_58C4(void);
+
+void fn_1_DAB1C(void) {
+    fn_1_58C4();
+}

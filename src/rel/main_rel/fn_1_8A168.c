@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_1_8A168: main_rel .text:0x0008A168 size 0x28
-// Carved by fzgx. Replace this file's body with the matching C.
+extern void fn_1_892FC(void *arg0, int arg1, int arg2);
+
+void fn_1_8A168(void *arg0) {
+    fn_1_892FC(arg0, 0, 0);
+}

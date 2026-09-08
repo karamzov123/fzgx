@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_1_12A32C: main_rel .text:0x0012A32C size 0x24
-// Carved by fzgx. Replace this file's body with the matching C.
+extern void fn_1_12A350(void *arg0, s32 arg1);
+
+void fn_1_12A32C(void *arg0) {
+    fn_1_12A350(arg0, 0);
+}

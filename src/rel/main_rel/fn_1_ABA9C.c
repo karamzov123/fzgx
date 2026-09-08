@@ -1,4 +1,15 @@
 #include "types.h"
 
-// fn_1_ABA9C: main_rel .text:0x000ABA9C size 0x10
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct {
+    u8 pad[0x2];
+    u16 field_0x2;
+} OffsetStruct;
+
+typedef struct {
+    u8 pad[0x24];
+    OffsetStruct *ptr_0x24;
+} ArgStruct;
+
+void fn_1_ABA9C(ArgStruct *arg) {
+    arg->ptr_0x24->field_0x2 = 0x12c;
+}

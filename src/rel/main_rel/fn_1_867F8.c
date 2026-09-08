@@ -1,4 +1,13 @@
 #include "types.h"
 
-// fn_1_867F8: main_rel .text:0x000867F8 size 0x18
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct {
+    u8 pad[0x184];
+    f32 value;
+    u8 tail[0x498];
+} Entry;
+
+extern Entry *lbl_1_bss_6D838;
+
+f32 fn_1_867F8(int index) {
+    return lbl_1_bss_6D838[index].value;
+}

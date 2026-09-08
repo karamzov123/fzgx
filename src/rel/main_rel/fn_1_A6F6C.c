@@ -1,4 +1,16 @@
 #include "types.h"
 
-// fn_1_A6F6C: main_rel .text:0x000A6F6C size 0x34
-// Carved by fzgx. Replace this file's body with the matching C.
+extern s16 lbl_1_bss_962;
+extern u32 lbl_1_data_341B8;
+
+s32 fn_1_A6F6C(void) {
+    s32 result = 0;
+
+    if (lbl_1_bss_962 == 0x99) {
+        if (*(s8 *)((u8 *)lbl_1_data_341B8 + 4) == 5) {
+            result = 1;
+        }
+    }
+
+    return result;
+}

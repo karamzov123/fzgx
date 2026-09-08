@@ -1,4 +1,15 @@
 #include "types.h"
 
-// fn_1_6CB4: main_rel .text:0x00006CB4 size 0x24
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct {
+    u8 pad[2];
+    s16 value;
+} Result;
+
+extern u32 lbl_1_bss_F68;
+extern Result *lbl_1_bss_F6C;
+
+void fn_1_6CB4(s16 value) {
+    if (lbl_1_bss_F68 != 0) {
+        lbl_1_bss_F6C->value = value;
+    }
+}

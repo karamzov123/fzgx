@@ -1,4 +1,5 @@
 #include "types.h"
 
-// fn_1_14FD6C: main_rel .text:0x0014FD6C size 0x10
-// Carved by fzgx. Replace this file's body with the matching C.
+s32 fn_1_14FD6C(s32 *arg0, s32 *arg1) {
+    return *arg0 - *arg1;
+}

@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_1_D0E08: main_rel .text:0x000D0E08 size 0x10
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u16 lbl_1_data_3D648[20];
+
+u8* fn_1_D0E08(void) {
+    return (u8*)lbl_1_data_3D648 + 0x16;
+}

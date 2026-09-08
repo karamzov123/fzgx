@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_1_8682C: main_rel .text:0x0008682C size 0x10
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u8 lbl_1_bss_6DA5C[30];
+
+u8 fn_1_8682C(int index) {
+    return lbl_1_bss_6DA5C[index];
+}

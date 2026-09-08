@@ -1,4 +1,14 @@
 #include "types.h"
 
-// fn_1_924CC: main_rel .text:0x000924CC size 0x40
-// Carved by fzgx. Replace this file's body with the matching C.
+extern s32 lbl_1_bss_6E984;
+extern u32 lbl_1_rodata_3FA0[28];
+extern void fn_80007AB4(void *arg0);
+
+void fn_1_924CC(void) {
+    u32 value;
+
+    if (lbl_1_bss_6E984 != 0) {
+        value = lbl_1_rodata_3FA0[0];
+        fn_80007AB4(&value);
+    }
+}

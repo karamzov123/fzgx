@@ -1,4 +1,9 @@
 #include "types.h"
 
-// fn_1_FA854: main_rel .text:0x000FA854 size 0x24
-// Carved by fzgx. Replace this file's body with the matching C.
+extern void fn_1_76BF8(void);
+extern void fn_1_72648(void);
+
+void fn_1_FA854(void) {
+    fn_1_76BF8();
+    fn_1_72648();
+}
