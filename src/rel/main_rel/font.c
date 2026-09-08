@@ -968,9 +968,7 @@ void fn_1_542C4(void *arg0, void *arg1, f32 arg2, f32 arg3, f32 arg4) {
 }
 /* fzgx:end fn_1_542C4 */
 
-/* fzgx:begin fn_1_54320 noprologue */
-#include "types.h"
-
+/* fzgx:begin fn_1_54320 */
 typedef struct fn_1_54320_FontState {
     u8 unk_0[0x30];
     u8 *unk_30;
@@ -980,18 +978,20 @@ typedef struct fn_1_54320_FontState {
     void *unk_48;
 } fn_1_54320_FontState;
 
-extern fn_1_54320_FontState *lbl_801A66CC;
+extern u8 *lbl_801A66CC;
 extern void fn_1_54668(u8 *, s32, s32);
 
 // Initializes the font buffer and records its current and end positions.
 void fn_1_54320(void) {
     fn_1_54320_FontState *state;
 
-    state = lbl_801A66CC;
+    state = (fn_1_54320_FontState *)lbl_801A66CC;
     fn_1_54668(state->unk_30, state->unk_34, 1);
-    lbl_801A66CC->unk_44 =
-        lbl_801A66CC->unk_30 + ((lbl_801A66CC->unk_34 - 1) << 3);
-    lbl_801A66CC->unk_48 = lbl_801A66CC->unk_30;
+    ((fn_1_54320_FontState *)lbl_801A66CC)->unk_44 =
+        ((fn_1_54320_FontState *)lbl_801A66CC)->unk_30 +
+        ((((fn_1_54320_FontState *)lbl_801A66CC)->unk_34 - 1) << 3);
+    ((fn_1_54320_FontState *)lbl_801A66CC)->unk_48 =
+        ((fn_1_54320_FontState *)lbl_801A66CC)->unk_30;
 }
 /* fzgx:end fn_1_54320 */
 
@@ -1082,8 +1082,8 @@ void fn_1_547F8(fn_1_547F8_node *node) {
 }
 /* fzgx:end fn_1_547F8 */
 
-/* fzgx:begin fn_1_54848 noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_54848 */
+extern u8 *lbl_801A66CC;
 
 typedef struct fn_1_54848_FontState {
     u8 pad_1a0[0x1a0];
@@ -1093,12 +1093,15 @@ typedef struct fn_1_54848_FontState {
     u32 unk_1ac;
 } fn_1_54848_FontState;
 
-// Volatile preserves the retail's repeated global-pointer loads.
-extern volatile fn_1_54848_FontState *lbl_801A66CC;
+// Volatile forces each global-state access to retain the retail load ordering.
+typedef volatile fn_1_54848_FontState fn_1_54848_VolatileFontState;
 
+// Synchronize the current and previous font-state values for the next update.
 void fn_1_54848(void) {
-    lbl_801A66CC->unk_1a0 = lbl_801A66CC->unk_1a4;
-    lbl_801A66CC->unk_1ac = lbl_801A66CC->unk_1a8;
+    ((fn_1_54848_VolatileFontState *)lbl_801A66CC)->unk_1a0 =
+        ((fn_1_54848_VolatileFontState *)lbl_801A66CC)->unk_1a4;
+    ((fn_1_54848_VolatileFontState *)lbl_801A66CC)->unk_1ac =
+        ((fn_1_54848_VolatileFontState *)lbl_801A66CC)->unk_1a8;
 }
 /* fzgx:end fn_1_54848 */
 

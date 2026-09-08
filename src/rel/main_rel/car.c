@@ -3029,21 +3029,46 @@ void fn_1_92530(void *arg0) {
 }
 /* fzgx:end fn_1_92530 */
 
-/* fzgx:begin fn_1_935E4 noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_935E4 */
+typedef struct Fn935E4Res {
+    u8 pad0[0x24];
+    void *field_24;
+} Fn935E4Res;
+typedef struct Fn935E4Obj {
+    u8 pad0[8];
+    Fn935E4Res *field_8;
+    void *field_c;
+} Fn935E4Obj;
+typedef struct Fn935E4Slot {
+    u8 pad0[0xa];
+    u16 field_a;
+} Fn935E4Slot;
+typedef struct Fn935E4Node {
+    u8 pad0[0xa];
+    u16 field_a;
+    u8 pad_c[6];
+    u16 field_12;
+    u8 pad14[0x12];
+    u8 field_26;
+    u8 pad27[1];
+    Fn935E4Slot *field_28;
+    u8 pad2c[8];
+    Fn935E4Slot *field_34;
+    u8 pad38[0x14];
+    u8 field_4c;
+} Fn935E4Node;
+typedef struct Fn935E4Car {
+    u8 pad0[0x1c];
+    Fn935E4Node *field_1c;
+} Fn935E4Car;
 
-typedef struct Fn935E4Res { u8 pad0[0x24]; void *field_24; } Fn935E4Res;
-typedef struct Fn935E4Obj { u8 pad0[8]; Fn935E4Res *field_8; void *field_c; } Fn935E4Obj;
-typedef struct Fn935E4Slot { u8 pad0[0xa]; u16 field_a; } Fn935E4Slot;
-typedef struct Fn935E4Node { u8 pad0[0xa]; u16 field_a; u8 pad_c[6]; u16 field_12; u8 pad14[0x12]; u8 field_26; u8 pad27[1]; Fn935E4Slot *field_28; u8 pad2c[8]; Fn935E4Slot *field_34; u8 pad38[0x14]; u8 field_4c; } Fn935E4Node;
-typedef struct Fn935E4Car { u8 pad0[0x1c]; Fn935E4Node *field_1c; } Fn935E4Car;
-extern u32 fn_1_41488(void *, void *);
-extern void *fn_1_41418(void *, u16);
+extern f32 lbl_1_rodata_4010[60];
+extern s32 fn_1_41418(void *, u16);
 extern s32 fn_1_97174(Fn935E4Node *, s32, void *);
 extern void fn_1_943F8(Fn935E4Car *, f32, void *);
-extern f32 lbl_1_rodata_4010[60];
 extern void fn_1_42AD0(void *, s32, u16, s32, u16);
 
+// Updates the selected car resource and applies the corresponding handling flags.
 void fn_1_935E4(Fn935E4Car *arg0, void *arg1, void *arg2, f32 arg3) {
     u16 flags;
     u32 id;
@@ -3051,28 +3076,47 @@ void fn_1_935E4(Fn935E4Car *arg0, void *arg1, void *arg2, f32 arg3) {
     Fn935E4Node *node;
     Fn935E4Slot *slot;
     s32 value;
+
     id = fn_1_41488(((Fn935E4Obj *)arg1)->field_8->field_24, arg2);
-    if (id + 0x10000 == 0xffff) id = 0;
+    if (id + 0x10000 == 0xffff) {
+        id = 0;
+    }
+
     flags = 0;
     if ((void *)arg1 == (void *)((u8 *)arg0 + 0x148)) {
         node = arg0->field_1c;
         if (node != 0) {
-            value = fn_1_97174(node, 0, fn_1_41418(((Fn935E4Obj *)arg1)->field_8->field_24, id));
-            if (value < 0) value = 0;
+            value = fn_1_97174(
+                node, 0,
+                (void *)fn_1_41418(((Fn935E4Obj *)arg1)->field_8->field_24, id));
+            if (value < 0) {
+                value = 0;
+            }
+
             short_value = (u16)value;
             node->field_12 = 0;
             if ((s32)node->field_26 > 0) {
                 slot = node->field_28;
             } else {
-                slot = (Fn935E4Slot *)((u8 *)node->field_34 + (-(s32)node->field_4c) * 0xc);
+                slot = (Fn935E4Slot *)((u8 *)node->field_34
+                    + (-(s32)node->field_4c) * 0xc);
             }
             slot->field_a = short_value;
         }
-        fn_1_943F8(arg0, arg3, fn_1_41418(((Fn935E4Obj *)arg1)->field_c, id));
+
+        fn_1_943F8(
+            arg0, arg3,
+            (void *)fn_1_41418(((Fn935E4Obj *)arg1)->field_c, id));
     }
-    if (arg3 > lbl_1_rodata_4010[0]) flags |= 0xc0;
-    else flags |= 0x60;
-    fn_1_42AD0(((Fn935E4Obj *)arg1)->field_8, 0, (u16)id, (s32)arg3, flags);
+
+    if (arg3 > lbl_1_rodata_4010[0]) {
+        flags |= 0xc0;
+    } else {
+        flags |= 0x60;
+    }
+
+    fn_1_42AD0(
+        ((Fn935E4Obj *)arg1)->field_8, 0, (u16)id, (s32)arg3, flags);
     ((u16 *)arg1)[0] = (u16)id;
 }
 /* fzgx:end fn_1_935E4 */

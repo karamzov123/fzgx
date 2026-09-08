@@ -21678,17 +21678,6 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/spline/fn_1_FA1A8.c",
-    "symbols": [
-      "fn_1_FA1A8"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": [],
-    "tu": "rel/main_rel/spline.c"
-  },
-  {
-    "module": "main_rel",
     "source": "rel/main_rel/spline/fn_1_FA450.c",
     "symbols": [
       "fn_1_FA450"

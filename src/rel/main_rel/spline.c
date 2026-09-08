@@ -809,15 +809,11 @@ void fn_1_F9E4C(void) {
 }
 /* fzgx:end fn_1_F9E4C */
 
-/* fzgx:begin fn_1_F9EE4 noprologue */
-#include "types.h"
-
-extern u32 fn_80008BEC(u32, u32, u32);
-extern u32 lbl_1_bss_7F0C0;
-
-void fn_1_F9EE4(u32 arg0) {
-    *(u16 *)((u8 *)((u8 *)&lbl_1_bss_7F0C0 + ((arg0 & 0xFF) * 48)) + 102) = 0;
-    fn_80008BEC((u32)((u8 *)((u8 *)&lbl_1_bss_7F0C0 + ((arg0 & 0xFF) * 48)) + 108), 0, 40);
+/* fzgx:begin fn_1_F9EE4 */
+// Reset one spline slot and clear its working buffer.
+void fn_1_F9EE4(s32 arg0) {
+    *(u16 *)((u8 *)&lbl_1_bss_7F0C0 + ((arg0 & 0xFF) * 0x30) + 0x66) = 0;
+    fn_80008BEC((u8 *)&lbl_1_bss_7F0C0 + ((arg0 & 0xFF) * 0x30) + 0x6C, 0, 0x28);
 }
 /* fzgx:end fn_1_F9EE4 */
 
@@ -877,18 +873,6 @@ u32 fn_1_FA088(void) {
     return (*(u8 *)(ptr + 2)) & 2;
 }
 /* fzgx:end fn_1_FA088 */
-
-/* fzgx:begin fn_1_FA1A8 noprologue */
-#include "types.h"
-
-extern s32 fn_1_FA69C(s16 value);
-
-// Return one when the signed spline lookup result is nonzero.
-u32 fn_1_FA1A8(s32 value) {
-    s32 lookup = fn_1_FA69C((s16)value);
-    return (u32)(lookup != 0);
-}
-/* fzgx:end fn_1_FA1A8 */
 
 /* fzgx:begin fn_1_FA450 */
 // Store the value when initialization permits the update.

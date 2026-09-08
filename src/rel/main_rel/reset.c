@@ -30,55 +30,60 @@ extern void fn_80070F44(void);
 extern void fn_1_D3B6C(void);
 extern void fn_80071100(void);
 
-/* fzgx:begin fn_1_D3214 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/reset.h"
-
+/* fzgx:begin fn_1_D3214 */
 extern s32 fn_1_B7E48(void);
 extern void fn_8001AF64(void);
-extern void VISetBlack(s32);
+extern void VISetBlack(int arg0);
 extern void fn_8006B224(void);
-extern void fn_8006FFCC(s32);
+extern void fn_8006FFCC(int arg0);
 extern void fn_8006FDEC(void);
 extern void fn_8006FEFC(void);
-extern void fn_8000EE50(u32, u32);
+extern void fn_8000EE50(void *arg0, void *arg1);
 extern void fn_1_C37A0(void);
 extern void fn_1_F7578(void);
 extern void fn_1_A0AA4(void);
 extern void fn_1_A02F0(void);
-extern void OSResetSystem(s32, u32, u32);
-extern void OSPanic(const char *, ...);
-extern void *memset(u32, s32, u32);
-extern void *memcpy(u32, u32, u32);
+extern void OSResetSystem(int reset, u32 reset_code, int force);
+extern int OSPanic(void *arg0, int arg1, ...);
+extern void *memset(void *dest, int value, unsigned long size);
+extern void *memcpy(void *dest, const void *src, unsigned long size);
 extern u8 lbl_801A66B0[4];
 
-// Performs the pending reset after the reset request has been accepted.
+#define RESET_AREA ((u8 *)((u32)0x8070 << 16))
+
+// Completes an accepted reset request and transfers control to the reset system.
 void fn_1_D3214(void) {
     Obj_1_bss_7AD48 *state = &lbl_1_bss_7AD48;
+    int result;
+    u32 callback;
 
     if (state->unk_0 != 0 || state->unk_1 != 0) {
-        if (fn_1_B7E48() == 0 && state->unk_2 == 0) {
+        result = fn_1_B7E48();
+        if (result == 0 && state->unk_2 == 0) {
             state->unk_2 = 1;
             fn_8001AF64();
             VISetBlack(1);
-            if (state->unk_4 == 0 || ((s32 (*)(void))state->unk_4)() != 0) {
-                fn_1_C37A0();
-                fn_1_F7578();
-                fn_8006B224();
-                fn_1_A0AA4();
-                fn_1_A02F0();
-                fn_8006FFCC(0);
-                fn_8006FDEC();
-                fn_8006FEFC();
-                fn_8000EE50(0x80700000, 0x80700020); // fzgx-allow: A1 fixed MEM1 scratch address
-                memset(0x80700000, 0, 0x20); // fzgx-allow: A1 fixed MEM1 scratch address
-                memcpy(0x80700000, (u32)lbl_801A66B0, 4); // fzgx-allow: A1 fixed MEM1 scratch address
-                state->unk_0 = 0;
-                OSResetSystem(0, state->unk_8, 0);
-                OSPanic((const char *)&lbl_1_data_3DBC0, 0x76,
-                            (const char *)lbl_1_data_3DBC8);
+            callback = state->unk_4;
+            if (callback != 0) {
+                result = ((int (*)(void))callback)();
+                if (result == 0) {
+                    return;
+                }
             }
+            fn_1_C37A0();
+            fn_1_F7578();
+            fn_8006B224();
+            fn_1_A0AA4();
+            fn_1_A02F0();
+            fn_8006FFCC(0);
+            fn_8006FDEC();
+            fn_8006FEFC();
+            fn_8000EE50(RESET_AREA, RESET_AREA + 0x20);
+            memset(RESET_AREA, 0, 0x20);
+            memcpy(RESET_AREA, lbl_801A66B0, 4);
+            state->unk_0 = 0;
+            OSResetSystem(0, state->unk_8, 0);
+            OSPanic(&lbl_1_data_3DBC0, 0x76, lbl_1_data_3DBC8);
         }
     }
 }

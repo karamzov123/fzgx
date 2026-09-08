@@ -119,11 +119,7 @@ void fn_1_58D38(void) {
 }
 /* fzgx:end fn_1_58D38 */
 
-/* fzgx:begin fn_1_58F50 noprologue */
-#include "rel/main_rel/effect.h"
-
-extern s32 fn_1_3FC8C(void);
-extern s32 fn_1_3FC58(void);
+/* fzgx:begin fn_1_58F50 */
 extern u8 lbl_1_data_1D1D8[276];
 
 typedef struct {
@@ -136,6 +132,7 @@ typedef struct {
     u8 pad_E[0xDA];
 } EffectEntry;
 
+/* Allocate an effect entry, initialize it, and return its sequence number. */
 s16 fn_1_58F50(const void *source) {
     EffectEntry *entry;
     s32 index;

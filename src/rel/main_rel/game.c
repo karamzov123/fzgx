@@ -146,14 +146,17 @@ void fn_1_35178(u32* arg0) {
 }
 /* fzgx:end fn_1_35178 */
 
-/* fzgx:begin fn_1_36A94 noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_36A94 */
+extern u8 lbl_1_bss_5480[132864];
+extern void fn_80008BA8(void *arg1, void *arg2, u32 size);
 
-extern u32 fn_80008BA8(void *, u32, u32);
-extern u32 lbl_1_bss_5480;
-
+// Clears one indexed 0x81c0-byte entry in the shared buffer.
 void fn_1_36A94(u32 arg0, u32 arg1) {
-    fn_80008BA8(((u8 *)&lbl_1_bss_5480 + ((arg0 & 0xFF) * (0x10000 - 32320))), arg1, (0x10000 - 32320));
+    u8 *entry = lbl_1_bss_5480;
+    u32 stride = 0x81c0;
+    u32 offset = (arg0 & 0xFF) * stride;
+
+    fn_80008BA8(entry + offset, (void *)arg1, stride);
 }
 /* fzgx:end fn_1_36A94 */
 

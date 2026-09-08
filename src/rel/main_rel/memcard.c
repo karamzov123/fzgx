@@ -1678,9 +1678,7 @@ u32 fn_1_B7F08(void) {
 }
 /* fzgx:end fn_1_B7F08 */
 
-/* fzgx:begin fn_1_B7F24 noprologue */
-#include "types.h"
-
+/* fzgx:begin fn_1_B7F24 */
 typedef struct {
     u8 pad_0[0x48];
     u32 unk_48;
@@ -1690,20 +1688,19 @@ typedef struct {
     u32 unk_E8;
     u32 unk_EC;
     u32 unk_F0;
-} MemcardState;
+} MemcardResetView;
 
-extern MemcardState lbl_1_bss_716C8;
-extern s8 lbl_1_bss_7730A;
-
-// Reset the memcard state used by the next operation.
+// Clear the operation state and mark the memory card as unavailable.
 void fn_1_B7F24(void) {
-    lbl_1_bss_716C8.unk_50 = 0;
-    lbl_1_bss_716C8.unk_F0 = 0;
-    lbl_1_bss_716C8.unk_4C = 0;
-    lbl_1_bss_716C8.unk_48 = 0;
-    lbl_1_bss_716C8.unk_EC = 0;
-    lbl_1_bss_716C8.unk_E8 = 0;
-    lbl_1_bss_7730A = -1;
+#define reset_state (*(MemcardResetView *)&lbl_1_bss_716C8)
+
+    reset_state.unk_50 = 0;
+    reset_state.unk_F0 = 0;
+    reset_state.unk_4C = 0;
+    reset_state.unk_48 = 0;
+    reset_state.unk_EC = 0;
+    reset_state.unk_E8 = 0;
+    *(s8 *)&lbl_1_bss_7730A = -1;
 }
 /* fzgx:end fn_1_B7F24 */
 
