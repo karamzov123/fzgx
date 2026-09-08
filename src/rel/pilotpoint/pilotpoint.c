@@ -159,3 +159,11 @@ void fn_14_C698(void) {
 void fn_14_DC28(void) {
 }
 /* fzgx:end fn_14_DC28 */
+
+/* fzgx:begin fn_14_DC6C */
+extern u32 lbl_14_data_6C8;
+
+u32 fn_14_DC6C(u32 arg0, u32 arg1) {
+    return *(u32 *)((u8 *)((u8 *)&lbl_14_data_6C8 + ((s16)arg0 * 24)) + ((s16)arg1 << 2));
+}
+/* fzgx:end fn_14_DC6C */

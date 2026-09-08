@@ -25719,6 +25719,17 @@
     "tu": "rel/pilotpoint/pilotpoint.c"
   },
   {
+    "module": "pilotpoint",
+    "source": "rel/pilotpoint/pilotpoint/fn_14_DC6C.c",
+    "symbols": [
+      "fn_14_DC6C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/pilotpoint/pilotpoint.c"
+  },
+  {
     "module": "profile",
     "source": "rel/profile/fn_16_2328.c",
     "symbols": [
