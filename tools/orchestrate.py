@@ -220,7 +220,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--shadow", action="store_true",
                     help="A/B trial: run on already-matched functions without relinking or committing")
     ap.add_argument("--revise", action="store_true",
-                    help="rewrite already-matched functions for readability; kept only if still 100%")
+                    help="rewrite already-matched functions for readability; kept only if still 100%%")
     a = ap.parse_args(argv)
     model = a.model or ("haiku" if a.harness == "claude" else "gpt-5.6-luna")
     p = Project()

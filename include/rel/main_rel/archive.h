@@ -19,32 +19,35 @@ extern u8 lbl_1_data_40608[0xA];
 // lbl_1_bss_897AC: .bss size 0x1B34, 5 refs from archive.c
 typedef struct {
     u32 unk_0;  // 1 loads, 0 stores
-    u8 pad_4[0x1B30];
+    u8 pad_4[0x64];
+    u32 unk_68;  // 2 loads, 0 stores
+    u8 pad_6C[0x1AC8];
 } Obj_1_bss_897AC;
 extern Obj_1_bss_897AC lbl_1_bss_897AC;
 
 // lbl_1_data_40798: .data size 0x9, 5 refs from archive.c (own data block)
 extern u8 lbl_1_data_40798[0x9];
 
+// lbl_1_data_40600: .data size 0x8, 4 refs from archive.c
+extern u32 lbl_1_data_40600;
+
 // lbl_1_bss_8B2E0: .bss size 0xC0, 4 refs from archive.c
 typedef struct {
-    u32 unk_0;  // 0 loads, 1 stores
+    u32 unk_0;  // 3 loads, 1 stores
     u8 pad_4[0xBC];
 } Obj_1_bss_8B2E0;
 extern Obj_1_bss_8B2E0 lbl_1_bss_8B2E0;
 
-// lbl_1_data_40600: .data size 0x8, 4 refs from archive.c
-extern u32 lbl_1_data_40600;
+// lbl_1_data_4076C: .data size 0x28, 3 refs from archive.c (own data block)
+extern u8 lbl_1_data_4076C[0x28];
 
 // lbl_1_bss_8B56C: .bss size 0x60, 3 refs from archive.c
 typedef struct {
-    u32 unk_0;  // 6 loads, 0 stores
-    u8 pad_4[0x5C];
+    u32 unk_0;  // 6 loads, 3 stores
+    u32 unk_4;  // 2 loads, 4 stores
+    u8 pad_8[0x58];
 } Obj_1_bss_8B56C;
 extern Obj_1_bss_8B56C lbl_1_bss_8B56C;
-
-// lbl_1_data_4076C: .data size 0x28, 3 refs from archive.c (own data block)
-extern u8 lbl_1_data_4076C[0x28];
 
 // lbl_1_data_407BC: .data size 0xC, 2 refs from archive.c (own data block)
 extern u8 lbl_1_data_407BC[0xC];
@@ -55,11 +58,37 @@ extern u32 lbl_1_bss_8B5EC;
 // lbl_1_data_40D50: .data size 0x20, 2 refs from archive.c (own data block)
 extern u8 lbl_1_data_40D50[0x20];
 
+// lbl_1_data_40A7C: .data size 0x124, 1 refs from archive.c (own data block)
+extern u8 lbl_1_data_40A7C[0x124];
+
+// lbl_1_data_40BC0: .data size 0x13, 1 refs from archive.c (own data block)
+extern u8 lbl_1_data_40BC0[0x13];
+
+// lbl_1_data_40BB8: .data size 0x8, 1 refs from archive.c (own data block)
+extern u32 lbl_1_data_40BB8;
+
 // lbl_1_data_40BA0: .data size 0x10, 1 refs from archive.c (own data block)
 extern u8 lbl_1_data_40BA0[0x10];
 
 // lbl_1_data_40720: .data size 0x30, 1 refs from archive.c (own data block)
 extern u8 lbl_1_data_40720[0x30];
+
+// lbl_1_data_40750: .data size 0x1A, 1 refs from archive.c (own data block)
+extern u8 lbl_1_data_40750[0x1A];
+
+// jumptable_1_data_40CC8: .data size 0x88, 1 refs from archive.c (own data block)
+extern u8 jumptable_1_data_40CC8[0x88];
+
+// lbl_1_data_40BD8: .data size 0xF0, 1 refs from archive.c (own data block)
+typedef struct {
+    u8 pad_0[0x4];
+    f32 unk_4;  // 6 loads, 0 stores
+    u8 pad_8[0xE8];
+} Obj_1_data_40BD8;
+extern Obj_1_data_40BD8 lbl_1_data_40BD8;
+
+// lbl_1_data_40614: .data size 0x10C, 1 refs from archive.c (own data block)
+extern u8 lbl_1_data_40614[0x10C];
 
 // lbl_1_data_40E7C: .data size 0x12, 1 refs from archive.c (own data block)
 extern u8 lbl_1_data_40E7C[0x12];
@@ -69,33 +98,5 @@ extern u8 lbl_1_data_40E90[0x12];
 
 // lbl_1_data_40BB0: .data size 0x8, 1 refs from archive.c (own data block)
 extern u32 lbl_1_data_40BB0;
-
-// lbl_1_data_40BC0: .data size 0x13, 1 refs from archive.c (own data block)
-extern u8 lbl_1_data_40BC0[0x13];
-
-// lbl_1_data_40750: .data size 0x1A, 1 refs from archive.c (own data block)
-extern u8 lbl_1_data_40750[0x1A];
-
-// lbl_1_data_40A7C: .data size 0x124, 1 refs from archive.c (own data block)
-extern u8 lbl_1_data_40A7C[0x124];
-
-// lbl_1_data_40614: .data size 0x10C, 1 refs from archive.c (own data block)
-extern u8 lbl_1_data_40614[0x10C];
-
-// jumptable_1_data_40CC8: .data size 0x88, 1 refs from archive.c (own data block)
-extern u8 jumptable_1_data_40CC8[0x88];
-
-// lbl_1_data_40BD8: .data size 0xF0, 1 refs from archive.c (own data block)
-typedef struct {
-    u8 pad_0[0x4];
-    f32 unk_4;  // 2 loads, 0 stores
-    u8 pad_8[0x4];
-    f32 unk_C;  // 3 loads, 0 stores
-    u8 pad_10[0xE0];
-} Obj_1_data_40BD8;
-extern Obj_1_data_40BD8 lbl_1_data_40BD8;
-
-// lbl_1_data_40BB8: .data size 0x8, 1 refs from archive.c (own data block)
-extern u32 lbl_1_data_40BB8;
 
 #endif  // REL_MAIN_REL_ARCHIVE_H

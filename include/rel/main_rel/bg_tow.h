@@ -14,11 +14,11 @@ typedef struct {
 } Obj_1_data_49AB4;
 extern Obj_1_data_49AB4 lbl_1_data_49AB4;
 
-// lbl_1_bss_8ED90: .bss size 0x4, 3 refs from bg_tow.c
-extern u32 lbl_1_bss_8ED90;
-
 // lbl_1_data_49A18: .data size 0x14, 3 refs from bg_tow.c (own data block)
 extern u8 lbl_1_data_49A18[0x14];
+
+// lbl_1_bss_8ED90: .bss size 0x4, 3 refs from bg_tow.c
+extern u32 lbl_1_bss_8ED90;
 
 // lbl_1_bss_8EDA4: .bss size 0x4C, 2 refs from bg_tow.c
 typedef struct {

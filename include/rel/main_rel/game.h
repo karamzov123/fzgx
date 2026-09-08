@@ -10,13 +10,6 @@
 // lbl_1_bss_5480: .bss size 0x20700, 7 refs from game.c
 extern u8 lbl_1_bss_5480[0x20700];
 
-// lbl_1_bss_3C12: .bss size 0xA, 6 refs from game.c
-typedef struct {
-    u8 unk_0;  // 6 loads, 0 stores
-    u8 pad_1[0x9];
-} Obj_1_bss_3C12;
-extern Obj_1_bss_3C12 lbl_1_bss_3C12;
-
 // lbl_1_bss_6EAD0: .bss size 0x708, 6 refs from game.c
 typedef struct {
     u32 unk_0;  // 23 loads, 0 stores
@@ -28,11 +21,18 @@ typedef struct {
 } Obj_1_bss_6EAD0;
 extern Obj_1_bss_6EAD0 lbl_1_bss_6EAD0;
 
-// lbl_1_bss_26C28: .bss size 0x4, 5 refs from game.c
-extern u32 lbl_1_bss_26C28;
+// lbl_1_bss_3C12: .bss size 0xA, 6 refs from game.c
+typedef struct {
+    u8 unk_0;  // 6 loads, 0 stores
+    u8 pad_1[0x9];
+} Obj_1_bss_3C12;
+extern Obj_1_bss_3C12 lbl_1_bss_3C12;
 
 // lbl_1_bss_7F04C: .bss size 0x4, 5 refs from game.c
 extern u32 lbl_1_bss_7F04C;
+
+// lbl_1_bss_26C28: .bss size 0x4, 5 refs from game.c
+extern u32 lbl_1_bss_26C28;
 
 // lbl_1_bss_25B88: .bss size 0x10, 5 refs from game.c
 typedef struct {
@@ -51,15 +51,6 @@ typedef struct {
 } Obj_1_bss_25BA0;
 extern Obj_1_bss_25BA0 lbl_1_bss_25BA0;
 
-// lbl_1_data_1A2B4: .data size 0xB0, 4 refs from game.c
-extern u8 lbl_1_data_1A2B4[0xB0];
-
-// lbl_1_bss_3820C: .bss size 0x1, 4 refs from game.c
-extern u8 lbl_1_bss_3820C;
-
-// lbl_1_data_5B7C: .data size 0x1, 4 refs from game.c
-extern u8 lbl_1_data_5B7C;
-
 // lbl_1_bss_25CA4: .bss size 0x2C, 4 refs from game.c
 typedef struct {
     u32 unk_0;  // 4 loads, 0 stores
@@ -67,8 +58,14 @@ typedef struct {
 } Obj_1_bss_25CA4;
 extern Obj_1_bss_25CA4 lbl_1_bss_25CA4;
 
-// lbl_1_bss_3C2A: .bss size 0x6, 3 refs from game.c
-extern s16 lbl_1_bss_3C2A;
+// lbl_1_bss_3820C: .bss size 0x1, 4 refs from game.c
+extern u8 lbl_1_bss_3820C;
+
+// lbl_1_data_5B7C: .data size 0x1, 4 refs from game.c
+extern u8 lbl_1_data_5B7C;
+
+// lbl_1_data_1A2B4: .data size 0xB0, 4 refs from game.c
+extern u8 lbl_1_data_1A2B4[0xB0];
 
 // lbl_1_bss_3C1C: .bss size 0xE, 3 refs from game.c
 typedef struct {
@@ -77,110 +74,20 @@ typedef struct {
 } Obj_1_bss_3C1C;
 extern Obj_1_bss_3C1C lbl_1_bss_3C1C;
 
+// lbl_1_bss_3C2A: .bss size 0x6, 3 refs from game.c
+extern s16 lbl_1_bss_3C2A;
+
 // lbl_1_bss_38450: .bss size 0x4, 3 refs from game.c
 extern u32 lbl_1_bss_38450;
 
-// lbl_1_bss_17AC: .bss size 0x1, 2 refs from game.c
-extern u8 lbl_1_bss_17AC;
-
-// lbl_1_bss_8E51D: .bss size 0x1, 2 refs from game.c
-extern u8 lbl_1_bss_8E51D;
-
-// lbl_1_bss_2625C: .bss size 0x20, 2 refs from game.c
-typedef struct {
-    u8 unk_0;  // 1 loads, 0 stores
-    u8 pad_1[0x1F];
-} Obj_1_bss_2625C;
-extern Obj_1_bss_2625C lbl_1_bss_2625C;
-
-// lbl_1_bss_25C48: .bss size 0x5C, 2 refs from game.c
-typedef struct {
-    s16 unk_0;  // 1 loads, 0 stores
-    u8 pad_2[0x5A];
-} Obj_1_bss_25C48;
-extern Obj_1_bss_25C48 lbl_1_bss_25C48;
-
-// lbl_1_bss_962: .bss size 0x2, 2 refs from game.c
-extern s16 lbl_1_bss_962;
-
-// lbl_1_bss_381F5: .bss size 0x1, 2 refs from game.c
-extern u8 lbl_1_bss_381F5;
+// lbl_1_bss_25E98: .bss size 0x1, 2 refs from game.c
+extern u8 lbl_1_bss_25E98;
 
 // lbl_1_bss_26C64: .bss size 0x4, 2 refs from game.c
 extern u32 lbl_1_bss_26C64;
 
-// lbl_1_bss_38200: .bss size 0x1, 2 refs from game.c
-extern u8 lbl_1_bss_38200;
-
-// lbl_1_bss_26B50: .bss size 0x4, 2 refs from game.c
-extern u32 lbl_1_bss_26B50;
-
-// lbl_1_bss_5104: .bss size 0x34, 2 refs from game.c
-typedef struct {
-    u8 unk_0;  // 1 loads, 1 stores
-    u8 pad_1[0x33];
-} Obj_1_bss_5104;
-extern Obj_1_bss_5104 lbl_1_bss_5104;
-
-// lbl_1_bss_38204: .bss size 0x8, 2 refs from game.c
-extern u32 lbl_1_bss_38204;
-
-// lbl_1_data_66E0: .data size 0x10, 2 refs from game.c (own data block)
-extern u8 lbl_1_data_66E0[0x10];
-
-// lbl_1_bss_3845C: .bss size 0x4, 2 refs from game.c
-extern u32 lbl_1_bss_3845C;
-
-// lbl_1_data_66F0: .data size 0x10, 2 refs from game.c (own data block)
-extern u8 lbl_1_data_66F0[0x10];
-
-// lbl_1_bss_381F8: .bss size 0x4, 2 refs from game.c
-extern u32 lbl_1_bss_381F8;
-
-// lbl_1_bss_5138: .bss size 0x104, 2 refs from game.c
-typedef struct {
-    u16 unk_0;  // 1 loads, 2 stores
-    u8 unk_2;  // 4 loads, 3 stores
-    u8 unk_3;  // 3 loads, 2 stores
-    u8 pad_4[0xC];
-    u16 unk_10;  // 0 loads, 1 stores
-    u16 unk_12;  // 0 loads, 1 stores
-    u8 pad_14[0x8];
-    f32 unk_1C;  // 0 loads, 1 stores
-    u8 unk_20;  // 0 loads, 1 stores
-    u8 pad_21[0xBF];
-    u8 unk_E0;  // 1 loads, 2 stores
-    u8 unk_E1;  // 0 loads, 10 stores
-    u8 unk_E2;  // 1 loads, 3 stores
-    u8 unk_E3;  // 1 loads, 1 stores
-    u8 unk_E4;  // 5 loads, 3 stores
-    u8 unk_E5;  // 2 loads, 1 stores
-    u8 pad_E6[0x5];
-    u8 unk_EB;  // 2 loads, 2 stores
-    u8 pad_EC[0x18];
-} Obj_1_bss_5138;
-extern Obj_1_bss_5138 lbl_1_bss_5138;
-
-// lbl_1_data_6608: .data size 0xF, 2 refs from game.c (own data block)
-extern u8 lbl_1_data_6608[0xF];
-
-// lbl_1_data_6618: .data size 0x14, 2 refs from game.c (own data block)
-extern u8 lbl_1_data_6618[0x14];
-
-// lbl_1_data_62EC: .data size 0x7, 2 refs from game.c (own data block)
-extern u32 lbl_1_data_62EC;
-
-// lbl_1_data_66A0: .data size 0x20, 2 refs from game.c (own data block)
-extern u8 lbl_1_data_66A0[0x20];
-
 // lbl_1_bss_5100: .bss size 0x4, 2 refs from game.c
 extern u32 lbl_1_bss_5100;
-
-// lbl_1_bss_3C11: .bss size 0x1, 2 refs from game.c
-extern u8 lbl_1_bss_3C11;
-
-// lbl_1_bss_26C58: .bss size 0x1, 2 refs from game.c
-extern u8 lbl_1_bss_26C58;
 
 // lbl_1_bss_8B5F4: .bss size 0x20, 2 refs from game.c
 typedef struct {
@@ -193,23 +100,87 @@ typedef struct {
 } Obj_1_bss_8B5F4;
 extern Obj_1_bss_8B5F4 lbl_1_bss_8B5F4;
 
-// lbl_1_bss_25B98: .bss size 0x2, 2 refs from game.c
-extern u16 lbl_1_bss_25B98;
+// lbl_1_data_66E0: .data size 0x10, 2 refs from game.c (own data block)
+extern u8 lbl_1_data_66E0[0x10];
 
-// lbl_1_bss_53F4: .bss size 0x2, 2 refs from game.c
-extern u16 lbl_1_bss_53F4;
+// lbl_1_data_66F0: .data size 0x10, 2 refs from game.c (own data block)
+extern u8 lbl_1_data_66F0[0x10];
 
-// lbl_1_bss_25E98: .bss size 0x1, 2 refs from game.c
-extern u8 lbl_1_bss_25E98;
+// lbl_1_bss_17AC: .bss size 0x1, 2 refs from game.c
+extern u8 lbl_1_bss_17AC;
 
-// lbl_1_bss_9C: .bss size 0x1, 2 refs from game.c
-extern u8 lbl_1_bss_9C;
+// lbl_1_bss_381F8: .bss size 0x4, 2 refs from game.c
+extern u32 lbl_1_bss_381F8;
 
 // lbl_1_bss_38210: .bss size 0x4, 2 refs from game.c
 extern u32 lbl_1_bss_38210;
 
 // lbl_1_bss_38214: .bss size 0x4, 2 refs from game.c
 extern u32 lbl_1_bss_38214;
+
+// lbl_1_data_66A0: .data size 0x20, 2 refs from game.c (own data block)
+extern u8 lbl_1_data_66A0[0x20];
+
+// lbl_1_bss_25B98: .bss size 0x2, 2 refs from game.c
+extern u16 lbl_1_bss_25B98;
+
+// lbl_1_data_6700: .data size 0x7, 2 refs from game.c (own data block)
+extern u32 lbl_1_data_6700;
+
+// lbl_1_data_6708: .data size 0x7, 2 refs from game.c (own data block)
+extern u32 lbl_1_data_6708;
+
+// lbl_1_bss_26C58: .bss size 0x1, 2 refs from game.c
+extern u8 lbl_1_bss_26C58;
+
+// lbl_1_bss_3C11: .bss size 0x1, 2 refs from game.c
+extern u8 lbl_1_bss_3C11;
+
+// lbl_1_bss_2625C: .bss size 0x20, 2 refs from game.c
+typedef struct {
+    u8 unk_0;  // 1 loads, 0 stores
+    u8 pad_1[0x1F];
+} Obj_1_bss_2625C;
+extern Obj_1_bss_2625C lbl_1_bss_2625C;
+
+// lbl_1_bss_5138: .bss size 0x104, 2 refs from game.c
+typedef struct {
+    u16 unk_0;  // 1 loads, 2 stores
+    u8 unk_2;  // 4 loads, 3 stores
+    u8 unk_3;  // 3 loads, 2 stores
+    u8 pad_4[0x4];
+    u16 unk_8;  // 0 loads, 2 stores
+    u8 pad_A[0x6];
+    u16 unk_10;  // 0 loads, 1 stores
+    u16 unk_12;  // 0 loads, 1 stores
+    u8 pad_14[0x8];
+    f32 unk_1C;  // 0 loads, 1 stores
+    u8 unk_20;  // 0 loads, 1 stores
+    u8 pad_21[0xBF];
+    u8 unk_E0;  // 1 loads, 2 stores
+    u8 unk_E1;  // 0 loads, 10 stores
+    u8 unk_E2;  // 1 loads, 3 stores
+    u8 unk_E3;  // 1 loads, 1 stores
+    u8 unk_E4;  // 5 loads, 3 stores
+    u8 unk_E5;  // 2 loads, 1 stores
+    u8 unk_E6;  // 0 loads, 1 stores
+    u8 pad_E7[0x4];
+    u8 unk_EB;  // 2 loads, 2 stores
+    u8 pad_EC[0x18];
+} Obj_1_bss_5138;
+extern Obj_1_bss_5138 lbl_1_bss_5138;
+
+// lbl_1_data_6608: .data size 0xF, 2 refs from game.c (own data block)
+extern u8 lbl_1_data_6608[0xF];
+
+// lbl_1_data_6618: .data size 0x14, 2 refs from game.c (own data block)
+extern u8 lbl_1_data_6618[0x14];
+
+// lbl_1_bss_38200: .bss size 0x1, 2 refs from game.c
+extern u8 lbl_1_bss_38200;
+
+// lbl_1_bss_3845C: .bss size 0x4, 2 refs from game.c
+extern u32 lbl_1_bss_3845C;
 
 // lbl_1_bss_D58: .bss size 0x18, 2 refs from game.c
 typedef struct {
@@ -225,11 +196,61 @@ typedef struct {
 } Obj_1_bss_D58;
 extern Obj_1_bss_D58 lbl_1_bss_D58;
 
-// lbl_1_data_6708: .data size 0x7, 2 refs from game.c (own data block)
-extern u32 lbl_1_data_6708;
+// lbl_1_bss_53F4: .bss size 0x2, 2 refs from game.c
+extern u16 lbl_1_bss_53F4;
 
-// lbl_1_data_6700: .data size 0x7, 2 refs from game.c (own data block)
-extern u32 lbl_1_data_6700;
+// lbl_1_bss_5104: .bss size 0x34, 2 refs from game.c
+typedef struct {
+    u8 unk_0;  // 1 loads, 1 stores
+    u8 pad_1[0x33];
+} Obj_1_bss_5104;
+extern Obj_1_bss_5104 lbl_1_bss_5104;
+
+// lbl_1_bss_381F5: .bss size 0x1, 2 refs from game.c
+extern u8 lbl_1_bss_381F5;
+
+// lbl_1_bss_26B50: .bss size 0x4, 2 refs from game.c
+extern u32 lbl_1_bss_26B50;
+
+// lbl_1_data_62EC: .data size 0x7, 2 refs from game.c (own data block)
+extern u32 lbl_1_data_62EC;
+
+// lbl_1_bss_25C48: .bss size 0x5C, 2 refs from game.c
+typedef struct {
+    s16 unk_0;  // 1 loads, 0 stores
+    u8 pad_2[0x5A];
+} Obj_1_bss_25C48;
+extern Obj_1_bss_25C48 lbl_1_bss_25C48;
+
+// lbl_1_bss_38204: .bss size 0x8, 2 refs from game.c
+extern u32 lbl_1_bss_38204;
+
+// lbl_1_bss_962: .bss size 0x2, 2 refs from game.c
+extern s16 lbl_1_bss_962;
+
+// lbl_1_bss_9C: .bss size 0x1, 2 refs from game.c
+extern u8 lbl_1_bss_9C;
+
+// lbl_1_bss_8E51D: .bss size 0x1, 2 refs from game.c
+extern u8 lbl_1_bss_8E51D;
+
+// lbl_1_data_66C0: .data size 0x10, 1 refs from game.c (own data block)
+extern u8 lbl_1_data_66C0[0x10];
+
+// lbl_1_data_66D0: .data size 0x10, 1 refs from game.c (own data block)
+extern u8 lbl_1_data_66D0[0x10];
+
+// lbl_1_data_65E8: .data size 0x17, 1 refs from game.c (own data block)
+extern u8 lbl_1_data_65E8[0x17];
+
+// lbl_1_data_662C: .data size 0xD, 1 refs from game.c (own data block)
+extern u8 lbl_1_data_662C[0xD];
+
+// lbl_1_data_6400: .data size 0x11, 1 refs from game.c (own data block)
+extern u8 lbl_1_data_6400[0x11];
+
+// lbl_1_data_6710: .data size 0x10, 1 refs from game.c (own data block)
+extern u8 lbl_1_data_6710[0x10];
 
 // lbl_1_data_6414: .data size 0x1D4, 1 refs from game.c (own data block)
 extern u8 lbl_1_data_6414[0x1D4];
@@ -239,23 +260,5 @@ extern u32 lbl_1_data_6600;
 
 // lbl_1_data_62F4: .data size 0x10C, 1 refs from game.c (own data block)
 extern u8 lbl_1_data_62F4[0x10C];
-
-// lbl_1_data_65E8: .data size 0x17, 1 refs from game.c (own data block)
-extern u8 lbl_1_data_65E8[0x17];
-
-// lbl_1_data_662C: .data size 0xD, 1 refs from game.c (own data block)
-extern u8 lbl_1_data_662C[0xD];
-
-// lbl_1_data_6710: .data size 0x10, 1 refs from game.c (own data block)
-extern u8 lbl_1_data_6710[0x10];
-
-// lbl_1_data_6400: .data size 0x11, 1 refs from game.c (own data block)
-extern u8 lbl_1_data_6400[0x11];
-
-// lbl_1_data_66C0: .data size 0x10, 1 refs from game.c (own data block)
-extern u8 lbl_1_data_66C0[0x10];
-
-// lbl_1_data_66D0: .data size 0x10, 1 refs from game.c (own data block)
-extern u8 lbl_1_data_66D0[0x10];
 
 #endif  // REL_MAIN_REL_GAME_H

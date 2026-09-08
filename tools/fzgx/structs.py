@@ -16,6 +16,8 @@ named by offset (`u32 unk_3C;`) that a librarian can rename.
 
 from __future__ import annotations
 
+import os
+
 import re
 from collections import defaultdict
 from pathlib import Path
@@ -40,6 +42,7 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
         lambda: {"width": 0, "float": False, "loads": 0, "stores": 0, "widths": {}, "signed": False})
     users: List[str] = []
     kinds = defaultdict(int)
+    stride_seen: Dict[str, int] = {}
     for fn in p.function_asm(module).values():
         if symbol not in fn.refs:
             continue
@@ -47,6 +50,7 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
         base: Dict[str, tuple] = {}  # register -> (kind, delta): kind "object" | "pointer", delta added to offsets
         derived: Dict[str, tuple] = {}  # register -> ("field", kind, off): pointee of a pointer field
         pending_ha: Dict[str, bool] = {}
+        strides: Dict[str, int] = {}    # register -> stride from `mulli rT, rIdx, S` (or slwi)
         for line in fn.asm:
             ins = _insn(line)
             m = re.match(rf"^lis r(\d+), {re.escape(symbol)}@ha", ins)
@@ -67,6 +71,22 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
             if m and f"r{m.group(2)}" in base:
                 base[f"r{m.group(1)}"] = base[f"r{m.group(2)}"]
                 continue
+            m = re.match(r"^mulli r(\d+), r\d+, (-?0x[0-9a-fA-F]+|-?\d+)$", ins) or \
+                re.match(r"^slwi r(\d+), r\d+, (\d+)$", ins)
+            if m:
+                v = int(m.group(2), 0)
+                strides[f"r{m.group(1)}"] = (1 << v) if ins.startswith("slwi") else v
+                continue
+            m = re.match(r"^add\.? r(\d+), r(\d+), r(\d+)$", ins)
+            if m:
+                ra, rb, rd = f"r{m.group(2)}", f"r{m.group(3)}", f"r{m.group(1)}"
+                pair = (ra, rb) if ra in base and rb in strides else ((rb, ra) if rb in base and ra in strides else None)
+                if pair:
+                    k, d = base[pair[0]]
+                    base[rd] = (k, d)  # element [i]: same layout, offsets relative to the element
+                    if d == 0:  # an index applied inside the record (delta != 0) is a sub-array, not the record stride
+                        stride_seen[k] = stride_seen.get(k, 0) or strides[pair[1]]
+                    continue
             # direct access through the symbol, with an optional displacement: op rX, (sym+0x3c)@l(rA) or sym@l(rA)
             m = re.match(rf"^(lwz|lhz|lha|lbz|lfs|lfd|stw|sth|stb|stfs|stfd) [rf](\d+), \(?{re.escape(symbol)}(?:\s*\+\s*(0x[0-9a-fA-F]+|\d+))?\)?@l\(r(\d+)\)", ins)
             if m and f"r{m.group(4)}" in pending_ha:
@@ -131,20 +151,72 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
                 pending_ha.pop(reg, None)
         if used:
             users.append(fn.symbol.name)
-    kind = "pointer" if kinds.get("pointer", 0) > kinds.get("object", 0) else "object"
     size = p.symbols(module)[symbol].size if symbol in p.symbols(module) else 0
+    # a word-sized global whose loaded value is ever dereferenced is a pointer; the direct
+    # loads/stores of the pointer itself must not outvote the accesses through it
+    if size <= 8 and kinds.get("pointer", 0) > 0:
+        kind = "pointer"
+    else:
+        kind = "pointer" if kinds.get("pointer", 0) > kinds.get("object", 0) else "object"
     out = {}
     pointees: Dict[int, Dict[int, Dict]] = defaultdict(dict)
+    # Only an index applied to the *loaded* pointer says anything about the element size; an
+    # index on the materialised address of a word-sized variable belongs to some neighbour.
+    stride = stride_seen.get(kind, 0)
+
+    def merge(off: int, f: Dict, into: Optional[Dict[int, Dict]] = None) -> None:
+        tbl = out if into is None else into
+        g = tbl.get(off)
+        if g is None:
+            tbl[off] = dict(f, widths=dict(f["widths"]))
+            return
+        g["width"] = max(g["width"], f["width"])
+        for w, n in f["widths"].items():
+            g["widths"][w] = g["widths"].get(w, 0) + n
+        g["signed"] = g["signed"] or f["signed"]
+        g["float"] = g["float"] or f["float"]
+        g["loads"] += f["loads"]
+        g["stores"] += f["stores"]
+
     for key, f in fields.items():
         if isinstance(key[0], tuple):  # ("field", kind, off), pointee_off
             (_, k, poff), off = key
             if k == kind:
                 pointees[poff][off] = f
+            elif kind == "pointer" and size <= 8 and k == "object" and poff == 0 and off >= 0:
+                # the pointer was loaded from its materialised address; what follows is the element
+                merge(off, f)
         elif key[0] == kind or (key[0] == "object" and key[1] == 0):
             if key[1] < 0 or (kind == "object" and size and key[1] >= size):
                 continue  # indexed neighbour or array stride, not a field of this object
-            out[key[1]] = f
+            if kind == "pointer" and size <= 8 and key[0] == "object":
+                continue  # the load of the pointer variable itself, not an element field
+            merge(key[1], f)
+    if os.environ.get("FZGX_DEBUG"):
+        print("DEBUG", symbol, size, kind, sorted((str(k), f["width"], f["loads"], f["stores"]) for k, f in fields.items()))
+    if stride and out:
+        # Constant-indexed accesses (unrolled loops) land past the stride; fold them onto the
+        # element only if that agrees with the fields already seen. A width clash means the
+        # index step belonged to something else, so the stride is dropped.
+        folded: Dict[int, Dict] = {o: dict(f, widths=dict(f["widths"])) for o, f in out.items() if o < stride}
+        ok = all(o + (f["width"] or 1) <= stride for o, f in folded.items())
+        for o, f in sorted(out.items()):
+            if o < stride or not ok:
+                continue
+            t = o % stride
+            w = f["width"] or 1
+            for eo, ef in folded.items():
+                ew = ef["width"] or 1
+                if eo < t + w and t < eo + ew and (eo != t or ew != w):
+                    ok = False
+            if ok:
+                merge(t, f, folded)
+        if ok:
+            out = folded
+        else:
+            stride = 0
     return {"symbol": symbol, "kind": kind, "fields": dict(sorted(out.items())), "users": users, "shapes": dict(kinds),
+            "stride": stride,
             "pointees": {poff: {o: f for o, f in sorted(fl.items()) if o >= 0}
                          for poff, fl in pointees.items() if sum(x["loads"] + x["stores"] for x in fl.values()) >= 3}}
 
@@ -213,15 +285,15 @@ def header(p: Project, module: str, min_refs: int = 20, sections=(".data", ".bss
         out.append(f"// {name}: {sd.section} size 0x{sd.size:X}, referenced by {n} functions, shape {info['shapes']}")
         nfields = info["fields"]
         pointee0 = info.get("pointees", {}).get(0) or {}
-        if sd.size <= 8 and (len(nfields) <= 1 and 0 in nfields or not nfields):
-            f = nfields.get(0, {"width": min(sd.size, 4) or 4, "float": False})
-            ctype = {1: "u8", 2: "u16", 4: "f32" if f.get("float") else "u32", 8: "f64"}.get(f.get("width", 4), "u32")
-            # a 4-byte global whose loaded value is dereferenced is a pointer to a struct
-            if sd.size == 4 and sum(x["loads"] + x["stores"] for x in pointee0.values()) >= 3:
+        if sd.size <= 8 and (info["kind"] == "pointer" or len(nfields) <= 1 and 0 in nfields or not nfields):
+            elem = nfields if info["kind"] == "pointer" else pointee0
+            if sd.size == 4 and elem and sum(x["loads"] + x["stores"] for x in elem.values()) >= 3:
                 pt = f"{tname}_Target"
-                out.append(typedef(info, pt, pointee0))
-                out.append(f"extern {pt} *{name};")
+                out.append(typedef(info, pt, elem, None, info.get("stride", 0)))
+                out.append(f"extern {pt} *{name};" + (f"  // array of 0x{info['stride']:X}-byte records" if info.get("stride") else ""))
             else:
+                f = nfields.get(0, {"width": min(sd.size, 4) or 4, "float": False})
+                ctype = {1: "u8", 2: "u16", 4: "f32" if f.get("float") else "u32", 8: "f64"}.get(f.get("width", 4), "u32")
                 out.append(f"extern {ctype} {name};")
         else:
             ptr_types = {}
@@ -359,15 +431,16 @@ def tu_header(p: Project, module: str, tu: str, min_refs: int = 2) -> str:
         out.append(f"// {name}: {sd.section} size 0x{sd.size:X}, {n} refs from {tu}{' (own data block)' if own else ''}")
         nfields = info["fields"]
         pointee0 = info.get("pointees", {}).get(0) or {}
-        if sd.size <= 8 and (len(nfields) <= 1 and 0 in nfields or not nfields):
-            f = nfields.get(0, {"width": min(sd.size, 4) or 4, "float": False})
-            w = f.get("width", 4) or 4
-            ctype = {1: "u8", 2: "s16" if f.get("signed") else "u16", 4: "f32" if f.get("float") else "u32", 8: "f64"}.get(w, "u32")
-            if sd.size == 4 and sum(x["loads"] + x["stores"] for x in pointee0.values()) >= 3:
+        if sd.size <= 8 and (info["kind"] == "pointer" or len(nfields) <= 1 and 0 in nfields or not nfields):
+            elem = nfields if info["kind"] == "pointer" else pointee0
+            if sd.size == 4 and elem and sum(x["loads"] + x["stores"] for x in elem.values()) >= 3:
                 pt = f"{tname}_Target"
-                out.append(typedef(info, pt, pointee0))
-                out.append(f"extern {pt} *{name};")
+                out.append(typedef(info, pt, elem, None, info.get("stride", 0)))
+                out.append(f"extern {pt} *{name};" + (f"  // array of 0x{info['stride']:X}-byte records" if info.get("stride") else ""))
             else:
+                f = nfields.get(0, {"width": min(sd.size, 4) or 4, "float": False})
+                w = f.get("width", 4) or 4
+                ctype = {1: "u8", 2: "s16" if f.get("signed") else "u16", 4: "f32" if f.get("float") else "u32", 8: "f64"}.get(w, "u32")
                 out.append(f"extern {ctype} {name};")
         elif not nfields and sd.size:
             out.append(f"extern u8 {name}[0x{sd.size:X}];")

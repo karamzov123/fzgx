@@ -20,11 +20,11 @@ typedef struct {
 } Obj_1_bss_7E9E8;
 extern Obj_1_bss_7E9E8 lbl_1_bss_7E9E8;
 
-// lbl_1_data_3E62C: .data size 0x80, 5 refs from ghost.c (own data block)
-extern u8 lbl_1_data_3E62C[0x80];
-
 // lbl_1_data_3E52C: .data size 0x4, 5 refs from ghost.c
 extern u32 lbl_1_data_3E52C;
+
+// lbl_1_data_3E62C: .data size 0x80, 5 refs from ghost.c (own data block)
+extern u8 lbl_1_data_3E62C[0x80];
 
 // lbl_1_bss_7ECB4: .bss size 0x48, 3 refs from ghost.c
 typedef struct {
@@ -38,19 +38,55 @@ extern Obj_1_bss_7ECB4 lbl_1_bss_7ECB4;
 
 // lbl_1_bss_77380: .bss size 0x3000, 2 refs from ghost.c
 typedef struct {
-    u32 unk_0;  // 2 loads, 2 stores
-    u32 unk_4;  // 2 loads, 2 stores
-    u32 unk_8;  // 2 loads, 2 stores
-    u32 unk_C;  // 2 loads, 2 stores
-    u32 unk_10;  // 2 loads, 2 stores
-    u32 unk_14;  // 2 loads, 2 stores
-    u32 unk_18;  // 2 loads, 2 stores
-    u32 unk_1C;  // 2 loads, 2 stores
-    u32 unk_20;  // 2 loads, 2 stores
-    u32 unk_24;  // 4 loads, 2 stores
-    u32 unk_28;  // 3 loads, 2 stores
-    u32 unk_2C;  // 4 loads, 3 stores
-    u8 pad_30[0x2FD0];
+    u32 unk_0;  // 10 loads, 11 stores
+    u32 unk_4;  // 10 loads, 11 stores
+    u32 unk_8;  // 10 loads, 11 stores
+    u32 unk_C;  // 10 loads, 11 stores
+    u32 unk_10;  // 10 loads, 11 stores
+    u32 unk_14;  // 10 loads, 11 stores
+    u32 unk_18;  // 10 loads, 11 stores
+    u32 unk_1C;  // 10 loads, 11 stores
+    u32 unk_20;  // 10 loads, 11 stores
+    u32 unk_24;  // 12 loads, 12 stores
+    u32 unk_28;  // 16 loads, 12 stores
+    u32 unk_2C;  // 15 loads, 13 stores
+    u32 unk_30;  // 1 loads, 1 stores
+    u32 unk_34;  // 1 loads, 1 stores
+    u32 unk_38;  // 1 loads, 1 stores
+    u32 unk_3C;  // 1 loads, 1 stores
+    u32 unk_40;  // 1 loads, 1 stores
+    u32 unk_44;  // 1 loads, 1 stores
+    u32 unk_48;  // 1 loads, 1 stores
+    u32 unk_4C;  // 1 loads, 1 stores
+    u32 unk_50;  // 1 loads, 1 stores
+    u32 unk_54;  // 1 loads, 1 stores
+    u32 unk_58;  // 1 loads, 1 stores
+    u32 unk_5C;  // 1 loads, 1 stores
+    u32 unk_60;  // 1 loads, 1 stores
+    u32 unk_64;  // 1 loads, 1 stores
+    u32 unk_68;  // 1 loads, 1 stores
+    u32 unk_6C;  // 1 loads, 1 stores
+    u32 unk_70;  // 1 loads, 1 stores
+    u32 unk_74;  // 1 loads, 1 stores
+    u32 unk_78;  // 1 loads, 1 stores
+    u32 unk_7C;  // 1 loads, 1 stores
+    u32 unk_80;  // 1 loads, 1 stores
+    u32 unk_84;  // 1 loads, 1 stores
+    u32 unk_88;  // 1 loads, 1 stores
+    u32 unk_8C;  // 1 loads, 1 stores
+    u32 unk_90;  // 1 loads, 0 stores
+    u32 unk_94;  // 1 loads, 0 stores
+    u32 unk_98;  // 1 loads, 0 stores
+    u32 unk_9C;  // 1 loads, 0 stores
+    u32 unk_A0;  // 1 loads, 0 stores
+    u32 unk_A4;  // 1 loads, 0 stores
+    u32 unk_A8;  // 1 loads, 0 stores
+    u32 unk_AC;  // 1 loads, 0 stores
+    u32 unk_B0;  // 1 loads, 0 stores
+    u32 unk_B4;  // 1 loads, 0 stores
+    u32 unk_B8;  // 1 loads, 0 stores
+    u32 unk_BC;  // 1 loads, 0 stores
+    u8 pad_C0[0x2F40];
 } Obj_1_bss_77380;
 extern Obj_1_bss_77380 lbl_1_bss_77380;
 
@@ -82,12 +118,6 @@ extern Obj_1_bss_7ECFC lbl_1_bss_7ECFC;
 // lbl_1_data_3E704: .data size 0x38, 1 refs from ghost.c (own data block)
 extern u8 lbl_1_data_3E704[0x38];
 
-// lbl_1_data_3E8A0: .data size 0x21, 1 refs from ghost.c (own data block)
-extern u8 lbl_1_data_3E8A0[0x21];
-
-// lbl_1_data_3E73C: .data size 0x158, 1 refs from ghost.c (own data block)
-extern u8 lbl_1_data_3E73C[0x158];
-
 // lbl_1_data_3E894: .data size 0x6, 1 refs from ghost.c (own data block)
 extern u32 lbl_1_data_3E894;
 
@@ -96,5 +126,11 @@ extern u32 lbl_1_data_3E89C;
 
 // lbl_1_data_3E6AC: .data size 0x58, 1 refs from ghost.c (own data block)
 extern u8 lbl_1_data_3E6AC[0x58];
+
+// lbl_1_data_3E73C: .data size 0x158, 1 refs from ghost.c (own data block)
+extern u8 lbl_1_data_3E73C[0x158];
+
+// lbl_1_data_3E8A0: .data size 0x21, 1 refs from ghost.c (own data block)
+extern u8 lbl_1_data_3E8A0[0x21];
 
 #endif  // REL_MAIN_REL_GHOST_H

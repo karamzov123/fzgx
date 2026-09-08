@@ -6,7 +6,7 @@ u8 fn_1_8C7C4(u32 index) {
     u32 addr;
     u32 ptr;
 
-    base = lbl_1_bss_6D838;
+    base = (u32)lbl_1_bss_6D838;
     if (base != 0) {
         addr = base + index * 0x620;
     } else {

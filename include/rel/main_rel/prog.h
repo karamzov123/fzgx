@@ -18,17 +18,20 @@ typedef struct {
 } Obj_1_bss_6F608;
 extern Obj_1_bss_6F608 lbl_1_bss_6F608;
 
-// lbl_1_bss_6F5F0: .bss size 0x4, 3 refs from prog.c
-extern u32 lbl_1_bss_6F5F0;
-
 // lbl_1_data_341B8: .data size 0x4, 3 refs from prog.c
 typedef struct {
     u32 unk_0;  // 2 loads, 5 stores
     u8 unk_4;  // 6 loads, 7 stores
-    u8 unk_5;  // 3 loads, 4 stores
-    s16 unk_6;  // 1 loads, 3 stores
+    u8 unk_5;  // 4 loads, 4 stores
+    s16 unk_6;  // 3 loads, 7 stores
 } Obj_1_data_341B8_Target;
 extern Obj_1_data_341B8_Target *lbl_1_data_341B8;
+
+// lbl_1_bss_6F5F0: .bss size 0x4, 3 refs from prog.c
+extern u32 lbl_1_bss_6F5F0;
+
+// lbl_1_bss_962: .bss size 0x2, 2 refs from prog.c
+extern s16 lbl_1_bss_962;
 
 // lbl_1_bss_6F620: .bss size 0x18, 2 refs from prog.c
 typedef struct {
@@ -40,9 +43,6 @@ typedef struct {
     u32 unk_14;  // 1 loads, 1 stores
 } Obj_1_bss_6F620;
 extern Obj_1_bss_6F620 lbl_1_bss_6F620;
-
-// lbl_1_bss_962: .bss size 0x2, 2 refs from prog.c
-extern s16 lbl_1_bss_962;
 
 // lbl_1_data_3431C: .data size 0x7, 1 refs from prog.c (own data block)
 extern u32 lbl_1_data_3431C;

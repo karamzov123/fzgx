@@ -11,8 +11,8 @@
 typedef struct {
     u32 unk_0;  // 2 loads, 5 stores
     u8 unk_4;  // 6 loads, 7 stores
-    u8 unk_5;  // 3 loads, 4 stores
-    s16 unk_6;  // 1 loads, 3 stores
+    u8 unk_5;  // 4 loads, 4 stores
+    s16 unk_6;  // 3 loads, 7 stores
 } Obj_1_data_341B8_Target;
 extern Obj_1_data_341B8_Target *lbl_1_data_341B8;
 

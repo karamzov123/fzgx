@@ -292,6 +292,72 @@ class Project:
             return {}
         return {u["name"]: u for u in json.loads(path.read_text())["units"]}
 
+    # ------------------------------------------------------------------ strings
+    def string_at(self, module: str, name: str, max_len: int = 200) -> Optional[str]:
+        """NUL-terminated printable string at a data symbol, read from the retail bytes.
+
+        dtk sometimes emits string tables as raw .4byte words, so the disassembly is
+        not a reliable source; the REL/DOL bytes are."""
+        sym = self.symbols(module).get(name)
+        if not sym or sym.kind != "object" or sym.section in (".bss", ".sbss", ".sbss2"):
+            return None
+        raw = self._raw_section(module, sym.section)
+        if raw is None:
+            return None
+        start = sym.addr - self._section_base(module, sym.section)
+        if start < 0 or start >= len(raw):
+            return None
+        end = raw.find(b"\0", start, start + max_len)
+        chunk = raw[start:end if end >= 0 else start + max_len]
+        if len(chunk) < 2 or any(b < 9 or (13 < b < 32) or b > 126 for b in chunk):
+            return None
+        return chunk.decode("ascii", "replace")
+
+    def _rel_layout(self, module: str):
+        if not hasattr(self, "_layouts"):
+            self._layouts = {}
+        if module in self._layouts:
+            return self._layouts[module]
+        import struct as _struct
+        cfg = (self.config_dir / "config.yml").read_text().splitlines()
+        obj = None
+        if module == "main":
+            obj = next(l.split(":", 1)[1].strip() for l in cfg if l.startswith("object:"))
+        else:
+            for i, line in enumerate(cfg):
+                if line.strip() == f"name: {module}":
+                    obj = next(l.split(":", 1)[1].strip() for l in reversed(cfg[:i]) if l.startswith("- object:"))
+                    break
+        data = (ROOT / "orig" / self.version / obj).read_bytes() if obj else b""
+        layout = {}
+        if module != "main" and data:
+            v = _struct.unpack(">16I", data[:0x40])
+            names = {1: ".text", 2: ".ctors", 3: ".dtors", 4: ".rodata", 5: ".data"}
+            for i in range(v[3]):
+                o, sz = _struct.unpack(">II", data[v[4] + 8 * i: v[4] + 8 * i + 8])
+                if sz and (o & ~3) and i in names:
+                    layout[names[i]] = (0, data[o & ~3: (o & ~3) + sz])
+        elif data:
+            offs = _struct.unpack(">18I", data[0:0x48]); addrs = _struct.unpack(">18I", data[0x48:0x90])
+            sizes = _struct.unpack(">18I", data[0x90:0xD8])
+            for sec in self.splits(module) or []:
+                pass
+            for i in range(18):
+                if sizes[i]:
+                    layout[f"#{i}"] = (addrs[i], data[offs[i]: offs[i] + sizes[i]])
+        self._layouts[module] = layout
+        return layout
+
+    def _raw_section(self, module: str, section: str) -> Optional[bytes]:
+        layout = self._rel_layout(module)
+        if section in layout:
+            return layout[section][1]
+        return None
+
+    def _section_base(self, module: str, section: str) -> int:
+        layout = self._rel_layout(module)
+        return layout[section][0] if section in layout else 0
+
     # ------------------------------------------------------------------- misc
     @staticmethod
     def now() -> int:

@@ -57,6 +57,12 @@ def _data_context(p: Project, module: str):
                 table_refs.setdefault(m.group(1), [])
                 if cur not in table_refs[m.group(1)]:
                     table_refs[m.group(1)].append(cur)
+    # dtk emits many string tables as raw .4byte words; the retail bytes are authoritative.
+    for name, sym in p.symbols(module).items():
+        if sym.kind == "object" and name not in strings and sym.size >= 2:
+            t = p.string_at(module, name)
+            if t:
+                strings[name] = t.rstrip("\n")
     return table_refs, strings
 
 

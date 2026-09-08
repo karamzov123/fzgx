@@ -18,54 +18,80 @@ typedef struct {
 } Obj_1_bss_716C8_At24;
 typedef struct {
     u8 unk_0;  // 6 loads, 0 stores
-    u8 pad_1[0x1];
-    u8 unk_2;  // 1 loads, 0 stores
+    u8 unk_1;  // 5 loads, 0 stores
+    u8 unk_2;  // 2 loads, 0 stores
     u8 pad_3[0x1];
     u8 unk_4;  // 2 loads, 0 stores
-    u8 pad_5[0x7];
-    u32 unk_C;  // 3 loads, 3 stores
+    u8 pad_5[0x2];
+    u8 unk_7;  // 0 loads, 1 stores
+    u8 pad_8[0x4];
+    u32 unk_C;  // 9 loads, 9 stores
     u8 pad_10[0x14];
-    Obj_1_bss_716C8_At24 *unk_24;  // 7 loads, 0 stores
+    Obj_1_bss_716C8_At24 *unk_24;  // 8 loads, 0 stores
     u8 pad_28[0x2];
     u8 unk_2A;  // 2 loads, 0 stores
     u8 pad_2B[0x1D];
-    u32 unk_48;  // 0 loads, 1 stores
-    u32 unk_4C;  // 0 loads, 1 stores
-    u32 unk_50;  // 0 loads, 1 stores
+    u32 unk_48;  // 1 loads, 2 stores
+    u32 unk_4C;  // 1 loads, 2 stores
+    u32 unk_50;  // 1 loads, 2 stores
     u8 pad_54[0x44];
-    u32 unk_98;  // 1 loads, 1 stores
-    u32 unk_9C;  // 1 loads, 1 stores
-    u8 pad_A0[0x2];
-    u8 unk_A2;  // 1 loads, 0 stores
-    u8 pad_A3[0x9];
-    u32 unk_AC;  // 3 loads, 3 stores
-    u8 pad_B0[0x14];
-    u32 unk_C4;  // 1 loads, 0 stores
-    u8 pad_C8[0x20];
-    u32 unk_E8;  // 0 loads, 1 stores
-    u32 unk_EC;  // 0 loads, 1 stores
-    u32 unk_F0;  // 0 loads, 1 stores
-    u8 pad_F4[0x44];
-    u32 unk_138;  // 1 loads, 1 stores
-    u32 unk_13C;  // 1 loads, 1 stores
+    u32 unk_98;  // 2 loads, 2 stores
+    u32 unk_9C;  // 2 loads, 2 stores
+    u8 pad_A0[0xA0];
 } Obj_1_bss_716C8;
 extern Obj_1_bss_716C8 lbl_1_bss_716C8;
 
 // lbl_1_bss_77380: .bss size 0x3000, 6 refs from memcard.c
 typedef struct {
-    u32 unk_0;  // 2 loads, 2 stores
-    u32 unk_4;  // 2 loads, 2 stores
-    u32 unk_8;  // 2 loads, 2 stores
-    u32 unk_C;  // 2 loads, 2 stores
-    u32 unk_10;  // 2 loads, 2 stores
-    u32 unk_14;  // 2 loads, 2 stores
-    u32 unk_18;  // 2 loads, 2 stores
-    u32 unk_1C;  // 2 loads, 2 stores
-    u32 unk_20;  // 2 loads, 2 stores
-    u32 unk_24;  // 4 loads, 2 stores
-    u32 unk_28;  // 3 loads, 2 stores
-    u32 unk_2C;  // 4 loads, 3 stores
-    u8 pad_30[0x2FD0];
+    u32 unk_0;  // 10 loads, 11 stores
+    u32 unk_4;  // 10 loads, 11 stores
+    u32 unk_8;  // 10 loads, 11 stores
+    u32 unk_C;  // 10 loads, 11 stores
+    u32 unk_10;  // 10 loads, 11 stores
+    u32 unk_14;  // 10 loads, 11 stores
+    u32 unk_18;  // 10 loads, 11 stores
+    u32 unk_1C;  // 10 loads, 11 stores
+    u32 unk_20;  // 10 loads, 11 stores
+    u32 unk_24;  // 12 loads, 12 stores
+    u32 unk_28;  // 16 loads, 12 stores
+    u32 unk_2C;  // 15 loads, 13 stores
+    u32 unk_30;  // 1 loads, 1 stores
+    u32 unk_34;  // 1 loads, 1 stores
+    u32 unk_38;  // 1 loads, 1 stores
+    u32 unk_3C;  // 1 loads, 1 stores
+    u32 unk_40;  // 1 loads, 1 stores
+    u32 unk_44;  // 1 loads, 1 stores
+    u32 unk_48;  // 1 loads, 1 stores
+    u32 unk_4C;  // 1 loads, 1 stores
+    u32 unk_50;  // 1 loads, 1 stores
+    u32 unk_54;  // 1 loads, 1 stores
+    u32 unk_58;  // 1 loads, 1 stores
+    u32 unk_5C;  // 1 loads, 1 stores
+    u32 unk_60;  // 1 loads, 1 stores
+    u32 unk_64;  // 1 loads, 1 stores
+    u32 unk_68;  // 1 loads, 1 stores
+    u32 unk_6C;  // 1 loads, 1 stores
+    u32 unk_70;  // 1 loads, 1 stores
+    u32 unk_74;  // 1 loads, 1 stores
+    u32 unk_78;  // 1 loads, 1 stores
+    u32 unk_7C;  // 1 loads, 1 stores
+    u32 unk_80;  // 1 loads, 1 stores
+    u32 unk_84;  // 1 loads, 1 stores
+    u32 unk_88;  // 1 loads, 1 stores
+    u32 unk_8C;  // 1 loads, 1 stores
+    u32 unk_90;  // 1 loads, 0 stores
+    u32 unk_94;  // 1 loads, 0 stores
+    u32 unk_98;  // 1 loads, 0 stores
+    u32 unk_9C;  // 1 loads, 0 stores
+    u32 unk_A0;  // 1 loads, 0 stores
+    u32 unk_A4;  // 1 loads, 0 stores
+    u32 unk_A8;  // 1 loads, 0 stores
+    u32 unk_AC;  // 1 loads, 0 stores
+    u32 unk_B0;  // 1 loads, 0 stores
+    u32 unk_B4;  // 1 loads, 0 stores
+    u32 unk_B8;  // 1 loads, 0 stores
+    u32 unk_BC;  // 1 loads, 0 stores
+    u8 pad_C0[0x2F40];
 } Obj_1_bss_77380;
 extern Obj_1_bss_77380 lbl_1_bss_77380;
 
@@ -108,6 +134,12 @@ extern u8 lbl_1_data_3C89C[0x44];
 // lbl_1_bss_962: .bss size 0x2, 4 refs from memcard.c
 extern s16 lbl_1_bss_962;
 
+// lbl_1_data_3D230: .data size 0x4, 3 refs from memcard.c (own data block)
+extern u32 lbl_1_data_3D230;
+
+// lbl_1_bss_7730A: .bss size 0x1, 3 refs from memcard.c
+extern u8 lbl_1_bss_7730A;
+
 // lbl_1_bss_7AC48: .bss size 0x8, 3 refs from memcard.c
 typedef struct {
     u32 unk_0;  // 1 loads, 0 stores
@@ -120,21 +152,6 @@ typedef struct {
     u8 pad_6[0x2];
 } Obj_1_bss_7AC48;
 extern Obj_1_bss_7AC48 lbl_1_bss_7AC48;
-
-// lbl_1_bss_7730A: .bss size 0x1, 3 refs from memcard.c
-extern u8 lbl_1_bss_7730A;
-
-// lbl_1_data_3D230: .data size 0x4, 3 refs from memcard.c (own data block)
-extern u32 lbl_1_data_3D230;
-
-// lbl_1_data_3D138: .data size 0xC, 2 refs from memcard.c (own data block)
-extern u8 lbl_1_data_3D138[0xC];
-
-// lbl_1_bss_718B1: .bss size 0x1, 2 refs from memcard.c
-extern u8 lbl_1_bss_718B1;
-
-// lbl_1_bss_718B4: .bss size 0x4, 2 refs from memcard.c
-extern u32 lbl_1_bss_718B4;
 
 // lbl_1_bss_718E0: .bss size 0x59E8, 2 refs from memcard.c
 typedef struct {
@@ -171,8 +188,8 @@ extern u8 lbl_1_bss_AA0[0x150];
 // lbl_1_data_2B60: .data size 0x4, 2 refs from memcard.c
 extern u32 lbl_1_data_2B60;
 
-// lbl_1_bss_71808: .bss size 0x4, 2 refs from memcard.c
-extern u32 lbl_1_bss_71808;
+// lbl_1_data_3D124: .data size 0x13, 2 refs from memcard.c (own data block)
+extern u8 lbl_1_data_3D124[0x13];
 
 // lbl_1_data_2BD54: .data size 0xA68, 2 refs from memcard.c
 extern u8 lbl_1_data_2BD54[0xA68];
@@ -180,8 +197,41 @@ extern u8 lbl_1_data_2BD54[0xA68];
 // lbl_1_bss_7A380: .bss size 0x8, 2 refs from memcard.c
 extern u32 lbl_1_bss_7A380;
 
-// lbl_1_data_3D124: .data size 0x13, 2 refs from memcard.c (own data block)
-extern u8 lbl_1_data_3D124[0x13];
+// lbl_1_bss_718B4: .bss size 0x4, 2 refs from memcard.c
+extern u32 lbl_1_bss_718B4;
+
+// lbl_1_bss_718B1: .bss size 0x1, 2 refs from memcard.c
+extern u8 lbl_1_bss_718B1;
+
+// lbl_1_bss_71808: .bss size 0x4, 2 refs from memcard.c
+extern u32 lbl_1_bss_71808;
+
+// lbl_1_data_3D138: .data size 0xC, 2 refs from memcard.c (own data block)
+extern u8 lbl_1_data_3D138[0xC];
+
+// jumptable_1_data_3C8E0: .data size 0xA0, 1 refs from memcard.c (own data block)
+extern u8 jumptable_1_data_3C8E0[0xA0];
+
+// jumptable_1_data_3CCA8: .data size 0x9C, 1 refs from memcard.c (own data block)
+extern u8 jumptable_1_data_3CCA8[0x9C];
+
+// jumptable_1_data_3CA18: .data size 0x9C, 1 refs from memcard.c (own data block)
+extern u8 jumptable_1_data_3CA18[0x9C];
+
+// jumptable_1_data_3C980: .data size 0x98, 1 refs from memcard.c (own data block)
+extern u8 jumptable_1_data_3C980[0x98];
+
+// lbl_1_data_3CF40: .data size 0xF, 1 refs from memcard.c (own data block)
+extern u8 lbl_1_data_3CF40[0xF];
+
+// jumptable_1_data_3CD44: .data size 0x9C, 1 refs from memcard.c (own data block)
+extern u8 jumptable_1_data_3CD44[0x9C];
+
+// jumptable_1_data_3CC0C: .data size 0x9C, 1 refs from memcard.c (own data block)
+extern u8 jumptable_1_data_3CC0C[0x9C];
+
+// jumptable_1_data_3CAB4: .data size 0x9C, 1 refs from memcard.c (own data block)
+extern u8 jumptable_1_data_3CAB4[0x9C];
 
 // lbl_1_data_3D11C: .data size 0x8, 1 refs from memcard.c (own data block)
 typedef struct {
@@ -192,32 +242,8 @@ typedef struct {
 } Obj_1_data_3D11C;
 extern Obj_1_data_3D11C lbl_1_data_3D11C;
 
-// lbl_1_data_3CF40: .data size 0xF, 1 refs from memcard.c (own data block)
-extern u8 lbl_1_data_3CF40[0xF];
-
-// jumptable_1_data_3CCA8: .data size 0x9C, 1 refs from memcard.c (own data block)
-extern u8 jumptable_1_data_3CCA8[0x9C];
-
-// jumptable_1_data_3CC0C: .data size 0x9C, 1 refs from memcard.c (own data block)
-extern u8 jumptable_1_data_3CC0C[0x9C];
-
 // lbl_1_data_3D108: .data size 0x11, 1 refs from memcard.c (own data block)
 extern u8 lbl_1_data_3D108[0x11];
-
-// jumptable_1_data_3CA18: .data size 0x9C, 1 refs from memcard.c (own data block)
-extern u8 jumptable_1_data_3CA18[0x9C];
-
-// jumptable_1_data_3C980: .data size 0x98, 1 refs from memcard.c (own data block)
-extern u8 jumptable_1_data_3C980[0x98];
-
-// jumptable_1_data_3CAB4: .data size 0x9C, 1 refs from memcard.c (own data block)
-extern u8 jumptable_1_data_3CAB4[0x9C];
-
-// jumptable_1_data_3CD44: .data size 0x9C, 1 refs from memcard.c (own data block)
-extern u8 jumptable_1_data_3CD44[0x9C];
-
-// jumptable_1_data_3C8E0: .data size 0xA0, 1 refs from memcard.c (own data block)
-extern u8 jumptable_1_data_3C8E0[0xA0];
 
 // jumptable_1_data_3CEF4: .data size 0x24, 1 refs from memcard.c (own data block)
 extern u8 jumptable_1_data_3CEF4[0x24];

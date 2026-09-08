@@ -17,6 +17,14 @@ extern Obj_1_bss_38454_Target *lbl_1_bss_38454;
 // lbl_1_data_3DDA8: .data size 0xC, 3 refs from bg_for.c (own data block)
 extern u8 lbl_1_data_3DDA8[0xC];
 
+// lbl_1_data_2B0D4: .data size 0x70, 2 refs from bg_for.c
+typedef struct {
+    u8 pad_0[0xA];
+    s16 unk_A;  // 1 loads, 0 stores
+    u8 pad_C[0x64];
+} Obj_1_data_2B0D4;
+extern Obj_1_data_2B0D4 lbl_1_data_2B0D4;
+
 // lbl_1_bss_7AE88: .bss size 0x30, 2 refs from bg_for.c
 typedef struct {
     u8 pad_0[0x554];
@@ -66,25 +74,20 @@ typedef struct {
 } Obj_1_bss_7AE88;
 extern Obj_1_bss_7AE88 lbl_1_bss_7AE88;
 
-// lbl_1_data_2B0D4: .data size 0x70, 2 refs from bg_for.c
-typedef struct {
-    u8 pad_0[0xA];
-    s16 unk_A;  // 1 loads, 0 stores
-    u8 pad_C[0x64];
-} Obj_1_data_2B0D4;
-extern Obj_1_data_2B0D4 lbl_1_data_2B0D4;
-
-// jumptable_1_data_3DCE0: .data size 0xC8, 1 refs from bg_for.c (own data block)
-extern u8 jumptable_1_data_3DCE0[0xC8];
-
 // lbl_1_data_3DC78: .data size 0x9, 1 refs from bg_for.c (own data block)
 extern u8 lbl_1_data_3DC78[0x9];
 
 // lbl_1_data_3DC84: .data size 0x11, 1 refs from bg_for.c (own data block)
 typedef struct {
     u32 unk_0;  // 17 loads, 3 stores
-    u8 pad_4[0xD];
+    u32 unk_4;  // 0 loads, 3 stores
+    u8 pad_8[0x4];
+    u32 unk_C;  // 8 loads, 8 stores
+    u8 pad_10[0x1];
 } Obj_1_data_3DC84;
 extern Obj_1_data_3DC84 lbl_1_data_3DC84;
+
+// jumptable_1_data_3DCE0: .data size 0xC8, 1 refs from bg_for.c (own data block)
+extern u8 jumptable_1_data_3DCE0[0xC8];
 
 #endif  // REL_MAIN_REL_BG_FOR_H

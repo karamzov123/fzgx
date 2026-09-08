@@ -28,13 +28,6 @@ typedef struct {
 } Obj_1_bss_89760;
 extern Obj_1_bss_89760 lbl_1_bss_89760;
 
-// lbl_1_bss_89770: .bss size 0x10, 2 refs from accessory.c
-typedef struct {
-    f32 unk_0;  // 1 loads, 4 stores
-    u8 pad_4[0xC];
-} Obj_1_bss_89770;
-extern Obj_1_bss_89770 lbl_1_bss_89770;
-
 // lbl_1_bss_86ED0: .bss size 0x1C70, 2 refs from accessory.c
 typedef struct {
     u8 pad_0[0x8];
@@ -44,6 +37,13 @@ typedef struct {
     u8 pad_14[0x1C5C];
 } Obj_1_bss_86ED0;
 extern Obj_1_bss_86ED0 lbl_1_bss_86ED0;
+
+// lbl_1_bss_89770: .bss size 0x10, 2 refs from accessory.c
+typedef struct {
+    f32 unk_0;  // 1 loads, 4 stores
+    u8 pad_4[0xC];
+} Obj_1_bss_89770;
+extern Obj_1_bss_89770 lbl_1_bss_89770;
 
 // lbl_1_bss_962: .bss size 0x2, 2 refs from accessory.c
 extern s16 lbl_1_bss_962;
@@ -57,19 +57,19 @@ typedef struct {
 } Obj_1_bss_89750;
 extern Obj_1_bss_89750 lbl_1_bss_89750;
 
-// lbl_1_data_4059C: .data size 0x24, 1 refs from accessory.c (own data block)
-extern u8 lbl_1_data_4059C[0x24];
-
 // jumptable_1_data_405C8: .data size 0x24, 1 refs from accessory.c (own data block)
 extern u8 jumptable_1_data_405C8[0x24];
 
 // lbl_1_data_405C0: .data size 0x8, 1 refs from accessory.c (own data block)
 extern u32 lbl_1_data_405C0;
 
-// lbl_1_data_405EC: .data size 0x8, 1 refs from accessory.c (own data block)
-extern u32 lbl_1_data_405EC;
-
 // lbl_1_data_405F4: .data size 0x6, 1 refs from accessory.c (own data block)
 extern u32 lbl_1_data_405F4;
+
+// lbl_1_data_4059C: .data size 0x24, 1 refs from accessory.c (own data block)
+extern u8 lbl_1_data_4059C[0x24];
+
+// lbl_1_data_405EC: .data size 0x8, 1 refs from accessory.c (own data block)
+extern u32 lbl_1_data_405EC;
 
 #endif  // REL_MAIN_REL_ACCESSORY_H

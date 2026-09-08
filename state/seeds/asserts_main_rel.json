@@ -1,0 +1,380 @@
+[
+ {
+  "fn": "fn_1_4928",
+  "addr": 18728,
+  "file": "alloc.c",
+  "line": 347,
+  "msg": "Cannot free memory."
+ },
+ {
+  "fn": "fn_1_6D2C",
+  "addr": 27948,
+  "file": "camera.c",
+  "line": 1350,
+  "msg": "CMN is NULL in camera.c"
+ },
+ {
+  "fn": "fn_1_6DD0",
+  "addr": 28112,
+  "file": "camera.c",
+  "line": 1380,
+  "msg": "CMN is NULL in camera.c"
+ },
+ {
+  "fn": "fn_1_8298",
+  "addr": 33432,
+  "file": "camera.c",
+  "line": 2002,
+  "msg": "no car camera set."
+ },
+ {
+  "fn": "fn_1_8770",
+  "addr": 34672,
+  "file": "camera.c",
+  "line": 2202,
+  "msg": "live_camera is NULL at set shake."
+ },
+ {
+  "fn": "fn_1_8840",
+  "addr": 34880,
+  "file": "camera.c",
+  "line": 2230,
+  "msg": "live_camera is NULL at stop shake."
+ },
+ {
+  "fn": "fn_1_88D8",
+  "addr": 35032,
+  "file": "camera.c",
+  "line": 2257,
+  "msg": "game_camera is NULL at set shake."
+ },
+ {
+  "fn": "fn_1_8A0C",
+  "addr": 35340,
+  "file": "camera.c",
+  "line": 2296,
+  "msg": "game_camera is NULL at set shake."
+ },
+ {
+  "fn": "fn_1_DA34",
+  "addr": 55860,
+  "file": "live_camera.c",
+  "line": 52,
+  "msg": "livecam error"
+ },
+ {
+  "fn": "fn_1_2FAA0",
+  "addr": 195232,
+  "file": "game.c",
+  "line": 2983,
+  "msg": "GAME: menu mask is zero."
+ },
+ {
+  "fn": "fn_1_3F440",
+  "addr": 259136,
+  "file": "game.c",
+  "line": 9812,
+  "msg": "Error: Rank is wrong."
+ },
+ {
+  "fn": "fn_1_47E54",
+  "addr": 294484,
+  "file": "bitmap.c",
+  "line": 396,
+  "msg": "Error! : ctgr is wrong."
+ },
+ {
+  "fn": "fn_1_47EE4",
+  "addr": 294628,
+  "file": "bitmap.c",
+  "line": 424,
+  "msg": "Error! : ctgr is wrong."
+ },
+ {
+  "fn": "fn_1_47F74",
+  "addr": 294772,
+  "file": "bitmap.c",
+  "line": 437,
+  "msg": "Error! : ctgr is wrong."
+ },
+ {
+  "fn": "fn_1_48004",
+  "addr": 294916,
+  "file": "bitmap.c",
+  "line": 453,
+  "msg": "Error! : ctgr is wrong."
+ },
+ {
+  "fn": "fn_1_48004",
+  "addr": 294916,
+  "file": "bitmap.c",
+  "line": 437,
+  "msg": "Error! : ctgr is wrong."
+ },
+ {
+  "fn": "fn_1_48418",
+  "addr": 295960,
+  "file": "bitmap.c",
+  "line": 584,
+  "msg": "Error : heap_id is wrong."
+ },
+ {
+  "fn": "fn_1_75D84",
+  "addr": 482692,
+  "file": "screen_effect.c",
+  "line": 1939,
+  "msg": "Error!: draw_quad   (s,t) is wrong"
+ },
+ {
+  "fn": "fn_1_76704",
+  "addr": 485124,
+  "file": "screen_effect.c",
+  "line": 2262,
+  "msg": "Error!: ScrefcSetModeLocsize   Copy size is zero."
+ },
+ {
+  "fn": "fn_1_77C5C",
+  "addr": 490588,
+  "file": "screen_effect.c",
+  "line": 3108,
+  "msg": "Error!: draw_quad   (s,t) is wrong"
+ },
+ {
+  "fn": "fn_1_7BCCC",
+  "addr": 507084,
+  "file": "light.c",
+  "line": 143,
+  "msg": "spec light over."
+ },
+ {
+  "fn": "fn_1_A5C98",
+  "addr": 679064,
+  "file": "relocation.c",
+  "line": 120,
+  "msg": "RelDest: illeagal purge order"
+ },
+ {
+  "fn": "fn_1_A6870",
+  "addr": 682096,
+  "file": "prog.c",
+  "line": 557,
+  "msg": "init_system: invalid TV format"
+ },
+ {
+  "fn": "fn_1_C34F0",
+  "addr": 799984,
+  "file": "memcard.c",
+  "line": 13618,
+  "msg": "OKASII by tokieda"
+ },
+ {
+  "fn": "fn_1_C36EC",
+  "addr": 800492,
+  "file": "memcard.c",
+  "line": 13688,
+  "msg": "OKASII by tokieda"
+ },
+ {
+  "fn": "fn_1_D2E44",
+  "addr": 863812,
+  "file": "face.c",
+  "line": 1267,
+  "msg": "Not Player CarId!"
+ },
+ {
+  "fn": "fn_1_D3214",
+  "addr": 864788,
+  "file": "reset.c",
+  "line": 118,
+  "msg": "NANDEYANEN!?"
+ },
+ {
+  "fn": "fn_1_D3474",
+  "addr": 865396,
+  "file": "reset.c",
+  "line": 118,
+  "msg": "NANDEYANEN!?"
+ },
+ {
+  "fn": "fn_1_D5C70",
+  "addr": 875632,
+  "file": "bg_lig.c",
+  "line": 1399,
+  "msg": "SPOT LIGHT OVER!"
+ },
+ {
+  "fn": "fn_1_D5C70",
+  "addr": 875632,
+  "file": "bg_lig.c",
+  "line": 1406,
+  "msg": "SPOT LIGHT OVER!"
+ },
+ {
+  "fn": "fn_1_D5C70",
+  "addr": 875632,
+  "file": "bg_lig.c",
+  "line": 1414,
+  "msg": "SPOT LIGHT OVER!"
+ },
+ {
+  "fn": "fn_1_D5C70",
+  "addr": 875632,
+  "file": "bg_lig.c",
+  "line": 1422,
+  "msg": "SPOT LIGHT OVER!"
+ },
+ {
+  "fn": "fn_1_D8FC4",
+  "addr": 888772,
+  "file": "bg_san.c",
+  "line": 1255,
+  "msg": "SPOT LIGHT OVER!"
+ },
+ {
+  "fn": "fn_1_D8FC4",
+  "addr": 888772,
+  "file": "bg_san.c",
+  "line": 1262,
+  "msg": "SPOT LIGHT OVER!"
+ },
+ {
+  "fn": "fn_1_D8FC4",
+  "addr": 888772,
+  "file": "bg_san.c",
+  "line": 1270,
+  "msg": "SPOT LIGHT OVER!"
+ },
+ {
+  "fn": "fn_1_D8FC4",
+  "addr": 888772,
+  "file": "bg_san.c",
+  "line": 1278,
+  "msg": "SPOT LIGHT OVER!"
+ },
+ {
+  "fn": "fn_1_DCBF4",
+  "addr": 904180,
+  "file": "bg_for.c",
+  "line": 541,
+  "msg": "SPOT LIGHT OVER!"
+ },
+ {
+  "fn": "fn_1_DCBF4",
+  "addr": 904180,
+  "file": "bg_for.c",
+  "line": 548,
+  "msg": "SPOT LIGHT OVER!"
+ },
+ {
+  "fn": "fn_1_DCBF4",
+  "addr": 904180,
+  "file": "bg_for.c",
+  "line": 556,
+  "msg": "SPOT LIGHT OVER!"
+ },
+ {
+  "fn": "fn_1_DCBF4",
+  "addr": 904180,
+  "file": "bg_for.c",
+  "line": 564,
+  "msg": "SPOT LIGHT OVER!"
+ },
+ {
+  "fn": "fn_1_EE530",
+  "addr": 976176,
+  "file": "ghost.c",
+  "line": 3173,
+  "msg": "type is invalid"
+ },
+ {
+  "fn": "fn_1_FB798",
+  "addr": 1030040,
+  "file": "bg_cas.c",
+  "line": 754,
+  "msg": "DICE OVER!"
+ },
+ {
+  "fn": "fn_1_103264",
+  "addr": 1061476,
+  "file": "bg_common.c",
+  "line": 505,
+  "msg": "SPOT LIGHT DISP OVER(length/width)"
+ },
+ {
+  "fn": "fn_1_11D1FC",
+  "addr": 1167868,
+  "file": "accessory.c",
+  "line": 8637,
+  "msg": "stop.."
+ },
+ {
+  "fn": "fn_1_12A2D0",
+  "addr": 1221328,
+  "file": "archive.c",
+  "line": 93,
+  "msg": "ArchiveSetCurrent: id is not used."
+ },
+ {
+  "fn": "fn_1_12A734",
+  "addr": 1222452,
+  "file": "archive.c",
+  "line": 329,
+  "msg": "ArchiveFreeARC: Current work is already freed."
+ },
+ {
+  "fn": "fn_1_12A8A4",
+  "addr": 1222820,
+  "file": "archive.c",
+  "line": 396,
+  "msg": "alloc_read : Can't open3."
+ },
+ {
+  "fn": "fn_1_12AAC8",
+  "addr": 1223368,
+  "file": "archive.c",
+  "line": 446,
+  "msg": "archive_open_start_addr: Can't ARCOpen."
+ },
+ {
+  "fn": "fn_1_12AC28",
+  "addr": 1223720,
+  "file": "archive.c",
+  "line": 446,
+  "msg": "archive_open_start_addr: Can't ARCOpen."
+ },
+ {
+  "fn": "fn_1_12ADC8",
+  "addr": 1224136,
+  "file": "archive.c",
+  "line": 446,
+  "msg": "archive_open_start_addr: Can't ARCOpen."
+ },
+ {
+  "fn": "fn_1_131390",
+  "addr": 1250192,
+  "file": "custom_memcard.c",
+  "line": 327,
+  "msg": "ERROR: load_data_pointer is NULL"
+ },
+ {
+  "fn": "fn_1_131558",
+  "addr": 1250648,
+  "file": "custom_memcard.c",
+  "line": 407,
+  "msg": "ERROR: list_data_pointer is NULL"
+ },
+ {
+  "fn": "fn_1_1332FC",
+  "addr": 1258236,
+  "file": "sel_static_disp.c",
+  "line": 1001,
+  "msg": "Error!:sels_disp_tatebou "
+ },
+ {
+  "fn": "fn_1_13354C",
+  "addr": 1258828,
+  "file": "sel_static_disp.c",
+  "line": 1063,
+  "msg": "Error!:sels_disp_tatebou_kagi "
+ }
+]

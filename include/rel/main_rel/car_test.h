@@ -27,6 +27,25 @@ typedef struct {
 } Obj_1_bss_6D7F4;
 extern Obj_1_bss_6D7F4 lbl_1_bss_6D7F4;
 
+// lbl_1_bss_6D7F0: .bss size 0x1, 2 refs from car_test.c
+extern u8 lbl_1_bss_6D7F0;
+
+// lbl_1_bss_6D620: .bss size 0x138, 2 refs from car_test.c
+typedef struct {
+    u8 unk_0;  // 2 loads, 2 stores
+    u8 pad_1[0x3];
+    f32 unk_4;  // 3 loads, 2 stores
+    f32 unk_8;  // 3 loads, 2 stores
+    u8 unk_C;  // 3 loads, 2 stores
+    u8 unk_D;  // 2 loads, 1 stores
+    u8 unk_E;  // 2 loads, 1 stores
+    u8 unk_F;  // 2 loads, 0 stores
+    u32 unk_10;  // 3 loads, 1 stores
+    u32 unk_14;  // 1 loads, 1 stores
+    u8 pad_18[0x120];
+} Obj_1_bss_6D620;
+extern Obj_1_bss_6D620 lbl_1_bss_6D620;
+
 // lbl_1_data_1FFE0: .data size 0x10, 2 refs from car_test.c (own data block)
 typedef struct {
     f32 unk_0;  // 1 loads, 2 stores
@@ -34,40 +53,22 @@ typedef struct {
 } Obj_1_data_1FFE0;
 extern Obj_1_data_1FFE0 lbl_1_data_1FFE0;
 
-// lbl_1_bss_6D7F0: .bss size 0x1, 2 refs from car_test.c
-extern u8 lbl_1_bss_6D7F0;
-
-// lbl_1_bss_6D620: .bss size 0x138, 2 refs from car_test.c
-typedef struct {
-    u8 unk_0;  // 1 loads, 0 stores
-    u8 pad_1[0x3];
-    f32 unk_4;  // 1 loads, 0 stores
-    f32 unk_8;  // 1 loads, 0 stores
-    u8 unk_C;  // 1 loads, 0 stores
-    u8 unk_D;  // 1 loads, 0 stores
-    u8 unk_E;  // 1 loads, 0 stores
-    u8 unk_F;  // 1 loads, 0 stores
-    u32 unk_10;  // 1 loads, 0 stores
-    u8 pad_14[0x124];
-} Obj_1_bss_6D620;
-extern Obj_1_bss_6D620 lbl_1_bss_6D620;
-
-// lbl_1_data_1F1D8: .data size 0x8, 1 refs from car_test.c (own data block)
-extern u32 lbl_1_data_1F1D8;
-
 // lbl_1_data_1FFDC: .data size 0x4, 1 refs from car_test.c (own data block)
 extern u32 lbl_1_data_1FFDC;
-
-// lbl_1_data_1EFDC: .data size 0x5, 1 refs from car_test.c (own data block)
-extern u32 lbl_1_data_1EFDC;
-
-// lbl_1_data_1EFE4: .data size 0x8, 1 refs from car_test.c (own data block)
-extern u32 lbl_1_data_1EFE4;
 
 // lbl_1_data_1F5A0: .data size 0xA4, 1 refs from car_test.c (own data block)
 extern u8 lbl_1_data_1F5A0[0xA4];
 
 // lbl_1_data_1F4FC: .data size 0xA4, 1 refs from car_test.c (own data block)
 extern u8 lbl_1_data_1F4FC[0xA4];
+
+// lbl_1_data_1F1D8: .data size 0x8, 1 refs from car_test.c (own data block)
+extern u32 lbl_1_data_1F1D8;
+
+// lbl_1_data_1EFDC: .data size 0x5, 1 refs from car_test.c (own data block)
+extern u32 lbl_1_data_1EFDC;
+
+// lbl_1_data_1EFE4: .data size 0x8, 1 refs from car_test.c (own data block)
+extern u32 lbl_1_data_1EFE4;
 
 #endif  // REL_MAIN_REL_CAR_TEST_H

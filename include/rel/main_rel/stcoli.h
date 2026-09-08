@@ -12,7 +12,7 @@ extern u8 lbl_1_data_5548[0x190];
 
 // lbl_1_bss_3BE4: .bss size 0x1C, 3 refs from stcoli.c
 typedef struct {
-    u32 unk_0;  // 2 loads, 2 stores
+    u32 unk_0;  // 12 loads, 4 stores
     u8 pad_4[0x4];
     f32 unk_8;  // 1 loads, 3 stores
     f32 unk_C;  // 1 loads, 3 stores
@@ -32,12 +32,31 @@ typedef struct {
 } Obj_1_bss_3BE4;
 extern Obj_1_bss_3BE4 lbl_1_bss_3BE4;
 
+// lbl_1_bss_6EAD0: .bss size 0x708, 2 refs from stcoli.c
+typedef struct {
+    u32 unk_0;  // 23 loads, 0 stores
+    u32 unk_4;  // 9 loads, 0 stores
+} Obj_1_bss_6EAD0_At0;
+typedef struct {
+    Obj_1_bss_6EAD0_At0 *unk_0;  // 34 loads, 0 stores
+    u8 pad_4[0x704];
+} Obj_1_bss_6EAD0;
+extern Obj_1_bss_6EAD0 lbl_1_bss_6EAD0;
+
+// lbl_1_data_4: .data size 0x4, 2 refs from stcoli.c
+extern f32 lbl_1_data_4;
+
+// lbl_1_data_5F5C: .data size 0x10, 2 refs from stcoli.c (own data block)
+extern u8 lbl_1_data_5F5C[0x10];
+
 // lbl_1_bss_5138: .bss size 0x104, 2 refs from stcoli.c
 typedef struct {
     u16 unk_0;  // 1 loads, 2 stores
     u8 unk_2;  // 4 loads, 3 stores
     u8 unk_3;  // 3 loads, 2 stores
-    u8 pad_4[0xC];
+    u8 pad_4[0x4];
+    u16 unk_8;  // 0 loads, 2 stores
+    u8 pad_A[0x6];
     u16 unk_10;  // 0 loads, 1 stores
     u16 unk_12;  // 0 loads, 1 stores
     u8 pad_14[0x8];
@@ -50,46 +69,12 @@ typedef struct {
     u8 unk_E3;  // 1 loads, 1 stores
     u8 unk_E4;  // 5 loads, 3 stores
     u8 unk_E5;  // 2 loads, 1 stores
-    u8 pad_E6[0x5];
+    u8 unk_E6;  // 0 loads, 1 stores
+    u8 pad_E7[0x4];
     u8 unk_EB;  // 2 loads, 2 stores
     u8 pad_EC[0x18];
 } Obj_1_bss_5138;
 extern Obj_1_bss_5138 lbl_1_bss_5138;
-
-// lbl_1_data_5F5C: .data size 0x10, 2 refs from stcoli.c (own data block)
-extern u8 lbl_1_data_5F5C[0x10];
-
-// lbl_1_data_4: .data size 0x4, 2 refs from stcoli.c
-extern f32 lbl_1_data_4;
-
-// lbl_1_bss_6EAD0: .bss size 0x708, 2 refs from stcoli.c
-typedef struct {
-    u32 unk_0;  // 23 loads, 0 stores
-    u32 unk_4;  // 9 loads, 0 stores
-} Obj_1_bss_6EAD0_At0;
-typedef struct {
-    Obj_1_bss_6EAD0_At0 *unk_0;  // 34 loads, 0 stores
-    u8 pad_4[0x704];
-} Obj_1_bss_6EAD0;
-extern Obj_1_bss_6EAD0 lbl_1_bss_6EAD0;
-
-// lbl_1_data_54B4: .data size 0x94, 1 refs from stcoli.c (own data block)
-extern u8 lbl_1_data_54B4[0x94];
-
-// lbl_1_data_5BF8: .data size 0x18, 1 refs from stcoli.c (own data block)
-extern u8 lbl_1_data_5BF8[0x18];
-
-// lbl_1_data_5B86: .data size 0x2, 1 refs from stcoli.c (own data block)
-extern s16 lbl_1_data_5B86;
-
-// lbl_1_data_51C8: .data size 0x28, 1 refs from stcoli.c (own data block)
-extern u8 lbl_1_data_51C8[0x28];
-
-// lbl_1_data_5B88: .data size 0x4, 1 refs from stcoli.c (own data block)
-extern u32 lbl_1_data_5B88;
-
-// lbl_1_data_5B8C: .data size 0x8, 1 refs from stcoli.c (own data block)
-extern u32 lbl_1_data_5B8C;
 
 // lbl_1_data_5B7C: .data size 0x1, 1 refs from stcoli.c (own data block)
 extern u8 lbl_1_data_5B7C;
@@ -97,13 +82,31 @@ extern u8 lbl_1_data_5B7C;
 // lbl_1_data_5B84: .data size 0x1, 1 refs from stcoli.c (own data block)
 extern u8 lbl_1_data_5B84;
 
-// lbl_1_data_5B80: .data size 0x4, 1 refs from stcoli.c (own data block)
-extern u32 lbl_1_data_5B80;
+// lbl_1_data_51C8: .data size 0x28, 1 refs from stcoli.c (own data block)
+extern u8 lbl_1_data_51C8[0x28];
 
 // lbl_1_data_61D4: .data size 0xEC, 1 refs from stcoli.c (own data block)
 extern u8 lbl_1_data_61D4[0xEC];
 
 // jumptable_1_data_56D8: .data size 0x54, 1 refs from stcoli.c (own data block)
 extern u8 jumptable_1_data_56D8[0x54];
+
+// lbl_1_data_5B88: .data size 0x4, 1 refs from stcoli.c (own data block)
+extern u32 lbl_1_data_5B88;
+
+// lbl_1_data_5B8C: .data size 0x8, 1 refs from stcoli.c (own data block)
+extern u32 lbl_1_data_5B8C;
+
+// lbl_1_data_5BF8: .data size 0x18, 1 refs from stcoli.c (own data block)
+extern u8 lbl_1_data_5BF8[0x18];
+
+// lbl_1_data_54B4: .data size 0x94, 1 refs from stcoli.c (own data block)
+extern u8 lbl_1_data_54B4[0x94];
+
+// lbl_1_data_5B80: .data size 0x4, 1 refs from stcoli.c (own data block)
+extern u32 lbl_1_data_5B80;
+
+// lbl_1_data_5B86: .data size 0x2, 1 refs from stcoli.c (own data block)
+extern s16 lbl_1_data_5B86;
 
 #endif  // REL_MAIN_REL_STCOLI_H

@@ -14,11 +14,11 @@ typedef struct {
 } Obj_1_bss_6EA88;
 extern Obj_1_bss_6EA88 lbl_1_bss_6EA88;
 
-// lbl_1_bss_6EA96: .bss size 0x2, 2 refs from ptclput.c
-extern u16 lbl_1_bss_6EA96;
-
 // lbl_1_data_2CD20: .data size 0xA, 2 refs from ptclput.c (own data block)
 extern u8 lbl_1_data_2CD20[0xA];
+
+// lbl_1_bss_6EA96: .bss size 0x2, 2 refs from ptclput.c
+extern u16 lbl_1_bss_6EA96;
 
 // lbl_1_data_33F0C: .data size 0x10, 1 refs from ptclput.c (own data block)
 typedef struct {

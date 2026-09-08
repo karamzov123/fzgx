@@ -26,13 +26,17 @@ typedef struct {
     f32 unk_28;  // 1 loads, 2 stores
     f32 unk_2C;  // 1 loads, 2 stores
     u32 unk_30;  // 1 loads, 2 stores
-    u8 unk_34;  // 0 loads, 2 stores
-    u8 pad_35[0xFB];
+    u8 unk_34;  // 0 loads, 6 stores
+    u8 unk_35;  // 0 loads, 1 stores
+    u8 pad_36[0xFA];
 } Obj_1_bss_8EDF0;
 extern Obj_1_bss_8EDF0 lbl_1_bss_8EDF0;
 
 // lbl_1_bss_8ED90: .bss size 0x4, 5 refs from rep_memcard.c
 extern u32 lbl_1_bss_8ED90;
+
+// lbl_1_data_49AC8: .data size 0xE, 3 refs from rep_memcard.c (own data block)
+extern u8 lbl_1_data_49AC8[0xE];
 
 // lbl_1_bss_8ED94: .bss size 0xC, 3 refs from rep_memcard.c
 typedef struct {
@@ -40,9 +44,6 @@ typedef struct {
     u8 pad_4[0x8];
 } Obj_1_bss_8ED94;
 extern Obj_1_bss_8ED94 lbl_1_bss_8ED94;
-
-// lbl_1_data_49AC8: .data size 0xE, 3 refs from rep_memcard.c (own data block)
-extern u8 lbl_1_data_49AC8[0xE];
 
 // lbl_1_data_49AB4: .data size 0x14, 2 refs from rep_memcard.c
 typedef struct {
