@@ -72,6 +72,10 @@ Rules that hold for everyone:
   anchors (then `fzgx tu-organize` and regenerate headers).
 - Batches: `uv run tools/orchestrate.py --harness codex|claude ...` (headless, one report
   per batch, `fzgx verify` relinks once at the end). Never use in-process subagents.
+- While a batch runs, never call `configure.py`, `ninja` or `dtk` by hand: go through
+  `fzgx verify` or `oracle.build_lock()`. Two concurrent splits kill each other (exit 137)
+  and a broken baseline makes a bisect blame every pending unit (verify now checks the
+  baseline first, but the split race still corrupts `build/`).
 
 ## Layout
 
