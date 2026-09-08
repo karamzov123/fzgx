@@ -60,29 +60,22 @@ void fn_1_154930(void) {
 }
 /* fzgx:end fn_1_154930 */
 
-/* fzgx:begin fn_1_1549B8 noprologue */
+/* fzgx:begin fn_1_1549B8 */
 #include "types.h"
 
-extern struct fn_1_1549B8_lbl_1_bss_8ED90 lbl_1_bss_8ED90;
-extern u32 fn_1_C0510(void *, u32, u32);
-extern u32 lbl_1_data_49AB4;
+extern void fn_1_C0510(u32 *arg0, u32 arg1, u32 arg2);
 
-struct fn_1_1549B8_lbl_1_bss_8ED90 {
-    u32 unk_0;
-    u32 unk_4;
-};
-
+// Copy the tow state into the active settings and advance the tow mode.
 void fn_1_1549B8(void) {
-    void * v0;
-    u32 v1;
-    u32 v2;
-    v0 = ((u8 *)&lbl_1_bss_8ED90 + 20);
-    v1 = lbl_1_bss_8ED90.unk_0;
-    v2 = lbl_1_bss_8ED90.unk_4;
-    *(u32 *)((u8 *)v0 + 8) = v1;
-    *(u32 *)((u8 *)v0 + 12) = v2;
-    *(u32 *)((u8 *)v0 + 16) = 5;
-    fn_1_C0510(v0, v2, v1);
-    lbl_1_data_49AB4 = 3;
+    u32 *src = &lbl_1_bss_8ED90;
+    u32 *dst = src + 5;
+    u32 first = src[0];
+    u32 second = src[1];
+
+    dst[2] = first;
+    dst[3] = second;
+    dst[4] = 5;
+    fn_1_C0510(dst, second, first);
+    lbl_1_data_49AB4.unk_0 = 3;
 }
 /* fzgx:end fn_1_1549B8 */

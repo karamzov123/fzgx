@@ -190,41 +190,33 @@ void fn_1_D3C04(void) {
 }
 /* fzgx:end fn_1_D3C04 */
 
-/* fzgx:begin fn_1_D3C58 noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_D3C58 */
+extern s32 fn_1_58C4(void);
+extern void fn_1_5948(s32 index);
+extern void fn_1_105AB8(void *base, s32 index);
+extern void fn_1_D47D8(void *state, s32 index);
+extern void fn_1_627C(s32 index);
+extern void fn_1_D5958(void *state);
+extern void fn_1_D4360(void *state);
+extern void fn_1_D4964(void *state);
 
-extern struct fn_1_D3C58_lbl_1_data_2A7E0 lbl_1_data_2A7E0;
-extern u32 fn_1_105AB8(u32, u32);
-extern u32 fn_1_58C4(void *);
-extern u32 fn_1_5948(u32);
-extern u32 fn_1_627C(u32);
-extern u32 fn_1_D4360(u32);
-extern u32 fn_1_D47D8(u32, u32);
-extern u32 fn_1_D4964(u32);
-extern u32 fn_1_D5958(u32);
-
-struct fn_1_D3C58_lbl_1_data_2A7E0 {
-    u8 pad_0[0x3C];
-    u32 unk_3C;
-};
-
+// Initializes the model-loader state for every available entry.
 void fn_1_D3C58(void) {
-    u32 v0;
-    s32 v1;
-    u32 t0;
-    v0 = lbl_1_data_2A7E0.unk_3C;
-    t0 = fn_1_58C4(&lbl_1_data_2A7E0);
-    v1 = 0;
-    while (v1 < (s32)t0) {
-    fn_1_5948(v1);
-    fn_1_105AB8((v0 + 32), v1);
-    fn_1_D47D8(v0, v1);
-    fn_1_627C(v1);
-    v1++;
+    Obj_1_data_2A7E0_At3C *state;
+    s32 count;
+    s32 index;
+
+    state = lbl_1_data_2A7E0.unk_3C;
+    count = fn_1_58C4();
+    for (index = 0; index < count; index++) {
+        fn_1_5948(index);
+        fn_1_105AB8(&state->unk_20, index);
+        fn_1_D47D8(state, index);
+        fn_1_627C(index);
     }
-    fn_1_D5958(v0);
-    fn_1_D4360(v0);
-    fn_1_D4964(v0);
+    fn_1_D5958(state);
+    fn_1_D4360(state);
+    fn_1_D4964(state);
 }
 /* fzgx:end fn_1_D3C58 */
 

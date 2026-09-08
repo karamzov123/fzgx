@@ -930,9 +930,6 @@ rel/main_rel/font/fn_1_520A0.c:
 rel/main_rel/font/fn_1_520CC.c:
 	.text       start:0x000520CC end:0x000520F8
 
-rel/main_rel/font/fn_1_520F8.c:
-	.text       start:0x000520F8 end:0x000521B8
-
 rel/main_rel/font/fn_1_52B68.c:
 	.text       start:0x00052B68 end:0x00052B8C
 

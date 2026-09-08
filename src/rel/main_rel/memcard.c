@@ -1908,21 +1908,13 @@ void fn_1_C36EC(void) {
 }
 /* fzgx:end fn_1_C36EC */
 
-/* fzgx:begin fn_1_C37A0 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/memcard.h"
-
+/* fzgx:begin fn_1_C37A0 */
 extern u8 lbl_1_bss_772C8[66];
-extern void* lbl_801A6410;
-extern void* fn_1_4630(void *heap, u32 size, void *file, s32 line);
-extern void fn_1_46B4(void *heap, void *ptr, void *file, s32 line);
+extern void *lbl_801A6410;
+extern u32 fn_1_4630(void *heap, u32 size, void *file, s32 line);
+extern void fn_1_46B4(void *heap, u32 ptr, void *file, s32 line);
 extern s32 CARDGetResultCode(s32 chan);
 extern s32 CARDUnmount(s32 chan);
-extern int fn_8002DFE0(int chan, void *workArea, int zero);
-extern void fn_80083DB0(void *dst, void *src);
-extern void strcat(void *dst, void *src);
-extern s32 CARDOpen(s32 chan, void *fileName, void *fileInfo);
 extern s32 fn_8002FC14(s32 chan, void *fileName);
 extern s32 fn_80030338(s32 chan, void *oldName, void *newName);
 
@@ -1935,13 +1927,14 @@ typedef struct CARDFileInfo {
     u16 padding;
 } CARDFileInfo;
 
+// Unmount the memory card, repair its save-file names, and release its work area.
 void fn_1_C37A0(void) {
     CARDFileInfo fileInfo;
     char sp28[32];
     char sp8[32];
-    char *base = (char*)&lbl_1_data_35AC8;
+    char *base = (char *)&lbl_1_data_35AC8;
     s32 chan;
-    void *workArea;
+    u32 workArea;
     s32 res;
 
     if (lbl_1_bss_772C8[0] == 0) {
@@ -1964,7 +1957,7 @@ void fn_1_C37A0(void) {
     } while (res == -1);
 
     if (res != 0) {
-        if (workArea != NULL) {
+        if (workArea != 0) {
             fn_1_46B4(lbl_801A6410, workArea, base + 0x6cf0, 0x35ab);
         }
         lbl_1_bss_772C8[0] = 0;
@@ -1983,7 +1976,7 @@ void fn_1_C37A0(void) {
             res = CARDUnmount(chan);
         } while (res == -1);
 
-        if (workArea != NULL) {
+        if (workArea != 0) {
             fn_1_46B4(lbl_801A6410, workArea, base + 0x6cf0, 0x35c2);
         }
         lbl_1_bss_772C8[0] = 0;
@@ -2001,19 +1994,21 @@ void fn_1_C37A0(void) {
         fn_80083DB0(sp28, lbl_1_bss_772C8);
         strcat(sp28, base + 0x6dd4);
 
-        while (fn_8002FC14(chan, sp28) == -1);
+        while (fn_8002FC14(chan, sp28) == -1) {
+        }
     } else if (res == -4) {
         fn_80083DB0(sp8, lbl_1_bss_772C8);
         strcat(sp8, base + 0x6dd4);
 
-        while (fn_80030338(chan, sp8, sp28) == -1);
+        while (fn_80030338(chan, sp8, sp28) == -1) {
+        }
     }
 
     do {
         res = CARDUnmount(chan);
     } while (res == -1);
 
-    if (workArea != NULL) {
+    if (workArea != 0) {
         fn_1_46B4(lbl_801A6410, workArea, base + 0x6cf0, 0x35ef);
     }
     lbl_1_bss_772C8[0] = 0;

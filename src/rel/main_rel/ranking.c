@@ -206,37 +206,80 @@ void fn_1_156598(void) {
 }
 /* fzgx:end fn_1_156598 */
 
-/* fzgx:begin fn_1_15659C noprologue */
-#include "types.h"
-
+/* fzgx:begin fn_1_15659C */
 typedef struct {
-    u32 unk_0; u32 unk_4; u32 unk_8; u32 unk_C; u32 unk_10; u32 unk_14; u32 unk_18; u32 unk_1C;
-    u32 unk_20; u32 unk_24; u32 unk_28; u32 unk_2C; u8 unk_30; u8 pad_31[3]; f32 unk_34;
-    u8 pad_38[0x1c]; u32 unk_54; u32 unk_58; u32 unk_5C; u32 unk_60; u32 unk_64; u32 unk_68;
-    u32 unk_6C; u32 unk_70; u32 unk_74; u32 unk_78; u32 unk_7C; u8 unk_80; u8 pad_81[3];
-    f32 unk_84; u8 pad_88[0x18];
-} fn_1_15659C_Obj_1_bss_8F428;
+    u32 unk_0;
+    u32 unk_4;
+    u32 unk_8;
+    u32 unk_C;
+    u32 unk_10;
+    u32 unk_14;
+    u32 unk_18;
+    u32 unk_1C;
+    u32 unk_20;
+    u32 unk_24;
+    u32 unk_28;
+    u32 unk_2C;
+    u8 unk_30;
+    u8 pad_31[3];
+    f32 unk_34;
+    u8 pad_38[0x1c];
+    u32 unk_54;
+    u32 unk_58;
+    u32 unk_5C;
+    u32 unk_60;
+    u32 unk_64;
+    u32 unk_68;
+    u32 unk_6C;
+    u32 unk_70;
+    u32 unk_74;
+    u32 unk_78;
+    u32 unk_7C;
+    u8 unk_80;
+    u8 pad_81[3];
+    f32 unk_84;
+    u8 pad_88[0x18];
+} RankingEntry;
 
-extern fn_1_15659C_Obj_1_bss_8F428 lbl_1_bss_8F428;
 extern f32 lbl_1_rodata_D8C8[18];
 extern void fn_80008BEC(void *dst, int value, int size);
 
+// Clears both ranking entries to their default sentinel values.
 void fn_1_15659C(void) {
+    RankingEntry *obj;
     f32 value;
-    fn_1_15659C_Obj_1_bss_8F428 *obj;
     int i;
 
     fn_80008BEC(&lbl_1_bss_8F428, 0, 0x140);
-    obj = &lbl_1_bss_8F428;
+    obj = (RankingEntry *)&lbl_1_bss_8F428;
     value = lbl_1_rodata_D8C8[0];
     for (i = 0; i < 2; i++) {
-        obj->unk_4 = -1; obj->unk_C = -1; obj->unk_10 = -1; obj->unk_14 = -1;
-        obj->unk_1C = -1; obj->unk_20 = -1; obj->unk_18 = -1; obj->unk_8 = -1;
-        obj->unk_24 = -1; obj->unk_28 = -1; obj->unk_2C = -1; obj->unk_34 = value;
-        obj->unk_30 = 0; obj->unk_54 = -1; obj->unk_5C = -1; obj->unk_60 = -1;
-        obj->unk_64 = -1; obj->unk_6C = -1; obj->unk_70 = -1; obj->unk_68 = -1;
-        obj->unk_58 = -1; obj->unk_74 = -1; obj->unk_78 = -1; obj->unk_7C = -1;
-        obj->unk_84 = value; obj->unk_80 = 0;
+        obj->unk_4 = -1;
+        obj->unk_C = -1;
+        obj->unk_10 = -1;
+        obj->unk_14 = -1;
+        obj->unk_1C = -1;
+        obj->unk_20 = -1;
+        obj->unk_18 = -1;
+        obj->unk_8 = -1;
+        obj->unk_24 = -1;
+        obj->unk_28 = -1;
+        obj->unk_2C = -1;
+        obj->unk_34 = value;
+        obj->unk_30 = 0;
+        obj->unk_54 = -1;
+        obj->unk_5C = -1;
+        obj->unk_60 = -1;
+        obj->unk_64 = -1;
+        obj->unk_6C = -1;
+        obj->unk_70 = -1;
+        obj->unk_68 = -1;
+        obj->unk_58 = -1;
+        obj->unk_74 = -1;
+        obj->unk_78 = -1;
+        obj->unk_7C = -1;
+        obj->unk_84 = value;
+        obj->unk_80 = 0;
         obj++;
     }
 }

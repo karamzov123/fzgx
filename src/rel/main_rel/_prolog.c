@@ -292,37 +292,30 @@ s32 fn_1_3F8C(u32 arg3, u32 arg0, u32 arg1, u32 index) {
 }
 /* fzgx:end fn_1_3F8C */
 
-/* fzgx:begin fn_1_4010 noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_4010 */
+extern u32 lbl_1_bss_DAC;
 
-extern struct fn_1_4010_lbl_1_bss_DAC lbl_1_bss_DAC;
-
-struct fn_1_4010_lbl_1_bss_DAC {
-    u32 unk_0;
-};
-
+// Store a value in the indexed entry of the active table.
 u32 fn_1_4010(u32 arg0, u32 arg1) {
-    u32 v0;
-    v0 = (*(u32 *)((u8 *)lbl_1_bss_DAC.unk_0 + 4) + (arg0 * 36));
-    *(u32 *)((u8 *)v0 + 24) = arg1;
-    return v0;
+    u32 *table = (u32 *)lbl_1_bss_DAC;
+    u8 *entry = (u8 *)table[1] + arg0 * 36;
+
+    *(u32 *)(entry + 24) = arg1;
+    return (u32)entry;
 }
 /* fzgx:end fn_1_4010 */
 
-/* fzgx:begin fn_1_4060 noprologue */
-#include "types.h"
-
-extern struct fn_1_4060_lbl_1_bss_DA8 lbl_1_bss_DA8;
-
-struct fn_1_4060_lbl_1_bss_DA8 {
-    u32 unk_0;
-};
+/* fzgx:begin fn_1_4060 */
+extern u32 lbl_1_bss_DA8;
 
 u32 fn_1_4060(void) {
-    u32 v0;
-    v0 = *(u32 *)((u8 *)lbl_1_bss_DA8.unk_0 + 8);
-    *(u32 *)((u8 *)v0 + 0) = 0;
-    return v0;
+    u32 *base;
+    u32 *slot;
+
+    base = (u32 *)lbl_1_bss_DA8;
+    slot = *(u32 **)((u8 *)base + 8);
+    *slot = 0;
+    return (u32)slot;
 }
 /* fzgx:end fn_1_4060 */
 
@@ -392,59 +385,48 @@ void fn_1_41A8(void) {
 }
 /* fzgx:end fn_1_41A8 */
 
-/* fzgx:begin fn_1_4310 noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_4310 */
+extern u32 lbl_1_bss_DAC;
 
-extern struct fn_1_4310_lbl_1_bss_DAC lbl_1_bss_DAC;
-
-struct fn_1_4310_lbl_1_bss_DAC {
-    u32 unk_0;
-};
-
+// Store the value in the shared state object's field.
 void fn_1_4310(u32 arg0) {
-    *(u32 *)((u8 *)lbl_1_bss_DAC.unk_0 + 16) = arg0;
+    *(u32 *)((u8 *)lbl_1_bss_DAC + 16) = arg0;
 }
 /* fzgx:end fn_1_4310 */
 
-/* fzgx:begin fn_1_4324 noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_4324 */
+extern u32 lbl_1_bss_DAC;
 
-extern struct fn_1_4324_lbl_1_bss_DAC lbl_1_bss_DAC;
-
-struct fn_1_4324_lbl_1_bss_DAC {
-    u32 unk_0;
-};
-
+// Store the current value in the shared state block.
 void fn_1_4324(u32 arg0) {
-    *(u32 *)((u8 *)lbl_1_bss_DAC.unk_0 + 20) = arg0;
+    *(u32 *)((u8 *)lbl_1_bss_DAC + 20) = arg0;
 }
 /* fzgx:end fn_1_4324 */
 
-/* fzgx:begin fn_1_4338 noprologue */
-#include "types.h"
-
-extern struct fn_1_4338_lbl_1_bss_DAC lbl_1_bss_DAC;
-
-struct fn_1_4338_lbl_1_bss_DAC {
-    u32 unk_0;
+/* fzgx:begin fn_1_4338 */
+struct fn_1_4338_target {
+    u8 unk_0[20];
+    u32 unk_14;
 };
 
+struct fn_1_4338_root {
+    struct fn_1_4338_target *unk_0;
+};
+
+extern u32 lbl_1_bss_DAC;
+
+// Return the value stored in the pointed-to object's field at offset 0x14.
 u32 fn_1_4338(void) {
-    return *(u32 *)((u8 *)lbl_1_bss_DAC.unk_0 + 20);
+    return ((struct fn_1_4338_root *)&lbl_1_bss_DAC)->unk_0->unk_14;
 }
 /* fzgx:end fn_1_4338 */
 
-/* fzgx:begin fn_1_434C noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_434C */
+extern u32 lbl_1_bss_DAC;
 
-extern struct fn_1_434C_lbl_1_bss_DAC lbl_1_bss_DAC;
-
-struct fn_1_434C_lbl_1_bss_DAC {
-    u32 unk_0;
-};
-
+// fn_1_434C returns the current main-rel state value.
 u32 fn_1_434C(void) {
-    return lbl_1_bss_DAC.unk_0;
+    return lbl_1_bss_DAC;
 }
 /* fzgx:end fn_1_434C */
 
@@ -479,23 +461,21 @@ void fn_1_4374(Node **list, Node *node) {
 }
 /* fzgx:end fn_1_4374 */
 
-/* fzgx:begin fn_1_43E8 noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_43E8 */
+extern u32 lbl_1_bss_DB0[2];
 
-extern u32 lbl_1_bss_DB0;
-
+// Store the incoming value in the shared startup state.
 void fn_1_43E8(u32 arg0) {
-    lbl_1_bss_DB0 = arg0;
+    lbl_1_bss_DB0[0] = arg0;
 }
 /* fzgx:end fn_1_43E8 */
 
-/* fzgx:begin fn_1_43F4 noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_43F4 */
+extern u32 lbl_1_bss_DB0[2];
 
-extern u32 lbl_1_bss_DB0;
-
+// Clear the first startup word used by the main REL state.
 void fn_1_43F4(void) {
-    lbl_1_bss_DB0 = 0;
+    lbl_1_bss_DB0[0] = 0;
 }
 /* fzgx:end fn_1_43F4 */
 

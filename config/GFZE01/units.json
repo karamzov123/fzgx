@@ -13491,20 +13491,6 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/font/fn_1_520F8.c",
-    "symbols": [
-      "fn_1_520F8"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": [],
-    "tu": "rel/main_rel/font.c",
-    "pool": {
-      "@10": "lbl_1_rodata_2778"
-    }
-  },
-  {
-    "module": "main_rel",
     "source": "rel/main_rel/font/fn_1_521B8.c",
     "symbols": [
       "fn_1_521B8"

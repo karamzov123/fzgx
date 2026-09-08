@@ -44,32 +44,31 @@ extern f64 lbl_1_rodata_478;
 extern f32 lbl_1_rodata_49C;
 extern f32 lbl_1_bss_10C0[6];
 
-/* fzgx:begin fn_1_6400 noprologue */
-#include "types.h"
-
-extern struct fn_1_6400_lbl_1_bss_F68 lbl_1_bss_F68;
-extern struct fn_1_6400_lbl_801A6410 lbl_801A6410;
-extern u32 fn_1_46B4(u32, u32, void *, u32);
-extern u32 lbl_1_data_3318;
-
-struct fn_1_6400_lbl_1_bss_F68 {
-    u32 unk_0;
-    u32 unk_4;
-    u32 unk_8;
-};
+/* fzgx:begin fn_1_6400 */
 struct fn_1_6400_lbl_801A6410 {
     u32 unk_0;
 };
+extern struct fn_1_6400_lbl_801A6410 lbl_801A6410;
+extern u32 fn_1_46B4(u32, u32, void *, u32);
+extern u8 lbl_1_data_3318[180];
 
+typedef struct {
+    u32 unk_0;
+    u32 unk_4;
+    u32 unk_8;
+} F68State;
+
+// Report and clear the three pending camera state values.
 void fn_1_6400(void) {
-    struct fn_1_6400_lbl_1_bss_F68 *p_lbl_1_bss_F68;
-    p_lbl_1_bss_F68 = (struct fn_1_6400_lbl_1_bss_F68 *)&lbl_1_bss_F68;
-    fn_1_46B4(lbl_801A6410.unk_0, p_lbl_1_bss_F68->unk_8, &lbl_1_data_3318, 918);
-    fn_1_46B4(lbl_801A6410.unk_0, p_lbl_1_bss_F68->unk_4, &lbl_1_data_3318, 919);
-    fn_1_46B4(lbl_801A6410.unk_0, p_lbl_1_bss_F68->unk_0, &lbl_1_data_3318, 920);
-    p_lbl_1_bss_F68->unk_8 = 0;
-    p_lbl_1_bss_F68->unk_4 = 0;
-    p_lbl_1_bss_F68->unk_0 = 0;
+    F68State *state;
+
+    state = (F68State *)&lbl_1_bss_F68;
+    fn_1_46B4(lbl_801A6410.unk_0, state->unk_8, lbl_1_data_3318, 0x396);
+    fn_1_46B4(lbl_801A6410.unk_0, state->unk_4, lbl_1_data_3318, 0x397);
+    fn_1_46B4(lbl_801A6410.unk_0, state->unk_0, lbl_1_data_3318, 0x398);
+    state->unk_8 = 0;
+    state->unk_4 = 0;
+    state->unk_0 = 0;
 }
 /* fzgx:end fn_1_6400 */
 

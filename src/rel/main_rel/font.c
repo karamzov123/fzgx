@@ -205,34 +205,21 @@ void fn_1_4966C(f32 value1, f32 value2) {
 }
 /* fzgx:end fn_1_4966C */
 
-/* fzgx:begin fn_1_49680 noprologue */
-#include "types.h"
-
-extern u32 lbl_1_bss_4B9CC[23];
-extern u32 lbl_1_data_1AEA8[616];
-extern f64 lbl_1_rodata_10E0[3];
-
-typedef struct {
-    u8 pad0[4];
-    u8 value1;
-    u8 value2;
-    u8 pad6[0x2e];
-    f32 scale;
-} TableEntry;
-
+/* fzgx:begin fn_1_49680 */
+// Scale the active font entry's byte dimensions into the shared bounds.
 void fn_1_49680(f32 value1, f32 value2) {
-    TableEntry *entry;
+    Obj_1_data_1AEA8 *entry;
     s16 index;
     f32 result1;
     f32 result2;
 
-    index = *(s16 *)((u8 *)lbl_1_bss_4B9CC + 0xc);
-    entry = (TableEntry *)((u8 *)lbl_1_data_1AEA8 + index * 0x38);
-    result1 = entry->scale * (value1 * (f32)entry->value1);
-    result2 = entry->scale * (value2 * (f32)entry->value2);
-    *(f32 *)((u8 *)lbl_1_bss_4B9CC + 0x4) = result1;
-    *(f32 *)((u8 *)lbl_1_bss_4B9CC + 0x0) = result1;
-    *(f32 *)((u8 *)lbl_1_bss_4B9CC + 0x8) = result2;
+    index = lbl_1_bss_4B9CC.unk_C;
+    entry = (Obj_1_data_1AEA8 *)((u8 *)&lbl_1_data_1AEA8 + index * 0x38);
+    result1 = entry->unk_34 * (value1 * (f32)entry->unk_4);
+    result2 = entry->unk_34 * (value2 * (f32)entry->unk_5);
+    lbl_1_bss_4B9CC.unk_4 = result1;
+    lbl_1_bss_4B9CC.unk_0 = result1;
+    lbl_1_bss_4B9CC.unk_8 = result2;
 }
 /* fzgx:end fn_1_49680 */
 
@@ -363,28 +350,16 @@ void fn_1_4BD48(void) {
 }
 /* fzgx:end fn_1_4BD48 */
 
-/* fzgx:begin fn_1_4CDE4 noprologue */
-#include "types.h"
-
-extern u32 lbl_1_bss_4B9CC[23];
-extern u32 lbl_1_data_1AEA8[616];
-extern f64 lbl_1_rodata_10E0[3];
-
-typedef struct {
-    u8 pad_0[4];
-    u8 value1;
-    u8 value2;
-    u8 pad_6[0x2e];
-} FontEntry;
-
+/* fzgx:begin fn_1_4CDE4 */
+/* Convert the selected font entry's byte metrics to floating-point coordinates. */
 void fn_1_4CDE4(f32 *x, f32 *y) {
-    FontEntry *entry;
+    Obj_1_data_1AEA8 *entry;
     s16 index;
 
-    index = *(s16 *)((u8 *)lbl_1_bss_4B9CC + 0xc);
-    entry = (FontEntry *)((u8 *)lbl_1_data_1AEA8 + index * 0x38);
-    *x = (f32)(u32)entry->value1;
-    *y = (f32)(u32)entry->value2;
+    index = lbl_1_bss_4B9CC.unk_C;
+    entry = (Obj_1_data_1AEA8 *)((u8 *)&lbl_1_data_1AEA8 + index * 0x38);
+    *x = (f32)(u32)entry->unk_4;
+    *y = (f32)(u32)entry->unk_5;
 }
 /* fzgx:end fn_1_4CDE4 */
 
@@ -653,10 +628,7 @@ void fn_1_4E6F4(void) {
 }
 /* fzgx:end fn_1_4E6F4 */
 
-/* fzgx:begin fn_1_4E724 noprologue */
-#include "types.h"
-#include "rel/main_rel/font.h"
-
+/* fzgx:begin fn_1_4E724 */
 typedef struct FontParams {
     u8 unk_00[0x30];
     u32 unk_30;
@@ -664,34 +636,12 @@ typedef struct FontParams {
     u8 unk_38[0x58 - 0x38];
 } FontParams;
 
-extern void fn_1_A71CC(void);
-extern void fn_800724C8(void);
-extern void fn_8007245C(u32);
-extern void fn_80074788(u32);
-extern void fn_80074660(u32);
-extern void fn_80073678(u32);
-extern void fn_80073898(u32);
-extern void fn_80073C6C(u32);
-extern void fn_800745A4(u32, u32, u32, u32, u32, u32);
-extern void fn_800734A8(u32, u32, u32, u32);
-extern void fn_80072AB0(u32, u32, u32);
-extern void fn_80072C24(u32, u32, u32, u32, u32);
-extern void fn_80072D64(u32, u32, u32, u32, u32, u32);
-extern void fn_80072CC4(u32, u32, u32, u32, u32);
-extern void fn_80072E20(u32, u32, u32, u32, u32, u32);
-extern void fn_80074918(u32, u32, u32);
-extern void fn_800728A8(u32, u32, u32, u32);
-extern void fn_800720B0(u32);
-extern void fn_80072864(u32);
-extern void lbl_8006D758(void);
-extern void fn_80072558(void);
-
 extern s32 fn_1_4EC74(FontParams *);
 extern s32 fn_1_4EB74(FontParams *);
-extern void fn_1_A722C(void);
+extern f64 lbl_1_rodata_2778[2];
+extern void *lbl_801A6D00;
 
-extern u8 *lbl_801A6D00;
-
+// Initialize the font system and return the selected font resource.
 s32 fn_1_4E724(FontParams *arg) {
     FontParams local = *arg;
     s32 ret;
@@ -723,7 +673,7 @@ s32 fn_1_4E724(FontParams *arg) {
         local.unk_34 = (f32)(s32)lbl_1_bss_4E6AC;
     }
 
-    lbl_801A6D00[0x197] = 0xff;
+    ((u8 *)lbl_801A6D00)[0x197] = 0xff;
 
     if (local.unk_30 & 0x00800000) {
         ret = fn_1_4EC74(&local);
@@ -846,40 +796,17 @@ void fn_1_520CC(void) {
 }
 /* fzgx:end fn_1_520CC */
 
-/* fzgx:begin fn_1_520F8 noprologue */
-#include "types.h"
-
+/* fzgx:begin fn_1_521B8 */
 extern s8 fn_1_A5DC4(s32 value);
-extern s32 lbl_1_bss_4E6A8;
-extern s32 lbl_1_bss_4E6AC;
 extern f64 lbl_1_rodata_2778[2];
 extern f32 lbl_1_rodata_2788[6];
 
-f32 fn_1_520F8(s32 value) {
-    s32 base;
-    f32 scaled;
-
-    if (fn_1_A5DC4(value) && lbl_1_bss_4E6A8 != 0) {
-        base = lbl_1_bss_4E6AC;
-        scaled = (f32)(value - base) * lbl_1_rodata_2788[0];
-        return (f32)base + scaled;
-    }
-    return (f32)value;
-}
-/* fzgx:end fn_1_520F8 */
-
-/* fzgx:begin fn_1_521B8 noprologue */
-#include "types.h"
-
-extern s8 fn_1_A5DC4(s32 value);
-extern s32 lbl_1_bss_4E6A8;
-extern f64 lbl_1_rodata_2778[2];
-extern f32 lbl_1_rodata_2788[6];
-
+// Convert a font value to its scaled coordinate when the font system is active.
 f32 fn_1_521B8(s32 value) {
-    if (fn_1_A5DC4(value) && lbl_1_bss_4E6A8 != 0) {
+    if (fn_1_A5DC4(value) && (s32)lbl_1_bss_4E6A8 != 0) {
         return lbl_1_rodata_2788[0] * (f32)value;
     }
+
     return (f32)value;
 }
 /* fzgx:end fn_1_521B8 */
@@ -1015,12 +942,11 @@ f32 fn_1_542B8(void) {
 }
 /* fzgx:end fn_1_542B8 */
 
-/* fzgx:begin fn_1_542C4 noprologue */
-#include "types.h"
-
+/* fzgx:begin fn_1_542C4 */
 extern void fn_1_54320(void);
+extern u8 *lbl_801A66CC;
 
-typedef struct fn_1_542C4_FontState {
+typedef struct FontState {
     u8 pad30[0x30];
     void *unk_30;
     void *unk_34;
@@ -1029,19 +955,19 @@ typedef struct fn_1_542C4_FontState {
     f32 unk_40;
     u8 pad44[8];
     f32 unk_4C;
-} fn_1_542C4_FontState;
+} FontState;
 
 // Volatile preserves the repeated loads of the shared font state.
-extern volatile fn_1_542C4_FontState *lbl_801A66CC;
+#define FONT_STATE ((volatile FontState *)lbl_801A66CC)
 
 // Store the current font parameters and notify the font system.
 void fn_1_542C4(void *arg0, void *arg1, f32 arg2, f32 arg3, f32 arg4) {
-    lbl_801A66CC->unk_30 = arg0;
-    lbl_801A66CC->unk_34 = arg1;
-    lbl_801A66CC->unk_38 = arg2;
-    lbl_801A66CC->unk_3C = arg3;
-    lbl_801A66CC->unk_40 = arg4;
-    lbl_801A66CC->unk_4C = arg4 - arg3;
+    FONT_STATE->unk_30 = arg0;
+    FONT_STATE->unk_34 = arg1;
+    FONT_STATE->unk_38 = arg2;
+    FONT_STATE->unk_3C = arg3;
+    FONT_STATE->unk_40 = arg4;
+    FONT_STATE->unk_4C = arg4 - arg3;
     fn_1_54320();
 }
 /* fzgx:end fn_1_542C4 */
@@ -1180,9 +1106,7 @@ void fn_1_54848(void) {
 }
 /* fzgx:end fn_1_54848 */
 
-/* fzgx:begin fn_1_54868 noprologue */
-#include "types.h"
-
+/* fzgx:begin fn_1_54868 */
 typedef struct fn_1_54868_FontState {
     u8 pad_1a0[0x1a0];
     u32 unk_1a0;
@@ -1191,15 +1115,18 @@ typedef struct fn_1_54868_FontState {
     u32 unk_1ac;
 } fn_1_54868_FontState;
 
-// Volatile preserves the retail's repeated font-state global loads.
-extern volatile fn_1_54868_FontState *lbl_801A66CC;
+extern u8 *lbl_801A66CC;
 
 // Copies the current font state's two counter values into its active fields.
 void fn_1_54868(u32 arg0, u32 arg1) {
-    lbl_801A66CC->unk_1a4 = arg0;
-    lbl_801A66CC->unk_1a8 = arg1;
-    lbl_801A66CC->unk_1a0 = lbl_801A66CC->unk_1a4;
-    lbl_801A66CC->unk_1ac = lbl_801A66CC->unk_1a8;
+    // Volatile access preserves the first retail global-pointer load.
+    ((volatile fn_1_54868_FontState *)lbl_801A66CC)->unk_1a4 = arg0;
+    // Volatile access preserves the second retail global-pointer load.
+    ((volatile fn_1_54868_FontState *)lbl_801A66CC)->unk_1a8 = arg1;
+    // Volatile access preserves the third retail global-pointer load.
+    ((volatile fn_1_54868_FontState *)lbl_801A66CC)->unk_1a0 = ((volatile fn_1_54868_FontState *)lbl_801A66CC)->unk_1a4;
+    // Volatile access preserves the fourth retail global-pointer load.
+    ((volatile fn_1_54868_FontState *)lbl_801A66CC)->unk_1ac = ((volatile fn_1_54868_FontState *)lbl_801A66CC)->unk_1a8;
 }
 /* fzgx:end fn_1_54868 */
 
@@ -1434,16 +1361,13 @@ void fn_1_56298(f32 value0, f32 value1, f32 value2, f32 value3) {
 }
 /* fzgx:end fn_1_56298 */
 
-/* fzgx:begin fn_1_5631C noprologue */
-#include "types.h"
-#include "rel/main_rel/font.h"
-
-extern void fn_80074C74(const u32 *value);
-
+/* fzgx:begin fn_1_5631C */
 void fn_1_5631C(const u32 *value) {
-    u32 *dst = (u32 *)((u8 *)&lbl_1_bss_6C7A4 + 4);
-    *(volatile u32 *)dst = *value; // Volatile preserves the retail store's address-before-load order.
-    fn_80074C74(value);
+    Obj_1_bss_6C7A4 *state = &lbl_1_bss_6C7A4;
+
+    // Store the incoming value in the shared font state before notifying the subsystem.
+    *(volatile u32 *)&state->unk_4 = *value;
+    fn_80074C74((u8 *)value);
 }
 /* fzgx:end fn_1_5631C */
 

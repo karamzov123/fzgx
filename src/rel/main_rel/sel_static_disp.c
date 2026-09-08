@@ -316,9 +316,7 @@ void fn_1_13C16C(void) {
 }
 /* fzgx:end fn_1_13C16C */
 
-/* fzgx:begin fn_1_13DA0C noprologue */
-#include "types.h"
-
+/* fzgx:begin fn_1_13DA0C */
 struct Struct_26F8 {
     u32 unk00;
     f32 unk04;
@@ -338,60 +336,60 @@ extern const f32 lbl_1_rodata_8DCC;
 extern const f32 lbl_1_rodata_8840;
 extern const f32 lbl_1_rodata_87B4;
 extern const u32 lbl_1_rodata_8DC0;
-extern void fn_1_4F734(struct Struct_26F8 *);
 extern const f32 lbl_1_rodata_8818;
 extern const f32 lbl_1_rodata_86F8;
 extern const u32 lbl_1_rodata_8DC4;
 extern const f32 lbl_1_rodata_8DD0;
 extern const u32 lbl_1_rodata_8DC8;
 
+// Register the three groups of static display configurations.
 void fn_1_13DA0C(void) {
-    struct Struct_26F8 sp08;
+    struct Struct_26F8 config;
 
-    sp08 = lbl_1_rodata_26F8;
-    sp08.unk00 = 0x9E1C;
-    sp08.unk04 = lbl_1_rodata_8658;
-    sp08.unk08 = lbl_1_rodata_8DCC;
-    sp08.unk0C = lbl_1_rodata_8840;
-    sp08.unk2C = lbl_1_rodata_87B4;
-    sp08.unk38 = lbl_1_rodata_8DC0;
-    sp08.unk30 = 0xF;
-    fn_1_4F734(&sp08);
+    config = lbl_1_rodata_26F8;
+    config.unk00 = 0x9E1C;
+    config.unk04 = lbl_1_rodata_8658;
+    config.unk08 = lbl_1_rodata_8DCC;
+    config.unk0C = lbl_1_rodata_8840;
+    config.unk2C = lbl_1_rodata_87B4;
+    config.unk38 = lbl_1_rodata_8DC0;
+    config.unk30 = 0xF;
+    fn_1_4F734(&config);
 
-    sp08.unk30 = 0x8000D;
-    fn_1_4F734(&sp08);
+    config.unk30 = 0x8000D;
+    fn_1_4F734(&config);
 
-    sp08.unk30 = 0x100007;
-    fn_1_4F734(&sp08);
+    config.unk30 = 0x100007;
+    fn_1_4F734(&config);
 
-    sp08.unk30 = 0x180005;
-    fn_1_4F734(&sp08);
+    config.unk30 = 0x180005;
+    fn_1_4F734(&config);
 
-    sp08 = lbl_1_rodata_26F8;
-    sp08.unk00 = 0x9E1D;
-    sp08.unk04 = lbl_1_rodata_8818;
-    sp08.unk08 = lbl_1_rodata_8DCC;
-    sp08.unk0C = lbl_1_rodata_86F8;
-    sp08.unk38 = lbl_1_rodata_8DC4;
-    sp08.unk2C = lbl_1_rodata_87B4;
-    sp08.unk30 = 0xD;
-    fn_1_4F734(&sp08);
+    config = lbl_1_rodata_26F8;
+    config.unk00 = 0x9E1D;
+    config.unk04 = lbl_1_rodata_8818;
+    config.unk08 = lbl_1_rodata_8DCC;
+    config.unk0C = lbl_1_rodata_86F8;
+    config.unk38 = lbl_1_rodata_8DC4;
+    config.unk2C = lbl_1_rodata_87B4;
+    config.unk30 = 0xD;
+    fn_1_4F734(&config);
 
-    sp08.unk30 = 0x100005;
-    fn_1_4F734(&sp08);
+    config.unk30 = 0x100005;
+    fn_1_4F734(&config);
 
-    sp08 = lbl_1_rodata_26F8;
-    sp08.unk00 = 0x9E1E;
-    sp08.unk04 = lbl_1_rodata_8DD0;
-    sp08.unk08 = lbl_1_rodata_8DCC;
-    sp08.unk0C = lbl_1_rodata_86F8;
-    sp08.unk38 = lbl_1_rodata_8DC8;
-    sp08.unk2C = lbl_1_rodata_87B4;
-    sp08.unk30 = 0xF;
-    fn_1_4F734(&sp08);
+    config = lbl_1_rodata_26F8;
+    config.unk00 = 0x9E1E;
+    config.unk04 = lbl_1_rodata_8DD0;
+    config.unk08 = lbl_1_rodata_8DCC;
+    config.unk0C = lbl_1_rodata_86F8;
+    config.unk38 = lbl_1_rodata_8DC8;
+    config.unk2C = lbl_1_rodata_87B4;
+    config.unk30 = 0xF;
+    fn_1_4F734(&config);
 
-    sp08.unk30 = 0x100007;
-    fn_1_4F734(&sp08);
+    config.unk30 = 0x100007;
+    fn_1_4F734(&config);
 }
 /* fzgx:end fn_1_13DA0C */
 
@@ -403,41 +401,40 @@ void fn_1_13E054(void* arg0, void* arg1, void* arg2, int arg3) {
 }
 /* fzgx:end fn_1_13E054 */
 
-/* fzgx:begin fn_1_13EDDC noprologue */
-#include "types.h"
-
-extern f32 lbl_1_rodata_85F0;
-extern u32 fn_1_13EE60(u32, u32, void *, u32, u32);
-extern u32 fn_1_13EF64(u32, u32, u32, void *, u32, void *, u32, f32);
+/* fzgx:begin fn_1_13EDDC */
+extern const f32 lbl_1_rodata_85F0;
+extern u32 fn_1_13EE60(u32 arg0, u32 arg1, void *result, u32 arg3, u32 arg4);
+extern u32 fn_1_13EF64(u32 arg0, u32 arg1, u32 arg2, void *arg3, u32 arg4, void *arg5, u32 arg6, f32 arg7);
 extern u32 lbl_1_rodata_8E8C;
 
-void fn_1_13EDDC(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4) {
-    struct { u32 a[47]; } loc_C;
-    u32 loc_8;
-    /* frame */
-    if ((s32)arg4 != 1) {
-    fn_1_13EE60(arg2, arg3, &loc_C, arg3, arg4);
-    loc_8 = lbl_1_rodata_8E8C;
-    fn_1_13EF64(arg0, arg1, 2, &loc_C, (0x10000 - 25056), &loc_8, 0, lbl_1_rodata_85F0);
+// Build the selected display data unless the caller requested the cached path.
+void fn_1_13EDDC(u32 arg0, u32 arg1, u32 arg2, u32 arg3, s32 arg4) {
+    u32 display_data[47];
+    u32 nan_value;
+
+    if (arg4 != 1) {
+        fn_1_13EE60(arg2, arg3, display_data, arg3, arg4);
+        nan_value = lbl_1_rodata_8E8C;
+        fn_1_13EF64(arg0, arg1, 2, display_data, 0x9e20, &nan_value, 0, lbl_1_rodata_85F0);
     }
 }
 /* fzgx:end fn_1_13EDDC */
 
-/* fzgx:begin fn_1_13F81C noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_13F81C */
+extern u8 lbl_1_bss_8E3E4[32];
 
-extern u32 lbl_1_bss_8E3E4[8];
-
-// Clear all cached display-resource handles before loading a new selection.
+// Clear the cached display-resource handles before loading a new selection.
 void fn_1_13F81C(void) {
-    lbl_1_bss_8E3E4[0] = 0;
-    lbl_1_bss_8E3E4[1] = 0;
-    lbl_1_bss_8E3E4[2] = 0;
-    lbl_1_bss_8E3E4[3] = 0;
-    lbl_1_bss_8E3E4[4] = 0;
-    lbl_1_bss_8E3E4[5] = 0;
-    lbl_1_bss_8E3E4[6] = 0;
-    lbl_1_bss_8E3E4[7] = 0;
+    u32 *handles = (u32 *)lbl_1_bss_8E3E4;
+
+    handles[0] = 0;
+    handles[1] = 0;
+    handles[2] = 0;
+    handles[3] = 0;
+    handles[4] = 0;
+    handles[5] = 0;
+    handles[6] = 0;
+    handles[7] = 0;
 }
 /* fzgx:end fn_1_13F81C */
 
@@ -519,12 +516,11 @@ void fn_1_13F9F0(void) {
 }
 /* fzgx:end fn_1_13F9F0 */
 
-/* fzgx:begin fn_1_141338 noprologue */
-#include "types.h"
-
-extern f32 lbl_1_rodata_863C;
+/* fzgx:begin fn_1_141338 */
+extern const f32 lbl_1_rodata_863C;
 extern u32 fn_1_141360(u32, u32, u32, u32, f32, f32);
 
+// Pass through the caller's arguments and append the default scale factor.
 void fn_1_141338(u32 arg0, u32 arg1, u32 arg2, u32 arg3, f32 arg4) {
     fn_1_141360(arg0, arg1, arg2, arg3, arg4, lbl_1_rodata_863C);
 }
@@ -599,13 +595,7 @@ void fn_1_149C2C(void) {
 }
 /* fzgx:end fn_1_149C2C */
 
-/* fzgx:begin fn_1_149C64 noprologue */
-#include "types.h"
-
-extern struct fn_1_149C64_lbl_1_bss_8E43C lbl_1_bss_8E43C;
-extern struct fn_1_149C64_lbl_1_bss_8E440 lbl_1_bss_8E440;
-extern u32 fn_1_149CA4(u32, u32, u32, u32);
-
+/* fzgx:begin fn_1_149C64 */
 struct fn_1_149C64_lbl_1_bss_8E43C {
     u32 unk_0;
 };
@@ -613,8 +603,16 @@ struct fn_1_149C64_lbl_1_bss_8E440 {
     u32 unk_0;
 };
 
+extern struct fn_1_149C64_lbl_1_bss_8E43C lbl_1_bss_8E43C;
+extern struct fn_1_149C64_lbl_1_bss_8E440 lbl_1_bss_8E440;
+extern void fn_1_149CA4(u32, u32, u32, u32);
+
+// Initialize the static display state with the default viewport dimensions.
 void fn_1_149C64(void) {
-    fn_1_149CA4(0, lbl_1_bss_8E43C.unk_0, 640, lbl_1_bss_8E440.unk_0);
+    struct fn_1_149C64_lbl_1_bss_8E43C *display_state = &lbl_1_bss_8E43C;
+    struct fn_1_149C64_lbl_1_bss_8E440 *display_config = &lbl_1_bss_8E440;
+
+    fn_1_149CA4(0, display_state->unk_0, 0x280, display_config->unk_0);
 }
 /* fzgx:end fn_1_149C64 */
 
@@ -1367,14 +1365,16 @@ s32 fn_1_14FD6C(s32 *arg0, s32 *arg1) {
 }
 /* fzgx:end fn_1_14FD6C */
 
-/* fzgx:begin fn_1_14FD7C noprologue */
-#include "types.h"
-
+/* fzgx:begin fn_1_14FD7C */
 extern void fn_1_14FD6C(void);
-extern void fn_8008279C(void* arg0, s32 arg1, s32 arg2, void* callback);
+extern void fn_8008279C(void *arg0, u32 arg1, s32 arg2, void *callback);
 
-void fn_1_14FD7C(void* arg0, s16 arg1) {
-    fn_8008279C(arg0, arg1, 4, fn_1_14FD6C);
+// Forward a callback and its selector to the dispatch helper.
+void fn_1_14FD7C(u32 *arg0, u32 arg1) {
+    s16 selector = arg1;
+    void (*callback)(void) = fn_1_14FD6C;
+
+    fn_8008279C(arg0, selector, 4, callback);
 }
 /* fzgx:end fn_1_14FD7C */
 

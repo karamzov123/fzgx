@@ -115,6 +115,28 @@ void fn_1_D720C(void) {
 /* fzgx:end fn_1_D720C */
 
 /* fzgx:begin fn_1_D744C */
+extern void fn_80008BA8(void *arg0, void *arg1, int arg2);
+extern u32 lbl_1_rodata_6490[4];
+extern u32 lbl_801A63D0;
+extern u32 fn_1_76504(s32, void *, s32);
+extern void fn_1_7269C(u32, s32, u32);
+extern void fn_1_5948(s32 index);
+extern void fn_1_D8388(void *obj);
+extern void fn_1_627C(s32 index);
+extern void *fn_1_9D260(Obj_1_data_2A7E0 *data);
+extern void fn_1_D7B7C(Obj_1_data_2A7E0_At3C *obj);
+extern void fn_1_9AD88(void);
+extern void *memset(void *dst, int value, u32 size);
+extern void fn_1_D7EF4(void *, u32);
+extern f32 lbl_1_rodata_6594[];
+extern f32 lbl_1_rodata_6524[];
+extern void lbl_8006DCA4(void);
+extern s32 fn_1_54E34(void *obj, f32 value);
+extern void *fn_1_54448(s32 value);
+extern void *fn_1_548AC(s32 value);
+extern void fn_1_D8878(void);
+extern void fn_1_5489C(void *obj, void *arg);
+
 extern s32 fn_1_58C4(void);
 extern void fn_1_5948(s32 index);
 extern void fn_1_D8388();

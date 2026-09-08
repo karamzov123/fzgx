@@ -261,15 +261,14 @@ void fn_1_A8EF8(u16 arg0, u16 arg1) {
 }
 /* fzgx:end fn_1_A8EF8 */
 
-/* fzgx:begin fn_1_A8F40 noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_A8F40 */
+extern void fn_1_A9420(u8 value);
+extern void fn_1_A942C(u8 value);
 
-extern u32 fn_1_A9420(u32);
-extern u32 fn_1_A942C(u32);
-
-u32 fn_1_A8F40(u32 arg0) {
+// Reset the mode before forwarding the supplied value.
+void fn_1_A8F40(u8 arg0) {
     fn_1_A9420(0);
-    return fn_1_A942C(arg0);
+    fn_1_A942C(arg0);
 }
 /* fzgx:end fn_1_A8F40 */
 
@@ -368,29 +367,17 @@ void fn_1_A983C(void) {
 }
 /* fzgx:end fn_1_A983C */
 
-/* fzgx:begin fn_1_AA538 noprologue */
-#include "types.h"
-
-extern void (*lbl_1_bss_7168C)(void);
-
-extern struct fn_1_AA538_lbl_1_bss_71690 lbl_1_bss_71690;
+/* fzgx:begin fn_1_AA538 */
 extern u32 fn_1_A7024(f32, f32, f32, f32);
 extern u32 fn_80074918(u32, u32, u32);
 
-struct fn_1_AA538_lbl_1_bss_71690 {
-    u32 unk_0;
-    f32 unk_4;
-    f32 unk_8;
-    f32 unk_C;
-    f32 unk_10;
-};
-
+// Initialize the shared rendering state and submit the associated configuration.
 void fn_1_AA538(void) {
-    struct fn_1_AA538_lbl_1_bss_71690 *p_lbl_1_bss_71690;
-    p_lbl_1_bss_71690 = (struct fn_1_AA538_lbl_1_bss_71690 *)&lbl_1_bss_71690;
-    fn_1_A7024(p_lbl_1_bss_71690->unk_4, p_lbl_1_bss_71690->unk_8, p_lbl_1_bss_71690->unk_C, p_lbl_1_bss_71690->unk_10);
+    Obj_1_bss_71690 *state = (Obj_1_bss_71690 *)&lbl_1_bss_71690;
+
+    fn_1_A7024(state->unk_4, state->unk_8, state->unk_C, state->unk_10);
     fn_80074918(1, 3, 1);
-    p_lbl_1_bss_71690->unk_0 = 1;
+    state->unk_0 = 1;
 }
 /* fzgx:end fn_1_AA538 */
 

@@ -186,24 +186,15 @@ void fn_1_F5AEC(void) {
 }
 /* fzgx:end fn_1_F5AEC */
 
-/* fzgx:begin fn_1_F5AF0 noprologue */
-#include "types.h"
-
-extern struct fn_1_F5AF0_lbl_1_data_2A7E0 lbl_1_data_2A7E0;
-extern u32 fn_1_9AD54(void *);
-extern u32 fn_1_F5D94(u32);
-
-struct fn_1_F5AF0_lbl_1_data_2A7E0 {
-    u8 pad_0[0x3C];
-    u32 unk_3C;
-};
-
+/* fzgx:begin fn_1_F5AF0 */
+// Update the spline state after refreshing the shared data.
 void fn_1_F5AF0(void) {
-    u32 v0;
-    v0 = lbl_1_data_2A7E0.unk_3C;
-    fn_1_9AD54(&lbl_1_data_2A7E0);
-    if ((s32)*(u32 *)((u8 *)v0 + 16) != 0) {
-    fn_1_F5D94(v0);
+    Obj_1_data_2A7E0_At3C *state;
+
+    state = lbl_1_data_2A7E0.unk_3C;
+    fn_1_9AD54();
+    if ((s32)state->unk_10 != 0) {
+        fn_1_F5D94(state);
     }
 }
 /* fzgx:end fn_1_F5AF0 */
@@ -245,22 +236,14 @@ int fn_1_F70C8(void) {
 }
 /* fzgx:end fn_1_F70C8 */
 
-/* fzgx:begin fn_1_F70D0 noprologue */
-#include "types.h"
-
-extern struct fn_1_F70D0_lbl_1_bss_7F028 lbl_1_bss_7F028;
-extern u32 fn_80008BEC(void *, u32, u32);
-
-struct fn_1_F70D0_lbl_1_bss_7F028 {
-    u8 unk_0;
-};
-
+/* fzgx:begin fn_1_F70D0 */
+// Clear the spline state buffers and mark the state as initialized.
 void fn_1_F70D0(void) {
-    struct fn_1_F70D0_lbl_1_bss_7F028 *p_lbl_1_bss_7F028;
-    p_lbl_1_bss_7F028 = (struct fn_1_F70D0_lbl_1_bss_7F028 *)&lbl_1_bss_7F028;
-    fn_80008BEC(((u8 *)p_lbl_1_bss_7F028 + 4), 0, 16);
-    fn_80008BEC(((u8 *)p_lbl_1_bss_7F028 + 20), 0, 16);
-    p_lbl_1_bss_7F028->unk_0 = (p_lbl_1_bss_7F028->unk_0 | 1);
+    u32 *state = (u32 *)&lbl_1_bss_7F028;
+
+    fn_80008BEC((u8 *)state + 4, 0, 0x10);
+    fn_80008BEC((u8 *)state + 0x14, 0, 0x10);
+    *(u8 *)state |= 1;
 }
 /* fzgx:end fn_1_F70D0 */
 

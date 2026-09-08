@@ -75,9 +75,7 @@ void fn_1_18FFC(int a, int b, int c, int d, int e, int f, int g) {
 }
 /* fzgx:end fn_1_18FFC */
 
-/* fzgx:begin fn_1_1902C noprologue */
-#include "types.h"
-
+/* fzgx:begin fn_1_1902C */
 typedef struct StcoliNode StcoliNode;
 typedef struct StcoliVec {
     u32 x;
@@ -93,12 +91,13 @@ struct StcoliNode {
     u8 rest[0x3c];
 };
 
-extern void fn_1_18784(u32, StcoliNode *, StcoliVec *, s32, f32);
+extern void fn_1_18784();
 extern void fn_1_18F28(StcoliNode *, StcoliVec *, void *, f32);
 extern void lbl_8006DAEC(void);
 extern void lbl_8006DB30(void);
 extern void lbl_8006DBE4(void);
 
+// Traverse the four-level collision hierarchy, preserving the input vector at each level.
 void fn_1_1902C(StcoliNode *root, StcoliVec *vec, void *arg3, f32 value) {
     StcoliNode *level1;
     s32 i1;
