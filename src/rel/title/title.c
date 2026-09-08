@@ -91,6 +91,20 @@ void fn_8_1F64(void) {
 }
 /* fzgx:end fn_8_1F64 */
 
+/* fzgx:begin fn_8_1F74 */
+extern f32 lbl_8_rodata_C;
+extern u32 fn_1_A5EFC(void);
+extern u32 fn_8006CE1C(f32);
+extern u8 lbl_801A66B8;
+
+void fn_8_1F74(void) {
+    fn_8006CE1C(lbl_8_rodata_C);
+    if (lbl_801A66B8 == 0) {
+    fn_1_A5EFC();
+    }
+}
+/* fzgx:end fn_8_1F74 */
+
 /* fzgx:begin fn_8_2120 */
 // fn_8_2120: empty in retail (single blr).
 void fn_8_2120(void) {
@@ -102,6 +116,58 @@ void fn_8_2120(void) {
 void fn_8_4E8C(void) {
 }
 /* fzgx:end fn_8_4E8C */
+
+/* fzgx:begin fn_8_4E90 */
+extern struct fn_8_4E90_lbl_801A6410 lbl_801A6410;
+extern struct fn_8_4E90_lbl_8_bss_0 lbl_8_bss_0;
+extern u32 fn_1_3F8C(void *, void *, u32, u32);
+extern u32 fn_1_435C(u32);
+extern u32 fn_1_45D0(u32, u32, void *, u32);
+extern u32 fn_1_46B4(u32, u32, void *, u32);
+extern u32 fn_1_7BA08(u32, u32, u32);
+extern u32 fn_1_7BA48(u32);
+extern u32 fn_8_68D8(void);
+extern u32 lbl_8_data_434;
+extern u32 lbl_8_data_7CDC;
+extern void fn_1_7BAF8(void);
+
+struct fn_8_4E90_lbl_8_bss_0 {
+    u8 pad_0[0x8];
+    u32 unk_8;
+    u8 pad_C[0x22C];
+    u32 unk_238;
+    u8 pad_23C[0x1];
+    u8 unk_23D;
+    u8 pad_23E[0x4];
+    u8 unk_242;
+    u8 pad_243[0x45];
+    u32 unk_288;
+};
+struct fn_8_4E90_lbl_801A6410 {
+    u32 unk_0;
+};
+
+void fn_8_4E90(void) {
+    struct fn_8_4E90_lbl_8_bss_0 *p_lbl_8_bss_0;
+    u32 t2, t3, t6;
+    p_lbl_8_bss_0 = (struct fn_8_4E90_lbl_8_bss_0 *)&lbl_8_bss_0;
+    if (p_lbl_8_bss_0->unk_23D == 0) {
+    p_lbl_8_bss_0->unk_242 = 0;
+    fn_8_68D8();
+    if (p_lbl_8_bss_0->unk_8 != 0) {
+    fn_1_46B4(lbl_801A6410.unk_0, p_lbl_8_bss_0->unk_8, &lbl_8_data_434, 3359);
+    p_lbl_8_bss_0->unk_8 = 0;
+    }
+    t2 = fn_1_7BA08(32, 32, 64);
+    t3 = fn_1_45D0(lbl_801A6410.unk_0, t2, &lbl_8_data_434, 3362);
+    p_lbl_8_bss_0->unk_8 = t3;
+    fn_1_7BA48(t3);
+    fn_1_435C(p_lbl_8_bss_0->unk_238);
+    t6 = fn_1_3F8C(&lbl_8_data_7CDC, fn_1_7BAF8, p_lbl_8_bss_0->unk_8, 2);
+    p_lbl_8_bss_0->unk_288 = t6;
+    }
+}
+/* fzgx:end fn_8_4E90 */
 
 /* fzgx:begin fn_8_516C */
 extern struct fn_8_516C_lbl_1_bss_7C850 lbl_1_bss_7C850;

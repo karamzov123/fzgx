@@ -221,6 +221,25 @@ int fn_1_F70C8(void) {
 }
 /* fzgx:end fn_1_F70C8 */
 
+/* fzgx:begin fn_1_F70D0 noprologue */
+#include "types.h"
+
+extern struct fn_1_F70D0_lbl_1_bss_7F028 lbl_1_bss_7F028;
+extern u32 fn_80008BEC(void *, u32, u32);
+
+struct fn_1_F70D0_lbl_1_bss_7F028 {
+    u8 unk_0;
+};
+
+void fn_1_F70D0(void) {
+    struct fn_1_F70D0_lbl_1_bss_7F028 *p_lbl_1_bss_7F028;
+    p_lbl_1_bss_7F028 = (struct fn_1_F70D0_lbl_1_bss_7F028 *)&lbl_1_bss_7F028;
+    fn_80008BEC(((u8 *)p_lbl_1_bss_7F028 + 4), 0, 16);
+    fn_80008BEC(((u8 *)p_lbl_1_bss_7F028 + 20), 0, 16);
+    p_lbl_1_bss_7F028->unk_0 = (p_lbl_1_bss_7F028->unk_0 | 1);
+}
+/* fzgx:end fn_1_F70D0 */
+
 /* fzgx:begin fn_1_F7308 */
 void fn_1_F7308(void) {
     fn_1_F7578();

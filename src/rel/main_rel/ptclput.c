@@ -4,6 +4,32 @@
 
 extern u16 lbl_1_bss_6EA94;
 
+/* fzgx:begin fn_1_9F870 noprologue */
+#include "types.h"
+
+extern struct fn_1_9F870_lbl_1_bss_6EA88 lbl_1_bss_6EA88;
+extern struct fn_1_9F870_lbl_801A6410 lbl_801A6410;
+extern u32 fn_1_46B4(u32, u32, void *, u32);
+extern u32 lbl_1_data_2CD20;
+
+struct fn_1_9F870_lbl_1_bss_6EA88 {
+    u32 unk_0;
+    u32 unk_4;
+    u32 unk_8;
+};
+struct fn_1_9F870_lbl_801A6410 {
+    u32 unk_0;
+};
+
+void fn_1_9F870(void) {
+    struct fn_1_9F870_lbl_1_bss_6EA88 *p_lbl_1_bss_6EA88;
+    p_lbl_1_bss_6EA88 = (struct fn_1_9F870_lbl_1_bss_6EA88 *)&lbl_1_bss_6EA88;
+    fn_1_46B4(lbl_801A6410.unk_0, p_lbl_1_bss_6EA88->unk_0, &lbl_1_data_2CD20, 1226);
+    fn_1_46B4(lbl_801A6410.unk_0, p_lbl_1_bss_6EA88->unk_4, &lbl_1_data_2CD20, 1227);
+    fn_1_46B4(lbl_801A6410.unk_0, p_lbl_1_bss_6EA88->unk_8, &lbl_1_data_2CD20, 1228);
+}
+/* fzgx:end fn_1_9F870 */
+
 /* fzgx:begin fn_1_9F8FC */
 void fn_1_9F8FC(void) {
     lbl_1_bss_6EA94 = 0;

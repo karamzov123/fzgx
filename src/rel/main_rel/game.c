@@ -146,6 +146,17 @@ void fn_1_35178(u32* arg0) {
 }
 /* fzgx:end fn_1_35178 */
 
+/* fzgx:begin fn_1_36A94 noprologue */
+#include "types.h"
+
+extern u32 fn_80008BA8(void *, u32, u32);
+extern u32 lbl_1_bss_5480;
+
+void fn_1_36A94(u32 arg0, u32 arg1) {
+    fn_80008BA8(((u8 *)&lbl_1_bss_5480 + ((arg0 & 0xFF) * (0x10000 - 32320))), arg1, (0x10000 - 32320));
+}
+/* fzgx:end fn_1_36A94 */
+
 /* fzgx:begin fn_1_36AD0 */
 u8* fn_1_36AD0(void) {
     return lbl_1_bss_5480;

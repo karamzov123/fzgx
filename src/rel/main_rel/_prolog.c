@@ -324,6 +324,48 @@ void fn_1_41A8(void) {
 }
 /* fzgx:end fn_1_41A8 */
 
+/* fzgx:begin fn_1_4310 noprologue */
+#include "types.h"
+
+extern struct fn_1_4310_lbl_1_bss_DAC lbl_1_bss_DAC;
+
+struct fn_1_4310_lbl_1_bss_DAC {
+    u32 unk_0;
+};
+
+void fn_1_4310(u32 arg0) {
+    *(u32 *)((u8 *)lbl_1_bss_DAC.unk_0 + 16) = arg0;
+}
+/* fzgx:end fn_1_4310 */
+
+/* fzgx:begin fn_1_4324 noprologue */
+#include "types.h"
+
+extern struct fn_1_4324_lbl_1_bss_DAC lbl_1_bss_DAC;
+
+struct fn_1_4324_lbl_1_bss_DAC {
+    u32 unk_0;
+};
+
+void fn_1_4324(u32 arg0) {
+    *(u32 *)((u8 *)lbl_1_bss_DAC.unk_0 + 20) = arg0;
+}
+/* fzgx:end fn_1_4324 */
+
+/* fzgx:begin fn_1_4338 noprologue */
+#include "types.h"
+
+extern struct fn_1_4338_lbl_1_bss_DAC lbl_1_bss_DAC;
+
+struct fn_1_4338_lbl_1_bss_DAC {
+    u32 unk_0;
+};
+
+u32 fn_1_4338(void) {
+    return *(u32 *)((u8 *)lbl_1_bss_DAC.unk_0 + 20);
+}
+/* fzgx:end fn_1_4338 */
+
 /* fzgx:begin fn_1_434C noprologue */
 #include "types.h"
 

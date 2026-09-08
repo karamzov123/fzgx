@@ -39,6 +39,35 @@ extern f32 lbl_1_rodata_2E0[32];
 extern f32 lbl_8006D6FC(f32 *value, void *target);
 u32 fn_1_6514(u32);
 
+/* fzgx:begin fn_1_6400 noprologue */
+#include "types.h"
+
+extern struct fn_1_6400_lbl_1_bss_F68 lbl_1_bss_F68;
+extern struct fn_1_6400_lbl_801A6410 lbl_801A6410;
+extern u32 fn_1_46B4(u32, u32, void *, u32);
+extern u32 lbl_1_data_3318;
+
+struct fn_1_6400_lbl_1_bss_F68 {
+    u32 unk_0;
+    u32 unk_4;
+    u32 unk_8;
+};
+struct fn_1_6400_lbl_801A6410 {
+    u32 unk_0;
+};
+
+void fn_1_6400(void) {
+    struct fn_1_6400_lbl_1_bss_F68 *p_lbl_1_bss_F68;
+    p_lbl_1_bss_F68 = (struct fn_1_6400_lbl_1_bss_F68 *)&lbl_1_bss_F68;
+    fn_1_46B4(lbl_801A6410.unk_0, p_lbl_1_bss_F68->unk_8, &lbl_1_data_3318, 918);
+    fn_1_46B4(lbl_801A6410.unk_0, p_lbl_1_bss_F68->unk_4, &lbl_1_data_3318, 919);
+    fn_1_46B4(lbl_801A6410.unk_0, p_lbl_1_bss_F68->unk_0, &lbl_1_data_3318, 920);
+    p_lbl_1_bss_F68->unk_8 = 0;
+    p_lbl_1_bss_F68->unk_4 = 0;
+    p_lbl_1_bss_F68->unk_0 = 0;
+}
+/* fzgx:end fn_1_6400 */
+
 /* fzgx:begin camera_get_state */
 // Return the camera state byte, or -1 when no camera state is active.
 s32 camera_get_state(void) {

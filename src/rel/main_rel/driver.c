@@ -366,6 +366,30 @@ void fn_1_A983C(void) {
 }
 /* fzgx:end fn_1_A983C */
 
+/* fzgx:begin fn_1_AA538 noprologue */
+#include "types.h"
+
+extern struct fn_1_AA538_lbl_1_bss_71690 lbl_1_bss_71690;
+extern u32 fn_1_A7024(f32, f32, f32, f32);
+extern u32 fn_80074918(u32, u32, u32);
+
+struct fn_1_AA538_lbl_1_bss_71690 {
+    u32 unk_0;
+    f32 unk_4;
+    f32 unk_8;
+    f32 unk_C;
+    f32 unk_10;
+};
+
+void fn_1_AA538(void) {
+    struct fn_1_AA538_lbl_1_bss_71690 *p_lbl_1_bss_71690;
+    p_lbl_1_bss_71690 = (struct fn_1_AA538_lbl_1_bss_71690 *)&lbl_1_bss_71690;
+    fn_1_A7024(p_lbl_1_bss_71690->unk_4, p_lbl_1_bss_71690->unk_8, p_lbl_1_bss_71690->unk_C, p_lbl_1_bss_71690->unk_10);
+    fn_80074918(1, 3, 1);
+    p_lbl_1_bss_71690->unk_0 = 1;
+}
+/* fzgx:end fn_1_AA538 */
+
 /* fzgx:begin fn_1_AAF18 */
 // fn_1_AAF18: empty in retail (single blr).
 void fn_1_AAF18(void) {

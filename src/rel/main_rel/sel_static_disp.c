@@ -390,6 +390,26 @@ void fn_1_13E054(void* arg0, void* arg1, void* arg2, int arg3) {
 }
 /* fzgx:end fn_1_13E054 */
 
+/* fzgx:begin fn_1_13EDDC noprologue */
+#include "types.h"
+
+extern f32 lbl_1_rodata_85F0;
+extern u32 fn_1_13EE60(u32, u32, void *, u32, u32);
+extern u32 fn_1_13EF64(u32, u32, u32, void *, u32, void *, u32, f32);
+extern u32 lbl_1_rodata_8E8C;
+
+void fn_1_13EDDC(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4) {
+    struct { u32 a[47]; } loc_C;
+    u32 loc_8;
+    /* frame */
+    if ((s32)arg4 != 1) {
+    fn_1_13EE60(arg2, arg3, &loc_C, arg3, arg4);
+    loc_8 = lbl_1_rodata_8E8C;
+    fn_1_13EF64(arg0, arg1, 2, &loc_C, (0x10000 - 25056), &loc_8, 0, lbl_1_rodata_85F0);
+    }
+}
+/* fzgx:end fn_1_13EDDC */
+
 /* fzgx:begin fn_1_13F81C noprologue */
 #include "types.h"
 #include "rel/main_rel/globals.h"
@@ -486,6 +506,17 @@ void fn_1_13F9F0(void) {
     }
 }
 /* fzgx:end fn_1_13F9F0 */
+
+/* fzgx:begin fn_1_141338 noprologue */
+#include "types.h"
+
+extern f32 lbl_1_rodata_863C;
+extern u32 fn_1_141360(u32, u32, u32, u32, f32, f32);
+
+void fn_1_141338(u32 arg0, u32 arg1, u32 arg2, u32 arg3, f32 arg4) {
+    fn_1_141360(arg0, arg1, arg2, arg3, arg4, lbl_1_rodata_863C);
+}
+/* fzgx:end fn_1_141338 */
 
 /* fzgx:begin fn_1_1420A4 */
 void fn_1_1420A4(void) {

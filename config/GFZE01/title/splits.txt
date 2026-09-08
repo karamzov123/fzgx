@@ -134,3 +134,9 @@ rel/title/operation/fn_8_6C50.c:
 
 rel/title/operation/fn_8_69D8.c:
 	.text       start:0x000069D8 end:0x00006A50 align:4
+
+rel/title/title/fn_8_1F74.c:
+	.text       start:0x00001F74 end:0x00001FB0 align:4
+
+rel/title/title/fn_8_4E90.c:
+	.text       start:0x00004E90 end:0x00004F64 align:4

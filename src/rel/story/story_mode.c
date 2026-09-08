@@ -182,6 +182,25 @@ void fn_7_2110(void) {
 }
 /* fzgx:end fn_7_2110 */
 
+/* fzgx:begin fn_7_2170 */
+extern struct fn_7_2170_lbl_7_bss_14 lbl_7_bss_14;
+extern u32 fn_7_4108(void *, u32, u32);
+extern u32 fn_7_41FC(void *);
+extern u32 lbl_7_bss_48;
+
+struct fn_7_2170_lbl_7_bss_14 {
+    u32 unk_0;
+};
+
+s32 fn_7_2170(u32 arg0) {
+    if (*(u32 *)((u8 *)lbl_7_bss_14.unk_0 + 36) != 0) {
+    fn_7_4108(&lbl_7_bss_48, *(u32 *)((u8 *)lbl_7_bss_14.unk_0 + 36), arg0);
+    fn_7_41FC(&lbl_7_bss_48);
+    }
+    return 0;
+}
+/* fzgx:end fn_7_2170 */
+
 /* fzgx:begin fn_7_2324 */
 // fn_7_2324: returns a constant.
 int fn_7_2324(void) {

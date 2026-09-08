@@ -11,6 +11,27 @@ extern void fn_1_103AD4(void);
 extern void fn_1_105768(void);
 extern void fn_1_9E5B8(void *);
 
+/* fzgx:begin fn_1_10240C */
+extern struct fn_1_10240C_lbl_801A6410 lbl_801A6410;
+extern u32 fn_1_45D0(u32, u32, void *, u32);
+extern u32 fn_1_46B4(u32, u32, void *, u32);
+extern u32 fn_80008BA8(u32, u32, u32);
+extern u32 lbl_1_data_3F17C;
+
+struct fn_1_10240C_lbl_801A6410 {
+    u32 unk_0;
+};
+
+void fn_1_10240C(u32 arg0, u32 arg1, s32 arg2) {
+    u32 t0;
+    t0 = fn_1_45D0(lbl_801A6410.unk_0, arg2, &lbl_1_data_3F17C, 561);
+    fn_80008BA8(t0, arg0, arg2);
+    fn_80008BA8(arg0, arg1, arg2);
+    fn_80008BA8(arg1, t0, arg2);
+    fn_1_46B4(lbl_801A6410.unk_0, t0, &lbl_1_data_3F17C, 565);
+}
+/* fzgx:end fn_1_10240C */
+
 /* fzgx:begin fn_1_102FD0 */
 // Initialize the cloth subsystem and reset its shared state.
 void fn_1_102FD0(void) {
