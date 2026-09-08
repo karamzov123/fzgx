@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_1_D97C: main_rel .text:0x0000D97C size 0x10
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u16 lbl_1_bss_1018[18];
+
+u16* fn_1_D97C(void) {
+    return &lbl_1_bss_1018[4];
+}
