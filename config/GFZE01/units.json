@@ -11341,9 +11341,9 @@
   },
   {
     "module": "sample",
-    "source": "rel/sample/fn_18_40C.c",
+    "source": "rel/sample/keygen.c",
     "symbols": [
-      "fn_18_40C"
+      "fn_18_3FC"
     ],
     "status": "matching",
     "mw_version": null,
@@ -11351,9 +11351,9 @@
   },
   {
     "module": "sample",
-    "source": "rel/sample/keygen.c",
+    "source": "rel/sample/sample_lz_decode.c",
     "symbols": [
-      "fn_18_3FC"
+      "sample_lz_decode"
     ],
     "status": "matching",
     "mw_version": null,

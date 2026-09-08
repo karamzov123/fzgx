@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 from typing import List, Optional
 
-from . import api, trivial, tu
+from . import api, naming, trivial, tu
 from .project import Project
 
 
@@ -159,6 +159,14 @@ def cmd_rename(a, p):
     _print(r, a.json); return 0 if r.get("ok") else 1
 
 
+def cmd_naming_bundle(a, p):
+    print(naming.bundle(p, a.module, a.tu, only_matched=not a.all)); return 0
+
+
+def cmd_naming_apply(a, p):
+    _print(naming.apply(p, json.loads(Path(a.file).read_text()), a.by), a.json); return 0
+
+
 def cmd_names(a, p):
     _print(api.names(p), a.json); return 0
 
@@ -221,6 +229,10 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--module", default="main_rel")
     s = sub.add_parser("rename", help="rename a symbol everywhere (symbols.txt, src, units.json, ledger, file); relink-verify"); s.set_defaults(fn=cmd_rename)
     s.add_argument("old", nargs="?"); s.add_argument("new", nargs="?"); s.add_argument("--map", help="JSON {old: new} applied with one relink")
+    s = sub.add_parser("naming-bundle", help="librarian bundle for one TU"); s.set_defaults(fn=cmd_naming_bundle)
+    s.add_argument("tu"); s.add_argument("--module", default="main_rel"); s.add_argument("--all", action="store_true")
+    s = sub.add_parser("naming-apply", help="apply a librarian proposal JSON (renames + structs)"); s.set_defaults(fn=cmd_naming_apply)
+    s.add_argument("--file", required=True); s.add_argument("--by", default="librarian")
     s = sub.add_parser("verify", help="relink once for all accepted units, verify hashes, commit; bisect on failure"); s.set_defaults(fn=cmd_verify)
     s.add_argument("--message")
     s = sub.add_parser("compare", help="A/B table for two agent-id prefixes (e.g. b3c-claude vs shadow-b3c-codex)"); s.set_defaults(fn=cmd_compare)
