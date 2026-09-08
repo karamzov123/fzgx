@@ -367,7 +367,15 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
             elif mn == "slwi": regs[d] = f"({use(a[1])} << {_imm(a[2])})"; rtype[d] = "u32"
             elif mn == "srwi": regs[d] = f"((u32){use(a[1])} >> {_imm(a[2])})"; rtype[d] = "u32"
             elif mn == "srawi": regs[d] = f"((s32){use(a[1])} >> {_imm(a[2])})"; rtype[d] = "s32"
-            elif mn == "add": regs[d] = f"({use(a[1])} + {use(a[2])})"; rtype[d] = "u32"
+            elif mn == "add":
+                x, y = use(a[1]), use(a[2])
+                # address + integer: byte arithmetic, or the pointee size scales the sum
+                if rtype.get(a[1]) == "void *" and rtype.get(a[2]) != "void *":
+                    regs[d] = f"((u8 *){x} + {y})"; rtype[d] = "void *"
+                elif rtype.get(a[2]) == "void *" and rtype.get(a[1]) != "void *":
+                    regs[d] = f"((u8 *){y} + {x})"; rtype[d] = "void *"
+                else:
+                    regs[d] = f"({x} + {y})"; rtype[d] = "u32"
             elif mn in ("subf",): regs[d] = f"({use(a[2])} - {use(a[1])})"; rtype[d] = "u32"
             elif mn == "sub": regs[d] = f"({use(a[1])} - {use(a[2])})"; rtype[d] = "u32"
             elif mn == "subi": regs[d] = f"({use(a[1])} - {_imm(a[2])})"; rtype[d] = "u32"
@@ -398,7 +406,11 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
                 raise Give()
             continue
         if mn == "addi":  # plain addi (not an address)
-            regs[a[0]] = f"({use(a[1])} + {_imm(a[2])})"; rtype[a[0]] = "u32"; continue
+            if rtype.get(a[1]) == "void *":
+                regs[a[0]] = f"((u8 *){use(a[1])} + {_imm(a[2])})"; rtype[a[0]] = "void *"
+            else:
+                regs[a[0]] = f"({use(a[1])} + {_imm(a[2])})"; rtype[a[0]] = "u32"
+            continue
         if mn == "oris":
             regs[a[0]] = f"({use(a[1])} | 0x{_imm(a[2]) << 16:X})"; rtype[a[0]] = "u32"; continue
         if mn == "subfic":
