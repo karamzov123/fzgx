@@ -119,6 +119,66 @@ void fn_1_58D38(void) {
 }
 /* fzgx:end fn_1_58D38 */
 
+/* fzgx:begin fn_1_58F50 noprologue */
+#include "rel/main_rel/effect.h"
+
+extern s32 fn_1_3FC8C(void);
+extern s32 fn_1_3FC58(void);
+extern u8 lbl_1_data_1D1D8[276];
+
+typedef struct {
+    u8 unk_0;
+    u8 pad_1[1];
+    s16 unk_2;
+    s16 unk_4;
+    u8 pad_6[6];
+    s16 unk_C;
+    u8 pad_E[0xDA];
+} EffectEntry;
+
+s16 fn_1_58F50(const void *source) {
+    EffectEntry *entry;
+    s32 index;
+    u8 *cursor;
+
+    if (fn_1_3FC8C() != 0) {
+        return -1;
+    }
+    if (fn_1_3FC58() != 0) {
+        return -1;
+    }
+
+    cursor = *(u8 **)&lbl_1_bss_6C848;
+    index = 0;
+    for (; index < 0xbe;) {
+        if (*(s8 *)cursor == 0) {
+            *cursor = 1;
+            goto found; /* irreducible split between allocation and failure */
+        }
+        index++;
+        cursor += 0xe8;
+    }
+    index = -1;
+found:
+    if (index < 0) {
+        return -1;
+    }
+
+    entry = (EffectEntry *)(*(u8 **)&lbl_1_bss_6C848) + index;
+    memcpy(entry, source, 0xe8);
+    entry->unk_0 = 1;
+    entry->unk_2 = index;
+    ((void (*)(void *))(*(u32 *)(lbl_1_data_1D1D8 + (entry->unk_C << 2))))(entry);
+
+    entry->unk_4 = lbl_1_bss_6C850.unk_0;
+    lbl_1_bss_6C850.unk_0++;
+    if (lbl_1_bss_6C850.unk_0 < 0) {
+        lbl_1_bss_6C850.unk_0 = 0;
+    }
+    return entry->unk_4;
+}
+/* fzgx:end fn_1_58F50 */
+
 /* fzgx:begin fn_1_59078 */
 s16 fn_1_59078(Obj_1_bss_6C84C_Target *arg0) {
     Obj_1_bss_6C84C_Target *obj;

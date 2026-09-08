@@ -11212,6 +11212,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/effect/fn_1_58F50.c",
+    "symbols": [
+      "fn_1_58F50"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/effect.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/effect/fn_1_59078.c",
     "symbols": [
       "fn_1_59078"
