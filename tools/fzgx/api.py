@@ -618,6 +618,10 @@ def _env_digest(p: Project) -> str:
         h.update(f.read_bytes())
     for f in ("oracle.py", "poolfix.py", "fixup.py", "stuck.py"):
         h.update((ROOT / "tools" / "fzgx" / f).read_bytes())
+    cfg = p.build_dir / "config.json"  # the split: which retail object holds each function
+    if cfg.exists():
+        st = cfg.stat()
+        h.update(f"{st.st_mtime_ns}:{st.st_size}".encode())
     return h.hexdigest()[:16]
 
 

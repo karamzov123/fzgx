@@ -313,9 +313,27 @@ class Project:
         if not hasattr(self, "_obj_index"):
             from .poolfix import Elf  # scoped: avoids the project<->poolfix import cycle at load
             cache = STATE_DIR / f"obj_index_{self.version}.json"
-            # the DOL's split objects live in build/<v>/obj, each REL's in build/<v>/<module>/obj
-            objs = sorted(set((self.build_dir / "obj").rglob("*.o")) | set(self.build_dir.glob("*/obj/**/*.o")))
-            stamp = max((o.stat().st_mtime for o in objs), default=0)
+            # only the objects of the current split (build/<v>/config.json): every split leaves
+            # the previous one's auto objects behind as orphans with stale symbol names
+            cfg = self.build_dir / "config.json"
+            listed: List[str] = []
+            def walk(x):
+                if isinstance(x, dict):
+                    for k, v in x.items():
+                        if k == "object" and isinstance(v, str):
+                            listed.append(v)
+                        else:
+                            walk(v)
+                elif isinstance(x, list):
+                    for v in x:
+                        walk(v)
+            try:
+                walk(json.loads(cfg.read_text()))
+            except (OSError, ValueError):
+                pass
+            objs = sorted(o for o in (ROOT / rel for rel in listed) if o.exists() and "/obj/auto_" in str(o))
+            st = cfg.stat() if cfg.exists() else None
+            stamp = f"{st.st_mtime_ns}:{st.st_size}:{len(objs)}" if st else "0"
             idx: Dict[str, str] = {}
             if cache.exists():
                 try:
