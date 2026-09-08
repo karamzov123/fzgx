@@ -67,7 +67,7 @@ def lift(p: Project, module: str, name: str) -> Optional[str]:
         m = re.fullmatch(r"b(\w+)", mn)
         if not (m and m.group(1) in COND and a and a[-1].startswith(".L_")):
             return None
-    if len(ins) > 48:
+    if len(ins) > 160:
         return None
     try:
         return _lift(p, module, name, ins)
@@ -75,7 +75,36 @@ def lift(p: Project, module: str, name: str) -> Optional[str]:
         return None
 
 
-def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
+def lift_variants(p: Project, module: str, name: str) -> List[str]:
+    """Every spelling worth checking: with stack locals, MWCC's frame layout depends on the
+    declaration order, so both plausible orders are candidates (the oracle picks)."""
+    first = lift(p, module, name)
+    if first is None:
+        return []
+    out = [first]
+    fa = p.function_asm(module).get(name)
+    ins: List[Tuple[str, List[str]]] = []
+    for ln in fa.asm:
+        t = ln.strip()
+        if t.startswith(".L_"):
+            continue
+        m = LINE_RE.match(t)
+        if m:
+            ins.append((m.group(1), [a.strip() for a in m.group(2).split(",")] if m.group(2) else []))
+    # the spellings the oracle must choose between: frame layout order, and whether a value
+    # passed several times to one call goes through a temporary
+    options = [("grouped", True), ("reverse", False), ("grouped", False)] if "/* frame */" in first else [("reverse", False)]
+    for layout, site_temps in options:
+        try:
+            alt = _lift(p, module, name, ins, layout=layout, site_temps=site_temps)
+        except Give:
+            continue
+        if alt and alt not in out:
+            out.append(alt)
+    return out
+
+
+def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site_temps: bool = True) -> Optional[str]:
     syms = p.symbols(module)
     regs: Dict[str, str] = {}          # register -> C expression
     rtype: Dict[str, str] = {}         # register -> C type of the expression
@@ -191,7 +220,54 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
 
     hi: Dict[str, str] = {}  # register holding sym@ha
     labels = LABELS[0]
+    frame_size = 0
+    for mn_, a_ in ins:
+        if mn_ == "stwu" and a_ and a_[0] == "r1":
+            m_ = re.match(r"^(-?0x[0-9a-f]+|-?\d+)\(r1\)$", a_[1])
+            if m_:
+                frame_size = -int(m_.group(1), 0)
+            break
+    saved_slots: set = set()
+    for mn_, a_ in ins:
+        if mn_ in ("stw", "stfd", "psq_st") and a_ and (SAVE_RE.match(a_[0]) or re.fullmatch(r"f(1[4-9]|2\d|3[01])", a_[0])) and "(r1)" in a_[1]:
+            m_ = re.match(r"^(-?0x[0-9a-f]+|-?\d+)\(r1\)$", a_[1])
+            if m_:
+                saved_slots.add(int(m_.group(1), 0))
+    slocals: Dict[int, Dict[str, object]] = {}  # frame offset -> {"w": width or 0 (address only), "t": type}
+    taken = sorted({_imm(a_[2]) for mn_, a_ in ins if mn_ == "addi" and len(a_) == 3 and a_[1] == "r1"})
+    top_of_locals = min(saved_slots) if saved_slots else frame_size
+
+    def owner(off: int):
+        """The address-taken local whose extent covers `off`, and the offset inside it."""
+        for i_, t_ in enumerate(taken):
+            end = taken[i_ + 1] if i_ + 1 < len(taken) else top_of_locals
+            if t_ <= off < end:
+                return t_, off - t_
+        return None
+
+    def local_at(off: int, w: int, t: str) -> str:
+        own = owner(off)
+        if own is not None:
+            base_off, inner = own
+            ent = slocals.setdefault(base_off, {"w": 0, "t": "u8", "addr": True, "elems": {}})
+            if w and not ent["w"]:
+                ent["w"] = w; ent["t"] = t
+            ent.setdefault("elems", {})[inner] = (w, t)
+            ew = ent["w"] or w or 1
+            i_ = taken.index(base_off)
+            extent = (taken[i_ + 1] if i_ + 1 < len(taken) else top_of_locals) - base_off
+            if extent <= ew:
+                return f"loc_{base_off:X}"  # a scalar whose address is taken
+            if extent >= 16:  # struct-wrapped (see the declarations)
+                return f"loc_{base_off:X}.a[{inner // ew}]" if inner % ew == 0 else f"*({t} *)((u8 *)&loc_{base_off:X} + {inner})"
+            return f"loc_{base_off:X}[{inner // ew}]" if inner % ew == 0 else f"*({t} *)((u8 *)loc_{base_off:X} + {inner})"
+        ent = slocals.setdefault(off, {"w": 0, "t": "u8", "addr": False, "elems": {}})
+        if w and not ent["w"]:
+            ent["w"] = w; ent["t"] = t
+        return f"loc_{off:X}"
     temps: List[str] = []
+    fnames_seen: set = set()
+    array_locals: set = set()
 
     def reads(idx: int, r: str) -> bool:
         """Is register r read at instruction idx (before being written there)?"""
@@ -276,8 +352,26 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
                 else:
                     stmts.append(f"if ({l} {inv} {r_}) {{"); open_ifs.append((tgt, "}"))
             continue
-        if mn in ("stwu", "mflr", "mtlr") or (mn in ("stw", "lwz") and a and (a[0] == "r0" or SAVE_RE.match(a[0])) and "(r1)" in a[1]) or (mn == "addi" and a and a[0] == "r1"):
+        lr_slot = f"0x{frame_size + 4:x}(r1)" if frame_size else None
+        if mn in ("stwu", "mflr", "mtlr") or (mn in ("stw", "lwz") and a and ((a[0] == "r0" and a[1] == lr_slot) or SAVE_RE.match(a[0])) and "(r1)" in a[1]) or (mn == "addi" and a and a[0] == "r1"):
             frame = True
+            continue
+        if mn == "addi" and len(a) == 3 and a[1] == "r1":
+            off_ = _imm(a[2])
+            local_at(off_, 0, "u8"); slocals[off_]["addr"] = True
+            regs[a[0]] = f"&loc_{off_:X}"; rtype[a[0]] = "void *"; frame = True
+            continue
+        if mn in LOAD_T and a and a[1].endswith("(r1)"):
+            off_ = _imm(a[1][:-4]); t = LOAD_T[mn]
+            if off_ in saved_slots or off_ >= frame_size:
+                frame = True; continue
+            regs[a[0]] = local_at(off_, WIDTH[mn], t); rtype[a[0]] = t; frame = True
+            continue
+        if mn in STORE_T and a and a[1].endswith("(r1)"):
+            off_ = _imm(a[1][:-4]); t = STORE_T[mn]
+            if off_ in saved_slots or off_ >= frame_size or a[0] == "r0" and off_ > frame_size:
+                frame = True; continue
+            stmts.append(f"{local_at(off_, WIDTH[mn], t)} = {use(a[0])};"); frame = True
             continue
         if mn in ("stfd", "lfd", "psq_st", "psq_l") and a and re.fullmatch(r"f(1[4-9]|2\d|3[01])", a[0]) and "(r1)" in a[1]:
             frame = True
@@ -293,7 +387,7 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
             sd = lookup(s)
             so = sym_off(a[2])
             if sd is not None and sd.kind == "function":
-                regs[a[0]] = s
+                regs[a[0]] = s; fnames_seen.add(s)
             elif so:
                 regs[a[0]] = f"((u8 *)&{s} + {so})"
             elif SAVE_RE.match(a[0]):
@@ -340,7 +434,11 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
                 b = use(base)
                 fb = field_base(b, base)
                 if fb is None:
-                    raise Give()
+                    # a computed address (array element, pointer arithmetic): a plain typed access
+                    regs[a[0]] = f"*({t} *)((u8 *){b} + {o})"; rtype[a[0]] = t
+                    if mn.endswith("u"):
+                        regs[base] = f"((u8 *){b} + {o})"
+                    continue
                 kind, key, k = fb
                 if kind == "param":
                     fields.setdefault(key, {})[o] = t; regs[a[0]] = f"{b}->unk_{o:X}"
@@ -389,7 +487,7 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
                 o = _imm(off); b = use(base)
                 fb = field_base(b, base)
                 if fb is None:
-                    raise Give()
+                    stmts.append(f"*({t} *)((u8 *){b} + {o}) = {val};"); continue
                 kind, key, k = fb
                 if kind == "param":
                     fields.setdefault(key, {})[o] = t; stmts.append(f"{b}->unk_{o:X} = {val};")
@@ -523,8 +621,31 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
             if temp_low is not None and temp_low - 1 > top:
                 top = temp_low - 1
             args = [use(f"r{k}") for k in range(3, top + 1)]
+            fset = [k for k in range(1, 9) if f"f{k}" in regs]
+            ftop = max(fset) if fset else 0
+            fargs = [use(f"f{k}") for k in range(1, ftop + 1)]
+            ptypes_ = []
+            for k in range(3, top + 1):
+                e = regs.get(f"r{k}", "")
+                is_addr = rtype.get(f"r{k}") == "void *" or e.startswith(("&", "(u8 *)", "((u8 *)")) or e in fnames_seen or e.startswith("&loc_") or (e.startswith("loc_") and slocals.get(int(e[4:], 16), {}).get("addr"))
+                ptypes_.append("void *" if is_addr else "u32")
+            for k in range(1, ftop + 1):
+                ptypes_.append(rtype.get(f"f{k}", "f32"))
+            args = args + fargs
+            seen_args: Dict[str, int] = {}
+            for e in args:
+                seen_args[e] = seen_args.get(e, 0) + 1
+            for e, n_ in seen_args.items():
+                if site_temps and n_ >= 2 and not re.fullmatch(r"[A-Za-z_]\w*|-?\d+", e):
+                    tn = f"v{len(temps)}"
+                    tt = next((rtype.get(r_) for r_, ex in regs.items() if ex == e), "u32") or "u32"
+                    temps.append(f"{tt} {tn};"); stmts.append(f"{tn} = {e};")
+                    args = [tn if x == e else x for x in args]
+                    for r_ in list(regs):
+                        if regs[r_] == e:
+                            regs[r_] = tn
             calls.append(callee)
-            externs.setdefault(callee, f"extern u32 {callee}({', '.join(['u32'] * len(args)) or 'void'});")
+            externs.setdefault(callee, f"extern u32 {callee}({', '.join(ptypes_) or 'void'});")
             stmts.append(f"__CALL__{len(calls) - 1}({', '.join(args)});")
             for r in list(regs):
                 if re.fullmatch(r"r([0-9]|1[0-2])|f([0-9]|1[0-3])", r):
@@ -562,16 +683,46 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
     if decls:
         names = [re.match(r"u32 (t\d+)", b).group(1) for b in decls]
         body = [f"u32 {', '.join(names)};"] + [re.sub(r"^u32 (t\d+) = ", r"\1 = ", b) for b in body]
+    if slocals:
+        offs = sorted(slocals)
+        top = min(saved_slots) if saved_slots else frame_size
+        decls = []
+        for i_, off_ in enumerate(offs):
+            ent = slocals[off_]
+            nxt = offs[i_ + 1] if i_ + 1 < len(offs) else top
+            size = max(nxt - off_, ent["w"] or 1)
+            w = ent["w"] or 1
+            if not ent["w"] and size in (1, 2, 4, 8):  # address only: a scalar of that size
+                ent["t"] = {1: "u8", 2: "u16", 4: "u32", 8: "f64"}[size]; w = size
+            elif not ent["w"] and size % 4 == 0:
+                ent["t"] = "u32"; w = 4  # a u8 buffer would be 16-aligned by MWCC; a u32 array is not
+            if size > w and size >= 16:
+                decls.append((off_, f"struct {{ {ent['t']} a[{max(size // w, 1)}]; }} loc_{off_:X};", "struct")); continue
+            if size > w:
+                decls.append((off_, f"{ent['t']} loc_{off_:X}[{max(size // w, 1)}];", True))
+            else:
+                # a scalar whose address is taken: `&x` at each use, which MWCC does not hoist
+                # (an array's decay it does, into a saved register)
+                decls.append((off_, f"{ent['t']} loc_{off_:X};", False))
+        if layout == "grouped":  # scalars first, arrays after, each group highest offset first
+            ordered = [d for d in sorted(decls, key=lambda x: -x[0]) if d[2] is False] + [d for d in sorted(decls, key=lambda x: -x[0]) if d[2] is not False]
+        else:  # highest frame offset declared first
+            ordered = sorted(decls, key=lambda x: -x[0])
+        body = [d[1] for d in ordered] + ["/* frame */"] + body
+        # an address-taken array is passed as itself, not &array, and cast like every address
+        arrays = {f"loc_{d[0]:X}" for d in decls if d[2] is True}  # struct-wrapped ones keep the &
+        def fix_addr(b: str) -> str:
+            return re.sub(r"&(loc_[0-9A-F]+)\b", lambda m: m.group(1) if m.group(1) in arrays else f"&{m.group(1)}", b)
+        body = [fix_addr(b) if not b.startswith(("u8 loc", "u32 loc", "f32 loc", "s16 loc", "u16 loc", "s8 loc", "f64 loc", "struct {")) else b for b in body]
     if temps:
         body = temps + body
     if locals_:
         body = [f"struct {name}_{g} *{ln};" for ln, g in locals_.items()] + body
     # an address stored or passed is a pointer: cast, so u32 fields and parameters accept it
     body = [b if b.startswith("p_") else re.sub(r"= (&[A-Za-z_]\w*(?:\[0\])?);", r"= (u32)\1;", b) for b in body]
-    body = [re.sub(r"(\(|, )(&[A-Za-z_]\w*(?:\[0\])?)(?=[,)])", r"\1(u32)\2", b) for b in body]
     fnames = {s for s, e in externs.items() if e.startswith("extern void ") and e.endswith("(void);")}
     for f in fnames:
-        body = [re.sub(rf"(= |\(|, ){re.escape(f)}(?=[,;)])", rf"\1(u32){f}", b) for b in body]
+        body = [re.sub(rf"(= ){re.escape(f)}(?=;)", rf"\1(u32){f}", b) for b in body]
     if ret is not None:
         body.append(f"return {ret};")
     def peephole(b: str) -> str:
@@ -665,11 +816,11 @@ def apply(p: Project, modules: Optional[List[str]] = None, max_size: int = 160, 
             continue  # matched the object and failed the link before: the same body fails again
         name = s.split(":", 1)[1] if ":" in s else s
         try:
-            t = lift(p, m, name)
+            variants = lift_variants(p, m, name)
         except Exception:
-            t = None
-        if t:
-            lifted.append((s, size, t))
+            variants = []
+        for vi, t in enumerate(variants):
+            lifted.append((s if vi == 0 else f"{s}#{vi}", size, t))
     out_dir = STATE_DIR / "lift"; out_dir.mkdir(exist_ok=True)
 
     # one mwcc run per module over every lifted body, one cheap score each, the full check only
@@ -677,14 +828,16 @@ def apply(p: Project, modules: Optional[List[str]] = None, max_size: int = 160, 
     results = []
     by_mod: Dict[str, list] = {}
     for s, size, t in lifted:
-        by_mod.setdefault(s.split(":")[0] if ":" in s else p.resolve(s).module, []).append((s, size, t))
+        s0 = s.split("#")[0]
+        by_mod.setdefault(s0.split(":")[0] if ":" in s0 else p.resolve(s0).module, []).append((s, size, t))
     for mod, items in by_mod.items():
         srcs = []
         for s, size, t in items:
-            src = out_dir / (s.replace(":", "__") + ".c"); src.write_text(t); srcs.append(src)
+            src = out_dir / (s.replace(":", "__").replace("#", "__v") + ".c"); src.write_text(t); srcs.append(src)
         objs = oracle.compile_many(p, mod, srcs, out_dir / "obj" / mod)
         for (s, size, t), src in zip(items, srcs):
             o = objs.get(src)
+            s = s.split("#")[0]  # a layout variant of the same function
             sym = p.resolve(s)
             target = p.target_object_for(sym) if sym else None
             if o is None or target is None:
@@ -703,6 +856,11 @@ def apply(p: Project, modules: Optional[List[str]] = None, max_size: int = 160, 
         fx = fixup.try_fix(p, s, t, budget_s=10.0)
         if fx.get("matched") and fx.get("body"):
             results[idx] = (s, size, fx["body"], True, 100.0); fixed += 1
+    best: Dict[str, tuple] = {}
+    for s, size, t, ok, pct in results:
+        if s not in best or (ok, pct) > (best[s][3], best[s][4]):
+            best[s] = (s, size, t, ok, pct)
+    results = list(best.values())
     matched = [(s, size, t) for s, size, t, ok, _ in results if ok]
     submitted, failed = [], []
     if submit:
