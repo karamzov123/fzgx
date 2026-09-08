@@ -1,5 +1,5 @@
 # F-Zero GX (NTSC-U, GFZE01)
-# Reference: config/config.example.yml (from dtk-template) for every option.
+# Reference: docs/dtk/config.example.yml (from dtk-template) for every option.
 object_base: orig/GFZE01
 object: sys/main.dol
 hash: 421c88106697d3275a3fc26fb7a01bf6d816b271
