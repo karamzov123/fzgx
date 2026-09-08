@@ -144,6 +144,23 @@ u32 fn_1_128C(void) {
 }
 /* fzgx:end fn_1_128C */
 
+/* fzgx:begin fn_1_12B4 */
+extern struct fn_1_12B4_lbl_1_bss_962 lbl_1_bss_962;
+extern u32 OSReport(void *, ...);
+extern u32 lbl_1_data_2A20;
+extern u32 lbl_1_data_7C0;
+
+struct fn_1_12B4_lbl_1_bss_962 {
+    s16 unk_0;
+};
+
+void fn_1_12B4(void) {
+    s16 v0;
+    v0 = lbl_1_bss_962.unk_0;
+    OSReport(&lbl_1_data_2A20, v0, ((u8 *)&lbl_1_data_7C0 + (v0 * 44)));
+}
+/* fzgx:end fn_1_12B4 */
+
 /* fzgx:begin fn_1_12FC */
 // fn_1_12FC: empty in retail (single blr).
 void fn_1_12FC(void) {
@@ -155,6 +172,29 @@ void fn_1_12FC(void) {
 void fn_1_1300(void) {
 }
 /* fzgx:end fn_1_1300 */
+
+/* fzgx:begin fn_1_3238 */
+extern u32 fn_1_15659C(u32);
+extern u32 fn_80008BEC(void *, u32, u32);
+extern u8 lbl_1_bss_978[];
+
+void fn_1_3238(void) {
+    u8 *p_lbl_1_bss_978;
+    u32 t9;
+    p_lbl_1_bss_978 = (u8 *)&lbl_1_bss_978;
+    fn_80008BEC(((u8 *)p_lbl_1_bss_978 + 80), 0, 48);
+    fn_80008BEC(((u8 *)p_lbl_1_bss_978 + 32), 0, 48);
+    fn_80008BEC(((u8 *)p_lbl_1_bss_978 + 128), 0, 80);
+    fn_80008BEC(((u8 *)p_lbl_1_bss_978 + 208), 0, 64);
+    fn_80008BEC(((u8 *)p_lbl_1_bss_978 + 272), 0, 24);
+    fn_80008BEC(((u8 *)p_lbl_1_bss_978 + 840), 0, 4);
+    fn_80008BEC(((u8 *)p_lbl_1_bss_978 + 844), 0, 52);
+    fn_80008BEC(((u8 *)p_lbl_1_bss_978 + 896), 0, 48);
+    fn_80008BEC(((u8 *)p_lbl_1_bss_978 + 944), 0, 48);
+    t9 = fn_80008BEC(((u8 *)p_lbl_1_bss_978 + 24), 0, 8);
+    fn_1_15659C(t9);
+}
+/* fzgx:end fn_1_3238 */
 
 /* fzgx:begin fn_1_3BB0 */
 extern u32 lbl_1_data_2B78;
@@ -257,6 +297,40 @@ s32 fn_1_3F8C(u32 arg3, u32 arg0, u32 arg1, u32 index) {
     return entry->result;
 }
 /* fzgx:end fn_1_3F8C */
+
+/* fzgx:begin fn_1_4010 noprologue */
+#include "types.h"
+
+extern struct fn_1_4010_lbl_1_bss_DAC lbl_1_bss_DAC;
+
+struct fn_1_4010_lbl_1_bss_DAC {
+    u32 unk_0;
+};
+
+u32 fn_1_4010(u32 arg0, u32 arg1) {
+    u32 v0;
+    v0 = (*(u32 *)((u8 *)lbl_1_bss_DAC.unk_0 + 4) + (arg0 * 36));
+    *(u32 *)((u8 *)v0 + 24) = arg1;
+    return v0;
+}
+/* fzgx:end fn_1_4010 */
+
+/* fzgx:begin fn_1_4060 noprologue */
+#include "types.h"
+
+extern struct fn_1_4060_lbl_1_bss_DA8 lbl_1_bss_DA8;
+
+struct fn_1_4060_lbl_1_bss_DA8 {
+    u32 unk_0;
+};
+
+u32 fn_1_4060(void) {
+    u32 v0;
+    v0 = *(u32 *)((u8 *)lbl_1_bss_DA8.unk_0 + 8);
+    *(u32 *)((u8 *)v0 + 0) = 0;
+    return v0;
+}
+/* fzgx:end fn_1_4060 */
 
 /* fzgx:begin fn_1_41A8 */
 typedef struct Node Node;

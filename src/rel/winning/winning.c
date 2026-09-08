@@ -6,6 +6,29 @@ void fn_15_B8C(void) {
 }
 /* fzgx:end fn_15_B8C */
 
+/* fzgx:begin fn_15_1EE0 */
+extern struct fn_15_1EE0_lbl_15_bss_0 lbl_15_bss_0;
+extern u32 camera_enable_flags(u32);
+extern u32 fn_15_236C(u32, u32);
+
+struct fn_15_1EE0_lbl_15_bss_0 {
+    u8 pad_0[0xC];
+    u32 unk_C;
+    u32 unk_10;
+    u32 unk_14;
+};
+
+void fn_15_1EE0(void) {
+    struct fn_15_1EE0_lbl_15_bss_0 *p_lbl_15_bss_0;
+    u32 t0;
+    p_lbl_15_bss_0 = (struct fn_15_1EE0_lbl_15_bss_0 *)&lbl_15_bss_0;
+    t0 = fn_15_236C(p_lbl_15_bss_0->unk_C, p_lbl_15_bss_0->unk_10);
+    if ((p_lbl_15_bss_0->unk_14 & 0x1) != 0) {
+    camera_enable_flags(t0);
+    }
+}
+/* fzgx:end fn_15_1EE0 */
+
 /* fzgx:begin fn_15_2CEC */
 // fn_15_2CEC: empty in retail (single blr).
 void fn_15_2CEC(void) {

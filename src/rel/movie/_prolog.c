@@ -30,6 +30,25 @@ void fn_5_220(void) {
 }
 /* fzgx:end fn_5_220 */
 
+/* fzgx:begin fn_5_684 */
+extern u32 fn_1_412A0(u32);
+extern u32 fn_1_48140(u32);
+extern u8 lbl_5_bss_5F;
+extern u8 lbl_5_bss_61;
+
+void fn_5_684(void) {
+    if ((s8)lbl_5_bss_5F != 0) {
+    fn_1_48140(154);
+    fn_1_48140(155);
+    fn_1_48140(147);
+    fn_1_412A0(1);
+    }
+    if ((s8)lbl_5_bss_61 != 0) {
+    fn_1_48140(1);
+    }
+}
+/* fzgx:end fn_5_684 */
+
 /* fzgx:begin fn_5_13B0 */
 extern u32 fn_1_412A0(u32);
 extern u32 fn_1_48140(u32);

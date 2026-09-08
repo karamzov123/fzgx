@@ -41,3 +41,6 @@ rel/replay/replay_mode/fn_13_E8C.c:
 
 rel/replay/_prolog/fn_13_B7C.c:
 	.text       start:0x00000B7C end:0x00000BCC align:4
+
+rel/replay/replay_mode/fn_13_F00.c:
+	.text       start:0x00000F00 end:0x00000FA8 align:4

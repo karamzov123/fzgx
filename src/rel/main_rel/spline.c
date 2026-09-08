@@ -184,6 +184,28 @@ void fn_1_F5AEC(void) {
 }
 /* fzgx:end fn_1_F5AEC */
 
+/* fzgx:begin fn_1_F5AF0 noprologue */
+#include "types.h"
+
+extern struct fn_1_F5AF0_lbl_1_data_2A7E0 lbl_1_data_2A7E0;
+extern u32 fn_1_9AD54(void *);
+extern u32 fn_1_F5D94(u32);
+
+struct fn_1_F5AF0_lbl_1_data_2A7E0 {
+    u8 pad_0[0x3C];
+    u32 unk_3C;
+};
+
+void fn_1_F5AF0(void) {
+    u32 v0;
+    v0 = lbl_1_data_2A7E0.unk_3C;
+    fn_1_9AD54(&lbl_1_data_2A7E0);
+    if ((s32)*(u32 *)((u8 *)v0 + 16) != 0) {
+    fn_1_F5D94(v0);
+    }
+}
+/* fzgx:end fn_1_F5AF0 */
+
 /* fzgx:begin fn_1_F5B38 */
 // fn_1_F5B38: empty in retail (single blr).
 void fn_1_F5B38(void) {

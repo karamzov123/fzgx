@@ -192,6 +192,44 @@ void fn_1_D3C04(void) {
 }
 /* fzgx:end fn_1_D3C04 */
 
+/* fzgx:begin fn_1_D3C58 noprologue */
+#include "types.h"
+
+extern struct fn_1_D3C58_lbl_1_data_2A7E0 lbl_1_data_2A7E0;
+extern u32 fn_1_105AB8(u32, u32);
+extern u32 fn_1_58C4(void *);
+extern u32 fn_1_5948(u32);
+extern u32 fn_1_627C(u32);
+extern u32 fn_1_D4360(u32);
+extern u32 fn_1_D47D8(u32, u32);
+extern u32 fn_1_D4964(u32);
+extern u32 fn_1_D5958(u32);
+
+struct fn_1_D3C58_lbl_1_data_2A7E0 {
+    u8 pad_0[0x3C];
+    u32 unk_3C;
+};
+
+void fn_1_D3C58(void) {
+    u32 v0;
+    s32 v1;
+    u32 t0;
+    v0 = lbl_1_data_2A7E0.unk_3C;
+    t0 = fn_1_58C4(&lbl_1_data_2A7E0);
+    v1 = 0;
+    while (v1 < (s32)t0) {
+    fn_1_5948(v1);
+    fn_1_105AB8((v0 + 32), v1);
+    fn_1_D47D8(v0, v1);
+    fn_1_627C(v1);
+    v1++;
+    }
+    fn_1_D5958(v0);
+    fn_1_D4360(v0);
+    fn_1_D4964(v0);
+}
+/* fzgx:end fn_1_D3C58 */
+
 /* fzgx:begin fn_1_D3DDC */
 void fn_1_D3DDC(void) {
     fn_1_D3F88(lbl_1_data_2A7E0.unk_3C);

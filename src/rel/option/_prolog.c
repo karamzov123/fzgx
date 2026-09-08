@@ -314,6 +314,20 @@ void fn_4_AB90(void) {
 }
 /* fzgx:end fn_4_AB90 */
 
+/* fzgx:begin fn_4_AD44 */
+extern u32 fn_1_B7C00(void);
+extern u32 fn_1_BC310(void *);
+extern u32 lbl_4_bss_5630;
+
+void fn_4_AD44(void) {
+    u32 t0;
+    t0 = fn_1_B7C00();
+    if ((t0 & 0xFF) == 0) {
+    fn_1_BC310(&lbl_4_bss_5630);
+    }
+}
+/* fzgx:end fn_4_AD44 */
+
 /* fzgx:begin fn_4_AD78 */
 extern u32 fn_1_C0510(u32);
 extern u32 lbl_4_bss_5630;
@@ -330,6 +344,22 @@ void fn_4_AD78(void) {
 void fn_4_ADAC(void) {
 }
 /* fzgx:end fn_4_ADAC */
+
+/* fzgx:begin fn_4_ADB0 */
+extern u32 fn_1_B7C00(void);
+extern u32 fn_1_C1394(void *);
+extern u32 lbl_4_bss_5630;
+extern u32 lbl_4_data_2F1C;
+
+void fn_4_ADB0(void) {
+    u32 t0;
+    t0 = fn_1_B7C00();
+    if ((t0 & 0xFF) == 0) {
+    lbl_4_data_2F1C = 0;
+    fn_1_C1394(&lbl_4_bss_5630);
+    }
+}
+/* fzgx:end fn_4_ADB0 */
 
 /* fzgx:begin fn_4_ADF0 */
 // fn_4_ADF0: empty in retail (single blr).

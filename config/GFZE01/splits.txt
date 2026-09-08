@@ -994,3 +994,12 @@ dol/fn_8001DE30.c:
 
 dol/fn_8006A998.c:
 	.text       start:0x8006A998 end:0x8006A9AC align:4
+
+dol/fn_8004784C.c:
+	.text       start:0x8004784C end:0x80047864 align:4
+
+dol/fn_80082908.c:
+	.text       start:0x80082908 end:0x80082928 align:4
+
+dol/__OSGetEffectivePriority.c:
+	.text       start:0x800103D4 end:0x80010410 align:4

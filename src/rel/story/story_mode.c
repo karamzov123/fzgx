@@ -1,5 +1,81 @@
 #include "types.h"
 
+/* fzgx:begin fn_7_244 */
+extern struct fn_7_244_lbl_7_bss_C lbl_7_bss_C;
+
+struct fn_7_244_lbl_7_bss_C {
+    u32 unk_0;
+};
+
+u32 fn_7_244(void) {
+    u32 v0;
+    v0 = lbl_7_bss_C.unk_0;
+    lbl_7_bss_C.unk_0 = (v0 + 1);
+    return v0;
+}
+/* fzgx:end fn_7_244 */
+
+/* fzgx:begin fn_7_25C */
+extern struct fn_7_25C_lbl_7_bss_0 lbl_7_bss_0;
+extern u32 camera_get_state(u32);
+extern u32 fn_1_3CC4(u32);
+extern u32 fn_1_407C(u32);
+extern u32 fn_1_435C(u32);
+extern u32 fn_1_5948(u32);
+extern u32 fn_1_627C(u32);
+extern u32 fn_1_9A770(u32);
+extern u32 fn_1_B7C00(void);
+extern u32 fn_1_C6F8C(u32);
+extern u32 fn_1_C7224(u32);
+
+struct fn_7_25C_lbl_7_bss_0 {
+    u8 pad_0[0x4];
+    u32 unk_4;
+    u32 unk_8;
+    u8 pad_C[0xC];
+    u32 unk_18;
+    u32 unk_1C;
+    u8 pad_20[0x4];
+    u32 unk_24;
+};
+
+void fn_7_25C(void) {
+    struct fn_7_25C_lbl_7_bss_0 *p_lbl_7_bss_0;
+    u32 v0;
+    u32 v1;
+    u32 t0, t1, t4, t5, t7, t8, t9, t11;
+    p_lbl_7_bss_0 = (struct fn_7_25C_lbl_7_bss_0 *)&lbl_7_bss_0;
+    if ((s32)p_lbl_7_bss_0->unk_24 == 0) {
+    t0 = fn_1_B7C00();
+    if ((t0 & 0xFF) == 0) {
+    t1 = fn_1_435C(p_lbl_7_bss_0->unk_18);
+    fn_1_407C(t1);
+    v0 = p_lbl_7_bss_0->unk_4;
+    if ((s32)v0 > 0) {
+    p_lbl_7_bss_0->unk_4 = (v0 - 1);
+    }
+    }
+    }
+    v1 = p_lbl_7_bss_0->unk_8;
+    if ((s32)v1 > 0) {
+    p_lbl_7_bss_0->unk_8 = (v1 - 1);
+    }
+    fn_1_3CC4(v1);
+    t4 = fn_1_435C(p_lbl_7_bss_0->unk_1C);
+    t5 = camera_get_state(t4);
+    if ((s8)t5 == -1) {
+    fn_1_407C(t5);
+    } else {
+    t7 = fn_1_5948(0);
+    t8 = fn_1_9A770(t7);
+    t9 = fn_1_C7224(t8);
+    fn_1_407C(t9);
+    t11 = fn_1_627C(0);
+    fn_1_C6F8C(t11);
+    }
+}
+/* fzgx:end fn_7_25C */
+
 /* fzgx:begin fn_7_50C */
 extern u16 lbl_1_bss_96A;
 
