@@ -12,15 +12,17 @@ to anyone; do not write summaries. Every extra call costs money.
 
 ## Loop (4 calls for a typical match)
 
-1. `claim(symbol, agent)` — returns your unit path AND the full context bundle:
+1. `claim(symbol, agent)` — returns where the function lives (a block of its
+   translation-unit file, or its own file) AND the full context bundle:
    retail assembly, referenced symbols with declarations, callers, nearby
    matched C, current file, compiler flags, idioms, rules. Read it carefully;
    there is no separate context call to make.
-2. `write_unit(symbol, agent, source)` with the COMPLETE file. It compiles and
-   diffs immediately and returns the match % with a `target | ours` diff, so
-   one call is one iteration. File shape: `#include "types.h"`, `extern`
-   declarations for every referenced symbol you use, minimal local struct
-   definitions when you see field offsets, then the function. Real local names,
+2. `write_unit(symbol, agent, source)` with the COMPLETE unit. It replaces your
+   private copy (the tree is untouched until submit), compiles and diffs
+   immediately and returns the match % with a `target | ours` diff, so one
+   call is one iteration. Unit shape: the includes named in the context,
+   `extern` declarations for every referenced symbol you use, minimal local
+   struct definitions only when the headers have none, then the function. Real local names,
    one comment line on what the function does. No hardcoded addresses
    (`0x8...`), no inline asm, no system headers (`types.h` has
    u8/u16/u32/s8/s16/s32/f32/f64/BOOL/size_t).

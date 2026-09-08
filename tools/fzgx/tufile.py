@@ -205,8 +205,11 @@ def _addr_of(p: Project, module: str, name: str) -> int:
 def splice(p: Project, unit: dict, text: str, noprologue: bool = False) -> Path:
     """Replace (or insert, in address order) the unit's block with `text` in its TU file.
 
-    Include lines in `text` join the prologue; the block is the rest. Held under the
-    TU file's lock for the duration of the read-modify-write only.
+    The prologue is frozen: a block never changes how its neighbours compile. Includes
+    already in the prologue are dropped from the block; any other include stays inside
+    the block (header guards make the whole-file view harmless) until `hoist` moves it
+    up after proving every block still compiles. Held under the TU file's lock for the
+    read-modify-write only.
     """
     path = tu_path(p, unit["tu"])
     name = unit["symbols"][0]
@@ -215,22 +218,58 @@ def splice(p: Project, unit: dict, text: str, noprologue: bool = False) -> Path:
         tf = parse(path.read_text()) if path.exists() else TuFile("", [])
         inc, body = split_includes(text)
         flags: List[str] = []
+        if not path.exists() or not tf.blocks and not tf.prologue.strip():
+            tf.prologue = merge_prologue("", inc)  # first block of a new file sets the prologue
+            inc = []
         if noprologue:
             flags.append("noprologue")
-            body = "\n".join(inc + [""]) + body if inc else body
         else:
-            tf.prologue = merge_prologue(tf.prologue, inc)
+            have = {ln.strip() for ln in tf.prologue.splitlines()}
+            inc = [ln for ln in inc if ln.strip() not in have]
+        if inc:
+            body = "\n".join(inc) + "\n\n" + body
         tf.blocks = [b for b in tf.blocks if b.name != name]
         tf.blocks.append(Block(name, body, flags))
         tf.blocks.sort(key=lambda b: _addr_of(p, unit["module"], b.name))
         _write_atomic(path, tf.render())
     finally:
         lock.close()
-    # every generated unit of this TU sees the prologue, so refresh them all
-    for u in p.load_units():
-        if u.get("tu") == unit["tu"]:
-            write_gen(p, u, tf)
+    write_gen(p, unit, tf)
     return path
+
+
+def hoist(p: Project, tu_source: str, compile_fn) -> Dict[str, object]:
+    """Move includes that blocks carry privately into the prologue, keeping the change only
+    if every generated unit of the TU still compiles (`compile_fn(unit) -> bool`)."""
+    path = tu_path(p, tu_source)
+    units = [u for u in p.load_units() if u.get("tu") == tu_source]
+    lock = _lock(path)
+    try:
+        before = path.read_text()
+        tf = parse(before)
+        moved: List[str] = []
+        for b in tf.blocks:
+            if "noprologue" in b.flags:
+                continue
+            inc, body = split_includes(b.body)
+            if inc:
+                tf.prologue = merge_prologue(tf.prologue, inc)
+                b.body = body
+                moved.extend(ln.strip() for ln in inc)
+        if not moved:
+            return {"hoisted": [], "ok": True}
+        _write_atomic(path, tf.render())
+        for u in units:
+            write_gen(p, u, tf)
+        ok = all(compile_fn(u) for u in units)
+        if not ok:
+            _write_atomic(path, before)
+            tf = parse(before)
+            for u in units:
+                write_gen(p, u, tf)
+        return {"hoisted": sorted(set(moved)) if ok else [], "ok": ok}
+    finally:
+        lock.close()
 
 
 def remove(p: Project, unit: dict) -> Optional[str]:

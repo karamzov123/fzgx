@@ -68,7 +68,15 @@ Rules that hold for everyone:
 ## Layout
 
 - `config/GFZE01/` — dtk config, per-module `symbols.txt`/`splits.txt`, `units.json` (generated units, read by `configure.py`).
-- `src/dol/`, `src/rel/<module>/` — C units; `include/` — shared headers.
+- `src/rel/<module>/<tu>.c` — one file per recovered translation unit, functions in retail
+  order as blocks between `/* fzgx:begin NAME */ … /* fzgx:end NAME */` markers (tooling-owned;
+  never hand-edit the markers). Every block is compiled as its own generated unit
+  (`build/GFZE01/gen/…`, one split range per function) so the link and the oracle stay per
+  function; `fzgx tu-check rel/<module>/<tu>.c` compiles the whole file as one unit (the goal
+  state). Agents edit private work copies under `.fzgx/work/`; `submit` splices a block in.
+  `src/dol/` and modules without a TU map keep one file per function (`fzgx tu-migrate --module M`
+  converts a module once `tus.json` exists).
+- `include/` — shared headers (generated per module/TU; see readability tooling).
 - `tools/fzgx/` — ledger, carve, oracle, context, lint; `tools/linecrypt.py`, `tools/avlz.py`, `tools/prepare_orig.py`.
 - `docs/batches/` — per-milestone and per-batch reports; `state/ledger.json` — committed ledger snapshot.
 - `tests/` — `uv run --group dev pytest -q` (no game data needed).

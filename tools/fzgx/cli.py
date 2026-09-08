@@ -214,6 +214,13 @@ def cmd_tu_check(a, p):
     return 0 if ok else 1
 
 
+def cmd_tu_hoist(a, p):
+    from . import oracle, tufile  # scoped: keeps the CLI import graph light
+    ok_fn = lambda u: oracle.compile_unit(p, p.objdiff_unit_name(u["module"], u["source"]), u["source"]).returncode == 0
+    r = tufile.hoist(p, a.tu, ok_fn)
+    _print(r, a.json); return 0 if r.get("ok") else 1
+
+
 def cmd_gen(a, p):
     from . import tufile  # scoped: same
     print(f"{tufile.regenerate(p)} generated units")
@@ -297,6 +304,8 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--module", default="main_rel"); s.add_argument("--no-verify", action="store_true")
     s = sub.add_parser("tu-check", help="compile a whole TU file as one unit (the goal state)"); s.set_defaults(fn=cmd_tu_check)
     s.add_argument("tu", help="e.g. rel/main_rel/camera.c"); s.add_argument("-v", "--verbose", action="store_true")
+    s = sub.add_parser("tu-hoist", help="move block-private includes into the TU prologue if every block still compiles"); s.set_defaults(fn=cmd_tu_hoist)
+    s.add_argument("tu", help="e.g. rel/main_rel/camera.c")
     s = sub.add_parser("gen", help="regenerate every per-function unit from the TU files"); s.set_defaults(fn=cmd_gen)
     s = sub.add_parser("verify", help="relink once for all accepted units, verify hashes, commit; bisect on failure"); s.set_defaults(fn=cmd_verify)
     s.add_argument("--message")

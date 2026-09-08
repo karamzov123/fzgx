@@ -1,5 +1,5 @@
 {
- "generated": 1788847509,
+ "generated": 1788847677,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -102499,17 +102499,17 @@
    "unit": "rel/main_rel/rep_memcard/fn_1_154FC0.c",
    "addr": 1396672,
    "size": 24,
-   "status": "unmatched",
-   "attempts": 2,
+   "status": "matched",
+   "attempts": 3,
    "best_percent": 100.0,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
-   "matched_commit": null,
+   "matched_commit": "408bbe9",
    "blocked_issue": null,
    "blocked_reason": null,
    "prev_status": null,
-   "link_state": null
+   "link_state": "verified"
   },
   {
    "symbol": "fn_1_154FD8",
@@ -155068,6 +155068,25 @@
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 100.0
+  },
+  {
+   "id": 1239,
+   "symbol": "fn_1_154FC0",
+   "agent": "librarian",
+   "harness": null,
+   "model": null,
+   "started": 1788847597,
+   "ended": 1788847597,
+   "checks": 0,
+   "final_percent": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0,
+   "outcome": "matched",
+   "notes": "resubmitted after prologue fix",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 0.0
   }
  ],
  "names": [

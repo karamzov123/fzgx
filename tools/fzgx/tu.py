@@ -259,6 +259,35 @@ def migrate(p: Project, module: str, verify: bool = True) -> Dict[str, object]:
             if d.is_dir() and not any(d.iterdir()):
                 d.rmdir()
         ok = True
-        if verify and (moved or dropped):
-            ok = oracle.configure(p).returncode == 0 and oracle.relink(p).returncode == 0
-    return {"moved": moved, "dropped": dropped, "tu_files": len(by_tu), "ok": ok}
+        fix = {}
+        if moved or dropped:
+            oracle.configure(p)
+            fix = fix_prologues(p, module)
+            if verify:
+                ok = oracle.relink(p).returncode == 0
+    return {"moved": moved, "dropped": dropped, "tu_files": len(by_tu), "ok": ok, **fix}
+
+
+def fix_prologues(p: Project, module: str) -> Dict[str, object]:
+    """Block units whose generated unit does not compile under the TU prologue (a private
+    typedef that clashes with the header, usually) are re-spliced `noprologue` with the
+    includes they had as standalone files (from git HEAD when the file was just migrated)."""
+    fixed, failed = [], []
+    for u in p.load_units():
+        if u["module"] != module or not u.get("tu"):
+            continue
+        unit = p.objdiff_unit_name(module, u["source"])
+        cp = oracle.compile_unit(p, unit, u["source"])
+        if cp.returncode == 0:
+            continue
+        cp2 = subprocess.run(["git", "show", f"HEAD:src/{u['source']}"], cwd=ROOT, text=True, capture_output=True)
+        if cp2.returncode == 0:
+            text = cp2.stdout
+        else:
+            tf = tufile.load(p, u["tu"])
+            b = tf.get(u["symbols"][0])
+            text = '#include "types.h"\n#include "rel/%s/globals.h"\n\n' % module + (b.body if b else "")
+        tufile.splice(p, u, text, noprologue=True)
+        cp = oracle.compile_unit(p, unit, u["source"])
+        (fixed if cp.returncode == 0 else failed).append(u["symbols"][0])
+    return {"noprologue": fixed, "still_failing": failed}
