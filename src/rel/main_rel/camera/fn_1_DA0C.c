@@ -1,4 +1,9 @@
 #include "types.h"
 
-// fn_1_DA0C: main_rel .text:0x0000DA0C size 0x18
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u8 lbl_1_bss_1049;
+extern u8 lbl_1_bss_1048;
+
+void fn_1_DA0C(void) {
+    lbl_1_bss_1049 = 0;
+    lbl_1_bss_1048 = 0;
+}

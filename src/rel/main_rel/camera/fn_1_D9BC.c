@@ -1,4 +1,12 @@
 #include "types.h"
 
-// fn_1_D9BC: main_rel .text:0x0000D9BC size 0x10
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct {
+    u8 pad_0[0x18];
+    u32 unk_18;
+} Obj_1_bss_1018;
+
+extern Obj_1_bss_1018 lbl_1_bss_1018;
+
+u32* fn_1_D9BC(void) {
+    return &lbl_1_bss_1018.unk_18;
+}

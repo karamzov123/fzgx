@@ -1,4 +1,9 @@
 #include "types.h"
 
-// fn_1_B85C: main_rel .text:0x0000B85C size 0x14
-// Carved by fzgx. Replace this file's body with the matching C.
+extern f32 lbl_1_bss_1040;
+extern f32 lbl_1_bss_1044;
+
+void fn_1_B85C(f32 unk0, f32 unk1) {
+    lbl_1_bss_1040 = unk0;
+    lbl_1_bss_1044 = unk1;
+}

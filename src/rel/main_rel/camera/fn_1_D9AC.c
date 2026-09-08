@@ -1,4 +1,6 @@
 #include "types.h"
+#include "rel/main_rel/camera.h"
 
-// fn_1_D9AC: main_rel .text:0x0000D9AC size 0x10
-// Carved by fzgx. Replace this file's body with the matching C.
+u32* fn_1_D9AC(void) {
+    return &lbl_1_bss_1018.unk_14;
+}

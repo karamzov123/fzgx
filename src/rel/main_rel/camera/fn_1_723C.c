@@ -1,4 +1,13 @@
 #include "types.h"
 
-// fn_1_723C: main_rel .text:0x0000723C size 0x20
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef struct {
+    u8 pad[0xA8];
+    s16 value;
+    u8 tail[0x152];
+} CameraEntry;
+
+extern CameraEntry *lbl_1_bss_F6C;
+
+s16 fn_1_723C(u32 index) {
+    return lbl_1_bss_F6C[(u8)index].value;
+}
