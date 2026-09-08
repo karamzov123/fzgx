@@ -572,6 +572,21 @@ void fn_1_3F8D0(void) {
 }
 /* fzgx:end fn_1_3F8D0 */
 
+/* fzgx:begin fn_1_3FBF4 noprologue */
+#include "types.h"
+
+extern u32 lbl_1_bss_3C30;
+
+void fn_1_3FBF4(u32 arg0) {
+    u32 v0;
+    v0 = (lbl_1_bss_3C30 & 0xFFFFFFFD);
+    if ((s32)arg0 != 0) {
+    v0 = (lbl_1_bss_3C30 | 2);
+    }
+    lbl_1_bss_3C30 = v0;
+}
+/* fzgx:end fn_1_3FBF4 */
+
 /* fzgx:begin fn_1_3FC18 */
 u16 fn_1_3FC18(void) {
     return lbl_1_bss_26C68[0];

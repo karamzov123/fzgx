@@ -290,6 +290,30 @@ void fn_1_A942C(u8 value) {
 }
 /* fzgx:end fn_1_A942C */
 
+/* fzgx:begin fn_1_A943C noprologue */
+#include "types.h"
+
+extern struct fn_1_A943C_lbl_1_bss_6F648 lbl_1_bss_6F648;
+
+struct fn_1_A943C_lbl_1_bss_6F648 {
+    u8 pad_0[0x2];
+    u8 unk_2;
+    u8 pad_3[0x1];
+    u16 unk_4;
+    u16 unk_6;
+    u16 unk_8;
+};
+
+void fn_1_A943C(u32 arg0, u32 arg1) {
+    u8 v0;
+    v0 = lbl_1_bss_6F648.unk_2;
+    lbl_1_bss_6F648.unk_4 = arg0;
+    lbl_1_bss_6F648.unk_6 = arg1;
+    lbl_1_bss_6F648.unk_8 = 0;
+    lbl_1_bss_6F648.unk_2 = (v0 & 0xFFFFFFFD);
+}
+/* fzgx:end fn_1_A943C */
+
 /* fzgx:begin fn_1_A9464 */
 // Set the two values and mark the shared state as ready.
 void fn_1_A9464(u16 arg0, u16 arg1) {

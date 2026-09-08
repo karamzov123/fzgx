@@ -95,3 +95,9 @@ rel/story/story_mode/fn_7_244.c:
 
 rel/story/story_mode/fn_7_25C.c:
 	.text       start:0x0000025C end:0x00000318 align:4
+
+rel/story/story_mode/fn_7_235C.c:
+	.text       start:0x0000235C end:0x00002384 align:4
+
+rel/story/story_mode/fn_7_4094.c:
+	.text       start:0x00004094 end:0x00004108 align:4

@@ -6,6 +6,54 @@ void fn_15_B8C(void) {
 }
 /* fzgx:end fn_15_B8C */
 
+/* fzgx:begin fn_15_1D7C */
+extern struct fn_15_1D7C_lbl_15_bss_0 lbl_15_bss_0;
+extern u32 fn_15_1F28(u32, u32);
+extern u32 fn_15_FCC(void);
+extern u32 fn_1_4A00(u32, u32, u32);
+
+struct fn_15_1D7C_lbl_15_bss_0 {
+    u8 pad_0[0xC];
+    u32 unk_C;
+    u32 unk_10;
+    u32 unk_14;
+};
+
+u32 fn_15_1D7C(u32 arg0, u32 arg1, u32 arg2) {
+    struct fn_15_1D7C_lbl_15_bss_0 *p_lbl_15_bss_0;
+    u32 v0;
+    u32 v1;
+    u32 v2;
+    u32 t0, t1, t2, t3;
+    p_lbl_15_bss_0 = (struct fn_15_1D7C_lbl_15_bss_0 *)&lbl_15_bss_0;
+    v0 = arg2;
+    v1 = arg0;
+    v2 = arg1;
+    if ((p_lbl_15_bss_0->unk_14 & 0x78) == 0) {
+    v0 = p_lbl_15_bss_0->unk_10;
+    v1 = 1;
+    v2 = 30;
+    t0 = fn_1_4A00(v1, v2, v0);
+    v1 = t0;
+    } else {
+    v0 = p_lbl_15_bss_0->unk_10;
+    v1 = 0;
+    v2 = 0;
+    t1 = fn_1_4A00(v1, v2, v0);
+    v1 = t1;
+    }
+    v1 = p_lbl_15_bss_0->unk_C;
+    v2 = p_lbl_15_bss_0->unk_10;
+    t2 = fn_15_1F28(v1, v2);
+    v1 = t2;
+    if ((p_lbl_15_bss_0->unk_14 & 0x1) != 0) {
+    t3 = fn_15_FCC();
+    v1 = t3;
+    }
+    return v1;
+}
+/* fzgx:end fn_15_1D7C */
+
 /* fzgx:begin fn_15_1EE0 */
 extern struct fn_15_1EE0_lbl_15_bss_0 lbl_15_bss_0;
 extern u32 camera_enable_flags(u32);
@@ -28,6 +76,26 @@ void fn_15_1EE0(void) {
     }
 }
 /* fzgx:end fn_15_1EE0 */
+
+/* fzgx:begin fn_15_2228 */
+extern u32 fn_15_2CEC(void);
+extern u32 fn_15_3AFC(void);
+extern u32 fn_15_401C(void);
+extern u32 fn_15_4124(void);
+extern u32 lbl_15_bss_14;
+extern u8 lbl_15_bss_21;
+
+void fn_15_2228(void) {
+    if ((lbl_15_bss_14 & ~0x7FFFFFFF) != 0) {
+    fn_15_4124();
+    }
+    fn_15_2CEC();
+    fn_15_3AFC();
+    if (lbl_15_bss_21 != 0) {
+    fn_15_401C();
+    }
+}
+/* fzgx:end fn_15_2228 */
 
 /* fzgx:begin fn_15_2CEC */
 // fn_15_2CEC: empty in retail (single blr).
@@ -88,6 +156,27 @@ void fn_15_3B00(void) {
     fn_1_7EAE8(t0);
 }
 /* fzgx:end fn_15_3B00 */
+
+/* fzgx:begin fn_15_401C */
+extern u32 fn_1_C6F80(u32);
+extern u32 lbl_15_bss_14;
+
+u32 fn_15_401C(u32 arg0) {
+    u32 v0;
+    u32 t0, t1;
+    v0 = arg0;
+    if ((lbl_15_bss_14 & 0x40000000) != 0) {
+    v0 = 1;
+    t0 = fn_1_C6F80(v0);
+    v0 = t0;
+    } else {
+    v0 = 0;
+    t1 = fn_1_C6F80(v0);
+    v0 = t1;
+    }
+    return v0;
+}
+/* fzgx:end fn_15_401C */
 
 /* fzgx:begin fn_15_405C */
 // fn_15_405C: empty in retail (single blr).

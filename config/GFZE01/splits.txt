@@ -1492,3 +1492,57 @@ dol/SIIsChanBusy.c:
 
 dol/fn_800589BC.c:
 	.text       start:0x800589BC end:0x80058A20 align:4
+
+dol/fn_8000BE5C.c:
+	.text       start:0x8000BE5C end:0x8000BE68 align:4
+
+dol/fn_8000DD68.c:
+	.text       start:0x8000DD68 end:0x8000DD74 align:4
+
+dol/fn_8000E794.c:
+	.text       start:0x8000E794 end:0x8000E7A0 align:4
+
+dol/fn_8000E7A0.c:
+	.text       start:0x8000E7A0 end:0x8000E7AC align:4
+
+dol/fn_800102AC.c:
+	.text       start:0x800102AC end:0x800102B8 align:4
+
+dol/AIGetStreamPlayState.c:
+	.text       start:0x8001E0D4 end:0x8001E0E4 align:4
+
+dol/AIGetStreamSampleRate.c:
+	.text       start:0x8001E2AC end:0x8001E2BC align:4
+
+dol/AIGetStreamVolRight.c:
+	.text       start:0x8001E304 end:0x8001E314 align:4
+
+dol/DSPCheckMailToDSP.c:
+	.text       start:0x80028CC0 end:0x80028CD0 align:4
+
+dol/DSPCheckMailFromDSP.c:
+	.text       start:0x80028CD0 end:0x80028CE0 align:4
+
+dol/fn_8003432C.c:
+	.text       start:0x8003432C end:0x80034350 align:4
+
+dol/GXPeekZ.c:
+	.text       start:0x80034350 end:0x80034378 align:4
+
+dol/__CARDIsPublic.c:
+	.text       start:0x8002EA54 end:0x8002EA84 align:4
+
+dol/fn_80057B5C.c:
+	.text       start:0x80057B5C end:0x80057B9C align:4
+
+dol/fn_800466D4.c:
+	.text       start:0x800466D4 end:0x80046718 align:4
+
+dol/fn_8006C134.c:
+	.text       start:0x8006C134 end:0x8006C17C align:4
+
+dol/fn_80045D3C.c:
+	.text       start:0x80045D3C end:0x80045D90 align:4
+
+dol/fn_80047C08.c:
+	.text       start:0x80047C08 end:0x80047C94 align:4

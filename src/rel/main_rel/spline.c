@@ -909,6 +909,23 @@ u32 fn_1_FA004(void) {
 }
 /* fzgx:end fn_1_FA004 */
 
+/* fzgx:begin fn_1_FA01C noprologue */
+#include "types.h"
+
+extern struct fn_1_FA01C_lbl_1_bss_84420 lbl_1_bss_84420;
+
+struct fn_1_FA01C_lbl_1_bss_84420 {
+    u32 unk_0;
+};
+
+u32 fn_1_FA01C(void) {
+    u32 v0;
+    v0 = lbl_1_bss_84420.unk_0;
+    *(u8 *)((u8 *)v0 + 1) = (*(u8 *)((u8 *)v0 + 1) & 0xFFFFFFFD);
+    return v0;
+}
+/* fzgx:end fn_1_FA01C */
+
 /* fzgx:begin fn_1_FA038 */
 void fn_1_FA038(void) {
     u32 ptr = lbl_1_bss_84420;
@@ -936,6 +953,23 @@ u32 fn_1_FA088(void) {
     return (*(u8 *)(ptr + 2)) & 2;
 }
 /* fzgx:end fn_1_FA088 */
+
+/* fzgx:begin fn_1_FA0A0 noprologue */
+#include "types.h"
+
+extern struct fn_1_FA0A0_lbl_1_bss_84420 lbl_1_bss_84420;
+
+struct fn_1_FA0A0_lbl_1_bss_84420 {
+    u32 unk_0;
+};
+
+u32 fn_1_FA0A0(void) {
+    u32 v0;
+    v0 = lbl_1_bss_84420.unk_0;
+    *(u8 *)((u8 *)v0 + 2) = (*(u8 *)((u8 *)v0 + 2) & 0xFFFFFFFD);
+    return v0;
+}
+/* fzgx:end fn_1_FA0A0 */
 
 /* fzgx:begin fn_1_FA1A8 noprologue */
 #include "types.h"

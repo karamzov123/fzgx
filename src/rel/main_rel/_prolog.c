@@ -560,6 +560,34 @@ u32 fn_1_44A4(void) {
 }
 /* fzgx:end fn_1_44A4 */
 
+/* fzgx:begin fn_1_44B4 */
+extern struct fn_1_44B4_lbl_1_bss_DB8 lbl_1_bss_DB8;
+extern u32 OSGetArenaHi(void);
+extern u32 OSGetArenaLo(void);
+extern u32 fn_80008EC8(u32, u32, u32);
+extern u32 fn_80008F60(u32, u32);
+
+struct fn_1_44B4_lbl_1_bss_DB8 {
+    u8 pad_0[0x8];
+    u32 unk_8;
+    u32 unk_C;
+    u32 unk_10;
+};
+
+void fn_1_44B4(void) {
+    struct fn_1_44B4_lbl_1_bss_DB8 *p_lbl_1_bss_DB8;
+    u32 t0, t1, t2, t3;
+    p_lbl_1_bss_DB8 = (struct fn_1_44B4_lbl_1_bss_DB8 *)&lbl_1_bss_DB8;
+    t0 = OSGetArenaHi();
+    t1 = OSGetArenaLo();
+    t2 = fn_80008EC8(t1, t0, 8);
+    p_lbl_1_bss_DB8->unk_10 = t2;
+    t3 = fn_80008F60(t2, ((t2 + 0xE0000) - 2848));
+    p_lbl_1_bss_DB8->unk_C = t3;
+    p_lbl_1_bss_DB8->unk_8 = -1;
+}
+/* fzgx:end fn_1_44B4 */
+
 /* fzgx:begin fn_1_45D0 */
 extern u32 OSReport(u32, ...);
 extern u32 fn_800090A4(u32);
@@ -588,6 +616,44 @@ s32 fn_1_45D0(u32 arg0, u32 arg1) {
     return v0;
 }
 /* fzgx:end fn_1_45D0 */
+
+/* fzgx:begin fn_1_4630 */
+extern u32 OSReport(u32, ...);
+extern u32 fn_800090A4(u32);
+extern u32 fn_80009830(void);
+extern u32 fn_800793D4(u32, u32, u32);
+extern u32 lbl_1_data_2C74;
+
+u32 fn_1_4630(u32 arg0, u32 arg1) {
+    u32 v0;
+    u32 v1;
+    u32 t0, t1, t2, t3;
+    v0 = arg0;
+    v1 = arg0;
+    if (arg1 == 0) {
+    v0 = (u32)&lbl_1_data_2C74;
+    t0 = OSReport((u32)v0, arg1);
+    v0 = t0;
+    v1 = 0;
+    } else {
+    t1 = fn_80009830();
+    v0 = t1;
+    if (v0 == 0) {
+    v0 = v1;
+    t2 = fn_800090A4(v0);
+    v0 = t2;
+    v1 = 0;
+    } else {
+    v1 = v0;
+    }
+    }
+    v0 = v1;
+    t3 = fn_800793D4(v0, 0, arg1);
+    v0 = t3;
+    v0 = v1;
+    return v0;
+}
+/* fzgx:end fn_1_4630 */
 
 /* fzgx:begin fn_1_4730 */
 typedef struct {

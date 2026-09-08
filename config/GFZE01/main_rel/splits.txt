@@ -4718,3 +4718,24 @@ rel/main_rel/spline/fn_1_F9E80.c:
 
 rel/main_rel/spline/fn_1_F9EB0.c:
 	.text       start:0x000F9EB0 end:0x000F9EE4 align:4
+
+rel/main_rel/spline/fn_1_FA01C.c:
+	.text       start:0x000FA01C end:0x000FA038 align:4
+
+rel/main_rel/spline/fn_1_FA0A0.c:
+	.text       start:0x000FA0A0 end:0x000FA0BC align:4
+
+rel/main_rel/game/fn_1_3FBF4.c:
+	.text       start:0x0003FBF4 end:0x0003FC18 align:4
+
+rel/main_rel/driver/fn_1_A943C.c:
+	.text       start:0x000A943C end:0x000A9464 align:4
+
+rel/main_rel/_prolog/fn_1_44B4.c:
+	.text       start:0x000044B4 end:0x0000451C align:4
+
+rel/main_rel/bg_san/fn_1_DADA8.c:
+	.text       start:0x000DADA8 end:0x000DAE24 align:4
+
+rel/main_rel/_prolog/fn_1_4630.c:
+	.text       start:0x00004630 end:0x000046B4 align:4

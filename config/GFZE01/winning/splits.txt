@@ -35,3 +35,12 @@ rel/winning/winning/fn_15_1EE0.c:
 
 rel/winning/winning/fn_15_3A14.c:
 	.text       start:0x00003A14 end:0x00003AFC align:4
+
+rel/winning/winning/fn_15_401C.c:
+	.text       start:0x0000401C end:0x0000405C align:4
+
+rel/winning/winning/fn_15_2228.c:
+	.text       start:0x00002228 end:0x00002274 align:4
+
+rel/winning/winning/fn_15_1D7C.c:
+	.text       start:0x00001D7C end:0x00001DF4 align:4
