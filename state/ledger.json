@@ -1,5 +1,5 @@
 {
- "generated": 1788892024,
+ "generated": 1788892293,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -8,8 +8,8 @@
    "addr": 0,
    "size": 664,
    "status": "unmatched",
-   "attempts": 0,
-   "best_percent": 0.0,
+   "attempts": 1,
+   "best_percent": 83.16265,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
@@ -58,20 +58,20 @@
   {
    "symbol": "car_colchg:_epilog",
    "module": "car_colchg",
-   "unit": null,
+   "unit": "rel/car_colchg/car_colchg/_epilog.c",
    "addr": 808,
    "size": 200,
-   "status": "unmatched",
-   "attempts": 0,
-   "best_percent": 0.0,
+   "status": "matched",
+   "attempts": 1,
+   "best_percent": 100.0,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
-   "matched_commit": null,
+   "matched_commit": "057de77",
    "blocked_issue": null,
    "blocked_reason": null,
    "prev_status": null,
-   "link_state": null
+   "link_state": "verified"
   },
   {
    "symbol": "colchg_menu_init",
@@ -234355,6 +234355,44 @@
    "best_body_path": "/Users/rayan/fzgx/.fzgx/attempts/fn_9_E4C.1788891933.c",
    "stale_checks": 2,
    "best_in_attempt": 96.94915
+  },
+  {
+   "id": 5412,
+   "symbol": "car_colchg:_prolog",
+   "agent": "car_colchg-pro-codex-1",
+   "harness": "codex",
+   "model": "gpt-5.6-luna",
+   "started": 1788892062,
+   "ended": 1788892282,
+   "checks": 3,
+   "final_percent": 83.16265,
+   "tokens_in": 228139,
+   "tokens_out": 11593,
+   "cost_usd": 0.024795,
+   "outcome": "released",
+   "notes": "Best attempt is 83.2%; remaining differences are chiefly MWCC register allocation and loop scheduling, plus the lbl_1_bss_970 byte-store offset and initialization-call placement.",
+   "best_body_path": "/Users/rayan/fzgx/.fzgx/attempts/car_colchg:_prolog.1788892282.c",
+   "stale_checks": 0,
+   "best_in_attempt": 83.16265
+  },
+  {
+   "id": 5413,
+   "symbol": "car_colchg:_epilog",
+   "agent": "car_colchg-pro-codex-2",
+   "harness": "codex",
+   "model": "gpt-5.6-luna",
+   "started": 1788892064,
+   "ended": 1788892162,
+   "checks": 4,
+   "final_percent": 100.0,
+   "tokens_in": 171542,
+   "tokens_out": 4995,
+   "cost_usd": 0.013115,
+   "outcome": "matched",
+   "notes": "Matched retail assembly exactly.",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 100.0
   }
  ],
  "names": [
