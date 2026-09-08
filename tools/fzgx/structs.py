@@ -39,7 +39,7 @@ def _insn(line: str) -> str:
 
 def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
     fields: Dict[Tuple[str, int], Dict[str, object]] = defaultdict(
-        lambda: {"width": 0, "float": False, "loads": 0, "stores": 0, "widths": {}, "signed": False})
+        lambda: {"width": 0, "float": False, "fops": 0, "loads": 0, "stores": 0, "widths": {}, "signed": False})
     users: List[str] = []
     kinds = defaultdict(int)
     stride_seen: Dict[str, int] = {}
@@ -71,6 +71,9 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
             if m and f"r{m.group(2)}" in base:
                 base[f"r{m.group(1)}"] = base[f"r{m.group(2)}"]
                 continue
+            if m and f"r{m.group(2)}" in derived:
+                derived[f"r{m.group(1)}"] = derived[f"r{m.group(2)}"]
+                continue
             m = re.match(r"^mulli r(\d+), r\d+, (-?0x[0-9a-fA-F]+|-?\d+)$", ins) or \
                 re.match(r"^slwi r(\d+), r\d+, (\d+)$", ins)
             if m:
@@ -87,6 +90,14 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
                     if d == 0:  # an index applied inside the record (delta != 0) is a sub-array, not the record stride
                         stride_seen[k] = stride_seen.get(k, 0) or strides[pair[1]]
                     continue
+                # index applied to a pointer loaded from the materialised address: element [i] of the pointee
+                pair = (ra, rb) if ra in derived and rb in strides else ((rb, ra) if rb in derived and ra in strides else None)
+                if pair:
+                    tag = derived[pair[0]]
+                    derived[rd] = tag
+                    if tag == ("field", "object", 0):
+                        stride_seen["derived0"] = stride_seen.get("derived0", 0) or strides[pair[1]]
+                    continue
             # direct access through the symbol, with an optional displacement: op rX, (sym+0x3c)@l(rA) or sym@l(rA)
             m = re.match(rf"^(lwz|lhz|lha|lbz|lfs|lfd|stw|sth|stb|stfs|stfd) [rf](\d+), \(?{re.escape(symbol)}(?:\s*\+\s*(0x[0-9a-fA-F]+|\d+))?\)?@l\(r(\d+)\)", ins)
             if m and f"r{m.group(4)}" in pending_ha:
@@ -95,7 +106,7 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
                 f["width"] = max(f["width"], OP_WIDTH[m.group(1)])
                 f["widths"][OP_WIDTH[m.group(1)]] = f["widths"].get(OP_WIDTH[m.group(1)], 0) + 1
                 f["signed"] = f["signed"] or m.group(1) == "lha"
-                f["float"] = f["float"] or m.group(1) in ("lfs", "lfd", "stfs", "stfd")
+                f["fops"] += m.group(1) in ("lfs", "lfd", "stfs", "stfd")
                 f["loads" if m.group(1).startswith("l") else "stores"] += 1
                 if m.group(1) == "lwz":
                     base[f"r{m.group(2)}"] = ("pointer", 0)
@@ -113,7 +124,7 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
                     f["width"] = max(f["width"], WIDTH[w])
                     f["widths"][WIDTH[w]] = f["widths"].get(WIDTH[w], 0) + 1
                     f["signed"] = f["signed"] or w == "ha"
-                    f["float"] = f["float"] or w in ("fs", "fd")
+                    f["fops"] += w in ("fs", "fd")
                     f["loads" if op == "l" else "stores"] += 1
                     kinds[bk] += 1
                     used = True
@@ -132,7 +143,7 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
                     f["width"] = max(f["width"], WIDTH[w])
                     f["widths"][WIDTH[w]] = f["widths"].get(WIDTH[w], 0) + 1
                     f["signed"] = f["signed"] or w == "ha"
-                    f["float"] = f["float"] or w in ("fs", "fd")
+                    f["fops"] += w in ("fs", "fd")
                     f["loads" if op == "l" else "stores"] += 1
                     used = True
                 if op == "l" and rf == "r":
@@ -158,11 +169,15 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
         kind = "pointer"
     else:
         kind = "pointer" if kinds.get("pointer", 0) > kinds.get("object", 0) else "object"
+    # a slot touched through both integer and float ops (type punning, unions, the odd
+    # zero-store) is typed by the majority of its accesses
+    for f in fields.values():
+        f["float"] = f["fops"] * 2 > f["loads"] + f["stores"]
     out = {}
     pointees: Dict[int, Dict[int, Dict]] = defaultdict(dict)
     # Only an index applied to the *loaded* pointer says anything about the element size; an
     # index on the materialised address of a word-sized variable belongs to some neighbour.
-    stride = stride_seen.get(kind, 0)
+    stride = stride_seen.get(kind, 0) or (stride_seen.get("derived0", 0) if kind == "pointer" and size <= 8 else 0)
 
     def merge(off: int, f: Dict, into: Optional[Dict[int, Dict]] = None) -> None:
         tbl = out if into is None else into
@@ -177,6 +192,8 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
         g["float"] = g["float"] or f["float"]
         g["loads"] += f["loads"]
         g["stores"] += f["stores"]
+        g["fops"] += f["fops"]
+        g["float"] = g["fops"] * 2 > g["loads"] + g["stores"]
 
     for key, f in fields.items():
         if isinstance(key[0], tuple):  # ("field", kind, off), pointee_off

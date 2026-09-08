@@ -102,27 +102,36 @@ typedef struct {
 } Obj_1_bss_850C6;
 extern Obj_1_bss_850C6 lbl_1_bss_850C6;
 
+// lbl_1_data_3EFA8: .data size 0x8, 3 refs from bg_cas.c (own data block)
+extern u32 lbl_1_data_3EFA8;
+
 // lbl_1_bss_85250: .bss size 0x30, 3 refs from bg_cas.c
 typedef struct {
     u8 pad_0[0x8];
     u32 unk_8;  // 6 loads, 0 stores
 } Obj_1_bss_85250_At10;
 typedef struct {
-    u8 unk_0;  // 5 loads, 3 stores
-    u8 unk_1;  // 11 loads, 5 stores
-    u8 unk_2;  // 2 loads, 0 stores
-    u8 pad_3[0xD];
-    f32 unk_10;  // 8 loads, 0 stores
-    f32 unk_14;  // 17 loads, 4 stores
-    f32 unk_18;  // 12 loads, 0 stores
-    f32 unk_1C;  // 2 loads, 2 stores
-    f32 unk_20;  // 2 loads, 2 stores
-    f32 unk_24;  // 2 loads, 2 stores
-    u8 pad_28[0xC];
-    f32 unk_34;  // 0 loads, 2 stores
-    f32 unk_38;  // 4 loads, 4 stores
-    f32 unk_3C;  // 0 loads, 2 stores
-    f32 unk_40;  // 0 loads, 3 stores
+    u8 unk_0;  // 5 loads, 6 stores
+    u8 unk_1;  // 12 loads, 5 stores
+    u8 unk_2;  // 3 loads, 1 stores
+    u8 pad_3[0x1];
+    u16 unk_4;  // 2 loads, 3 stores
+    u8 pad_6[0x2];
+    u32 unk_8;  // 0 loads, 2 stores
+    u8 pad_C[0x4];
+    u32 unk_10;  // 9 loads, 1 stores
+    f32 unk_14;  // 18 loads, 5 stores
+    f32 unk_18;  // 14 loads, 1 stores
+    u32 unk_1C;  // 3 loads, 3 stores
+    u32 unk_20;  // 3 loads, 3 stores
+    u32 unk_24;  // 3 loads, 3 stores
+    u32 unk_28;  // 1 loads, 1 stores
+    u32 unk_2C;  // 1 loads, 1 stores
+    u32 unk_30;  // 1 loads, 1 stores
+    f32 unk_34;  // 0 loads, 3 stores
+    f32 unk_38;  // 4 loads, 5 stores
+    f32 unk_3C;  // 0 loads, 3 stores
+    f32 unk_40;  // 0 loads, 4 stores
     u8 pad_44[0x1];
     u8 unk_45;  // 2 loads, 0 stores
     u8 pad_46[0x12];
@@ -149,23 +158,14 @@ typedef struct {
 } Obj_1_bss_85250;
 extern Obj_1_bss_85250 lbl_1_bss_85250;
 
-// lbl_1_data_3EFA8: .data size 0x8, 3 refs from bg_cas.c (own data block)
-extern u32 lbl_1_data_3EFA8;
-
-// lbl_1_data_3EFB0: .data size 0x8, 2 refs from bg_cas.c (own data block)
-extern u32 lbl_1_data_3EFB0;
-
-// lbl_1_bss_850D4: .bss size 0x4, 2 refs from bg_cas.c
-extern f32 lbl_1_bss_850D4;
-
-// lbl_1_bss_850D8: .bss size 0x8, 2 refs from bg_cas.c
-extern f32 lbl_1_bss_850D8;
+// lbl_1_bss_84450: .bss size 0x1, 2 refs from bg_cas.c
+extern u8 lbl_1_bss_84450;
 
 // lbl_1_bss_85224: .bss size 0x2C, 2 refs from bg_cas.c
 extern u8 lbl_1_bss_85224[0x2C];
 
-// lbl_1_data_3EFB8: .data size 0x108, 2 refs from bg_cas.c (own data block)
-extern u8 lbl_1_data_3EFB8[0x108];
+// lbl_1_bss_85204: .bss size 0x20, 2 refs from bg_cas.c
+extern u8 lbl_1_bss_85204[0x20];
 
 // lbl_1_bss_D58: .bss size 0x18, 2 refs from bg_cas.c
 typedef struct {
@@ -181,11 +181,17 @@ typedef struct {
 } Obj_1_bss_D58;
 extern Obj_1_bss_D58 lbl_1_bss_D58;
 
-// lbl_1_bss_85204: .bss size 0x20, 2 refs from bg_cas.c
-extern u8 lbl_1_bss_85204[0x20];
+// lbl_1_data_3EFB8: .data size 0x108, 2 refs from bg_cas.c (own data block)
+extern u8 lbl_1_data_3EFB8[0x108];
 
-// lbl_1_bss_84450: .bss size 0x1, 2 refs from bg_cas.c
-extern u8 lbl_1_bss_84450;
+// lbl_1_bss_850D4: .bss size 0x4, 2 refs from bg_cas.c
+extern f32 lbl_1_bss_850D4;
+
+// lbl_1_bss_850D8: .bss size 0x8, 2 refs from bg_cas.c
+extern f32 lbl_1_bss_850D8;
+
+// lbl_1_data_3EFB0: .data size 0x8, 2 refs from bg_cas.c (own data block)
+extern u32 lbl_1_data_3EFB0;
 
 // lbl_1_data_3EF90: .data size 0x9, 1 refs from bg_cas.c (own data block)
 extern u8 lbl_1_data_3EF90[0x9];

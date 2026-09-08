@@ -22,7 +22,30 @@ extern Obj_1_bss_1148 lbl_1_bss_1148;
 
 // lbl_1_bss_17C4: .bss size 0xC, 4 refs from live_camera.c
 typedef struct {
-    u32 unk_0;  // 4 loads, 0 stores
+    u32 unk_0;  // 3 loads, 0 stores
+    f32 unk_4;  // 4 loads, 0 stores
+    u32 unk_8;  // 2 loads, 0 stores
+    u32 unk_C;  // 2 loads, 0 stores
+    u32 unk_10;  // 2 loads, 0 stores
+    u32 unk_14;  // 2 loads, 0 stores
+    u32 unk_18;  // 2 loads, 0 stores
+    u32 unk_1C;  // 2 loads, 0 stores
+    u32 unk_20;  // 2 loads, 0 stores
+    u32 unk_24;  // 2 loads, 0 stores
+    u32 unk_28;  // 2 loads, 0 stores
+    u32 unk_2C;  // 1 loads, 0 stores
+    u32 unk_30;  // 1 loads, 0 stores
+    u32 unk_34;  // 1 loads, 0 stores
+    u32 unk_38;  // 1 loads, 0 stores
+    u32 unk_3C;  // 1 loads, 0 stores
+    u32 unk_40;  // 1 loads, 0 stores
+    u32 unk_44;  // 1 loads, 0 stores
+    u32 unk_48;  // 1 loads, 0 stores
+    u32 unk_4C;  // 1 loads, 0 stores
+    s16 unk_50;  // 1 loads, 0 stores
+} Obj_1_bss_17C4_At0;
+typedef struct {
+    Obj_1_bss_17C4_At0 *unk_0;  // 4 loads, 0 stores
     u8 pad_4[0x8];
 } Obj_1_bss_17C4;
 extern Obj_1_bss_17C4 lbl_1_bss_17C4;
@@ -41,11 +64,18 @@ typedef struct {
 } Obj_1_data_44F4;
 extern Obj_1_data_44F4 lbl_1_data_44F4;
 
-// lbl_1_bss_1800: .bss size 0x10, 2 refs from live_camera.c
-extern u8 lbl_1_bss_1800[0x10];
+// lbl_1_bss_17B0: .bss size 0x4, 2 refs from live_camera.c
+extern u32 lbl_1_bss_17B0;
 
-// lbl_1_bss_115C: .bss size 0x1, 2 refs from live_camera.c
-extern u8 lbl_1_bss_115C;
+// lbl_1_data_47B4: .data size 0x2EC, 2 refs from live_camera.c (own data block)
+typedef struct {
+    u8 pad_0[0x18];
+    s16 unk_18;  // 1 loads, 0 stores
+    u8 pad_1A[0x2];
+    u32 unk_1C;  // 2 loads, 0 stores
+    u8 pad_20[0x2CC];
+} Obj_1_data_47B4;
+extern Obj_1_data_47B4 lbl_1_data_47B4;
 
 // lbl_1_bss_525C: .bss size 0x198, 2 refs from live_camera.c
 typedef struct {
@@ -75,6 +105,12 @@ typedef struct {
 } Obj_1_bss_17D0;
 extern Obj_1_bss_17D0 lbl_1_bss_17D0;
 
+// lbl_1_bss_115C: .bss size 0x1, 2 refs from live_camera.c
+extern u8 lbl_1_bss_115C;
+
+// lbl_1_bss_1800: .bss size 0x10, 2 refs from live_camera.c
+extern u8 lbl_1_bss_1800[0x10];
+
 // lbl_1_bss_6F243: .bss size 0x1, 2 refs from live_camera.c
 extern u8 lbl_1_bss_6F243;
 
@@ -89,21 +125,29 @@ typedef struct {
 } Obj_1_bss_6EAD0;
 extern Obj_1_bss_6EAD0 lbl_1_bss_6EAD0;
 
-// lbl_1_bss_3B28: .bss size 0x4, 2 refs from live_camera.c
-extern u32 lbl_1_bss_3B28;
-
-// lbl_1_bss_3B2C: .bss size 0x4, 2 refs from live_camera.c
-extern u32 lbl_1_bss_3B2C;
-
-// lbl_1_data_47B4: .data size 0x2EC, 2 refs from live_camera.c (own data block)
+// lbl_1_bss_3B30: .bss size 0x8C, 2 refs from live_camera.c
 typedef struct {
-    u8 pad_0[0x18];
-    s16 unk_18;  // 1 loads, 0 stores
-    u8 pad_1A[0x2];
-    u32 unk_1C;  // 2 loads, 0 stores
-    u8 pad_20[0x2CC];
-} Obj_1_data_47B4;
-extern Obj_1_data_47B4 lbl_1_data_47B4;
+    u32 unk_0;  // 1 loads, 0 stores
+    u8 pad_4[0x7C];
+    u32 unk_80;  // 0 loads, 1 stores
+    u32 unk_84;  // 0 loads, 1 stores
+    u8 pad_88[0x4];
+} Obj_1_bss_3B30;
+extern Obj_1_bss_3B30 lbl_1_bss_3B30;
+
+// lbl_1_bss_17F8: .bss size 0x8, 2 refs from live_camera.c
+extern u32 lbl_1_bss_17F8;
+
+// lbl_1_data_4440: .data size 0x44, 2 refs from live_camera.c (own data block)
+extern u8 lbl_1_data_4440[0x44];
+
+// lbl_1_data_4754: .data size 0x60, 2 refs from live_camera.c (own data block)
+typedef struct {
+    u8 pad_0[0xC];
+    s16 unk_C;  // 1 loads, 0 stores
+    u8 pad_E[0x52];
+} Obj_1_data_4754;
+extern Obj_1_data_4754 lbl_1_data_4754;
 
 // lbl_1_data_4AA0: .data size 0x6E0, 2 refs from live_camera.c (own data block)
 typedef struct {
@@ -118,43 +162,22 @@ typedef struct {
 } Obj_1_data_4AA0;
 extern Obj_1_data_4AA0 lbl_1_data_4AA0;
 
-// lbl_1_bss_17F8: .bss size 0x8, 2 refs from live_camera.c
-extern u32 lbl_1_bss_17F8;
+// lbl_1_bss_3B28: .bss size 0x4, 2 refs from live_camera.c
+extern u32 lbl_1_bss_3B28;
 
-// lbl_1_bss_17B0: .bss size 0x4, 2 refs from live_camera.c
-extern u32 lbl_1_bss_17B0;
-
-// lbl_1_data_4754: .data size 0x60, 2 refs from live_camera.c (own data block)
-typedef struct {
-    u8 pad_0[0xC];
-    s16 unk_C;  // 1 loads, 0 stores
-    u8 pad_E[0x52];
-} Obj_1_data_4754;
-extern Obj_1_data_4754 lbl_1_data_4754;
-
-// lbl_1_bss_3B30: .bss size 0x8C, 2 refs from live_camera.c
-typedef struct {
-    u32 unk_0;  // 1 loads, 0 stores
-    u8 pad_4[0x7C];
-    u32 unk_80;  // 0 loads, 1 stores
-    u32 unk_84;  // 0 loads, 1 stores
-    u8 pad_88[0x4];
-} Obj_1_bss_3B30;
-extern Obj_1_bss_3B30 lbl_1_bss_3B30;
-
-// lbl_1_data_4440: .data size 0x44, 2 refs from live_camera.c (own data block)
-extern u8 lbl_1_data_4440[0x44];
-
-// lbl_1_data_5184: .data size 0x4, 1 refs from live_camera.c (own data block)
-extern u32 lbl_1_data_5184;
-
-// lbl_1_data_5180: .data size 0x4, 1 refs from live_camera.c (own data block)
-extern u32 lbl_1_data_5180;
+// lbl_1_bss_3B2C: .bss size 0x4, 2 refs from live_camera.c
+extern u32 lbl_1_bss_3B2C;
 
 // lbl_1_data_4420: .data size 0xE, 1 refs from live_camera.c (own data block)
 extern u8 lbl_1_data_4420[0xE];
 
 // lbl_1_data_4430: .data size 0xF, 1 refs from live_camera.c (own data block)
 extern u8 lbl_1_data_4430[0xF];
+
+// lbl_1_data_5180: .data size 0x4, 1 refs from live_camera.c (own data block)
+extern u32 lbl_1_data_5180;
+
+// lbl_1_data_5184: .data size 0x4, 1 refs from live_camera.c (own data block)
+extern u32 lbl_1_data_5184;
 
 #endif  // REL_MAIN_REL_LIVE_CAMERA_H

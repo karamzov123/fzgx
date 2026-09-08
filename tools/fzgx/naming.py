@@ -88,6 +88,12 @@ def bundle(p: Project, module: str, tu: str, only_matched: bool = True) -> str:
         if own:
             parts.append("String literals in this TU's data block: " + ", ".join(own[:60]) + (" ..." if len(own) > 60 else ""))
             parts.append("")
+    # assert calls pin a function to a source line and often name the global they check
+    asserts: Dict[str, List[Dict]] = {}
+    seed = ROOT / "state" / "seeds" / f"asserts_{module}.json"
+    if seed.exists():
+        for c in json.loads(seed.read_text()):
+            asserts.setdefault(c["fn"], []).append(c)
     n = 0
     for f in funcs:
         u = units.get(f.name)
@@ -114,6 +120,8 @@ def bundle(p: Project, module: str, tu: str, only_matched: bool = True) -> str:
                      + (f"  callees: {', '.join(callees[:8])}" if callees else "")
                      + tbl
                      + (f"  data: {', '.join(data_refs[:8])}" if data_refs else ""))
+        for c in asserts.get(f.name, [])[:4]:
+            parts.append(f"  assert at {c['file']}:{c['line']}: \"{c['msg']}\"")
         if u:
             src = ROOT / "src" / u["source"]
             if src.exists():

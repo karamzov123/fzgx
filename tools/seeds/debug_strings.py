@@ -105,10 +105,29 @@ def main(argv=None) -> int:
             else:
                 lo = mid + 1
         return None
+    # The code references the *start* of the string object, which may sit a few bytes before
+    # the regex match ("../sprite.c", "src/main.c") or a few bytes after it when the regex
+    # swallowed stray non-string bytes ahead of the name. Anchor on the relocation target.
+    PATH_RE = re.compile(rb"[A-Za-z0-9_./\\-]{2,60}\.c\x00")
     rows = []
+    seen = set()
     for sec, off, name in anchors:
-        users = sorted({fn_at(t).addr for t in refs.get((sec, off), []) if fn_at(t)})
-        rows.append({"file": name, "sec": sec, "data_off": off, "refs": users})
+        end = off + len(name) + 1
+        cands = [t for (ts, t) in refs if ts == sec and off - 24 <= t < end - 2]
+        best = None
+        for t in sorted(cands, key=lambda t: abs(t - off)):
+            m = PATH_RE.match(data, by_index[sec][0] + t)
+            if m and m.end() - by_index[sec][0] == end:
+                best = t
+                break
+        if best is None:
+            continue
+        full = data[by_index[sec][0] + best:by_index[sec][0] + end - 1].decode()
+        if (sec, best) in seen:
+            continue
+        seen.add((sec, best))
+        users = sorted({fn_at(t).addr for t in refs.get((sec, best), []) if fn_at(t)})
+        rows.append({"file": full.replace("\\", "/").rsplit("/", 1)[-1], "path": full, "sec": sec, "data_off": best, "refs": users})
     # 3. keep anchors in a consistent order: data order must agree with text order of first refs
     ordered = [r for r in rows if r["refs"]]
     ordered.sort(key=lambda r: (r["sec"], r["data_off"]))

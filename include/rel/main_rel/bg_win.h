@@ -94,13 +94,13 @@ extern Obj_1_bss_50EC lbl_1_bss_50EC;
 // lbl_1_data_4C9A0: .data size 0xF, 1 refs from bg_win.c (own data block)
 extern u8 lbl_1_data_4C9A0[0xF];
 
+// lbl_1_data_4C9B0: .data size 0x11, 1 refs from bg_win.c (own data block)
+extern u8 lbl_1_data_4C9B0[0x11];
+
 // lbl_1_data_4C930: .data size 0x24, 1 refs from bg_win.c (own data block)
 extern u8 lbl_1_data_4C930[0x24];
 
 // jumptable_1_data_4C954: .data size 0x2C, 1 refs from bg_win.c (own data block)
 extern u8 jumptable_1_data_4C954[0x2C];
-
-// lbl_1_data_4C9B0: .data size 0x11, 1 refs from bg_win.c (own data block)
-extern u8 lbl_1_data_4C9B0[0x11];
 
 #endif  // REL_MAIN_REL_BG_WIN_H

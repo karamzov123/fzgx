@@ -13,10 +13,10 @@ extern u32 lbl_1_data_3D924;
 // lbl_1_bss_7ACD8: .bss size 0x4, 7 refs from face.c
 typedef struct {
     u32 unk_0;  // 8 loads, 8 stores
-    u32 unk_4;  // 11 loads, 4 stores
+    u32 unk_4;  // 13 loads, 4 stores
     u32 unk_8;  // 0 loads, 3 stores
     u8 pad_C[0x4];
-    u32 unk_10;  // 6 loads, 4 stores
+    u32 unk_10;  // 7 loads, 4 stores
     u32 unk_14;  // 7 loads, 4 stores
     u32 unk_18;  // 0 loads, 6 stores
     u32 unk_1C;  // 2 loads, 5 stores
@@ -37,20 +37,20 @@ extern u8 lbl_1_data_3DA2C[0xD4];
 // lbl_1_bss_7ACE5: .bss size 0x1, 3 refs from face.c
 extern u8 lbl_1_bss_7ACE5;
 
-// lbl_1_bss_7ACE8: .bss size 0x4, 2 refs from face.c
-extern u32 lbl_1_bss_7ACE8;
-
 // lbl_1_bss_7ACF0: .bss size 0x8, 2 refs from face.c
 extern u32 lbl_1_bss_7ACF0;
+
+// lbl_1_bss_7ACE8: .bss size 0x4, 2 refs from face.c
+extern u32 lbl_1_bss_7ACE8;
 
 // lbl_1_data_3DB2C: .data size 0x12, 1 refs from face.c (own data block)
 extern u8 lbl_1_data_3DB2C[0x12];
 
-// lbl_1_data_3DB40: .data size 0x18, 1 refs from face.c (own data block)
-extern u8 lbl_1_data_3DB40[0x18];
-
 // lbl_1_data_3DB00: .data size 0x2C, 1 refs from face.c (own data block)
 extern u8 lbl_1_data_3DB00[0x2C];
+
+// lbl_1_data_3DB40: .data size 0x18, 1 refs from face.c (own data block)
+extern u8 lbl_1_data_3DB40[0x18];
 
 // lbl_1_data_3DB58: .data size 0x33, 1 refs from face.c (own data block)
 extern u8 lbl_1_data_3DB58[0x33];

@@ -17,6 +17,9 @@ typedef struct {
 } Obj_1_bss_7AD78;
 extern Obj_1_bss_7AD78 lbl_1_bss_7AD78;
 
+// lbl_1_data_3DC38: .data size 0x18, 1 refs from bg_lig.c (own data block)
+extern u8 lbl_1_data_3DC38[0x18];
+
 // jumptable_1_data_3DC08: .data size 0x2C, 1 refs from bg_lig.c (own data block)
 extern u8 jumptable_1_data_3DC08[0x2C];
 
@@ -25,8 +28,5 @@ extern u8 lbl_1_data_3DBE8[0x9];
 
 // lbl_1_data_3DBF4: .data size 0x11, 1 refs from bg_lig.c (own data block)
 extern u8 lbl_1_data_3DBF4[0x11];
-
-// lbl_1_data_3DC38: .data size 0x18, 1 refs from bg_lig.c (own data block)
-extern u8 lbl_1_data_3DC38[0x18];
 
 #endif  // REL_MAIN_REL_BG_LIG_H

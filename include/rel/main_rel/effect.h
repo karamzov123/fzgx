@@ -13,9 +13,6 @@ extern u8 lbl_1_bss_6C848;
 // lbl_1_data_1D1D8: .data size 0x114, 7 refs from effect.c
 extern u8 lbl_1_data_1D1D8[0x114];
 
-// lbl_1_data_1D62C: .data size 0x94, 6 refs from effect.c (own data block)
-extern u8 lbl_1_data_1D62C[0x94];
-
 // lbl_1_bss_6C850: .bss size 0xC, 6 refs from effect.c
 typedef struct {
     s16 unk_0;  // 16 loads, 16 stores
@@ -23,17 +20,21 @@ typedef struct {
 } Obj_1_bss_6C850;
 extern Obj_1_bss_6C850 lbl_1_bss_6C850;
 
+// lbl_1_data_1D62C: .data size 0x94, 6 refs from effect.c (own data block)
+extern u8 lbl_1_data_1D62C[0x94];
+
 // lbl_1_data_1C698: .data size 0x5D0, 5 refs from effect.c
 extern u8 lbl_1_data_1C698[0x5D0];
 
 // lbl_1_bss_6C84C: .bss size 0x4, 4 refs from effect.c
 typedef struct {
-    u8 unk_0;  // 7 loads, 4 stores
-    u8 pad_1[0x3];
-    s16 unk_4;  // 9 loads, 0 stores
+    u8 unk_0;  // 14 loads, 5 stores
+    u8 pad_1[0x1];
+    u16 unk_2;  // 0 loads, 1 stores
+    s16 unk_4;  // 10 loads, 1 stores
     u8 pad_6[0x2];
     u32 unk_8;  // 3 loads, 2 stores
-    s16 unk_C;  // 5 loads, 0 stores
+    s16 unk_C;  // 6 loads, 0 stores
     u8 pad_E[0xA];
     s16 unk_18;  // 1 loads, 0 stores
     u16 unk_1A;  // 2 loads, 0 stores
@@ -41,18 +42,14 @@ typedef struct {
     u32 unk_34;  // 1 loads, 0 stores
     u32 unk_38;  // 1 loads, 0 stores
     u8 pad_3C[0xAC];
-    u8 unk_E8;  // 7 loads, 0 stores
 } Obj_1_bss_6C84C_Target;
-extern Obj_1_bss_6C84C_Target *lbl_1_bss_6C84C;
+extern Obj_1_bss_6C84C_Target *lbl_1_bss_6C84C;  // array of 0xE8-byte records
 
 // lbl_1_bss_6C860: .bss size 0x4, 3 refs from effect.c
 extern u32 lbl_1_bss_6C860;
 
 // lbl_1_bss_6C86C: .bss size 0x4, 2 refs from effect.c
 extern u32 lbl_1_bss_6C86C;
-
-// lbl_1_data_1D8A4: .data size 0x4, 1 refs from effect.c (own data block)
-extern f32 lbl_1_data_1D8A4;
 
 // lbl_1_data_1D730: .data size 0x174, 1 refs from effect.c (own data block)
 typedef struct {
@@ -71,5 +68,8 @@ typedef struct {
     u8 pad_10[0x60];
 } Obj_1_data_1D6C0;
 extern Obj_1_data_1D6C0 lbl_1_data_1D6C0;
+
+// lbl_1_data_1D8A4: .data size 0x4, 1 refs from effect.c (own data block)
+extern f32 lbl_1_data_1D8A4;
 
 #endif  // REL_MAIN_REL_EFFECT_H

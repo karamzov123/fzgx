@@ -55,17 +55,21 @@ def select(p: Project, spec: str) -> List[str]:
     return [r["symbol"] for r in rows[::step][: int(n)]]
 
 
-def select_tu(p: Project, module: str, tu_files: List[str], max_size: int = 0) -> List[str]:
-    """Every unmatched, unattempted function of the given TUs (whole-file matching)."""
+def select_tu(p: Project, module: str, tu_files: List[str], max_size: int = 0, revise: bool = False) -> List[str]:
+    """Every unmatched, unattempted function of the given TUs (whole-file matching);
+    with revise=True, every matched one instead (whole-file readability rewrite)."""
     import json as _json
     d = _json.loads((p.module_config_dir(module) / "tus.json").read_text())
     want = {t["file"]: t["functions"] for t in d["tus"] if t["file"] in tu_files}
-    inv = {r["symbol"]: r for r in api.inventory(p, module=module, status="unmatched")}
+    inv = {r["symbol"]: r for r in api.inventory(p, module=module, status="matched" if revise else "unmatched")}
+    units = {u["symbols"][0] for u in p.load_units() if u["module"] == module}
     out = []
     for f in tu_files:
         for fn in want.get(f, []):
             r = inv.get(fn)
-            if r and r["attempts"] == 0 and (not max_size or r["size"] <= max_size):
+            if not r or (max_size and r["size"] > max_size):
+                continue
+            if (fn in units) if revise else r["attempts"] == 0:
                 out.append(fn)
     return out
 
@@ -229,7 +233,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     if a.select:
         symbols += select(p, a.select)
     if a.select_tu:
-        symbols += select_tu(p, a.module, a.select_tu, a.max_size)
+        symbols += select_tu(p, a.module, a.select_tu, a.max_size, a.revise)
     if not symbols:
         print("nothing selected", file=sys.stderr)
         return 2

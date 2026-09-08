@@ -59,14 +59,14 @@ typedef struct {
 } Obj_1_bss_7AC20;
 extern Obj_1_bss_7AC20 lbl_1_bss_7AC20;
 
-// lbl_1_data_2CEC: .data size 0xA, 1 refs from alloc.c (own data block)
-extern u8 lbl_1_data_2CEC[0xA];
-
 // lbl_1_data_32A8: .data size 0xC, 1 refs from alloc.c (own data block)
 extern u8 lbl_1_data_32A8[0xC];
 
 // lbl_1_data_3314: .data size 0x1, 1 refs from alloc.c (own data block)
 extern u8 lbl_1_data_3314;
+
+// lbl_1_data_2CEC: .data size 0xA, 1 refs from alloc.c (own data block)
+extern u8 lbl_1_data_2CEC[0xA];
 
 // lbl_1_data_2CD0: .data size 0x8, 1 refs from alloc.c (own data block)
 extern u32 lbl_1_data_2CD0;

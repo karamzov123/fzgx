@@ -50,8 +50,11 @@ extern u32 lbl_1_bss_4E6A8;
 // lbl_1_bss_4E6AC: .bss size 0x4, 3 refs from enemy_ctrl.c
 extern u32 lbl_1_bss_4E6AC;
 
-// lbl_1_data_3D290: .data size 0x4, 2 refs from enemy_ctrl.c (own data block)
-extern u32 lbl_1_data_3D290;
+// lbl_1_data_3D57C: .data size 0x4, 2 refs from enemy_ctrl.c (own data block)
+extern u32 lbl_1_data_3D57C;
+
+// lbl_1_data_3D574: .data size 0x5, 2 refs from enemy_ctrl.c (own data block)
+extern u32 lbl_1_data_3D574;
 
 // lbl_1_data_3D670: .data size 0x4, 2 refs from enemy_ctrl.c (own data block)
 extern u32 lbl_1_data_3D670;
@@ -62,8 +65,8 @@ extern u8 lbl_1_data_20D1C[0xB4];
 // lbl_1_bss_9C: .bss size 0x1, 2 refs from enemy_ctrl.c
 extern u8 lbl_1_bss_9C;
 
-// lbl_1_data_3D574: .data size 0x5, 2 refs from enemy_ctrl.c (own data block)
-extern u32 lbl_1_data_3D574;
+// lbl_1_data_3D290: .data size 0x4, 2 refs from enemy_ctrl.c (own data block)
+extern u32 lbl_1_data_3D290;
 
 // lbl_1_bss_84: .bss size 0x18, 2 refs from enemy_ctrl.c
 typedef struct {
@@ -86,17 +89,11 @@ typedef struct {
 } Obj_1_data_3D928;
 extern Obj_1_data_3D928 lbl_1_data_3D928;
 
-// lbl_1_data_3D57C: .data size 0x4, 2 refs from enemy_ctrl.c (own data block)
-extern u32 lbl_1_data_3D57C;
+// lbl_1_data_3D234: .data size 0x38, 1 refs from enemy_ctrl.c (own data block)
+extern u8 lbl_1_data_3D234[0x38];
 
 // lbl_1_data_3D634: .data size 0xF, 1 refs from enemy_ctrl.c (own data block)
 extern u8 lbl_1_data_3D634[0xF];
-
-// jumptable_1_data_3D580: .data size 0x30, 1 refs from enemy_ctrl.c (own data block)
-extern u8 jumptable_1_data_3D580[0x30];
-
-// lbl_1_data_3D630: .data size 0x3, 1 refs from enemy_ctrl.c (own data block)
-extern u32 lbl_1_data_3D630;
 
 // lbl_1_data_3D558: .data size 0x18, 1 refs from enemy_ctrl.c (own data block)
 typedef struct {
@@ -105,16 +102,19 @@ typedef struct {
 } Obj_1_data_3D558;
 extern Obj_1_data_3D558 lbl_1_data_3D558;
 
-// lbl_1_data_3D924: .data size 0x4, 1 refs from enemy_ctrl.c (own data block)
-extern u32 lbl_1_data_3D924;
-
 // jumptable_1_data_3D5E0: .data size 0x50, 1 refs from enemy_ctrl.c (own data block)
 extern u8 jumptable_1_data_3D5E0[0x50];
 
 // lbl_1_data_3D554: .data size 0x4, 1 refs from enemy_ctrl.c (own data block)
 extern f32 lbl_1_data_3D554;
 
-// lbl_1_data_3D234: .data size 0x38, 1 refs from enemy_ctrl.c (own data block)
-extern u8 lbl_1_data_3D234[0x38];
+// jumptable_1_data_3D580: .data size 0x30, 1 refs from enemy_ctrl.c (own data block)
+extern u8 jumptable_1_data_3D580[0x30];
+
+// lbl_1_data_3D630: .data size 0x3, 1 refs from enemy_ctrl.c (own data block)
+extern u32 lbl_1_data_3D630;
+
+// lbl_1_data_3D924: .data size 0x4, 1 refs from enemy_ctrl.c (own data block)
+extern u32 lbl_1_data_3D924;
 
 #endif  // REL_MAIN_REL_ENEMY_CTRL_H

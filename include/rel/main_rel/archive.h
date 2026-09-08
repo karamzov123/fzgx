@@ -16,6 +16,9 @@ extern u32 lbl_1_bss_8CA40;
 // lbl_1_data_40608: .data size 0xA, 8 refs from archive.c (own data block)
 extern u8 lbl_1_data_40608[0xA];
 
+// lbl_1_data_40798: .data size 0x9, 5 refs from archive.c (own data block)
+extern u8 lbl_1_data_40798[0x9];
+
 // lbl_1_bss_897AC: .bss size 0x1B34, 5 refs from archive.c
 typedef struct {
     u32 unk_0;  // 1 loads, 0 stores
@@ -25,12 +28,6 @@ typedef struct {
 } Obj_1_bss_897AC;
 extern Obj_1_bss_897AC lbl_1_bss_897AC;
 
-// lbl_1_data_40798: .data size 0x9, 5 refs from archive.c (own data block)
-extern u8 lbl_1_data_40798[0x9];
-
-// lbl_1_data_40600: .data size 0x8, 4 refs from archive.c
-extern u32 lbl_1_data_40600;
-
 // lbl_1_bss_8B2E0: .bss size 0xC0, 4 refs from archive.c
 typedef struct {
     u32 unk_0;  // 3 loads, 1 stores
@@ -38,8 +35,8 @@ typedef struct {
 } Obj_1_bss_8B2E0;
 extern Obj_1_bss_8B2E0 lbl_1_bss_8B2E0;
 
-// lbl_1_data_4076C: .data size 0x28, 3 refs from archive.c (own data block)
-extern u8 lbl_1_data_4076C[0x28];
+// lbl_1_data_40600: .data size 0x8, 4 refs from archive.c
+extern u32 lbl_1_data_40600;
 
 // lbl_1_bss_8B56C: .bss size 0x60, 3 refs from archive.c
 typedef struct {
@@ -49,8 +46,8 @@ typedef struct {
 } Obj_1_bss_8B56C;
 extern Obj_1_bss_8B56C lbl_1_bss_8B56C;
 
-// lbl_1_data_407BC: .data size 0xC, 2 refs from archive.c (own data block)
-extern u8 lbl_1_data_407BC[0xC];
+// lbl_1_data_4076C: .data size 0x28, 3 refs from archive.c (own data block)
+extern u8 lbl_1_data_4076C[0x28];
 
 // lbl_1_bss_8B5EC: .bss size 0x4, 2 refs from archive.c
 extern u32 lbl_1_bss_8B5EC;
@@ -58,11 +55,8 @@ extern u32 lbl_1_bss_8B5EC;
 // lbl_1_data_40D50: .data size 0x20, 2 refs from archive.c (own data block)
 extern u8 lbl_1_data_40D50[0x20];
 
-// lbl_1_data_40A7C: .data size 0x124, 1 refs from archive.c (own data block)
-extern u8 lbl_1_data_40A7C[0x124];
-
-// lbl_1_data_40BC0: .data size 0x13, 1 refs from archive.c (own data block)
-extern u8 lbl_1_data_40BC0[0x13];
+// lbl_1_data_407BC: .data size 0xC, 2 refs from archive.c (own data block)
+extern u8 lbl_1_data_407BC[0xC];
 
 // lbl_1_data_40BB8: .data size 0x8, 1 refs from archive.c (own data block)
 extern u32 lbl_1_data_40BB8;
@@ -70,11 +64,17 @@ extern u32 lbl_1_data_40BB8;
 // lbl_1_data_40BA0: .data size 0x10, 1 refs from archive.c (own data block)
 extern u8 lbl_1_data_40BA0[0x10];
 
+// lbl_1_data_40614: .data size 0x10C, 1 refs from archive.c (own data block)
+extern u8 lbl_1_data_40614[0x10C];
+
 // lbl_1_data_40720: .data size 0x30, 1 refs from archive.c (own data block)
 extern u8 lbl_1_data_40720[0x30];
 
-// lbl_1_data_40750: .data size 0x1A, 1 refs from archive.c (own data block)
-extern u8 lbl_1_data_40750[0x1A];
+// lbl_1_data_40E7C: .data size 0x12, 1 refs from archive.c (own data block)
+extern u8 lbl_1_data_40E7C[0x12];
+
+// lbl_1_data_40E90: .data size 0x12, 1 refs from archive.c (own data block)
+extern u8 lbl_1_data_40E90[0x12];
 
 // jumptable_1_data_40CC8: .data size 0x88, 1 refs from archive.c (own data block)
 extern u8 jumptable_1_data_40CC8[0x88];
@@ -87,16 +87,16 @@ typedef struct {
 } Obj_1_data_40BD8;
 extern Obj_1_data_40BD8 lbl_1_data_40BD8;
 
-// lbl_1_data_40614: .data size 0x10C, 1 refs from archive.c (own data block)
-extern u8 lbl_1_data_40614[0x10C];
+// lbl_1_data_40750: .data size 0x1A, 1 refs from archive.c (own data block)
+extern u8 lbl_1_data_40750[0x1A];
 
-// lbl_1_data_40E7C: .data size 0x12, 1 refs from archive.c (own data block)
-extern u8 lbl_1_data_40E7C[0x12];
-
-// lbl_1_data_40E90: .data size 0x12, 1 refs from archive.c (own data block)
-extern u8 lbl_1_data_40E90[0x12];
+// lbl_1_data_40BC0: .data size 0x13, 1 refs from archive.c (own data block)
+extern u8 lbl_1_data_40BC0[0x13];
 
 // lbl_1_data_40BB0: .data size 0x8, 1 refs from archive.c (own data block)
 extern u32 lbl_1_data_40BB0;
+
+// lbl_1_data_40A7C: .data size 0x124, 1 refs from archive.c (own data block)
+extern u8 lbl_1_data_40A7C[0x124];
 
 #endif  // REL_MAIN_REL_ARCHIVE_H

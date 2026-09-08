@@ -2516,46 +2516,46 @@ rel/main_rel/cloth/fn_1_103054.c:
 rel/main_rel/cloth/fn_1_103058.c:
 	.text       start:0x00103058 end:0x00103090
 
-rel/main_rel/cloth/fn_1_103AA8.c:
+rel/main_rel/bg_common/fn_1_103AA8.c:
 	.text       start:0x00103AA8 end:0x00103AD4
 
-rel/main_rel/cloth/fn_1_103F10.c:
+rel/main_rel/bg_common/fn_1_103F10.c:
 	.text       start:0x00103F10 end:0x00103F58
 
-rel/main_rel/cloth/fn_1_104710.c:
+rel/main_rel/bg_common/fn_1_104710.c:
 	.text       start:0x00104710 end:0x00104730
 
-rel/main_rel/cloth/fn_1_105724.c:
+rel/main_rel/bg_common/fn_1_105724.c:
 	.text       start:0x00105724 end:0x00105744
 
-rel/main_rel/cloth/fn_1_105744.c:
+rel/main_rel/bg_common/fn_1_105744.c:
 	.text       start:0x00105744 end:0x00105768
 
-rel/main_rel/cloth/fn_1_105768.c:
+rel/main_rel/bg_common/fn_1_105768.c:
 	.text       start:0x00105768 end:0x0010576C
 
-rel/main_rel/cloth/fn_1_1067A8.c:
+rel/main_rel/bg_common/fn_1_1067A8.c:
 	.text       start:0x001067A8 end:0x0010688C
 
 rel/main_rel/cloth/fn_1_106CAC.c:
 	.text       start:0x00106CAC end:0x00106D30
 
-rel/main_rel/cloth/fn_1_106D30.c:
+rel/main_rel/bg_common/fn_1_106D30.c:
 	.text       start:0x00106D30 end:0x00106DB4
 
-rel/main_rel/cloth/fn_1_106EA4.c:
+rel/main_rel/bg_common/fn_1_106EA4.c:
 	.text       start:0x00106EA4 end:0x00106EB0
 
-rel/main_rel/cloth/fn_1_1071C0.c:
+rel/main_rel/bg_common/fn_1_1071C0.c:
 	.text       start:0x001071C0 end:0x001071E8
 
-rel/main_rel/cloth/fn_1_107E90.c:
+rel/main_rel/bg_common/fn_1_107E90.c:
 	.text       start:0x00107E90 end:0x00107F2C
 
-rel/main_rel/cloth/fn_1_107F2C.c:
+rel/main_rel/bg_common/fn_1_107F2C.c:
 	.text       start:0x00107F2C end:0x00107F50
 
-rel/main_rel/cloth/fn_1_107F50.c:
+rel/main_rel/bg_common/fn_1_107F50.c:
 	.text       start:0x00107F50 end:0x00107F74
 
 rel/main_rel/accessory/fn_1_108870.c:

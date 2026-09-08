@@ -23,6 +23,21 @@ typedef struct {
 } Obj_1_bss_84428;
 extern Obj_1_bss_84428 lbl_1_bss_84428;
 
+// lbl_1_data_3E8F0: .data size 0x1, 3 refs from spline.c (own data block)
+extern u8 lbl_1_data_3E8F0;
+
+// lbl_1_bss_7F028: .bss size 0x1, 3 refs from spline.c
+extern u8 lbl_1_bss_7F028;
+
+// lbl_1_bss_7F02C: .bss size 0x10, 3 refs from spline.c
+typedef struct {
+    u8 unk_0;  // 2 loads, 11 stores
+    u8 pad_1[0x1];
+    u16 unk_2;  // 5 loads, 5 stores
+    u8 pad_4[0xC];
+} Obj_1_bss_7F02C;
+extern Obj_1_bss_7F02C lbl_1_bss_7F02C;
+
 // lbl_1_bss_718E0: .bss size 0x59E8, 3 refs from spline.c
 typedef struct {
     u16 unk_0;  // 0 loads, 1 stores
@@ -40,21 +55,6 @@ typedef struct {
 } Obj_1_bss_718E0;
 extern Obj_1_bss_718E0 lbl_1_bss_718E0;
 
-// lbl_1_bss_7F028: .bss size 0x1, 3 refs from spline.c
-extern u8 lbl_1_bss_7F028;
-
-// lbl_1_data_3E8F0: .data size 0x1, 3 refs from spline.c (own data block)
-extern u8 lbl_1_data_3E8F0;
-
-// lbl_1_bss_7F02C: .bss size 0x10, 3 refs from spline.c
-typedef struct {
-    u8 unk_0;  // 2 loads, 11 stores
-    u8 pad_1[0x1];
-    u16 unk_2;  // 5 loads, 5 stores
-    u8 pad_4[0xC];
-} Obj_1_bss_7F02C;
-extern Obj_1_bss_7F02C lbl_1_bss_7F02C;
-
 // lbl_1_bss_7F03C: .bss size 0x10, 2 refs from spline.c
 typedef struct {
     u8 unk_0;  // 3 loads, 4 stores
@@ -66,9 +66,6 @@ extern Obj_1_bss_7F03C lbl_1_bss_7F03C;
 
 // jumptable_1_data_3E8F4: .data size 0x1C, 1 refs from spline.c (own data block)
 extern u8 jumptable_1_data_3E8F4[0x1C];
-
-// lbl_1_data_3E910: .data size 0xA0, 1 refs from spline.c (own data block)
-extern u8 lbl_1_data_3E910[0xA0];
 
 // lbl_1_data_3E8E0: .data size 0x9, 1 refs from spline.c (own data block)
 extern u8 lbl_1_data_3E8E0[0x9];
@@ -91,5 +88,8 @@ typedef struct {
     u8 pad_C[0x54];
 } Obj_1_data_3EF30;
 extern Obj_1_data_3EF30 lbl_1_data_3EF30;
+
+// lbl_1_data_3E910: .data size 0xA0, 1 refs from spline.c (own data block)
+extern u8 lbl_1_data_3E910[0xA0];
 
 #endif  // REL_MAIN_REL_SPLINE_H
