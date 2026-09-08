@@ -1,4 +1,9 @@
 #include "types.h"
 
-// fn_1_446C: main_rel .text:0x0000446C size 0x38
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u32 lbl_1_data_2C70;
+extern void fn_80008E84(u32 value);
+
+void fn_1_446C(void) {
+    fn_80008E84(lbl_1_data_2C70);
+    lbl_1_data_2C70 = (u32)-1;
+}

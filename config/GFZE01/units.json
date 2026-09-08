@@ -2565,7 +2565,7 @@
     "symbols": [
       "fn_1_446C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
