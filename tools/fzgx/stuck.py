@@ -167,8 +167,9 @@ def best_bodies(p: Project, min_percent: float, module: Optional[str] = None) ->
     return out
 
 
-def analyse(p: Project, symbol: str, path: str) -> Dict[str, object]:
-    res = oracle.check(p, symbol, 0, source=Path(path))
+def analyse(p: Project, symbol: str, path: str, res: Optional[oracle.CheckResult] = None) -> Dict[str, object]:
+    if res is None:
+        res = oracle.check(p, symbol, 0, source=Path(path))
     if not res.ok:
         return {"symbol": symbol, "ok": False, "error": res.error[-300:]}
     lrows, rrows = getattr(res, "_rows", ([], []))
@@ -183,8 +184,11 @@ def analyse(p: Project, symbol: str, path: str) -> Dict[str, object]:
 
 def run(p: Project, min_percent: float = 80.0, module: Optional[str] = None, workers: int = 12) -> Dict[str, object]:
     bodies = best_bodies(p, min_percent, module)
+    items = sorted(bodies.items())
+    # one parallel batched compile for every body, then the row analysis in threads
+    checks = oracle.check_many(p, [(s, Path(v[0])) for s, v in items])
     with ThreadPoolExecutor(max_workers=workers) as ex:
-        results = list(ex.map(lambda kv: analyse(p, kv[0], kv[1][0]), sorted(bodies.items())))
+        results = list(ex.map(lambda kv: analyse(p, kv[0], kv[1][0], checks.get(kv[0])), items))
     for r in results:
         _, pct, size, mod = bodies[r["symbol"]]
         r.update({"ledger_best": pct, "size": size, "module": mod})

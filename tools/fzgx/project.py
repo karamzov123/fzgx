@@ -165,7 +165,16 @@ class Project:
 
     # ------------------------------------------------------------------- splits
     def splits(self, module: str) -> List[Split]:
+        # parsed once per file version: every check used to re-read the whole splits file
         path = self.module_config_dir(module) / "splits.txt"
+        try:
+            stamp = path.stat().st_mtime_ns
+        except OSError:
+            stamp = None
+        cache = self.__dict__.setdefault("_splits_cache", {})
+        hit = cache.get(module)
+        if hit and hit[0] == stamp:
+            return hit[1]
         out: List[Split] = []
         unit: Optional[str] = None
         for raw in path.read_text().splitlines():
@@ -185,6 +194,7 @@ class Project:
                 end=int(attrs["end"], 16),
                 align=int(attrs["align"]) if "align" in attrs else None,
             ))
+        cache[module] = (stamp, out)
         return out
 
     def unit_of(self, sym: Symbol) -> Optional[str]:

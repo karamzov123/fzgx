@@ -23,7 +23,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 from . import poolfix
-from .project import ROOT, STATE_DIR, Project
+from .project import ROOT, STATE_DIR, Project, Symbol
 
 OBJDIFF = ROOT / "build" / "tools" / "objdiff-cli"
 
@@ -269,8 +269,27 @@ def _pool_rows(project: Project, module: str, left: dict, right: dict,
     return rows, pairs
 
 
+_FLAGS_CACHE: Dict[tuple, Tuple[str, str]] = {}
+
+
 def module_flags(project: Project, module: str) -> Tuple[str, str]:
-    """(compiler flags, mw version) of a module, from any configured unit of it."""
+    """(compiler flags, mw version) of a module, from any configured unit of it. Cached per
+    objdiff.json version: the lookup used to parse the whole file on every check."""
+    oj = ROOT / "objdiff.json"
+    try:
+        stamp = oj.stat().st_mtime_ns
+    except OSError:
+        stamp = None
+    key = (project.version, module, stamp)
+    hit = _FLAGS_CACHE.get(key)
+    if hit:
+        return hit
+    hit = _module_flags(project, module)
+    _FLAGS_CACHE[key] = hit
+    return hit
+
+
+def _module_flags(project: Project, module: str) -> Tuple[str, str]:
     for name, meta in project.objdiff_units().items():
         if name.split("/", 1)[0] == module and meta.get("scratch", {}).get("c_flags"):
             flags = meta["scratch"]["c_flags"].replace(" -lang=c", "") + f" -i include -i build/{project.version}/include"
@@ -304,22 +323,92 @@ def compile_many(project: Project, module: str, sources: List[Path], out_dir: Pa
     base_cmd += shlex.split(flags) + ["-c", "-o", str(out_dir)]
     for o in (out_dir / (s.stem + ".o") for s in sources):
         o.unlink(missing_ok=True)
-    # mwcc stops at the first source that fails: the sources before it are done, the failing
-    # one is skipped, and the rest go into the next invocation
-    todo = list(sources)
-    while todo:
-        subprocess.run(base_cmd + [str(s) for s in todo], cwd=ROOT, text=True, capture_output=True, timeout=600)
-        k = None
-        for i, s_ in enumerate(todo):
-            o = out_dir / (s_.stem + ".o")
-            if o.exists():
-                out[s_] = o
-            elif k is None:
-                k = i
-        if k is None:
-            break
-        todo = todo[k + 1:]
+
+    def one_chunk(chunk: List[Path]) -> None:
+        # mwcc stops at the first source that fails: the sources before it are done, the failing
+        # one is skipped, and the rest go into the next invocation
+        todo = list(chunk)
+        while todo:
+            subprocess.run(base_cmd + [str(s) for s in todo], cwd=ROOT, text=True, capture_output=True, timeout=600)
+            k = None
+            for i, s_ in enumerate(todo):
+                if not (out_dir / (s_.stem + ".o")).exists() and k is None:
+                    k = i
+            if k is None:
+                break
+            todo = todo[k + 1:]
+
+    # parallel: chunks of up to COMPILE_CHUNK sources, COMPILE_WORKERS mwcc processes at once
+    # (a process start is ~80 ms, a source in a batch ~2-8 ms)
+    n = len(sources)
+    if n > COMPILE_CHUNK:
+        per = max(COMPILE_CHUNK, (n + COMPILE_WORKERS - 1) // COMPILE_WORKERS)
+        chunks = [sources[i:i + per] for i in range(0, n, per)]
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=COMPILE_WORKERS) as ex:
+            list(ex.map(one_chunk, chunks))
+    elif n:
+        one_chunk(sources)
+    for s_ in sources:
+        o = out_dir / (s_.stem + ".o")
+        if o.exists():
+            out[s_] = o
     return out
+
+
+COMPILE_CHUNK = 24
+COMPILE_WORKERS = 12
+
+
+def check_many(project: Project, items: List[Tuple[str, Path]], max_diff_lines: int = 0) -> Dict[str, CheckResult]:
+    """`check` for many (symbol, source) pairs at once: the uncarved ones are compiled in
+    parallel batches (one mwcc process per chunk instead of one per function), then diffed
+    one by one; carved ones go through `check`. Returns {symbol: result}."""
+    results: Dict[str, CheckResult] = {}
+    by_module: Dict[str, List[Tuple[str, Symbol, Path]]] = {}
+    for symbol, source in items:
+        sym = project.resolve(symbol)
+        if sym is None:
+            results[symbol] = CheckResult(False, symbol, "", error="unknown or ambiguous symbol (use module:name)")
+            continue
+        if project.unit_of(sym) or project.target_object_for(sym) is None:
+            results[symbol] = check(project, symbol, max_diff_lines, source=source)
+            continue
+        by_module.setdefault(sym.module, []).append((symbol, sym, source))
+    for module, group in by_module.items():
+        cdir = STATE_DIR / "work" / "many" / module
+        cdir.mkdir(parents=True, exist_ok=True)
+        srcs: List[Path] = []
+        for symbol, sym, source in group:
+            f = cdir / (project.key(sym).replace(":", "__") + ".c")
+            f.write_text(source.read_text())
+            srcs.append(f)
+        objs = compile_many(project, module, srcs, cdir / "obj")
+
+        def diff_one(arg) -> Tuple[str, CheckResult]:
+            (symbol, sym, source), f = arg
+            obj = objs.get(f)
+            if obj is None:
+                # name the error the slow way, one process for this function only
+                return symbol, check(project, symbol, max_diff_lines, source=source)
+            target = project.target_object_for(sym)
+            res = _diff(project, module, sym.name, "", max_diff_lines, target=target, base=obj)
+            if res.ok and res.matched_pool:
+                mapping = {private: pooled for private, pooled, _ in res._pool_pairs}
+                r = poolfix.apply(obj, mapping)
+                if not r["skipped"] and r["rodata_emptied"]:
+                    res2 = _diff(project, module, sym.name, "", max_diff_lines, target=target, base=obj)
+                    if res2.ok and res2.matched:
+                        res2.pool_map, res2.pool = mapping, res.pool
+                        res = res2
+            res.uncarved = True
+            return symbol, res
+
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=COMPILE_WORKERS) as ex:
+            for symbol, res in ex.map(diff_one, zip(group, srcs)):
+                results[symbol] = res
+    return results
 
 
 _RELOC_MASKS = {1: 0x00000000, 4: 0xFFFF0000, 5: 0xFFFF0000, 6: 0xFFFF0000, 10: 0xFC000003, 11: 0xFFFF0003, 109: 0xFFE00000}
