@@ -132,7 +132,7 @@ def reconcile_tu(p: Project, tu_source: str, v) -> Dict[str, object]:
                 continue  # names a block-private type: cannot leave the block
             variants.setdefault(n, Counter())[ln] += 1
             where.setdefault(n, set()).add(b.name)
-    prologue_decl_names = set(tutidy._header_items(tufile.prologue_decls(tf)))
+    prologue_decl_names = set(tufile._header_items(tufile.prologue_decls(tf)))
     all_names = [b.name for b in tf.blocks]
     for n, cnt in variants.items():
         users = sorted(where[n])
