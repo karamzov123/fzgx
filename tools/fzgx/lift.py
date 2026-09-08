@@ -814,7 +814,11 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     count = use(a[0])
                     tn = f"v{len(temps)}"; temps.append(f"u32 {tn};")
                     loop_locals(b_, t_, k_)
-                    stmts.append(f"for ({tn} = {count}; {tn} != 0; {tn}--) {{")
+                    guarded = any(ins[x][0] in ("cmplwi", "cmpwi") and ins[x][1][0] == a[0] and _imm(ins[x][1][1]) == 0 for x in range(max(0, i - 3), i))
+                    if guarded:
+                        stmts.append(f"for ({tn} = 0; {tn} < {count}; {tn}++) {{")
+                    else:
+                        stmts.append(f"for ({tn} = {count}; {tn} != 0; {tn}--) {{")
                     skip.add(k_)
                     open_ifs.append((k_, "}"))
                     open_ifs.sort(key=lambda x: -x[0])
@@ -1791,10 +1795,29 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         body = [re.sub(rf"(?<![\w>.*])({re.escape(pn)})\b(?!\s*->|\s*=\s*\(struct)", r"(u32)\1", b)
                 if not (b.startswith(f"{pn} = ") or decl_line.match(b)) else b for b in body]
     body = [b + "  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */" if re.search(r"\(\s*[\w\s]+\*\s*\)\s*0[xX][0-9A-Fa-f]{8}", b) else b for b in body]
+    if module == "main":
+        small = {".sdata", ".sbss", ".sdata2", ".sbss2"}
+        def padded(text_: str, g: str) -> str:
+            sd = lookup(g)
+            if sd is None or sd.section in small or sd.size <= 8:
+                return text_
+            # size of the struct as written: from the last field / pad
+            m_ = re.search(r"    (\w[\w ]*?) (unk|pad)_([0-9A-F]+)(\[0x([0-9A-F]+)\])?;\n\};$", text_)
+            if not m_:
+                return text_
+            off = int(m_.group(3), 16)
+            w = int(m_.group(5), 16) if m_.group(5) else {"u8": 1, "s8": 1, "u16": 2, "s16": 2, "u32": 4, "f32": 4, "f64": 8}.get(m_.group(1).strip(), 4)
+            end = off + w
+            if end <= 8 and sd.size > end:
+                return text_[:-3] + f"    u8 pad_{end:X}[0x{sd.size - end:X}];\n}};"
+            return text_
+        for g in list(gfields):
+            sname = f"{name}_{g}"
+            structs = [padded(t_, g) if t_.startswith(f"struct {sname} {{") else t_ for t_ in structs]
     text = ['#include "types.h"', ""]
-    text += sorted(externs.values())
     if structs:
-        text += [""] + structs
+        text += structs + [""]
+    text += sorted(externs.values())
     text += ["", f"{rtype_c} {name}({', '.join(decl_params) or 'void'}) {{"]
     text += [f"    {b}" for b in body]
     text += ["}", ""]
