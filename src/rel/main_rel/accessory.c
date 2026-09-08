@@ -1,5 +1,88 @@
 #include "types.h"
 
+/* fzgx:begin fn_1_108870 */
+#include "rel/main_rel/accessory.h"
+
+typedef struct {
+    u8 pad_0[0xc];
+    u32 unk_c;
+    u8 pad_10[0x58];
+} AccessoryEntry;
+
+AccessoryEntry *fn_1_108870(void) {
+    u32 i;
+
+    for (i = 0; i < 0x46; i++) {
+        if (((AccessoryEntry *)&lbl_1_bss_86ED0)[i].unk_c == 0) {
+            return &((AccessoryEntry *)&lbl_1_bss_86ED0)[i];
+        }
+    }
+    return 0;
+}
+/* fzgx:end fn_1_108870 */
+
+/* fzgx:begin fn_1_109114 */
+#include "rel/main_rel/accessory.h"
+
+typedef struct {
+    u8 pad_0[0x150];
+    struct {
+        u8 pad_0[8];
+        u8 *unk_8;
+    } *unk_150;
+} AccessoryData;
+
+typedef struct {
+    u8 pad_0[0x8];
+    u32 unk_8;
+    AccessoryData *unk_C;
+    void *unk_10;
+    u8 pad_14[4];
+    u32 unk_18;
+    u8 pad_1C[8];
+    u8 *unk_24;
+} AccessoryObject;
+
+extern void *fn_80077B14(void *);
+extern void lbl_8006DBAC(void *);
+extern void fn_8006E250(void *, void *);
+
+void fn_1_109114(AccessoryObject *self) {
+    void *base;
+    u16 *item;
+    int entry_index;
+    int item_index;
+    u8 *entry;
+    
+    base = fn_80077B14(self->unk_10);
+    lbl_8006DBAC((u8 *)self->unk_C->unk_150->unk_8 +
+                 ((u32 *)&lbl_1_data_3FFBC)[self->unk_8] * 0x18c + 0x88);
+    entry = self->unk_24;
+    entry_index = 0;
+    while (entry_index < self->unk_18) {
+        item = (u16 *)entry;
+        item_index = 0;
+        while (item_index < entry[2]) {
+            fn_8006E250(entry + 0x10, (u8 *)base + item[2] * 0x40);
+            item++;
+            item_index++;
+        }
+        entry_index++;
+        entry += 0x44;
+    }
+}
+/* fzgx:end fn_1_109114 */
+
+/* fzgx:begin fn_1_10B7D8 */
+extern void fn_1_10846C(void *arg0);
+
+void fn_1_10B7D8(void *arg0) {
+    if (arg0 != 0) {
+        fn_1_10846C(arg0);
+    }
+}
+/* fzgx:end fn_1_10B7D8 */
+
 /* fzgx:begin fn_1_1154D0 */
 extern void fn_1_10846C(void);
 extern f32 lbl_1_rodata_7B1C;
@@ -141,6 +224,23 @@ void fn_1_1166EC(Fn1166ECObject *obj) {
 }
 /* fzgx:end fn_1_1166EC */
 
+/* fzgx:begin fn_1_128B00 */
+extern s32 fn_1_14D670(void);
+
+s32 fn_1_128B00(s16 value) {
+    switch (value) {
+    case 0:
+        return 7;
+    case 1:
+        return 10;
+    case 2:
+        return 4;
+    default:
+        return fn_1_14D670();
+    }
+}
+/* fzgx:end fn_1_128B00 */
+
 /* fzgx:begin fn_1_128DD8 */
 extern u8 lbl_1_data_405C0[8];
 
@@ -209,6 +309,17 @@ s8 fn_1_12A24C(s8 arg) {
 }
 /* fzgx:end fn_1_12A24C */
 
+/* fzgx:begin fn_1_12A290 */
+extern u32 lbl_1_bss_897AC[1741];
+
+u32 fn_1_12A290(s32 index) {
+    if (index == -1) {
+        return 0;
+    }
+    return lbl_1_bss_897AC[index * 27 + 26];
+}
+/* fzgx:end fn_1_12A290 */
+
 /* fzgx:begin fn_1_12A2B8 */
 extern u32 lbl_1_bss_897A4;
 
@@ -216,3 +327,11 @@ void fn_1_12A2B8(u32 value) {
     lbl_1_bss_897A4 = value;
 }
 /* fzgx:end fn_1_12A2B8 */
+
+/* fzgx:begin fn_1_12A2C4 */
+extern u32 lbl_1_bss_897A8;
+
+void fn_1_12A2C4(u32 value) {
+    lbl_1_bss_897A8 = value;
+}
+/* fzgx:end fn_1_12A2C4 */

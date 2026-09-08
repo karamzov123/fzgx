@@ -1,5 +1,74 @@
 #include "types.h"
 
+/* fzgx:begin fn_1_E50F0 */
+extern void lbl_8006DCA4(void *base, void *arg);
+extern void fn_1_A71AC(void);
+extern void fn_8006F828(void *base, f32 *out);
+extern void fn_1_E4A38(void *base, s32 x, s32 y, void *arg);
+
+void fn_1_E50F0(void *base, void *arg) {
+    struct {
+        f32 values[2];
+        u32 pad[2];
+    } locals;
+
+    lbl_8006DCA4(base, arg);
+    fn_1_A71AC();
+    fn_8006F828((char *)base + 0x54, locals.values);
+    fn_1_E4A38(base, (s32)locals.values[0], (s32)locals.values[1], arg);
+}
+/* fzgx:end fn_1_E50F0 */
+
+/* fzgx:begin fn_1_E5430 */
+#include "rel/main_rel/phys.h"
+
+s16 fn_1_E5430(s16 index) {
+    Obj_1_bss_7AE88 *obj = &lbl_1_bss_7AE88;
+
+    switch (index) {
+    case 0:
+        return obj->unk_4;
+    case 1:
+        return obj->unk_C;
+    case 2:
+        return obj->unk_14;
+    case 3:
+        return obj->unk_1C;
+    case 4:
+        return obj->unk_24;
+    case 5:
+        return obj->unk_2C;
+    default:
+        return -1;
+    }
+}
+/* fzgx:end fn_1_E5430 */
+
+/* fzgx:begin fn_1_E54A8 */
+#include "rel/main_rel/phys.h"
+
+void *fn_1_E54A8(s16 type, s16 index) {
+    Obj_1_bss_7AE88 *base = &lbl_1_bss_7AE88;
+
+    switch (type) {
+    case 0:
+        return (void *)((char *)base->unk_0 + index * 0x1a8);
+    case 1:
+        return (void *)((char *)base->unk_8 + index * 0x1a8);
+    case 2:
+        return (void *)((char *)base->unk_10 + index * 0x1a8);
+    case 3:
+        return (void *)((char *)base->unk_18 + index * 0x1a8);
+    case 4:
+        return (void *)((char *)base->unk_20 + index * 0x1a8);
+    case 5:
+        return (void *)((char *)base->unk_28 + index * 0x1a8);
+    default:
+        return (void *)0;
+    }
+}
+/* fzgx:end fn_1_E54A8 */
+
 /* fzgx:begin fn_1_E5724 */
 s16 fn_1_E5724(void *base) {
     return *(s16 *)((char *)base + 0x8);
@@ -24,6 +93,17 @@ f32 fn_1_E5734(E5734Obj *self) {
 }
 /* fzgx:end fn_1_E5734 */
 
+/* fzgx:begin fn_1_E573C */
+typedef struct {
+    u8 unk0[0x100];
+    s32 value;
+} E573CObj;
+
+s16 fn_1_E573C(E573CObj *self) {
+    return self->value;
+}
+/* fzgx:end fn_1_E573C */
+
 /* fzgx:begin fn_1_E5748 */
 // Returns a pointer to the member at offset 0x54.
 u8 *fn_1_E5748(u8 *self) {
@@ -44,6 +124,18 @@ f32 fn_1_E5758(u8 *self) {
 }
 /* fzgx:end fn_1_E5758 */
 
+/* fzgx:begin fn_1_E5760 */
+u8 *fn_1_E5760(u8 *self) {
+    return self + 0x78;
+}
+/* fzgx:end fn_1_E5760 */
+
+/* fzgx:begin fn_1_E5768 */
+u8 *fn_1_E5768(u8 *self) {
+    return self + 0xF4;
+}
+/* fzgx:end fn_1_E5768 */
+
 /* fzgx:begin fn_1_E57A4 */
 f32 fn_1_E57A4(void *base) {
     return *(f32 *)((char *)base + 0x18);
@@ -62,11 +154,79 @@ f32 fn_1_E57B4(void *base) {
 }
 /* fzgx:end fn_1_E57B4 */
 
+/* fzgx:begin fn_1_E57BC */
+f32 fn_1_E57BC(void *base) {
+    return *(f32 *)((char *)base + 0x24);
+}
+/* fzgx:end fn_1_E57BC */
+
+/* fzgx:begin fn_1_E57C4 */
+u32 fn_1_E57C4(void *base) {
+    return *(u32 *)((char *)base + 0x148);
+}
+/* fzgx:end fn_1_E57C4 */
+
+/* fzgx:begin fn_1_E57CC */
+void *fn_1_E57CC(void *base) {
+    return (char *)base + 0x2c;
+}
+/* fzgx:end fn_1_E57CC */
+
+/* fzgx:begin fn_1_E57D4 */
+void *fn_1_E57D4(void *base) {
+    return (char *)base + 0x38;
+}
+/* fzgx:end fn_1_E57D4 */
+
+/* fzgx:begin fn_1_E57DC */
+void *fn_1_E57DC(void *base) {
+    return (char *)base + 0x6c;
+}
+/* fzgx:end fn_1_E57DC */
+
+/* fzgx:begin fn_1_E57E4 */
+f32 fn_1_E57E4(void *base) {
+    return *(f32 *)((char *)base + 0x84);
+}
+/* fzgx:end fn_1_E57E4 */
+
+/* fzgx:begin fn_1_E57EC */
+f32 fn_1_E57EC(void *base) {
+    return *(f32 *)((char *)base + 0x28);
+}
+/* fzgx:end fn_1_E57EC */
+
 /* fzgx:begin fn_1_E57F4 */
 void fn_1_E57F4(void *base, f32 value) {
     *(f32 *)((char *)base + 0x4) = value;
 }
 /* fzgx:end fn_1_E57F4 */
+
+/* fzgx:begin fn_1_E57FC */
+extern void fn_80008BEC(void *dst, int value, int size);
+extern void fn_80008BA8(void *dst, const void *src, int size);
+
+void fn_1_E57FC(void *base, const void *value) {
+    if (value == 0) {
+        fn_80008BEC((char *)base + 0x44, 0, 0xc);
+    } else {
+        fn_80008BA8((char *)base + 0x44, value, 0xc);
+    }
+}
+/* fzgx:end fn_1_E57FC */
+
+/* fzgx:begin fn_1_E5840 */
+extern void fn_80008BEC(void *dst, int value, u32 size);
+extern void fn_80008BA8(void *dst, const void *src, u32 size);
+
+void fn_1_E5840(void *base, const void *value) {
+    if (value == 0) {
+        fn_80008BEC((char *)base + 0x78, 0, 0xc);
+    } else {
+        fn_80008BA8((char *)base + 0x78, value, 0xc);
+    }
+}
+/* fzgx:end fn_1_E5840 */
 
 /* fzgx:begin fn_1_E5884 */
 extern f32 lbl_1_rodata_67A8;
@@ -84,12 +244,83 @@ void fn_1_E5884(void *base, const void *value) {
 }
 /* fzgx:end fn_1_E5884 */
 
+/* fzgx:begin fn_1_E58CC */
+extern u32 lbl_1_rodata_6A8C[3];
+extern void fn_80008BA8(void *dst, const void *src, u32 size);
+
+void fn_1_E58CC(void *base, const void *value) {
+    if (value == 0) {
+        u32 temp[3];
+
+        temp[0] = lbl_1_rodata_6A8C[0];
+        temp[1] = lbl_1_rodata_6A8C[1];
+        temp[2] = lbl_1_rodata_6A8C[2];
+        fn_80008BA8((char *)base + 0x128, temp, 0xc);
+    } else {
+        fn_80008BA8((char *)base + 0x128, value, 0xc);
+    }
+}
+/* fzgx:end fn_1_E58CC */
+
+/* fzgx:begin fn_1_E5930 */
+void fn_1_E5930(void *base, u32 unused, u32 mask138, u32 mask13c) {
+    u32 value13c = *(u32 *)((char *)base + 0x13c);
+    u32 value138 = *(u32 *)((char *)base + 0x138);
+    *(u32 *)((char *)base + 0x13c) = value13c | mask13c;
+    *(u32 *)((char *)base + 0x138) = value138 | mask138;
+}
+/* fzgx:end fn_1_E5930 */
+
+/* fzgx:begin fn_1_E5970 */
+void fn_1_E5970(void *base, f32 value) {
+    *(f32 *)((char *)base + 0x18) = value;
+}
+/* fzgx:end fn_1_E5970 */
+
+/* fzgx:begin fn_1_E5978 */
+void fn_1_E5978(void *base, f32 value) {
+    *(f32 *)((char *)base + 0x1c) = value;
+}
+/* fzgx:end fn_1_E5978 */
+
 /* fzgx:begin fn_1_E5980 */
 // fn_1_E5980: Store float value at offset 0x20 in base pointer
 void fn_1_E5980(void *base, f32 value) {
     *(f32 *)((char *)base + 0x20) = value;
 }
 /* fzgx:end fn_1_E5980 */
+
+/* fzgx:begin fn_1_E5988 */
+extern void fn_80008BEC(void *dst, void *value, u32 size);
+extern void fn_80008BA8(void *dst, void *value, u32 size);
+
+void fn_1_E5988(void *base, void *value) {
+    if (value == NULL) {
+        fn_80008BEC((void *)((char *)base + 0x54), NULL, 0xC);
+    } else {
+        fn_80008BA8((void *)((char *)base + 0x54), value, 0xC);
+    }
+
+    if (value == NULL) {
+        fn_80008BEC((void *)((char *)base + 0x60), NULL, 0xC);
+    } else {
+        fn_80008BA8((void *)((char *)base + 0x60), value, 0xC);
+    }
+}
+/* fzgx:end fn_1_E5988 */
+
+/* fzgx:begin fn_1_E5A0C */
+extern void fn_80008BEC(void *dst, void *value, u32 size);
+extern void fn_80008BA8(void *dst, void *value, u32 size);
+
+void fn_1_E5A0C(void *base, void *value) {
+    if (value == NULL) {
+        fn_80008BEC((void *)((char *)base + 0x2C), NULL, 0xC);
+    } else {
+        fn_80008BA8((void *)((char *)base + 0x2C), value, 0xC);
+    }
+}
+/* fzgx:end fn_1_E5A0C */
 
 /* fzgx:begin fn_1_E5A50 */
 extern void fn_80008BEC(void *dst, void *value, u32 size);
@@ -103,6 +334,194 @@ void fn_1_E5A50(void *base, void *value) {
     }
 }
 /* fzgx:end fn_1_E5A50 */
+
+/* fzgx:begin fn_1_E5A94 */
+extern void fn_80008BEC(void *dst, void *value, u32 size);
+extern void fn_80008BA8(void *dst, void *value, u32 size);
+
+void fn_1_E5A94(void *base, void *value) {
+    if (value == NULL) {
+        fn_80008BEC((void *)((char *)base + 0x6C), NULL, 0xC);
+    } else {
+        fn_80008BA8((void *)((char *)base + 0x6C), value, 0xC);
+    }
+}
+/* fzgx:end fn_1_E5A94 */
+
+/* fzgx:begin fn_1_E5AD8 */
+void fn_1_E5AD8(void *base, f32 value) {
+    *(f32 *)((char *)base + 0x28) = value;
+}
+/* fzgx:end fn_1_E5AD8 */
+
+/* fzgx:begin fn_1_E86FC */
+extern u32 fn_80083970(const u8* left, const char* right);
+extern u32 strlen(const char* string);
+
+typedef struct StringValueEntry {
+    u32 value;
+    const u8* string;
+} StringValueEntry;
+
+typedef struct StringValueTable {
+    s32 count;
+    u32 unused;
+    StringValueEntry* entries;
+} StringValueTable;
+
+u32 fn_1_E86FC(StringValueTable* table, const char* string) {
+    StringValueEntry* entry;
+    u32 best_value;
+    s32 best_length;
+    s32 count;
+
+    if (table == 0) {
+        return 0;
+    }
+
+    entry = table->entries;
+    count = table->count;
+    best_length = 0;
+    best_value = 0;
+
+    while (count > 0) {
+        u32 length;
+
+        if (fn_80083970(entry->string, string) != 0) {
+            length = strlen(string);
+            if (entry->string[length] == 0) {
+                length++;
+            }
+            if ((s32)length > best_length) {
+                best_value = entry->value;
+                best_length = length;
+            }
+        }
+
+        count--;
+        entry++;
+    }
+
+    return best_value;
+}
+/* fzgx:end fn_1_E86FC */
+
+/* fzgx:begin fn_1_E87A4 */
+#include "rel/main_rel/phys.h"
+
+extern void fn_1_8CED0(void* object, s32 value0, s32 value1);
+extern void fn_1_8D0A4(void* object);
+
+void fn_1_E87A4(f64 value0, f64 value1) {
+    s32 converted0;
+    s32 converted1;
+    void* object;
+
+    converted0 = (s32)value0;
+    converted1 = (s32)value1;
+    object = (u8*)&lbl_1_bss_7AEB8 + 0x210;
+    fn_1_8CED0(object, converted0, converted1);
+    fn_1_8D0A4(object);
+}
+/* fzgx:end fn_1_E87A4 */
+
+/* fzgx:begin fn_1_E87FC */
+#include "rel/main_rel/phys.h"
+
+typedef struct {
+    u8 pad_0[0xC];
+    u32 unk_C;
+    u32 unk_10;
+    u32 unk_14;
+    u32 unk_18;
+} PhysObj;
+
+extern void fn_800734A8(u32, u32, u32, u32);
+extern void fn_80072EDC(u32, s32);
+extern void fn_800745A4(u32, s32, s32, u32, s32, s32);
+extern void fn_80073778(void *, u32);
+extern void fn_80015C1C(void *, f32, f32, f32, f32, f32, f32, f32, f32, f32);
+extern void lbl_8006DFFC(void *, void *, void *);
+extern void fn_80038D34(void *, u32, s32);
+
+void fn_1_E87FC(PhysObj *obj) {
+    u8 *entry;
+    s16 i;
+    Obj_1_bss_7AEB8 *global;
+    u8 work[0x30];
+
+    fn_800734A8(obj->unk_C, obj->unk_10, obj->unk_18, 4);
+    fn_80072EDC(obj->unk_C, 1);
+    fn_800745A4(obj->unk_10, 0, 0, obj->unk_14, 0, 0x7d);
+    fn_80073778((u8 *)&lbl_1_bss_7AEB8 + 0x274, obj->unk_18);
+    global = &lbl_1_bss_7AEB8;
+
+    i = 0;
+    entry = (u8 *)global;
+    while (i < global->unk_1E4) {
+        f32 value = global->unk_20C;
+        fn_80015C1C(work, global->unk_1EC, global->unk_1F0,
+                    global->unk_1F4, global->unk_1F8, global->unk_1FC,
+                    global->unk_200, global->unk_204, global->unk_208, value);
+        lbl_8006DFFC(work, entry + 4, work);
+        fn_80038D34(work, obj->unk_14, 0);
+        entry += 0x30;
+        i++;
+    }
+
+    obj->unk_C++;
+    obj->unk_18++;
+    obj->unk_14++;
+    obj->unk_10++;
+}
+/* fzgx:end fn_1_E87FC */
+
+/* fzgx:begin fn_1_E95B4 */
+#include "rel/main_rel/phys.h"
+
+typedef struct {
+    u8 pad_0[0x8];
+    f32 unk_8;
+    f32 unk_C;
+} Camera;
+
+extern f32 lbl_1_rodata_6780[236];
+extern Camera *game_camera_get(void);
+extern f32 fn_1_A6FE8(void);
+extern void fn_1_E8938(void);
+extern void fn_1_8D1C8(void *object, void (*callback)(void), int arg);
+
+void fn_1_E95B4(void) {
+    f32 *table = lbl_1_rodata_6780;
+    Obj_1_bss_7AEB8 *state;
+    Obj_1_bss_7AEB8 *state_after;
+    Obj_1_bss_7AEB8 *state_final;
+    Camera *camera;
+    f32 camera_y;
+
+    if ((lbl_1_bss_7AEB8.unk_0 & (0xFFFFFFFFu << 31)) == 0) {
+        return;
+    }
+
+    camera = game_camera_get();
+    state = &lbl_1_bss_7AEB8;
+    state->unk_254 = camera->unk_8;
+    camera = game_camera_get();
+    camera_y = state->unk_254;
+    state_after = &lbl_1_bss_7AEB8;
+    state_after->unk_258 = camera->unk_C;
+
+    if (camera_y < table[10] || camera_y > table[233]) {
+        state->unk_254 = table[234];
+        state_after->unk_258 = fn_1_A6FE8();
+    }
+
+    state_final = &lbl_1_bss_7AEB8;
+    state_final->unk_25C = table[12];
+    state_final->unk_260 = table[235];
+    fn_1_8D1C8((u8 *)state_final + 0x210, fn_1_E8938, 0);
+}
+/* fzgx:end fn_1_E95B4 */
 
 /* fzgx:begin fn_1_E9C68 */
 extern u32 lbl_1_bss_7B188[2];
@@ -134,6 +553,14 @@ void fn_1_E9C68(void) {
     }
 }
 /* fzgx:end fn_1_E9C68 */
+
+/* fzgx:begin fn_1_EB074 */
+extern u32 lbl_1_bss_7C94C[67];
+
+void fn_1_EB074(u32 value) {
+    lbl_1_bss_7C94C[0] = value;
+}
+/* fzgx:end fn_1_EB074 */
 
 /* fzgx:begin fn_1_EB080 */
 extern u32 lbl_1_bss_7B188[2];
@@ -174,6 +601,29 @@ int fn_1_EB200(void) {
 }
 /* fzgx:end fn_1_EB200 */
 
+/* fzgx:begin fn_1_EB248 */
+extern u32 lbl_1_bss_7B188[2];
+extern s32 lbl_1_data_3E52C;
+
+int fn_1_EB248(void) {
+    if ((s32)lbl_1_bss_7B188[0] == 0) {
+        return 0;
+    }
+
+    {
+        s32 state = *(s32*)&lbl_1_data_3E52C;
+
+        if ((u32)(state - 9) <= 4 ||
+            (u32)(state - 5) <= 2 ||
+            state == 8) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+/* fzgx:end fn_1_EB248 */
+
 /* fzgx:begin fn_1_EF924 */
 extern void fn_1_EE530(void);
 extern u32 lbl_1_data_3E538;
@@ -193,3 +643,43 @@ void fn_1_EF924(void) {
     fn_1_484CC(2);
 }
 /* fzgx:end fn_1_EF924 */
+
+/* fzgx:begin fn_1_EFA1C */
+#include "rel/main_rel/phys.h"
+
+extern void fn_1_EE530(void);
+
+void fn_1_EFA1C(void) {
+    fn_1_EE530();
+    lbl_1_data_3E52C = lbl_1_data_3E538;
+}
+/* fzgx:end fn_1_EFA1C */
+
+/* fzgx:begin fn_1_F22E4 */
+extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
+extern s32 lbl_1_data_3E53C[];
+
+s16 fn_1_F22E4(s32 arg) {
+    s16 a;
+    s16 b;
+    s32 index;
+
+    fn_1_12EF80((s16)arg, &a, &b);
+    index = (a - 1) * 6 + b;
+    return (s16)lbl_1_data_3E53C[index];
+}
+/* fzgx:end fn_1_F22E4 */
+
+/* fzgx:begin fn_1_F2740 */
+extern u8 lbl_1_data_3E5B4[120];
+
+u32 fn_1_F2740(u32 a, u32 b) {
+    if (a >= 6) {
+        return 0;
+    }
+    if (b >= 6) {
+        return 0;
+    }
+    return ((u32 *)lbl_1_data_3E5B4)[(a - 1) * 6 + b];
+}
+/* fzgx:end fn_1_F2740 */

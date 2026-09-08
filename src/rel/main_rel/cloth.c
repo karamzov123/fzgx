@@ -35,6 +35,16 @@ void fn_1_10302C(void) {
 }
 /* fzgx:end fn_1_10302C */
 
+/* fzgx:begin fn_1_103030 */
+extern void fn_1_103AD4(void);
+extern void fn_1_105768(void);
+
+void fn_1_103030(void) {
+    fn_1_103AD4();
+    fn_1_105768();
+}
+/* fzgx:end fn_1_103030 */
+
 /* fzgx:begin fn_1_103054 */
 // fn_1_103054: empty in retail (single blr).
 void fn_1_103054(void) {
@@ -51,3 +61,36 @@ void fn_1_103058(void) {
     }
 }
 /* fzgx:end fn_1_103058 */
+
+/* fzgx:begin fn_1_103090 */
+typedef struct ClothState {
+    u8 _pad68[0x68];
+    void *field_68;
+    u8 _pad6c[8];
+    void *field_74;
+    void *field_78;
+    u8 field_7c;
+} ClothState;
+
+void fn_1_103090(ClothState *self) {
+    self->field_74 = self->field_68;
+    self->field_78 = &self->field_7c;
+}
+/* fzgx:end fn_1_103090 */
+
+/* fzgx:begin fn_1_1030A4 */
+typedef struct Cloth {
+    u8 pad_00[0x68];
+    s32 field_68;
+    u8 field_6c[4];
+    u8 field_70[1];
+} Cloth;
+
+extern void fn_1_9E5B8(void *);
+
+void fn_1_1030A4(Cloth *self) {
+    if (self->field_68 != 0) {
+        fn_1_9E5B8(&self->field_70);
+    }
+}
+/* fzgx:end fn_1_1030A4 */

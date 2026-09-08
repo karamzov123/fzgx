@@ -1,5 +1,67 @@
 #include "types.h"
 
+/* fzgx:begin fn_1_D3768 */
+extern int fn_1_45730(void *owner, void *buffer);
+extern u8 lbl_1_bss_3BC0[32];
+extern int fn_1_458A0(void *buffer, void *work, int size, int mode);
+extern char lbl_1_data_3DBD8[10];
+extern u32 lbl_801A6410;
+extern void *fn_1_45D0(u32 allocator, u32 size, const char *name, int mode);
+extern int fn_1_45850(void *buffer);
+extern void fn_1_12F78(void *owner, void *data);
+extern void DCFlushRange(void *address, u32 length);
+extern void *fn_80071100(void *data, void *size, void *user);
+extern int fn_1_D3B6C(void);
+
+typedef struct {
+    u8 _pad[0x10];
+    u32 flags;
+} Fn80071100Result;
+
+int fn_1_D3768(void *owner, void *user) {
+    u8 buffer[0x58];
+    u32 data_size;
+    Fn80071100Result *result;
+    u32 aligned_size;
+    void *data;
+
+    if (fn_1_45730(owner, buffer) == 0) {
+        return 0;
+    }
+    if (fn_1_458A0(buffer, lbl_1_bss_3BC0, 32, 0) < 0) {
+        return 0;
+    }
+
+    (void)__lwbrx(lbl_1_bss_3BC0, 0);
+    data_size = __lwbrx(lbl_1_bss_3BC0, 4);
+    aligned_size = (data_size + 0x1f) & ~0x1f;
+    data = fn_1_45D0(lbl_801A6410,
+                     ((aligned_size + 0x1f) & ~0x1f) + 0x20,
+                     lbl_1_data_3DBD8, 0x7a);
+    result = (Fn80071100Result *)((u8 *)data + 0x20);
+    if (result == 0) {
+        return 0;
+    }
+    if (fn_1_45850(buffer) == 0) {
+        return 0;
+    }
+
+    fn_1_12F78(owner, result);
+    DCFlushRange(result, aligned_size);
+    result = (Fn80071100Result *)fn_80071100(result, data, user);
+    result->flags &= ~1;
+    return fn_1_D3B6C();
+}
+/* fzgx:end fn_1_D3768 */
+
+/* fzgx:begin fn_1_D3884 */
+extern void fn_80071484(void);
+
+void fn_1_D3884(void) {
+    fn_80071484();
+}
+/* fzgx:end fn_1_D3884 */
+
 /* fzgx:begin fn_1_D38A4 */
 extern void fn_80071678(void);
 
@@ -7,6 +69,34 @@ void fn_1_D38A4(void) {
     fn_80071678();
 }
 /* fzgx:end fn_1_D38A4 */
+
+/* fzgx:begin fn_1_D3B6C */
+extern void *OSGetArenaHi(void);
+extern void fn_1_D3BE8(void *);
+
+typedef struct {
+    u32 unk0;
+    void *value;
+} FnD3B6CEntry;
+
+typedef struct {
+    s32 count;
+    u8 pad[4];
+    FnD3B6CEntry *entries;
+} FnD3B6CObject;
+
+void *fn_1_D3B6C(FnD3B6CObject *object) {
+    s32 i;
+
+    if (object != 0 && object > (FnD3B6CObject *)OSGetArenaHi()) {
+        for (i = 0; i < object->count; i++) {
+            fn_1_D3BE8(object->entries[i].value);
+        }
+    }
+
+    return object;
+}
+/* fzgx:end fn_1_D3B6C */
 
 /* fzgx:begin fn_1_D3BE8 */
 extern u8 lbl_1_bss_7AD58[8];
@@ -22,6 +112,59 @@ void fn_1_D3BE8(void) {
 void fn_1_D3C00(void) {
 }
 /* fzgx:end fn_1_D3C00 */
+
+/* fzgx:begin fn_1_D3C04 */
+#include "rel/main_rel/mdlload.h"
+
+extern void fn_1_9A508(void);
+extern void fn_1_D3F24(void *arg);
+
+void fn_1_D3C04(void) {
+    void *state = lbl_1_data_2A7E0.unk_3C;
+
+    *(u32 *)((u8 *)state + 0xE7E0) = 0;
+    fn_1_9A508();
+    fn_1_D3F24(state);
+    *(u32 *)((u8 *)state + 0xFD64) = (u32)-1;
+}
+/* fzgx:end fn_1_D3C04 */
+
+/* fzgx:begin fn_1_D3DDC */
+#include "rel/main_rel/mdlload.h"
+
+extern void fn_1_D3F88(void *value);
+
+void fn_1_D3DDC(void) {
+    fn_1_D3F88(lbl_1_data_2A7E0.unk_3C);
+}
+/* fzgx:end fn_1_D3DDC */
+
+/* fzgx:begin fn_1_D3E08 */
+#include "rel/main_rel/mdlload.h"
+
+extern f32 lbl_1_rodata_6168[112];
+extern u32 fn_1_5910(void);
+extern void fn_1_9AD88(Obj_1_data_2A7E0 *obj);
+extern u32 fn_1_9D260(void);
+extern s32 fn_1_D3E90(void);
+extern void fn_1_1067A8(void *obj, f32 value, f32 limit);
+extern void fn_1_D4174(Obj_1_data_2A7E0_At3C *obj, u32 value);
+
+void fn_1_D3E08(void) {
+    u32 index;
+    Obj_1_data_2A7E0_At3C *obj;
+    u32 value;
+
+    index = fn_1_5910();
+    obj = lbl_1_data_2A7E0.unk_3C;
+    fn_1_9AD88(&lbl_1_data_2A7E0);
+    value = fn_1_9D260();
+    if (fn_1_D3E90() == 0) {
+        fn_1_1067A8((u8 *)obj + 0x20, ((f32 *)obj)[index], lbl_1_rodata_6168[0]);
+    }
+    fn_1_D4174(obj, value);
+}
+/* fzgx:end fn_1_D3E08 */
 
 /* fzgx:begin fn_1_D3E8C */
 // fn_1_D3E8C: empty in retail (single blr).
@@ -98,6 +241,96 @@ void fn_1_D3F88(void *base) {
     }
 }
 /* fzgx:end fn_1_D3F88 */
+
+/* fzgx:begin fn_1_D4174 */
+extern void fn_1_103264(void *ptr, void *arg);
+
+void fn_1_D4174(void *base, void *arg) {
+    s32 count;
+    char *ptr;
+
+    ptr = (char *)base + 0x10000;
+    count = *(s32 *)(ptr - 0x1820);
+    ptr -= 0x181c;
+
+    while (count > 0) {
+        fn_1_103264(ptr, arg);
+        count--;
+        ptr += 0xac;
+    }
+}
+/* fzgx:end fn_1_D4174 */
+
+/* fzgx:begin fn_1_D41D8 */
+#include "rel/main_rel/mdlload.h"
+
+extern s16 fn_1_3F0C8(void);
+extern void fn_1_D6748(void *obj, u32 *arg1, s16 arg2);
+extern u32 lbl_801A63C0;
+
+typedef struct {
+    u8 pad_0[0xC];
+    s16 unk_C;
+    s16 unk_E;
+    u8 pad_10[0x4];
+    u32 unk_14;
+    u8 pad_18[0x8];
+    u32 unk_20;
+} MdlloadItem;
+
+void fn_1_D41D8(void) {
+    Obj_1_bss_3BE0_Target **root;
+    s32 i;
+    MdlloadItem *item;
+
+    if (fn_1_3F0C8() == 0x28) {
+        return;
+    }
+
+    root = &lbl_1_bss_3BE0;
+    i = 0;
+    item = (MdlloadItem *)(*root)->unk_A8;
+    while (i < (s32)(*root)->unk_A4) {
+        if (item->unk_20 & 1) {
+            s32 random_value;
+            s32 divisor;
+            s32 remainder;
+
+            random_value = (s32)(lbl_801A63C0 * 0x676A4B6B + 0x33CB);
+            lbl_801A63C0 = (u32)random_value;
+            random_value = ((u32)random_value >> 16) & 0x7FFF;
+            divisor = (u16)item->unk_C;
+            remainder = random_value % divisor;
+            if ((remainder >> 7) == 0) {
+                fn_1_D6748(item, &item->unk_14, item->unk_E);
+            }
+        }
+        i++;
+        item++;
+    }
+}
+/* fzgx:end fn_1_D41D8 */
+
+/* fzgx:begin fn_1_D4360 */
+void fn_1_D4360(void *base) {
+    *(s32 *)((char *)base + 0xc074) = 200;
+}
+/* fzgx:end fn_1_D4360 */
+
+/* fzgx:begin fn_1_D47D8 */
+struct Entry {
+    s8 flag[0x18];
+};
+
+struct Base {
+    char pad[0xe780];
+    struct Entry entries[1];
+};
+
+void fn_1_D47D8(struct Base *base, s32 index) {
+    base->entries[index].flag[0] = -1;
+}
+/* fzgx:end fn_1_D47D8 */
 
 /* fzgx:begin fn_1_D5958 */
 extern void fn_1_D550C(void *);

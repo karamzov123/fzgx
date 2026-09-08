@@ -55,6 +55,17 @@ void fn_1_D66B8(void) {
 }
 /* fzgx:end fn_1_D66B8 */
 
+/* fzgx:begin fn_1_D66BC */
+extern u8 lbl_1_data_3DC38[24];
+extern void fn_80008BA8(void *arg0, void *arg1, int arg2);
+
+int fn_1_D66BC(void *unused, void *arg)
+{
+    fn_80008BA8(arg, lbl_1_data_3DC38, 0x10);
+    return 1;
+}
+/* fzgx:end fn_1_D66BC */
+
 /* fzgx:begin fn_1_D66F4 */
 // fn_1_D66F4: empty in retail (single blr).
 void fn_1_D66F4(void) {
@@ -67,6 +78,67 @@ int fn_1_D6740(void) {
     return 1;
 }
 /* fzgx:end fn_1_D6740 */
+
+/* fzgx:begin fn_1_D720C */
+extern u32 lbl_1_rodata_6490[4];
+extern u32 lbl_801A63D0;
+extern u32 fn_1_76504(s32, void *, s32);
+extern void fn_1_7269C(u32, s32, u32);
+
+void fn_1_D720C(void) {
+    u32 local[4];
+    u32 result;
+
+    local[0] = lbl_1_rodata_6490[0];
+    local[1] = lbl_1_rodata_6490[1];
+    local[2] = lbl_1_rodata_6490[2];
+    local[3] = lbl_1_rodata_6490[3];
+    result = fn_1_76504(0x1d, local, 0);
+    fn_1_7269C(result, 0, lbl_801A63D0);
+}
+/* fzgx:end fn_1_D720C */
+
+/* fzgx:begin fn_1_D744C */
+#include "rel/main_rel/bg_lig.h"
+
+extern s32 fn_1_58C4(void);
+extern void fn_1_5948(s32 index);
+extern void fn_1_D8388(Obj_1_data_2A7E0_At3C *obj, s32 index);
+extern void fn_1_627C(s32 index);
+
+void fn_1_D744C(void) {
+    Obj_1_data_2A7E0_At3C *obj;
+    s32 count;
+    s32 i;
+
+    obj = lbl_1_data_2A7E0.unk_3C;
+    count = fn_1_58C4();
+    for (i = 0; i < count; i++) {
+        fn_1_5948(i);
+        fn_1_D8388(obj, i);
+        fn_1_627C(i);
+    }
+}
+/* fzgx:end fn_1_D744C */
+
+/* fzgx:begin fn_1_D7688 */
+#include "rel/main_rel/bg_lig.h"
+
+extern void *fn_1_9D260(Obj_1_data_2A7E0 *data);
+extern void fn_1_D8784(Obj_1_data_2A7E0_At3C *obj);
+extern void fn_1_D7B7C(Obj_1_data_2A7E0_At3C *obj);
+extern void fn_1_D8EEC(Obj_1_data_2A7E0_At3C *obj, void *value);
+extern void fn_1_9AD88(void);
+
+void fn_1_D7688(void) {
+    Obj_1_data_2A7E0_At3C *obj = lbl_1_data_2A7E0.unk_3C;
+    void *value = fn_1_9D260(&lbl_1_data_2A7E0);
+    fn_1_D8784(obj);
+    fn_1_D7B7C(obj);
+    fn_1_D8EEC(obj, value);
+    fn_1_9AD88();
+}
+/* fzgx:end fn_1_D7688 */
 
 /* fzgx:begin fn_1_D76EC */
 // fn_1_D76EC: empty in retail (single blr).
@@ -107,3 +179,213 @@ void fn_1_D7724(Vec3Bits *dst, s16 index) {
     *dst = *src;
 }
 /* fzgx:end fn_1_D7724 */
+
+/* fzgx:begin fn_1_D79E4 */
+extern void *memset(void *dst, int value, u32 size);
+
+void fn_1_D79E4(void *obj) {
+    memset((u8 *)obj + 0x30, 0, 0x3c0);
+}
+/* fzgx:end fn_1_D79E4 */
+
+/* fzgx:begin fn_1_D8388 */
+extern u32 fn_1_58C4(void);
+extern void fn_1_D7EF4(void *, u32);
+
+void fn_1_D8388(void *obj) {
+    u8 *p = (u8 *)obj;
+    s32 i;
+
+    if (fn_1_58C4() < 2) {
+        i = 0;
+        do {
+            fn_1_D7EF4(p + 0x3f0, 0);
+            i++;
+            p += 0x30;
+        } while (i < 0xf);
+    }
+}
+/* fzgx:end fn_1_D8388 */
+
+/* fzgx:begin fn_1_D8784 */
+typedef void (*LigCallback)(void);
+
+typedef struct {
+    u32 unk_00;
+    LigCallback callback;
+    void *data;
+} LigCallbackObject;
+
+typedef struct {
+    u8 pad_000[0x3f0];
+    u8 callback_data[0x24];
+    f32 scale;
+} LigEntry;
+
+typedef struct {
+    u8 pad_000[0x6c0];
+    f32 threshold;
+} LigObject;
+
+extern u32 fn_1_58C4(LigObject *obj);
+extern f32 lbl_1_rodata_6594[];
+extern f32 lbl_1_rodata_6524[];
+extern void lbl_8006DCA4(void);
+extern s32 fn_1_54E34(void *obj, f32 value);
+extern void *fn_1_54448(s32 value);
+extern void *fn_1_548AC(s32 value);
+extern void fn_1_D8878(void);
+extern void fn_1_5489C(void *obj, void *arg);
+
+void fn_1_D8784(LigObject *obj) {
+    void *callback_data;
+    void *owner;
+    u8 i;
+    f32 factor;
+    LigEntry *entry;
+
+    if (fn_1_58C4(obj) >= 2) {
+        return;
+    }
+    if (obj->threshold < lbl_1_rodata_6594[0]) {
+        return;
+    }
+
+    factor = lbl_1_rodata_6524[0];
+    i = 0;
+    for (; i < 0xf; i++) {
+        lbl_8006DCA4();
+        entry = (LigEntry *)((u8 *)obj + (i * 0x30));
+        callback_data = entry->callback_data;
+        if (fn_1_54E34(callback_data, factor * entry->scale) != 0) {
+            owner = fn_1_54448(0);
+            {
+                LigCallbackObject *callback = (LigCallbackObject *)fn_1_548AC(0xc);
+                if (callback != 0) {
+                    callback->callback = fn_1_D8878;
+                    callback->data = callback_data;
+                    fn_1_5489C(owner, callback);
+                }
+            }
+        }
+    }
+}
+/* fzgx:end fn_1_D8784 */
+
+/* fzgx:begin fn_1_D8CA8 */
+typedef struct {
+    u8 pad_00[0x68];
+    u32 field_68;
+    u8 pad_6c[0x40];
+} LigEntry;
+
+typedef struct {
+    u8 pad_00[0x6d4];
+    s32 count;
+    LigEntry entries[1];
+} LigObject;
+
+extern void fn_1_103090(LigEntry *entry);
+
+void fn_1_D8CA8(LigObject *obj) {
+    s32 count = obj->count;
+    LigEntry *entry = obj->entries;
+
+    while (count > 0) {
+        entry->field_68 = 1;
+        fn_1_103090(entry);
+        count--;
+        entry++;
+    }
+}
+/* fzgx:end fn_1_D8CA8 */
+
+/* fzgx:begin fn_1_D8D08 */
+typedef struct {
+    u8 data[0xac];
+} LigEntry;
+
+typedef struct {
+    u8 pad[0x6d4];
+    s32 count;
+    LigEntry entries[1];
+} LigContainer;
+
+extern void fn_1_1030A4(LigEntry *entry);
+
+void fn_1_D8D08(LigContainer *container) {
+    s32 count = container->count;
+    LigEntry *entry = container->entries;
+
+    while (count > 0) {
+        fn_1_1030A4(entry);
+        count--;
+        entry++;
+    }
+}
+/* fzgx:end fn_1_D8D08 */
+
+/* fzgx:begin fn_1_D8EEC */
+typedef struct {
+    u8 data[0xac];
+} LigEntry;
+
+typedef struct {
+    u8 pad[0x6d4];
+    s32 count;
+    LigEntry entries[1];
+} LigObject;
+
+extern void fn_1_103264(LigEntry *entry, void *arg);
+
+void fn_1_D8EEC(LigObject *obj, void *arg) {
+    s32 count = obj->count;
+    LigEntry *entry = obj->entries;
+
+    while (count > 0) {
+        fn_1_103264(entry, arg);
+        count--;
+        entry++;
+    }
+}
+/* fzgx:end fn_1_D8EEC */
+
+/* fzgx:begin fn_1_D8F4C */
+#include "rel/main_rel/bg_lig.h"
+
+typedef struct {
+    u8 pad_0[0x24];
+    u32 unk_24;
+} FnInputData;
+
+typedef struct {
+    FnInputData *unk_0;
+} FnInput;
+
+u32 fn_1_D8F4C(s32 index, FnInput *input) {
+    FnInputData *data = input->unk_0;
+    Obj_1_data_2A7E0_At3C *state = lbl_1_data_2A7E0.unk_3C;
+    u32 value = data->unk_24;
+
+    switch (index) {
+    case 0:
+        state->unk_6CC = value;
+        break;
+    case 1:
+        state->unk_6D0 = value;
+        break;
+    case 2:
+        if (state->unk_1C58 == 0) {
+            state->unk_1C58 = (u32)data;
+        }
+        break;
+    case 3:
+        if (state->unk_1C5C == 0) {
+            state->unk_1C5C = (u32)data;
+        }
+        break;
+    }
+
+    return 1;
+}
+/* fzgx:end fn_1_D8F4C */

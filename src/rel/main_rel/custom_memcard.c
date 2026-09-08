@@ -1,5 +1,91 @@
 #include "types.h"
 
+/* fzgx:begin fn_1_1312F0 */
+extern u8 fn_1_B7C00(void);
+extern s32 fn_1_B7CD4(void);
+extern s32 fn_1_B7C5C(void);
+extern void OSReport(const char* format, ...);
+extern void fn_1_46B4(u32 arg0, void* arg1, u8* arg2, s32 arg3);
+extern char lbl_1_data_40EF8[17];
+extern u8 lbl_1_data_40EA4[84];
+extern u32 lbl_801A6410;
+extern u32 lbl_1_bss_8CA40;
+
+void fn_1_1312F0(void) {
+    u8* ptr = (u8*)&lbl_1_bss_8CA40;
+    void* memcard;
+
+    if (fn_1_B7C00() == 0) {
+        if (fn_1_B7CD4() == 0) {
+            OSReport(lbl_1_data_40EF8, fn_1_B7C5C());
+        }
+
+        memcard = *(void**)(ptr + 0x18);
+        *(s32*)(ptr + 0x0) = -1;
+        *(s32*)(ptr + 0x8) = -1;
+        *(s32*)(ptr + 0xc) = 0;
+        if (memcard != 0) {
+            fn_1_46B4(lbl_801A6410, memcard, lbl_1_data_40EA4, 0x136);
+            *(s32*)(ptr + 0x18) = 0;
+        }
+    }
+}
+/* fzgx:end fn_1_1312F0 */
+
+/* fzgx:begin fn_1_1314A4 */
+#include "rel/main_rel/custom_memcard.h"
+
+typedef struct {
+    s32 unk_00;
+    u8 unk_04[4];
+    s32 unk_08;
+    u8 unk_0C[4];
+    void* unk_10;
+    u8 unk_14[4];
+    void* unk_18;
+} CustomMemcardState;
+
+extern u32 lbl_801A6410;
+extern void fn_80008BA8(void*, void*, s32);
+extern void OSReport(u8*, ...);
+
+void fn_1_1314A4(void) {
+    CustomMemcardState* state = (CustomMemcardState*)&lbl_1_bss_8CA40;
+    void* card;
+
+    if ((u8)fn_1_B7C00() == 0) {
+        if (fn_1_B7CD4() == 0) {
+            OSReport(lbl_1_data_40EF8, fn_1_B7C5C());
+        }
+        fn_80008BA8(state->unk_10, state->unk_18, 0x20700);
+        card = state->unk_18;
+        state->unk_00 = -1;
+        state->unk_08 = -1;
+        state->unk_10 = 0;
+        if (card != 0) {
+            fn_1_46B4((void*)lbl_801A6410, card, lbl_1_data_40EA4, 0x188);
+            state->unk_18 = 0;
+        }
+    }
+}
+/* fzgx:end fn_1_1314A4 */
+
+/* fzgx:begin fn_1_1317B4 */
+extern u32 lbl_1_bss_8CA6C[1605];
+
+u32 fn_1_1317B4(void) {
+    return lbl_1_bss_8CA6C[0];
+}
+/* fzgx:end fn_1_1317B4 */
+
+/* fzgx:begin fn_1_1318B8 */
+extern u8 lbl_1_bss_8E380;
+
+u8 fn_1_1318B8(void) {
+    return lbl_1_bss_8E380 != 0;
+}
+/* fzgx:end fn_1_1318B8 */
+
 /* fzgx:begin fn_1_1318D4 */
 extern u8 lbl_1_bss_8E380;
 extern u8 fn_1_B7C00(void);
@@ -37,3 +123,42 @@ s32 fn_1_1318D4(void) {
     return 1;
 }
 /* fzgx:end fn_1_1318D4 */
+
+/* fzgx:begin fn_1_132488 */
+#include "rel/main_rel/custom_memcard.h"
+
+extern void fn_1_1324C4(void *arg0);
+extern void fn_1_132774(void *arg0);
+
+void fn_1_132488(void *arg0) {
+    if ((lbl_1_bss_8B3A0.unk_94 & 0x40000000) != 0) {
+        fn_1_1324C4(arg0);
+    } else {
+        fn_1_132774(arg0);
+    }
+}
+/* fzgx:end fn_1_132488 */
+
+/* fzgx:begin fn_1_137364 */
+extern u32 lbl_1_data_416B8[];
+
+void fn_1_137364(s16 arg0, u8* arg1, u8* arg2, u8* arg3) {
+    if (arg0 < 0x29) {
+        *arg1 = lbl_1_data_416B8[arg0 * 3];
+        *arg2 = lbl_1_data_416B8[arg0 * 3 + 1];
+        *arg3 = lbl_1_data_416B8[arg0 * 3 + 2];
+    } else {
+        *arg2 = 2;
+        *arg1 = 2;
+        *arg3 = 2;
+    }
+}
+/* fzgx:end fn_1_137364 */
+
+/* fzgx:begin fn_1_13F7F8 */
+#include "rel/main_rel/custom_memcard.h"
+
+u32 fn_1_13F7F8(s16 arg0, s16 arg1) {
+    return ((u32 (*)[6])&lbl_1_data_414D8)[arg0][arg1];
+}
+/* fzgx:end fn_1_13F7F8 */

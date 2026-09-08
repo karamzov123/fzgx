@@ -180,6 +180,112 @@ void fn_1_A2E24(u32 arg0, u32 arg1, s32 arg2) {
 }
 /* fzgx:end fn_1_A2E24 */
 
+/* fzgx:begin fn_1_A4C9C */
+extern s32 camera_get_mode(void);
+extern u8 lbl_1_bss_6F2D8[62];
+extern u32 lbl_1_bss_6F1DC;
+
+extern void fn_80067344(s32, s32, u32, s32);
+extern void fn_80067898(u32);
+extern void fn_1_A5470(s16 mode);
+extern u32 fn_1_3F13C(void);
+extern u32 fn_1_EB0B0(void);
+extern s32 fn_1_F1B94(void);
+
+void fn_1_A4C9C(s32 index, u8 value) {
+    s16 mode;
+
+    mode = camera_get_mode();
+    if (value == lbl_1_bss_6F2D8[index * 2]) {
+        return;
+    }
+
+    fn_80067344(1, 2, 0xB0270000, 0x7F);
+
+    switch (value) {
+    case 2:
+        fn_1_A5470(mode);
+        lbl_1_bss_6F2D8[index * 2] = value;
+        break;
+    case 1:
+        lbl_1_bss_6F2D8[index * 2] = value;
+        break;
+    case 3:
+        if ((fn_1_3F13C() & 0xFF) == 2 && fn_1_EB0B0() != 0) {
+            if (fn_1_F1B94() == 1) {
+                if (lbl_1_bss_6F1DC <= 0x2D) {
+                    fn_80067898(0xA9064E00);
+                }
+                lbl_1_bss_6F2D8[index * 2] = value;
+            } else if (fn_1_F1B94() == 3) {
+                if (lbl_1_bss_6F1DC <= 0x2D) {
+                    fn_80067898(0xA9064F00);
+                }
+                lbl_1_bss_6F2D8[index * 2] = value;
+            }
+        } else {
+            if (lbl_1_bss_6F1DC <= 0x2D) {
+                fn_80067898(0xA9062200);
+            }
+            lbl_1_bss_6F2D8[index * 2] = value;
+        }
+        break;
+    }
+}
+/* fzgx:end fn_1_A4C9C */
+
+/* fzgx:begin fn_1_A4F18 */
+extern u32 lbl_1_bss_6EA98;
+
+extern void fn_80067344(s32, s32, u32, s32);
+extern void fn_80067898(u32);
+
+void fn_1_A4F18(s32 value) {
+    u8 *state = (u8 *)&lbl_1_bss_6EA98;
+
+    if (state[0x7A0] != (u8)value) {
+        fn_80067344(1, 0x10, 0xB0270000, 0x7F);
+
+        switch ((u8)value) {
+        case 3:
+            if (!state[0x740] && *(u32 *)(state + 0x744) <= 0x2D) {
+                fn_80067898(0xA9091A00);
+            }
+            if (!state[0x740] && *(u32 *)(state + 0x744) <= 0x2D) {
+                fn_80067898(0xA9060000);
+            }
+            break;
+        case 2:
+            if (!state[0x740] && *(u32 *)(state + 0x744) <= 0x2D) {
+                fn_80067898(0xA9091A00);
+            }
+            if (!state[0x740] && *(u32 *)(state + 0x744) <= 0x2D) {
+                fn_80067898(0xA9060100);
+            }
+            break;
+        case 1:
+            if (!state[0x740] && *(u32 *)(state + 0x744) <= 0x2D) {
+                fn_80067898(0xA9091A00);
+            }
+            if (!state[0x740] && *(u32 *)(state + 0x744) <= 0x2D) {
+                fn_80067898(0xA9060200);
+            }
+            break;
+        case 0:
+            if (!state[0x740] && *(u32 *)(state + 0x744) <= 0x2D) {
+                fn_80067898(0xA9091A00);
+            }
+            if (!state[0x740] && *(u32 *)(state + 0x744) <= 0x2D) {
+                fn_80067898(0xA9060300);
+            }
+            break;
+        }
+    }
+
+    state[0x7A0] = value;
+}
+/* fzgx:end fn_1_A4F18 */
+
 /* fzgx:begin fn_1_A50C8 */
 extern u32 lbl_1_rodata_45D0[];
 extern u8 lbl_1_bss_6F1D8;
@@ -205,6 +311,74 @@ void fn_1_A50C8(s32 index) {
 }
 /* fzgx:end fn_1_A50C8 */
 
+/* fzgx:begin fn_1_A51C8 */
+#include "rel/main_rel/sound.h"
+
+extern u32 lbl_1_rodata_4718[];
+
+extern void fn_80067344(s32, s32, u32, s32);
+extern void fn_80067898(u32);
+
+void fn_1_A51C8(s16 index) {
+    u32 value;
+
+    if (index <= 6) {
+        value = lbl_1_rodata_4718[index];
+        fn_80067344(2, 0xF, 0xB0270000, 0x7F);
+
+        if (!lbl_1_bss_6F1D8 && lbl_1_bss_6F1DC <= 0x2D) {
+            fn_80067898(value);
+        }
+    }
+}
+/* fzgx:end fn_1_A51C8 */
+
+/* fzgx:begin fn_1_A5244 */
+extern u32 lbl_1_rodata_4730[];
+extern u32 lbl_1_bss_6F1DC;
+
+extern void fn_80067344(s32, s32, u32, s32);
+extern void fn_80067898(u32);
+
+void fn_1_A5244(u8 index) {
+    u32 value;
+
+    if (index <= 0x1D) {
+        value = lbl_1_rodata_4730[index];
+        fn_80067344(1, 2, 0xB0270000, 0x7F);
+
+        if (lbl_1_bss_6F1DC <= 0x2D) {
+            fn_80067898(value);
+        }
+    }
+}
+/* fzgx:end fn_1_A5244 */
+
+/* fzgx:begin fn_1_A52B0 */
+extern u32 lbl_1_rodata_47A8[];
+extern u8 lbl_1_bss_6F1D8;
+extern u32 lbl_1_bss_6F1DC;
+
+extern void fn_80067344(s32, s32, u32, s32);
+extern void fn_80067898(u32);
+
+void fn_1_A52B0(s32 index) {
+    u32 value;
+
+    if ((u8)index > 0x1E) {
+        return;
+    }
+
+    value = lbl_1_rodata_47A8[(u8)index - 1];
+
+    fn_80067344(1, 0xF, 0xB0270000, 0x7F);
+
+    if (!lbl_1_bss_6F1D8 && lbl_1_bss_6F1DC <= 0x2D) {
+        fn_80067898(value);
+    }
+}
+/* fzgx:end fn_1_A52B0 */
+
 /* fzgx:begin fn_1_A5330 */
 extern u8 lbl_1_bss_6F41C[260];
 
@@ -213,8 +387,126 @@ void fn_1_A5330(u8 value, s16 index) {
 }
 /* fzgx:end fn_1_A5330 */
 
+/* fzgx:begin fn_1_A5470 */
+#include "rel/main_rel/sound.h"
+
+extern s32 fn_1_86690(s32 value);
+extern void fn_80067344(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
+extern void fn_80067898(void *value);
+extern u8 lbl_1_rodata_4820[164];
+
+void fn_1_A5470(s32 value) {
+    s32 index;
+    u32 entry;
+
+    if (value != -1) {
+        index = (s8)value;
+        index = (s8)fn_1_86690(index);
+        entry = ((u32 *)lbl_1_rodata_4820)[index];
+        fn_80067344(1, 0x10, (s32)0xb0270000, 0x7f);
+        if (entry != 0 && lbl_1_bss_6F1D8 == 0 &&
+            lbl_1_bss_6F1DC <= 0x2d) {
+            fn_80067898((void *)entry);
+        }
+    }
+}
+/* fzgx:end fn_1_A5470 */
+
 /* fzgx:begin fn_1_A5590 */
 // fn_1_A5590: empty in retail (single blr).
 void fn_1_A5590(void) {
 }
 /* fzgx:end fn_1_A5590 */
+
+/* fzgx:begin fn_1_A5848 */
+extern u8 lbl_1_bss_6F1E0;
+
+u8 fn_1_A5848(void) {
+    return lbl_1_bss_6F1E0;
+}
+/* fzgx:end fn_1_A5848 */
+
+/* fzgx:begin fn_1_A5858 */
+extern u8 lbl_1_bss_6F1E0;
+
+void fn_1_A5858(u8 value) {
+    lbl_1_bss_6F1E0 = value;
+}
+/* fzgx:end fn_1_A5858 */
+
+/* fzgx:begin fn_1_A5864 */
+#include "rel/main_rel/sound.h"
+
+extern int fn_8004C658(u32 obj);
+extern int fn_8004BBCC(u32 obj);
+extern void fn_8004BC0C(u32 obj, int arg);
+extern void fn_800674FC(u32 arg0, u32 arg1, u32 arg2);
+extern int fn_1_3FC38(void);
+
+void fn_1_A5864(void) {
+    if (lbl_1_bss_6EAD0.unk_0 != 0) {
+        if (lbl_1_bss_6EAD0.unk_0->unk_0 != 0 &&
+            fn_8004C658(lbl_1_bss_6EAD0.unk_0->unk_0) == 3) {
+            if (fn_8004BBCC(lbl_1_bss_6EAD0.unk_0->unk_0) == 0) {
+                fn_8004BC0C(lbl_1_bss_6EAD0.unk_0->unk_0, 1);
+            }
+        }
+
+        if (lbl_1_bss_6EAD0.unk_0->unk_4 != 0 &&
+            fn_8004C658(lbl_1_bss_6EAD0.unk_0->unk_4) == 3) {
+            if (fn_8004BBCC(lbl_1_bss_6EAD0.unk_0->unk_4) == 0) {
+                fn_8004BC0C(lbl_1_bss_6EAD0.unk_0->unk_4, 1);
+            }
+        }
+
+        if (fn_1_3FC38() != 0) {
+            if (lbl_1_bss_6EAC6.unk_0 != 0) {
+                fn_800674FC(0x10, 0xA0000300, 0);
+            }
+            if (lbl_1_bss_6EAC6.unk_0 != 0) {
+                fn_800674FC(0x10, 0xA0000400, 0);
+            }
+            if (lbl_1_bss_6EAC6.unk_0 != 0) {
+                fn_800674FC(0, 0xA0020000, 0);
+            }
+        }
+    }
+}
+/* fzgx:end fn_1_A5864 */
+
+/* fzgx:begin fn_1_A59AC */
+extern u8 lbl_1_bss_6EA98;
+extern s32 fn_1_3FC38(void);
+extern s32 fn_8004C658(void *);
+extern s32 fn_8004BBCC(void *);
+extern void fn_8004BC0C(void *, s32);
+extern void fn_800674FC(s32, u32, s32);
+
+void fn_1_A59AC(void) {
+    u8 *sound = &lbl_1_bss_6EA98;
+
+    if (*(void **)(sound + 0x38) != 0) {
+        if (*(void **)(*(void **)(sound + 0x38)) != 0) {
+            if (fn_8004C658(*(void **)(*(void **)(sound + 0x38))) == 3) {
+                if (fn_8004BBCC(*(void **)(*(void **)(sound + 0x38))) != 0) {
+                    fn_8004BC0C(*(void **)(*(void **)(sound + 0x38)), 0);
+                }
+            }
+        }
+
+        if (fn_1_3FC38() == 0 || *(u8 *)(sound + 0x749) == 0) {
+            if (*(void **)((u8 *)*(void **)(sound + 0x38) + 4) != 0) {
+                if (fn_8004C658(*(void **)((u8 *)*(void **)(sound + 0x38) + 4)) == 3) {
+                    if (fn_8004BBCC(*(void **)((u8 *)*(void **)(sound + 0x38) + 4)) != 0) {
+                        fn_8004BC0C(*(void **)((u8 *)*(void **)(sound + 0x38) + 4), 0);
+                    }
+                }
+            }
+        }
+
+        if (fn_1_3FC38() != 0 && *(u8 *)(sound + 0x2e) != 0) {
+            fn_800674FC(0, 0xA0030000, 0);
+        }
+    }
+}
+/* fzgx:end fn_1_A59AC */

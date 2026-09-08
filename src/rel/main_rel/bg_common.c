@@ -12,6 +12,67 @@ void fn_1_103AA8(void) {
 }
 /* fzgx:end fn_1_103AA8 */
 
+/* fzgx:begin fn_1_103AD4 */
+extern f32 lbl_1_rodata_78E8[19];
+extern f32 lbl_1_rodata_7934[11];
+extern f32 lbl_1_bss_85290;
+
+void fn_1_103AD4(void) {
+    f32 current = lbl_1_bss_85290;
+
+    if (current > lbl_1_rodata_78E8[0]) {
+        lbl_1_bss_85290 = current - lbl_1_rodata_7934[0];
+    }
+}
+/* fzgx:end fn_1_103AD4 */
+
+/* fzgx:begin fn_1_103F10 */
+extern void fn_1_9E5B8(void *);
+
+void fn_1_103F10(void *arg) {
+    int count;
+    u8 *entry;
+
+    entry = (u8 *)arg + 0x8e4;
+    count = 4;
+    do {
+        fn_1_9E5B8(entry);
+        count--;
+        entry += 0xfc;
+    } while (count > 0);
+}
+/* fzgx:end fn_1_103F10 */
+
+/* fzgx:begin fn_1_103F58 */
+typedef void (*Fn103FCC)(void);
+
+typedef struct Fn1_103F58_Object {
+    u8 pad0[4];
+    Fn103FCC callback;
+    void *context;
+} Fn1_103F58_Object;
+
+extern void *fn_1_54448(s32 arg0);
+extern Fn1_103F58_Object *fn_1_548AC(s32 arg0);
+extern void fn_1_103FCC(void);
+extern void fn_1_5489C(void *arg0, Fn1_103F58_Object *arg1);
+
+void fn_1_103F58(void *arg0) {
+    void *value;
+    Fn1_103F58_Object *object;
+
+    if (*(u32 *)arg0 != 0) {
+        value = fn_1_54448(0);
+        object = fn_1_548AC(12);
+        if (object != 0) {
+            object->callback = fn_1_103FCC;
+            object->context = arg0;
+            fn_1_5489C(value, object);
+        }
+    }
+}
+/* fzgx:end fn_1_103F58 */
+
 /* fzgx:begin fn_1_104710 */
 extern void fn_1_10688C(void);
 
@@ -87,6 +148,14 @@ void fn_1_1067A8(void *arg0, f32 arg1, f32 arg2) {
 }
 /* fzgx:end fn_1_1067A8 */
 
+/* fzgx:begin fn_1_106EA4 */
+extern f32 lbl_1_bss_85290;
+
+void fn_1_106EA4(f32 arg0) {
+    lbl_1_bss_85290 = arg0;
+}
+/* fzgx:end fn_1_106EA4 */
+
 /* fzgx:begin fn_1_1071C0 */
 extern u8 lbl_1_bss_86EC4;
 extern u32 lbl_1_bss_86EC0;
@@ -98,6 +167,25 @@ void fn_1_1071C0(void) {
     }
 }
 /* fzgx:end fn_1_1071C0 */
+
+/* fzgx:begin fn_1_107900 */
+extern u8 lbl_1_bss_86ED0;
+extern void fn_80008BEC(void *arg0, int arg1, int arg2);
+
+void fn_1_107900(void) {
+    fn_80008BEC(&lbl_1_bss_86ED0, 0, 0x1c70);
+}
+/* fzgx:end fn_1_107900 */
+
+/* fzgx:begin fn_1_107C4C */
+extern void fn_1_1088B8(void *arg);
+
+void fn_1_107C4C(void *arg) {
+    if (arg != 0) {
+        fn_1_1088B8(arg);
+    }
+}
+/* fzgx:end fn_1_107C4C */
 
 /* fzgx:begin fn_1_107E90 */
 extern u8 lbl_1_data_3FFBC[1396];
@@ -130,3 +218,19 @@ void fn_1_107E90(Fn107E90Context *context) {
     }
 }
 /* fzgx:end fn_1_107E90 */
+
+/* fzgx:begin fn_1_107F2C */
+extern void fn_1_107F74(void *arg0, int arg1);
+
+void fn_1_107F2C(void *arg0) {
+    fn_1_107F74(arg0, 0);
+}
+/* fzgx:end fn_1_107F2C */
+
+/* fzgx:begin fn_1_107F50 */
+extern void fn_1_107F74(void *arg0, int arg1);
+
+void fn_1_107F50(void *arg0) {
+    fn_1_107F74(arg0, 1);
+}
+/* fzgx:end fn_1_107F50 */
