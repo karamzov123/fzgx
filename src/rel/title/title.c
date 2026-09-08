@@ -354,6 +354,36 @@ s32 fn_8_6570(void) {
 }
 /* fzgx:end fn_8_6570 */
 
+/* fzgx:begin fn_8_6594 */
+extern u32 fn_1_3F8C0(void);
+extern u32 fn_1_47F74(u32);
+extern u32 fn_1_5370(u32, u32);
+extern u32 fn_80008E84(u32);
+extern u32 lbl_8_bss_2B4;
+extern void fn_8_6558(void);
+extern void fn_8_6560(void);
+extern void fn_8_6568(void);
+extern void fn_8_6570(void);
+
+void fn_8_6594(u32 arg0) {
+    u32 v0;
+    u32 t1, t2;
+    *(u32 *)((u8 *)arg0 + 168) = (u32)fn_8_6558;
+    *(u32 *)((u8 *)arg0 + 196) = (u32)fn_8_6568;
+    *(u32 *)((u8 *)arg0 + 204) = (u32)fn_8_6560;
+    *(u32 *)((u8 *)arg0 + 172) = (u32)fn_8_6570;
+    fn_1_5370(0, 0);
+    *(u32 *)((u8 *)arg0 + 0) = (*(u32 *)((u8 *)arg0 + 0) | 513);
+    v0 = (*(u32 *)((u8 *)arg0 + 0) | 0x800000);
+    *(u32 *)((u8 *)arg0 + 0) = v0;
+    lbl_8_bss_2B4 = 0;
+    t1 = fn_1_3F8C0();
+    t2 = fn_80008E84(t1);
+    fn_1_47F74(148);
+    fn_80008E84(t2);
+}
+/* fzgx:end fn_8_6594 */
+
 /* fzgx:begin fn_8_67B0 */
 extern u32 fn_1_3F8C0(void);
 extern u32 fn_1_48140(u32);

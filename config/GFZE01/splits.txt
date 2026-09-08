@@ -1816,3 +1816,45 @@ dol/fn_80021FBC.c:
 
 dol/fn_8001BD84.c:
 	.text       start:0x8001BD84 end:0x8001BDF0 align:4
+
+dol/CARDGetResultCode.c:
+	.text       start:0x8002A958 end:0x8002A988 align:4
+
+dol/fn_80046804.c:
+	.text       start:0x80046804 end:0x8004683C align:4
+
+dol/OSLinkFixed.c:
+	.text       start:0x8000E334 end:0x8000E370 align:4
+
+dol/fn_80008BA8.c:
+	.text       start:0x80008BA8 end:0x80008BEC align:4
+
+dol/fn_80046BE0.c:
+	.text       start:0x80046BE0 end:0x80046C28 align:4
+
+dol/fn_80046B90.c:
+	.text       start:0x80046B90 end:0x80046BE0 align:4
+
+dol/fn_800414D0.c:
+	.text       start:0x800414D0 end:0x80041530 align:4
+
+dol/fn_800567EC.c:
+	.text       start:0x800567EC end:0x80056850 align:4
+
+dol/fn_80006B70.c:
+	.text       start:0x80006B70 end:0x80006BDC align:4
+
+dol/fn_80041460.c:
+	.text       start:0x80041460 end:0x800414D0 align:4
+
+dol/fn_8008D8A8.c:
+	.text       start:0x8008D8A8 end:0x8008D92C align:4
+
+dol/fn_8008B784.c:
+	.text       start:0x8008B784 end:0x8008B830 align:4
+
+dol/fn_80074188.c:
+	.text       start:0x80074188 end:0x8007423C align:4
+
+dol/fn_80051594.c:
+	.text       start:0x80051594 end:0x80051678 align:4

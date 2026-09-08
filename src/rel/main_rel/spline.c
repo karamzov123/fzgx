@@ -1006,6 +1006,28 @@ u8 fn_1_FA4C0(void) {
 }
 /* fzgx:end fn_1_FA4C0 */
 
+/* fzgx:begin fn_1_FA5E0 */
+extern u32 lbl_1_bss_84420;
+
+u32 fn_1_FA5E0(u32 arg0, u32 arg1) {
+    s16 v0;
+    u32 v1;
+    u32 v2;
+    v0 = (s16)arg0;
+    v1 = arg0;
+    if (v0 >= 41) {
+    v1 = 0;
+    return v1;
+    }
+    v1 = 1;
+    v2 = (v1 << (arg1 & 0xFF));
+    v1 = (lbl_1_bss_84420 + (v0 << 1));
+    v1 = *(u16 *)((u8 *)v1 + 10);
+    v1 = (v1 & v2);
+    return v1;
+}
+/* fzgx:end fn_1_FA5E0 */
+
 /* fzgx:begin fn_1_FA61C */
 // Clears the low flag bit in the spline state.
 void fn_1_FA61C(void) {

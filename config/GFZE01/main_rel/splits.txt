@@ -4757,3 +4757,9 @@ rel/main_rel/stcoli/fn_1_2C688.c:
 
 rel/main_rel/memcard/fn_1_AC92C.c:
 	.text       start:0x000AC92C end:0x000AC960 align:4
+
+rel/main_rel/spline/fn_1_FA5E0.c:
+	.text       start:0x000FA5E0 end:0x000FA61C align:4
+
+rel/main_rel/bg_tow/fn_1_154C84.c:
+	.text       start:0x00154C84 end:0x00154CC4 align:4
