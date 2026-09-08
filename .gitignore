@@ -1,0 +1,19 @@
+# Game files and toolchain: never committed
+orig/**
+!orig/**/.gitkeep
+build/
+*.iso
+*.rvz
+*.gcm
+*.dol
+*.rel
+*.bin
+# Generated
+objdiff.json
+build.ninja
+.ninja_*
+__pycache__/
+.venv/
+.DS_Store
+# Private planning docs
+SPEC.md
