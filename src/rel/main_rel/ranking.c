@@ -1,59 +1,21 @@
 #include "types.h"
 #include "rel/main_rel/globals.h"
 
-/* fzgx:begin fn_1_1554D0 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
-typedef struct {
-    f32 unk_0;  // 12 loads, 6 stores
-    u32 unk_4;  // 2 loads, 0 stores
-    f64 unk_8;  // 8 loads, 6 stores
-    f64 unk_10;  // 8 loads, 6 stores
-    u16 unk_18;  // 10 loads, 6 stores
-    u8 unk_1A;  // 2 loads, 0 stores
-    u8 pad_1B[0x5];
-    f64 unk_20;  // 8 loads, 6 stores
-    f64 unk_28;  // 8 loads, 6 stores
-    f64 unk_30;  // 9 loads, 10 stores
-    u32 unk_38;  // 2 loads, 0 stores
-    u8 pad_3C[0x16];
-    u8 unk_52;  // 2 loads, 0 stores
-    u8 pad_53[0x15];
-    u8 unk_68;  // 0 loads, 4 stores
-    u8 pad_69[0x7];
-    u32 unk_70;  // 1 loads, 0 stores
-    u8 pad_74[0x2C];
-    u8 unk_A0;  // 0 loads, 2 stores
-    u8 pad_A1[0x7];
-    u32 unk_A8;  // 1 loads, 0 stores
-    u8 pad_AC[0x2C];
-    u8 unk_D8;  // 0 loads, 2 stores
-    u8 pad_D9[0x7];
-    u32 unk_E0;  // 1 loads, 0 stores
-    u8 pad_E4[0x2C];
-    u8 unk_110;  // 0 loads, 2 stores
-} Obj_1_bss_8EF20_At0;
-typedef struct {
-    Obj_1_bss_8EF20_At0 *unk_0;  // 17 loads, 3 stores
-    u8 pad_4[0x3C];
-    u32 unk_40;  // 1 loads, 2 stores
-    u8 pad_44[0x4];
-} Obj_1_bss_8EF20;
-extern Obj_1_bss_8EF20 lbl_1_bss_8EF20;
-extern u8 lbl_1_data_49B08[0xA];
+/* fzgx:begin fn_1_1554D0 */
+#include "rel/main_rel/ranking.h"
 
 extern u32 lbl_801A6410;
+extern void fn_1_46B4(u32, Obj_1_bss_8EF20_At0 *, u8 *, u32);
+extern Obj_1_bss_8EF20_At0 *fn_1_4630(u32, u32, u8 *, u32);
 
-extern void fn_1_46B4(u32, Obj_1_bss_8EF20_At0 *, unsigned char *, u32);
-extern Obj_1_bss_8EF20_At0 *fn_1_4630(u32, u32, unsigned char *, u32);
-
+// Rebuild the ranking object when the previous one has been consumed.
 void fn_1_1554D0(void) {
     if (lbl_1_bss_8EF20.unk_0 != 0) {
         fn_1_46B4(lbl_801A6410, lbl_1_bss_8EF20.unk_0,
                   lbl_1_data_49B08, 0xd50);
         lbl_1_bss_8EF20.unk_0 = 0;
     }
+
     if (lbl_1_bss_8EF20.unk_0 == 0) {
         lbl_1_bss_8EF20.unk_0 =
             fn_1_4630(lbl_801A6410, 0x230, lbl_1_data_49B08, 0xd55);
@@ -277,57 +239,45 @@ void fn_1_156598(void) {
 /* fzgx:end fn_1_156598 */
 
 /* fzgx:begin fn_1_15665C */
-extern u8 lbl_1_bss_8F428[320];
+#include "rel/main_rel/ranking.h"
+
 extern f32 lbl_1_rodata_D8C8[18];
 extern void fn_80008BEC(void *, int, u32);
 extern void fn_1_1568C4(void *);
 
-typedef struct Entry {
-    u32 unk_00;
-    void *owner;
-    s32 unk_08;
-    s32 unk_0c;
-    s32 unk_10;
-    s32 unk_14;
-    s32 unk_18;
-    s32 unk_1c;
-    s32 unk_20;
-    s32 unk_24;
-    s32 unk_28;
-    s32 unk_2c;
-    u32 unk_30;
-    f32 value_34;
-    u8 unk_38[0x18];
-} Entry;
+typedef Obj_1_bss_8F428 RankingEntry;
 
+// Initializes one ranking entry and registers it with the ranking system.
 void fn_1_15665C(void *owner, s32 index) {
-    Entry *entry;
+    RankingEntry *entry;
 
-    entry = (Entry *)lbl_1_bss_8F428 + index;
+    entry = (RankingEntry *)((u8 *)&lbl_1_bss_8F428 + index * 0x50);
     fn_80008BEC(entry, 0, 0x50);
-    entry->unk_00 = 0;
-    entry->owner = owner;
-    entry->unk_08 = -1;
-    entry->unk_0c = -1;
+    entry->unk_0 = 0;
+    entry->unk_4 = (u32)owner;
+    entry->unk_8 = -1;
+    entry->unk_C = -1;
     entry->unk_10 = -1;
     entry->unk_14 = -1;
-    entry->unk_1c = -1;
+    entry->unk_1C = -1;
     entry->unk_20 = -1;
     entry->unk_18 = -1;
     entry->unk_24 = -1;
     entry->unk_28 = -1;
-    entry->unk_2c = -1;
-    entry->value_34 = lbl_1_rodata_D8C8[0];
+    entry->unk_2C = -1;
+    entry->unk_34 = lbl_1_rodata_D8C8[0];
     fn_1_1568C4(entry);
 }
 /* fzgx:end fn_1_15665C */
 
 /* fzgx:begin fn_1_1566F8 */
-extern u8 lbl_1_bss_8F428[];
+#include "rel/main_rel/ranking.h"
+
 extern void fn_80008BA8(void *, void *, int);
 
+// Updates the indexed ranking entry's value through the shared ranking helper.
 void fn_1_1566F8(s32 index, void *arg) {
-    fn_80008BA8(lbl_1_bss_8F428 + index * 0x50 + 0x34, arg, 0x1c);
+    fn_80008BA8(&lbl_1_bss_8F428.unk_34 + index * 0x14, arg, 0x1c);
 }
 /* fzgx:end fn_1_1566F8 */
 
@@ -340,6 +290,7 @@ typedef struct Entry {
     u8 pad_08[0x48];
 } Entry;
 
+// Reset the ranking entry's status and score markers.
 void fn_1_156730(s32 index) {
     Entry *entry = (Entry *)lbl_1_bss_8F428 + index;
 
@@ -353,16 +304,16 @@ typedef struct {
     u8 pad_0[0x4];
     u32 unk_4;
     u8 pad_8[0x48];
-} Entry;
+} RankingEntry;
 
-extern Entry lbl_1_bss_8F428;
+extern RankingEntry lbl_1_bss_8F428;
 extern void fn_1_1569E8(void *entry);
 extern void fn_1_1568C4(void *entry);
 
+// Updates the ranking entry when it is not marked as unused.
 void fn_1_156754(s32 index) {
-    Entry *entry;
+    RankingEntry *entry = &lbl_1_bss_8F428 + index;
 
-    entry = &lbl_1_bss_8F428 + index;
     if (entry->unk_4 + 0x10000 != 0xffff) {
         fn_1_1569E8(entry);
         fn_1_1568C4(entry);
@@ -371,19 +322,17 @@ void fn_1_156754(s32 index) {
 /* fzgx:end fn_1_156754 */
 
 /* fzgx:begin fn_1_156884 */
-typedef struct {
-    u8 unk0[4];
-    u32 field4;
-    u8 unk8[0x48];
-} Entry;
+#include "rel/main_rel/ranking.h"
 
-extern Entry lbl_1_bss_8F428[4];
-extern void fn_1_1574E0(Entry *entry, u32 value);
+extern void fn_1_1574E0(Obj_1_bss_8F428 *entry, u32 value);
 
-void fn_1_156884(int index) {
-    Entry *entry = &lbl_1_bss_8F428[index];
-    u32 value = entry->field4;
+// Refreshes an entry when its ranking value is not the invalid sentinel.
+void fn_1_156884(s32 index) {
+    Obj_1_bss_8F428 *entry;
+    u32 value;
 
+    entry = (Obj_1_bss_8F428 *)((u8 *)&lbl_1_bss_8F428 + index * 0x50);
+    value = entry->unk_4;
     if (value + 0x10000 != 0xffff) {
         fn_1_1574E0(entry, value);
     }
@@ -409,55 +358,56 @@ void fn_1_1569A0(State *state) {
 
 /* fzgx:begin fn_1_1569E8 */
 extern void fn_8006B7B4(void *);
-extern void fn_8006B870(s32);
+extern void fn_8006B870(void);
 
 typedef struct {
-    u32 flags;
+    u32 unk_00;
     u8 _pad04[8];
-    void *field0c;
-    void *field10;
-    void *field14;
-    s32 field18;
-    void *field1c;
-    void *field20;
+    void *unk_0c;
+    void *unk_10;
+    void *unk_14;
+    s32 unk_18;
+    void *unk_1c;
+    void *unk_20;
     u8 _pad24[4];
-    void *field28;
-    void *field2c;
+    void *unk_28;
+    void *unk_2c;
 } State;
 
+/* Releases pending ranking resources and resets their status flags. */
 void fn_1_1569E8(State *state) {
-    if (state->flags & 4) {
-        fn_8006B7B4(state->field10);
-        state->flags &= ~4;
+    if (state->unk_00 & 4) {
+        fn_8006B7B4(state->unk_10);
+        state->unk_00 &= ~4;
     }
-    if (state->flags & 2) {
-        fn_8006B7B4(state->field0c);
-        state->flags &= ~2;
+    if (state->unk_00 & 2) {
+        fn_8006B7B4(state->unk_0c);
+        state->unk_00 &= ~2;
     }
-    if (state->flags & 8) {
-        fn_8006B7B4(state->field14);
-        state->flags &= ~8;
+    if (state->unk_00 & 8) {
+        fn_8006B7B4(state->unk_14);
+        state->unk_00 &= ~8;
     }
-    if (state->flags & 0x20) {
-        fn_8006B7B4(state->field1c);
-        state->flags &= ~0x20;
+    if (state->unk_00 & 0x20) {
+        fn_8006B7B4(state->unk_1c);
+        state->unk_00 &= ~0x20;
     }
-    if (state->flags & 0x40) {
-        fn_8006B7B4(state->field20);
-        state->flags &= ~0x40;
+    if (state->unk_00 & 0x40) {
+        fn_8006B7B4(state->unk_20);
+        state->unk_00 &= ~0x40;
     }
-    if ((u32)(state->field18 + 0x10000) != 0xffff) {
-        fn_8006B870(state->field18);
-        state->field18 = -1;
+    if ((u32)(state->unk_18 + 0x10000) != 0xffff) {
+        fn_8006B870();
+        state->unk_18 = -1;
     }
-    state->flags &= ~0x10;
-    if (state->flags & 0x80) {
-        fn_8006B7B4(state->field28);
-        state->flags &= ~0x80;
+    state->unk_00 &= ~0x10;
+    if (state->unk_00 & 0x80) {
+        fn_8006B7B4(state->unk_28);
+        state->unk_00 &= ~0x80;
     }
-    if (state->flags & 0x100) {
-        fn_8006B7B4(state->field2c);
-        state->flags &= ~0x100;
+    if (state->unk_00 & 0x100) {
+        fn_8006B7B4(state->unk_2c);
+        state->unk_00 &= ~0x100;
     }
 }
 /* fzgx:end fn_1_1569E8 */
@@ -538,7 +488,7 @@ void fn_1_1578C4(void) {
 /* fzgx:begin fn_1_157920 */
 extern u32 lbl_1_bss_8F578;
 
-// fn_1_157920: simple getter returning global variable value
+// Return the current ranking value.
 u32 fn_1_157920(void) {
     return lbl_1_bss_8F578;
 }
@@ -600,6 +550,8 @@ int fn_1_159064(void) {
 /* fzgx:end fn_1_159064 */
 
 /* fzgx:begin fn_1_159440 */
+#include "rel/main_rel/ranking.h"
+
 typedef struct {
     u8 pad_0[0x30];
     u32 unk_30;
@@ -607,13 +559,13 @@ typedef struct {
     u8 pad_38[0x4];
 } RankingEntry;
 
-extern RankingEntry lbl_1_data_4C810[4];
 extern void fn_1_1594AC(int index, int flag);
 
+// Preserve the current ranking entry before refreshing its state.
 void fn_1_159440(int index, int flag) {
     RankingEntry *entry;
 
-    entry = &lbl_1_data_4C810[index];
+    entry = &((RankingEntry *)&lbl_1_data_4C810)[index];
     entry->unk_34 = entry->unk_30;
     fn_1_1594AC(index, flag);
 }
@@ -637,88 +589,79 @@ void fn_1_159478(int index, int unused, int value) {
 /* fzgx:end fn_1_159478 */
 
 /* fzgx:begin fn_1_1594AC */
-extern char lbl_1_data_4C900[46];
-extern int lbl_1_bss_8F588[188];
+#include "rel/main_rel/ranking.h"
 
 extern void OSReport(const char *format, ...);
 extern void fn_1_465D0(void *object, int value);
 extern void fn_80008BEC(void *dst, int value, int size);
 
-typedef struct {
-    void *object;
-    s16 *indices;
-    u8 data[0x20];
-    s16 state;
-    s16 state2;
-    u8 type;
-    u8 pad2d[0x0b];
-    int value;
-} Entry;
-
-extern Entry lbl_1_data_4C810[4];
-
 void fn_1_1594AC(int index, int flag) {
-    Entry *entry;
+    Obj_1_data_4C810 *entry;
     s16 value;
     int offset;
 
-    entry = &lbl_1_data_4C810[index];
-    if (entry->type >= 0x10) {
-        OSReport(lbl_1_data_4C900);
+    // Activate the selected ranking entry and publish its referenced indices.
+    entry = (Obj_1_data_4C810 *)((u8 *)&lbl_1_data_4C810 + index * 0x3c);
+    if (entry->unk_2C >= 0x10) {
+        OSReport((const char *)lbl_1_data_4C900);
     }
 
     if (flag != 0) {
-        fn_1_465D0(entry->object, 6);
+        fn_1_465D0((void *)entry->unk_0, 6);
     } else {
-        fn_1_465D0(entry->object, 5);
+        fn_1_465D0((void *)entry->unk_0, 5);
     }
 
     offset = 0;
     for (;;) {
-        value = *(s16 *)((u8 *)entry->indices + offset);
+        value = *(s16 *)((u8 *)entry->unk_4 + offset);
         if (value == -1) {
             break;
         }
-        lbl_1_bss_8F588[value] = index;
+        ((int *)lbl_1_bss_8F588)[value] = index;
         offset += 2;
     }
 
-    fn_80008BEC(entry->data, 0, 0x20);
-    entry->state = 1;
-    entry->state2 = 0;
-    entry->value = flag;
+    fn_80008BEC((u8 *)entry + 8, 0, 0x20);
+    entry->unk_28 = 1;
+    entry->unk_2A = 0;
+    entry->unk_38 = flag;
 }
 /* fzgx:end fn_1_1594AC */
 
 /* fzgx:begin fn_1_15AC00 */
-extern u8 lbl_1_bss_8F878[88];
+#include "rel/main_rel/ranking.h"
 
+// Return the address of the ranking state byte at offset 0x3f.
 u8 *fn_1_15AC00(void) {
-    return &lbl_1_bss_8F878[0x3f];
+    return &lbl_1_bss_8F878.unk_3F;
 }
 /* fzgx:end fn_1_15AC00 */
 
 /* fzgx:begin fn_1_15B3E8 */
-extern u8 lbl_1_bss_8F878[88];
+#include "rel/main_rel/ranking.h"
 
+// Return the current ranking state byte.
 u8 fn_1_15B3E8(void) {
-    return lbl_1_bss_8F878[0x3a];
+    return lbl_1_bss_8F878.unk_3A;
 }
 /* fzgx:end fn_1_15B3E8 */
 
 /* fzgx:begin fn_1_15B3F8 */
-extern u8 lbl_1_bss_8F878[88];
+#include "rel/main_rel/ranking.h"
 
+// Return the ranking state byte at offset 0x3b.
 u8 fn_1_15B3F8(void) {
-    return lbl_1_bss_8F878[0x3b];
+    return lbl_1_bss_8F878.unk_3B;
 }
 /* fzgx:end fn_1_15B3F8 */
 
 /* fzgx:begin fn_1_15B408 */
-extern u8 lbl_1_bss_8F878[88];
+#include "rel/main_rel/ranking.h"
 
+// Returns the current ranking state.
 u8 fn_1_15B408(void) {
-    return lbl_1_bss_8F878[0x3c];
+    return lbl_1_bss_8F878.unk_3C;
 }
 /* fzgx:end fn_1_15B408 */
 

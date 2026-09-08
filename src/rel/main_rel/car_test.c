@@ -1,6 +1,8 @@
 #include "types.h"
 
 /* fzgx:begin fn_1_7D694 */
+#include "rel/main_rel/globals.h"
+
 extern u32 lbl_1_bss_6D7E8[2];
 
 typedef struct {
@@ -18,9 +20,11 @@ typedef struct {
     s8 value;
 } GlobalEntry;
 
+// Compares the object's entry value with the current global entry.
 void fn_1_7D694(Object *obj) {
     Entry *entry = obj->entry;
     GlobalEntry *global = (GlobalEntry *)lbl_1_bss_6D7E8[0];
+
     if (entry->value == global->value) {
         return;
     }
@@ -112,10 +116,13 @@ void *fn_1_7F254(void *arg0, void *arg1) {
 /* fzgx:end fn_1_7F254 */
 
 /* fzgx:begin fn_1_7F518 */
+#include "rel/main_rel/globals.h"
+
 extern u32 lbl_1_data_1F4FC[41];
 extern void fn_80083DB0(void* arg0, u32 arg1);
 extern void fn_1_801F8(s16 arg0, void* arg1);
 
+// Initializes the car test entry and optionally performs its follow-up setup.
 void* fn_1_7F518(s16 arg0, void* arg1, s32 arg2) {
     fn_80083DB0(arg1, lbl_1_data_1F4FC[arg0]);
     if (arg2 == 1) {

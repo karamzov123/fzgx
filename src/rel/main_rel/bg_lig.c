@@ -147,20 +147,16 @@ void fn_1_D76EC(void) {
 /* fzgx:end fn_1_D76EC */
 
 /* fzgx:begin fn_1_D76F0 */
-typedef struct {
-    f32 x;
-    f32 y;
-    f32 z;
-} Vec3;
+#include "rel/main_rel/globals.h"
 
-extern u32 lbl_1_data_2A7E0[62];
+// Copies a three-component float vector into the indexed light buffer entry.
+void fn_1_D76F0(const f32 *src, s16 index) {
+    f32 *dst = (f32 *)lbl_1_data_2A7E0.unk_3C;
 
-void fn_1_D76F0(const Vec3 *src, s16 index) {
-    f32 *dst = (f32 *)lbl_1_data_2A7E0[15];
-    dst[index * 3] = src->x;
+    dst[index * 3] = src[0];
     dst += index * 3;
-    dst[1] = src->y;
-    dst[2] = src->z;
+    dst[1] = src[1];
+    dst[2] = src[2];
 }
 /* fzgx:end fn_1_D76F0 */
 
@@ -189,25 +185,30 @@ void fn_1_D79E4(void *obj) {
 /* fzgx:end fn_1_D79E4 */
 
 /* fzgx:begin fn_1_D8388 */
+#include "rel/main_rel/globals.h"
+
 extern u32 fn_1_58C4(void);
 extern void fn_1_D7EF4(void *, u32);
 
+// Initializes each lighting entry while the lighting system is available.
 void fn_1_D8388(void *obj) {
-    u8 *p = (u8 *)obj;
+    u8 *entry = (u8 *)obj;
     s32 i;
 
     if (fn_1_58C4() < 2) {
         i = 0;
         do {
-            fn_1_D7EF4(p + 0x3f0, 0);
+            fn_1_D7EF4(entry + 0x3f0, 0);
             i++;
-            p += 0x30;
+            entry += 0x30;
         } while (i < 0xf);
     }
 }
 /* fzgx:end fn_1_D8388 */
 
 /* fzgx:begin fn_1_D8784 */
+#include "rel/main_rel/globals.h"
+
 typedef void (*LigCallback)(void);
 
 typedef struct {
@@ -237,6 +238,7 @@ extern void *fn_1_548AC(s32 value);
 extern void fn_1_D8878(void);
 extern void fn_1_5489C(void *obj, void *arg);
 
+// Queues callbacks for eligible lig entries.
 void fn_1_D8784(LigObject *obj) {
     void *callback_data;
     void *owner;
@@ -326,21 +328,24 @@ void fn_1_D8D08(LigContainer *container) {
 /* fzgx:end fn_1_D8D08 */
 
 /* fzgx:begin fn_1_D8EEC */
+#include "rel/main_rel/globals.h"
+
 typedef struct {
-    u8 data[0xac];
+    u8 unk_0[0xac];
 } LigEntry;
 
 typedef struct {
-    u8 pad[0x6d4];
-    s32 count;
-    LigEntry entries[1];
+    u8 unk_0[0x6d4];
+    s32 unk_6d4;
+    LigEntry unk_6d8[1];
 } LigObject;
 
 extern void fn_1_103264(LigEntry *entry, void *arg);
 
+// Applies the operation to each entry in the object.
 void fn_1_D8EEC(LigObject *obj, void *arg) {
-    s32 count = obj->count;
-    LigEntry *entry = obj->entries;
+    s32 count = obj->unk_6d4;
+    LigEntry *entry = obj->unk_6d8;
 
     while (count > 0) {
         fn_1_103264(entry, arg);

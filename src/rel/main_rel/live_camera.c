@@ -1,17 +1,21 @@
 #include "types.h"
 
 /* fzgx:begin fn_1_DA34 */
-extern char lbl_1_data_4420[14];
-extern char lbl_1_data_4430[15];
+#include "rel/main_rel/globals.h"
 
-extern void fn_8000C49C(char *, s32, ...);
+extern u8 lbl_1_data_4420[14];
+extern u8 lbl_1_data_4430[15];
+extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
 
+// Reports the camera source location and message used by this routine.
 void fn_1_DA34(void) {
     fn_8000C49C(lbl_1_data_4420, 0x34, lbl_1_data_4430);
 }
 /* fzgx:end fn_1_DA34 */
 
 /* fzgx:begin fn_1_EE04 */
+#include "rel/main_rel/globals.h"
+
 typedef struct {
     u8 pad[2];
     s16 state;
@@ -22,6 +26,7 @@ typedef void (*Fn1EE04Handler)(Fn1EE04Context *);
 extern Fn1EE04Handler lbl_1_data_4440[17];
 extern void fn_1_6DD0(void *);
 
+ // Dispatch the live-camera state handler before advancing camera processing.
 void fn_1_EE04(Fn1EE04Context *context) {
     lbl_1_data_4440[context->state](context);
     fn_1_6DD0(0);
@@ -67,9 +72,12 @@ u8 fn_1_12850(void) {
 /* fzgx:end fn_1_12850 */
 
 /* fzgx:begin fn_1_12860 */
+#include "rel/main_rel/globals.h"
+
 extern u32 lbl_1_bss_1800[4];
 extern u32 *fn_1_1289C(u32 *);
 
+// Initializes the live-camera state and returns the active camera result.
 u32 fn_1_12860(u32 arg0, u32 arg1) {
     lbl_1_bss_1800[0] = arg0;
     lbl_1_bss_1800[1] = arg1;

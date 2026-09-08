@@ -605,6 +605,8 @@ void fn_1_ABDA8(ArgStruct *arg) {
 /* fzgx:end fn_1_ABDA8 */
 
 /* fzgx:begin fn_1_ABDB8 */
+#include "rel/main_rel/globals.h"
+
 extern s32 fn_8002FE54(u8 byte_val, void *arg1, void *arg2);
 
 typedef struct {
@@ -621,6 +623,7 @@ typedef struct {
     ResultStruct *ptr_0x24;
 } ArgStruct;
 
+// Stores the loaded result and resets its metadata after a successful load.
 void fn_1_ABDB8(ArgStruct *arg) {
     s32 result;
 
@@ -691,6 +694,8 @@ void fn_1_ABF44(Fn1ABF44Object *arg) {
 /* fzgx:end fn_1_ABF44 */
 
 /* fzgx:begin fn_1_AC12C */
+#include "rel/main_rel/globals.h"
+
 typedef struct Fn1AC12CState {
     u8 pad_00[0x2];
     u16 value;
@@ -710,6 +715,7 @@ typedef struct Fn1AC12CTarget {
 extern void *fn_8002C0A0(u8 id);
 extern void fn_8002F7D8(void *dst, void *src, int size, int zero, int flags);
 
+// Initializes the memory-card request and prepares its transfer buffer.
 void fn_1_AC12C(Fn1AC12CTarget *target) {
     target->state->value = 300;
     target->result = fn_8002C0A0(target->id);
@@ -1122,6 +1128,7 @@ void fn_1_ACD00(void) {
 /* fzgx:end fn_1_ACD00 */
 
 /* fzgx:begin fn_1_ACD04 */
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/memcard.h"
 
 typedef struct {
@@ -1160,6 +1167,7 @@ extern int fn_8002E0C4(u8 value);
 extern void fn_1_46B4(void *arg0, void *arg1, void *arg2, int arg3);
 extern void *lbl_801A6410;
 
+// Reset the card state and publish the completed memory-card operation.
 void fn_1_ACD04(Fn1Acd04Obj *obj) {
     int value;
 
@@ -1319,6 +1327,7 @@ extern Obj_1_data_3C7B8 lbl_1_data_3C7B8;
 extern s32 fn_8002E0C4(u8 value);
 extern void fn_1_46B4(void* manager, void* value, Obj_1_data_3C7B8* data, s32 offset);
 
+// Cleans up pending card data, updates state values, and marks the object ready.
 void fn_1_ACF30(MemcardObject* obj) {
     if (obj->card != 0) {
         do {
@@ -1409,6 +1418,8 @@ void fn_1_AD168(Fn1AD168Obj *obj) {
 /* fzgx:end fn_1_AD168 */
 
 /* fzgx:begin fn_1_AD1AC */
+#include "rel/main_rel/globals.h"
+
 typedef struct Fn1AD1ACOut {
     u8 pad0[4];
     void *field4;
@@ -1422,8 +1433,9 @@ typedef struct Fn1AD1AC {
 
 extern void *fn_8002A958(u8 arg0);
 
-void fn_1_AD1AC(Fn1AD1AC *arg0) {
-    arg0->field24->field4 = fn_8002A958(arg0->field0);
+// Store the generated value in the object's output slot.
+void fn_1_AD1AC(Fn1AD1AC *obj) {
+    obj->field24->field4 = fn_8002A958(obj->field0);
 }
 /* fzgx:end fn_1_AD1AC */
 
@@ -1608,32 +1620,31 @@ u8 fn_1_B7CD4(void) {
 /* fzgx:end fn_1_B7CD4 */
 
 /* fzgx:begin fn_1_B7E14 */
-extern u8 lbl_1_bss_716C8[320];
-extern void fn_80083D6C(void *dst, void *src, int size);
+#include "rel/main_rel/memcard.h"
+
+// Copies the 0x20-byte memory-card state into the global work area.
+void fn_80083D6C(void *dst, const void *src, int size);
 
 void fn_1_B7E14(void *arg) {
-    fn_80083D6C(lbl_1_bss_716C8 + 0x54, arg, 0x20);
+    fn_80083D6C(lbl_1_bss_716C8.pad_54, arg, 0x20);
 }
 /* fzgx:end fn_1_B7E14 */
 
 /* fzgx:begin fn_1_B7E48 */
-extern u8 lbl_1_bss_716C8[320];
+#include "rel/main_rel/memcard.h"
+#include "rel/main_rel/globals.h"
 
-typedef struct {
-    u8 pad0[8];
-    u32 flags;
-} FlagObject;
-
+// Return whether either tracked object has its active flag set.
 int fn_1_B7E48(void) {
     int result = 0;
-    FlagObject *object = *(FlagObject **)(lbl_1_bss_716C8 + 0x24);
+    Obj_1_bss_716C8_At24 *object = lbl_1_bss_716C8.unk_24;
 
-    if (object != 0 && (object->flags & 0x200) != 0) {
+    if (object != 0 && (object->unk_8 & 0x200) != 0) {
         result = 1;
     }
 
-    object = *(FlagObject **)(lbl_1_bss_716C8 + 0xc4);
-    if (object != 0 && (object->flags & 0x200) != 0) {
+    object = *(Obj_1_bss_716C8_At24 **)(lbl_1_bss_716C8.pad_A0 + 0x24);
+    if (object != 0 && (object->unk_8 & 0x200) != 0) {
         result = 1;
     }
 
@@ -1642,6 +1653,8 @@ int fn_1_B7E48(void) {
 /* fzgx:end fn_1_B7E48 */
 
 /* fzgx:begin fn_1_B7E98 */
+#include "rel/main_rel/globals.h"
+
 typedef struct {
     u8 unk_0;
     s8 unk_1;
@@ -1650,6 +1663,7 @@ typedef struct {
 
 extern MemcardEntry lbl_1_bss_716C8[];
 
+// Return whether the indexed memory-card entry is not in the unavailable state.
 int fn_1_B7E98(int index) {
     return lbl_1_bss_716C8[index].unk_1 != -3;
 }
@@ -1673,6 +1687,8 @@ u32 fn_1_B7F08(void) {
 /* fzgx:end fn_1_B7F08 */
 
 /* fzgx:begin fn_1_B7F24 */
+#include "rel/main_rel/globals.h"
+
 typedef struct {
     u8 pad_0[0x48];
     u32 unk_48;
@@ -1687,6 +1703,7 @@ typedef struct {
 extern MemcardState lbl_1_bss_716C8;
 extern s8 lbl_1_bss_7730A;
 
+// Reset the memcard state used by the next operation.
 void fn_1_B7F24(void) {
     lbl_1_bss_716C8.unk_50 = 0;
     lbl_1_bss_716C8.unk_F0 = 0;
@@ -1710,6 +1727,7 @@ u32 fn_1_B7FC8(void) {
 extern int fn_8002A744(void);
 extern void fn_8002A74C(u16 value);
 
+// Toggles the low 16-bit status value and stores the result.
 void fn_1_B7FDC(void) {
     u16 value = (u16)fn_8002A744();
     value = (u16)(value ^ 1);
@@ -1726,27 +1744,22 @@ extern int fn_1_46B4(void *arg0, u32 arg1, Obj_1_data_3C7B8 *arg2, int arg3);
 extern int fn_8002DFE0(int arg0, u32 arg1, int arg2);
 extern int fn_8002D65C(int arg0);
 
-typedef struct {
-    u8 pad_0[0xC];
-    u32 unk_C;
-    u8 pad_10[0x90];
-} Slot;
-
+// Loads a memory-card slot, retrying transient operations and cleaning up failures.
 int fn_1_B800C(int index) {
     int result;
-    Slot *object;
+    Obj_1_bss_716C8 *slot;
 
-    object = (Slot *)&lbl_1_bss_716C8 + index;
-    object->unk_C = fn_1_45D0(*(void **)&lbl_801A6410, 0xA000, &lbl_1_data_3C7B8, 0x256D);
+    slot = (Obj_1_bss_716C8 *)((u8 *)&lbl_1_bss_716C8 + index * 0xa0);
+    slot->unk_C = fn_1_45D0(*(void **)&lbl_801A6410, 0xA000, &lbl_1_data_3C7B8, 0x256D);
     for (;;) {
-        result = fn_8002DFE0(index, object->unk_C, 0);
+        result = fn_8002DFE0(index, slot->unk_C, 0);
         if (result == -1) {
             continue;
         }
         if (result != 0 && result != -6) {
-            if (object->unk_C != 0) {
-                fn_1_46B4(*(void **)&lbl_801A6410, object->unk_C, &lbl_1_data_3C7B8, 0x2573);
-                object->unk_C = 0;
+            if (slot->unk_C != 0) {
+                fn_1_46B4(*(void **)&lbl_801A6410, slot->unk_C, &lbl_1_data_3C7B8, 0x2573);
+                slot->unk_C = 0;
             }
             return result;
         }
@@ -1765,16 +1778,18 @@ extern int fn_8002E0C4(int);
 extern void fn_1_46B4(void *arg0, u32 arg1, void *arg2, u32 arg3);
 extern void *lbl_801A6410;
 
+// Wait for the card operation, then release its temporary result.
 void fn_1_B80F0(int index) {
-    u8 *entry = (u8 *)&lbl_1_bss_716C8 + index * 0xa0;
+    Obj_1_bss_716C8 *entry =
+        (Obj_1_bss_716C8 *)((u8 *)&lbl_1_bss_716C8 + index * 0xa0);
 
     while (fn_8002E0C4(index) == -1) {
     }
 
-    if (*(u32 *)(entry + 0xc) != 0) {
-        fn_1_46B4(lbl_801A6410, *(u32 *)(entry + 0xc),
+    if (entry->unk_C != 0) {
+        fn_1_46B4(lbl_801A6410, entry->unk_C,
                   &lbl_1_data_3C7B8, 0x258c);
-        *(u32 *)(entry + 0xc) = 0;
+        entry->unk_C = 0;
     }
 }
 /* fzgx:end fn_1_B80F0 */
@@ -1813,6 +1828,7 @@ typedef struct {
     u32 unk_2C;
 } Fn1B9C38Entry;
 
+// Clears the selected memory-card entry table, saving each populated entry first.
 void fn_1_B9C38(s32 index) {
     Fn1B9C38Entry *entry;
     s32 i;
@@ -1840,6 +1856,7 @@ extern void fn_1_1596DC(u32);
 extern void fn_1_484CC(u32);
 extern u32 lbl_801A6410;
 
+// Flush the pending memory-card operation and restore the card state when needed.
 void fn_1_BC29C(void) {
     if (lbl_1_bss_7A380 != 0) {
         fn_1_46B4(lbl_801A6410, lbl_1_bss_7A380, &lbl_1_data_3C7B8, 0x2ad4);
@@ -1878,6 +1895,7 @@ void fn_1_C17CC(void) {
 /* fzgx:end fn_1_C17CC */
 
 /* fzgx:begin fn_1_C34F0 */
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/memcard.h"
 
 extern void fn_1_F755C(u8 value);
@@ -1893,6 +1911,7 @@ extern u32 lbl_1_data_2B58;
 extern u32 lbl_1_data_2B60;
 extern u8 lbl_1_data_3D124[19];
 
+// Initializes the memory-card state and restores the persistent card data.
 void fn_1_C34F0(void) {
     Obj_1_bss_718C0_At0 *base;
     u8 *ptr;
@@ -1926,6 +1945,7 @@ void fn_1_C34F0(void) {
 extern void fn_80008BA8(void *dst, const void *src, u32 size);
 extern void fn_8000C49C(void *arg0, u32 arg1, ...);
 
+// Serializes the current memory-card data into the active buffer.
 void fn_1_C36EC(void) {
     u8 *buffer = (u8 *)lbl_1_bss_718C0.unk_0 + 4;
 

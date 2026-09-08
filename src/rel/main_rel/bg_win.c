@@ -61,10 +61,11 @@ void fn_1_15E220(u8 *value) {
 /* fzgx:end fn_1_15E220 */
 
 /* fzgx:begin fn_1_15E260 */
-extern u8 lbl_1_bss_8FDA8[];
+#include "rel/main_rel/bg_win.h"
 
+// Marks the indexed background-window entry as active.
 void fn_1_15E260(s32 index) {
-    lbl_1_bss_8FDA8[index * 0x34] |= 4;
+    (&lbl_1_bss_8FDA8.unk_0)[index * 0x34] |= 4;
 }
 /* fzgx:end fn_1_15E260 */
 
@@ -95,6 +96,8 @@ void fn_1_15E3E0(s32 index, u32 value) {
 /* fzgx:end fn_1_15E3E0 */
 
 /* fzgx:begin fn_1_15E540 */
+#include "rel/main_rel/globals.h"
+
 typedef struct {
     u8 unk_0;
     u8 unk_1;
@@ -108,6 +111,7 @@ extern void fn_1_15E220(u8 *);
 extern void fn_1_3F8C(void *, void *, u8 *, s32);
 extern WinEntry lbl_1_bss_8FDA8[];
 
+// Initializes a window entry once and marks it ready for reuse.
 void fn_1_15E540(s32 index, void *arg) {
     if (!(lbl_1_bss_8FDA8[index].unk_0 & 1)) {
         void *value = fn_1_435C(arg);

@@ -1,6 +1,8 @@
 #include "types.h"
 
 /* fzgx:begin fn_1_68248 */
+#include "rel/main_rel/globals.h"
+
 extern char lbl_1_data_1D8A8[13];
 extern void *lbl_801A6410;
 extern void fn_1_46B4(void *, void *, char *, int);
@@ -10,6 +12,7 @@ typedef struct Fn1_68248Arg {
     void *unk_34;
 } Fn1_68248Arg;
 
+// Register the effect resource with the shared effect manager.
 void fn_1_68248(Fn1_68248Arg *arg) {
     fn_1_46B4(lbl_801A6410, arg->unk_34, lbl_1_data_1D8A8, 0xe2);
 }

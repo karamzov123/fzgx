@@ -39,14 +39,15 @@ void fn_1_154CD0(u32 arg0, u32 arg1) {
 /* fzgx:end fn_1_154CD0 */
 
 /* fzgx:begin fn_1_154D84 */
-extern u32 lbl_1_bss_8ED90;
-extern u32 lbl_1_bss_8ED94[3];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/rep_memcard.h"
+
 extern u32 lbl_801A6410;
-extern char lbl_1_data_49AC8[14];
-
+extern u8 lbl_1_data_49AC8[14];
 extern void fn_80008BA8(u32 arg0, u32 arg1, u32 arg2);
-extern void fn_1_46B4(u32 arg0, u32 arg1, char *arg2, s32 arg3);
+extern void fn_1_46B4(u32 arg0, u32 arg1, u8 *arg2, s32 arg3);
 
+// Saves the pending memory-card data and clears the pending state.
 u32 fn_1_154D84(u32 arg0) {
     if (lbl_1_bss_8ED90 == 0) {
         return 0;
@@ -55,10 +56,10 @@ u32 fn_1_154D84(u32 arg0) {
         return 0;
     }
 
-    fn_80008BA8(arg0, lbl_1_bss_8ED90, lbl_1_bss_8ED94[0]);
+    fn_80008BA8(arg0, lbl_1_bss_8ED90, lbl_1_bss_8ED94.unk_0);
     fn_1_46B4(lbl_801A6410, lbl_1_bss_8ED90, lbl_1_data_49AC8, 0x13f);
     lbl_1_bss_8ED90 = 0;
-    lbl_1_bss_8ED94[0] = 0;
+    lbl_1_bss_8ED94.unk_0 = 0;
     return 1;
 }
 /* fzgx:end fn_1_154D84 */
@@ -100,34 +101,37 @@ void fn_1_154ED0(Fn_1_154ED0_Arg *arg0) {
 /* fzgx:end fn_1_154ED0 */
 
 /* fzgx:begin fn_1_154F1C */
-extern u32 lbl_1_bss_8EDF0[76];
+#include "rel/main_rel/rep_memcard.h"
+
 extern void *memset(void *dest, int value, u32 size);
 
+// Reset the memory-card state and clear its backing buffer.
 void fn_1_154F1C(void) {
-    u32 *ptr = &lbl_1_bss_8EDF0[13];
-
-    lbl_1_bss_8EDF0[7] = 0;
-    lbl_1_bss_8EDF0[5] = 0;
-    lbl_1_bss_8EDF0[6] = 0;
-    memset(ptr, 0, 250);
-    *(u8 *)ptr = 0;
+    lbl_1_bss_8EDF0.unk_1C = 0;
+    lbl_1_bss_8EDF0.unk_14 = 0;
+    lbl_1_bss_8EDF0.unk_18 = 0;
+    memset(&lbl_1_bss_8EDF0.unk_34, 0, 250);
+    lbl_1_bss_8EDF0.unk_34 = 0;
 }
 /* fzgx:end fn_1_154F1C */
 
 /* fzgx:begin fn_1_154F74 */
-extern u32 lbl_1_bss_8EDF0[76];
+#include "rel/main_rel/rep_memcard.h"
 
+// Stores the two memory-card state values used by the replication subsystem.
 void fn_1_154F74(u32 arg0, u32 arg1) {
-    lbl_1_bss_8EDF0[8] = arg0;
-    lbl_1_bss_8EDF0[9] = arg1;
+    lbl_1_bss_8EDF0.unk_20 = arg0;
+    lbl_1_bss_8EDF0.unk_24 = arg1;
 }
 /* fzgx:end fn_1_154F74 */
 
 /* fzgx:begin fn_1_154F88 */
-extern f32 lbl_1_bss_8EDF0[76];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/rep_memcard.h"
 
+// Stores the current float value in the memory-card state.
 void fn_1_154F88(f32 value) {
-    lbl_1_bss_8EDF0[11] = value;
+    lbl_1_bss_8EDF0.unk_2C = value;
 }
 /* fzgx:end fn_1_154F88 */
 

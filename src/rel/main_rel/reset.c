@@ -1,6 +1,7 @@
 #include "types.h"
 
 /* fzgx:begin fn_1_D3214 */
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/reset.h"
 
 extern s32 fn_1_B7E48(void);
@@ -21,6 +22,7 @@ extern void *memset(u32, s32, u32);
 extern void *memcpy(u32, u32, u32);
 extern u8 lbl_801A66B0[4];
 
+// Performs the pending reset after the reset request has been accepted.
 void fn_1_D3214(void) {
     Obj_1_bss_7AD48 *state = &lbl_1_bss_7AD48;
 

@@ -25,10 +25,12 @@ u16 fn_1_A5DB0(void) {
 /* fzgx:end fn_1_A5DB0 */
 
 /* fzgx:begin fn_1_A5DC4 */
-extern s32 lbl_1_bss_6F5F0;
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/relocation.h"
 
+// Return whether relocation processing is in one of the active states.
 s32 fn_1_A5DC4(void) {
-    if (lbl_1_bss_6F5F0 == 1 || lbl_1_bss_6F5F0 == 2) {
+    if ((s32)lbl_1_bss_6F5F0 == 1 || (s32)lbl_1_bss_6F5F0 == 2) {
         return 1;
     }
     return 0;
@@ -49,11 +51,11 @@ void fn_1_A5EFC(void) {
 /* fzgx:end fn_1_A5EFC */
 
 /* fzgx:begin fn_1_A66FC */
-extern u32 lbl_1_bss_6F5F4;
-extern s32 *lbl_1_data_341B8;
-extern u32 lbl_1_bss_6F5F0;
-extern u8 lbl_801A66B0[];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/relocation.h"
 
+extern u32 lbl_1_bss_6F5F4;
+extern u8 lbl_801A66B0[];
 extern s32 OSGetResetCode(void);
 extern u32 fn_8000FE78(void);
 extern void fn_8000FEE8(s32);
@@ -61,6 +63,7 @@ extern void fn_1_A6870(u32 *);
 extern void fn_1_A5F44(void);
 extern s32 fn_1_A6480(void);
 
+// Records the reset state and performs the appropriate relocation startup or recovery.
 s32 fn_1_A66FC(s32 value) {
     s32 result;
 
@@ -70,19 +73,19 @@ s32 fn_1_A66FC(s32 value) {
             result = 1;
         } else {
             fn_8000FEE8(0);
-            *lbl_1_data_341B8 = 0;
+            lbl_1_data_341B8->unk_0 = 0;
             result = 1;
         }
         if (lbl_801A66B0[3] != 0) {
             lbl_1_bss_6F5F0 = 1;
             fn_1_A6870(&lbl_1_bss_6F5F0);
         }
-    } else if (*lbl_1_data_341B8 != 0) {
+    } else if ((s32)lbl_1_data_341B8->unk_0 != 0) {
         fn_1_A5F44();
         result = fn_1_A6480();
     } else {
         fn_8000FEE8(0);
-        *lbl_1_data_341B8 = 0;
+        lbl_1_data_341B8->unk_0 = 0;
         result = 1;
     }
     return result;

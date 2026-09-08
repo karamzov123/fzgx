@@ -126,23 +126,28 @@ void fn_1_A7A70(void) {
 /* fzgx:end fn_1_A7A70 */
 
 /* fzgx:begin fn_1_A8528 */
+#include "rel/main_rel/globals.h"
+
 typedef struct FnA8528Object {
     u8 pad_ea[0xea];
-    s16 field_ea;
-    s16 field_ec;
-    s16 field_ee;
-    f32 field_f0;
-    f32 field_f4;
-    f32 field_f8;
+    s16 unk_ea;
+    s16 unk_ec;
+    s16 unk_ee;
+    f32 unk_f0;
+    f32 unk_f4;
+    f32 unk_f8;
+    u8 pad_fc[0x18];
+    u8 unk_114[0xc];
+    u8 unk_120[0x4];
 } FnA8528Object;
 
 typedef struct FnA8528Config {
     u8 pad_0c[0x0c];
-    f32 field_0c;
+    f32 unk_0c;
     u8 pad_10[0x0c];
-    f32 field_1c;
+    f32 unk_1c;
     u8 pad_20[0x0c];
-    f32 field_2c;
+    f32 unk_2c;
 } FnA8528Config;
 
 extern FnA8528Config *lbl_801A6D00;
@@ -155,26 +160,30 @@ extern void fn_1_A861C(void *arg0, void *arg1);
 extern void fn_1_A8834(void *arg0, void *arg1);
 extern void fn_1_A89B0(void *arg0, void *arg1, s32 arg2);
 
+// Initializes the driver's state from the active configuration and shared systems.
 void fn_1_A8528(FnA8528Object *arg0, void *arg1) {
-    s16 temp[3];
-    void *value;
+    s16 orientation[3];
+    void *driver_data;
 
     if (arg1 != 0) {
-        value = (u8 *)arg1 + 0x14c;
+        driver_data = (u8 *)arg1 + 0x14c;
     } else {
-        value = lbl_801A6D00;
+        driver_data = lbl_801A6D00;
     }
+
     lbl_8006DAEC();
-    lbl_8006DBAC(value);
-    lbl_8006E0A4((u8 *)arg0 + 0x114);
-    lbl_8006E0A4((u8 *)arg0 + 0x120);
-    fn_8006F6A8(temp);
-    arg0->field_f0 = lbl_801A6D00->field_0c;
-    arg0->field_f4 = lbl_801A6D00->field_1c;
-    arg0->field_f8 = lbl_801A6D00->field_2c;
-    arg0->field_ec = temp[0];
-    arg0->field_ea = temp[1];
-    arg0->field_ee = temp[2];
+    lbl_8006DBAC(driver_data);
+    lbl_8006E0A4(arg0->unk_114);
+    lbl_8006E0A4(arg0->unk_120);
+    fn_8006F6A8(orientation);
+
+    arg0->unk_f0 = lbl_801A6D00->unk_0c;
+    arg0->unk_f4 = lbl_801A6D00->unk_1c;
+    arg0->unk_f8 = lbl_801A6D00->unk_2c;
+    arg0->unk_ec = orientation[0];
+    arg0->unk_ea = orientation[1];
+    arg0->unk_ee = orientation[2];
+
     fn_1_A861C(arg0, arg1);
     fn_1_A8834(arg0, arg1);
     fn_1_A89B0(arg0, arg1, 1);
@@ -215,10 +224,12 @@ void fn_1_A8D84(void) {
 /* fzgx:end fn_1_A8D84 */
 
 /* fzgx:begin fn_1_A8DC4 */
-extern u32 lbl_1_bss_6F640[2];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/driver.h"
 
+// Returns the current driver state handle.
 u32 fn_1_A8DC4(void) {
-    return lbl_1_bss_6F640[0];
+    return lbl_1_bss_6F640;
 }
 /* fzgx:end fn_1_A8DC4 */
 
@@ -277,35 +288,27 @@ void fn_1_A8F78(void) {
 /* fzgx:begin fn_1_A9420 */
 #include "rel/main_rel/driver.h"
 
+// Stores the current value in the driver's status byte.
 void fn_1_A9420(u8 value) {
     lbl_1_bss_6F648.unk_0 = value;
 }
 /* fzgx:end fn_1_A9420 */
 
 /* fzgx:begin fn_1_A942C */
-typedef struct {
-    u8 unk_0;
-    u8 unk_1;
-    u8 unk_2;
-    u8 pad_3[0x1];
-    u16 unk_4;
-    s16 unk_6;
-    s16 unk_8;
-    u8 pad_A[0x2];
-    u32 unk_C;
-    u8 pad_10[0x1000];
-} Obj_1_bss_6F648;
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/driver.h"
 
-extern Obj_1_bss_6F648 lbl_1_bss_6F648;
-
+// Stores the value in the driver's secondary byte-sized state field.
 void fn_1_A942C(u8 value) {
     lbl_1_bss_6F648.unk_1 = value;
 }
 /* fzgx:end fn_1_A942C */
 
 /* fzgx:begin fn_1_A9464 */
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/driver.h"
 
+// Set the two values and mark the shared state as ready.
 void fn_1_A9464(u16 arg0, u16 arg1) {
     u8 flags;
 
@@ -326,34 +329,34 @@ void fn_1_A96DC(void) {
 /* fzgx:end fn_1_A96DC */
 
 /* fzgx:begin fn_1_A96EC */
-// fn_1_A96EC: main_rel .text:0x000A96EC size 0x10
-// Zero the first element of lbl_1_data_3599C
+#include "rel/main_rel/driver.h"
 
-extern u32 lbl_1_data_3599C[15];
-
+// Clear the driver's first state field.
 void fn_1_A96EC(void) {
-    lbl_1_data_3599C[0] = 0;
+    lbl_1_data_3599C.unk_0 = 0;
 }
 /* fzgx:end fn_1_A96EC */
 
 /* fzgx:begin fn_1_A96FC */
+#include "rel/main_rel/globals.h"
+
 extern u32 fn_1_451C(void);
 extern void fn_8008069C(void *buffer, char *format, ...);
 extern void fn_1_A5AA0(void *buffer, void *destination);
 
-extern s16 lbl_1_bss_960;
 extern u32 lbl_1_bss_71670;
+extern u8 lbl_1_bss_71674[8];
 extern u32 lbl_1_data_35A70[18];
 extern char lbl_1_data_35AB8[11];
-extern u8 lbl_1_bss_71674[8];
 
+// Initialize the driver state and format its startup data.
 void fn_1_A96FC(void) {
     u8 buffer[0x48];
 
     lbl_1_bss_71670 = fn_1_451C();
     fn_8008069C(buffer, lbl_1_data_35AB8,
-                lbl_1_data_35A70[lbl_1_bss_960]);
-    fn_1_A5AA0(buffer, lbl_1_bss_71674);
+                lbl_1_data_35A70[*((s16 *)&lbl_1_bss_960)]);
+    fn_1_A5AA0(buffer, &lbl_1_bss_71674);
 }
 /* fzgx:end fn_1_A96FC */
 

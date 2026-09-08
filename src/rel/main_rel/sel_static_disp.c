@@ -63,27 +63,28 @@ void fn_1_135894(void* arg0, void* arg1, void* arg2, void* arg3,
 /* fzgx:begin fn_1_137288 */
 extern void* fn_1_12F118(void);
 extern void* fn_1_36AD0(void);
-extern void fn_1_1373B0(int arg0, void* arg1, void* arg2, void* arg3, s16 arg4);
-extern void fn_1_137364(int arg0, void* arg1, void* arg2, void* arg3, s16 arg4);
+extern void fn_1_1373B0(int index, void* value0, void* value1, void* value2, s16 selector);
+extern void fn_1_137364(int index, void* value0, void* value1, void* value2, s16 selector);
 
-void fn_1_137288(int arg0, void* arg1, void* arg2, void* arg3, s16 arg4) {
-    void* base;
+// Selects the static display entry and writes either its configured or fallback value.
+void fn_1_137288(int index, void* value0, void* value1, void* value2, s16 selector) {
+    void* entry;
 
-    if ((s16)arg0 >= 0x29) {
-        base = fn_1_12F118();
-        if (base == fn_1_36AD0()) {
-            base = (char*)base + (s32)arg4 * 0x81c0;
+    if ((s16)index >= 0x29) {
+        entry = fn_1_12F118();
+        if (entry == fn_1_36AD0()) {
+            entry = (char*)entry + (s32)selector * 0x81c0;
         } else {
-            base = (char*)base + (s32)((s16)arg0 - 0x29) * 0x81c0;
+            entry = (char*)entry + (s32)((s16)index - 0x29) * 0x81c0;
         }
 
-        if (*(u32*)base & 0x40000000) {
-            fn_1_1373B0(arg0, arg1, arg2, arg3, arg4);
+        if (*(u32*)entry & 0x40000000) {
+            fn_1_1373B0(index, value0, value1, value2, selector);
         } else {
-            fn_1_137364(*(u8*)((char*)base + 0x81a0), arg1, arg2, arg3, arg4);
+            fn_1_137364(*(u8*)((char*)entry + 0x81a0), value0, value1, value2, selector);
         }
     } else {
-        fn_1_137364(arg0, arg1, arg2, arg3, arg4);
+        fn_1_137364(index, value0, value1, value2, selector);
     }
 }
 /* fzgx:end fn_1_137288 */
@@ -279,6 +280,7 @@ void fn_1_13E054(void* arg0, void* arg1, void* arg2, int arg3) {
 /* fzgx:begin fn_1_13F81C */
 extern u32 lbl_1_bss_8E3E4[8];
 
+// Reset the eight static display slots before they are populated.
 void fn_1_13F81C(void) {
     lbl_1_bss_8E3E4[0] = 0;
     lbl_1_bss_8E3E4[1] = 0;
@@ -298,6 +300,7 @@ extern u32 fn_1_45D0(u32 arg0, int arg1, void* arg2, int arg3);
 extern u32 lbl_1_bss_8E3E4[8];
 extern void fn_1_FC414(u32 arg0, int arg1);
 
+// Loads a display resource and registers it for the selected slot.
 void fn_1_13F848(u32 arg0) {
     u32 index = arg0 & 0xFF;
 
@@ -310,6 +313,7 @@ void fn_1_13F848(u32 arg0) {
 /* fzgx:begin fn_1_13F8B0 */
 extern u32 lbl_1_bss_8E3E4[8];
 
+// Return the stored display handle selected by the low byte of the key.
 u32 fn_1_13F8B0(u32 arg0) {
     return lbl_1_bss_8E3E4[arg0 & 0xFF];
 }
@@ -318,6 +322,7 @@ u32 fn_1_13F8B0(u32 arg0) {
 /* fzgx:begin fn_1_13F948 */
 extern u32 lbl_1_bss_8E404[8];
 
+// Reset all static display resource handles before initialization.
 void fn_1_13F948(void) {
     lbl_1_bss_8E404[0] = 0;
     lbl_1_bss_8E404[1] = 0;
@@ -337,6 +342,7 @@ extern u32 fn_1_45D0(u32 arg0, int arg1, void* arg2, int arg3);
 extern u32 lbl_1_bss_8E404[8];
 extern u32 fn_80008BEC(u32 arg0, int arg1, int arg2);
 
+// Builds and initializes the selected static display entry.
 u32 fn_1_13F974(u32 arg0) {
     u32* config = &lbl_801A6410;
 
@@ -349,8 +355,9 @@ u32 fn_1_13F974(u32 arg0) {
 /* fzgx:begin fn_1_13F9DC */
 extern u32 lbl_1_bss_8E404[8];
 
-u32 fn_1_13F9DC(u32 arg0) {
-    return lbl_1_bss_8E404[arg0 & 0xFF];
+// Returns the object stored in the selected static-display slot.
+u32 fn_1_13F9DC(u32 slot) {
+    return lbl_1_bss_8E404[slot & 0xFF];
 }
 /* fzgx:end fn_1_13F9DC */
 
@@ -363,16 +370,17 @@ extern void fn_1_46B4(u32 arg0, void* arg1, char* arg2, int arg3);
 
 typedef struct {
     char pad[0x3A4];
-    u32 field_3A4;
+    u32 unk_3A4;
 } FnObject;
 
+/* Clears each static display slot, releasing any active object first. */
 void fn_1_13F9F0(void) {
     u8 i;
 
     i = 0;
     while (i < 8) {
         if (lbl_1_bss_8E404[i] != 0) {
-            if (((FnObject*)lbl_1_bss_8E404[i])->field_3A4 != 0) {
+            if (((FnObject*)lbl_1_bss_8E404[i])->unk_3A4 != 0) {
                 fn_1_7F3AC((void*)lbl_1_bss_8E404[i]);
             }
             fn_1_46B4(lbl_801A6410, (void*)lbl_1_bss_8E404[i],
@@ -463,13 +471,15 @@ void fn_1_149BF4(void) {
 extern u32 lbl_1_bss_8E428;
 extern void fn_1_149CA4(u32 arg0, u32 arg1, u32 arg2, u32 arg3);
 
+// Forward the four current static-display values to the display-update routine.
 void fn_1_149C2C(void) {
-    u8* base = (u8*)&lbl_1_bss_8E428;
-    u32 arg0 = *(u32*)(base + 0xC);
-    u32 arg1 = *(u32*)(base + 0x14);
-    u32 arg2 = *(u32*)(base + 0x10);
-    u32 arg3 = *(u32*)(base + 0x18);
-    fn_1_149CA4(arg0, arg1, arg2, arg3);
+    u8* table = (u8*)&lbl_1_bss_8E428;
+    u32 position = *(u32*)(table + 0xC);
+    u32 direction = *(u32*)(table + 0x14);
+    u32 scale = *(u32*)(table + 0x10);
+    u32 flags = *(u32*)(table + 0x18);
+
+    fn_1_149CA4(position, direction, scale, flags);
 }
 /* fzgx:end fn_1_149C2C */
 
@@ -582,6 +592,7 @@ typedef struct {
 extern const f32 lbl_1_rodata_99A4;
 extern Obj_1_bss_8E518 lbl_1_bss_8E518;
 
+// Reset the static display state to its initial values.
 void fn_1_14A17C(void) {
     lbl_1_bss_8E518.unk_20 = 0;
     lbl_1_bss_8E518.unk_18 = lbl_1_rodata_99A4;
@@ -1108,9 +1119,10 @@ typedef struct {
 } Entry;
 
 typedef struct {
-    u8 data[1200];
+    Entry entries[75];
 } Table;
 
+// Count entries in the static display table whose value matches the argument.
 s16 fn_1_14F01C(s16 value) {
     Table table;
     s16 count;
@@ -1120,7 +1132,7 @@ s16 fn_1_14F01C(s16 value) {
     i = 0;
     count = 0;
     while (i < 75) {
-        if (value == ((Entry *)&table.data[0])[i].value) {
+        if (table.entries[i].value == value) {
             count++;
         }
         i++;
@@ -1142,6 +1154,7 @@ typedef struct {
     Entry entries[75];
 } Table;
 
+// Finds the index of the requested occurrence of a value in the static table.
 s16 fn_1_14F090(s16 value, s16 occurrence) {
     Table table;
     s16 i;
@@ -1366,6 +1379,7 @@ typedef struct Object {
     Entry entries[1];
 } Object;
 
+// Marks each static display entry active before updating it.
 void fn_1_150C8C(Object *obj) {
     s32 count;
     Entry *entry;
@@ -1441,13 +1455,14 @@ extern void fn_1_151668(void *self);
 
 typedef struct StaticDisp {
     u8 pad_2728[0x2728];
-    s32 field_2728;
-    s32 field_272c;
+    s32 unk_2728;
+    s32 unk_272c;
 } StaticDisp;
 
+// Reset the display state before rebuilding its static entries.
 void fn_1_150F30(StaticDisp *self) {
-    self->field_2728 = 0;
-    self->field_272c = -1;
+    self->unk_2728 = 0;
+    self->unk_272c = -1;
     fn_1_150F74(self);
     fn_1_151668(self);
 }
@@ -1486,44 +1501,45 @@ typedef struct Entry {
     u8 flag_185f;
 } Entry;
 
+// Initialize display values and propagate enabled display flags across all entries.
 void fn_1_150F74(Object *obj) {
-    const f32 *pool;
+    const f32 *constants;
     Entry *entry;
-    u32 *bits;
-    s32 i;
+    u32 *bit_flags;
+    s32 index;
 
-    pool = lbl_1_rodata_CF40;
-    obj->value_2730 = pool[58];
-    obj->value_2734 = pool[23];
-    obj->value_2738 = pool[23];
-    obj->value_273c = pool[59];
-    obj->value_2744 = pool[60];
+    constants = lbl_1_rodata_CF40;
+    obj->value_2730 = constants[58];
+    obj->value_2734 = constants[23];
+    obj->value_2738 = constants[23];
+    obj->value_273c = constants[59];
+    obj->value_2744 = constants[60];
 
     entry = (Entry *)obj;
-    for (i = 0; i < 0x40; i++) {
-        bits = entry->bits;
+    for (index = 0; index < 0x40; index++) {
+        bit_flags = entry->bits;
         if (entry->flag_185c != 0) {
             entry->value_1824 = obj->value_2730;
-            entry->value_1828 = pool[23];
-            entry->value_182c = pool[23];
-            *bits |= ((u32)1 << 31);
+            entry->value_1828 = constants[23];
+            entry->value_182c = constants[23];
+            *bit_flags |= ((u32)1 << 31);
         }
         if (entry->flag_185d != 0) {
-            entry->value_1824 = pool[23];
-            entry->value_1828 = pool[23];
-            entry->value_182c = pool[23];
-            entry->value_1830 = pool[23];
+            entry->value_1824 = constants[23];
+            entry->value_1828 = constants[23];
+            entry->value_182c = constants[23];
+            entry->value_1830 = constants[23];
         }
         if (entry->flag_185d != 0 || entry->flag_185e != 0) {
-            entry->value_1834 = pool[23];
-            entry->value_1840 = pool[23];
-            entry->value_1838 = pool[23];
-            entry->value_1844 = pool[23];
-            entry->value_183c = pool[23];
-            entry->value_1848 = pool[23];
+            entry->value_1834 = constants[23];
+            entry->value_1840 = constants[23];
+            entry->value_1838 = constants[23];
+            entry->value_1844 = constants[23];
+            entry->value_183c = constants[23];
+            entry->value_1848 = constants[23];
         }
         if (entry->flag_185f != 0) {
-            *bits &= 0x7fffffff;
+            *bit_flags &= 0x7fffffff;
         }
         entry = (Entry *)((u8 *)entry + 0x3c);
     }

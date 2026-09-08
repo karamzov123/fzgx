@@ -18,6 +18,7 @@ void fn_1_DA7B8(void) {
 extern u32 fn_1_58C4(void);
 extern void fn_1_DAB1C(Obj_1_data_2A7E0_At3C *obj);
 
+// Advances the background state when the scene transition is ready.
 void fn_1_DA9F0(void) {
     Obj_1_data_2A7E0_At3C *obj = lbl_1_data_2A7E0.unk_3C;
 
@@ -80,6 +81,7 @@ void fn_1_DAAF8(void) {
 /* fzgx:begin fn_1_DAAFC */
 extern void fn_1_58C4(void);
 
+// Initialize the background-san subsystem through its shared setup routine.
 void fn_1_DAAFC(void) {
     fn_1_58C4();
 }
@@ -88,6 +90,7 @@ void fn_1_DAAFC(void) {
 /* fzgx:begin fn_1_DAB1C */
 extern void fn_1_58C4(void);
 
+// Runs the background sanitation update.
 void fn_1_DAB1C(void) {
     fn_1_58C4();
 }
@@ -96,6 +99,7 @@ void fn_1_DAB1C(void) {
 /* fzgx:begin fn_1_DAB3C */
 extern void fn_1_58C4(void);
 
+// Perform the background sanitation step.
 void fn_1_DAB3C(void) {
     fn_1_58C4();
 }
@@ -140,16 +144,20 @@ extern void fn_1_1067A8(void *arg0, f32 arg1, f32 arg2);
 
 // Initializes the current background object and updates it for the active state.
 void fn_1_DAEFC(void) {
-    s32 index;
-    Obj_1_data_2A7E0_At3C *object;
+    s32 slot;
+    Obj_1_data_2A7E0_At3C *background;
 
-    index = fn_1_5910();
-    object = lbl_1_data_2A7E0.unk_3C;
-    fn_1_DB198(object, fn_1_9D260());
+    slot = fn_1_5910();
+    background = lbl_1_data_2A7E0.unk_3C;
+    fn_1_DB198(background, fn_1_9D260());
     fn_1_9AD88();
     if (fn_1_7B054() == 42) {
         if (fn_1_3F0C8() != 39) {
-            fn_1_1067A8((u8 *)object + 0x142a0, ((f32 *)object)[index], lbl_1_rodata_663C);
+            fn_1_1067A8(
+                (u8 *)background + 0x142a0,
+                ((f32 *)background)[slot],
+                lbl_1_rodata_663C
+            );
         }
     }
 }
@@ -164,19 +172,20 @@ void fn_1_DAF90(void) {
 /* fzgx:begin fn_1_DB138 */
 typedef struct {
     u8 unk_00[0x10];
-    s32 count;
+    s32 unk_10;
 } BgSanContext;
 
-extern u32 fn_1_58C4(BgSanContext *arg0);
-extern void fn_1_DB268(void *arg0);
+extern u32 fn_1_58C4(BgSanContext *context);
+extern void fn_1_DB268(void *entry);
 
-void fn_1_DB138(BgSanContext *arg0) {
+// Process each background-san entry when the object is in an eligible state.
+void fn_1_DB138(BgSanContext *context) {
     u8 *entry;
     s32 count;
 
-    if (fn_1_58C4(arg0) < 2) {
-        count = arg0->count;
-        entry = (u8 *)arg0 + 0x14;
+    if (fn_1_58C4(context) < 2) {
+        count = context->unk_10;
+        entry = (u8 *)context + 0x14;
         while (count > 0) {
             fn_1_DB268(entry);
             count -= 1;
@@ -188,38 +197,51 @@ void fn_1_DB138(BgSanContext *arg0) {
 
 /* fzgx:begin fn_1_DB198 */
 typedef struct BgSanObject {
-    u8 pad_0000[0x10];
-    s32 active;
-    void *data;
-    u8 pad_0018[0x80c];
-    f32 offset_x;
-    f32 offset_y;
-    f32 offset_z;
+    u8 unk_00[0x10];
+    s32 unk_10;
+    void *unk_14;
+    u8 unk_18[0x80c];
+    f32 unk_824;
+    f32 unk_828;
+    f32 unk_82c;
 } BgSanObject;
+
+typedef struct BgSanPosition {
+    f32 unk_00;
+    f32 unk_04;
+    f32 unk_08;
+} BgSanPosition;
+
+typedef struct BgSanAllocation {
+    u8 unk_00[0x4];
+    void (*unk_04)(void);
+    void *unk_08;
+} BgSanAllocation;
 
 extern u32 fn_1_58C4(BgSanObject *object);
 extern f32 lbl_1_rodata_6644[35];
 extern void lbl_8006DCA4(void *data);
-extern void *fn_1_5448C(f32 *position);
-extern void *fn_1_548AC(u32 size);
+extern void *fn_1_5448C(BgSanPosition *position);
+extern BgSanAllocation *fn_1_548AC(u32 size);
 extern void fn_1_DB53C(void);
-extern void fn_1_5489C(void *result, void *allocation);
+extern void fn_1_5489C(void *result, BgSanAllocation *allocation);
 
+// Builds a scaled position event when the object is active.
 void fn_1_DB198(BgSanObject *object, void *arg1) {
-    f32 position[3];
+    BgSanPosition position;
     void *result;
-    void *allocation;
+    BgSanAllocation *allocation;
 
-    if (fn_1_58C4(object) < 2 && object->active != 0) {
-        position[0] = (((f32 *)object->data)[3] + object->offset_x) * lbl_1_rodata_6644[0];
-        position[1] = (((f32 *)object->data)[4] + object->offset_y) * lbl_1_rodata_6644[0];
-        position[2] = (((f32 *)object->data)[5] + object->offset_z) * lbl_1_rodata_6644[0];
-        lbl_8006DCA4(object->data);
-        result = fn_1_5448C(position);
+    if (fn_1_58C4(object) < 2 && object->unk_10 != 0) {
+        position.unk_00 = (((f32 *)object->unk_14)[3] + object->unk_824) * lbl_1_rodata_6644[0];
+        position.unk_04 = (((f32 *)object->unk_14)[4] + object->unk_828) * lbl_1_rodata_6644[0];
+        position.unk_08 = (((f32 *)object->unk_14)[5] + object->unk_82c) * lbl_1_rodata_6644[0];
+        lbl_8006DCA4(object->unk_14);
+        result = fn_1_5448C(&position);
         allocation = fn_1_548AC(12);
         if (allocation != 0) {
-            ((void **)allocation)[1] = (void *)fn_1_DB53C;
-            ((void **)allocation)[2] = arg1;
+            allocation->unk_04 = fn_1_DB53C;
+            allocation->unk_08 = arg1;
             fn_1_5489C(result, allocation);
         }
     }
@@ -275,6 +297,7 @@ void fn_1_5948(s32);
 void fn_1_DC648(Obj_1_data_2A7E0_At3C *);
 void fn_1_627C(s32);
 
+// Initializes the scene data and updates each active scene entry.
 void fn_1_DC268(void) {
     Obj_1_data_2A7E0_At3C *obj;
     s32 i;
@@ -354,6 +377,7 @@ typedef struct Container {
     Entry entries[1];
 } Container;
 
+// Marks each entry as initialized and processes all entries in the container.
 void fn_1_DC3A4(Container *container) {
     s32 count;
     Entry *entry;
@@ -372,6 +396,7 @@ void fn_1_DC3A4(Container *container) {
 /* fzgx:begin fn_1_DC404 */
 extern void fn_1_1030A4(void *);
 
+// Calls the cleanup routine for each entry in the container.
 typedef struct Entry {
     u8 data[0xac];
 } Entry;
@@ -399,20 +424,21 @@ void fn_1_DC404(Container *container) {
 extern void fn_1_103264(void *, void *);
 
 typedef struct Entry {
-    u8 unk00[0xac];
+    u8 unk_00[0xac];
 } Entry;
 
 typedef struct Container {
-    s32 count;
-    Entry entries[1];
+    s32 unk_00;
+    Entry unk_04[1];
 } Container;
 
+// Process each entry in the container with the supplied argument.
 void fn_1_DC5E8(Container *container, void *arg) {
     s32 count;
     Entry *entry;
 
-    entry = container->entries;
-    count = container->count;
+    entry = container->unk_04;
+    count = container->unk_00;
     while (count > 0) {
         fn_1_103264(entry, arg);
         count--;
@@ -428,11 +454,12 @@ extern void fn_1_DC764(void);
 extern void fn_1_5489C(void *, void *);
 
 typedef struct Handler {
-    u8 unk00[4];
-    void (*callback)(void);
-    void *context;
+    u8 unk_00[4];
+    void (*unk_04)(void);
+    void *unk_08;
 } Handler;
 
+// Registers the callback and its context with a newly allocated handler.
 void fn_1_DC6FC(void *context) {
     void *value;
     Handler *handler;
@@ -440,8 +467,8 @@ void fn_1_DC6FC(void *context) {
     value = fn_1_54448(0);
     handler = fn_1_548AC(12);
     if (handler != 0) {
-        handler->callback = fn_1_DC764;
-        handler->context = context;
+        handler->unk_04 = fn_1_DC764;
+        handler->unk_08 = context;
         fn_1_5489C(value, handler);
     }
 }

@@ -18,43 +18,39 @@ s16 fn_1_402A4(u32 index) {
 /* fzgx:end fn_1_402A4 */
 
 /* fzgx:begin fn_1_98230 */
-typedef struct Fn198230Node Fn198230Node;
-typedef struct Fn198230Entry Fn198230Entry;
-typedef void (*Fn198230Callback)(Fn198230Node *, Fn198230Entry *);
+#include "rel/main_rel/burner.h"
 
-struct Fn198230Node {
-    u8 unk_00[0x04];
-    Fn198230Node *next;
+typedef struct BurnerNode BurnerNode;
+typedef struct BurnerEntry BurnerEntry;
+typedef void (*BurnerCallback)(BurnerNode *, BurnerEntry *);
+
+struct BurnerNode {
+    u8 pad_0[0x4];
+    BurnerNode *next;
     u32 index;
 };
 
-struct Fn198230Entry {
-    u8 unk_00[0x08];
-    Fn198230Callback callback;
-    u8 unk_0C[0x08];
+struct BurnerEntry {
+    u8 pad_0[0x8];
+    BurnerCallback callback;
+    u8 pad_C[0x8];
 };
 
-typedef struct {
-    u8 unk_00[0x04];
-    Fn198230Node *head;
-} Fn198230Root;
-
-extern Fn198230Root *lbl_1_bss_6EA04;
-extern Fn198230Entry lbl_1_data_27DE0[];
-extern s32 lbl_1_bss_6EA08;
-
+/* Dispatchs each queued burner callback, then advances the burner frame. */
 void fn_1_98230(void) {
-    Fn198230Node *node = lbl_1_bss_6EA04->head;
+    BurnerNode *node = (BurnerNode *)lbl_1_bss_6EA04->unk_4;
 
     while (node != 0) {
-        Fn198230Node *next = node->next;
-        Fn198230Entry *entry = &lbl_1_data_27DE0[node->index];
+        BurnerNode *next = node->next;
+        BurnerEntry *entry =
+            (BurnerEntry *)((u8 *)&lbl_1_data_27DE0 + node->index * 0x14);
+
         entry->callback(node, entry);
         node = next;
     }
 
     lbl_1_bss_6EA08 += 1;
-    if (lbl_1_bss_6EA08 >= 4) {
+    if ((s32)lbl_1_bss_6EA08 >= 4) {
         lbl_1_bss_6EA08 = 0;
     }
 }
@@ -182,50 +178,50 @@ void fn_1_984F0(void *object) {
 /* fzgx:end fn_1_984F0 */
 
 /* fzgx:begin fn_1_98590 */
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/burner.h"
+
 typedef struct Fn198590Node Fn198590Node;
 
 struct Fn198590Node {
     u8 unk_00[0x04];
     Fn198590Node *next;
     u8 unk_08[0x6C];
-    f32 value_74;
+    f32 unk_74;
     u8 unk_78[0x42C];
-    f32 value_4A4;
+    f32 unk_4A4;
 };
 
-typedef struct {
-    u8 unk_00[0x04];
-    Fn198590Node *head;
-} Fn198590Root;
-
-extern Fn198590Root *lbl_1_bss_6EA04;
 extern f32 lbl_1_rodata_4104[59];
-extern s32 lbl_1_bss_6EA08;
 
+// Reset each linked burner's timing values and advance the shared update slot.
 void fn_1_98590(void) {
-    Fn198590Node *node = lbl_1_bss_6EA04->head;
+    Fn198590Node *node = (Fn198590Node *)lbl_1_bss_6EA04->unk_4;
     f32 value = lbl_1_rodata_4104[0];
 
     while (node != 0) {
         Fn198590Node *next = node->next;
-        node->value_74 = value;
-        node->value_4A4 = value;
+
+        node->unk_74 = value;
+        node->unk_4A4 = value;
         node = next;
     }
 
     lbl_1_bss_6EA08 += 1;
-    if (lbl_1_bss_6EA08 >= 4) {
+    if ((s32)lbl_1_bss_6EA08 >= 4) {
         lbl_1_bss_6EA08 = 0;
     }
 }
 /* fzgx:end fn_1_98590 */
 
 /* fzgx:begin fn_1_985EC */
-typedef struct Fn1985Node Fn1985Node;
+#include "rel/main_rel/burner.h"
 
-struct Fn1985Node {
+typedef struct BurnerEntry BurnerEntry;
+
+struct BurnerEntry {
     u8 unk_00[0x04];
-    Fn1985Node *next;
+    BurnerEntry *next;
     u8 unk_08[0x40];
     u32 key;
     u8 unk_4C[0x28];
@@ -234,21 +230,16 @@ struct Fn1985Node {
     u32 flags;
 };
 
-typedef struct {
-    u8 unk_00[0x04];
-    Fn1985Node *head;
-} Fn1985Root;
-
-extern Fn1985Root *lbl_1_bss_6EA04;
 extern f32 lbl_1_rodata_4104[59];
 
+// Reset matching burner entries while walking the global entry list.
 void fn_1_985EC(u32 key) {
-    Fn1985Node *node = lbl_1_bss_6EA04->head;
+    BurnerEntry *node = (BurnerEntry *)lbl_1_bss_6EA04->unk_4;
     f32 value = lbl_1_rodata_4104[0];
     u32 zero = 0;
 
     while (node != 0) {
-        Fn1985Node *next = node->next;
+        BurnerEntry *next = node->next;
         if (node->key == key) {
             node->value = value;
             node->flags = zero;
@@ -313,6 +304,7 @@ void fn_1_9A0A4(void) {
 /* fzgx:end fn_1_9A0A4 */
 
 /* fzgx:begin fn_1_9A578 */
+// Runs the active burner callback after advancing the burner state.
 extern s16 lbl_1_data_2A7E0;
 extern void fn_1_10302C(void);
 
@@ -335,18 +327,16 @@ void fn_1_9A578(void) {
 /* fzgx:end fn_1_9A578 */
 
 /* fzgx:begin fn_1_9A770 */
+#include "rel/main_rel/globals.h"
+
 typedef void (*fn_1_9A770_callback)(void);
 
-struct fn_1_9A770_data {
-    u8 pad[0x38];
-    fn_1_9A770_callback callback;
-};
-
-extern struct fn_1_9A770_data lbl_1_data_2A7E0;
-
+// Invokes the registered burner callback when one is installed.
 void fn_1_9A770(void) {
-    if (lbl_1_data_2A7E0.callback != 0) {
-        lbl_1_data_2A7E0.callback();
+    fn_1_9A770_callback callback = (fn_1_9A770_callback)lbl_1_data_2A7E0.unk_38;
+
+    if (callback != 0) {
+        callback();
     }
 }
 /* fzgx:end fn_1_9A770 */
@@ -412,25 +402,19 @@ void fn_1_9CC40(void) {
 /* fzgx:end fn_1_9CC40 */
 
 /* fzgx:begin fn_1_9CC6C */
-typedef struct {
-    u8 pad[0x30];
-    u32 value30;
-    u32 value34;
-} GlobalState;
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/burner.h"
 
-extern void fn_1_9DB04(void);
-extern void fn_1_9C724(void);
-extern void fn_1_9BBE4(void *, s32, s32, s32);
-extern u32 lbl_1_data_2A7E0[62];
-extern GlobalState *lbl_801A66CC;
+extern Obj_1_data_2A7E0_At3C *lbl_801A66CC;
 
+// Initializes the burner state and copies the current burner position into the global state.
 void fn_1_9CC6C(void *arg0, s32 arg1) {
     if (arg0 != 0) {
         fn_1_9DB04();
         fn_1_9C724();
         fn_1_9BBE4(arg0, 0, arg1 - 1, 0);
-        lbl_801A66CC->value30 = lbl_1_data_2A7E0[26];
-        lbl_801A66CC->value34 = lbl_1_data_2A7E0[27];
+        lbl_801A66CC->unk_30 = lbl_1_data_2A7E0.unk_68;
+        lbl_801A66CC->unk_34 = lbl_1_data_2A7E0.unk_6C;
     }
 }
 /* fzgx:end fn_1_9CC6C */
@@ -613,6 +597,8 @@ void fn_1_9D2EC(void) {
 /* fzgx:end fn_1_9D2EC */
 
 /* fzgx:begin fn_1_9D360 */
+#include "rel/main_rel/globals.h"
+
 typedef struct {
     u8 pad[0x1e];
     u8 count;
@@ -626,6 +612,7 @@ typedef struct {
 extern void *fn_80077A18(Burner *);
 extern void fn_80077F8C(Burner *);
 
+// Builds the burner's entry pointers from its index list, then finalizes it.
 void fn_1_9D360(Burner *burner, BurnerTable *table, u8 *indices) {
     void **out;
     s32 i;

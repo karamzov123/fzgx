@@ -560,6 +560,8 @@ void fn_1_60F80(void) {
 /* fzgx:end fn_1_60F80 */
 
 /* fzgx:begin fn_1_61760 */
+#include "rel/main_rel/globals.h"
+
 extern u8 lbl_1_data_1D62C[148];
 extern void *lbl_801A6410;
 extern void fn_1_46B4(void *, void *, u8 *, s32);
@@ -569,6 +571,7 @@ struct Fn1_61760Object {
     void *field_38;
 };
 
+// Dispatches the object's effect resource when one is available.
 void fn_1_61760(struct Fn1_61760Object *object) {
     if (object->field_38 != 0) {
         fn_1_46B4(lbl_801A6410, object->field_38, lbl_1_data_1D62C, 0x16c1);
@@ -615,6 +618,8 @@ void fn_1_61CE8(void) {
 /* fzgx:end fn_1_61CE8 */
 
 /* fzgx:begin fn_1_61E60 */
+#include "rel/main_rel/globals.h"
+
 typedef struct {
     u8 pad20[0x20];
     void *field20;
@@ -627,10 +632,10 @@ typedef struct {
 
 extern void *lbl_801A6410;
 extern u8 lbl_1_data_1D62C[148];
-
 extern void fn_1_4730(void *arg0, void *arg1, int arg2, u8 *arg3, int arg4);
 extern void fn_1_46B4(void *arg0, void *arg1, u8 *arg2, int arg3);
 
+// Releases the effect resources and clears the active effect references.
 int fn_1_61E60(Fn1_61E60Object *object) {
     Fn1_61E60Node *node = object->field38;
 
@@ -860,6 +865,8 @@ void fn_1_65420(void) {
 /* fzgx:end fn_1_65420 */
 
 /* fzgx:begin fn_1_656C8 */
+#include "rel/main_rel/globals.h"
+
 extern void lbl_8006DCA4(void *object);
 extern s32 fn_1_54E34(void *object, f32 value);
 extern void *fn_1_5448C(void *object);
@@ -868,29 +875,30 @@ extern void fn_1_5489C(void *object, void *event);
 extern void fn_1_65748(void);
 
 typedef struct {
-    u32 pad_00;
-    void (*vtable)(void);
-    void *owner;
-} Event;
+    u32 unk_00;
+    void (*unk_04)(void);
+    void *unk_08;
+} EffectEvent;
 
 typedef struct {
-    u8 pad_00[0x28];
-    f32 value;
-    u8 pad_2c[0x10];
-    u8 embedded[1];
-} Object;
+    u8 unk_00[0x28];
+    f32 unk_28;
+    u8 unk_2c[0x10];
+    u8 unk_3c[1];
+} EffectObject;
 
-void fn_1_656C8(Object *object) {
+// Initializes the effect and queues an event when its embedded state is ready.
+void fn_1_656C8(EffectObject *object) {
     void *result;
-    Event *event;
+    EffectEvent *event;
 
     lbl_8006DCA4(object);
-    if (fn_1_54E34(&object->embedded[0], object->value) != 0) {
-        result = fn_1_5448C(&object->embedded[0]);
-        event = (Event *)fn_1_548AC(0xc);
+    if (fn_1_54E34(&object->unk_3c[0], object->unk_28) != 0) {
+        result = fn_1_5448C(&object->unk_3c[0]);
+        event = (EffectEvent *)fn_1_548AC(0xc);
         if (event != 0) {
-            event->vtable = fn_1_65748;
-            event->owner = object;
+            event->unk_04 = fn_1_65748;
+            event->unk_08 = object;
             fn_1_5489C(result, event);
         }
     }
@@ -964,6 +972,8 @@ void fn_1_6767C(void) {
 /* fzgx:end fn_1_6767C */
 
 /* fzgx:begin fn_1_68054 */
+#include "rel/main_rel/globals.h"
+
 extern const f32 lbl_1_rodata_2A70[12];
 extern void lbl_8006DCA4(void *object);
 extern int fn_1_54E34(void *object, f32 value);
@@ -985,6 +995,7 @@ typedef struct EffectEntry {
     EffectObject *owner;
 } EffectEntry;
 
+// Updates an effect and queues its completion callback when the effect is active.
 void fn_1_68054(EffectObject *object) {
     f32 value;
     void *result;

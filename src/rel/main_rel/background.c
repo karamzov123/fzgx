@@ -66,6 +66,8 @@ void fn_1_9D77C(Fn1_9D77C_Item *items, s32 count) {
 /* fzgx:end fn_1_9D77C */
 
 /* fzgx:begin fn_1_9D9E4 */
+#include "rel/main_rel/background.h"
+
 extern const f32 lbl_1_rodata_41FC;
 extern u8 fn_1_86624(void);
 extern void *fn_1_14F04(void);
@@ -73,28 +75,11 @@ extern f32 lbl_1_rodata_4244[7];
 extern void fn_1_17920(s32, s32, f32);
 extern void fn_1_85C58(s32, f32);
 extern void lbl_8006DB74(void *);
-extern s16 lbl_1_bss_960;
-
-typedef struct {
-    u8 pad_0[0x70];
-    u8 unk_70;
-    u8 pad_71[0x3];
-    u32 unk_74;
-    u32 unk_78;
-} BackgroundData;
-
-typedef struct {
-    u8 pad_0[0x8];
-    s32 unk_8;
-} BackgroundState;
 
 typedef struct {
     u8 pad[0x468];
-    f32 unk_468;
+    f32 value;
 } Fn14F04Result;
-
-extern BackgroundData lbl_1_data_2A7E0;
-extern BackgroundState *lbl_1_bss_3BE0;
 
 void fn_1_9D9E4(void) {
     f32 value;
@@ -105,7 +90,7 @@ void fn_1_9D9E4(void) {
 
     value = lbl_1_rodata_41FC;
     lbl_1_data_2A7E0.unk_74 = 1;
-    if (lbl_1_bss_960 == 9) {
+    if (*(s16 *)&lbl_1_bss_960 == 9) {
         lbl_1_data_2A7E0.unk_70 = fn_1_86624();
     } else {
         lbl_1_data_2A7E0.unk_70 = 0x1e;
@@ -120,7 +105,7 @@ void fn_1_9D9E4(void) {
             count = 0;
         }
         fn_1_17920(count, 0, lbl_1_rodata_4244[0]);
-        value = result->unk_468;
+        value = result->value;
     }
 
     i = 0;
@@ -215,42 +200,41 @@ void fn_1_9E1D0(void) {
 /* fzgx:end fn_1_9E1D0 */
 
 /* fzgx:begin fn_1_9E598 */
+#include "rel/main_rel/background.h"
+
 typedef struct Node Node;
 struct Node {
     Node *next;
 };
 
-extern Node *lbl_1_bss_6EA84;
-
+// Append a node to the linked-list tail and terminate the new tail.
 void fn_1_9E598(Node *node) {
-    lbl_1_bss_6EA84->next = node;
+    Node *tail;
+
+    tail = *(Node **)&lbl_1_bss_6EA84;
+    tail->next = node;
     node->next = 0;
-    lbl_1_bss_6EA84 = node;
+    lbl_1_bss_6EA84 = (u32)node;
 }
 /* fzgx:end fn_1_9E598 */
 
 /* fzgx:begin fn_1_9E5B8 */
-typedef struct Node Node;
-struct Node {
-    Node *next;
-};
+#include "rel/main_rel/background.h"
 
-extern Node *lbl_1_bss_6EA80;
-extern Node *lbl_1_bss_6EA84;
+// Removes a node from the background-node chain and updates its tail link.
+void fn_1_9E5B8(Obj_1_bss_6EA80_Target *node) {
+    u32 *link;
 
-void fn_1_9E5B8(Node *node) {
-    Node **link;
-
-    link = &lbl_1_bss_6EA80;
-    while (*link != 0 && *link != node) {
-        link = (Node **)*link;
+    link = (u32 *)&lbl_1_bss_6EA80;
+    while (*link != 0 && *link != (u32)node) {
+        link = (u32 *)*link;
     }
     if (*link == 0) {
         return;
     }
-    *link = node->next;
-    if (lbl_1_bss_6EA84 == node) {
-        lbl_1_bss_6EA84 = (Node *)link;
+    *link = node->unk_0;
+    if (lbl_1_bss_6EA84 == (u32)node) {
+        lbl_1_bss_6EA84 = (u32)link;
     }
 }
 /* fzgx:end fn_1_9E5B8 */

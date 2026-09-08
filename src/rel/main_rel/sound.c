@@ -1,19 +1,21 @@
 #include "types.h"
 
 /* fzgx:begin fn_1_9FE74 */
-extern void *lbl_1_bss_6EA9C;
-extern u32 lbl_1_data_33F1C;
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/sound.h"
+
 extern void *lbl_801A6410;
 extern u32 fn_1_44A4(void);
 extern void *fn_80008E84(void *arg);
 extern u32 fn_1_45D0(void *arg0, void *arg1, u32 *arg2, int arg3);
 
+// Initialize the sound resource and register it with the sound system.
 u32 fn_1_9FE74(void *arg) {
     u32 result;
 
-    lbl_1_bss_6EA9C = fn_80008E84((void *)fn_1_44A4());
+    lbl_1_bss_6EA9C = (u32)fn_80008E84((void *)fn_1_44A4());
     result = fn_1_45D0(lbl_801A6410, arg, &lbl_1_data_33F1C, 0x94);
-    fn_80008E84(lbl_1_bss_6EA9C);
+    fn_80008E84((void *)lbl_1_bss_6EA9C);
     return result;
 }
 /* fzgx:end fn_1_9FE74 */
@@ -173,6 +175,7 @@ void fn_1_A2DC4(u32 arg0) {
 
 extern void fn_800674FC(u16 arg0, u32 arg1, s16 arg2);
 
+// Notifies the sound system when sound processing is enabled.
 void fn_1_A2E24(u32 arg0, u32 arg1, s32 arg2) {
     if (lbl_1_bss_6EAC6.unk_0 != 0) {
         fn_800674FC(arg0, arg1, arg2);
@@ -393,21 +396,25 @@ void fn_1_A5330(u8 value, s16 index) {
 extern s32 fn_1_86690(s32 value);
 extern void fn_80067344(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 extern void fn_80067898(void *value);
-extern u8 lbl_1_rodata_4820[164];
+extern void *lbl_1_rodata_4820[41];
 
+// Starts a sound resource when playback is enabled and the sound limit allows it.
 void fn_1_A5470(s32 value) {
-    s32 index;
-    u32 entry;
+    s32 sound_id;
+    void *sound_resource;
 
-    if (value != -1) {
-        index = (s8)value;
-        index = (s8)fn_1_86690(index);
-        entry = ((u32 *)lbl_1_rodata_4820)[index];
-        fn_80067344(1, 0x10, (s32)0xb0270000, 0x7f);
-        if (entry != 0 && lbl_1_bss_6F1D8 == 0 &&
-            lbl_1_bss_6F1DC <= 0x2d) {
-            fn_80067898((void *)entry);
-        }
+    if (value == -1) {
+        return;
+    }
+
+    sound_id = (s8)value;
+    sound_id = (s8)fn_1_86690(sound_id);
+    sound_resource = lbl_1_rodata_4820[sound_id];
+
+    fn_80067344(1, 0x10, (s32)0xb0270000, 0x7f);
+    if (sound_resource != 0 && lbl_1_bss_6F1D8 == 0 &&
+        lbl_1_bss_6F1DC <= 0x2d) {
+        fn_80067898(sound_resource);
     }
 }
 /* fzgx:end fn_1_A5470 */
@@ -475,32 +482,30 @@ void fn_1_A5864(void) {
 /* fzgx:end fn_1_A5864 */
 
 /* fzgx:begin fn_1_A59AC */
-extern u8 lbl_1_bss_6EA98;
+#include "rel/main_rel/sound.h"
+
 extern s32 fn_1_3FC38(void);
 extern s32 fn_8004C658(void *);
 extern s32 fn_8004BBCC(void *);
 extern void fn_8004BC0C(void *, s32);
 extern void fn_800674FC(s32, u32, s32);
 
+// Updates active sound handles and emits the sound-system notification when enabled.
 void fn_1_A59AC(void) {
-    u8 *sound = &lbl_1_bss_6EA98;
+    u8 *sound = (u8 *)&lbl_1_bss_6EA98;
 
     if (*(void **)(sound + 0x38) != 0) {
-        if (*(void **)(*(void **)(sound + 0x38)) != 0) {
-            if (fn_8004C658(*(void **)(*(void **)(sound + 0x38))) == 3) {
-                if (fn_8004BBCC(*(void **)(*(void **)(sound + 0x38))) != 0) {
-                    fn_8004BC0C(*(void **)(*(void **)(sound + 0x38)), 0);
-                }
-            }
+        if (*(void **)(*(void **)(sound + 0x38)) != 0 &&
+            fn_8004C658(*(void **)(*(void **)(sound + 0x38))) == 3 &&
+            fn_8004BBCC(*(void **)(*(void **)(sound + 0x38))) != 0) {
+            fn_8004BC0C(*(void **)(*(void **)(sound + 0x38)), 0);
         }
 
         if (fn_1_3FC38() == 0 || *(u8 *)(sound + 0x749) == 0) {
-            if (*(void **)((u8 *)*(void **)(sound + 0x38) + 4) != 0) {
-                if (fn_8004C658(*(void **)((u8 *)*(void **)(sound + 0x38) + 4)) == 3) {
-                    if (fn_8004BBCC(*(void **)((u8 *)*(void **)(sound + 0x38) + 4)) != 0) {
-                        fn_8004BC0C(*(void **)((u8 *)*(void **)(sound + 0x38) + 4), 0);
-                    }
-                }
+            if (*(void **)((u8 *)*(void **)(sound + 0x38) + 4) != 0 &&
+                fn_8004C658(*(void **)((u8 *)*(void **)(sound + 0x38) + 4)) == 3 &&
+                fn_8004BBCC(*(void **)((u8 *)*(void **)(sound + 0x38) + 4)) != 0) {
+                fn_8004BC0C(*(void **)((u8 *)*(void **)(sound + 0x38) + 4), 0);
             }
         }
 

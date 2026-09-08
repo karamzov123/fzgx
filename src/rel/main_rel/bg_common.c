@@ -1,14 +1,15 @@
 #include "types.h"
 
 /* fzgx:begin fn_1_103AA8 */
+#include "rel/main_rel/bg_common.h"
+
 extern f32 lbl_1_rodata_78E8[19];
 extern void fn_1_103B00(void);
-extern f32 lbl_1_bss_85290;
-extern u32 lbl_1_data_2A7E0[62];
 
+// Initializes the background-common state and its update callback.
 void fn_1_103AA8(void) {
     lbl_1_bss_85290 = lbl_1_rodata_78E8[0];
-    lbl_1_data_2A7E0[13] = (u32)fn_1_103B00;
+    lbl_1_data_2A7E0.unk_34 = (u32)fn_1_103B00;
 }
 /* fzgx:end fn_1_103AA8 */
 
@@ -91,17 +92,15 @@ void fn_1_105724(void) {
 /* fzgx:end fn_1_105724 */
 
 /* fzgx:begin fn_1_105744 */
-extern u32 lbl_1_bss_854B8[1666];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/bg_common.h"
 
-// fn_1_105744: Initialize the first data structure in lbl_1_bss_854B8
+// Reset the shared background state to its initial sentinel and zero values.
 void fn_1_105744(void) {
-    s32 neg_one = -1;
-    s32 zero = 0;
-    u32 *p = lbl_1_bss_854B8;
-    *(s16 *)((char *)p + 0xc) = neg_one;
-    p[0] = zero;
-    p[1] = zero;
-    p[2] = zero;
+    lbl_1_bss_854B8.unk_C = -1;
+    lbl_1_bss_854B8.unk_0 = 0;
+    lbl_1_bss_854B8.unk_4 = 0;
+    lbl_1_bss_854B8.unk_8 = 0;
 }
 /* fzgx:end fn_1_105744 */
 
@@ -188,31 +187,35 @@ void fn_1_107C4C(void *arg) {
 /* fzgx:end fn_1_107C4C */
 
 /* fzgx:begin fn_1_107E90 */
-extern u8 lbl_1_data_3FFBC[1396];
+#include "rel/main_rel/bg_common.h"
+
 extern void lbl_8006DBAC(void *arg);
 extern void lbl_8006E1B0(void *arg0, void *arg1);
 
 typedef struct {
-    u8 unk0[0x8];
-    u32 index;
-    u8 *data;
-    u8 unk10[0x8];
-    u32 count;
-    u8 unk1c[0x8];
-    u8 *entries;
+    u8 unk_00[0x8];
+    u32 unk_08;
+    u8 *unk_0C;
+    u8 unk_10[0x8];
+    u32 unk_18;
+    u8 unk_1C[0x8];
+    u8 *unk_24;
 } Fn107E90Context;
 
+// Initialize each background entry selected by the context.
 void fn_1_107E90(Fn107E90Context *context) {
     u32 i;
     u8 *entries;
-    u8 *base;
+    u8 *background;
     u8 *entry;
+    u32 *background_indices;
 
     i = 0;
-    entries = context->entries;
-    base = *(u8 **)(*(u8 **)(context->data + 0x150) + 0x8);
-    entry = base + ((u32 *)lbl_1_data_3FFBC)[context->index] * 0x18c;
-    for (; i < context->count; i++, entries += 0x44) {
+    entries = context->unk_24;
+    background_indices = (u32 *)&lbl_1_data_3FFBC;
+    background = *(u8 **)(*(u8 **)(context->unk_0C + 0x150) + 0x8);
+    entry = background + background_indices[context->unk_08] * 0x18c;
+    for (; i < context->unk_18; i++, entries += 0x44) {
         lbl_8006DBAC(entry + 0x88);
         lbl_8006E1B0(entries + 0x28, entries + 0x10);
     }

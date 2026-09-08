@@ -84,6 +84,8 @@ void fn_1_3CC4(void) {
 /* fzgx:end fn_1_3CC4 */
 
 /* fzgx:begin fn_1_3F8C */
+#include "rel/main_rel/globals.h"
+
 typedef struct Fn1_3F8C_Entry Fn1_3F8C_Entry;
 
 struct Fn1_3F8C_Entry {
@@ -106,6 +108,7 @@ typedef struct Fn1_3F8C_Table {
 extern Fn1_3F8C_Table *lbl_1_bss_DAC;
 extern u32 lbl_1_bss_DB0[2];
 
+// Retrieves an entry from the free list and links it into the indexed list.
 s32 fn_1_3F8C(u32 arg3, u32 arg0, u32 arg1, u32 index) {
     Fn1_3F8C_Table *table = lbl_1_bss_DAC;
     Fn1_3F8C_Entry *entry = table->head;

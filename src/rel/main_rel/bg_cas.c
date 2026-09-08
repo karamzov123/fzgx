@@ -9,13 +9,13 @@ u8 *fn_1_FB870(void) {
 /* fzgx:end fn_1_FB870 */
 
 /* fzgx:begin fn_1_FB96C */
-extern u8 lbl_1_bss_84454[3124];
-extern void fn_1_FB9DC(int index);
-extern void fn_1_FBA88(int index);
-extern void fn_1_FBC5C(int index);
+#include "rel/main_rel/bg_cas.h"
 
+// Initializes the selected background-cas state before running its setup stages.
 void fn_1_FB96C(int index) {
-    *(u32 *)(lbl_1_bss_84454 + (index & 0xff) * 0x270) = 1;
+    u32 *states = &lbl_1_bss_84454.unk_0;
+
+    states[(index & 0xff) * 0x9c] = 1;
     fn_1_FB9DC(index);
     fn_1_FBA88(index);
     fn_1_FBC5C(index);
@@ -23,69 +23,52 @@ void fn_1_FB96C(int index) {
 /* fzgx:end fn_1_FB96C */
 
 /* fzgx:begin fn_1_FB9C0 */
-typedef struct {
-    int field0;
-    u8 pad4[0x26c];
-} State;
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/bg_cas.h"
 
-extern State lbl_1_bss_84454[];
-
+// Clear the selected CAS state value.
 void fn_1_FB9C0(int index) {
-    State *state = &lbl_1_bss_84454[index & 0xff];
-
-    state->field0 = 0;
+    (&lbl_1_bss_84454.unk_0)[(index & 0xff) * 0x9c] = 0;
 }
 /* fzgx:end fn_1_FB9C0 */
 
 /* fzgx:begin fn_1_FB9DC */
-extern u8 lbl_1_bss_84454[3124];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/bg_cas.h"
 
-typedef struct {
-    u8 pad14[0x14];
-    int field14;
-    u8 pad18[0x5c];
-    int field74;
-    u8 pad78[0x5c];
-    int fieldd4;
-    u8 padd8[0x5c];
-    int field134;
-    u8 pad138[0x5c];
-    int field194;
-    u8 pad198[0x5c];
-    int field1f4;
-    u8 pad1f8[0x78];
-} State;
-
+// Reset the per-slot flags and enable the flags associated with the selected slot.
 void fn_1_FB9DC(int index) {
-    State *state = (State *)lbl_1_bss_84454 + (index & 0xff);
+    u32 slot = index & 0xff;
+    Obj_1_bss_84454 *state =
+        (Obj_1_bss_84454 *)((u8 *)&lbl_1_bss_84454 + slot * 0x270);
 
-    state->field14 = 0;
-    state->field134 = 0;
-    state->field74 = 0;
-    state->field194 = 0;
-    state->fieldd4 = 0;
-    state->field1f4 = 0;
+    state->unk_14 = 0;
+    state->unk_134 = 0;
+    state->unk_74 = 0;
+    state->unk_194 = 0;
+    state->unk_D4 = 0;
+    state->unk_1F4 = 0;
 
-    switch (index & 0xff) {
+    switch (slot) {
     case 0:
-        state->field14 = 1;
-        state->field134 = 1;
+        state->unk_14 = 1;
+        state->unk_134 = 1;
         break;
     case 1:
-        state->field134 = 1;
-        state->field194 = 1;
+        state->unk_134 = 1;
+        state->unk_194 = 1;
         break;
     case 2:
-        state->field134 = 1;
-        state->field1f4 = 1;
+        state->unk_134 = 1;
+        state->unk_1F4 = 1;
         break;
     case 3:
-        state->field134 = 1;
-        state->field1f4 = 1;
+        state->unk_134 = 1;
+        state->unk_1F4 = 1;
         break;
     case 4:
-        state->field134 = 1;
-        state->field194 = 1;
+        state->unk_134 = 1;
+        state->unk_194 = 1;
         break;
     default:
         break;
@@ -184,10 +167,11 @@ void fn_1_FD388(void) {
 /* fzgx:end fn_1_FD388 */
 
 /* fzgx:begin fn_1_FDFF4 */
-extern u8 lbl_1_bss_850C6[14];
+#include "rel/main_rel/bg_cas.h"
 
+// Mark the background-collision object as active.
 void fn_1_FDFF4(void) {
-    lbl_1_bss_850C6[0] = 1;
+    lbl_1_bss_850C6.unk_0 = 1;
 }
 /* fzgx:end fn_1_FDFF4 */
 
@@ -230,27 +214,15 @@ void fn_1_FE780(void) {
 /* fzgx:end fn_1_FE780 */
 
 /* fzgx:begin fn_1_FE784 */
-typedef struct {
-    u8 pad[0x3c];
-    void *object;
-} FE784Data;
+#include "rel/main_rel/globals.h"
 
-typedef struct {
-    u8 pad[0x10];
-    s32 active;
-} FE784Object;
-
-extern FE784Data lbl_1_data_2A7E0;
-extern void fn_1_9AD88(FE784Data *);
-extern void fn_1_10069C(FE784Object *);
-extern void fn_1_FF038(FE784Object *);
-
+// Initialize the current background object and process it when active.
 void fn_1_FE784(void) {
-    FE784Object *object;
+    Obj_1_data_2A7E0_At3C *object;
 
-    object = (FE784Object *)lbl_1_data_2A7E0.object;
+    object = lbl_1_data_2A7E0.unk_3C;
     fn_1_9AD88(&lbl_1_data_2A7E0);
-    if (object->active != 0) {
+    if ((s32)object->unk_10 != 0) {
         fn_1_10069C(object);
     }
     fn_1_FF038(object);

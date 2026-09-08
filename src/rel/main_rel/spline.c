@@ -213,8 +213,9 @@ u8 fn_1_F7568(void) {
 /* fzgx:end fn_1_F7568 */
 
 /* fzgx:begin fn_1_F7578 */
-extern u8 lbl_1_bss_7F02C[16];
-extern u16 lbl_1_bss_7F03C[8];
+#include "rel/main_rel/spline.h"
+
+// Initialize the spline work buffers to their default values.
 extern void fn_8001D32C(u32 *);
 extern void fn_80008BEC(void *, int, u32);
 
@@ -226,8 +227,8 @@ void fn_1_F7578(void) {
     values[2] = 2;
     values[3] = 2;
     fn_8001D32C(values);
-    fn_80008BEC(lbl_1_bss_7F02C, 0, 0x10);
-    fn_80008BEC(lbl_1_bss_7F03C, 0, 0x10);
+    fn_80008BEC(&lbl_1_bss_7F02C, 0, 0x10);
+    fn_80008BEC(&lbl_1_bss_7F03C, 0, 0x10);
 }
 /* fzgx:end fn_1_F7578 */
 
@@ -296,13 +297,14 @@ s32 fn_1_F7954(void) {
 /* fzgx:end fn_1_F7954 */
 
 /* fzgx:begin fn_1_F79C8 */
-extern u8 lbl_1_bss_718E0[23016];
-extern u16 lbl_1_data_414[36];
-extern void fn_1_F8918(u8 *, Obj_1_bss_7F0C0 *, u8 *);
+#include "rel/main_rel/spline.h"
 
-// Initialize the spline workspace and publish its active data region.
+extern void fn_1_F8918(u8 *, Obj_1_bss_7F0C0 *);
+extern u16 lbl_1_data_414[36];
+
+// Initialize spline data and publish the active spline region.
 void fn_1_F79C8(void) {
-    fn_1_F8918(&lbl_1_bss_718E0[0x1c0], &lbl_1_bss_7F0C0, lbl_1_bss_718E0);
+    fn_1_F8918(&lbl_1_bss_718E0.pad_1A2[0x1e], &lbl_1_bss_7F0C0);
     lbl_1_bss_84420 = (u32)((u8 *)&lbl_1_bss_7F0C0 + 0x4b5c);
     lbl_1_data_414[0] = 0xffff;
 }
@@ -510,13 +512,10 @@ u32 fn_1_F8A38(u32 value) {
 }
 /* fzgx:end fn_1_F8A38 */
 
-/* fzgx:begin fn_1_F8A58 noprologue */
-#include "types.h"
-
-extern u32 lbl_1_bss_7F0C0[5336];
-
+/* fzgx:begin fn_1_F8A58 */
+// Sets the spline flag selected by the low byte of the input.
 void fn_1_F8A58(u32 value) {
-    lbl_1_bss_7F0C0[4673] |= 0x80000000u >> (value & 0xff);
+    ((u32 *)&lbl_1_bss_7F0C0)[4673] |= 0x80000000u >> (value & 0xff);
 }
 /* fzgx:end fn_1_F8A58 */
 
@@ -569,14 +568,11 @@ void fn_1_F8B50(void) {
 }
 /* fzgx:end fn_1_F8B50 */
 
-/* fzgx:begin fn_1_F8B64 noprologue */
-#include "types.h"
-
-extern u32 lbl_1_bss_7F0C0[5336];
-
+/* fzgx:begin fn_1_F8B64 */
+// Clear the spline state counters.
 void fn_1_F8B64(void) {
-    lbl_1_bss_7F0C0[4676] = 0;
-    lbl_1_bss_7F0C0[4677] = 0;
+    ((u32 *)&lbl_1_bss_7F0C0)[4676] = 0;
+    ((u32 *)&lbl_1_bss_7F0C0)[4677] = 0;
 }
 /* fzgx:end fn_1_F8B64 */
 
@@ -615,14 +611,11 @@ void fn_1_F8C00(s32 value) {
 }
 /* fzgx:end fn_1_F8C00 */
 
-/* fzgx:begin fn_1_F8C28 noprologue */
-#include "types.h"
-
-extern u32 lbl_1_bss_7F0C0[5336];
-
+/* fzgx:begin fn_1_F8C28 */
+// Clears the bit corresponding to the spline index.
 void fn_1_F8C28(s32 value) {
     value *= 2;
-    lbl_1_bss_7F0C0[4676] &= ~(((u32)1 << 31) >> (31 - value));
+    (&lbl_1_bss_7F0C0.unk_104)[4676 - 65] &= ~(((u32)1 << 31) >> (31 - value));
 }
 /* fzgx:end fn_1_F8C28 */
 
@@ -935,13 +928,6 @@ u8 fn_1_FA69C(s32 index) {
 /* fzgx:begin fn_1_FA75C */
 #include "rel/main_rel/spline.h"
 
-typedef struct {
-    u8 pad_0[4];
-    u8 unk_4;
-    u8 pad_5[0x16b];
-    u32 unk_170;
-} Fn1FA75CState;
-
 extern s32 fn_1_58C4(void);
 extern void fn_80008BEC(void *dst, s32 value, u32 size);
 extern void fn_1_FA89C(Obj_1_data_2A7E0_At3C *obj);
@@ -951,25 +937,26 @@ extern void fn_1_9A508(void);
 extern void fn_1_FB0B4(Obj_1_bss_84428 *data);
 extern void fn_1_FB180(Obj_1_bss_84428 *data);
 
+// Reset spline state while preserving the active spline entry.
 void fn_1_FA75C(void) {
     s32 result;
     Obj_1_data_2A7E0_At3C *obj;
-    Fn1FA75CState *state;
+    u8 *status;
     u32 saved;
 
     result = fn_1_58C4();
     obj = lbl_1_data_2A7E0.unk_3C;
-    state = (Fn1FA75CState *)obj;
-    saved = state->unk_170;
+    status = (u8 *)&obj->unk_4;
+    saved = obj->unk_170;
     fn_80008BEC(obj, 0, 0x174);
-    state->unk_170 = saved;
+    obj->unk_170 = saved;
 
-    if (state->unk_170 != 0 && result <= 1) {
+    if (obj->unk_170 != 0 && result <= 1) {
         fn_1_FA89C(obj);
     } else {
         fn_1_76BF8();
         fn_1_72648();
-        state->unk_4 = 0;
+        *status = 0;
     }
 
     obj->unk_0 = -1;
@@ -977,10 +964,10 @@ void fn_1_FA75C(void) {
     fn_1_FB0B4(&lbl_1_bss_84428);
     fn_1_FB180(&lbl_1_bss_84428);
 
-    if (state->unk_4 == 0) {
+    if (*status == 0) {
         fn_1_76BF8();
         fn_1_72648();
-        state->unk_4 = 0;
+        *status = 0;
     }
 }
 /* fzgx:end fn_1_FA75C */
@@ -1034,6 +1021,7 @@ Obj_1_bss_84428 *fn_1_FB0A8(void) {
 /* fzgx:end fn_1_FB0A8 */
 
 /* fzgx:begin fn_1_FB180 */
+// Set the destination value to one.
 void fn_1_FB180(int *value) {
     *value = 1;
 }

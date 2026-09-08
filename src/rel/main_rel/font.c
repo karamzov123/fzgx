@@ -550,11 +550,11 @@ void fn_1_4E6F4(void) {
 /* fzgx:end fn_1_4E6F4 */
 
 /* fzgx:begin fn_1_4F724 */
-extern u16 lbl_1_bss_646D2[7];
+#include "rel/main_rel/font.h"
 
-// fn_1_4F724: initialize lbl_1_bss_646D2[0] to zero.
+// Clear the font state value before the next initialization.
 void fn_1_4F724(void) {
-    lbl_1_bss_646D2[0] = 0;
+    lbl_1_bss_646D2.unk_0 = 0;
 }
 /* fzgx:end fn_1_4F724 */
 
@@ -567,8 +567,9 @@ void fn_1_50164(f32 a, f32 b, f32 c, f32 d) {
 /* fzgx:end fn_1_50164 */
 
 /* fzgx:begin fn_1_51564 */
-extern u16 lbl_1_bss_4C678[0xC033];
+extern u16 lbl_1_bss_4C678[0xC034];
 
+// Store the six font-related halfwords in the global font state.
 void fn_1_51564(u16 a, u16 b, u16 c, u16 d, u16 e, u16 f) {
     lbl_1_bss_4C678[0xC02e] = a;
     lbl_1_bss_4C678[0xC02f] = b;
@@ -580,11 +581,11 @@ void fn_1_51564(u16 a, u16 b, u16 c, u16 d, u16 e, u16 f) {
 /* fzgx:end fn_1_51564 */
 
 /* fzgx:begin fn_1_51990 */
-extern u32 lbl_1_bss_4C678[2];
+extern u32 lbl_1_bss_4C678;
 
-// fn_1_51990: Copy a value to structure field at +0x4c, then set bit 0x01000000 in field at +0x30.
+// Copy the font state value and enable the corresponding object flag.
 void fn_1_51990(void *obj) {
-    *(u32 *)((u8 *)obj + 0x4c) = lbl_1_bss_4C678[0];
+    *(u32 *)((u8 *)obj + 0x4c) = lbl_1_bss_4C678;
     *(u32 *)((u8 *)obj + 0x30) |= 0x01000000;
 }
 /* fzgx:end fn_1_51990 */
@@ -694,8 +695,9 @@ void fn_1_5417C(void *arg) {
 
 /* fzgx:begin fn_1_541A8 */
 extern u8 lbl_1_data_1C5DC[4];
-extern u8 lbl_1_data_1C5EC[100];
+extern u32 lbl_1_data_1C5EC[25];
 
+// Select the localized form for a value and column, including the special 10–20 range.
 void *fn_1_541A8(void *arg, s32 value) {
     s32 special;
     u32 remainder;
@@ -726,7 +728,7 @@ void *fn_1_541A8(void *arg, s32 value) {
         }
     }
 
-    row = (u32 *)(lbl_1_data_1C5EC + index * 24);
+    row = &lbl_1_data_1C5EC[index * 6];
     return (void *)row[value < 0 ? 0 : (value > 5 ? 5 : value)];
 }
 /* fzgx:end fn_1_541A8 */
@@ -776,26 +778,27 @@ f32 fn_1_542B8(void) {
 /* fzgx:begin fn_1_542C4 */
 typedef struct FontState {
     u8 pad30[0x30];
-    void *field_30;
-    void *field_34;
-    f32 field_38;
-    f32 field_3C;
-    f32 field_40;
+    void *unk_30;
+    void *unk_34;
+    f32 unk_38;
+    f32 unk_3C;
+    f32 unk_40;
     u8 pad44[8];
-    f32 field_4C;
+    f32 unk_4C;
 } FontState;
 
-// Volatile fields preserve the retail's repeated global-state accesses.
+// Volatile preserves the repeated loads of the shared font state.
 extern volatile FontState *lbl_801A66CC;
 extern void fn_1_54320(void);
 
+// Store the current font parameters and notify the font system.
 void fn_1_542C4(void *arg0, void *arg1, f32 arg2, f32 arg3, f32 arg4) {
-    lbl_801A66CC->field_30 = arg0;
-    lbl_801A66CC->field_34 = arg1;
-    lbl_801A66CC->field_38 = arg2;
-    lbl_801A66CC->field_3C = arg3;
-    lbl_801A66CC->field_40 = arg4;
-    lbl_801A66CC->field_4C = arg4 - arg3;
+    lbl_801A66CC->unk_30 = arg0;
+    lbl_801A66CC->unk_34 = arg1;
+    lbl_801A66CC->unk_38 = arg2;
+    lbl_801A66CC->unk_3C = arg3;
+    lbl_801A66CC->unk_40 = arg4;
+    lbl_801A66CC->unk_4C = arg4 - arg3;
     fn_1_54320();
 }
 /* fzgx:end fn_1_542C4 */
@@ -813,6 +816,7 @@ typedef struct FontState {
 extern FontState *lbl_801A66CC;
 extern void fn_1_54668(u8 *, s32, s32);
 
+// Initializes the font buffer and records its current and end positions.
 void fn_1_54320(void) {
     FontState *state;
 
@@ -840,6 +844,7 @@ extern void fn_1_54668(void *arg0, u32 arg1, u32 arg2);
 extern void fn_1_9FA18(void);
 extern void fn_1_58248(void);
 
+// Reset the font manager's node list and process any completed nodes.
 void fn_1_545B8(void) {
     if (lbl_801A66CC->unk_48 >= lbl_801A66CC->unk_44) {
         if (lbl_801A66CC->unk_44 > (u32 *)lbl_801A66CC->unk_30) {
@@ -865,6 +870,7 @@ typedef struct fn_1_54668_node {
 
 extern void fn_1_54848(void);
 
+// Initialize a forward- or reverse-linked list and notify the allocator.
 void fn_1_54668(fn_1_54668_node *node, s32 count, u32 reverse) {
     s32 i;
 
@@ -898,6 +904,7 @@ typedef struct fn_1_547F8_node {
     void (*callback)(struct fn_1_547F8_node *);
 } fn_1_547F8_node;
 
+// Invoke each node callback while walking the linked list.
 void fn_1_547F8(fn_1_547F8_node *node) {
     while (node != 0) {
         if (node->callback != 0) {
@@ -910,21 +917,22 @@ void fn_1_547F8(fn_1_547F8_node *node) {
 
 /* fzgx:begin fn_1_54868 */
 typedef struct FontState {
-    u8 pad1A0[0x1A0];
-    u32 field_1A0;
-    u32 field_1A4;
-    u32 field_1A8;
-    u32 field_1AC;
+    u8 pad_1a0[0x1a0];
+    u32 unk_1a0;
+    u32 unk_1a4;
+    u32 unk_1a8;
+    u32 unk_1ac;
 } FontState;
 
-// Volatile preserves the retail's repeated global-state accesses.
+// Volatile preserves the retail's repeated font-state global loads.
 extern volatile FontState *lbl_801A66CC;
 
+// Copies the current font state's two counter values into its active fields.
 void fn_1_54868(u32 arg0, u32 arg1) {
-    lbl_801A66CC->field_1A4 = arg0;
-    lbl_801A66CC->field_1A8 = arg1;
-    lbl_801A66CC->field_1A0 = lbl_801A66CC->field_1A4;
-    lbl_801A66CC->field_1AC = lbl_801A66CC->field_1A8;
+    lbl_801A66CC->unk_1a4 = arg0;
+    lbl_801A66CC->unk_1a8 = arg1;
+    lbl_801A66CC->unk_1a0 = lbl_801A66CC->unk_1a4;
+    lbl_801A66CC->unk_1ac = lbl_801A66CC->unk_1a8;
 }
 /* fzgx:end fn_1_54868 */
 
@@ -1203,6 +1211,7 @@ extern u8 *lbl_801A66CC;
 extern void lbl_8006DD14(void *arg0, void *arg1);
 extern void fn_800749B0(s32 arg0, void *arg1);
 
+// Marks the selected font resource as active before handing it to the loader.
 void fn_1_560F0(s32 index, void *arg) {
     if (arg != NULL) {
         lbl_1_bss_6C7CC.unk_0 |= (1u << 31) >> index;
@@ -1290,6 +1299,7 @@ void fn_1_56530(void) {
 /* fzgx:begin fn_1_565E8 */
 extern u8 lbl_1_bss_6C7DC[100];
 
+// Return the font data buffer used by the font subsystem.
 u8 *fn_1_565E8(void) {
     return lbl_1_bss_6C7DC;
 }

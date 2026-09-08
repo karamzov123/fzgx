@@ -74,8 +74,9 @@ void fn_1_109114(AccessoryObject *self) {
 /* fzgx:end fn_1_109114 */
 
 /* fzgx:begin fn_1_10B7D8 */
-extern void fn_1_10846C(void *arg0);
+#include "rel/main_rel/globals.h"
 
+// Initializes the accessory object when a caller supplies one.
 void fn_1_10B7D8(void *arg0) {
     if (arg0 != 0) {
         fn_1_10846C(arg0);
@@ -242,17 +243,18 @@ s32 fn_1_128B00(s16 value) {
 /* fzgx:end fn_1_128B00 */
 
 /* fzgx:begin fn_1_128DD8 */
+#include "rel/main_rel/globals.h"
+
 extern u8 lbl_1_data_405C0[8];
 
+// Return the index of value in the accessory lookup table, or its length.
 u8 fn_1_128DD8(u8 value) {
     u8 i;
 
-    i = 0;
-    while (i < 6) {
+    for (i = 0; i < 6; i++) {
         if (lbl_1_data_405C0[i] == value) {
             return i;
         }
-        i++;
     }
     return i;
 }

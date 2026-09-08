@@ -210,16 +210,18 @@ void fn_1_153AAC(void) {
 /* fzgx:end fn_1_153AAC */
 
 /* fzgx:begin fn_1_153AB0 */
-extern u32 lbl_1_data_2A7E0[62];
-extern void fn_1_153C60(u32 value);
-extern void fn_1_1540B0(u32 value);
+#include "rel/main_rel/globals.h"
+
+extern void fn_1_153C60(Obj_1_data_2A7E0_At3C *value);
+extern void fn_1_1540B0(Obj_1_data_2A7E0_At3C *value);
 extern void fn_1_9AD88(void);
 
+// Initializes the background Aurora object.
 void fn_1_153AB0(void) {
-    u32 value = lbl_1_data_2A7E0[15];
+    Obj_1_data_2A7E0_At3C *object = lbl_1_data_2A7E0.unk_3C;
 
-    fn_1_153C60(value);
-    fn_1_1540B0(value);
+    fn_1_153C60(object);
+    fn_1_1540B0(object);
     fn_1_9AD88();
 }
 /* fzgx:end fn_1_153AB0 */
@@ -231,23 +233,29 @@ void fn_1_153AF4(void) {
 /* fzgx:end fn_1_153AF4 */
 
 /* fzgx:begin fn_1_153AF8 */
-void fn_1_153AF8(u32 *p) {
-    u32 *q = p;
-    int i = 0;
+#include "rel/main_rel/globals.h"
 
-    p[0] = 0;
-    while (i < (int)p[0]) {
-        *++q = 0;
-        i++;
+// Clears the first entry and any following entries selected by its count.
+void fn_1_153AF8(u32 *entries) {
+    u32 *current = entries;
+    int index = 0;
+
+    entries[0] = 0;
+    while (index < (int)entries[0]) {
+        *++current = 0;
+        index++;
     }
 }
 /* fzgx:end fn_1_153AF8 */
 
 /* fzgx:begin fn_1_153D48 */
+#include "rel/main_rel/globals.h"
+
 extern void fn_80008BEC(void *arg0, u32 arg1, u32 arg2);
 
-void fn_1_153D48(void *arg0) {
-    fn_80008BEC((u8 *)arg0 + 0x1108, 0, 0x5fc);
+// Clears the Aurora background data region.
+void fn_1_153D48(void *background) {
+    fn_80008BEC((u8 *)background + 0x1108, 0, 0x5fc);
 }
 /* fzgx:end fn_1_153D48 */
 

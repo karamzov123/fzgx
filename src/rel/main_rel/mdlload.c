@@ -1,6 +1,8 @@
 #include "types.h"
 
 /* fzgx:begin fn_1_D3768 */
+#include "rel/main_rel/globals.h"
+
 extern int fn_1_45730(void *owner, void *buffer);
 extern u8 lbl_1_bss_3BC0[32];
 extern int fn_1_458A0(void *buffer, void *work, int size, int mode);
@@ -18,6 +20,7 @@ typedef struct {
     u32 flags;
 } Fn80071100Result;
 
+// Loads, prepares, and submits a model payload for the requested owner.
 int fn_1_D3768(void *owner, void *user) {
     u8 buffer[0x58];
     u32 data_size;
@@ -99,9 +102,11 @@ void *fn_1_D3B6C(FnD3B6CObject *object) {
 /* fzgx:end fn_1_D3B6C */
 
 /* fzgx:begin fn_1_D3BE8 */
+#include "rel/main_rel/globals.h"
+
 extern u8 lbl_1_bss_7AD58[8];
 
-// fn_1_D3BE8: increment the first byte in global array lbl_1_bss_7AD58
+// Increment the model-loader byte counter.
 void fn_1_D3BE8(void) {
     lbl_1_bss_7AD58[0]++;
 }
@@ -243,20 +248,23 @@ void fn_1_D3F88(void *base) {
 /* fzgx:end fn_1_D3F88 */
 
 /* fzgx:begin fn_1_D4174 */
-extern void fn_1_103264(void *ptr, void *arg);
+#include "rel/main_rel/globals.h"
 
+extern void fn_1_103264(void *item, void *arg);
+
+// Process each model-load entry in the caller-provided table.
 void fn_1_D4174(void *base, void *arg) {
-    s32 count;
-    char *ptr;
+    s32 remaining;
+    char *entry;
 
-    ptr = (char *)base + 0x10000;
-    count = *(s32 *)(ptr - 0x1820);
-    ptr -= 0x181c;
+    entry = (char *)base + 0x10000;
+    remaining = *(s32 *)(entry - 0x1820);
+    entry -= 0x181c;
 
-    while (count > 0) {
-        fn_1_103264(ptr, arg);
-        count--;
-        ptr += 0xac;
+    while (remaining > 0) {
+        fn_1_103264(entry, arg);
+        remaining--;
+        entry += 0xac;
     }
 }
 /* fzgx:end fn_1_D4174 */

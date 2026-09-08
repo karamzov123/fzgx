@@ -125,18 +125,23 @@ s32 fn_1_97174(Fn197174Owner *owner, void *arg1, void *arg2) {
 /* fzgx:end fn_1_97174 */
 
 /* fzgx:begin fn_1_9724C */
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/rob.h"
+
 extern s16 fn_1_98104(void);
-extern u32 *lbl_1_bss_6EAD0;
 extern void fn_8004C698(u32 arg0);
 
+// Loads the active resource value when the initialization check has not completed.
 void fn_1_9724C(void) {
     if (fn_1_98104() == 0) {
-        fn_8004C698(lbl_1_bss_6EAD0[1]);
+        fn_8004C698(lbl_1_bss_6EAD0.unk_0->unk_4);
     }
 }
 /* fzgx:end fn_1_9724C */
 
 /* fzgx:begin fn_1_97F1C */
+#include "rel/main_rel/globals.h"
+
 typedef struct {
     u8 unk_000[0x4A4];
     s32 value_4A4;
@@ -147,6 +152,7 @@ extern char lbl_1_data_27D90[80];
 extern void fn_8008069C(char *buffer, const char *format, ...);
 extern s32 fn_1_12A32C(char *buffer);
 
+/* Formats the indexed message and stores its parsed value in the object. */
 s16 fn_1_97F1C(Fn197F1CObject *object, s16 index) {
     char buffer[0x80];
 

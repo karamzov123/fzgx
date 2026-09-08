@@ -230,8 +230,9 @@ void fn_1_23640(Fn_1_23640 *self, int value) {
 /* fzgx:end fn_1_23640 */
 
 /* fzgx:begin fn_1_248C0 */
+#include "rel/main_rel/stcoli.h"
+
 extern char lbl_1_bss_9C;
-extern s16 lbl_1_bss_960;
 extern void fn_1_A2D84(int value);
 
 typedef struct Fn_1_248C0 {
@@ -242,6 +243,7 @@ typedef struct Fn_1_248C0 {
     unsigned char unk_4b3;
 } Fn_1_248C0;
 
+// Updates the collision state and reports whether the current flags trigger a response.
 int fn_1_248C0(Fn_1_248C0 *self, int arg) {
     int result;
     int test;
@@ -254,7 +256,7 @@ int fn_1_248C0(Fn_1_248C0 *self, int arg) {
             result = 1;
         }
         if (!(self->unk_00 & 0x10000) && self->unk_4b3 == 0) {
-            if (lbl_1_bss_960 == 9 && lbl_1_bss_9C == 5) {
+            if (*(s16 *)&lbl_1_bss_960 == 9 && lbl_1_bss_9C == 5) {
             } else if (lbl_1_bss_9C == 6) {
             } else if (self->unk_475 != -1 && !(self->unk_00 & 0x04000200)) {
                 fn_1_A2D84(0xA9072100);
@@ -270,7 +272,7 @@ int fn_1_248C0(Fn_1_248C0 *self, int arg) {
             self->unk_4b3 = 1;
         }
         if ((self->unk_00 & 1) && test) {
-            if ((self->unk_00 & 0x02810000) || arg != 0) {
+            if ((self->unk_00 & 0x02810000) || arg) {
                 result = 1;
             }
         }

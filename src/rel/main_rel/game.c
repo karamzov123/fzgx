@@ -90,6 +90,7 @@ extern void fn_1_435C(u32 arg0);
 extern void fn_1_4310(u32 arg0);
 extern void fn_1_A1588(u32 arg0, u32 arg1);
 
+// Initializes global game state and configures startup resources.
 void fn_1_3DDAC(void) {
     fn_1_4A00(1, 0x1e, lbl_1_bss_5100);
     fn_1_5370(3, 0);
@@ -113,17 +114,19 @@ void fn_1_3DDAC(void) {
 /* fzgx:end fn_1_3DDAC */
 
 /* fzgx:begin fn_1_3E5D0 */
-extern u32 lbl_1_bss_25B88[4];
-extern u32 lbl_1_bss_25CA4[11];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/game.h"
+
 extern void fn_1_435C(u32 value);
 extern void fn_1_4310(s32 value);
 extern void fn_1_4811C(s32 value);
 extern void fn_1_A8F78(void);
 
+// Resets the active state, clears its companion state, and starts the next phase.
 void fn_1_3E5D0(void) {
-    fn_1_435C(lbl_1_bss_25B88[0]);
+    fn_1_435C(lbl_1_bss_25B88.unk_0);
     fn_1_4310(0);
-    fn_1_435C(lbl_1_bss_25CA4[0]);
+    fn_1_435C(lbl_1_bss_25CA4.unk_0);
     fn_1_4310(0);
     fn_1_4811C(0x8a);
     fn_1_A8F78();
@@ -174,19 +177,23 @@ void fn_1_3EF08(u8 value) {
 /* fzgx:end fn_1_3EF08 */
 
 /* fzgx:begin fn_1_3EF14 */
-extern u8 lbl_1_bss_3C12[10];
-extern s16 lbl_1_bss_960;
-extern u8 lbl_1_bss_3C30[5308];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/game.h"
 
-extern void fn_80008BA8(void *arg1, u8 *arg2, u32 arg3);
-extern void fn_80008BEC(void *arg1, u32 arg2, u32 arg3);
+extern void fn_80008BA8(void *arg1, void *arg2, u32 size);
+extern void fn_80008BEC(void *arg1, void *arg2, u32 size);
 
+static inline s16 current_mode(void) {
+    return *(s16 *)&lbl_1_bss_960;
+}
+
+// Selects the appropriate buffer initialization based on the current mode.
 void fn_1_3EF14(void *arg1) {
-    if (lbl_1_bss_3C12[0] != 0 ||
-        ((u16)(lbl_1_bss_960 - 13) <= 1) ||
-        lbl_1_bss_960 == 10 ||
-        lbl_1_bss_960 == 16) {
-        fn_80008BA8(arg1, lbl_1_bss_3C30, 0x14b8);
+    if (lbl_1_bss_3C12.unk_0 != 0 ||
+        (u16)(current_mode() - 13) <= 1 ||
+        current_mode() == 10 ||
+        current_mode() == 16) {
+        fn_80008BA8(arg1, &lbl_1_bss_3C30, 0x14b8);
     } else {
         fn_80008BEC(arg1, 0, 0x14b8);
     }
@@ -194,18 +201,21 @@ void fn_1_3EF14(void *arg1) {
 /* fzgx:end fn_1_3EF14 */
 
 /* fzgx:begin fn_1_3EF8C */
-extern u8 lbl_1_bss_3C12[10];
-extern u8 lbl_1_data_5B7C;
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/game.h"
 
+// Stores the value unless initialization has already occurred.
 void fn_1_3EF8C(u8 value) {
-    if (lbl_1_bss_3C12[0] != 0) {
-        return;
+    if (lbl_1_bss_3C12.unk_0 == 0) {
+        lbl_1_data_5B7C = value;
     }
-    lbl_1_data_5B7C = value;
 }
 /* fzgx:end fn_1_3EF8C */
 
 /* fzgx:begin fn_1_3EFA8 */
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/game.h"
+
 typedef struct MainRelState {
     u8 pad_0000[0x12];
     u8 unk_12;
@@ -215,16 +225,14 @@ typedef struct MainRelState {
     s32 unk_14F8;
 } MainRelState;
 
-extern MainRelState lbl_1_bss_3C00;
-extern s32 lbl_1_bss_26B50;
-
+// Reports whether the relevant state is active and enabled.
 s32 fn_1_3EFA8(void) {
     s32 result = 0;
-    MainRelState *state = &lbl_1_bss_3C00;
+    MainRelState *state = (MainRelState *)&lbl_1_bss_3C00;
 
     if (state->unk_14F8 != 0 ||
         (state->unk_30 & 2) != 0 ||
-        lbl_1_bss_26B50 != 0) {
+        (s32)lbl_1_bss_26B50 != 0) {
         if (state->unk_12 != 0) {
             result = 1;
         }
@@ -258,28 +266,32 @@ void fn_1_3F02C(u32 arg1) {
 /* fzgx:end fn_1_3F02C */
 
 /* fzgx:begin fn_1_3F038 */
-extern u8 lbl_1_bss_26C58;
-extern u8 lbl_1_bss_3C11;
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/game.h"
+
 extern void fn_1_36330(void);
 extern void fn_1_36B10(void);
 extern void fn_1_3C98(void);
-extern u32 lbl_1_bss_3C30[1327];
 extern void fn_1_37AA8(void);
 extern void fn_1_37E98(void);
 
+// Initializes the game state and reports whether startup has completed.
 int fn_1_3F038(void) {
     if (lbl_1_bss_26C58 != 0) {
         return 1;
     }
+
     if (lbl_1_bss_3C11 != 0) {
         fn_1_36330();
         lbl_1_bss_3C11 = 0;
     }
+
     fn_1_36B10();
     fn_1_3C98();
-    if ((lbl_1_bss_3C30[0] & 0x00000004) == 0) {
+    if ((lbl_1_bss_3C30.unk_0 & 4) == 0) {
         fn_1_37AA8();
     }
+
     if (lbl_1_bss_26C58 != 0) {
         fn_1_37E98();
         return 1;
@@ -310,12 +322,13 @@ u8 *fn_1_3F0D8(u32 index, f32 *value, u8 *flag) {
 /* fzgx:end fn_1_3F0D8 */
 
 /* fzgx:begin fn_1_3F114 */
-extern u8 lbl_1_bss_3C12[10];
-extern u8 lbl_1_bss_3C30[5308];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/game.h"
 
+// Returns the current global status byte when the subsystem is enabled.
 u8 fn_1_3F114(void) {
-    if (lbl_1_bss_3C12[0] != 0) {
-        return lbl_1_bss_3C30[4];
+    if (lbl_1_bss_3C12.unk_0 != 0) {
+        return lbl_1_bss_3C30.unk_4;
     }
     return 0;
 }
@@ -345,6 +358,7 @@ typedef struct {
 extern MainState lbl_1_bss_3C00;
 extern s32 lbl_1_bss_26B50;
 
+// Reports whether the active state permits the current mode.
 s32 fn_1_3F164(void) {
     s32 result = 0;
     MainState *state = &lbl_1_bss_3C00;
@@ -361,11 +375,12 @@ s32 fn_1_3F164(void) {
 /* fzgx:end fn_1_3F164 */
 
 /* fzgx:begin fn_1_3F1D4 */
-extern u8 lbl_1_bss_3C30[5308];
+#include "rel/main_rel/globals.h"
 
+// Return the stored status byte when the game state is initialized.
 s32 fn_1_3F1D4(void) {
-    if (lbl_1_bss_3C30[5] == 1) {
-        return lbl_1_bss_3C30[0x13f6];
+    if (lbl_1_bss_3C30.unk_5 == 1) {
+        return lbl_1_bss_3C30.unk_13F6;
     }
     return -1;
 }
@@ -385,10 +400,13 @@ u8 fn_1_3F1F8(void) {
 /* fzgx:end fn_1_3F1F8 */
 
 /* fzgx:begin fn_1_3F23C */
-extern u8 lbl_1_bss_2625C[32];
+#include "rel/main_rel/game.h"
 
+// Reads the byte selected by the low eight bits of the index.
 u8 fn_1_3F23C(u32 index) {
-    return lbl_1_bss_2625C[index & 0xff];
+    u8 *table = &lbl_1_bss_2625C.unk_0;
+
+    return table[index & 0xff];
 }
 /* fzgx:end fn_1_3F23C */
 
@@ -401,6 +419,8 @@ u8 fn_1_3F250(u32 index) {
 /* fzgx:end fn_1_3F250 */
 
 /* fzgx:begin fn_1_3F264 */
+#include "rel/main_rel/globals.h"
+
 typedef struct {
     u8 unk[0xb];
     u8 value;
@@ -409,6 +429,7 @@ typedef struct {
 extern Entry *lbl_1_bss_53F8[34];
 extern s16 lbl_1_bss_25C48[46];
 
+// Return the entry value, falling back to the indexed default when absent.
 u8 fn_1_3F264(u32 index) {
     u32 masked = index & 0xff;
     Entry *entry = lbl_1_bss_53F8[masked];
@@ -422,26 +443,22 @@ u8 fn_1_3F264(u32 index) {
 /* fzgx:end fn_1_3F264 */
 
 /* fzgx:begin fn_1_3F440 */
-typedef struct {
-    u8 pad_0[8];
-    u8 unk_8;
-    u8 pad_9[5];
-    u8 unk_E[256];
-} Obj_1_bss_3C30;
-
-extern u32 lbl_1_data_62EC;
-extern char lbl_1_data_65E8[23];
-extern Obj_1_bss_3C30 lbl_1_bss_3C30;
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/game.h"
 
 extern void fn_8000C49C(const void *, u32, const char *, ...);
 
+// Reports an out-of-range index and returns the corresponding limit when valid.
 s32 fn_1_3F440(u8 index) {
+    u8 *limits;
+
     if (index > 0x1d) {
-        fn_8000C49C(&lbl_1_data_62EC, 0x2654, lbl_1_data_65E8);
+        fn_8000C49C(&lbl_1_data_62EC, 0x2654, (const char *)lbl_1_data_65E8);
     }
 
-    if (lbl_1_bss_3C30.unk_8 > lbl_1_bss_3C30.unk_E[index]) {
-        return lbl_1_bss_3C30.unk_E[index];
+    limits = (u8 *)&lbl_1_bss_3C30.unk_0;
+    if (lbl_1_bss_3C30.unk_8 > limits[index + 14]) {
+        return limits[index + 14];
     }
 
     return -1;
@@ -481,69 +498,70 @@ u32 fn_1_3F7D0(void) {
 /* fzgx:end fn_1_3F7D0 */
 
 /* fzgx:begin fn_1_3F7E0 */
-extern u8 lbl_1_bss_3C30[5308];
+#include "rel/main_rel/globals.h"
 
+// Selects the mode-specific byte from the shared game state.
 u8 fn_1_3F7E0(void) {
-    u32 value = *(u32*)lbl_1_bss_3C30;
-    if (value & 0x00008000) {
-        return lbl_1_bss_3C30[9];
+    if (lbl_1_bss_3C30.unk_0 & 0x00008000) {
+        return lbl_1_bss_3C30.unk_9;
     }
-    return lbl_1_bss_3C30[10];
+    return lbl_1_bss_3C30.pad_A[0];
 }
 /* fzgx:end fn_1_3F7E0 */
 
 /* fzgx:begin fn_1_3F800 */
-extern u8 lbl_1_bss_3C30[5308];
+#include "rel/main_rel/game.h"
 
+// Stores the value in the shared game state.
 void fn_1_3F800(u32 value) {
-    *(u32*)(lbl_1_bss_3C30 + 0x1464) = value;
+    lbl_1_bss_3C30.unk_1464 = value;
 }
 /* fzgx:end fn_1_3F800 */
 
 /* fzgx:begin fn_1_3F810 */
-extern u8 lbl_1_bss_3C30[5308];
+#include "rel/main_rel/globals.h"
 
+// Stores a value and its scaled companion in the shared game state.
 void fn_1_3F810(u8 value, u32 input) {
-    lbl_1_bss_3C30[0x146C] = value;
-    lbl_1_bss_3C30[0x146D] = (u8)((input / 5) >> 1);
+    lbl_1_bss_3C30.unk_146C = value;
+    lbl_1_bss_3C30.unk_146D = (u8)((input / 5) >> 1);
 }
 /* fzgx:end fn_1_3F810 */
 
 /* fzgx:begin fn_1_3F834 */
-extern u8 lbl_1_bss_3C30[5308];
+#include "rel/main_rel/globals.h"
 
+// Stores the byte value in the shared game state.
 void fn_1_3F834(u8 value) {
-    lbl_1_bss_3C30[0x1470] = value;
+    lbl_1_bss_3C30.unk_1470 = value;
 }
 /* fzgx:end fn_1_3F834 */
 
 /* fzgx:begin fn_1_3F844 */
-extern u8 lbl_1_bss_3C30[5308];
+#include "rel/main_rel/globals.h"
 
+// Store the current 16-bit value in the shared game state.
 void fn_1_3F844(u16 value) {
-    *(u16 *)&lbl_1_bss_3C30[0x146e] = value;
+    lbl_1_bss_3C30.unk_146E = value;
 }
 /* fzgx:end fn_1_3F844 */
 
 /* fzgx:begin fn_1_3F854 */
-extern u8 lbl_1_bss_3C30[5308];
+#include "rel/main_rel/globals.h"
 
+// Return the current game-state byte.
 u8 fn_1_3F854(void) {
-    return lbl_1_bss_3C30[8];
+    return lbl_1_bss_3C30.unk_8;
 }
 /* fzgx:end fn_1_3F854 */
 
 /* fzgx:begin fn_1_3F864 */
-typedef struct {
-    u32 unk_0;
-} Obj_1_bss_3C30;
+#include "rel/main_rel/globals.h"
 
-extern Obj_1_bss_3C30 lbl_1_bss_3C30;
-extern s16 lbl_1_bss_960;
-
+// Reports whether the game is in the guarded state or mode 0x000c.
 u8 fn_1_3F864(void) {
     if ((lbl_1_bss_3C30.unk_0 & 0x00100000) != 0 ||
-        lbl_1_bss_960 == 0x000c) {
+        *(s16 *)&lbl_1_bss_960 == 0x000c) {
         return 1;
     }
     return 0;
@@ -551,14 +569,14 @@ u8 fn_1_3F864(void) {
 /* fzgx:end fn_1_3F864 */
 
 /* fzgx:begin fn_1_3F894 */
-extern u8 lbl_1_bss_3C30[5308];
-extern u16 lbl_1_bss_53F4;
-extern u32 lbl_1_bss_25BA0[1];
+#include "rel/main_rel/game.h"
+
 extern u32 lbl_1_bss_26C2C[2];
 
+// Enables the associated game state and records the current mode.
 void fn_1_3F894(void) {
-    lbl_1_bss_53F4 = lbl_1_bss_3C30[7];
-    lbl_1_bss_25BA0[0] = 1;
+    lbl_1_bss_53F4 = lbl_1_bss_3C30.unk_7;
+    lbl_1_bss_25BA0.unk_0 = 1;
     lbl_1_bss_26C2C[0] = 1;
 }
 /* fzgx:end fn_1_3F894 */
@@ -625,31 +643,31 @@ u32 fn_1_3FC58(void) {
 /* fzgx:end fn_1_3FC58 */
 
 /* fzgx:begin fn_1_3FC68 */
-extern u32 lbl_1_bss_3C30;
+#include "rel/main_rel/game.h"
 
+// Toggles the 0x02000000 status flag according to the requested state.
 void fn_1_3FC68(s32 enabled) {
-    lbl_1_bss_3C30 = enabled != 0
-        ? lbl_1_bss_3C30 & ~0x02000000
-        : lbl_1_bss_3C30 | 0x02000000;
+    lbl_1_bss_3C30.unk_0 = enabled != 0
+        ? lbl_1_bss_3C30.unk_0 & ~0x02000000
+        : lbl_1_bss_3C30.unk_0 | 0x02000000;
 }
 /* fzgx:end fn_1_3FC68 */
 
 /* fzgx:begin fn_1_3FC8C */
-extern u8 lbl_1_bss_3C30[5308];
+#include "rel/main_rel/globals.h"
 
-// fn_1_3FC8C: Extract bit 6 from the first word of the global buffer.
+// Return the global state flag stored in bit 6 of the control word.
 u32 fn_1_3FC8C(void) {
-    u32 value = *(u32*)lbl_1_bss_3C30;
-    return value & 0x02000000;
+    return lbl_1_bss_3C30.unk_0 & 0x02000000;
 }
 /* fzgx:end fn_1_3FC8C */
 
 /* fzgx:begin fn_1_3FC9C */
-extern u8 lbl_1_bss_8B3A0[332];
+#include "rel/main_rel/globals.h"
 
+ // Return the low byte of the signed global status field.
 u32 fn_1_3FC9C(void) {
-    s16 value = *(s16*)(lbl_1_bss_8B3A0 + 8);
-    return (u32)value & 0xff;
+    return (u32)lbl_1_bss_8B3A0.unk_8 & 0xff;
 }
 /* fzgx:end fn_1_3FC9C */
 
@@ -807,27 +825,22 @@ void fn_1_40D44(void) {
 /* fzgx:end fn_1_40D44 */
 
 /* fzgx:begin fn_1_40E08 */
-typedef struct {
-    u32 unk_0;
-    u8 pad_4[0xA];
-} Obj_1_bss_3C1C;
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/game.h"
 
-extern s16 lbl_1_bss_960;
-extern Obj_1_bss_3C1C lbl_1_bss_3C1C;
-extern u32 lbl_1_bss_38210;
-extern u32 lbl_1_bss_38214;
 extern u8 lbl_1_data_662C[13];
 extern u32 lbl_801A63C0;
 extern void fn_1_40BE4(void);
 extern void fn_1_3F8C(u8 *, void (*)(void), s32, s32);
 
+// Initializes the random-selection bounds and schedules the next callback.
 void fn_1_40E08(u32 arg0) {
     u32 value;
     u32 half;
     u32 max;
     u32 remainder;
 
-    if (lbl_1_bss_960 == 0x10) {
+    if (*(s16 *)&lbl_1_bss_960 == 0x10) {
         lbl_1_bss_3C1C.unk_0 = -1;
     }
 
@@ -876,8 +889,11 @@ u8 fn_1_40F44(void) {
 /* fzgx:end fn_1_40F44 */
 
 /* fzgx:begin fn_1_40F54 */
+#include "rel/main_rel/globals.h"
+
 extern void fn_1_48B0(void *arg0, int arg1);
 
+// Initializes the related game state with the standard allocation size.
 void fn_1_40F54(void *arg0) {
     fn_1_48B0(arg0, 0x20);
 }
@@ -886,12 +902,11 @@ void fn_1_40F54(void *arg0) {
 /* fzgx:begin fn_1_40F78 */
 #include "rel/main_rel/game.h"
 
-extern u32 lbl_1_bss_38450;
+// Initializes the shared resource handles when the subsystem is enabled.
 extern u8 lbl_1_data_66C0[0x10];
 extern u8 lbl_1_data_66D0[0x10];
 
 extern u32 lbl_801A6CE0;
-extern u32 lbl_1_bss_38450;
 extern u32 lbl_1_bss_38454;
 extern u32 fn_80070DE0(void (*)(void));
 extern void fn_1_40F54(void);
@@ -916,10 +931,13 @@ void fn_1_40F78(void) {
 /* fzgx:end fn_1_40F78 */
 
 /* fzgx:begin fn_1_4100C */
-extern char lbl_1_data_66E0[16];
-extern char lbl_1_data_66F0[16];
-extern void fn_1_465D0(char *arg0, u32 arg1);
+#include "rel/main_rel/globals.h"
 
+extern u8 lbl_1_data_66E0[0x10];
+extern u8 lbl_1_data_66F0[0x10];
+extern void fn_1_465D0(u8 *arg0, u32 arg1);
+
+// Initialize both shared data blocks.
 void fn_1_4100C(void) {
     fn_1_465D0(lbl_1_data_66E0, 1);
     fn_1_465D0(lbl_1_data_66F0, 1);
@@ -976,35 +994,42 @@ void fn_1_410A0(void) {
 /* fzgx:end fn_1_410A0 */
 
 /* fzgx:begin fn_1_41104 */
+#include "rel/main_rel/globals.h"
+
 extern char *lbl_1_data_66A0[8];
 extern void fn_1_41134(u32 index, char *value);
 
+// Selects the indexed message and passes it to the message formatter.
 void fn_1_41104(u32 index) {
     fn_1_41134(index, lbl_1_data_66A0[index]);
 }
 /* fzgx:end fn_1_41104 */
 
 /* fzgx:begin fn_1_41134 */
-extern char lbl_1_data_6700[7];
-extern char lbl_1_data_6708[7];
-extern void fn_8008069C(char *buffer, char *format, ...);
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/game.h"
+
+extern void fn_8008069C(char *buffer, u32 *format, ...);
 extern void fn_1_465D0(char *value, u32 flag);
 
+// Format the value with each registered template and publish both results.
 void fn_1_41134(void *unused, char *value) {
     char buffer[128];
 
-    fn_8008069C(buffer, lbl_1_data_6700, value);
+    fn_8008069C(buffer, &lbl_1_data_6700, value);
     fn_1_465D0(buffer, 1);
-    fn_8008069C(buffer, lbl_1_data_6708, value);
+    fn_8008069C(buffer, &lbl_1_data_6708, value);
     fn_1_465D0(buffer, 1);
 }
 /* fzgx:end fn_1_41134 */
 
 /* fzgx:begin fn_1_411A4 */
+#include "rel/main_rel/globals.h"
+
 extern u32 lbl_1_data_66A0[8];
 extern void fn_1_411D4(u32 index, u32 value);
 
-// fn_1_411A4: Load array element by index and call fn_1_411D4 with both index and value.
+// Look up the indexed entry and pass it to the follow-up handler.
 void fn_1_411A4(u32 index) {
     fn_1_411D4(index, lbl_1_data_66A0[index]);
 }

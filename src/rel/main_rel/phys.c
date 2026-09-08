@@ -203,9 +203,12 @@ void fn_1_E57F4(void *base, f32 value) {
 /* fzgx:end fn_1_E57F4 */
 
 /* fzgx:begin fn_1_E57FC */
+#include "rel/main_rel/globals.h"
+
 extern void fn_80008BEC(void *dst, int value, int size);
 extern void fn_80008BA8(void *dst, const void *src, int size);
 
+// Clears or copies the 12-byte value stored in the object.
 void fn_1_E57FC(void *base, const void *value) {
     if (value == 0) {
         fn_80008BEC((char *)base + 0x44, 0, 0xc);
@@ -216,9 +219,12 @@ void fn_1_E57FC(void *base, const void *value) {
 /* fzgx:end fn_1_E57FC */
 
 /* fzgx:begin fn_1_E5840 */
+#include "rel/main_rel/globals.h"
+
 extern void fn_80008BEC(void *dst, int value, u32 size);
 extern void fn_80008BA8(void *dst, const void *src, u32 size);
 
+// Copies a 12-byte value into the object's field, clearing it when no value is supplied.
 void fn_1_E5840(void *base, const void *value) {
     if (value == 0) {
         fn_80008BEC((char *)base + 0x78, 0, 0xc);
@@ -229,12 +235,16 @@ void fn_1_E5840(void *base, const void *value) {
 /* fzgx:end fn_1_E5840 */
 
 /* fzgx:begin fn_1_E5884 */
+#include "rel/main_rel/globals.h"
+
 extern f32 lbl_1_rodata_67A8;
 extern void fn_80008BA8(void *dst, const void *src, u32 size);
 
+// Resets the three-component value or copies a replacement into it.
 void fn_1_E5884(void *base, const void *value) {
     if (value == 0) {
         f32 zero = lbl_1_rodata_67A8;
+
         *(f32 *)((char *)base + 0xfc) = zero;
         *(f32 *)((char *)base + 0xf8) = zero;
         *(f32 *)((char *)base + 0xf4) = zero;
@@ -245,9 +255,12 @@ void fn_1_E5884(void *base, const void *value) {
 /* fzgx:end fn_1_E5884 */
 
 /* fzgx:begin fn_1_E58CC */
+#include "rel/main_rel/globals.h"
+
 extern u32 lbl_1_rodata_6A8C[3];
 extern void fn_80008BA8(void *dst, const void *src, u32 size);
 
+// Copies either the supplied 12-byte value or the default value into the object.
 void fn_1_E58CC(void *base, const void *value) {
     if (value == 0) {
         u32 temp[3];
@@ -524,32 +537,31 @@ void fn_1_E95B4(void) {
 /* fzgx:end fn_1_E95B4 */
 
 /* fzgx:begin fn_1_E9C68 */
-extern u32 lbl_1_bss_7B188[2];
-extern s16 lbl_1_bss_960;
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/phys.h"
+
 extern u32 fn_1_3F8C0(void);
-extern u8 lbl_1_bss_7C85C[113];
-extern u32 lbl_1_data_3E52C;
-extern u8 lbl_1_data_3E434[68];
 extern u32 fn_80008E84(u32 value);
 
+// Updates the active physics callback and refreshes its associated state.
 void fn_1_E9C68(void) {
     u32 value;
 
-    if ((s32)lbl_1_bss_7B188[0] == 0) {
+    if ((s32)lbl_1_bss_7B188 == 0) {
         return;
     }
 
-    if (lbl_1_bss_960 == 9) {
+    if (*(s16 *)&lbl_1_bss_960 == 9) {
         value = fn_80008E84(fn_1_3F8C0());
-        *(u32*)lbl_1_bss_7C85C = value;
+        lbl_1_bss_7C85C.unk_0 = value;
     }
 
     if ((s32)lbl_1_data_3E52C >= 0) {
         ((void (**)(void))lbl_1_data_3E434)[lbl_1_data_3E52C]();
     }
 
-    if (lbl_1_bss_960 == 9) {
-        fn_80008E84(*(u32*)lbl_1_bss_7C85C);
+    if (*(s16 *)&lbl_1_bss_960 == 9) {
+        fn_80008E84(lbl_1_bss_7C85C.unk_0);
     }
 }
 /* fzgx:end fn_1_E9C68 */
@@ -566,34 +578,35 @@ void fn_1_EB074(u32 value) {
 extern u32 lbl_1_bss_7B188[2];
 extern u32 lbl_1_data_3E358[3];
 
-// fn_1_EB080: Check BSS flag, conditionally copy data field, store parameter.
+// Update the current state, retaining the prior value when entering mode 11.
 void fn_1_EB080(int param) {
-    u8* data_ptr = (u8*)lbl_1_data_3E358;
-    
+    u32* state = lbl_1_data_3E358;
+
     if ((int)lbl_1_bss_7B188[0] == 0) {
         return;
     }
-    
+
     if (param == 11) {
-        *(u32*)(data_ptr + 0x1e0) = *(u32*)(data_ptr + 0x1d4);
+        state[0x1e0 / 4] = state[0x1d4 / 4];
     }
-    
-    *(u32*)(data_ptr + 0x1d8) = param;
+
+    state[0x1d8 / 4] = param;
 }
 /* fzgx:end fn_1_EB080 */
 
 /* fzgx:begin fn_1_EB200 */
-extern u32 lbl_1_bss_7B188[2];
-extern s32 lbl_1_data_3E52C;
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/phys.h"
 
+// Return whether the active state is one of the physics states.
 int fn_1_EB200(void) {
-    if ((s32)lbl_1_bss_7B188[0] == 0) {
+    if ((s32)lbl_1_bss_7B188 == 0) {
         return 0;
     }
 
-    if (lbl_1_data_3E52C == 14 ||
-        lbl_1_data_3E52C == 16 ||
-        lbl_1_data_3E52C == 15) {
+    if ((s32)lbl_1_data_3E52C == 14 ||
+        (s32)lbl_1_data_3E52C == 16 ||
+        (s32)lbl_1_data_3E52C == 15) {
         return 1;
     }
 
@@ -602,16 +615,17 @@ int fn_1_EB200(void) {
 /* fzgx:end fn_1_EB200 */
 
 /* fzgx:begin fn_1_EB248 */
-extern u32 lbl_1_bss_7B188[2];
-extern s32 lbl_1_data_3E52C;
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/phys.h"
 
+// Return whether the current state is one of the supported race states.
 int fn_1_EB248(void) {
-    if ((s32)lbl_1_bss_7B188[0] == 0) {
+    if ((s32)lbl_1_bss_7B188 == 0) {
         return 0;
     }
 
     {
-        s32 state = *(s32*)&lbl_1_data_3E52C;
+        s32 state = lbl_1_data_3E52C;
 
         if ((u32)(state - 9) <= 4 ||
             (u32)(state - 5) <= 2 ||
@@ -656,16 +670,18 @@ void fn_1_EFA1C(void) {
 /* fzgx:end fn_1_EFA1C */
 
 /* fzgx:begin fn_1_F22E4 */
-extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
+#include "rel/main_rel/globals.h"
+
 extern s32 lbl_1_data_3E53C[];
 
+// Converts the current course selection into its associated data value.
 s16 fn_1_F22E4(s32 arg) {
-    s16 a;
-    s16 b;
+    s16 group;
+    s16 entry;
     s32 index;
 
-    fn_1_12EF80((s16)arg, &a, &b);
-    index = (a - 1) * 6 + b;
+    fn_1_12EF80((s16)arg, &group, &entry);
+    index = (group - 1) * 6 + entry;
     return (s16)lbl_1_data_3E53C[index];
 }
 /* fzgx:end fn_1_F22E4 */

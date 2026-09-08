@@ -1,14 +1,16 @@
 #include "types.h"
 
 /* fzgx:begin fn_1_56858 */
+#include "rel/main_rel/globals.h"
+
 extern char lbl_1_data_1C660[12];
 extern void *lbl_801A6410;
 extern void fn_1_46B4(void *, void *, char *, int);
 
 typedef struct ShadowMapEntry {
     char pad_00[0x3c];
-    void *field_3c;
-    void *field_40;
+    void *unk_3c;
+    void *unk_40;
     char pad_44[0x08];
 } ShadowMapEntry;
 
@@ -16,14 +18,11 @@ void fn_1_56858(ShadowMapEntry *entries, u32 count) {
     u32 i;
     ShadowMapEntry *entry;
 
-    i = 0;
-    entry = entries;
-    while (i < count) {
-        fn_1_46B4(lbl_801A6410, entry->field_3c, lbl_1_data_1C660, 0x87);
-        fn_1_46B4(lbl_801A6410, entry->field_40, lbl_1_data_1C660, 0x88);
+    // Register each entry's resources, then clear it for reuse.
+    for (i = 0, entry = entries; i < count; i++, entry++) {
+        fn_1_46B4(lbl_801A6410, entry->unk_3c, lbl_1_data_1C660, 0x87);
+        fn_1_46B4(lbl_801A6410, entry->unk_40, lbl_1_data_1C660, 0x88);
         memset(entry, 0, 0x4c);
-        i++;
-        entry++;
     }
 }
 /* fzgx:end fn_1_56858 */
@@ -42,11 +41,11 @@ void fn_1_568EC(ShadowMap *map, u32 value0, u32 value1) {
 /* fzgx:end fn_1_568EC */
 
 /* fzgx:begin fn_1_57714 */
-extern u8 lbl_1_data_1C670[28];
+#include "rel/main_rel/shadowmap.h"
 
-// fn_1_57714: stores a byte to a global data location.
+// Updates the shadow-map enable flag.
 void fn_1_57714(u8 value) {
-    lbl_1_data_1C670[0] = value;
+    lbl_1_data_1C670.unk_0 = value;
 }
 /* fzgx:end fn_1_57714 */
 

@@ -1,10 +1,12 @@
 #include "types.h"
 
 /* fzgx:begin fn_1_EC900 */
-extern u32 lbl_1_bss_7B1A4[2];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/ghost.h"
 
+// Return the current ghost state value.
 u32 fn_1_EC900(void) {
-    return lbl_1_bss_7B1A4[0];
+    return lbl_1_bss_7B1A4;
 }
 /* fzgx:end fn_1_EC900 */
 
@@ -271,10 +273,12 @@ void fn_1_F190C(void) {
 /* fzgx:end fn_1_F190C */
 
 /* fzgx:begin fn_1_F1950 */
-extern u32 lbl_1_bss_7ECFC[23];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/ghost.h"
 
+// Set the transfer completion flag for the asynchronous callback.
 void fn_1_F1950(void) {
-    lbl_1_bss_7ECFC[0] = 1;
+    lbl_1_bss_7ECFC.unk_0 = 1;
 }
 /* fzgx:end fn_1_F1950 */
 
@@ -402,34 +406,37 @@ void fn_1_F1ED0(s32 index) {
 /* fzgx:end fn_1_F1ED0 */
 
 /* fzgx:begin ghost_test_flag */
-extern u32 lbl_1_bss_7E9E8[6];
+#include "rel/main_rel/ghost.h"
 
+// Tests whether a ghost flag is set in the corresponding 32-bit flag word.
 u32 ghost_test_flag(s32 index) {
     if (index < 0x20) {
-        return lbl_1_bss_7E9E8[0] & (1 << index);
+        return lbl_1_bss_7E9E8.unk_0 & (1 << index);
     }
     if (index < 0x40) {
-        return lbl_1_bss_7E9E8[1] & (1 << (index - 0x20));
+        return lbl_1_bss_7E9E8.unk_4 & (1 << (index - 0x20));
     }
     if (index < 0x60) {
-        return lbl_1_bss_7E9E8[2] & (1 << (index - 0x40));
+        return lbl_1_bss_7E9E8.unk_8 & (1 << (index - 0x40));
     }
-    return lbl_1_bss_7E9E8[3] & (1 << (index - 0x60));
+    return lbl_1_bss_7E9E8.unk_C & (1 << (index - 0x60));
 }
 /* fzgx:end ghost_test_flag */
 
 /* fzgx:begin fn_1_F2008 */
-extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
-extern u8 lbl_1_bss_7F0C0[];
+#include "rel/main_rel/ghost.h"
 
+// Records the flag for the ghost entry identified by the decoded pair.
 void fn_1_F2008(s32 arg) {
     s16 a;
     s16 b;
     s32 index;
+    u8 *ghost_data;
 
     fn_1_12EF80((s16)arg, &a, &b);
     index = (a - 1) * 6 + b;
-    lbl_1_bss_7F0C0[0x4938 + index] |= 1;
+    ghost_data = (u8 *)&lbl_1_bss_7F0C0;
+    ghost_data[0x4938 + index] |= 1;
 }
 /* fzgx:end fn_1_F2008 */
 
@@ -437,6 +444,7 @@ void fn_1_F2008(s32 arg) {
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 extern u8 lbl_1_bss_7F0C0[];
 
+// Tests the record flag selected by the supplied ghost identifier.
 u32 ghost_test_record_flag0(s32 arg) {
     s16 a;
     s16 b;
@@ -449,17 +457,21 @@ u32 ghost_test_record_flag0(s32 arg) {
 /* fzgx:end ghost_test_record_flag0 */
 
 /* fzgx:begin ghost_set_record_flag1 */
-extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
-extern u8 lbl_1_bss_7F0C0[];
+#include "rel/main_rel/globals.h"
 
+extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
+
+// Sets the second record flag for the record associated with arg.
 void ghost_set_record_flag1(s32 arg) {
     s16 a;
     s16 b;
     s32 index;
+    u8 *record_flags;
 
     fn_1_12EF80((s16)arg, &a, &b);
     index = (a - 1) * 6 + b;
-    lbl_1_bss_7F0C0[0x4938 + index] |= 2;
+    record_flags = (u8 *)&lbl_1_bss_7F0C0;
+    record_flags[0x4938 + index] |= 2;
 }
 /* fzgx:end ghost_set_record_flag1 */
 
@@ -467,14 +479,15 @@ void ghost_set_record_flag1(s32 arg) {
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 extern u8 lbl_1_bss_7F0C0[];
 
+// Sets the second record flag for the record selected by the argument.
 void ghost_set_record_flag2(s32 arg) {
-    s16 a;
-    s16 b;
-    s32 index;
+    s16 record_group;
+    s16 record_index;
+    s32 flag_index;
 
-    fn_1_12EF80((s16)arg, &a, &b);
-    index = (a - 1) * 6 + b;
-    lbl_1_bss_7F0C0[0x4938 + index] |= 4;
+    fn_1_12EF80((s16)arg, &record_group, &record_index);
+    flag_index = (record_group - 1) * 6 + record_index;
+    lbl_1_bss_7F0C0[0x4938 + flag_index] |= 4;
 }
 /* fzgx:end ghost_set_record_flag2 */
 
@@ -482,6 +495,7 @@ void ghost_set_record_flag2(s32 arg) {
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 extern u8 lbl_1_bss_7F0C0[];
 
+// Return the record's flag bit after decoding its table position.
 s32 fn_1_F21B8(s32 arg) {
     s16 a;
     s16 b;
@@ -494,11 +508,13 @@ s32 fn_1_F21B8(s32 arg) {
 /* fzgx:end fn_1_F21B8 */
 
 /* fzgx:begin fn_1_F220C */
+#include "rel/main_rel/globals.h"
+
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 extern char lbl_1_data_3E8A0[];
-extern u8 lbl_1_bss_7F0C0[];
 extern void OSReport(const char *format, ...);
 
+// Logs the resolved course coordinates and marks the corresponding course as visited.
 void fn_1_F220C(s32 arg) {
     s16 a;
     s16 b;
@@ -507,7 +523,7 @@ void fn_1_F220C(s32 arg) {
     fn_1_12EF80((s16)arg, &a, &b);
     index = (a - 1) * 6 + b;
     OSReport(lbl_1_data_3E8A0, a, b, index);
-    lbl_1_bss_7F0C0[0x4938 + index] |= 8;
+    ((u8 *)&lbl_1_bss_7F0C0)[0x4938 + index] |= 8;
 }
 /* fzgx:end fn_1_F220C */
 
@@ -515,6 +531,7 @@ void fn_1_F220C(s32 arg) {
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 extern u8 lbl_1_bss_7F0C0[];
 
+// Returns the flag for the state selected by the converted coordinates.
 s32 fn_1_F2280(s32 arg) {
     s16 a;
     s16 b;

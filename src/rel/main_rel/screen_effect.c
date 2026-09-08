@@ -41,54 +41,53 @@ void fn_1_7269C(u32 arg0, u32 arg1, void *arg2) {
 /* fzgx:end fn_1_7269C */
 
 /* fzgx:begin fn_1_72714 */
-extern void fn_1_727BC(void);
-extern u8 lbl_1_bss_6C8EC[];
+#include "rel/main_rel/screen_effect.h"
 
+extern void fn_1_727BC(void);
+
+// Initialize the effect slot and return its requested subregion.
 void *fn_1_72714(u8 arg0, u8 arg1) {
     u32 offset;
     u8 *result;
 
     fn_1_727BC();
     offset = arg0 * 0x10c;
-    result = &lbl_1_bss_6C8EC[offset];
+    result = (u8 *)&lbl_1_bss_6C8EC + offset;
     return result + (arg1 << 5);
 }
 /* fzgx:end fn_1_72714 */
 
 /* fzgx:begin fn_1_72768 */
-typedef struct {
-    u8 pad_0[0x104];
-    u32 unk_104;
-    u8 unk_108;
-    u8 pad_109[3];
-} ScreenEffect;
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/screen_effect.h"
 
-extern ScreenEffect lbl_1_bss_6C8EC[];
 extern void fn_1_727BC(u8 arg0, u32 arg1);
 
+// Initialize the selected screen-effect entry and store its value.
 void fn_1_72768(u8 arg0, u32 arg1) {
-    ScreenEffect *entry;
+    Obj_1_bss_6C8EC *entry;
     u32 index;
 
     fn_1_727BC(arg0, 0);
     index = arg0;
-    entry = &lbl_1_bss_6C8EC[index];
+    entry = (Obj_1_bss_6C8EC *)((u8 *)&lbl_1_bss_6C8EC + index * 0x10c);
     entry->unk_104 = arg1;
 }
 /* fzgx:end fn_1_72768 */
 
 /* fzgx:begin fn_1_72848 */
-extern u8 lbl_1_bss_6C8EC[2144];
-extern void fn_1_76650(void *arg);
-extern u8 lbl_1_bss_6D14C[92];
+#include "rel/main_rel/screen_effect.h"
+
+extern void fn_1_76650(void *);
 
 void fn_1_72848(void) {
     u8 i;
 
+    // Reset each screen-effect entry before clearing the active-effect flag.
     for (i = 0; i < 8; i++) {
-        fn_1_76650(&lbl_1_bss_6C8EC[i * 0x10c]);
+        fn_1_76650((u8 *)&lbl_1_bss_6C8EC + i * 0x10c);
     }
-    lbl_1_bss_6D14C[0] = 0;
+    lbl_1_bss_6D14C.unk_0 = 0;
 }
 /* fzgx:end fn_1_72848 */
 
@@ -275,24 +274,16 @@ void fn_1_76BF8(void) {
 }
 /* fzgx:end fn_1_76BF8 */
 
-/* fzgx:begin fn_1_76C60 noprologue */
-#include "types.h"
+/* fzgx:begin fn_1_76C60 */
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/screen_effect.h"
 
-extern u8 lbl_1_data_1DAC0[0x44];
-typedef struct {
-    u8 pad_0[0x5];
-    u8 unk_5;  // 3 loads, 0 stores
-    u8 pad_6[0x102];
-} Obj_1_data_1D9B8;
-extern Obj_1_data_1D9B8 lbl_1_data_1D9B8;
-extern u32 lbl_1_bss_6C8E4;
-extern u32 lbl_1_bss_6C8E8;
-
+extern const f32 lbl_1_rodata_31AC;
+extern u32 lbl_801A6410;
 extern u32 fn_80008E84(u32 arg);
 extern void fn_1_46B4(u32 arg0, u32 arg1, void *arg2, u32 arg3);
 extern u16 fn_1_A5D9C(void);
 extern void fn_1_76DBC(void);
-extern u32 lbl_801A6410;
 
 typedef struct {
     u8 pad_0[0xa0];
@@ -319,11 +310,7 @@ typedef struct {
     u8 unk_108;
 } FnScreenEffect;
 
-extern u32 lbl_1_bss_6C8E4;
-extern u32 lbl_1_bss_6C8E8;
-extern u8 lbl_1_data_1DAC0[68];
-extern const f32 lbl_1_rodata_31AC;
-
+// Clears the active screen-effect state and resets its rendering parameters.
 void fn_1_76C60(FnScreenEffect *arg) {
     u8 i;
     u16 value;
@@ -444,15 +431,18 @@ void fn_1_772E0(void) {
 /* fzgx:end fn_1_772E0 */
 
 /* fzgx:begin fn_1_78950 */
-extern u8 lbl_1_bss_6D14C[92];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/screen_effect.h"
+
 extern void fn_8006FDEC(void);
 extern void fn_8006FEFC(void);
 extern void fn_8006FD1C(void);
 
+// Reset the screen effect state and refresh its processing stages twice.
 void fn_1_78950(void) {
     int i;
 
-    lbl_1_bss_6D14C[0] = 1;
+    lbl_1_bss_6D14C.unk_0 = 1;
     for (i = 0; i < 2; i++) {
         fn_8006FDEC();
         fn_8006FEFC();
@@ -462,13 +452,12 @@ void fn_1_78950(void) {
 /* fzgx:end fn_1_78950 */
 
 /* fzgx:begin fn_1_7899C */
-// fn_1_7899C: main_rel .text:0x0007899C size 0x10
-// Zero the first byte of lbl_1_bss_6D14C
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/screen_effect.h"
 
-extern u8 lbl_1_bss_6D14C[92];
-
+// Reset the screen-effect state before the next effect begins.
 void fn_1_7899C(void) {
-    lbl_1_bss_6D14C[0] = 0;
+    lbl_1_bss_6D14C.unk_0 = 0;
 }
 /* fzgx:end fn_1_7899C */
 
@@ -490,35 +479,40 @@ void fn_1_789AC(void) {
 /* fzgx:end fn_1_789AC */
 
 /* fzgx:begin fn_1_79100 */
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/screen_effect.h"
+
 extern void fn_1_9A864(void);
 extern u8 fn_1_7B074(void);
-extern u32 lbl_1_bss_6D770;
-extern u32 lbl_1_bss_6D774;
 extern void fn_8006FDEC(void);
 extern void fn_80071718(void *arg);
 extern void fn_800711A8(void *arg);
 extern void fn_1_14CB4(void);
 extern void fn_1_FA84(void);
-extern s16 lbl_1_data_1DFA4[6];
 
+// Release the active screen-effect resources and reset the effect state.
 void fn_1_79100(void) {
     fn_1_9A864();
+
     if (!fn_1_7B074()) {
         if (lbl_1_bss_6D770 != 0 || lbl_1_bss_6D774 != 0) {
             fn_8006FDEC();
         }
+
         if (lbl_1_bss_6D770 != 0) {
             fn_80071718((void *)lbl_1_bss_6D770);
             lbl_1_bss_6D770 = 0;
         }
+
         if (lbl_1_bss_6D774 != 0) {
             fn_800711A8((void *)lbl_1_bss_6D774);
             lbl_1_bss_6D774 = 0;
         }
     }
+
     fn_1_14CB4();
     fn_1_FA84();
-    lbl_1_data_1DFA4[4] = -1;
+    lbl_1_data_1DFA4.unk_8 = -1;
 }
 /* fzgx:end fn_1_79100 */
 
@@ -532,57 +526,52 @@ void fn_1_7A648(void *arg0) {
 /* fzgx:end fn_1_7A648 */
 
 /* fzgx:begin fn_1_7A9B8 */
-typedef struct {
-    u8 unk00[0x18];
-    s32 count;
-    void *nodes;
-} Manager;
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/screen_effect.h"
 
 typedef struct {
-    u8 unk00[0xf4];
-    void *field_f4;
-    u8 unk_f8[0x4b0 - 0xf8];
-} Node;
+    u8 pad_0[0xf4];
+    void *resource;
+    u8 pad_f8[0x4b0 - 0xf8];
+} ScreenEffect;
 
 typedef struct {
-    u8 unk00[0x2c];
-    void *field_2c;
-    u8 unk30[0x8c - 0x30];
-    void *field_8c;
-    u8 unk90[0xa0 - 0x90];
-} Entry;
-
-extern Manager *lbl_1_bss_3BE0;
-extern Entry *lbl_1_bss_3BE4;
+    u8 pad_0[0x2c];
+    u8 reset_data[0x60];
+    u8 load_data[0x14];
+} ScreenEffectEntry;
 
 extern void lbl_8006DBAC(void *arg0);
 extern void lbl_8006E1B0(void *arg0, void *arg1);
 
+// Resets the active screen-effect entries and releases each attached resource.
 void fn_1_7A9B8(void) {
-    Entry *table;
-    Node *node;
+    ScreenEffectEntry *entry;
+    ScreenEffect *effect;
     s32 i;
 
     i = 0;
-    table = lbl_1_bss_3BE4;
-    node = (Node *)lbl_1_bss_3BE0->nodes;
-    while (i < lbl_1_bss_3BE0->count) {
-        if (node->field_f4 != 0) {
-            lbl_8006DBAC(&table->field_2c);
-            lbl_8006E1B0(node->field_f4, &table->field_8c);
+    entry = (ScreenEffectEntry *)lbl_1_bss_3BE4.unk_0;
+    effect = (ScreenEffect *)lbl_1_bss_3BE0->unk_1C;
+    while (i < (s32)lbl_1_bss_3BE0->unk_18) {
+        if (effect->resource != 0) {
+            lbl_8006DBAC(&entry->reset_data);
+            lbl_8006E1B0(effect->resource, &entry->load_data);
         }
         i++;
-        table++;
-        node++;
+        entry++;
+        effect++;
     }
 }
 /* fzgx:end fn_1_7A9B8 */
 
 /* fzgx:begin fn_1_7B054 */
-extern s16 lbl_1_data_1DFA4[6];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/screen_effect.h"
 
+// Return the current screen effect value.
 s16 fn_1_7B054(void) {
-    return lbl_1_data_1DFA4[4];
+    return lbl_1_data_1DFA4.unk_8;
 }
 /* fzgx:end fn_1_7B054 */
 

@@ -212,10 +212,13 @@ void fn_1_D0790(void) {
 /* fzgx:end fn_1_D0790 */
 
 /* fzgx:begin fn_1_D07AC */
-extern u8 lbl_1_bss_7ACA0[48];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/enemy_ctrl.h"
 
+// Stores a value in the indexed enemy-control slot.
 void fn_1_D07AC(u32 index, u32 value) {
-    ((u32 *)lbl_1_bss_7ACA0)[(index & 0xff) * 3] = value;
+    u32* slots = &lbl_1_bss_7ACA0.unk_0;
+    slots[(index & 0xff) * 3] = value;
 }
 /* fzgx:end fn_1_D07AC */
 
@@ -244,18 +247,20 @@ u16* fn_1_D0D98(void) {
 /* fzgx:end fn_1_D0D98 */
 
 /* fzgx:begin fn_1_D0DA8 */
-extern u16 lbl_1_data_3D648[20];
+#include "rel/main_rel/enemy_ctrl.h"
 
+// Return the address of the object's 16-bit field at offset 0x6.
 u8* fn_1_D0DA8(void) {
-    return (u8*)lbl_1_data_3D648 + 0x6;
+    return (u8*)&lbl_1_data_3D648.unk_6;
 }
 /* fzgx:end fn_1_D0DA8 */
 
 /* fzgx:begin fn_1_D0DB8 */
-extern u16 lbl_1_data_3D648[20];
+#include "rel/main_rel/enemy_ctrl.h"
 
+// Returns the byte address of the object's field at offset 0x8.
 u8* fn_1_D0DB8(void) {
-    return (u8*)lbl_1_data_3D648 + 0x8;
+    return (u8*)&lbl_1_data_3D648.unk_8;
 }
 /* fzgx:end fn_1_D0DB8 */
 
@@ -268,82 +273,100 @@ u8* fn_1_D0DC8(void) {
 /* fzgx:end fn_1_D0DC8 */
 
 /* fzgx:begin fn_1_D0DD8 */
-extern u16 lbl_1_data_3D648[20];
+#include "rel/main_rel/enemy_ctrl.h"
 
+// Return the address of the enemy-control value at offset 0x10.
 u8* fn_1_D0DD8(void) {
-    return (u8*)lbl_1_data_3D648 + 0x10;
+    return (u8*)&lbl_1_data_3D648.unk_10;
 }
 /* fzgx:end fn_1_D0DD8 */
 
 /* fzgx:begin fn_1_D0DE8 */
-extern u16 lbl_1_data_3D648[20];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/enemy_ctrl.h"
 
+// Return the address of the object's field at offset 0x12.
 u8* fn_1_D0DE8(void) {
-    return (u8*)lbl_1_data_3D648 + 0x12;
+    return (u8*)&lbl_1_data_3D648.unk_12;
 }
 /* fzgx:end fn_1_D0DE8 */
 
 /* fzgx:begin fn_1_D0DF8 */
-extern u16 lbl_1_data_3D648[20];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/enemy_ctrl.h"
 
-u8* fn_1_D0DF8(void) {
-    return (u8*)lbl_1_data_3D648 + 0x14;
+// Return the enemy-control field at offset 0x14.
+u16* fn_1_D0DF8(void) {
+    return &lbl_1_data_3D648.unk_14;
 }
 /* fzgx:end fn_1_D0DF8 */
 
 /* fzgx:begin fn_1_D0E08 */
-extern u16 lbl_1_data_3D648[20];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/enemy_ctrl.h"
 
+// Return the address of the enemy-control field at offset 0x16.
 u8* fn_1_D0E08(void) {
-    return (u8*)lbl_1_data_3D648 + 0x16;
+    return (u8*)&lbl_1_data_3D648.unk_16;
 }
 /* fzgx:end fn_1_D0E08 */
 
 /* fzgx:begin fn_1_D0E18 */
-extern u16 lbl_1_data_3D648[20];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/enemy_ctrl.h"
 
-u8* fn_1_D0E18(void) {
-    return (u8*)lbl_1_data_3D648 + 0x18;
+// Return the address of the enemy-control field at offset 0x18.
+u16* fn_1_D0E18(void) {
+    return &lbl_1_data_3D648.unk_18;
 }
 /* fzgx:end fn_1_D0E18 */
 
 /* fzgx:begin fn_1_D0E28 */
-extern u16 lbl_1_data_3D648[20];
+#include "rel/main_rel/enemy_ctrl.h"
+#include "rel/main_rel/globals.h"
 
-u16* fn_1_D0E28(void) {
-    return lbl_1_data_3D648;
+// Return the enemy-control data block.
+Obj_1_data_3D648* fn_1_D0E28(void) {
+    return &lbl_1_data_3D648;
 }
 /* fzgx:end fn_1_D0E28 */
 
 /* fzgx:begin fn_1_D0E34 */
-extern u16 lbl_1_data_3D648[20];
+#include "rel/main_rel/enemy_ctrl.h"
 
+// Returns the status-byte array beginning at the shared enemy data block.
 u8* fn_1_D0E34(void) {
-    return (u8*)lbl_1_data_3D648 + 0x20;
+    return &lbl_1_data_3D648.unk_20;
 }
 /* fzgx:end fn_1_D0E34 */
 
 /* fzgx:begin fn_1_D0E44 */
-extern u16 lbl_1_data_3D648[20];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/enemy_ctrl.h"
 
+// Return the address of the enemy controller's status byte.
 u8* fn_1_D0E44(void) {
-    return (u8*)lbl_1_data_3D648 + 0x21;
+    return &lbl_1_data_3D648.unk_21;
 }
 /* fzgx:end fn_1_D0E44 */
 
 /* fzgx:begin fn_1_D0E54 */
-extern u16 lbl_1_data_3D648[20];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/enemy_ctrl.h"
 
+// Returns the address of this object's byte flag.
 u8* fn_1_D0E54(void) {
-    return (u8*)lbl_1_data_3D648 + 0x22;
+    return &lbl_1_data_3D648.unk_22;
 }
 /* fzgx:end fn_1_D0E54 */
 
 /* fzgx:begin fn_1_D0E64 */
-extern u16 lbl_1_data_3D648[20];
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/enemy_ctrl.h"
 
+// Returns the address of the enemy-control byte at offset 0x23.
 u8* fn_1_D0E64(void) {
-    return (u8*)lbl_1_data_3D648 + 0x23;
+    return &lbl_1_data_3D648.unk_23;
 }
 /* fzgx:end fn_1_D0E64 */
 
@@ -352,6 +375,7 @@ u8* fn_1_D0E64(void) {
 
 extern u32 fn_80008E84(u32);
 
+// Stores the initialized enemy-control value.
 void fn_1_D2F50(void) {
     lbl_1_data_3D928.unk_0 = fn_80008E84(lbl_1_data_3D924);
 }

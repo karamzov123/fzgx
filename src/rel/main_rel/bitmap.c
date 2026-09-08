@@ -19,22 +19,15 @@ void fn_1_48140(void *arg) {
 /* fzgx:begin fn_1_48164 */
 #include "rel/main_rel/bitmap.h"
 
-extern void fn_1_48214(int, int);
-
-typedef struct {
-    s32 unk_0;
-    u8 pad_4[0x20];
-    u8 unk_24;
-} BitmapEntry;
-
+// Enables every bitmap entry assigned to the requested value.
 void fn_1_48164(int value) {
     s16 i;
-    BitmapEntry *entry;
+    Obj_1_data_FCD4 *entry;
 
     i = 1;
-    entry = (BitmapEntry *)((u8 *)&lbl_1_data_FCD4 + 0x28);
-    for (; i < 0xbc; i++, entry++) {
-        if (entry->unk_0 != 0 && entry->unk_24 == value) {
+    entry = (Obj_1_data_FCD4 *)((u8 *)&lbl_1_data_FCD4 + 0x28);
+    for (; i < 0xbc; i++, entry = (Obj_1_data_FCD4 *)((u8 *)entry + 0x28)) {
+        if ((s32)entry->unk_0 != 0 && entry->unk_24 == value) {
             fn_1_48214(i, 1);
         }
     }
@@ -104,31 +97,32 @@ extern void fn_80009064(u32 value);
 extern void fn_1_48214(s32 index, s32 value);
 extern void fn_1_46B4(u32 arg0, u32 arg1, char *arg2, s32 arg3);
 
+// Releases a bitmap and invalidates dependent texture records.
 void fn_1_484CC(s32 index) {
     u8 *record;
-    s16 i;
-    u32 *entry;
+    s16 record_index;
+    u32 *bitmap;
 
-    entry = (u32 *)((u8 *)&lbl_1_data_6CA0 + index * 12);
-    if (*(s32 *)entry == -1) {
+    bitmap = (u32 *)((u8 *)&lbl_1_data_6CA0 + index * 12);
+    if (*(s32 *)bitmap == -1) {
         return;
     }
 
     fn_8006FDEC();
-    i = 1;
+    record_index = 1;
     record = (u8 *)&lbl_1_data_FCD4 + 0x28;
-    while (i < 188) {
+    while (record_index < 188) {
         if (*(s32 *)record != 0 && record[0x24] == index) {
-            fn_1_48214(i, 1);
+            fn_1_48214(record_index, 1);
         }
-        i++;
+        record_index++;
         record += 0x28;
     }
 
-    fn_80009064(entry[0]);
-    fn_1_46B4(lbl_801A6410, entry[1],
+    fn_80009064(bitmap[0]);
+    fn_1_46B4(lbl_801A6410, bitmap[1],
               (char *)lbl_1_data_1A368, 0x265);
-    entry[0] = (u32)-1;
+    bitmap[0] = (u32)-1;
 }
 /* fzgx:end fn_1_484CC */
 
@@ -177,16 +171,18 @@ u32 fn_1_486F8(void) {
 /* fzgx:end fn_1_486F8 */
 
 /* fzgx:begin fn_1_48730 */
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/bitmap.h"
 
+// Look up the bitmap data for the table and slot encoded in value.
 void *fn_1_48730(u32 value) {
-    u32 index = (value >> 8) & 0xffff;
-    u32 offset = value & 0xff;
+    u32 table_index = (value >> 8) & 0xffff;
+    u32 slot_index = value & 0xff;
     Obj_1_data_FCD4 *entry =
-        (Obj_1_data_FCD4 *)((u8 *)&lbl_1_data_FCD4 + index * 0x28);
+        (Obj_1_data_FCD4 *)((u8 *)&lbl_1_data_FCD4 + table_index * 0x28);
 
     if (entry != 0 && (s32)entry->unk_0 == 1 && entry->unk_20 != 0) {
-        return (u8 *)entry->unk_20->unk_4 + ((u8)offset << 4);
+        return (u8 *)entry->unk_20->unk_4 + ((u8)slot_index << 4);
     }
     return 0;
 }

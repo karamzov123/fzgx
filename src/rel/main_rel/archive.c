@@ -1,15 +1,17 @@
 #include "types.h"
 
 /* fzgx:begin fn_1_12A2D0 */
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/archive.h"
 
 extern void fn_8000C49C(char *arg0, s32 arg1, ...);
 
+// Store the selected entry when it is valid; otherwise report an invalid entry.
 void fn_1_12A2D0(s32 value) {
-    s32 *entry;
+    Obj_1_bss_897AC *entry;
 
-    entry = (s32 *)((u8 *)&lbl_1_bss_897AC + value * 0x6c);
-    if (*entry == 1) {
+    entry = (Obj_1_bss_897AC *)((u8 *)&lbl_1_bss_897AC + value * 0x6c);
+    if ((s32)entry->unk_0 == 1) {
         lbl_1_bss_897A0 = value;
     } else {
         fn_8000C49C((char *)lbl_1_data_40608, 0x5d, lbl_1_data_40614);
@@ -71,11 +73,14 @@ void fn_1_12AAC8(void *arg0) {
 /* fzgx:end fn_1_12AAC8 */
 
 /* fzgx:begin fn_1_12ABB4 */
+#include "rel/main_rel/globals.h"
+
 extern s32 lbl_1_bss_897A4;
 extern u32 lbl_801A6410;
 extern char lbl_1_data_40608[10];
 extern void fn_1_46B4(void *arg0, void *arg1, char *arg2, s32 arg3);
 
+// Initializes the archive table once.
 void fn_1_12ABB4(void *arg0) {
     if (lbl_1_bss_897A4 == 0) {
         fn_1_46B4((void *)lbl_801A6410, arg0, lbl_1_data_40608, 0x1e0);
@@ -256,12 +261,13 @@ void fn_1_12C6BC(void *arg) {
 /* fzgx:end fn_1_12C6BC */
 
 /* fzgx:begin fn_1_12D354 */
-extern char lbl_1_data_40798[];
-extern u32 lbl_1_bss_8B56C[24];
+#include "rel/main_rel/archive.h"
+
 extern void fn_8000C49C(char *format, ...);
 
+// Registers an object in the first available archive slot and reports overflow.
 void fn_1_12D354(void *arg0, void *arg1, void *arg2) {
-    char *base = lbl_1_data_40798;
+    char *base = (char *)lbl_1_data_40798;
     u32 i;
 
     if (arg2 == 0) {
@@ -269,9 +275,9 @@ void fn_1_12D354(void *arg0, void *arg1, void *arg2) {
     }
 
     for (i = 0; i < 12; i++) {
-        if (lbl_1_bss_8B56C[i * 2] == 0) {
-            lbl_1_bss_8B56C[i * 2] = (u32)arg2;
-            lbl_1_bss_8B56C[i * 2 + 1] = 0;
+        if ((&lbl_1_bss_8B56C.unk_0)[i * 2] == 0) {
+            (&lbl_1_bss_8B56C.unk_0)[i * 2] = (u32)arg2;
+            (&lbl_1_bss_8B56C.unk_0)[i * 2 + 1] = 0;
             return;
         }
     }
@@ -281,11 +287,13 @@ void fn_1_12D354(void *arg0, void *arg1, void *arg2) {
 /* fzgx:end fn_1_12D354 */
 
 /* fzgx:begin fn_1_12E424 */
-extern u32 lbl_1_bss_8B3A0[83];
+#include "rel/main_rel/globals.h"
+
 extern u32 fn_1_95120(void *arg);
 
+// Reports whether the archive state is active, otherwise querying the supplied entry.
 u8 fn_1_12E424(void *arg0, u8 *arg1) {
-    if (lbl_1_bss_8B3A0[37] & (1u << 31)) {
+    if (lbl_1_bss_8B3A0.unk_94 & (1u << 31)) {
         return 1;
     }
     return (u8)fn_1_95120(arg1 + 0x148);
@@ -322,22 +330,26 @@ u32 fn_1_12F118(void) {
 /* fzgx:end fn_1_12F118 */
 
 /* fzgx:begin fn_1_12F128 */
-extern u32 lbl_801A66A0;
-extern u32 lbl_1_bss_8B3A0[83];
+#include "rel/main_rel/globals.h"
 
+extern u32 lbl_801A66A0;
+
+// Stores the current global value in the indexed archive slot.
 void fn_1_12F128(s16 index) {
-    lbl_1_bss_8B3A0[index + 56] = lbl_801A66A0;
+    (&lbl_1_bss_8B3A0.unk_E0)[index] = lbl_801A66A0;
 }
 /* fzgx:end fn_1_12F128 */
 
 /* fzgx:begin fn_1_12F150 */
-extern u32 lbl_801A66A0;
-extern u32 lbl_1_bss_8B3A0[83];
+#include "rel/main_rel/globals.h"
 
+extern u32 lbl_801A66A0;
+
+// Store the timestamp and two values for one archive entry.
 void fn_1_12F150(s16 index, u32 value_100, u32 value_110) {
-    lbl_1_bss_8B3A0[index + 60] = lbl_801A66A0;
-    lbl_1_bss_8B3A0[index + 64] = value_100;
-    lbl_1_bss_8B3A0[index + 68] = value_110;
+    (&lbl_1_bss_8B3A0.unk_F0)[index] = lbl_801A66A0;
+    (&lbl_1_bss_8B3A0.unk_100)[index] = value_100;
+    (&lbl_1_bss_8B3A0.unk_110)[index] = value_110;
 }
 /* fzgx:end fn_1_12F150 */
 
@@ -352,26 +364,27 @@ void fn_1_12F17C(void) {
 /* fzgx:end fn_1_12F17C */
 
 /* fzgx:begin fn_1_12F194 */
-extern u32 lbl_1_bss_8B3A0[83];
+#include "rel/main_rel/globals.h"
 
+// Reset the archived state counters and values.
 void fn_1_12F194(void) {
-    lbl_1_bss_8B3A0[72] = 0;
-    lbl_1_bss_8B3A0[60] = 0;
-    lbl_1_bss_8B3A0[64] = 0;
-    lbl_1_bss_8B3A0[68] = 0;
-    lbl_1_bss_8B3A0[56] = 0;
-    lbl_1_bss_8B3A0[61] = 0;
-    lbl_1_bss_8B3A0[65] = 0;
-    lbl_1_bss_8B3A0[69] = 0;
-    lbl_1_bss_8B3A0[57] = 0;
-    lbl_1_bss_8B3A0[62] = 0;
-    lbl_1_bss_8B3A0[66] = 0;
-    lbl_1_bss_8B3A0[70] = 0;
-    lbl_1_bss_8B3A0[58] = 0;
-    lbl_1_bss_8B3A0[63] = 0;
-    lbl_1_bss_8B3A0[67] = 0;
-    lbl_1_bss_8B3A0[71] = 0;
-    lbl_1_bss_8B3A0[59] = 0;
+    lbl_1_bss_8B3A0.unk_120 = 0;
+    lbl_1_bss_8B3A0.unk_F0 = 0;
+    lbl_1_bss_8B3A0.unk_100 = 0;
+    lbl_1_bss_8B3A0.unk_110 = 0;
+    lbl_1_bss_8B3A0.unk_E0 = 0;
+    lbl_1_bss_8B3A0.unk_F4 = 0;
+    lbl_1_bss_8B3A0.unk_104 = 0;
+    lbl_1_bss_8B3A0.unk_114 = 0;
+    lbl_1_bss_8B3A0.unk_E4 = 0;
+    lbl_1_bss_8B3A0.unk_F8 = 0;
+    lbl_1_bss_8B3A0.unk_108 = 0;
+    lbl_1_bss_8B3A0.unk_118 = 0;
+    lbl_1_bss_8B3A0.unk_E8 = 0;
+    lbl_1_bss_8B3A0.unk_FC = 0;
+    lbl_1_bss_8B3A0.unk_10C = 0;
+    lbl_1_bss_8B3A0.unk_11C = 0;
+    lbl_1_bss_8B3A0.unk_EC = 0;
 }
 /* fzgx:end fn_1_12F194 */
 
@@ -455,6 +468,8 @@ void fn_1_12F308(void) {
 /* fzgx:end fn_1_12F308 */
 
 /* fzgx:begin fn_1_12F30C */
+#include "rel/main_rel/globals.h"
+
 typedef struct Fn1_12F30CState {
     s32 value;
 } Fn1_12F30CState;
@@ -463,6 +478,7 @@ extern void fn_1_435C(void *arg0, Fn1_12F30CState *state);
 extern void fn_1_426C(s32 value);
 extern void fn_1_7B4C0(void);
 
+// Resets the active archive entry before advancing archive processing.
 void fn_1_12F30C(void *arg0, Fn1_12F30CState *state) {
     if (state->value != -1) {
         fn_1_435C(arg0, state);
@@ -474,10 +490,13 @@ void fn_1_12F30C(void *arg0, Fn1_12F30CState *state) {
 /* fzgx:end fn_1_12F30C */
 
 /* fzgx:begin fn_1_130F98 */
+#include "rel/main_rel/globals.h"
+
 extern s32 lbl_1_bss_8CA44[10];
 extern s32 lbl_1_bss_8CA40;
 extern void (*lbl_1_data_40D50[8])(void);
 
+// Promote a pending archive operation and dispatch the selected handler.
 void fn_1_130F98(void) {
     if (lbl_1_bss_8CA44[0] >= 0) {
         s32 value = lbl_1_bss_8CA44[0];

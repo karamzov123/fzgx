@@ -24,6 +24,7 @@ u32 fn_1_7F428(u32 arg0) {
 /* fzgx:begin fn_1_7F934 */
 extern void fn_1_7F658(void);
 
+// Runs the car initialization routine.
 void fn_1_7F934(void) {
     fn_1_7F658();
 }
@@ -33,6 +34,7 @@ void fn_1_7F934(void) {
 extern char lbl_1_data_2057C[22];
 extern void fn_1_465D0(char *arg0, s32 arg1);
 
+// Initializes the car data table with its default entry.
 void fn_1_7FFF0(void) {
     fn_1_465D0(lbl_1_data_2057C, 1);
 }
@@ -142,6 +144,7 @@ void fn_1_80F1C(s32 arg0, void *arg1) {
 /* fzgx:end fn_1_80F1C */
 
 /* fzgx:begin fn_1_8171C */
+// Maps a car mode to its corresponding status code.
 s32 fn_1_8171C(s32 value) {
     switch (value) {
     case 0:
@@ -256,21 +259,22 @@ s32 fn_1_818AC(Obj *a, Obj *b) {
 /* fzgx:end fn_1_818AC */
 
 /* fzgx:begin fn_1_835E0 */
-extern void fn_1_435C(void *);
 extern u32 lbl_1_bss_6D970;
-extern void fn_1_43E8(s32);
 extern char lbl_1_data_20714[10];
+extern u32 lbl_1_bss_6D974;
+extern void fn_1_435C(void *);
+extern void fn_1_43E8(s32);
 extern void fn_1_850C4(void);
 extern void fn_1_3F8C(char *, void (*)(void), void *, s32);
 extern void fn_1_8B8A4(void);
-extern u32 lbl_1_bss_6D974;
 extern void fn_1_43F4(void);
 
-void fn_1_835E0(void *arg0, void *arg1, void *arg2) {
-    fn_1_435C(arg1);
-    lbl_1_bss_6D970 = (u32)arg2;
+// Registers the car callbacks and publishes the supplied car context.
+void fn_1_835E0(void *car_context, void *initial_state, void *callback_context) {
+    fn_1_435C(initial_state);
+    lbl_1_bss_6D970 = (u32)callback_context;
     fn_1_43E8(1);
-    fn_1_3F8C(lbl_1_data_20714, fn_1_850C4, arg0, 9);
+    fn_1_3F8C(lbl_1_data_20714, fn_1_850C4, car_context, 9);
     lbl_1_bss_6D974 = (u32)fn_1_8B8A4;
     fn_1_43F4();
 }
@@ -417,6 +421,7 @@ void fn_1_85F70(void) {
 extern f32 lbl_1_rodata_3518[6];
 extern void fn_1_85934(f32);
 
+// Passes the default car parameter to the car update routine.
 void fn_1_8616C(void) {
     fn_1_85934(lbl_1_rodata_3518[0]);
 }
@@ -434,27 +439,25 @@ void fn_1_86194(void) {
 /* fzgx:end fn_1_86194 */
 
 /* fzgx:begin fn_1_861B4 */
-extern u8 lbl_1_bss_6D84A[6];
-extern void fn_1_C489C(void *);
-extern void fn_1_C40A0(void *);
+extern u8 lbl_1_bss_6D84A;
+extern void fn_1_C489C(Obj_1_bss_6D838_Target *);
+extern void fn_1_C40A0(Obj_1_bss_6D838_Target *);
 
-// Processes each active car entry, then finalizes the car table.
+// Processes active car entries before finalizing the car table.
 void fn_1_861B4(void) {
     u32 i;
-    u8 *entry;
-    u8 *count;
+    Obj_1_bss_6D838_Target *car;
 
-    entry = (u8 *)lbl_1_bss_6D838;
-    count = lbl_1_bss_6D84A;
     i = 0;
-    while (i < (s8)*count) {
-        if (*(u32 *)entry & 0x04000000) {
-            fn_1_C489C(entry);
+    car = lbl_1_bss_6D838;
+    while (i < (s8)lbl_1_bss_6D84A) {
+        if (car->unk_0 & 0x04000000) {
+            fn_1_C489C(car);
         }
         i++;
-        entry += 0x620;
+        car++;
     }
-    fn_1_C40A0((void *)lbl_1_bss_6D838);
+    fn_1_C40A0(lbl_1_bss_6D838);
 }
 /* fzgx:end fn_1_861B4 */
 
@@ -616,34 +619,6 @@ s8 fn_1_86690(s8 index) {
     return lbl_1_bss_6D838[index].unk_6;
 }
 /* fzgx:end fn_1_86690 */
-
-/* fzgx:begin fn_1_8677C noprologue */
-#include "types.h"
-
-typedef struct {
-    u32 flags;
-    u8 pad[0x58];
-} EntryState;
-
-typedef struct {
-    u8 pad_0[0x244];
-    EntryState states[4];
-    u8 tail[0x26C];
-} Entry;
-
-extern Entry *lbl_1_bss_6D838;
-
-u8 fn_1_8677C(int index) {
-    u8 i;
-
-    for (i = 0; i < 4; i++) {
-        if (lbl_1_bss_6D838[index].states[i].flags & 4) {
-            return 1;
-        }
-    }
-    return 0;
-}
-/* fzgx:end fn_1_8677C */
 
 /* fzgx:begin fn_1_867F8 */
 // Return the indexed car's stored float value.
@@ -3110,20 +3085,20 @@ u32 fn_1_8CA0C(void) {
 /* fzgx:end fn_1_8CA0C */
 
 /* fzgx:begin fn_1_8CA20 */
-// fn_1_8CA20: Load value from BSS and return with offset applied
+#include "rel/main_rel/car.h"
 
-extern u32 lbl_1_bss_6D83C;
-
+// Return the car object's data pointer adjusted to this function's subobject.
 u32 fn_1_8CA20(void) {
-    return lbl_1_bss_6D83C + 0x3a8;
+    return lbl_1_bss_6D83C.unk_0 + 0x3a8;
 }
 /* fzgx:end fn_1_8CA20 */
 
 /* fzgx:begin fn_1_8CA34 */
-extern u32 lbl_1_bss_6D83C;
+#include "rel/main_rel/car.h"
 
+// Return the car object address adjusted to this function's field.
 u32 fn_1_8CA34(void) {
-    return lbl_1_bss_6D83C + 0x3ac;
+    return lbl_1_bss_6D83C.unk_0 + 0x3ac;
 }
 /* fzgx:end fn_1_8CA34 */
 
@@ -3217,18 +3192,19 @@ typedef struct {
 extern int fn_1_F7BE4(s16 arg0);
 extern const FnTable lbl_1_rodata_3D34;
 
+// Return whether the indexed flag remains enabled after the preliminary check.
 u32 fn_1_8D690(s16 arg0) {
     FnTable table;
-    u32 result;
+    u32 valid;
 
-    result = 1;
+    valid = 1;
     if (!fn_1_F7BE4(arg0)) {
         table = lbl_1_rodata_3D34;
         if ((table.entries[(s32)arg0] & ~0x7fffffff) == 0) {
-            result = 0;
+            valid = 0;
         }
     }
-    return result != 0;
+    return valid != 0;
 }
 /* fzgx:end fn_1_8D690 */
 
@@ -3305,16 +3281,18 @@ void fn_1_8E188(void) {
 /* fzgx:end fn_1_8E188 */
 
 /* fzgx:begin fn_1_8E1E8 */
-extern u32 lbl_1_bss_6E958[2];
+#include "rel/main_rel/car.h"
+
 extern void fn_80071718(u32 value);
 extern void fn_800711A8(u32 value);
 
+// Releases the pending resource handles, if any.
 void fn_1_8E1E8(void) {
-    if (lbl_1_bss_6E958[1] != 0) {
-        fn_80071718(lbl_1_bss_6E958[1]);
-        fn_800711A8(lbl_1_bss_6E958[0]);
-        lbl_1_bss_6E958[1] = 0;
-        lbl_1_bss_6E958[0] = 0;
+    if (lbl_1_bss_6E958.unk_4 != 0) {
+        fn_80071718(lbl_1_bss_6E958.unk_4);
+        fn_800711A8(lbl_1_bss_6E958.unk_0);
+        lbl_1_bss_6E958.unk_4 = 0;
+        lbl_1_bss_6E958.unk_0 = 0;
     }
 }
 /* fzgx:end fn_1_8E1E8 */
@@ -3587,6 +3565,7 @@ struct Fn19617CData {
     void *unk_0C;
 };
 
+// Initializes the car resources and restores the shared resource state.
 void fn_1_9617C(Fn19617CData *arg0, void *arg1) {
     fn_1_12AB38(lbl_1_data_27BA4);
     if (fn_1_12A8A4(arg1, &arg0->unk_0C) != 0) {
@@ -3674,6 +3653,7 @@ struct Fn196968Object {
 extern u8 lbl_1_data_2785C[16];
 extern void *fn_1_41488(void *arg0, void *arg1);
 
+// Initialize the cached value and return the resource-derived sequence number.
 u16 fn_1_96968(Fn196968Object *object, void *arg1) {
     if (object->resource_170 != 0 && object->resource_174 != 0) {
         object->value_28 = fn_1_41488(object->resource_174, lbl_1_data_2785C);
@@ -3700,11 +3680,13 @@ struct Fn1969E8Owner {
 extern s32 fn_1_41488(void *arg0, void *arg1);
 extern u32 lbl_1_data_22A24;
 
+// Resolve the owner's resource values and cache the associated lookup result.
 u16 fn_1_969E8(Fn1969E8Owner *owner, void *arg1) {
     if (owner->unk_1b0 != 0 && owner->unk_1b4 != 0) {
         owner->unk_2c = fn_1_41488(owner->unk_1b4, &lbl_1_data_22A24);
         return (u16)(fn_1_41488(owner->unk_1b4, arg1) + 1);
     }
+
     owner->unk_2c = 0;
     return 0;
 }
@@ -3724,6 +3706,7 @@ struct Fn196A68Object {
 extern u32 fn_1_41488(void *arg0, void *arg1);
 extern u32 lbl_1_data_27870;
 
+// Updates the car's resource state and returns the next resource index.
 u16 fn_1_96A68(Fn196A68Object *object, void *arg1) {
     if (object->unk_1F0 != 0 && object->unk_1F4 != 0) {
         object->unk_34 = fn_1_41488(object->unk_1F4, &lbl_1_data_27870);
@@ -3745,19 +3728,24 @@ struct Fn196B14Entry {
 extern u8 lbl_1_data_27874[56];
 extern s32 fn_1_41488(void *arg0, void *arg1);
 
+// Computes the indexed entry value when its backing resource is available.
 u16 fn_1_96B14(void *base, void *arg1, s32 index) {
     Fn196B14Entry *entry = (Fn196B14Entry *)((u8 *)base + (index << 5));
+
     if (entry->unk_210 != 0 && entry->unk_214 != 0) {
         ((u32 *)((u8 *)base + 0x38))[index] =
             (u32)fn_1_41488(entry->unk_214, lbl_1_data_27874);
         return (u16)(fn_1_41488(entry->unk_214, arg1) + 1);
     }
+
     ((u32 *)((u8 *)base + 0x38))[index] = 0;
     return 0;
 }
 /* fzgx:end fn_1_96B14 */
 
 /* fzgx:begin fn_1_96BC0 */
+#include "rel/main_rel/car.h"
+
 typedef struct Fn196BC0Object Fn196BC0Object;
 
 struct Fn196BC0Object {
@@ -3768,13 +3756,14 @@ struct Fn196BC0Object {
     void *resource_1D4;
 };
 
-extern u32 lbl_1_data_2786C;
-extern void *fn_1_41488(void *arg0, void *arg1);
+extern s32 fn_1_41488(void *arg0, void *arg1);
 
+// Updates the car's resource-derived value and returns the converted result.
 u16 fn_1_96BC0(Fn196BC0Object *object, void *arg1) {
     if (object->resource_1D0 != 0 && object->resource_1D4 != 0) {
-        object->value_30 = fn_1_41488(object->resource_1D4, &lbl_1_data_2786C);
-        return (u16)((u32)fn_1_41488(object->resource_1D4, arg1) + 1);
+        object->value_30 = (void *)fn_1_41488(
+            object->resource_1D4, &lbl_1_data_2786C);
+        return (u16)(fn_1_41488(object->resource_1D4, arg1) + 1);
     }
 
     object->value_30 = 0;
@@ -3799,22 +3788,23 @@ extern void fn_1_A7B5C(void *arg0, s32 arg1, void *arg2, s8 arg3, void *arg4);
 
 typedef struct FnA7E60Object {
     u8 pad_fc[0xfc];
-    s32 field_fc;
-    s32 field_100;
-    s32 field_104;
-    s32 field_108;
+    s32 unk_fc;
+    s32 unk_100;
+    s32 unk_104;
+    s32 unk_108;
 } FnA7E60Object;
 
+// Initialize the selected car data and build its localized display values.
 void fn_1_A7E60(void *arg0, s8 arg1, FnA7E60Object *object, s32 arg3, void *arg4) {
     char buffer[0x80];
-    u8 *base;
+    u8 *data;
     s32 index;
-    s32 table_value;
+    s32 format_value;
 
-    base = lbl_1_data_34348;
+    data = lbl_1_data_34348;
     index = (s32)arg1;
-    object->field_fc = ((s32 *)lbl_1_data_26B60)[index];
-    object->field_100 = ((s32 *)lbl_1_data_26C14)[index];
+    object->unk_fc = ((s32 *)lbl_1_data_26B60)[index];
+    object->unk_100 = ((s32 *)lbl_1_data_26C14)[index];
 
     if (arg3 != -1) {
         fn_1_12A2B8(1);
@@ -3824,13 +3814,13 @@ void fn_1_A7E60(void *arg0, s8 arg1, FnA7E60Object *object, s32 arg3, void *arg4
         fn_1_12A2B8(0);
     }
 
-    fn_1_12AB38(base + 0x40);
-    table_value = ((s32 *)lbl_1_data_20D1C)[index];
-    fn_8008069C(buffer, (const char *)(base + 0x18), table_value);
-    object->field_108 = fn_1_12AC00(buffer);
-    fn_8008069C(buffer, (const char *)(base + 0x48), table_value);
-    object->field_104 = fn_1_12ADA0(buffer, object->field_108);
-    fn_1_12AB38(base + 0x3c);
+    fn_1_12AB38(data + 0x40);
+    format_value = ((s32 *)lbl_1_data_20D1C)[index];
+    fn_8008069C(buffer, (const char *)(data + 0x18), format_value);
+    object->unk_108 = fn_1_12AC00(buffer);
+    fn_8008069C(buffer, (const char *)(data + 0x48), format_value);
+    object->unk_104 = fn_1_12ADA0(buffer, object->unk_108);
+    fn_1_12AB38(data + 0x3c);
     fn_1_12A2B8(0);
     fn_1_12A2C4(0);
     fn_1_A7B5C(object, 0, arg0, arg1, arg4);
