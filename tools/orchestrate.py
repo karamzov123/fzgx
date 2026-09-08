@@ -55,6 +55,21 @@ def select(p: Project, spec: str) -> List[str]:
     return [r["symbol"] for r in rows[::step][: int(n)]]
 
 
+def select_tu(p: Project, module: str, tu_files: List[str], max_size: int = 0) -> List[str]:
+    """Every unmatched, unattempted function of the given TUs (whole-file matching)."""
+    import json as _json
+    d = _json.loads((p.module_config_dir(module) / "tus.json").read_text())
+    want = {t["file"]: t["functions"] for t in d["tus"] if t["file"] in tu_files}
+    inv = {r["symbol"]: r for r in api.inventory(p, module=module, status="unmatched")}
+    out = []
+    for f in tu_files:
+        for fn in want.get(f, []):
+            r = inv.get(fn)
+            if r and r["attempts"] == 0 and (not max_size or r["size"] <= max_size):
+                out.append(fn)
+    return out
+
+
 def claude_cmd(symbol: str, agent_id: str, model: str) -> List[str]:
     prompt = f"SYMBOL={symbol}  AGENT_ID={agent_id}. Match this function following your loop."
     return ["claude", "-p", prompt, "--agent", "matcher", "--model", model,
@@ -194,6 +209,9 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--timeout", type=int, default=900, help="seconds per agent")
     ap.add_argument("--symbols", nargs="*", default=[])
     ap.add_argument("--select", help="module:min_size:max_size:count, e.g. main_rel:8:96:48")
+    ap.add_argument("--select-tu", nargs="*", help="whole-file batches: TU names from tus.json, e.g. camera.c coli.c")
+    ap.add_argument("--module", default="main_rel", help="module for --select-tu")
+    ap.add_argument("--max-size", type=int, default=0, help="size cap for --select-tu")
     ap.add_argument("--budget-usd", type=float, help="stop launching new agents past this spend (claude only reports cost)")
     ap.add_argument("--batch", default=time.strftime("b%Y%m%d-%H%M"))
     ap.add_argument("--no-trivial", action="store_true", help="skip the mechanical blr/li pass first")
@@ -210,6 +228,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     symbols = list(a.symbols)
     if a.select:
         symbols += select(p, a.select)
+    if a.select_tu:
+        symbols += select_tu(p, a.module, a.select_tu, a.max_size)
     if not symbols:
         print("nothing selected", file=sys.stderr)
         return 2

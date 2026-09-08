@@ -35,7 +35,8 @@ def _insn(line: str) -> str:
 
 
 def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
-    fields: Dict[Tuple[str, int], Dict[str, object]] = defaultdict(lambda: {"width": 0, "float": False, "loads": 0, "stores": 0})
+    fields: Dict[Tuple[str, int], Dict[str, object]] = defaultdict(
+        lambda: {"width": 0, "float": False, "loads": 0, "stores": 0, "widths": {}, "signed": False})
     users: List[str] = []
     kinds = defaultdict(int)
     for fn in p.function_asm(module).values():
@@ -71,6 +72,8 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
                 off = int(m.group(3), 0) if m.group(3) else 0
                 f = fields[("object", off)]
                 f["width"] = max(f["width"], OP_WIDTH[m.group(1)])
+                f["widths"][OP_WIDTH[m.group(1)]] = f["widths"].get(OP_WIDTH[m.group(1)], 0) + 1
+                f["signed"] = f["signed"] or m.group(1) == "lha"
                 f["float"] = f["float"] or m.group(1) in ("lfs", "lfd", "stfs", "stfd")
                 f["loads" if m.group(1).startswith("l") else "stores"] += 1
                 if m.group(1) == "lwz":
@@ -87,6 +90,8 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
                     key = (bk, off)
                     f = fields[key]
                     f["width"] = max(f["width"], WIDTH[w])
+                    f["widths"][WIDTH[w]] = f["widths"].get(WIDTH[w], 0) + 1
+                    f["signed"] = f["signed"] or w == "ha"
                     f["float"] = f["float"] or w in ("fs", "fd")
                     f["loads" if op == "l" else "stores"] += 1
                     kinds[bk] += 1
@@ -104,6 +109,8 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
                     key = (derived[rb], off)
                     f = fields[key]
                     f["width"] = max(f["width"], WIDTH[w])
+                    f["widths"][WIDTH[w]] = f["widths"].get(WIDTH[w], 0) + 1
+                    f["signed"] = f["signed"] or w == "ha"
                     f["float"] = f["float"] or w in ("fs", "fd")
                     f["loads" if op == "l" else "stores"] += 1
                     used = True
@@ -157,11 +164,18 @@ def typedef(info: Dict[str, object], name: Optional[str] = None, fields: Optiona
         if off > cur:
             lines.append(f"    u8 pad_{cur:X}[0x{off - cur:X}];")
         w = f["width"] or 4
+        widths = f.get("widths") or {w: 1}
+        if len(widths) > 1:
+            narrow = min(widths)
+            # two narrow fields read once as one wide word: keep the narrow view when the
+            # neighbouring narrow slot is itself accessed
+            if any(o == off + narrow for o in fields) or widths[narrow] >= widths.get(w, 0):
+                w = narrow
         # MWCC (-align powerpc) aligns each field naturally; a misaligned access is an
         # unaligned load into a wider field or a packed byte run, so emit bytes instead.
         if off % w:
             w = 1
-        ctype = {1: "u8", 2: "u16", 4: "f32" if f["float"] else "u32", 8: "f64"}[w]
+        ctype = {1: "u8", 2: "s16" if f.get("signed") else "u16", 4: "f32" if f["float"] else "u32", 8: "f64"}[w]
         if off in ptr_types and w == 4:
             ctype = f"{ptr_types[off]} *"
         lines.append(f"    {ctype}{'' if ctype.endswith('*') else ' '}unk_{off:X};  // {f['loads']} loads, {f['stores']} stores")

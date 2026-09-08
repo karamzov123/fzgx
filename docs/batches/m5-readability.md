@@ -59,6 +59,25 @@ functions were mostly stubs and getters, so there was little to name. Names
 become meaningful once whole TUs are matched against shared types, which is
 why types came first.
 
+## Revise batch r1 (Luna, 28 cast-heavy units)
+
+28/28 rewritten against `globals.h` and kept at 100%, one relink, $0.15, 79 s.
+Before/after example (font.c):
+
+    s16 index = *(s16 *)((u8 *)lbl_1_bss_4B9CC + 0xc);              ->  s16 index = *(s16 *)&lbl_1_bss_4B9CC.unk_C;
+    *(f32 *)((u8 *)lbl_1_bss_4B9CC + 0x1c) = value1 * scale;        ->  lbl_1_bss_4B9CC.unk_1C = value1 * scale;
+
+The residual cast exposed a header limit: the emitter took the widest access
+per offset. It now keeps the narrower width when the neighbouring slot is
+used or the narrow accesses dominate, and `lha` loads become `s16` (28 signed
+halfword fields in the header). Arrays of fixed-stride records
+(`lbl_1_data_1AEA8[index * 14 + 13]`, 0x38-byte font metrics) are the next
+analyzer target.
+
+Luna naming pilot on effect.c (64 matched functions): 11 renames of the
+`effect_queue_event_2` kind for ~$0.02. Same verdict as Sonnet on ghost.c: not
+applied; naming waits until a TU is matched as a whole.
+
 ## Next
 
 1. Revise batch over the 45 cast-heavy and 100 private-struct units (Luna,
