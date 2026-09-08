@@ -122,8 +122,10 @@ def _render_diff(left_rows: List[dict], right_rows: List[dict], max_lines: int,
     return out
 
 
-def check(project: Project, symbol: str, max_diff_lines: int = 80, source: Optional[Path] = None) -> CheckResult:
-    """Compile the unit (or `source`, an agent's work copy) into the unit's object and diff it."""
+def check(project: Project, symbol: str, max_diff_lines: int = 80, source: Optional[Path] = None,
+          mw_version: Optional[str] = None, extra_cflags: Optional[str] = None) -> CheckResult:
+    """Compile the unit (or `source`, an agent's work copy) into the unit's object and diff it.
+    For an uncarved function, `mw_version`/`extra_cflags` are the unit options being proposed."""
     sym = project.resolve(symbol)
     if sym is None:
         return CheckResult(False, symbol, "", error="unknown or ambiguous symbol (use module:name)")
@@ -138,7 +140,7 @@ def check(project: Project, symbol: str, max_diff_lines: int = 80, source: Optio
         if target is None or not target.exists():
             return CheckResult(False, symbol, "", error="no retail object defines this function (run ninja)")
         base_obj = STATE_DIR / "work" / (project.key(sym).replace(":", "__") + ".o")
-        cp = compile_source(project, sym.module, source, base_obj)
+        cp = compile_source(project, sym.module, source, base_obj, mw_version, extra_cflags)
         if cp.returncode != 0 or not base_obj.exists():
             err = "\n".join(l for l in (cp.stdout + cp.stderr).splitlines() if "Usage Warning" not in l)
             return CheckResult(False, symbol, "", error=err.strip()[-4000:])
@@ -281,9 +283,18 @@ def module_flags(project: Project, module: str) -> Tuple[str, str]:
     return flags, ("GC/1.2.5n" if module == "main" else "GC/1.3.2")
 
 
-def compile_source(project: Project, module: str, source: Path, obj: Path) -> subprocess.CompletedProcess:
-    """Compile a standalone source with the module's flags into `obj` (no unit involved)."""
+def compile_source(project: Project, module: str, source: Path, obj: Path,
+                   mw_version: Optional[str] = None, extra_cflags: Optional[str] = None) -> subprocess.CompletedProcess:
+    """Compile a standalone source with the module's flags into `obj` (no unit involved);
+    a unit-specific compiler version or extra flags (last flag wins in mwcc) override them."""
     flags, mw = module_flags(project, module)
+    mw = mw_version or mw
+    if extra_cflags:
+        extra = shlex.split(extra_cflags)
+        olevel = [f for f in extra if f.startswith("-O")]
+        if olevel:  # mwcc keeps the first -O it sees: replace the module's
+            flags = " ".join(shlex.quote(olevel[-1] if f.startswith("-O") else f) for f in shlex.split(flags))
+        flags = " ".join([flags] + [shlex.quote(f) for f in extra if not f.startswith("-O")])
     obj.parent.mkdir(parents=True, exist_ok=True)
     cmd = [str(ROOT / "build" / "tools" / "wibo"), str(ROOT / "build" / "compilers" / mw / "mwcceppc.exe")]
     cmd += shlex.split(flags) + ["-c", str(source), "-o", str(obj)]

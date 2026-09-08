@@ -332,7 +332,12 @@ def load_generated_units() -> None:
         from fzgx import tufile as _tufile  # scoped: same
         _tufile.regenerate(_Project(config.version), units)
     for u in units:
-        opts: Dict[str, Any] = {"extra_cflags": u.get("extra_cflags") or []}
+        extra = list(u.get("extra_cflags") or [])
+        opts: Dict[str, Any] = {"extra_cflags": [f for f in extra if not f.startswith("-O")]}
+        olevel = [f for f in extra if f.startswith("-O")]
+        if olevel:  # mwcc keeps the first -O it sees: an override must replace the module's
+            base = cflags_base if u["module"] == "main" else cflags_rel
+            opts["cflags"] = [olevel[-1] if f.startswith("-O") else f for f in base]
         if u.get("mw_version"):
             opts["mw_version"] = u["mw_version"]
         if u.get("tu"):

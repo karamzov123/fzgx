@@ -386,7 +386,7 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
     if unit_src and (mw_version or extra_cflags):
         _set_unit_opts(p, unit_src, mw_version, extra_cflags)
         _reconfigure_and_split(p)
-    res = oracle.check(p, symbol, max_diff_lines, source=src)
+    res = oracle.check(p, symbol, max_diff_lines, source=src, mw_version=mw_version, extra_cflags=extra_cflags)
     if res.ok and not _is_shadow(agent):
         # a symbol our object references that retail kept local to its TU must become global:
         # our unit is a different object now. dtk exports such a local under a suffixed name
@@ -627,6 +627,9 @@ def sweep_attempts(p: Project, module: Optional[str] = None, min_percent: float 
         text = _attempt_text(p, key)
         if not text or sym.name not in text:
             continue
+        last = l.db.execute("SELECT outcome FROM attempts WHERE symbol=? ORDER BY id DESC LIMIT 1", (key,)).fetchone()
+        if last and last["outcome"] == "link-mismatch":
+            continue  # matched the object and failed the link before: a resubmit fails the same way
         # no carve before a match: check diffs the saved body against the retail auto object
         work = p.work_path(key)
         work.parent.mkdir(parents=True, exist_ok=True)
