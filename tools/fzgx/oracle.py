@@ -111,7 +111,9 @@ def check(project: Project, symbol: str, max_diff_lines: int = 80) -> CheckResul
     unit = project.objdiff_unit_name(sym.module, unit_src)
     base_obj = _base_object(project, unit)
 
-    with build_lock("compile.lock"):
+    # Same lock as submit/carve: a concurrent ninja would re-run `dtk split`
+    # (units.json changed) and rewrite split objects mid-link.
+    with build_lock():
         cp = run(["ninja", project.rel(base_obj)])
     if cp.returncode != 0:
         err = "\n".join(l for l in (cp.stdout + cp.stderr).splitlines()

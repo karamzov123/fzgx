@@ -4,89 +4,152 @@
 Matcher agents get these tools and nothing else (no shell): they can only
 claim a function, read its context, replace their own unit's source, check it
 against retail, and submit or release. Every mutation is validated against
-the ledger's claim, so an agent cannot touch a unit it does not own.
+the ledger's claim (tools/fzgx/api.py), so an agent cannot touch a unit it
+does not own.
+
+Each tool call runs the CLI (`tools/fzgx.py --json ...`) in a subprocess
+rather than importing the library, so fixes to tools/fzgx/ take effect on the
+next call without restarting the server or the session. Overhead is ~0.1 s.
 
 Registered in .mcp.json (Claude Code) and ~/.codex/config.toml (Codex).
-Run from the repository root: `uv run tools/fzgx_mcp.py`. The script's own
-directory (tools/) is on sys.path, so the fzgx package imports directly.
+Run from the repository root: `uv run tools/fzgx_mcp.py`.
 """
 
 from __future__ import annotations
 
+import json
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
 from typing import List, Optional
 
 import anyio
 from mcp.server.fastmcp import FastMCP
 
-from fzgx import api
-from fzgx.project import Project
+ROOT = Path(__file__).resolve().parent.parent
+CLI = ROOT / "tools" / "fzgx.py"
 
 mcp = FastMCP("fzgx", instructions="F-Zero GX matching-decompilation oracle. One function per agent: "
               "claim -> context -> write_unit -> check (<= 8) -> submit | release.")
-VERSION = "GFZE01"
 
 
-def _p() -> Project:
-    return Project(VERSION)
+def _cli(*args: str, as_json: bool = True, timeout: int = 900) -> str | dict | list:
+    cmd = [sys.executable, str(CLI)] + (["--json"] if as_json else []) + list(args)
+    cp = subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, timeout=timeout)
+    out = cp.stdout.strip()
+    if as_json:
+        try:
+            return json.loads(out) if out else {"ok": False, "error": (cp.stderr or "no output").strip()[-2000:]}
+        except json.JSONDecodeError:
+            return {"ok": False, "error": (out + "\n" + cp.stderr).strip()[-2000:]}
+    return out if cp.returncode == 0 or out else (cp.stderr.strip() or "no output")[-4000:]
+
+
+async def _run(*args: str, as_json: bool = True):
+    return await anyio.to_thread.run_sync(lambda: _cli(*args, as_json=as_json))
 
 
 @mcp.tool()
 async def claim(symbol: str, agent: str) -> dict:
     """Claim SYMBOL for AGENT and carve it into its own unit (src/<unit>.c). Fails if claimed, matched, blocked, or at the attempt cap."""
-    return await anyio.to_thread.run_sync(lambda: api.claim(_p(), symbol, agent))
+    return await _run("claim", symbol, "--agent", agent)
 
 
 @mcp.tool()
 async def context(symbol: str, budget_tokens: int = 6000) -> str:
     """Context bundle: retail assembly, referenced symbols with declarations, callers, nearby matched C, current unit source, compiler flags, idioms, rules."""
-    return await anyio.to_thread.run_sync(lambda: api.context(_p(), symbol, budget_tokens))
+    return await _run("context", symbol, "--budget-tokens", str(budget_tokens), as_json=False)
 
 
 @mcp.tool()
 async def read_unit(symbol: str) -> dict:
     """Current source of SYMBOL's unit."""
-    return await anyio.to_thread.run_sync(lambda: api.read_unit(_p(), symbol))
+    return await _run("read-unit", symbol)
 
 
 @mcp.tool()
 async def write_unit(symbol: str, agent: str, source: str) -> dict:
     """Replace the whole source of the unit AGENT has claimed for SYMBOL. Returns lint findings (A1/A2: hardcoded addresses; S1/S2: goto/volatile without justification). Inline asm is rejected."""
-    return await anyio.to_thread.run_sync(lambda: api.write_unit(_p(), symbol, agent, source))
+    def go():
+        with tempfile.NamedTemporaryFile("w", suffix=".c", delete=False, dir=ROOT / ".fzgx") as f:
+            f.write(source)
+            path = f.name
+        try:
+            return _cli("write-unit", symbol, "--agent", agent, "--file", path)
+        finally:
+            Path(path).unlink(missing_ok=True)
+    (ROOT / ".fzgx").mkdir(exist_ok=True)
+    return await anyio.to_thread.run_sync(go)
 
 
 @mcp.tool()
 async def check(symbol: str, versions: Optional[str] = None, max_diff_lines: int = 80) -> str:
     """Compile SYMBOL's unit and diff against retail. Prints match % and a `target | ours` instruction diff. With versions='all' (or a comma list like 'GC/1.2.5n,GC/1.3.2') compiles under each CodeWarrior version and reports % per version instead."""
-    res = await anyio.to_thread.run_sync(lambda: api.check(_p(), symbol, max_diff_lines, versions))
-    return api.format_check(res)
+    args = ["check", symbol, "--max-diff-lines", str(max_diff_lines)]
+    if versions:
+        args += ["--versions", versions]
+    return await _run(*args, as_json=False)
 
 
 @mcp.tool()
 async def submit(symbol: str, agent: str, message: str, harness: str = "", model: str = "",
                  mw_version: Optional[str] = None, names: Optional[List[dict]] = None) -> dict:
     """Accept a 100% match: lint, relink every target, verify all 16 hashes, commit. `names` is an optional list of {kind,target,name,rationale} proposals for the librarian. Pass mw_version (e.g. 'GC/1.3') only if check(versions=...) showed that version matches."""
-    return await anyio.to_thread.run_sync(
-        lambda: api.submit(_p(), symbol, agent, message, harness or None, model or None, mw_version, None, names))
+    def go():
+        args = ["submit", symbol, "--agent", agent, "--message", message]
+        if harness:
+            args += ["--harness", harness]
+        if model:
+            args += ["--model", model]
+        if mw_version:
+            args += ["--mw-version", mw_version]
+        path = None
+        if names:
+            with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, dir=ROOT / ".fzgx") as f:
+                json.dump(names, f)
+                path = f.name
+            args += ["--names", path]
+        try:
+            return _cli(*args)
+        finally:
+            if path:
+                Path(path).unlink(missing_ok=True)
+    (ROOT / ".fzgx").mkdir(exist_ok=True)
+    return await anyio.to_thread.run_sync(go)
 
 
 @mcp.tool()
 async def release(symbol: str, agent: str, reason: str, harness: str = "", model: str = "") -> dict:
     """Give up on SYMBOL. The best attempt is saved for the next agent; say precisely what still differs."""
-    return await anyio.to_thread.run_sync(
-        lambda: api.release(_p(), symbol, reason, harness or None, model or None, agent=agent))
+    args = ["release", symbol, "--reason", reason]
+    if harness:
+        args += ["--harness", harness]
+    if model:
+        args += ["--model", model]
+    return await _run(*args)
 
 
 @mcp.tool()
 async def inventory(module: Optional[str] = None, status: Optional[str] = None,
                     max_size: Optional[int] = None, limit: Optional[int] = 50) -> list:
     """List functions (orchestrator use): filter by module (main, main_rel, ...), status (unmatched|claimed|matched|blocked), max_size bytes."""
-    return await anyio.to_thread.run_sync(lambda: api.inventory(_p(), module, status, limit, max_size))
+    args = ["inventory"]
+    if module:
+        args += ["--module", module]
+    if status:
+        args += ["--status", status]
+    if max_size:
+        args += ["--max-size", str(max_size)]
+    if limit:
+        args += ["--limit", str(limit)]
+    return await _run(*args)
 
 
 @mcp.tool()
 async def report() -> dict:
     """Ledger status totals, costs, and objdiff progress."""
-    return await anyio.to_thread.run_sync(lambda: api.report(_p()))
+    return await _run("report")
 
 
 if __name__ == "__main__":
