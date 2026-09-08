@@ -5615,7 +5615,7 @@
     "symbols": [
       "fn_1_E572C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
