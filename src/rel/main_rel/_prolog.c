@@ -605,6 +605,76 @@ void fn_1_44B4(void) {
 }
 /* fzgx:end fn_1_44B4 */
 
+/* fzgx:begin fn_1_451C noprologue */
+#include "types.h"
+
+struct fn_1_451C_lbl_1_bss_DB8 {
+    u8 pad_0[0x8];
+    u32 unk_8;
+    u32 unk_C;
+    u32 unk_10;
+};
+
+extern struct fn_1_451C_lbl_1_bss_DB8 lbl_1_bss_DB8;
+extern u32 OSGetArenaHi(void);
+extern u32 OSGetArenaLo(void);
+extern u32 fn_1_481E8(u32);
+extern u32 fn_1_566DC(void);
+extern u32 fn_80008E84(void);
+extern u32 fn_80008F60(u32, u32);
+extern u32 fn_80009064(u32);
+extern u32 fn_80009FA4(u32);
+extern u32 fn_80077848(void);
+extern u32 fn_8007785C(u32, u32);
+
+u32 fn_1_451C(void) {
+    u32 t9;
+    u32 t8;
+    u32 t7;
+    u32 t6;
+    u32 t5;
+    u32 t4;
+    u32 t3;
+    u32 t0;
+    u32 v2;
+    u32 v1;
+    u32 v0;
+    struct fn_1_451C_lbl_1_bss_DB8 *p_lbl_1_bss_DB8;
+    p_lbl_1_bss_DB8 = (struct fn_1_451C_lbl_1_bss_DB8 *)&lbl_1_bss_DB8;
+    t0 = OSGetArenaHi();
+    OSGetArenaLo();
+    fn_1_481E8(188);
+    v0 = (p_lbl_1_bss_DB8->unk_C + 1);
+    v1 = v0;
+    while ((s32)v1 < 8) {
+    t3 = fn_80009FA4(v1);
+    v2 = t3;
+    if ((t3 + 0x10000) != 65535) {
+    v2 = v1;
+    t4 = fn_80009064(v2);
+    v2 = t4;
+    }
+    v1++;
+    }
+    v2 = p_lbl_1_bss_DB8->unk_10;
+    v2 = (v2 + 0xE0000);
+    v2 -= 2848;
+    t5 = fn_80008F60(v2, t0);
+    v2 = t5;
+    p_lbl_1_bss_DB8->unk_8 = v2;
+    t6 = fn_80008E84();
+    v2 = t6;
+    t7 = fn_80077848();
+    v2 = t7;
+    t8 = fn_1_566DC();
+    v2 = t8;
+    t9 = fn_8007785C(v2, 0);
+    v2 = t9;
+    v2 = p_lbl_1_bss_DB8->unk_8;
+    return v2;
+}
+/* fzgx:end fn_1_451C */
+
 /* fzgx:begin fn_1_45D0 */
 extern u32 OSReport(u32, ...);
 extern u32 fn_800090A4(u32);

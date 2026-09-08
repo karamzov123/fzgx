@@ -677,6 +677,69 @@ void fn_1_2A678(Fn_1_2A678_Source *self, Fn_1_2A678_Dest *dest) {
 }
 /* fzgx:end fn_1_2A678 */
 
+/* fzgx:begin fn_1_2C688 noprologue */
+#include "types.h"
+
+extern u32 memset(u32, u32, u32);
+
+u32 fn_1_2C688(u32 arg0, u32 arg1, u32 arg2) {
+    u32 v1;
+    s32 v0;
+    u32 v2;
+    u32 v3;
+    u32 v4;
+    u32 v5;
+    u32 v6;
+    u32 t0;
+    u32 t1;
+    u32 t2;
+    v0 = 0;
+    v1 = arg0;
+    do {
+    v2 = *(u32 *)((u8 *)v1 + 1160);
+    v3 = arg0;
+    v4 = arg1;
+    v5 = arg2;
+    if (v2 != 0) {
+    v3 = v2;
+    v4 = 0;
+    v5 = 192;
+    t0 = memset(v3, v4, v5);
+    v3 = t0;
+    v3 = (v2 + 8);
+    *(u32 *)((u8 *)v2 + 0) = v3;
+    *(u32 *)((u8 *)v2 + 4) = (v2 + 100);
+    }
+    v0++;
+    v1 += 4;
+    } while ((s32)v0 < 4);
+    v3 = *(u32 *)((u8 *)arg0 + 1176);
+    if (v3 != 0) {
+    v4 = 0;
+    v5 = 404;
+    t1 = memset(v3, v4, v5);
+    v3 = t1;
+    }
+    v6 = *(u32 *)((u8 *)arg0 + 1180);
+    if (v6 != 0) {
+    v3 = v6;
+    v4 = 0;
+    v5 = 279;
+    t2 = memset(v3, v4, v5);
+    v3 = t2;
+    v4 = (v6 + 184);
+    *(u32 *)((u8 *)v6 + 128) = 0;
+    v3 = (v6 + 200);
+    *(u32 *)((u8 *)v6 + 144) = v4;
+    *(u32 *)((u8 *)v6 + 148) = v3;
+    *(u32 *)((u8 *)v6 + 156) = -1;
+    *(u32 *)((u8 *)v6 + 184) = -1;
+    *(u32 *)((u8 *)v6 + 216) = -1;
+    }
+    return v3;
+}
+/* fzgx:end fn_1_2C688 */
+
 /* fzgx:begin fn_1_2C7C4 */
 void fn_1_2C7C4(u8 *value, const u8 *target, int step) {
     if (value[0] != target[0]) {
