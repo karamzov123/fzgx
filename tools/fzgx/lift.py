@@ -624,6 +624,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     dowhile_by_entry: Dict[int, Tuple[int, int, int]] = {}
     dowhile_test: Dict[int, Tuple[int, int, int]] = {}
     ctr_loops: Dict[int, Tuple[int, int]] = {}  # mtctr index -> (body start, bdnz index)
+    ctr_guarded: set = set()
     for k_, (mn_, a_) in enumerate(ins):
         m_ = re.fullmatch(r"b(\w+)", mn_)
         if mn_ == "bdnz" and a_ and a_[-1].startswith(".L_"):
@@ -632,6 +633,12 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 mt = next((x for x in range(t_ - 1, max(-1, t_ - 4), -1) if ins[x][0] == "mtctr"), None)
                 if mt is not None and mt not in copies and not any(mt == li for li in copies):
                     ctr_loops[mt] = (t_, k_)
+                    # `cmplwi n, 0; beq end` just before or just after the mtctr: the guard of an
+                    # up-counting for loop
+                    for x in list(range(max(0, mt - 3), mt)) + list(range(mt + 1, min(t_, mt + 3))):
+                        if ins[x][0] in ("cmplwi", "cmpwi") and ins[x][1][0] == ins[mt][1][0] and _imm(ins[x][1][1]) == 0 \
+                                and x + 1 < len(ins) and ins[x + 1][0] == "beq" and labels.get(ins[x + 1][1][-1], -1) > k_:
+                            skip.add(x); skip.add(x + 1); ctr_guarded.add(mt)
             continue
         if not (m_ and m_.group(1) in COND and a_ and a_[-1].startswith(".L_")):
             continue
@@ -814,7 +821,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     count = use(a[0])
                     tn = f"v{len(temps)}"; temps.append(f"u32 {tn};")
                     loop_locals(b_, t_, k_)
-                    guarded = any(ins[x][0] in ("cmplwi", "cmpwi") and ins[x][1][0] == a[0] and _imm(ins[x][1][1]) == 0 for x in range(max(0, i - 3), i))
+                    guarded = i in ctr_guarded
                     if guarded:
                         stmts.append(f"for ({tn} = 0; {tn} < {count}; {tn}++) {{")
                     else:
@@ -1076,7 +1083,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             if mn == "lis":
                 regs[a[0]] = f"0x{(_imm(a[1]) & 0xFFFF) << 16:X}"; rtype[a[0]] = "u32"; continue
             if mn == "addi" and sym_of(a[2]) and a[1] in hi:
-                s = sym_of(a[2]); declare(s, "u32")
+                s = sym_of(a[2]); declare(s, "u32", far_ref=True)  # lis/addi: the retail addressed it far
                 sd = lookup(s)
                 so = sym_off(a[2])
                 if sd is not None and sd.kind == "function":
@@ -1782,6 +1789,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             continue
         structs.append(struct_text(sname, offs))
         externs[g] = f"extern struct {sname} {g};"
+    far_structs = set()
     for g, offs in pfields.items():
         sname = f"{name}_{g}_T"
         structs.append(struct_text(sname, offs))
@@ -1797,6 +1805,16 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     body = [b + "  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */" if re.search(r"\(\s*[\w\s]+\*\s*\)\s*0[xX][0-9A-Fa-f]{8}", b) else b for b in body]
     if module == "main":
         small = {".sdata", ".sbss", ".sdata2", ".sbss2"}
+        # a global outside the small-data sections is addressed far in retail whatever its size:
+        # MWCC assumes an extern of 8 bytes or less is small, so such a global is declared as an
+        # array of unknown size and read through [0]
+        for g in list(gfields):
+            sd = lookup(g)
+            if sd is None or sd.section in small or not gfields[g] or g in locals_.values():
+                continue
+            sname = f"{name}_{g}"
+            externs[g] = f"extern struct {sname} {g}[];"
+            body = [re.sub(rf"(?<![\w>.]){re.escape(g)}\.unk_", f"{g}[0].unk_", b) for b in body]
         def padded(text_: str, g: str) -> str:
             sd = lookup(g)
             if sd is None or sd.section in small or sd.size <= 8:
