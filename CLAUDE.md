@@ -72,6 +72,11 @@ Rules that hold for everyone:
   anchors (then `fzgx tu-organize` and regenerate headers).
 - Batches: `uv run tools/orchestrate.py --harness codex|claude ...` (headless, one report
   per batch, `fzgx verify` relinks once at the end). Never use in-process subagents.
+- The orchestrator does three things: pick a pool, run the batch, run the TU-finish round
+  (`--finish`, or `--finish-only --module M`: include/tidy/hoist/reflag every TU, revise
+  agents on the queue, collapse complete TUs). It reads reports. It does not edit blocks,
+  headers or splits by hand, and does not experiment on the live tree (use `--shadow`).
+  A TU that the round cannot converge is blocked like a function at the attempt cap.
 - While a batch runs, never call `configure.py`, `ninja` or `dtk` by hand: go through
   `fzgx verify` or `oracle.build_lock()`. Two concurrent splits kill each other (exit 137)
   and a broken baseline makes a bisect blame every pending unit (verify now checks the
