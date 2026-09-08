@@ -80,6 +80,9 @@ Rules that hold for everyone:
   records typedef names in `config/GFZE01/<module>/typedefs.json`, re-splits, regenerates
   every header of the module (offset self-check) and relinks. Headers are generated:
   never hand-edit `include/rel/<module>/*.h`; change the analyzer or the name map.
+- The split runs `dtk dol split --no-update`: dtk never rewrites `symbols.txt`/`splits.txt` (its rewrite
+  dropped attributes). A carved DOL function with no callers is marked `force_active` in symbols.txt
+  (alone in its object mwld dead-strips it and every hash after it fails); carve does this.
 - Header changes can alter a matched unit's code. `ninja build/GFZE01/ok` must pass after
   regenerating; if a REL fails, byte-diff `build/GFZE01/<m>/<m>.rel` against `orig/` and
   map the first divergence to a function.
