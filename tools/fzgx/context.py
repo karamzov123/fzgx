@@ -287,14 +287,29 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
                     rows = _oracle.function_rows(project, symbol, tgt, o) if o else None
                     if rows and (best is None or rows[2] > best[0]):
                         best = (rows[2], vt, rows)
-            if best and best[0] >= 60:
+            if best:
                 pct, vt, (lr, rr, _) = best
                 diffs = [(i, stuck._fmt(a), stuck._fmt(b)) for i, (a, b) in enumerate(zip(lr, rr)) if (a.get("diff_kind") or "DIFF_NONE") != "DIFF_NONE" or (b.get("diff_kind") or "DIFF_NONE") != "DIFF_NONE"]
                 lines = [f"{i:4d}  {t:38s} | {o}" for i, t, o in diffs[:20]]
-                parts.append(f"\n## Mechanical draft ({pct:.1f}%): lifted from the disassembly, verified to this score\n"
-                             "Its calls, struct layouts, locals and loops are taken from the retail code; what it misses is\n"
-                             "in the rows below (target | draft). Start from it: rename, restructure, fix those rows.\n```c\n" + vt + "\n```\n"
+                if pct >= 60:
+                    head = (f"\n## Mechanical draft ({pct:.1f}%): lifted from the disassembly, verified to this score\n"
+                            "Its calls, struct layouts, locals and loops are taken from the retail code; what it misses is\n"
+                            "in the rows below (target | draft). Start from it: rename, restructure, fix those rows.\n")
+                else:
+                    head = (f"\n## Mechanical draft ({pct:.1f}%, low): lifted from the disassembly; the shape is off but the\n"
+                            "declarations, struct layouts, call prototypes and locals are from the retail code. Keep those;\n"
+                            "rewrite the control flow and expression shapes from the disassembly (first differing rows below).\n")
+                parts.append(head + "```c\n" + vt + "\n```\n"
                              + ("```\n" + "\n".join(lines) + ("\n..." if len(diffs) > 20 else "") + "\n```" if diffs else ""))
+            else:
+                # no full draft: the skeleton is what the lifter recovered before it gave up
+                # (declarations, layouts, calls with argument shapes, locals, leading statements)
+                sk = _lift.skeleton(project, module, symbol)
+                if sk and "NOT LIFTED" in sk:
+                    parts.append("\n## Mechanical skeleton (unverified): what the lifter recovered before it gave up\n"
+                                 "Declarations, struct layouts, call prototypes with argument shapes, locals and the leading\n"
+                                 "statements are taken from the retail code; the `NOT LIFTED` marker says where it stopped.\n"
+                                 "Keep its declarations and layouts, write the rest of the body from the disassembly.\n```c\n" + sk + "\n```")
         except Exception:
             pass
 

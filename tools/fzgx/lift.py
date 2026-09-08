@@ -78,6 +78,33 @@ def lift(p: Project, module: str, name: str) -> Optional[str]:
         return None
 
 
+def skeleton(p: Project, module: str, name: str) -> Optional[str]:
+    """What the lifter recovers before it gives up: declarations, layouts, locals, the leading
+    statements, and a marker for what is left. For the agent's context when no full draft exists."""
+    fa = p.function_asm(module).get(name)
+    if fa is None:
+        return None
+    ins: List[Tuple[str, List[str]]] = []
+    labels: Dict[str, int] = {}
+    for ln in fa.asm:
+        t = ln.strip()
+        if t.startswith(".L_") and t.endswith(":"):
+            labels[t[:-1]] = len(ins); continue
+        m = LINE_RE.match(t)
+        if m:
+            ins.append((m.group(1), [a.strip() for a in m.group(2).split(",")] if m.group(2) else []))
+    if not ins:
+        return None
+    LABELS[0] = labels
+    try:
+        text = _lift(p, module, name, ins, partial=True)
+    except Give:
+        return None
+    except Exception:
+        return None
+    return text
+
+
 def lift_variants(p: Project, module: str, name: str) -> List[str]:
     """Every spelling worth checking: with stack locals, MWCC's frame layout depends on the
     declaration order, so both plausible orders are candidates (the oracle picks)."""
@@ -107,7 +134,7 @@ def lift_variants(p: Project, module: str, name: str) -> List[str]:
     return out
 
 
-def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site_temps: bool = True) -> Optional[str]:
+def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site_temps: bool = True, partial: bool = False) -> Optional[str]:
     syms = p.symbols(module)
     regs: Dict[str, str] = {}          # register -> C expression
     rtype: Dict[str, str] = {}         # register -> C type of the expression
@@ -375,6 +402,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     open_ifs: List[Tuple[int, str]] = []          # (instruction index where a block closes, text to emit)
     skip: set = set()                             # instruction indices consumed by the structure (the `b` of a then-block)
     i = -1
+    gave_at: Optional[int] = None
     temps_written: List[Tuple[str, int]] = []
     carried: Dict[str, str] = {}     # register -> local name while inside a loop region
     loop_regions: List[Tuple[int, int, int]] = []  # (body_start, test_start, backbranch_index)
@@ -391,705 +419,721 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     loop_end_by_index = {k: (b, t, k) for b, t, k in loop_regions}
     in_loop: List[Tuple[int, int, int]] = []
     for i, (mn, a) in enumerate(ins):
-        # a value used more than once (before its register is redefined) lives in a local: the
-        # compiler would otherwise recompute or reschedule the expression at each use
-        if i > 0:
-            pm, pa = ins[i - 1]
-            pd = pa[0] if pa and pm not in STORE_T and not pm.startswith(("st", "cmp", "b")) and pm not in ("mtlr", "mtspr", "bl") else None
-            if pd and pd in regs and pd not in carried and not re.fullmatch(r"[A-Za-z_]\w*|-?\d+|0x[0-9A-Fa-f]+|&[A-Za-z_]\w*", regs[pd]) and not regs[pd].startswith(("(struct ", "__CALLRET__", "((u8 *)&", "&")):
-                uses = 0
-                for x in range(i, len(ins)):
-                    if reads(x, pd) or (ins[x][0] == "bl" and re.fullmatch(r"r([3-9]|10)|f[1-8]", pd)):
-                        uses += 1
-                    if ins[x][0] == "blr" and pd in ("r3", "f1"):
-                        uses += 1  # returned
-                    if ins[x][0] == "bl" and re.fullmatch(r"r([0-9]|1[0-2])|f([0-9]|1[0-3])", pd):
-                        break
-                    if ins[x][1] and ins[x][1][0] == pd and ins[x][0] not in STORE_T and not ins[x][0].startswith(("st", "cmp")):
-                        break
-                if uses >= 2:
-                    tn = f"v{len(temps)}"; temps.append(f"{rtype.get(pd, 'u32')} {tn};")
-                    stmts.append(f"{tn} = {regs[pd]};"); regs[pd] = tn
-        # a carried register that now holds a new expression: materialise the assignment
-        for r_, tn in list(carried.items()):
-            if regs.get(r_) is None:
-                regs[r_] = tn  # cleared by a call: the local still holds the value
-            elif regs.get(r_) != tn:
-                e_ = regs.get(r_)
-                if e_.startswith(("((u8 *)", "(u8 *)", "&", "(struct ")):
-                    e_ = f"(u32){e_}"  # a register reused for an address: the local is an integer
-                stmts.append(f"{tn} = {e_};"); regs[r_] = tn
-        if a and mn not in STORE_T and not mn.startswith(("st", "cmp", "b")) and mn not in ("mtlr", "mtspr"):
-            temps_written.append((a[0], i)); written_since_call.add(a[0])
-        if mn == "bl":
-            pass  # cleared after the call is processed (see the bl branch)
-        # the previous instruction wrote a callee-saved register with a computed value that a
-        # call will intervene before its use: the source kept it in a local
-        if i > 0:
-            pm, pa = ins[i - 1]
-            pd = pa[0] if pa and pm not in STORE_T and not pm.startswith(("st", "cmp", "b")) and pm not in ("mtlr", "mtspr") else None
-            if pd and SAVE_RE.match(pd) and pd not in carried and pd in regs and not re.fullmatch(r"[A-Za-z_]\w*|-?\d+|0x[0-9A-Fa-f]+|&[A-Za-z_]\w*", regs[pd]) and not regs[pd].startswith("(struct "):
-                call_before_use = False
-                for x in range(i, len(ins)):
-                    if ins[x][0] == "bl":
-                        call_before_use = True; break
-                    if reads(x, pd) or (ins[x][1] and ins[x][1][0] == pd and ins[x][0] not in STORE_T):
-                        break
-                if call_before_use:
-                    tn = f"v{len(temps)}"; temps.append(f"{rtype.get(pd, 'u32')} {tn};")
-                    stmts.append(f"{tn} = {regs[pd]};"); regs[pd] = tn
-        while open_ifs and open_ifs[-1][0] == i:
-            stmts.append(open_ifs.pop()[1])
-        if i in pending_div:
-            d_, e_ = pending_div.pop(i)
-            regs[d_] = e_; rtype[d_] = "u32"
-        if i in copies:
-            K, rD, rS, end_ = copies[i]
-            size = 8 * K
-            dst = src = None
-            for x in range(i + 1, end_):
-                mn_x, a_x = ins[x]
-                if mn_x == "addi" and a_x[0] == rD and a_x[1] == "r1":
-                    off_ = _imm(a_x[2]) + 4
-                    slocals.setdefault(off_, {"w": 4, "t": "u32", "addr": True, "elems": {}})
-                    dst = f"loc_{off_:X}"
-                elif mn_x in ("subi", "addi") and a_x[0] == rD:
-                    base_e = use(a_x[1]); k_ = _imm(a_x[2]) * (-1 if mn_x == "subi" else 1) + 4
-                    dst = f"*(struct {name}_Copy{size} *)((u8 *){base_e} + {k_})" if k_ else f"*(struct {name}_Copy{size} *){base_e}"
-                elif mn_x in ("subi", "addi") and a_x[0] == rS:
-                    base_e = use(a_x[1]); k_ = _imm(a_x[2]) * (-1 if mn_x == "subi" else 1) + 4
-                    src = f"*(struct {name}_Copy{size} *)((u8 *){base_e} + {k_})" if k_ else f"*(struct {name}_Copy{size} *){base_e}"
-            if dst is None or src is None:
-                raise Give()
-            copy_types.add(size)
-            stmts.append(f"{dst} = {src};")
-            for x in range(i, end_ + 1):
-                skip.add(x)
-            for r_ in (rD, rS, "r0", "r3"):
-                regs.pop(r_, None)
-            continue
-        if i in skip:
-            continue
-        if i in loop_by_entry:
-            b_, t_, k_ = loop_by_entry[i]
-            # loop-carried registers: written inside [b_, k_] and read inside before written, or read by the test
-            def writes(x):
-                mn_x, a_x = ins[x]
-                return a_x[0] if a_x and mn_x not in STORE_T and not mn_x.startswith(("st", "cmp", "b")) and mn_x not in ("mtlr", "mtspr") else None
-            def reads_of(x):
-                mn_x, a_x = ins[x]
-                srcs = a_x[1:] if mn_x not in STORE_T and not mn_x.startswith(("st", "cmp", "b")) else a_x
-                return set(re.findall(r"\b([rf]\d+)\b", " ".join(srcs)))
-            written_in = {writes(x) for x in range(b_, k_ + 1) if writes(x)}
-            live_in, seen_w = set(), set()
-            for x in range(b_, t_):
-                live_in |= (reads_of(x) - seen_w)
-                w_ = writes(x)
-                if w_:
-                    seen_w.add(w_)
-            test_reads = set()
-            for x in range(t_, k_ + 1):
-                test_reads |= reads_of(x)
-            for r_ in sorted((live_in | test_reads) & written_in):
-                if r_ in ("r1", "r0") or r_ in carried:
-                    continue
-                tn = f"v{len(temps)}"
-                init = regs.get(r_)
-                if init is None:
-                    init = use(r_) if re.fullmatch(r"r([3-9]|10)|f[1-8]", r_) else "0"
-                temps.append(f"{rtype.get(r_, 'u32')} {tn};")
-                stmts.append(f"{tn} = {init};")
-                regs[r_] = tn; carried[r_] = tn
-            # the test, evaluated on the pre-loop state, gives the condition
-            saved_regs, saved_rtype, saved_len = dict(regs), dict(rtype), len(stmts)
-            cond_expr = None
-            for x in range(t_, k_):
-                mn_x, a_x = ins[x]
-                if mn_x in ("cmpwi", "cmpw", "cmplwi", "cmplw"):
-                    lhs = use(a_x[0]); rhs = str(_imm(a_x[1])) if mn_x.endswith("i") else use(a_x[1])
-                    uns = mn_x.startswith("cmpl")
-                    def typed2(e: str, reg: str) -> str:
-                        tt = rtype.get(reg, "u32")
-                        if uns:
-                            return e if tt in ("u32", "u16", "u8") else f"(u32){e}"
-                        return e if tt in ("s32", "s16", "s8") else f"(s32){e}"
-                    lhs = typed2(lhs, a_x[0])
-                    if not mn_x.endswith("i"):
-                        rhs = typed2(rhs, a_x[1])
-                    cond_expr = (lhs, rhs)
-                elif mn_x == "extsb":
-                    regs[a_x[0]] = f"(s8){use(a_x[1])}"; rtype[a_x[0]] = "s8"
-                elif mn_x == "extsh":
-                    regs[a_x[0]] = f"(s16){use(a_x[1])}"; rtype[a_x[0]] = "s16"
-                elif mn_x in LOAD_T and a_x and not a_x[1].endswith("(r1)"):
-                    raise Give()  # a load in the test: keep the region out of the lifter for now
-                else:
-                    raise Give()
-            if cond_expr is None:
-                raise Give()
-            m_ = re.fullmatch(r"b(\w+)", ins[k_][0])
-            op = COND[m_.group(1)]
-            stmts.append(f"while ({cond_expr[0]} {op} {cond_expr[1]}) {{")
-            regs, rtype = saved_regs, saved_rtype
-            # the body runs next; the test instructions and the back branch are consumed
-            for x in range(t_, k_ + 1):
-                skip.add(x)
-            open_ifs.append((k_ + 1, "}"))
-            open_ifs.sort(key=lambda x: -x[0])
-            in_loop.append((b_, t_, k_))
-            continue
-        if mn == "b":
-            raise Give()  # an unconditional jump that no if/else or loop explained
-        if mn == "blr":
-            break
-        if mn in ("cmpwi", "cmpw", "cmplwi", "cmplw"):
-            lhs = use(a[0]); rhs = str(_imm(a[1])) if mn.endswith("i") else use(a[1])
-            uns = mn.startswith("cmpl")
-            # the compare's signedness is the operands' type: cmpwi wants signed operands
-            def typed(e: str, reg: str) -> str:
-                t = rtype.get(reg, "u32")
-                if uns:
-                    return e if t in ("u32", "u16", "u8") else f"(u32){e}"
-                return e if t in ("s32", "s16", "s8") else f"(s32){e}"
-            lhs = typed(lhs, a[0])
-            if not mn.endswith("i"):
-                rhs = typed(rhs, a[1])
-            cond = (lhs, rhs, uns); continue
-        if mn.endswith("lr") and mn[1:-2] in COND and cond is not None:
-            op = COND[mn[1:-2]]
-            l, r_, uns = cond
-            stmts.append(f"if ({l} {op} {r_}) {{ return __RET__; }}"); continue
-        m = re.fullmatch(r"b(\w+)", mn)
-        if m and m.group(1) in COND and a and a[-1].startswith(".L_") and cond is not None:
-            tgt = labels.get(a[-1])
-            if tgt is None or tgt <= i:
-                raise Give()  # a back edge no loop region explained
-            op = COND[m.group(1)]
-            inv = {"==": "!=", "!=": "==", "<": ">=", ">": "<=", "<=": ">", ">=": "<"}[op]  # branch taken = skip
-            l, r_, uns = cond
-            if ins[tgt][0] == "blr" or tgt == len(ins) - 1:
-                stmts.append(f"if ({l} {op} {r_}) {{ return __RET__; }}")
-            else:
-                # every register the region writes and code after it may read is a local: its
-                # writes become statements inside the branches, reads after use the local
-                region_end = tgt
-                pm0, pa0 = ins[tgt - 1]
-                if pm0 == "b" and pa0 and pa0[-1].startswith(".L_") and labels.get(pa0[-1], -1) > tgt:
-                    region_end = labels[pa0[-1]]
-                written = []
-                for x in range(i + 1, region_end):
-                    mn_x, a_x = ins[x]
-                    if a_x and mn_x not in STORE_T and not mn_x.startswith(("st", "cmp", "b")) and mn_x not in ("mtlr", "mtspr", "mtctr"):
-                        if a_x[0] not in written:
-                            written.append(a_x[0])
-                for rw in written:
-                    if rw in ("r0", "r1") or rw in carried or not re.fullmatch(r"r([3-9]|1\d|2\d|3[01])|f([1-9]|1\d|2\d|3[01])", rw):
-                        continue
-                    read_after = any(reads(x, rw) or (ins[x][0] == "bl" and re.fullmatch(r"r([3-9]|10)|f[1-8]", rw)) or (ins[x][0] == "blr" and rw in ("r3", "f1"))
-                                     for x in range(region_end, len(ins)))
-                    read_inside_first = False
-                    for x in range(i + 1, region_end):
-                        if reads(x, rw):
-                            read_inside_first = True; break
-                        if ins[x][1] and ins[x][1][0] == rw and ins[x][0] not in STORE_T and not ins[x][0].startswith(("st", "cmp", "b")):
+        try:
+            # a value used more than once (before its register is redefined) lives in a local: the
+            # compiler would otherwise recompute or reschedule the expression at each use
+            if i > 0:
+                pm, pa = ins[i - 1]
+                pd = pa[0] if pa and pm not in STORE_T and not pm.startswith(("st", "cmp", "b")) and pm not in ("mtlr", "mtspr", "bl") else None
+                if pd and pd in regs and pd not in carried and not re.fullmatch(r"[A-Za-z_]\w*|-?\d+|0x[0-9A-Fa-f]+|&[A-Za-z_]\w*", regs[pd]) and not regs[pd].startswith(("(struct ", "__CALLRET__", "((u8 *)&", "&")):
+                    uses = 0
+                    for x in range(i, len(ins)):
+                        if reads(x, pd) or (ins[x][0] == "bl" and re.fullmatch(r"r([3-9]|10)|f[1-8]", pd)):
+                            uses += 1
+                        if ins[x][0] == "blr" and pd in ("r3", "f1"):
+                            uses += 1  # returned
+                        if ins[x][0] == "bl" and re.fullmatch(r"r([0-9]|1[0-2])|f([0-9]|1[0-3])", pd):
                             break
-                    if not (read_after or read_inside_first):
-                        continue
-                    init0 = regs.get(rw)
-                    if init0 is not None and (re.fullmatch(r"&[A-Za-z_]\w*", init0) or init0.startswith("((u8 *)&") or init0.startswith("(struct ")):
-                        continue  # MWCC rematerialises addresses: no local
-                    tn = f"v{len(temps)}"
-                    init = regs.get(rw)
-                    if init is None and re.fullmatch(r"r([3-9]|10)|f[1-8]", rw):
-                        init = use(rw)
-                    temps.append(f"{rtype.get(rw, 'u32')} {tn};")
-                    if init is not None:
-                        stmts.append(f"{tn} = {init};")
-                    regs[rw] = tn; carried[rw] = tn
-                # `if (c) { then } else { else }` when the then-block ends with a forward jump
-                # over the else-block; otherwise a plain if
-                pm, pa = ins[tgt - 1]
-                if pm == "b" and pa and pa[-1].startswith(".L_") and labels.get(pa[-1], -1) > tgt:
-                    end = labels[pa[-1]]
-                    skip.add(tgt - 1)
-                    stmts.append(f"if ({l} {inv} {r_}) {{")
-                    # closers are pushed innermost-last: the stack pops the else first, then the end
-                    open_ifs.append((end, "}")); open_ifs.append((tgt - 1, "} else {"))
-                else:
-                    stmts.append(f"if ({l} {inv} {r_}) {{"); open_ifs.append((tgt, "}"))
-            open_ifs.sort(key=lambda x: -x[0])  # smallest index on top: every closer pops at its index
-            continue
-        lr_slot = f"0x{frame_size + 4:x}(r1)" if frame_size else None
-        slot_ = None
-        if a and len(a) > 1 and a[1].endswith("(r1)"):
-            m_s = re.match(r"^(-?0x[0-9a-f]+|-?\d+)", a[1])
-            slot_ = int(m_s.group(1), 0) if m_s else None
-        if mn in ("stwu", "mflr", "mtlr") or (mn in ("stw", "lwz") and a and ((a[0] == "r0" and a[1] == lr_slot) or (SAVE_RE.match(a[0]) and slot_ in saved_slots))) or (mn == "addi" and a and a[0] == "r1"):
-            frame = True
-            continue
-        if mn == "addi" and len(a) == 3 and a[1] == "r1":
-            off_ = _imm(a[2])
-            local_at(off_, 0, "u8"); slocals[off_]["addr"] = True
-            regs[a[0]] = f"&loc_{off_:X}"; rtype[a[0]] = "void *"; frame = True
-            continue
-        if mn in ("stw", "stfd") and a and a[1].endswith("(r1)"):
-            off_ = _imm(a[1][:-4])
-            e_ = regs.get(a[0], "")
-            if mn == "stw" and e_ in ("0x43300000", "1127219200"):
-                conv_slots[off_] = ("hi", None); frame = True; continue
-            if mn == "stw" and off_ - 4 in conv_slots and conv_slots[off_ - 4][0] == "hi":
-                conv_slots[off_ - 4] = ("pair", e_); frame = True; continue
-            if mn == "stfd" and e_.startswith("__FCTIWZ__("):
-                conv_slots[off_] = ("fctiwz", e_[len("__FCTIWZ__("):-1]); frame = True; continue
-        if mn == "lfd" and a and a[1].endswith("(r1)") and _imm(a[1][:-4]) in conv_slots and conv_slots[_imm(a[1][:-4])][0] == "pair":
-            x = conv_slots[_imm(a[1][:-4])][1]
-            m_ = re.fullmatch(r"__XORIS__\((.+), 32768\)", x)
-            regs[a[0]] = f"__I2D__({m_.group(1)}, signed)" if m_ else f"__I2D__({x}, unsigned)"
-            rtype[a[0]] = "f64"; frame = True; continue
-        if mn == "lwz" and a and a[1].endswith("(r1)") and _imm(a[1][:-4]) - 4 in conv_slots and conv_slots[_imm(a[1][:-4]) - 4][0] == "fctiwz":
-            regs[a[0]] = f"(s32){conv_slots[_imm(a[1][:-4]) - 4][1]}"; rtype[a[0]] = "s32"; frame = True; continue
-        if mn in LOAD_T and a and a[1].endswith("(r1)"):
-            off_ = _imm(a[1][:-4]); t = LOAD_T[mn]
-            if off_ in saved_slots or off_ >= frame_size:
-                frame = True; continue
-            regs[a[0]] = local_at(off_, WIDTH[mn], t); rtype[a[0]] = t; frame = True
-            continue
-        if mn in STORE_T and a and a[1].endswith("(r1)"):
-            off_ = _imm(a[1][:-4]); t = STORE_T[mn]
-            if off_ in saved_slots or off_ >= frame_size or a[0] == "r0" and off_ > frame_size:
-                frame = True; continue
-            stmts.append(f"{local_at(off_, WIDTH[mn], t)} = {use(a[0])};"); frame = True
-            continue
-        if mn in ("stfd", "lfd", "psq_st", "psq_l") and a and re.fullmatch(r"f(1[4-9]|2\d|3[01])", a[0]) and slot_ in saved_slots:
-            frame = True
-            continue  # callee-saved float registers
-        if mn in ("crclr", "crset") or mn == "nop":
-            if mn == "crclr":
-                variadic_next[0] = True  # `crclr cr1eq`: the callee is variadic (no float varargs)
-            continue
-        if mn == "lis" and sym_of(a[1]):
-            hi[a[0]] = sym_of(a[1]); regs.pop(a[0], None); continue
-        if mn == "lis":
-            regs[a[0]] = f"0x{(_imm(a[1]) & 0xFFFF) << 16:X}"; rtype[a[0]] = "u32"; continue
-        if mn == "addi" and sym_of(a[2]) and a[1] in hi:
-            s = sym_of(a[2]); declare(s, "u32")
-            sd = lookup(s)
-            so = sym_off(a[2])
-            if sd is not None and sd.kind == "function":
-                regs[a[0]] = s; fnames_seen.add(s)
-            elif so:
-                regs[a[0]] = f"((u8 *)&{s} + {so})"
-            elif SAVE_RE.match(a[0]):
-                # kept in a callee-saved register: the source held it in a local pointer
-                ln = f"p_{s}"
-                locals_[ln] = s
-                declare(s, "struct", far_ref=True); gfields.setdefault(s, {})
-                # the cast is what keeps the address in the register across calls: MWCC
-                # rematerialises a plain `&sym` after each call, but not a cast of it.
-                # The assignment is emitted right before the first statement that uses it.
-                stmts.append(f"{ln} = (struct {name}_{s} *)&{s};")  # eager: retail places it early
-                regs[a[0]] = ln
-            else:
-                regs[a[0]] = f"&{s}"
-            rtype[a[0]] = "void *"; continue
-        if mn in ("li",):
-            regs[a[0]] = str(_imm(a[1])); rtype[a[0]] = "s32"; continue
-        if mn == "mr":
-            regs[a[0]] = use(a[1]); rtype[a[0]] = rtype.get(a[1], "u32"); continue
-        if mn in LOAD_T:
-            m = MEM_RE.match(a[1])
-            if not m:
-                raise Give()
-            off, base = m.group(1), m.group(2)
-            t = LOAD_T[mn]
-            if off.endswith("@l") and base in hi:
-                s = hi[base]; so = sym_off(off)
-                if so or s in struct_syms:
-                    declare(s, "struct", far_ref=True); gfields.setdefault(s, {})[so] = t; regs[a[0]] = f"{s}.unk_{so:X}"
-                else:
-                    declare(s, t, far_ref=True); regs[a[0]] = ref(s)
-                rtype[a[0]] = t
-                if mn.endswith("u"):
-                    regs[base] = f"&{s}" if not so else f"((u8 *)&{s} + {so})"; hi.pop(base, None)
+                        if ins[x][1] and ins[x][1][0] == pd and ins[x][0] not in STORE_T and not ins[x][0].startswith(("st", "cmp")):
+                            break
+                    if uses >= 2:
+                        tn = f"v{len(temps)}"; temps.append(f"{rtype.get(pd, 'u32')} {tn};")
+                        stmts.append(f"{tn} = {regs[pd]};"); regs[pd] = tn
+            # a carried register that now holds a new expression: materialise the assignment
+            for r_, tn in list(carried.items()):
+                if regs.get(r_) is None:
+                    regs[r_] = tn  # cleared by a call: the local still holds the value
+                elif regs.get(r_) != tn:
+                    e_ = regs.get(r_)
+                    if e_.startswith(("((u8 *)", "(u8 *)", "&", "(struct ")):
+                        e_ = f"(u32){e_}"  # a register reused for an address: the local is an integer
+                    stmts.append(f"{tn} = {e_};"); regs[r_] = tn
+            if a and mn not in STORE_T and not mn.startswith(("st", "cmp", "b")) and mn not in ("mtlr", "mtspr"):
+                temps_written.append((a[0], i)); written_since_call.add(a[0])
+            if mn == "bl":
+                pass  # cleared after the call is processed (see the bl branch)
+            # the previous instruction wrote a callee-saved register with a computed value that a
+            # call will intervene before its use: the source kept it in a local
+            if i > 0:
+                pm, pa = ins[i - 1]
+                pd = pa[0] if pa and pm not in STORE_T and not pm.startswith(("st", "cmp", "b")) and pm not in ("mtlr", "mtspr") else None
+                if pd and SAVE_RE.match(pd) and pd not in carried and pd in regs and not re.fullmatch(r"[A-Za-z_]\w*|-?\d+|0x[0-9A-Fa-f]+|&[A-Za-z_]\w*", regs[pd]) and not regs[pd].startswith("(struct "):
+                    call_before_use = False
+                    for x in range(i, len(ins)):
+                        if ins[x][0] == "bl":
+                            call_before_use = True; break
+                        if reads(x, pd) or (ins[x][1] and ins[x][1][0] == pd and ins[x][0] not in STORE_T):
+                            break
+                    if call_before_use:
+                        tn = f"v{len(temps)}"; temps.append(f"{rtype.get(pd, 'u32')} {tn};")
+                        stmts.append(f"{tn} = {regs[pd]};"); regs[pd] = tn
+            while open_ifs and open_ifs[-1][0] == i:
+                stmts.append(open_ifs.pop()[1])
+            if i in pending_div:
+                d_, e_ = pending_div.pop(i)
+                regs[d_] = e_; rtype[d_] = "u32"
+            if i in copies:
+                K, rD, rS, end_ = copies[i]
+                size = 8 * K
+                dst = src = None
+                for x in range(i + 1, end_):
+                    mn_x, a_x = ins[x]
+                    if mn_x == "addi" and a_x[0] == rD and a_x[1] == "r1":
+                        off_ = _imm(a_x[2]) + 4
+                        slocals.setdefault(off_, {"w": 4, "t": "u32", "addr": True, "elems": {}})
+                        dst = f"loc_{off_:X}"
+                    elif mn_x in ("subi", "addi") and a_x[0] == rD:
+                        base_e = use(a_x[1]); k_ = _imm(a_x[2]) * (-1 if mn_x == "subi" else 1) + 4
+                        dst = f"*(struct {name}_Copy{size} *)((u8 *){base_e} + {k_})" if k_ else f"*(struct {name}_Copy{size} *){base_e}"
+                    elif mn_x in ("subi", "addi") and a_x[0] == rS:
+                        base_e = use(a_x[1]); k_ = _imm(a_x[2]) * (-1 if mn_x == "subi" else 1) + 4
+                        src = f"*(struct {name}_Copy{size} *)((u8 *){base_e} + {k_})" if k_ else f"*(struct {name}_Copy{size} *){base_e}"
+                if dst is None or src is None:
+                    raise Give()
+                copy_types.add(size)
+                stmts.append(f"{dst} = {src};")
+                for x in range(i, end_ + 1):
+                    skip.add(x)
+                for r_ in (rD, rS, "r0", "r3"):
+                    regs.pop(r_, None)
                 continue
-            elif off.endswith("@sda21"):
-                s = sym_of(off); so = sym_off(off)
-                if so:
-                    declare(s, "struct"); gfields.setdefault(s, {})[so] = t; regs[a[0]] = f"{s}.unk_{so:X}"
+            if i in skip:
+                continue
+            if i in loop_by_entry:
+                b_, t_, k_ = loop_by_entry[i]
+                # loop-carried registers: written inside [b_, k_] and read inside before written, or read by the test
+                def writes(x):
+                    mn_x, a_x = ins[x]
+                    return a_x[0] if a_x and mn_x not in STORE_T and not mn_x.startswith(("st", "cmp", "b")) and mn_x not in ("mtlr", "mtspr") else None
+                def reads_of(x):
+                    mn_x, a_x = ins[x]
+                    srcs = a_x[1:] if mn_x not in STORE_T and not mn_x.startswith(("st", "cmp", "b")) else a_x
+                    return set(re.findall(r"\b([rf]\d+)\b", " ".join(srcs)))
+                written_in = {writes(x) for x in range(b_, k_ + 1) if writes(x)}
+                live_in, seen_w = set(), set()
+                for x in range(b_, t_):
+                    live_in |= (reads_of(x) - seen_w)
+                    w_ = writes(x)
+                    if w_:
+                        seen_w.add(w_)
+                test_reads = set()
+                for x in range(t_, k_ + 1):
+                    test_reads |= reads_of(x)
+                for r_ in sorted((live_in | test_reads) & written_in):
+                    if r_ in ("r1", "r0") or r_ in carried:
+                        continue
+                    tn = f"v{len(temps)}"
+                    init = regs.get(r_)
+                    if init is None:
+                        init = use(r_) if re.fullmatch(r"r([3-9]|10)|f[1-8]", r_) else "0"
+                    temps.append(f"{rtype.get(r_, 'u32')} {tn};")
+                    stmts.append(f"{tn} = {init};")
+                    regs[r_] = tn; carried[r_] = tn
+                # the test, evaluated on the pre-loop state, gives the condition
+                saved_regs, saved_rtype, saved_len = dict(regs), dict(rtype), len(stmts)
+                cond_expr = None
+                for x in range(t_, k_):
+                    mn_x, a_x = ins[x]
+                    if mn_x in ("cmpwi", "cmpw", "cmplwi", "cmplw"):
+                        lhs = use(a_x[0]); rhs = str(_imm(a_x[1])) if mn_x.endswith("i") else use(a_x[1])
+                        uns = mn_x.startswith("cmpl")
+                        def typed2(e: str, reg: str) -> str:
+                            tt = rtype.get(reg, "u32")
+                            if uns:
+                                return e if tt in ("u32", "u16", "u8") else f"(u32){e}"
+                            return e if tt in ("s32", "s16", "s8") else f"(s32){e}"
+                        lhs = typed2(lhs, a_x[0])
+                        if not mn_x.endswith("i"):
+                            rhs = typed2(rhs, a_x[1])
+                        cond_expr = (lhs, rhs)
+                    elif mn_x == "extsb":
+                        regs[a_x[0]] = f"(s8){use(a_x[1])}"; rtype[a_x[0]] = "s8"
+                    elif mn_x == "extsh":
+                        regs[a_x[0]] = f"(s16){use(a_x[1])}"; rtype[a_x[0]] = "s16"
+                    elif mn_x in LOAD_T and a_x and not a_x[1].endswith("(r1)"):
+                        raise Give()  # a load in the test: keep the region out of the lifter for now
+                    else:
+                        raise Give()
+                if cond_expr is None:
+                    raise Give()
+                m_ = re.fullmatch(r"b(\w+)", ins[k_][0])
+                op = COND[m_.group(1)]
+                stmts.append(f"while ({cond_expr[0]} {op} {cond_expr[1]}) {{")
+                regs, rtype = saved_regs, saved_rtype
+                # the body runs next; the test instructions and the back branch are consumed
+                for x in range(t_, k_ + 1):
+                    skip.add(x)
+                open_ifs.append((k_ + 1, "}"))
+                open_ifs.sort(key=lambda x: -x[0])
+                in_loop.append((b_, t_, k_))
+                continue
+            if mn == "b":
+                raise Give()  # an unconditional jump that no if/else or loop explained
+            if mn == "blr":
+                break
+            if mn in ("cmpwi", "cmpw", "cmplwi", "cmplw"):
+                lhs = use(a[0]); rhs = str(_imm(a[1])) if mn.endswith("i") else use(a[1])
+                uns = mn.startswith("cmpl")
+                # the compare's signedness is the operands' type: cmpwi wants signed operands
+                def typed(e: str, reg: str) -> str:
+                    t = rtype.get(reg, "u32")
+                    if uns:
+                        return e if t in ("u32", "u16", "u8") else f"(u32){e}"
+                    return e if t in ("s32", "s16", "s8") else f"(s32){e}"
+                lhs = typed(lhs, a[0])
+                if not mn.endswith("i"):
+                    rhs = typed(rhs, a[1])
+                cond = (lhs, rhs, uns); continue
+            if mn.endswith("lr") and mn[1:-2] in COND and cond is not None:
+                op = COND[mn[1:-2]]
+                l, r_, uns = cond
+                stmts.append(f"if ({l} {op} {r_}) {{ return __RET__; }}"); continue
+            m = re.fullmatch(r"b(\w+)", mn)
+            if m and m.group(1) in COND and a and a[-1].startswith(".L_") and cond is not None:
+                tgt = labels.get(a[-1])
+                if tgt is None or tgt <= i:
+                    raise Give()  # a back edge no loop region explained
+                op = COND[m.group(1)]
+                inv = {"==": "!=", "!=": "==", "<": ">=", ">": "<=", "<=": ">", ">=": "<"}[op]  # branch taken = skip
+                l, r_, uns = cond
+                if ins[tgt][0] == "blr" or tgt == len(ins) - 1:
+                    stmts.append(f"if ({l} {op} {r_}) {{ return __RET__; }}")
                 else:
-                    declare(s, t); regs[a[0]] = s
-                rtype[a[0]] = t
-            else:
-                o = _imm(off)
-                b = use(base)
-                fb = field_base(b, base)
-                if fb is None:
-                    # a computed address (array element, pointer arithmetic): a plain typed access
-                    regs[a[0]] = f"*({t} *)((u8 *){b} + {o})"; rtype[a[0]] = t
+                    # every register the region writes and code after it may read is a local: its
+                    # writes become statements inside the branches, reads after use the local
+                    region_end = tgt
+                    pm0, pa0 = ins[tgt - 1]
+                    if pm0 == "b" and pa0 and pa0[-1].startswith(".L_") and labels.get(pa0[-1], -1) > tgt:
+                        region_end = labels[pa0[-1]]
+                    written = []
+                    for x in range(i + 1, region_end):
+                        mn_x, a_x = ins[x]
+                        if a_x and mn_x not in STORE_T and not mn_x.startswith(("st", "cmp", "b")) and mn_x not in ("mtlr", "mtspr", "mtctr"):
+                            if a_x[0] not in written:
+                                written.append(a_x[0])
+                    for rw in written:
+                        if rw in ("r0", "r1") or rw in carried or not re.fullmatch(r"r([3-9]|1\d|2\d|3[01])|f([1-9]|1\d|2\d|3[01])", rw):
+                            continue
+                        read_after = any(reads(x, rw) or (ins[x][0] == "bl" and re.fullmatch(r"r([3-9]|10)|f[1-8]", rw)) or (ins[x][0] == "blr" and rw in ("r3", "f1"))
+                                         for x in range(region_end, len(ins)))
+                        read_inside_first = False
+                        for x in range(i + 1, region_end):
+                            if reads(x, rw):
+                                read_inside_first = True; break
+                            if ins[x][1] and ins[x][1][0] == rw and ins[x][0] not in STORE_T and not ins[x][0].startswith(("st", "cmp", "b")):
+                                break
+                        if not (read_after or read_inside_first):
+                            continue
+                        init0 = regs.get(rw)
+                        if init0 is not None and (re.fullmatch(r"&[A-Za-z_]\w*", init0) or init0.startswith("((u8 *)&") or init0.startswith("(struct ")):
+                            continue  # MWCC rematerialises addresses: no local
+                        tn = f"v{len(temps)}"
+                        init = regs.get(rw)
+                        if init is None and re.fullmatch(r"r([3-9]|10)|f[1-8]", rw):
+                            init = use(rw)
+                        temps.append(f"{rtype.get(rw, 'u32')} {tn};")
+                        if init is not None:
+                            stmts.append(f"{tn} = {init};")
+                        regs[rw] = tn; carried[rw] = tn
+                    # `if (c) { then } else { else }` when the then-block ends with a forward jump
+                    # over the else-block; otherwise a plain if
+                    pm, pa = ins[tgt - 1]
+                    if pm == "b" and pa and pa[-1].startswith(".L_") and labels.get(pa[-1], -1) > tgt:
+                        end = labels[pa[-1]]
+                        skip.add(tgt - 1)
+                        stmts.append(f"if ({l} {inv} {r_}) {{")
+                        # closers are pushed innermost-last: the stack pops the else first, then the end
+                        open_ifs.append((end, "}")); open_ifs.append((tgt - 1, "} else {"))
+                    else:
+                        stmts.append(f"if ({l} {inv} {r_}) {{"); open_ifs.append((tgt, "}"))
+                open_ifs.sort(key=lambda x: -x[0])  # smallest index on top: every closer pops at its index
+                continue
+            lr_slot = f"0x{frame_size + 4:x}(r1)" if frame_size else None
+            slot_ = None
+            if a and len(a) > 1 and a[1].endswith("(r1)"):
+                m_s = re.match(r"^(-?0x[0-9a-f]+|-?\d+)", a[1])
+                slot_ = int(m_s.group(1), 0) if m_s else None
+            if mn in ("stwu", "mflr", "mtlr") or (mn in ("stw", "lwz") and a and ((a[0] == "r0" and a[1] == lr_slot) or (SAVE_RE.match(a[0]) and slot_ in saved_slots))) or (mn == "addi" and a and a[0] == "r1"):
+                frame = True
+                continue
+            if mn == "addi" and len(a) == 3 and a[1] == "r1":
+                off_ = _imm(a[2])
+                local_at(off_, 0, "u8"); slocals[off_]["addr"] = True
+                regs[a[0]] = f"&loc_{off_:X}"; rtype[a[0]] = "void *"; frame = True
+                continue
+            if mn in ("stw", "stfd") and a and a[1].endswith("(r1)"):
+                off_ = _imm(a[1][:-4])
+                e_ = regs.get(a[0], "")
+                if mn == "stw" and e_ in ("0x43300000", "1127219200"):
+                    conv_slots[off_] = ("hi", None); frame = True; continue
+                if mn == "stw" and off_ - 4 in conv_slots and conv_slots[off_ - 4][0] == "hi":
+                    conv_slots[off_ - 4] = ("pair", e_); frame = True; continue
+                if mn == "stfd" and e_.startswith("__FCTIWZ__("):
+                    conv_slots[off_] = ("fctiwz", e_[len("__FCTIWZ__("):-1]); frame = True; continue
+            if mn == "lfd" and a and a[1].endswith("(r1)") and _imm(a[1][:-4]) in conv_slots and conv_slots[_imm(a[1][:-4])][0] == "pair":
+                x = conv_slots[_imm(a[1][:-4])][1]
+                m_ = re.fullmatch(r"__XORIS__\((.+), 32768\)", x)
+                regs[a[0]] = f"__I2D__({m_.group(1)}, signed)" if m_ else f"__I2D__({x}, unsigned)"
+                rtype[a[0]] = "f64"; frame = True; continue
+            if mn == "lwz" and a and a[1].endswith("(r1)") and _imm(a[1][:-4]) - 4 in conv_slots and conv_slots[_imm(a[1][:-4]) - 4][0] == "fctiwz":
+                regs[a[0]] = f"(s32){conv_slots[_imm(a[1][:-4]) - 4][1]}"; rtype[a[0]] = "s32"; frame = True; continue
+            if mn in LOAD_T and a and a[1].endswith("(r1)"):
+                off_ = _imm(a[1][:-4]); t = LOAD_T[mn]
+                if off_ in saved_slots or off_ >= frame_size:
+                    frame = True; continue
+                regs[a[0]] = local_at(off_, WIDTH[mn], t); rtype[a[0]] = t; frame = True
+                continue
+            if mn in STORE_T and a and a[1].endswith("(r1)"):
+                off_ = _imm(a[1][:-4]); t = STORE_T[mn]
+                if off_ in saved_slots or off_ >= frame_size or a[0] == "r0" and off_ > frame_size:
+                    frame = True; continue
+                stmts.append(f"{local_at(off_, WIDTH[mn], t)} = {use(a[0])};"); frame = True
+                continue
+            if mn in ("stfd", "lfd", "psq_st", "psq_l") and a and re.fullmatch(r"f(1[4-9]|2\d|3[01])", a[0]) and slot_ in saved_slots:
+                frame = True
+                continue  # callee-saved float registers
+            if mn in ("crclr", "crset") or mn == "nop":
+                if mn == "crclr":
+                    variadic_next[0] = True  # `crclr cr1eq`: the callee is variadic (no float varargs)
+                continue
+            if mn == "lis" and sym_of(a[1]):
+                hi[a[0]] = sym_of(a[1]); regs.pop(a[0], None); continue
+            if mn == "lis":
+                regs[a[0]] = f"0x{(_imm(a[1]) & 0xFFFF) << 16:X}"; rtype[a[0]] = "u32"; continue
+            if mn == "addi" and sym_of(a[2]) and a[1] in hi:
+                s = sym_of(a[2]); declare(s, "u32")
+                sd = lookup(s)
+                so = sym_off(a[2])
+                if sd is not None and sd.kind == "function":
+                    regs[a[0]] = s; fnames_seen.add(s)
+                elif so:
+                    regs[a[0]] = f"((u8 *)&{s} + {so})"
+                elif SAVE_RE.match(a[0]):
+                    # kept in a callee-saved register: the source held it in a local pointer
+                    ln = f"p_{s}"
+                    locals_[ln] = s
+                    declare(s, "struct", far_ref=True); gfields.setdefault(s, {})
+                    # the cast is what keeps the address in the register across calls: MWCC
+                    # rematerialises a plain `&sym` after each call, but not a cast of it.
+                    # The assignment is emitted right before the first statement that uses it.
+                    stmts.append(f"{ln} = (struct {name}_{s} *)&{s};")  # eager: retail places it early
+                    regs[a[0]] = ln
+                else:
+                    regs[a[0]] = f"&{s}"
+                rtype[a[0]] = "void *"; continue
+            if mn in ("li",):
+                regs[a[0]] = str(_imm(a[1])); rtype[a[0]] = "s32"; continue
+            if mn == "mr":
+                regs[a[0]] = use(a[1]); rtype[a[0]] = rtype.get(a[1], "u32"); continue
+            if mn in LOAD_T:
+                m = MEM_RE.match(a[1])
+                if not m:
+                    raise Give()
+                off, base = m.group(1), m.group(2)
+                t = LOAD_T[mn]
+                if off.endswith("@l") and base in hi:
+                    s = hi[base]; so = sym_off(off)
+                    if so or s in struct_syms:
+                        declare(s, "struct", far_ref=True); gfields.setdefault(s, {})[so] = t; regs[a[0]] = f"{s}.unk_{so:X}"
+                    else:
+                        declare(s, t, far_ref=True); regs[a[0]] = ref(s)
+                    rtype[a[0]] = t
                     if mn.endswith("u"):
-                        regs[base] = f"((u8 *){b} + {o})"
+                        regs[base] = f"&{s}" if not so else f"((u8 *)&{s} + {so})"; hi.pop(base, None)
                     continue
-                kind, key, k = fb
-                if kind == "param":
-                    fields.setdefault(key, {})[o] = t; regs[a[0]] = f"{b}->unk_{o:X}"
-                elif kind == "global" and b in locals_:
-                    gfields.setdefault(key, {})[o] = t; regs[a[0]] = f"{b}->unk_{o:X}"
-                elif kind == "global" and key in ptr_globals and o + k == 0 and t == "u32":
-                    regs[a[0]] = key  # the pointer variable itself, read through its address
-                elif kind == "global":
-                    declare(key, "struct", far_ref=True); gfields.setdefault(key, {})[o + k] = t; regs[a[0]] = f"{key}.unk_{o + k:X}"
-                elif kind == "abs":
-                    hit = symbol_at(key + o)
-                    if hit is None:
-                        raise Give()  # hardware or unnamed memory: nothing the lint would accept
-                    sd, so = hit
-                    if so == 0 and sd.size <= 8:
-                        declare(sd.name, t, far_ref=True); regs[a[0]] = ref(sd.name)
+                elif off.endswith("@sda21"):
+                    s = sym_of(off); so = sym_off(off)
+                    if so:
+                        declare(s, "struct"); gfields.setdefault(s, {})[so] = t; regs[a[0]] = f"{s}.unk_{so:X}"
                     else:
-                        declare(sd.name, "struct", far_ref=True); gfields.setdefault(sd.name, {})[so] = t; regs[a[0]] = f"{sd.name}.unk_{so:X}"
+                        declare(s, t); regs[a[0]] = s
+                    rtype[a[0]] = t
                 else:
-                    ptr_globals.add(key); pfields.setdefault(key, {})[o] = t; regs[a[0]] = f"{key}->unk_{o:X}"
-                rtype[a[0]] = t
-            if mn.endswith("u"):  # update form: the base register advances
-                regs[base] = f"((u8 *){use(base)} + {_imm(off) if not off.endswith(('@l', '@sda21')) else 0})"
-            if reused_after_store(i, a[0], a[1]):
-                tn = f"v{len(temps)}"; temps.append(f"{rtype.get(a[0], 'u32')} {tn};")
-                stmts.append(f"{tn} = {regs[a[0]]};"); regs[a[0]] = tn
-            continue
-        if mn in STORE_T:
-            m = MEM_RE.match(a[1])
-            if not m:
-                raise Give()
-            off, base = m.group(1), m.group(2)
-            t = STORE_T[mn]
-            val = use(a[0])
-            if off.endswith("@l") and base in hi:
-                s = hi[base]; so = sym_off(off)
-                if so or s in struct_syms:
-                    declare(s, "struct", far_ref=True); gfields.setdefault(s, {})[so] = t; stmts.append(f"{s}.unk_{so:X} = {val};")
-                else:
-                    declare(s, t, far_ref=True); stmts.append(f"{ref(s)} = {val};")
-            elif off.endswith("@sda21"):
-                s = sym_of(off); so = sym_off(off)
-                if so:
-                    declare(s, "struct"); gfields.setdefault(s, {})[so] = t; stmts.append(f"{s}.unk_{so:X} = {val};")
-                else:
-                    declare(s, t); stmts.append(f"{s} = {val};")
-            else:
-                o = _imm(off); b = use(base)
-                fb = field_base(b, base)
-                if fb is None:
-                    stmts.append(f"*({t} *)((u8 *){b} + {o}) = {val};"); continue
-                kind, key, k = fb
-                if kind == "param":
-                    fields.setdefault(key, {})[o] = t; stmts.append(f"{b}->unk_{o:X} = {val};")
-                elif kind == "global" and b in locals_:
-                    gfields.setdefault(key, {})[o] = t; stmts.append(f"{b}->unk_{o:X} = {val};")
-                elif kind == "global" and key in ptr_globals and o + k == 0 and t == "u32":
-                    stmts.append(f"{key} = {val};")
-                elif kind == "global":
-                    declare(key, "struct", far_ref=True); gfields.setdefault(key, {})[o + k] = t; stmts.append(f"{key}.unk_{o + k:X} = {val};")
-                elif kind == "abs":
-                    hit = symbol_at(key + o)
-                    if hit is None:
-                        raise Give()
-                    sd, so = hit
-                    if so == 0 and sd.size <= 8:
-                        declare(sd.name, t, far_ref=True); stmts.append(f"{ref(sd.name)} = {val};")
+                    o = _imm(off)
+                    b = use(base)
+                    fb = field_base(b, base)
+                    if fb is None:
+                        # a computed address (array element, pointer arithmetic): a plain typed access
+                        regs[a[0]] = f"*({t} *)((u8 *){b} + {o})"; rtype[a[0]] = t
+                        if mn.endswith("u"):
+                            regs[base] = f"((u8 *){b} + {o})"
+                        continue
+                    kind, key, k = fb
+                    if kind == "param":
+                        fields.setdefault(key, {})[o] = t; regs[a[0]] = f"{b}->unk_{o:X}"
+                    elif kind == "global" and b in locals_:
+                        gfields.setdefault(key, {})[o] = t; regs[a[0]] = f"{b}->unk_{o:X}"
+                    elif kind == "global" and key in ptr_globals and o + k == 0 and t == "u32":
+                        regs[a[0]] = key  # the pointer variable itself, read through its address
+                    elif kind == "global":
+                        declare(key, "struct", far_ref=True); gfields.setdefault(key, {})[o + k] = t; regs[a[0]] = f"{key}.unk_{o + k:X}"
+                    elif kind == "abs":
+                        hit = symbol_at(key + o)
+                        if hit is None:
+                            raise Give()  # hardware or unnamed memory: nothing the lint would accept
+                        sd, so = hit
+                        if so == 0 and sd.size <= 8:
+                            declare(sd.name, t, far_ref=True); regs[a[0]] = ref(sd.name)
+                        else:
+                            declare(sd.name, "struct", far_ref=True); gfields.setdefault(sd.name, {})[so] = t; regs[a[0]] = f"{sd.name}.unk_{so:X}"
                     else:
-                        declare(sd.name, "struct", far_ref=True); gfields.setdefault(sd.name, {})[so] = t; stmts.append(f"{sd.name}.unk_{so:X} = {val};")
+                        ptr_globals.add(key); pfields.setdefault(key, {})[o] = t; regs[a[0]] = f"{key}->unk_{o:X}"
+                    rtype[a[0]] = t
+                if mn.endswith("u"):  # update form: the base register advances
+                    regs[base] = f"((u8 *){use(base)} + {_imm(off) if not off.endswith(('@l', '@sda21')) else 0})"
+                if reused_after_store(i, a[0], a[1]):
+                    tn = f"v{len(temps)}"; temps.append(f"{rtype.get(a[0], 'u32')} {tn};")
+                    stmts.append(f"{tn} = {regs[a[0]]};"); regs[a[0]] = tn
+                continue
+            if mn in STORE_T:
+                m = MEM_RE.match(a[1])
+                if not m:
+                    raise Give()
+                off, base = m.group(1), m.group(2)
+                t = STORE_T[mn]
+                val = use(a[0])
+                if off.endswith("@l") and base in hi:
+                    s = hi[base]; so = sym_off(off)
+                    if so or s in struct_syms:
+                        declare(s, "struct", far_ref=True); gfields.setdefault(s, {})[so] = t; stmts.append(f"{s}.unk_{so:X} = {val};")
+                    else:
+                        declare(s, t, far_ref=True); stmts.append(f"{ref(s)} = {val};")
+                elif off.endswith("@sda21"):
+                    s = sym_of(off); so = sym_off(off)
+                    if so:
+                        declare(s, "struct"); gfields.setdefault(s, {})[so] = t; stmts.append(f"{s}.unk_{so:X} = {val};")
+                    else:
+                        declare(s, t); stmts.append(f"{s} = {val};")
                 else:
-                    ptr_globals.add(key); pfields.setdefault(key, {})[o] = t; stmts.append(f"{key}->unk_{o:X} = {val};")
-            continue
-        if mn in ("extsh", "extsb", "clrlwi", "rlwinm", "slwi", "srwi", "srawi", "add", "subf", "sub", "mulli", "mullw", "neg", "or", "and", "xor", "ori", "andi.", "addis", "subi", "not", "extrwi", "extlwi"):
-            d = a[0]
-            if mn == "extrwi":
-                n, b = _imm(a[2]), _imm(a[3]); regs[d] = f"(({use(a[1])} >> {32 - b - n}) & 0x{(1 << n) - 1:X})"; rtype[d] = "u32"; continue
-            if mn == "extlwi":
-                n, b = _imm(a[2]), _imm(a[3]); regs[d] = f"(({use(a[1])} << {b}) & 0x{((1 << n) - 1) << (32 - n):X})"; rtype[d] = "u32"; continue
-            if mn == "extsh": regs[d] = f"(s16){use(a[1])}"; rtype[d] = "s16"
-            elif mn == "extsb": regs[d] = f"(s8){use(a[1])}"; rtype[d] = "s8"
-            elif mn == "clrlwi":
-                n = 32 - _imm(a[2]); regs[d] = f"({use(a[1])} & 0x{(1 << n) - 1:X})" if n < 32 else use(a[1]); rtype[d] = "u32"
-            elif mn == "slwi": regs[d] = f"({use(a[1])} << {_imm(a[2])})"; rtype[d] = "u32"
-            elif mn == "srwi":
-                src_e = regs.get(a[1], "")
-                m_ = re.fullmatch(r"\(\(\((.+) - __MULHU__\((.+), (\d+)\)\) >> 1\) \+ __MULHU__\(\2, \3\)\)", src_e) if src_e else None
-                if m_ and m_.group(1) == m_.group(2):  # the add form: x - q >> 1 + q, then >> (s-1)
-                    dv = divisor_of(int(m_.group(3)), _imm(a[2]) + 1, True)
-                    if dv is None:
-                        raise Give()
-                    regs[d] = f"({m_.group(1)} / {dv})"; rtype[d] = "u32"
-                else:
-                    m2 = re.fullmatch(r"__MULHU__\((.+), (\d+)\)", src_e) if src_e else None
-                    if m2:
-                        dv = divisor_of(int(m2.group(2)), _imm(a[2]), False)
+                    o = _imm(off); b = use(base)
+                    fb = field_base(b, base)
+                    if fb is None:
+                        stmts.append(f"*({t} *)((u8 *){b} + {o}) = {val};"); continue
+                    kind, key, k = fb
+                    if kind == "param":
+                        fields.setdefault(key, {})[o] = t; stmts.append(f"{b}->unk_{o:X} = {val};")
+                    elif kind == "global" and b in locals_:
+                        gfields.setdefault(key, {})[o] = t; stmts.append(f"{b}->unk_{o:X} = {val};")
+                    elif kind == "global" and key in ptr_globals and o + k == 0 and t == "u32":
+                        stmts.append(f"{key} = {val};")
+                    elif kind == "global":
+                        declare(key, "struct", far_ref=True); gfields.setdefault(key, {})[o + k] = t; stmts.append(f"{key}.unk_{o + k:X} = {val};")
+                    elif kind == "abs":
+                        hit = symbol_at(key + o)
+                        if hit is None:
+                            raise Give()
+                        sd, so = hit
+                        if so == 0 and sd.size <= 8:
+                            declare(sd.name, t, far_ref=True); stmts.append(f"{ref(sd.name)} = {val};")
+                        else:
+                            declare(sd.name, "struct", far_ref=True); gfields.setdefault(sd.name, {})[so] = t; stmts.append(f"{sd.name}.unk_{so:X} = {val};")
+                    else:
+                        ptr_globals.add(key); pfields.setdefault(key, {})[o] = t; stmts.append(f"{key}->unk_{o:X} = {val};")
+                continue
+            if mn in ("extsh", "extsb", "clrlwi", "rlwinm", "slwi", "srwi", "srawi", "add", "subf", "sub", "mulli", "mullw", "neg", "or", "and", "xor", "ori", "andi.", "addis", "subi", "not", "extrwi", "extlwi"):
+                d = a[0]
+                if mn == "extrwi":
+                    n, b = _imm(a[2]), _imm(a[3]); regs[d] = f"(({use(a[1])} >> {32 - b - n}) & 0x{(1 << n) - 1:X})"; rtype[d] = "u32"; continue
+                if mn == "extlwi":
+                    n, b = _imm(a[2]), _imm(a[3]); regs[d] = f"(({use(a[1])} << {b}) & 0x{((1 << n) - 1) << (32 - n):X})"; rtype[d] = "u32"; continue
+                if mn == "extsh": regs[d] = f"(s16){use(a[1])}"; rtype[d] = "s16"
+                elif mn == "extsb": regs[d] = f"(s8){use(a[1])}"; rtype[d] = "s8"
+                elif mn == "clrlwi":
+                    n = 32 - _imm(a[2]); regs[d] = f"({use(a[1])} & 0x{(1 << n) - 1:X})" if n < 32 else use(a[1]); rtype[d] = "u32"
+                elif mn == "slwi": regs[d] = f"({use(a[1])} << {_imm(a[2])})"; rtype[d] = "u32"
+                elif mn == "srwi":
+                    src_e = regs.get(a[1], "")
+                    m_ = re.fullmatch(r"\(\(\((.+) - __MULHU__\((.+), (\d+)\)\) >> 1\) \+ __MULHU__\(\2, \3\)\)", src_e) if src_e else None
+                    if m_ and m_.group(1) == m_.group(2):  # the add form: x - q >> 1 + q, then >> (s-1)
+                        dv = divisor_of(int(m_.group(3)), _imm(a[2]) + 1, True)
                         if dv is None:
                             raise Give()
-                        regs[d] = f"({m2.group(1)} / {dv})"; rtype[d] = "u32"
+                        regs[d] = f"({m_.group(1)} / {dv})"; rtype[d] = "u32"
                     else:
-                        regs[d] = f"((u32){use(a[1])} >> {_imm(a[2])})"; rtype[d] = "u32"
-            elif mn == "srawi": regs[d] = f"((s32){use(a[1])} >> {_imm(a[2])})"; rtype[d] = "s32"
-            elif mn == "add":
-                x, y = use(a[1]), use(a[2])
-                # address + integer: byte arithmetic, or the pointee size scales the sum
-                if rtype.get(a[1]) == "void *" and rtype.get(a[2]) != "void *":
-                    regs[d] = f"((u8 *){x} + {y})"; rtype[d] = "void *"
-                elif rtype.get(a[2]) == "void *" and rtype.get(a[1]) != "void *":
-                    regs[d] = f"((u8 *){y} + {x})"; rtype[d] = "void *"
-                else:
-                    regs[d] = f"({x} + {y})"; rtype[d] = "u32"
-            elif mn in ("subf",): regs[d] = f"({use(a[2])} - {use(a[1])})"; rtype[d] = "u32"
-            elif mn == "sub": regs[d] = f"({use(a[1])} - {use(a[2])})"; rtype[d] = "u32"
-            elif mn == "subi": regs[d] = f"({use(a[1])} - {_imm(a[2])})"; rtype[d] = "u32"
-            elif mn == "addi": regs[d] = f"({use(a[1])} + {_imm(a[2])})"; rtype[d] = "u32"
-            elif mn == "mulli": regs[d] = f"({use(a[1])} * {_imm(a[2])})"; rtype[d] = "s32"
-            elif mn == "mullw": regs[d] = f"({use(a[1])} * {use(a[2])})"; rtype[d] = "s32"
-            elif mn == "neg": regs[d] = f"(-{use(a[1])})"; rtype[d] = "s32"
-            elif mn == "or": regs[d] = f"({use(a[1])} | {use(a[2])})"; rtype[d] = "u32"
-            elif mn == "and": regs[d] = f"({use(a[1])} & {use(a[2])})"; rtype[d] = "u32"
-            elif mn == "xor": regs[d] = f"({use(a[1])} ^ {use(a[2])})"; rtype[d] = "u32"
-            elif mn == "ori": regs[d] = f"({use(a[1])} | {_imm(a[2])})"; rtype[d] = "u32"
-            elif mn == "andi.": regs[d] = f"({use(a[1])} & {_imm(a[2])})"; rtype[d] = "u32"
-            elif mn == "not": regs[d] = f"(~{use(a[1])})"; rtype[d] = "u32"
-            elif mn == "rlwinm":
-                sh, mb, me = _imm(a[2]), _imm(a[3]), _imm(a[4])
-                if sh == 0 and mb == 0:
-                    n = me + 1; regs[d] = f"({use(a[1])} & 0x{(0xFFFFFFFF << (32 - n)) & 0xFFFFFFFF:X})"
-                elif sh == 0 and me == 31:
-                    regs[d] = f"({use(a[1])} & 0x{(1 << (32 - mb)) - 1:X})"
-                elif mb == 0 and me == 31 - sh:
-                    regs[d] = f"({use(a[1])} << {sh})"
-                elif me == 31 and mb == 32 - sh and sh:
-                    regs[d] = f"((u32){use(a[1])} >> {32 - sh})"
-                else:
-                    raise Give()
-                rtype[d] = "u32"
-            else:
-                raise Give()
-            continue
-        if mn == "addi":  # plain addi (not an address)
-            if rtype.get(a[1]) == "void *":
-                regs[a[0]] = f"((u8 *){use(a[1])} + {_imm(a[2])})"; rtype[a[0]] = "void *"
-            else:
-                regs[a[0]] = f"({use(a[1])} + {_imm(a[2])})"; rtype[a[0]] = "u32"
-            continue
-        if mn == "oris":
-            regs[a[0]] = f"({use(a[1])} | 0x{_imm(a[2]) << 16:X})"; rtype[a[0]] = "u32"; continue
-        if mn == "subfic":
-            regs[a[0]] = f"({_imm(a[2])} - {use(a[1])})"; rtype[a[0]] = "s32"; continue
-        if mn == "clrrwi":
-            n = _imm(a[2]); regs[a[0]] = f"({use(a[1])} & ~0x{(1 << n) - 1:X})"; rtype[a[0]] = "u32"; continue
-        if mn == "clrlslwi":
-            b, n = _imm(a[2]), _imm(a[3]); regs[a[0]] = f"(({use(a[1])} & 0x{(1 << (32 - b)) - 1:X}) << {n})"; rtype[a[0]] = "u32"; continue
-        if mn.endswith(".") and mn[:-1] in ("extrwi", "rlwinm", "andi", "extsb", "extsh", "clrlwi", "subic", "addic", "and", "or", "subf", "add", "neg", "srawi", "cntlzw", "xor", "mulli", "slwi", "srwi"):
-            # record form: the result is also compared with zero for the branch that follows
-            base_mn = mn[:-1]
-            ins_i = (base_mn, a)
-            handled = False
-            # evaluate through the plain op by recursion on a one-instruction list is awkward:
-            # replicate the few cases inline
-            if base_mn == "extrwi":
-                n, b = _imm(a[2]), _imm(a[3]); regs[a[0]] = f"(({use(a[1])} >> {32 - b - n}) & 0x{(1 << n) - 1:X})"; rtype[a[0]] = "u32"; handled = True
-            elif base_mn == "andi":
-                regs[a[0]] = f"({use(a[1])} & {_imm(a[2])})"; rtype[a[0]] = "u32"; handled = True
-            elif base_mn == "extsb":
-                regs[a[0]] = f"(s8){use(a[1])}"; rtype[a[0]] = "s8"; handled = True
-            elif base_mn == "extsh":
-                regs[a[0]] = f"(s16){use(a[1])}"; rtype[a[0]] = "s16"; handled = True
-            elif base_mn == "clrlwi":
-                n = 32 - _imm(a[2]); regs[a[0]] = f"({use(a[1])} & 0x{(1 << n) - 1:X})"; rtype[a[0]] = "u32"; handled = True
-            elif base_mn in ("subic", "addic"):
-                k = _imm(a[2]); regs[a[0]] = f"({use(a[1])} {'-' if base_mn == 'subic' else '+'} {k})"; rtype[a[0]] = rtype.get(a[1], "s32"); handled = True
-            elif base_mn == "and":
-                regs[a[0]] = f"({use(a[1])} & {use(a[2])})"; rtype[a[0]] = "u32"; handled = True
-            elif base_mn == "or":
-                regs[a[0]] = f"({use(a[1])} | {use(a[2])})"; rtype[a[0]] = "u32"; handled = True
-            elif base_mn == "subf":
-                regs[a[0]] = f"({use(a[2])} - {use(a[1])})"; rtype[a[0]] = "s32"; handled = True
-            elif base_mn == "add":
-                regs[a[0]] = f"({use(a[1])} + {use(a[2])})"; rtype[a[0]] = "s32"; handled = True
-            elif base_mn == "neg":
-                regs[a[0]] = f"(-{use(a[1])})"; rtype[a[0]] = "s32"; handled = True
-            elif base_mn == "rlwinm":
-                sh, mb, me = _imm(a[2]), _imm(a[3]), _imm(a[4])
-                if sh == 0 and mb == 0: regs[a[0]] = f"({use(a[1])} & 0x{(0xFFFFFFFF << (31 - me)) & 0xFFFFFFFF:X})"
-                elif sh == 0 and me == 31: regs[a[0]] = f"({use(a[1])} & 0x{(1 << (32 - mb)) - 1:X})"
-                else: raise Give()
-                rtype[a[0]] = "u32"; handled = True
-            if not handled:
-                raise Give()
-            signed = rtype.get(a[0]) in ("s8", "s16", "s32")
-            cond = (regs[a[0]], "0", not signed); continue
-        if mn in ("lwzx", "lhzx", "lbzx", "lfsx", "lhax"):
-            t = {"lwzx": "u32", "lhzx": "u16", "lbzx": "u8", "lfsx": "f32", "lhax": "s16"}[mn]
-            b = use(a[1]); i2 = use(a[2])
-            regs[a[0]] = f"*({t} *)((u8 *){b} + {i2})"; rtype[a[0]] = t; continue
-        if mn in ("stwx", "sthx", "stbx", "stfsx"):
-            t = {"stwx": "u32", "sthx": "u16", "stbx": "u8", "stfsx": "f32"}[mn]
-            stmts.append(f"*({t} *)((u8 *){use(a[1])} + {use(a[2])}) = {use(a[0])};"); continue
-        if mn in ("fmuls", "fadds", "fsubs", "fdivs", "fmul", "fadd", "fsub", "fdiv"):
-            op = {"fmuls": "*", "fadds": "+", "fsubs": "-", "fdivs": "/", "fmul": "*", "fadd": "+", "fsub": "-", "fdiv": "/"}[mn]
-            t = "f32" if mn.endswith("s") else "f64"
-            m_ = re.fullmatch(r"__I2D__\((.+), (signed|unsigned)\)", regs.get(a[1], ""))
-            if m_ and op == "-":
-                cast = "(s32)" if m_.group(2) == "signed" else "(u32)"
-                regs[a[0]] = f"({t}){cast}{m_.group(1)}"; rtype[a[0]] = t
-                written_since_call.discard(a[2]); regs.pop(a[2], None)  # the constant, not an argument
-                continue
-            regs[a[0]] = f"({use(a[1])} {op} {use(a[2])})"; rtype[a[0]] = t; continue
-        if mn in ("fmadds", "fmadd"):
-            regs[a[0]] = f"(({use(a[1])} * {use(a[2])}) + {use(a[3])})"; rtype[a[0]] = "f32" if mn.endswith("s") else "f64"; continue
-        if mn in ("fmsubs", "fmsub"):
-            regs[a[0]] = f"(({use(a[1])} * {use(a[2])}) - {use(a[3])})"; rtype[a[0]] = "f32" if mn.endswith("s") else "f64"; continue
-        if mn == "fmr":
-            regs[a[0]] = use(a[1]); rtype[a[0]] = rtype.get(a[1], "f32"); continue
-        if mn == "fneg":
-            regs[a[0]] = f"(-{use(a[1])})"; rtype[a[0]] = rtype.get(a[1], "f32"); continue
-        if mn == "frsp":
-            regs[a[0]] = f"(f32){use(a[1])}"; rtype[a[0]] = "f32"; continue
-        if mn == "andc":
-            regs[a[0]] = f"({use(a[1])} & ~{use(a[2])})"; rtype[a[0]] = "u32"; continue
-        if mn == "mulhwu":
-            # unsigned division by a constant: q = mulhu(x, m) then the fix-up sequence; the
-            # divisor is recovered from the magic number (Hacker's Delight magicu). The whole
-            # idiom is matched here by looking ahead, so its steps never leak into expressions.
-            m_expr = regs.get(a[1]); x_reg = a[2]; x_expr = use(x_reg)
-            if m_expr is None:
-                raise Give()
-            try:
-                magic = int(eval(m_expr, {"__builtins__": {}})) & 0xFFFFFFFF if re.fullmatch(r"[0-9x\s()+\-*A-Fa-f]+", m_expr) else None
-            except Exception:
-                magic = None
-            if magic is None:
-                raise Give()
-            q = a[0]
-            # the fix-up steps may be interleaved with unrelated instructions: find them in order
-            def find(start, pred):
-                for x in range(start, min(len(ins), start + 12)):
-                    if pred(ins[x][0], ins[x][1]):
-                        return x
-                return None
-            j1 = find(i + 1, lambda m_, a_: m_ == "subf" and len(a_) == 3 and a_[1] == q and a_[2] == x_reg)
-            if j1 is not None:
-                t1 = ins[j1][1][0]
-                j2 = find(j1 + 1, lambda m_, a_: m_ == "srwi" and a_[1] == t1 and _imm(a_[2]) == 1)
-                if j2 is not None:
-                    t2 = ins[j2][1][0]
-                    j3 = find(j2 + 1, lambda m_, a_: m_ == "add" and set(a_[1:]) == {t2, q})
-                    if j3 is not None:
-                        t3 = ins[j3][1][0]
-                        j4 = find(j3 + 1, lambda m_, a_: m_ == "srwi" and a_[1] == t3)
-                        if j4 is not None:
-                            dv = divisor_of(magic, _imm(ins[j4][1][2]) + 1, True)
+                        m2 = re.fullmatch(r"__MULHU__\((.+), (\d+)\)", src_e) if src_e else None
+                        if m2:
+                            dv = divisor_of(int(m2.group(2)), _imm(a[2]), False)
                             if dv is None:
                                 raise Give()
-                            for x in (j1, j2, j3, j4):
-                                skip.add(x)
-                            pending_div[j4] = (ins[j4][1][0], f"({x_expr} / {dv})")
-                            continue
-            j1 = find(i + 1, lambda m_, a_: m_ == "srwi" and a_[1] == q)
-            if j1 is not None:
-                dv = divisor_of(magic, _imm(ins[j1][1][2]), False)
-                if dv is None:
+                            regs[d] = f"({m2.group(1)} / {dv})"; rtype[d] = "u32"
+                        else:
+                            regs[d] = f"((u32){use(a[1])} >> {_imm(a[2])})"; rtype[d] = "u32"
+                elif mn == "srawi": regs[d] = f"((s32){use(a[1])} >> {_imm(a[2])})"; rtype[d] = "s32"
+                elif mn == "add":
+                    x, y = use(a[1]), use(a[2])
+                    # address + integer: byte arithmetic, or the pointee size scales the sum
+                    if rtype.get(a[1]) == "void *" and rtype.get(a[2]) != "void *":
+                        regs[d] = f"((u8 *){x} + {y})"; rtype[d] = "void *"
+                    elif rtype.get(a[2]) == "void *" and rtype.get(a[1]) != "void *":
+                        regs[d] = f"((u8 *){y} + {x})"; rtype[d] = "void *"
+                    else:
+                        regs[d] = f"({x} + {y})"; rtype[d] = "u32"
+                elif mn in ("subf",): regs[d] = f"({use(a[2])} - {use(a[1])})"; rtype[d] = "u32"
+                elif mn == "sub": regs[d] = f"({use(a[1])} - {use(a[2])})"; rtype[d] = "u32"
+                elif mn == "subi": regs[d] = f"({use(a[1])} - {_imm(a[2])})"; rtype[d] = "u32"
+                elif mn == "addi": regs[d] = f"({use(a[1])} + {_imm(a[2])})"; rtype[d] = "u32"
+                elif mn == "mulli": regs[d] = f"({use(a[1])} * {_imm(a[2])})"; rtype[d] = "s32"
+                elif mn == "mullw": regs[d] = f"({use(a[1])} * {use(a[2])})"; rtype[d] = "s32"
+                elif mn == "neg": regs[d] = f"(-{use(a[1])})"; rtype[d] = "s32"
+                elif mn == "or": regs[d] = f"({use(a[1])} | {use(a[2])})"; rtype[d] = "u32"
+                elif mn == "and": regs[d] = f"({use(a[1])} & {use(a[2])})"; rtype[d] = "u32"
+                elif mn == "xor": regs[d] = f"({use(a[1])} ^ {use(a[2])})"; rtype[d] = "u32"
+                elif mn == "ori": regs[d] = f"({use(a[1])} | {_imm(a[2])})"; rtype[d] = "u32"
+                elif mn == "andi.": regs[d] = f"({use(a[1])} & {_imm(a[2])})"; rtype[d] = "u32"
+                elif mn == "not": regs[d] = f"(~{use(a[1])})"; rtype[d] = "u32"
+                elif mn == "rlwinm":
+                    sh, mb, me = _imm(a[2]), _imm(a[3]), _imm(a[4])
+                    if sh == 0 and mb == 0:
+                        n = me + 1; regs[d] = f"({use(a[1])} & 0x{(0xFFFFFFFF << (32 - n)) & 0xFFFFFFFF:X})"
+                    elif sh == 0 and me == 31:
+                        regs[d] = f"({use(a[1])} & 0x{(1 << (32 - mb)) - 1:X})"
+                    elif mb == 0 and me == 31 - sh:
+                        regs[d] = f"({use(a[1])} << {sh})"
+                    elif me == 31 and mb == 32 - sh and sh:
+                        regs[d] = f"((u32){use(a[1])} >> {32 - sh})"
+                    else:
+                        raise Give()
+                    rtype[d] = "u32"
+                else:
                     raise Give()
-                skip.add(j1)
-                pending_div[j1] = (ins[j1][1][0], f"({x_expr} / {dv})")
+                continue
+            if mn == "addi":  # plain addi (not an address)
+                if rtype.get(a[1]) == "void *":
+                    regs[a[0]] = f"((u8 *){use(a[1])} + {_imm(a[2])})"; rtype[a[0]] = "void *"
+                else:
+                    regs[a[0]] = f"({use(a[1])} + {_imm(a[2])})"; rtype[a[0]] = "u32"
+                continue
+            if mn == "oris":
+                regs[a[0]] = f"({use(a[1])} | 0x{_imm(a[2]) << 16:X})"; rtype[a[0]] = "u32"; continue
+            if mn == "subfic":
+                regs[a[0]] = f"({_imm(a[2])} - {use(a[1])})"; rtype[a[0]] = "s32"; continue
+            if mn == "clrrwi":
+                n = _imm(a[2]); regs[a[0]] = f"({use(a[1])} & ~0x{(1 << n) - 1:X})"; rtype[a[0]] = "u32"; continue
+            if mn == "clrlslwi":
+                b, n = _imm(a[2]), _imm(a[3]); regs[a[0]] = f"(({use(a[1])} & 0x{(1 << (32 - b)) - 1:X}) << {n})"; rtype[a[0]] = "u32"; continue
+            if mn.endswith(".") and mn[:-1] in ("extrwi", "rlwinm", "andi", "extsb", "extsh", "clrlwi", "subic", "addic", "and", "or", "subf", "add", "neg", "srawi", "cntlzw", "xor", "mulli", "slwi", "srwi"):
+                # record form: the result is also compared with zero for the branch that follows
+                base_mn = mn[:-1]
+                ins_i = (base_mn, a)
+                handled = False
+                # evaluate through the plain op by recursion on a one-instruction list is awkward:
+                # replicate the few cases inline
+                if base_mn == "extrwi":
+                    n, b = _imm(a[2]), _imm(a[3]); regs[a[0]] = f"(({use(a[1])} >> {32 - b - n}) & 0x{(1 << n) - 1:X})"; rtype[a[0]] = "u32"; handled = True
+                elif base_mn == "andi":
+                    regs[a[0]] = f"({use(a[1])} & {_imm(a[2])})"; rtype[a[0]] = "u32"; handled = True
+                elif base_mn == "extsb":
+                    regs[a[0]] = f"(s8){use(a[1])}"; rtype[a[0]] = "s8"; handled = True
+                elif base_mn == "extsh":
+                    regs[a[0]] = f"(s16){use(a[1])}"; rtype[a[0]] = "s16"; handled = True
+                elif base_mn == "clrlwi":
+                    n = 32 - _imm(a[2]); regs[a[0]] = f"({use(a[1])} & 0x{(1 << n) - 1:X})"; rtype[a[0]] = "u32"; handled = True
+                elif base_mn in ("subic", "addic"):
+                    k = _imm(a[2]); regs[a[0]] = f"({use(a[1])} {'-' if base_mn == 'subic' else '+'} {k})"; rtype[a[0]] = rtype.get(a[1], "s32"); handled = True
+                elif base_mn == "and":
+                    regs[a[0]] = f"({use(a[1])} & {use(a[2])})"; rtype[a[0]] = "u32"; handled = True
+                elif base_mn == "or":
+                    regs[a[0]] = f"({use(a[1])} | {use(a[2])})"; rtype[a[0]] = "u32"; handled = True
+                elif base_mn == "subf":
+                    regs[a[0]] = f"({use(a[2])} - {use(a[1])})"; rtype[a[0]] = "s32"; handled = True
+                elif base_mn == "add":
+                    regs[a[0]] = f"({use(a[1])} + {use(a[2])})"; rtype[a[0]] = "s32"; handled = True
+                elif base_mn == "neg":
+                    regs[a[0]] = f"(-{use(a[1])})"; rtype[a[0]] = "s32"; handled = True
+                elif base_mn == "rlwinm":
+                    sh, mb, me = _imm(a[2]), _imm(a[3]), _imm(a[4])
+                    if sh == 0 and mb == 0: regs[a[0]] = f"({use(a[1])} & 0x{(0xFFFFFFFF << (31 - me)) & 0xFFFFFFFF:X})"
+                    elif sh == 0 and me == 31: regs[a[0]] = f"({use(a[1])} & 0x{(1 << (32 - mb)) - 1:X})"
+                    else: raise Give()
+                    rtype[a[0]] = "u32"; handled = True
+                if not handled:
+                    raise Give()
+                signed = rtype.get(a[0]) in ("s8", "s16", "s32")
+                cond = (regs[a[0]], "0", not signed); continue
+            if mn in ("lwzx", "lhzx", "lbzx", "lfsx", "lhax"):
+                t = {"lwzx": "u32", "lhzx": "u16", "lbzx": "u8", "lfsx": "f32", "lhax": "s16"}[mn]
+                b = use(a[1]); i2 = use(a[2])
+                regs[a[0]] = f"*({t} *)((u8 *){b} + {i2})"; rtype[a[0]] = t; continue
+            if mn in ("stwx", "sthx", "stbx", "stfsx"):
+                t = {"stwx": "u32", "sthx": "u16", "stbx": "u8", "stfsx": "f32"}[mn]
+                stmts.append(f"*({t} *)((u8 *){use(a[1])} + {use(a[2])}) = {use(a[0])};"); continue
+            if mn in ("fmuls", "fadds", "fsubs", "fdivs", "fmul", "fadd", "fsub", "fdiv"):
+                op = {"fmuls": "*", "fadds": "+", "fsubs": "-", "fdivs": "/", "fmul": "*", "fadd": "+", "fsub": "-", "fdiv": "/"}[mn]
+                t = "f32" if mn.endswith("s") else "f64"
+                m_ = re.fullmatch(r"__I2D__\((.+), (signed|unsigned)\)", regs.get(a[1], ""))
+                if m_ and op == "-":
+                    cast = "(s32)" if m_.group(2) == "signed" else "(u32)"
+                    regs[a[0]] = f"({t}){cast}{m_.group(1)}"; rtype[a[0]] = t
+                    written_since_call.discard(a[2]); regs.pop(a[2], None)  # the constant, not an argument
+                    continue
+                regs[a[0]] = f"({use(a[1])} {op} {use(a[2])})"; rtype[a[0]] = t; continue
+            if mn in ("fmadds", "fmadd"):
+                regs[a[0]] = f"(({use(a[1])} * {use(a[2])}) + {use(a[3])})"; rtype[a[0]] = "f32" if mn.endswith("s") else "f64"; continue
+            if mn in ("fmsubs", "fmsub"):
+                regs[a[0]] = f"(({use(a[1])} * {use(a[2])}) - {use(a[3])})"; rtype[a[0]] = "f32" if mn.endswith("s") else "f64"; continue
+            if mn == "fmr":
+                regs[a[0]] = use(a[1]); rtype[a[0]] = rtype.get(a[1], "f32"); continue
+            if mn == "fneg":
+                regs[a[0]] = f"(-{use(a[1])})"; rtype[a[0]] = rtype.get(a[1], "f32"); continue
+            if mn == "frsp":
+                regs[a[0]] = f"(f32){use(a[1])}"; rtype[a[0]] = "f32"; continue
+            if mn == "andc":
+                regs[a[0]] = f"({use(a[1])} & ~{use(a[2])})"; rtype[a[0]] = "u32"; continue
+            if mn == "mulhwu":
+                # unsigned division by a constant: q = mulhu(x, m) then the fix-up sequence; the
+                # divisor is recovered from the magic number (Hacker's Delight magicu). The whole
+                # idiom is matched here by looking ahead, so its steps never leak into expressions.
+                m_expr = regs.get(a[1]); x_reg = a[2]; x_expr = use(x_reg)
+                if m_expr is None:
+                    raise Give()
+                try:
+                    magic = int(eval(m_expr, {"__builtins__": {}})) & 0xFFFFFFFF if re.fullmatch(r"[0-9x\s()+\-*A-Fa-f]+", m_expr) else None
+                except Exception:
+                    magic = None
+                if magic is None:
+                    raise Give()
+                q = a[0]
+                # the fix-up steps may be interleaved with unrelated instructions: find them in order
+                def find(start, pred):
+                    for x in range(start, min(len(ins), start + 12)):
+                        if pred(ins[x][0], ins[x][1]):
+                            return x
+                    return None
+                j1 = find(i + 1, lambda m_, a_: m_ == "subf" and len(a_) == 3 and a_[1] == q and a_[2] == x_reg)
+                if j1 is not None:
+                    t1 = ins[j1][1][0]
+                    j2 = find(j1 + 1, lambda m_, a_: m_ == "srwi" and a_[1] == t1 and _imm(a_[2]) == 1)
+                    if j2 is not None:
+                        t2 = ins[j2][1][0]
+                        j3 = find(j2 + 1, lambda m_, a_: m_ == "add" and set(a_[1:]) == {t2, q})
+                        if j3 is not None:
+                            t3 = ins[j3][1][0]
+                            j4 = find(j3 + 1, lambda m_, a_: m_ == "srwi" and a_[1] == t3)
+                            if j4 is not None:
+                                dv = divisor_of(magic, _imm(ins[j4][1][2]) + 1, True)
+                                if dv is None:
+                                    raise Give()
+                                for x in (j1, j2, j3, j4):
+                                    skip.add(x)
+                                pending_div[j4] = (ins[j4][1][0], f"({x_expr} / {dv})")
+                                continue
+                j1 = find(i + 1, lambda m_, a_: m_ == "srwi" and a_[1] == q)
+                if j1 is not None:
+                    dv = divisor_of(magic, _imm(ins[j1][1][2]), False)
+                    if dv is None:
+                        raise Give()
+                    skip.add(j1)
+                    pending_div[j1] = (ins[j1][1][0], f"({x_expr} / {dv})")
+                    continue
+                raise Give()
+            if mn == "nor":
+                regs[a[0]] = f"(~({use(a[1])} | {use(a[2])}))"; rtype[a[0]] = "u32"; continue
+            if mn == "slw":
+                regs[a[0]] = f"({use(a[1])} << {use(a[2])})"; rtype[a[0]] = "u32"; continue
+            if mn == "srw":
+                regs[a[0]] = f"((u32){use(a[1])} >> {use(a[2])})"; rtype[a[0]] = "u32"; continue
+            if mn == "sraw":
+                regs[a[0]] = f"((s32){use(a[1])} >> {use(a[2])})"; rtype[a[0]] = "s32"; continue
+            if mn == "mulhw":
+                regs[a[0]] = f"(u32)(((s64){use(a[1])} * (s64){use(a[2])}) >> 32)"; rtype[a[0]] = "s32"; continue
+            if mn == "xoris":
+                regs[a[0]] = f"__XORIS__({use(a[1])}, {_imm(a[2])})"; rtype[a[0]] = "u32"; continue
+            if mn == "fctiwz":
+                regs[a[0]] = f"__FCTIWZ__({use(a[1])})"; rtype[a[0]] = "f64"; continue
+            if mn == "cntlzw":
+                regs[a[0]] = f"__cntlzw({use(a[1])})"; rtype[a[0]] = "u32"; continue
+            if mn == "bl":
+                callee = a[0]
+                if lookup(callee) is None:
+                    raise Give()
+                # arguments: r3..rN where N is the highest argument register set here; a lower
+                # register never written is a parameter of ours passed straight through
+                # an argument register counts only if this function wrote it since the last call
+                # (a stale value from earlier code is not an argument), or passes a parameter through
+                # an argument is a register written since the last call whose value is not consumed
+                # by the caller before the call (a register read after its last write was a temporary)
+                def is_arg(rk: str) -> bool:
+                    if rk not in regs:
+                        return False
+                    if rk in params and regs[rk] == f"arg{params.index(rk)}":
+                        return True
+                    if rk not in written_since_call:
+                        return False
+                    last_w = max((x for x, (m_, a_) in enumerate(ins[:i]) if a_ and a_[0] == rk and m_ not in STORE_T and not m_.startswith(("st", "cmp", "b"))), default=None)
+                    if last_w is None:
+                        return True
+                    return not any(reads(x, rk) for x in range(last_w + 1, i))
+                set_regs = [k for k in range(3, 11) if is_arg(f"r{k}")]
+                top = max(set_regs) if set_regs else 2
+                # registers below the lowest temporary this function used are parameters passed
+                # straight through to the callee: a temporary in r6 with r3..r5 untouched means
+                # the source wrote callee(a, b, c)
+                written = [int(x[1:]) for x, _ in temps_written if re.fullmatch(r"r([3-9]|10)", x)]
+                temp_low = min((w for w in written if f"r{w}" not in params), default=None)
+                if temp_low is not None and temp_low - 1 > top:
+                    top = temp_low - 1
+                fset = [k for k in range(1, 9) if f"f{k}" in regs and (f"f{k}" in written_since_call or f"f{k}" in params)]
+                ftop = max(fset) if fset else 0
+                fargs = [use(f"f{k}") for k in range(1, ftop + 1)]
+                ptypes_ = []
+                for k in range(3, top + 1):
+                    e = regs.get(f"r{k}", "")
+                    stack_addr = e.startswith("&loc_") or (e.startswith("loc_") and e[4:].split("[")[0].isalnum() and slocals.get(int(e[4:].split("[")[0], 16), {}).get("addr"))
+                    other_addr = rtype.get(f"r{k}") == "void *" or e.startswith(("&", "(u8 *)", "((u8 *)", "(struct ")) or e in fnames_seen or e in ptr_globals
+                    if stack_addr:
+                        ptypes_.append("void *")  # `&x` with a pointer parameter is recomputed per call
+                    else:
+                        if other_addr and not e.startswith("(u32)"):
+                            regs[f"r{k}"] = f"(u32){e}"
+                        ptypes_.append("u32")
+                for k in range(1, ftop + 1):
+                    ptypes_.append(rtype.get(f"f{k}", "f32"))
+                args = [use(f"r{k}") for k in range(3, top + 1)] + fargs  # after the casts
+                seen_args: Dict[str, int] = {}
+                for e in args:
+                    seen_args[e] = seen_args.get(e, 0) + 1
+                for e, n_ in seen_args.items():
+                    if site_temps and n_ >= 2 and not re.fullmatch(r"[A-Za-z_]\w*|-?\d+|0x[0-9A-Fa-f]+", e):
+                        tn = f"v{len(temps)}"
+                        tt = next((rtype.get(r_) for r_, ex in regs.items() if ex == e), "u32") or "u32"
+                        temps.append(f"{tt} {tn};"); stmts.append(f"{tn} = {e};")
+                        args = [tn if x == e else x for x in args]
+                        for r_ in list(regs):
+                            if regs[r_] == e:
+                                regs[r_] = tn
+                calls.append(callee)
+                written_since_call.clear()
+                if variadic_next[0]:
+                    variadic_next[0] = False
+                    proto = f"extern u32 {callee}({ptypes_[0] if ptypes_ else 'void *'}, ...);"
+                    externs[callee] = proto
+                else:
+                    proto = f"extern u32 {callee}({', '.join(ptypes_) or 'void'});"
+                    prev = externs.get(callee)
+                    if prev is None or prev.endswith("(void);") or (prev.count(",") < proto.count(",") and "..." not in prev):
+                        externs[callee] = proto
+                stmts.append(f"__CALL__{len(calls) - 1}({', '.join(args)});")
+                for r in list(regs):
+                    if re.fullmatch(r"r([0-9]|1[0-2])|f([0-9]|1[0-3])", r):
+                        regs.pop(r, None)
+                regs["r3"] = f"__CALLRET__{len(calls) - 1}"; rtype["r3"] = "u32"
                 continue
             raise Give()
-        if mn == "nor":
-            regs[a[0]] = f"(~({use(a[1])} | {use(a[2])}))"; rtype[a[0]] = "u32"; continue
-        if mn == "slw":
-            regs[a[0]] = f"({use(a[1])} << {use(a[2])})"; rtype[a[0]] = "u32"; continue
-        if mn == "srw":
-            regs[a[0]] = f"((u32){use(a[1])} >> {use(a[2])})"; rtype[a[0]] = "u32"; continue
-        if mn == "sraw":
-            regs[a[0]] = f"((s32){use(a[1])} >> {use(a[2])})"; rtype[a[0]] = "s32"; continue
-        if mn == "mulhw":
-            regs[a[0]] = f"(u32)(((s64){use(a[1])} * (s64){use(a[2])}) >> 32)"; rtype[a[0]] = "s32"; continue
-        if mn == "xoris":
-            regs[a[0]] = f"__XORIS__({use(a[1])}, {_imm(a[2])})"; rtype[a[0]] = "u32"; continue
-        if mn == "fctiwz":
-            regs[a[0]] = f"__FCTIWZ__({use(a[1])})"; rtype[a[0]] = "f64"; continue
-        if mn == "cntlzw":
-            regs[a[0]] = f"__cntlzw({use(a[1])})"; rtype[a[0]] = "u32"; continue
-        if mn == "bl":
-            callee = a[0]
-            if lookup(callee) is None:
-                raise Give()
-            # arguments: r3..rN where N is the highest argument register set here; a lower
-            # register never written is a parameter of ours passed straight through
-            # an argument register counts only if this function wrote it since the last call
-            # (a stale value from earlier code is not an argument), or passes a parameter through
-            # an argument is a register written since the last call whose value is not consumed
-            # by the caller before the call (a register read after its last write was a temporary)
-            def is_arg(rk: str) -> bool:
-                if rk not in regs:
-                    return False
-                if rk in params and regs[rk] == f"arg{params.index(rk)}":
-                    return True
-                if rk not in written_since_call:
-                    return False
-                last_w = max((x for x, (m_, a_) in enumerate(ins[:i]) if a_ and a_[0] == rk and m_ not in STORE_T and not m_.startswith(("st", "cmp", "b"))), default=None)
-                if last_w is None:
-                    return True
-                return not any(reads(x, rk) for x in range(last_w + 1, i))
-            set_regs = [k for k in range(3, 11) if is_arg(f"r{k}")]
-            top = max(set_regs) if set_regs else 2
-            # registers below the lowest temporary this function used are parameters passed
-            # straight through to the callee: a temporary in r6 with r3..r5 untouched means
-            # the source wrote callee(a, b, c)
-            written = [int(x[1:]) for x, _ in temps_written if re.fullmatch(r"r([3-9]|10)", x)]
-            temp_low = min((w for w in written if f"r{w}" not in params), default=None)
-            if temp_low is not None and temp_low - 1 > top:
-                top = temp_low - 1
-            fset = [k for k in range(1, 9) if f"f{k}" in regs and (f"f{k}" in written_since_call or f"f{k}" in params)]
-            ftop = max(fset) if fset else 0
-            fargs = [use(f"f{k}") for k in range(1, ftop + 1)]
-            ptypes_ = []
-            for k in range(3, top + 1):
-                e = regs.get(f"r{k}", "")
-                stack_addr = e.startswith("&loc_") or (e.startswith("loc_") and e[4:].split("[")[0].isalnum() and slocals.get(int(e[4:].split("[")[0], 16), {}).get("addr"))
-                other_addr = rtype.get(f"r{k}") == "void *" or e.startswith(("&", "(u8 *)", "((u8 *)", "(struct ")) or e in fnames_seen or e in ptr_globals
-                if stack_addr:
-                    ptypes_.append("void *")  # `&x` with a pointer parameter is recomputed per call
-                else:
-                    if other_addr and not e.startswith("(u32)"):
-                        regs[f"r{k}"] = f"(u32){e}"
-                    ptypes_.append("u32")
-            for k in range(1, ftop + 1):
-                ptypes_.append(rtype.get(f"f{k}", "f32"))
-            args = [use(f"r{k}") for k in range(3, top + 1)] + fargs  # after the casts
-            seen_args: Dict[str, int] = {}
-            for e in args:
-                seen_args[e] = seen_args.get(e, 0) + 1
-            for e, n_ in seen_args.items():
-                if site_temps and n_ >= 2 and not re.fullmatch(r"[A-Za-z_]\w*|-?\d+|0x[0-9A-Fa-f]+", e):
-                    tn = f"v{len(temps)}"
-                    tt = next((rtype.get(r_) for r_, ex in regs.items() if ex == e), "u32") or "u32"
-                    temps.append(f"{tt} {tn};"); stmts.append(f"{tn} = {e};")
-                    args = [tn if x == e else x for x in args]
-                    for r_ in list(regs):
-                        if regs[r_] == e:
-                            regs[r_] = tn
-            calls.append(callee)
-            written_since_call.clear()
-            if variadic_next[0]:
-                variadic_next[0] = False
-                proto = f"extern u32 {callee}({ptypes_[0] if ptypes_ else 'void *'}, ...);"
-                externs[callee] = proto
-            else:
-                proto = f"extern u32 {callee}({', '.join(ptypes_) or 'void'});"
-                prev = externs.get(callee)
-                if prev is None or prev.endswith("(void);") or (prev.count(",") < proto.count(",") and "..." not in prev):
-                    externs[callee] = proto
-            stmts.append(f"__CALL__{len(calls) - 1}({', '.join(args)});")
-            for r in list(regs):
-                if re.fullmatch(r"r([0-9]|1[0-2])|f([0-9]|1[0-3])", r):
-                    regs.pop(r, None)
-            regs["r3"] = f"__CALLRET__{len(calls) - 1}"; rtype["r3"] = "u32"
-            continue
-        raise Give()
+
+        except (Give, KeyError, IndexError, ValueError) as e:
+            # a KeyError is the lifter losing track of a register: the same give-up, later
+            if not partial or (not isinstance(e, Give) and i < 0):
+                raise
+            gave_at = i
+            break
+    if partial and gave_at is not None:
+        left = len(ins) - gave_at
+        nxt = "; ".join(f"{m_} {', '.join(a_)}" for m_, a_ in ins[gave_at:gave_at + 4])
+        # what the registers held at that point, for the reader: not code, the values are partial
+        held = [f"/* {r_} = {e_} */" for r_, e_ in sorted(regs.items()) if e_ and not re.fullmatch(r"(arg\d+|v\d+|t\d+|\d+|0x[0-9A-Fa-f]+)", e_)]
+        stmts.extend(held[:12])
+        stmts.append(f"/* NOT LIFTED from here: {left} instructions, starting `{nxt}` */")
+        regs.clear()
     for ln_, asg in pending_ptr.items():
         if any(re.search(rf"\b{re.escape(ln_)}\b", e) for e in regs.values()):
             stmts.append(asg)
@@ -1097,6 +1141,8 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     # return value: whatever r3 holds at blr, when this function wrote r3 (an untouched first
     # parameter is not a return value; a parameter copied back after a call is)
     wrote_r3 = any(a and a[0] == "r3" and mn not in ("stw", "sth", "stb", "stfs", "stfd", "cmpwi", "cmpw", "cmplwi", "cmplw") for mn, a in ins)
+    if partial and gave_at is not None:
+        wrote_r3 = False  # the return value is beyond the give-up point
     if "r3" in regs and wrote_r3 and not regs["r3"].startswith("__CALLRET__"):
         ret = regs["r3"]  # a call's result falls through in r3 either way: `void f(void) { g(); }`
     # a call whose result is returned becomes `return f(...)`; one whose result feeds later code
@@ -1186,7 +1232,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         body = [re.sub(rf"(= ){re.escape(f)}(?=;)", rf"\1(u32){f}", b) for b in body]
     if ret is not None:
         body.append(f"return {ret};")
-    if any(("__MULHU__" in b or "__I2D__" in b or "__XORIS__" in b or "__FCTIWZ__" in b) for b in body) or (ret and any(x in ret for x in ("__MULHU__", "__I2D__", "__XORIS__", "__FCTIWZ__"))):
+    if not partial and (any(("__MULHU__" in b or "__I2D__" in b or "__XORIS__" in b or "__FCTIWZ__" in b) for b in body) or (ret and any(x in ret for x in ("__MULHU__", "__I2D__", "__XORIS__", "__FCTIWZ__")))):
         raise Give()
     def peephole(b: str) -> str:
         m = re.fullmatch(r"(\S.*?) = \((\S.*?) ([+-]) (\d+)\);", b)
@@ -1228,7 +1274,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             decl_params.append(f"struct {sname} *arg{i}")
         else:
             decl_params.append(f"{ptypes[r]} arg{i}")
-    if calls and not frame:
+    if calls and not frame and not partial:
         raise Give()
     def struct_text(sname: str, offs: Dict[int, str]) -> str:
         lines = [f"struct {sname} {{"]

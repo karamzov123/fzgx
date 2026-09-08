@@ -23,4 +23,7 @@ the declaration style, the expression shape, the locals, the control flow.
 A "Mechanical draft" in the context is C lifted from the disassembly and scored by the oracle: its
 calls, struct layouts, locals and loops are right by construction. Start from it, fix the rows listed
 under it, and rename; do not rewrite it from scratch.
+A "Mechanical skeleton" is the same lifter stopped partway: its declarations, struct layouts, call
+prototypes and locals are still from the retail code. Keep them, and write the body from the `NOT LIFTED`
+marker on using the disassembly; the leading statements show the register-to-local mapping it chose.
 Finish with exactly one line and nothing else: RESULT: matched|released SYMBOL <percent>% checks=<n>
