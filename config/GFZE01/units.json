@@ -1267,7 +1267,7 @@
     "symbols": [
       "DVDReadDiskID"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
@@ -1427,7 +1427,7 @@
     "symbols": [
       "__init_user"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
@@ -1617,7 +1617,7 @@
     "symbols": [
       "fn_80017DA8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
@@ -2497,7 +2497,7 @@
     "symbols": [
       "stateTimeout"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
