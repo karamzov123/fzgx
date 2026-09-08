@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_1_9D230: main_rel .text:0x0009D230 size 0x30
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u32 fn_1_9D260(void);
+
+u32 fn_1_9D230(void) {
+    return (fn_1_9D260() & 0xC) != 0;
+}
