@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_1_18FFC: main_rel .text:0x00018FFC size 0x30
-// Carved by fzgx. Replace this file's body with the matching C.
+extern void fn_1_18784(int, int, int, int);
+
+void fn_1_18FFC(int a, int b, int c, int d, int e, int f, int g) {
+    fn_1_18784(c, d, e, g);
+}
