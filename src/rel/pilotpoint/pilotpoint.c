@@ -81,6 +81,22 @@ void fn_14_645C(void) {
 }
 /* fzgx:end fn_14_645C */
 
+/* fzgx:begin fn_14_A1F4 */
+extern u32 fn_1_412A0(u32);
+extern u32 fn_1_48140(u32);
+extern u32 lbl_801A66B4;
+
+void fn_14_A1F4(void) {
+    fn_1_48140(151);
+    fn_1_48140(141);
+    if ((s32)lbl_801A66B4 == 5) {
+    fn_1_412A0(4);
+    } else {
+    fn_1_412A0(5);
+    }
+}
+/* fzgx:end fn_14_A1F4 */
+
 /* fzgx:begin fn_14_A244 */
 extern struct fn_14_A244_lbl_14_bss_20 lbl_14_bss_20;
 extern u16 lbl_14_bss_9452;

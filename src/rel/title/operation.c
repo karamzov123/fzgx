@@ -10,6 +10,44 @@ void fn_8_68D8(void) {
 }
 /* fzgx:end fn_8_68D8 */
 
+/* fzgx:begin fn_8_69D8 */
+extern struct fn_8_69D8_lbl_801A6410 lbl_801A6410;
+extern u32 fn_1_412A0(u32);
+extern u32 fn_1_46B4(u32, u32, u32, u32);
+extern u32 lbl_801A66B4;
+extern u32 lbl_8_bss_2B0;
+extern u32 lbl_8_data_8AD4;
+
+struct fn_8_69D8_lbl_801A6410 {
+    u32 unk_0;
+};
+
+void fn_8_69D8(void) {
+    if ((s32)lbl_801A66B4 == 5) {
+    fn_1_412A0(4);
+    } else {
+    fn_1_412A0(5);
+    }
+    if (lbl_8_bss_2B0 != 0) {
+    fn_1_46B4(lbl_801A6410.unk_0, lbl_8_bss_2B0, (u32)&lbl_8_data_8AD4, 1199);
+    lbl_8_bss_2B0 = 0;
+    }
+}
+/* fzgx:end fn_8_69D8 */
+
+/* fzgx:begin fn_8_6C50 */
+extern u32 fn_1_412A0(u32);
+extern u32 lbl_801A66B4;
+
+void fn_8_6C50(void) {
+    if ((s32)lbl_801A66B4 == 5) {
+    fn_1_412A0(4);
+    } else {
+    fn_1_412A0(5);
+    }
+}
+/* fzgx:end fn_8_6C50 */
+
 /* fzgx:begin fn_8_8C44 */
 // fn_8_8C44: empty in retail (single blr).
 void fn_8_8C44(void) {

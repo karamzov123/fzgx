@@ -245,6 +245,46 @@ u32 fn_1_F1588(void) {
 }
 /* fzgx:end fn_1_F1588 */
 
+/* fzgx:begin fn_1_F17B4 noprologue */
+#include "types.h"
+
+extern f64 lbl_1_rodata_6C88;
+extern void fn_80008BA8(u32 *out, const void *value, s32 size);
+
+s32 fn_1_F17B4(const void *value) {
+    u32 bits;
+    s32 exponent;
+    s32 sign;
+    s32 fraction;
+    f64 converted;
+    s32 magnitude;
+    s32 result;
+
+    fn_80008BA8(&bits, value, 4);
+
+    exponent = (s32)((bits >> 23) & 0xff) - 0x7f;
+    sign = bits >> 31;
+    fraction = bits & 0x7fffff;
+
+    if (exponent >= 0) {
+        exponent = (exponent << 27) >> 27;
+        exponent += 0xf;
+    } else {
+        converted = (f32)exponent;
+        converted = __fabs(converted);
+        magnitude = (s32)converted;
+        magnitude = (magnitude << 27) >> 27;
+        exponent = ~magnitude + 0x10;
+        exponent = (exponent << 27) >> 27;
+    }
+
+    result = sign << 20;
+    result += exponent << 15;
+    result += fraction >> 8;
+    return result;
+}
+/* fzgx:end fn_1_F17B4 */
+
 /* fzgx:begin ghost_pack_bits */
 void ghost_pack_bits(u32 *out, const u32 *x, const u32 *y, const u32 *z) {
     out[0] = 0;

@@ -2304,6 +2304,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80013994.c",
+    "symbols": [
+      "fn_80013994"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_800157AC.c",
     "symbols": [
       "fn_800157AC"
@@ -2447,6 +2457,16 @@
     "source": "dol/fn_8001D3E4.c",
     "symbols": [
       "fn_8001D3E4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8001DE30.c",
+    "symbols": [
+      "fn_8001DE30"
     ],
     "status": "matching",
     "mw_version": null,
@@ -14693,6 +14713,20 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/ghost/fn_1_F17B4.c",
+    "symbols": [
+      "fn_1_F17B4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/ghost.c",
+    "pool": {
+      "@14": "lbl_1_rodata_6C88"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/ghost/fn_1_F18C0.c",
     "symbols": [
       "fn_1_F18C0"
@@ -25021,6 +25055,16 @@
   },
   {
     "module": "movie_module",
+    "source": "rel/movie_module/fn_12_59C.c",
+    "symbols": [
+      "fn_12_59C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
     "source": "rel/movie_module/fn_12_63C.c",
     "symbols": [
       "fn_12_63C"
@@ -25679,6 +25723,17 @@
     "source": "rel/pilotpoint/pilotpoint/fn_14_645C.c",
     "symbols": [
       "fn_14_645C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/pilotpoint/pilotpoint.c"
+  },
+  {
+    "module": "pilotpoint",
+    "source": "rel/pilotpoint/pilotpoint/fn_14_A1F4.c",
+    "symbols": [
+      "fn_14_A1F4"
     ],
     "status": "matching",
     "mw_version": null,
@@ -27234,6 +27289,28 @@
     "source": "rel/title/operation/fn_8_68D8.c",
     "symbols": [
       "fn_8_68D8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/operation.c"
+  },
+  {
+    "module": "title",
+    "source": "rel/title/operation/fn_8_69D8.c",
+    "symbols": [
+      "fn_8_69D8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/operation.c"
+  },
+  {
+    "module": "title",
+    "source": "rel/title/operation/fn_8_6C50.c",
+    "symbols": [
+      "fn_8_6C50"
     ],
     "status": "matching",
     "mw_version": null,

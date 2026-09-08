@@ -985,3 +985,9 @@ dol/fn_80034378.c:
 
 dol/fn_80034444.c:
 	.text       start:0x80034444 end:0x80034488 align:4
+
+dol/fn_80013994.c:
+	.text       start:0x80013994 end:0x800139E8 align:4
+
+dol/fn_8001DE30.c:
+	.text       start:0x8001DE30 end:0x8001DE84 align:4

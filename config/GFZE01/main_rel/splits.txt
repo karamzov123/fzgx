@@ -4562,3 +4562,6 @@ rel/main_rel/_prolog/fn_1_3C78.c:
 
 rel/main_rel/sound/fn_1_A2DF4.c:
 	.text       start:0x000A2DF4 end:0x000A2E24 align:4
+
+rel/main_rel/ghost/fn_1_F17B4.c:
+	.text       start:0x000F17B4 end:0x000F1864 align:4
