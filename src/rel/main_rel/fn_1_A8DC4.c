@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_1_A8DC4: main_rel .text:0x000A8DC4 size 0x10
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u32 lbl_1_bss_6F640[2];
+
+u32 fn_1_A8DC4(void) {
+    return lbl_1_bss_6F640[0];
+}
