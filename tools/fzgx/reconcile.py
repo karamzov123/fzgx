@@ -173,7 +173,8 @@ def reconcile_tu(p: Project, tu_source: str, v) -> Dict[str, object]:
             if b.name in where[n]:
                 strip_decl(b, n)
     def render_prologue():
-        lines = [c for n, c in chosen.items() if c is not None]
+        have = {ln.strip() for ln in base_prologue.splitlines()}
+        lines = list(dict.fromkeys(c for n, c in chosen.items() if c is not None and c.strip() not in have))
         return base_prologue.rstrip("\n") + ("\n" + "\n".join(lines) + "\n" if lines else "\n")
     tf.prologue = render_prologue()
     failing = [b.name for b in tf.blocks if not verify([b.name])]
