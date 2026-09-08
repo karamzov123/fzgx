@@ -610,16 +610,39 @@ def names(p: Project) -> List[Dict[str, Any]]:
     return [dict(r) for r in Ledger().pending_names()]
 
 
+def _env_digest(p: Project) -> str:
+    """Everything besides the body that can change a check's verdict: headers, tooling."""
+    import hashlib
+    h = hashlib.sha256()
+    for f in sorted((ROOT / "include").rglob("*.h")):
+        h.update(f.read_bytes())
+    for f in ("oracle.py", "poolfix.py", "fixup.py", "stuck.py"):
+        h.update((ROOT / "tools" / "fzgx" / f).read_bytes())
+    return h.hexdigest()[:16]
+
+
 def sweep_attempts(p: Project, module: Optional[str] = None, min_percent: float = 90.0,
-                   limit: int = 200) -> Dict[str, Any]:
+                   limit: int = 200, workers: int = 12) -> Dict[str, Any]:
     """Re-check the best saved attempt of every plateaued function against today's oracle
-    and headers; submit the ones that now match (outright or as a pool match)."""
+    and headers; submit the ones that now match (outright, as a pool match, or after the
+    deterministic fixup). Checks run `workers` wide and are memoised by body and environment
+    (.fzgx/sweep_cache.json): a body already checked under the same headers is skipped."""
+    import hashlib
+    from concurrent.futures import ThreadPoolExecutor
+    from . import fixup
     from .permute import _attempt_text  # scoped: permute imports api; avoid the cycle at import time
     l = Ledger()
     q = ("SELECT symbol FROM functions WHERE status='unmatched' AND best_percent>=? "
          + ("AND module=? " if module else "") + "ORDER BY best_percent DESC LIMIT ?")
     rows = l.db.execute(q, [min_percent] + ([module] if module else []) + [limit]).fetchall()
-    out = {"checked": 0, "submitted": [], "pool": [], "still": []}
+    env = _env_digest(p)
+    cache_path = STATE_DIR / "sweep_cache.json"
+    try:
+        cache: Dict[str, Any] = json.loads(cache_path.read_text()) if cache_path.exists() else {}
+    except ValueError:
+        cache = {}
+    todo = []
+    out: Dict[str, Any] = {"candidates": len(rows), "checked": 0, "cached": 0, "submitted": [], "pool": [], "fixed": [], "still": []}
     for (key,) in rows:
         sym = p.resolve(key)
         if sym is None:
@@ -630,26 +653,45 @@ def sweep_attempts(p: Project, module: Optional[str] = None, min_percent: float 
         last = l.db.execute("SELECT outcome FROM attempts WHERE symbol=? ORDER BY id DESC LIMIT 1", (key,)).fetchone()
         if last and last["outcome"] == "link-mismatch":
             continue  # matched the object and failed the link before: a resubmit fails the same way
-        # no carve before a match: check diffs the saved body against the retail auto object
-        work = p.work_path(key)
-        work.parent.mkdir(parents=True, exist_ok=True)
-        work.write_text(text)
-        out["checked"] += 1
-        res = oracle.check(p, key, 20, source=work)
+        ck = f"{env}:{hashlib.sha256(text.encode()).hexdigest()[:24]}"
+        if ck in cache and not cache[ck].get("match"):
+            out["cached"] += 1
+            out["still"].append((key, cache[ck].get("percent")))
+            continue
+        todo.append((key, text, ck))
+    scratch = STATE_DIR / "sweep"
+    scratch.mkdir(parents=True, exist_ok=True)
+
+    def one(item):
+        key, text, ck = item
+        src = scratch / (key.replace(":", "__") + ".c")
+        src.write_text(text)
+        res = oracle.check(p, key, 20, source=src)
         if res.ok and oracle.unit_fully_matches(res) is None:
-            r = submit(p, key, agent="sweep", message="saved attempt re-checked")
-            if r.get("ok"):
-                (out["pool"] if r.get("pool") else out["submitted"]).append(key)
-                continue
-        elif res.ok:
-            from . import fixup  # the same last-resort repairs an agent's release runs
+            return key, ck, {"match": True, "body": text, "percent": 100.0}
+        if res.ok:
             fx = fixup.try_fix(p, key, text, budget_s=6.0)
             if fx.get("matched") and fx.get("body"):
-                work.write_text(fx["body"])
-                r = submit(p, key, agent="sweep", message=f"saved attempt repaired: {fx.get('label')}")
-                if r.get("ok"):
-                    out.setdefault("fixed", []).append((key, fx.get("label")))
-                    continue
-        work.unlink(missing_ok=True)
-        out["still"].append((key, round(res.percent, 1) if res.ok else res.error[:80]))
+                return key, ck, {"match": True, "body": fx["body"], "label": fx.get("label"), "percent": 100.0}
+            return key, ck, {"match": False, "percent": round(max(res.percent, fx.get("best") or 0.0), 1)}
+        return key, ck, {"match": False, "percent": None, "error": res.error[:80]}
+
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        results = list(ex.map(one, todo))
+    out["checked"] = len(results)
+    for key, ck, r in results:
+        if r["match"]:
+            work = p.work_path(key)
+            work.parent.mkdir(parents=True, exist_ok=True)
+            work.write_text(r["body"])
+            sub = submit(p, key, agent="sweep", message=("saved attempt repaired: " + r["label"]) if r.get("label") else "saved attempt re-checked")
+            if sub.get("ok"):
+                (out["fixed"] if r.get("label") else out["pool"] if sub.get("pool") else out["submitted"]).append(key if not r.get("label") else (key, r["label"]))
+                continue
+            work.unlink(missing_ok=True)
+            out["still"].append((key, sub.get("error", "submit failed")[:80]))
+            continue
+        cache[ck] = {"match": False, "percent": r["percent"]}
+        out["still"].append((key, r["percent"] if r["percent"] is not None else r.get("error")))
+    cache_path.write_text(json.dumps(cache))
     return out

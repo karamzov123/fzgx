@@ -329,7 +329,7 @@ def cmd_permute(a, p):
 
 
 def cmd_sweep(a, p):
-    r = api.sweep_attempts(p, a.module, a.min_percent, a.limit)
+    r = api.sweep_attempts(p, a.module, a.min_percent, a.limit, a.workers)
     _print(r, a.json); return 0
 
 
@@ -439,7 +439,7 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--plateau", type=float, help="batch: every unmatched function with best %% >= this")
     s.add_argument("--module"); s.add_argument("--max-size", type=int, default=1024); s.add_argument("--limit", type=int, default=20)
     s = sub.add_parser("sweep", help="re-check saved attempts of plateaued functions; submit matches and pool matches"); s.set_defaults(fn=cmd_sweep)
-    s.add_argument("--module"); s.add_argument("--min-percent", type=float, default=90.0); s.add_argument("--limit", type=int, default=200)
+    s.add_argument("--module"); s.add_argument("--min-percent", type=float, default=90.0); s.add_argument("--limit", type=int, default=200); s.add_argument("--workers", type=int, default=12)
     s = sub.add_parser("stuck", help="classify plateaued attempts (>= N%) by failure mode from the object diff"); s.set_defaults(fn=cmd_stuck)
     s.add_argument("--min-percent", type=float, default=80.0); s.add_argument("--module"); s.add_argument("--workers", type=int, default=12)
     s.add_argument("--json", action="store_true")
