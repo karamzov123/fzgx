@@ -366,16 +366,37 @@ class Project:
                 cache.write_text(json.dumps({"stamp": stamp, "index": idx}))
             self._obj_index = idx
         rel = self._obj_index.get(sym.name)
-        return ROOT / rel if rel else None
-
-    # -------------------------------------------------------------------- units
-    def unit_record(self, unit_source: str) -> Optional[dict]:
-        """units.json entry for a split unit name (the `source` field), if configured."""
-        for u in self.load_units():
-            if u["source"] == unit_source:
-                return u
+        if rel:
+            return ROOT / rel
+        # carved: dtk writes the retail object of the unit itself under <module build dir>/obj
+        unit_src = self.unit_of(sym)
+        if unit_src:
+            o = self.module_build_dir(sym.module) / "obj" / Path(unit_src).with_suffix(".o")
+            if o.exists():
+                return o
         return None
 
+    # -------------------------------------------------------------------- units
+    def load_units(self) -> List[dict]:
+        """units.json, parsed once per file version (every check used to re-read it)."""
+        if not self.units_path.exists():
+            return []
+        stamp = self.units_path.stat().st_mtime_ns
+        cache = self.__dict__.setdefault("_units_cache", None)
+        if cache and cache[0] == stamp:
+            return json.loads(cache[1])  # a fresh copy: callers mutate and save the list
+        text = self.units_path.read_text()
+        self.__dict__["_units_cache"] = (stamp, text)
+        return json.loads(text)
+
+    def unit_record(self, unit_source: str) -> Optional[dict]:
+        """units.json entry for a split unit name (the `source` field), if configured."""
+        stamp = self.units_path.stat().st_mtime_ns if self.units_path.exists() else None
+        idx = self.__dict__.get("_units_index")
+        if not idx or idx[0] != stamp:
+            idx = (stamp, {u["source"]: u for u in self.load_units()})
+            self.__dict__["_units_index"] = idx
+        return idx[1].get(unit_source)
     def tu_map(self, module: str) -> Dict[str, str]:
         """function symbol -> TU file stem (e.g. 'camera'), from tus.json (cached per module)."""
         if not hasattr(self, "_tu_maps"):
@@ -400,9 +421,25 @@ class Project:
         return STATE_DIR / "work" / (key.replace(":", "__") + ".c")
 
     def load_units(self) -> List[dict]:
+        """units.json, parsed once per file version (every check used to re-read it)."""
         if not self.units_path.exists():
             return []
-        return json.loads(self.units_path.read_text())
+        stamp = self.units_path.stat().st_mtime_ns
+        cache = self.__dict__.setdefault("_units_cache", None)
+        if cache and cache[0] == stamp:
+            return json.loads(cache[1])  # a fresh copy: callers mutate and save the list
+        text = self.units_path.read_text()
+        self.__dict__["_units_cache"] = (stamp, text)
+        return json.loads(text)
+
+    def unit_record(self, unit_source: str) -> Optional[dict]:
+        """units.json entry for a split unit name (the `source` field), if configured."""
+        stamp = self.units_path.stat().st_mtime_ns if self.units_path.exists() else None
+        idx = self.__dict__.get("_units_index")
+        if not idx or idx[0] != stamp:
+            idx = (stamp, {u["source"]: u for u in self.load_units()})
+            self.__dict__["_units_index"] = idx
+        return idx[1].get(unit_source)
 
     def save_units(self, units: List[dict]) -> None:
         units.sort(key=lambda u: (u["module"], u["source"]))

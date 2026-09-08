@@ -158,8 +158,33 @@ def check(project: Project, symbol: str, max_diff_lines: int = 80, source: Optio
     unit = project.objdiff_unit_name(sym.module, unit_src)
     base_obj = _base_object(project, unit)
 
-    # Direct mwcc compile into this unit's own object: no ninja, no build lock.
-    cp = compile_unit(project, unit, unit_src, source)
+    if source is not None:
+        # a body that is not the unit's own text (a candidate, an agent's work copy) never goes
+        # into the link's object: ninja would keep the foreign object as up to date and the REL
+        # would stop hashing. Scratch object, two-object diff against the retail unit object.
+        target = project.target_object_for(sym)
+        if target is not None and target.exists():
+            scratch_obj = STATE_DIR / "work" / (project.key(sym).replace(":", "__") + ".o")
+            scratch_obj.parent.mkdir(parents=True, exist_ok=True)
+            ucfg = project.unit_record(unit_src) or {}
+            cp = compile_source(project, sym.module, source, scratch_obj, mw_version or ucfg.get("mw_version"),
+                                extra_cflags or (" ".join(ucfg.get("extra_cflags") or []) or None))
+            if cp.returncode != 0 or not scratch_obj.exists():
+                err = "\n".join(l for l in (cp.stdout + cp.stderr).splitlines() if "Usage Warning" not in l)
+                return CheckResult(False, symbol, unit, error=err.strip()[-4000:])
+            res = _diff(project, sym.module, symbol, unit, max_diff_lines, target=target, base=scratch_obj)
+            if res.ok and res.matched_pool:
+                mapping = {private: pooled for private, pooled, _ in res._pool_pairs}
+                r = poolfix.apply(scratch_obj, mapping)
+                if not r["skipped"] and r["rodata_emptied"]:
+                    res2 = _diff(project, sym.module, symbol, unit, max_diff_lines, target=target, base=scratch_obj)
+                    if res2.ok and res2.matched:
+                        res2.pool_map, res2.pool = mapping, res.pool
+                        return res2
+            return res
+
+    # the unit's own text: direct mwcc compile into this unit's own object, no ninja, no build lock
+    cp = compile_unit(project, unit, unit_src, None)
     if cp.returncode != 0 or not base_obj.exists():
         err = "\n".join(l for l in (cp.stdout + cp.stderr).splitlines() if "Usage Warning" not in l)
         return CheckResult(False, symbol, unit, error=err.strip()[-4000:])
@@ -365,43 +390,51 @@ def check_many(project: Project, items: List[Tuple[str, Path]], max_diff_lines: 
     parallel batches (one mwcc process per chunk instead of one per function), then diffed
     one by one; carved ones go through `check`. Returns {symbol: result}."""
     results: Dict[str, CheckResult] = {}
-    by_module: Dict[str, List[Tuple[str, Symbol, Path]]] = {}
+    # groups by module and unit options (a unit may carry its own compiler version / flags);
+    # carved units are diffed against their own retail object, with their own text when no
+    # source is given
+    groups: Dict[tuple, List[Tuple[str, Symbol, Optional[Path], str]]] = {}
     for symbol, source in items:
         sym = project.resolve(symbol)
         if sym is None:
             results[symbol] = CheckResult(False, symbol, "", error="unknown or ambiguous symbol (use module:name)")
             continue
-        if project.unit_of(sym) or project.target_object_for(sym) is None:
+        unit_src = project.unit_of(sym)
+        if project.target_object_for(sym) is None or (unit_src is None and source is None):
             results[symbol] = check(project, symbol, max_diff_lines, source=source)
             continue
-        by_module.setdefault(sym.module, []).append((symbol, sym, source))
-    for module, group in by_module.items():
+        ucfg = (project.unit_record(unit_src) or {}) if unit_src else {}
+        key = (sym.module, ucfg.get("mw_version"), " ".join(ucfg.get("extra_cflags") or []) or None)
+        unit = project.objdiff_unit_name(sym.module, unit_src) if unit_src else ""
+        groups.setdefault(key, []).append((symbol, sym, source if source is not None else unit_source_path(project, unit_src), unit))
+    for (module, mw, extra), group in groups.items():
         cdir = STATE_DIR / "work" / "many" / module
         cdir.mkdir(parents=True, exist_ok=True)
         srcs: List[Path] = []
-        for symbol, sym, source in group:
+        for symbol, sym, source, unit in group:
             f = cdir / (project.key(sym).replace(":", "__") + ".c")
             f.write_text(source.read_text())
             srcs.append(f)
-        objs = compile_many(project, module, srcs, cdir / "obj")
+        objs = compile_many(project, module, srcs, cdir / "obj", mw, extra)
 
         def diff_one(arg) -> Tuple[str, CheckResult]:
-            (symbol, sym, source), f = arg
+            (symbol, sym, source, unit), f = arg
             obj = objs.get(f)
             if obj is None:
                 # name the error the slow way, one process for this function only
                 return symbol, check(project, symbol, max_diff_lines, source=source)
             target = project.target_object_for(sym)
-            res = _diff(project, module, sym.name, "", max_diff_lines, target=target, base=obj)
+            res = _diff(project, module, sym.name, unit, max_diff_lines, target=target, base=obj)
             if res.ok and res.matched_pool:
                 mapping = {private: pooled for private, pooled, _ in res._pool_pairs}
                 r = poolfix.apply(obj, mapping)
                 if not r["skipped"] and r["rodata_emptied"]:
-                    res2 = _diff(project, module, sym.name, "", max_diff_lines, target=target, base=obj)
+                    res2 = _diff(project, module, sym.name, unit, max_diff_lines, target=target, base=obj)
                     if res2.ok and res2.matched:
                         res2.pool_map, res2.pool = mapping, res.pool
                         res = res2
-            res.uncarved = True
+            if not unit:
+                res.uncarved = True
             return symbol, res
 
         from concurrent.futures import ThreadPoolExecutor

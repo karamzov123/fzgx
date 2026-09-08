@@ -110,6 +110,31 @@ class Verifier:
             self.cache[k] = {"ok": ok, "pool_map": res.pool_map if res.ok else {}}
         return ok
 
+    def prefetch(self, p: Project, module: str) -> int:
+        """One batched compile+diff for every block of the module whose verdict is not cached:
+        the per-block `matches` calls then hit the cache. Returns the number verified."""
+        todo = []
+        for u in p.load_units():
+            if u["module"] != module or not u.get("symbols") or not u.get("tu"):
+                continue
+            k = self._key(u, "match")
+            with self.lock:
+                if k in self.cache:
+                    continue
+            todo.append((u, k))
+        if not todo:
+            return 0
+        res = oracle.check_many(p, [(f"{u['module']}:{u['symbols'][0]}", None) for u, _ in todo], 20)
+        with self.lock:
+            for u, k in todo:
+                r = res.get(f"{u['module']}:{u['symbols'][0]}")
+                if r is None:
+                    continue
+                ok = r.ok and (r.matched or r.matched_pool) and oracle.unit_fully_matches(r) is None
+                self.cache[k] = {"ok": ok, "pool_map": r.pool_map if r.ok else {}}
+                self.misses += 1
+        return len(todo)
+
     def save(self) -> None:
         with self.lock:
             self.path.parent.mkdir(parents=True, exist_ok=True)
@@ -162,6 +187,7 @@ def finish(p: Project, module: str, workers: int = 12) -> Dict[str, object]:
     tus = _tus(p, module)
     v = Verifier(p)
     t0 = time.time()
+    v.prefetch(p, module)
     # TUs are independent files with their own locks; only collapse takes the build lock
     with ThreadPoolExecutor(max_workers=workers) as ex:
         results = list(ex.map(lambda tu: finish_tu(p, tu, True, v), tus))
