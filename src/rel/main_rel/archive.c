@@ -33,6 +33,8 @@ extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
 extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
 extern s32 lbl_1_bss_8CA44[10];
 
+extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
+
 /* fzgx:begin fn_1_12A2D0 */
 extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
 

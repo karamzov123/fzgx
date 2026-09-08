@@ -76,6 +76,8 @@ extern void fn_1_D3BE8(void);
 
 extern void fn_1_D3BE8(void);
 
+extern void fn_1_D3BE8(void);
+
 /* fzgx:begin fn_1_D3768 */
 extern int fn_1_D3B6C(void);
 
