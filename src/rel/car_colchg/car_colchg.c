@@ -26,6 +26,10 @@ s32 fn_1_7F49C(s16, s32, void *);
 void fn_1_A8DD4(const char *, ...);
 void fn_1_80058(s8, struct CarColchgEntry *);
 void fn_1_80C18(u32, struct CarColchgEntry *, s32);
+extern struct CarColchgEntry lbl_9_data_1B8[];
+extern s16 lbl_1_bss_962;
+extern u32 lbl_1_bss_71688;
+extern u32 lbl_1_bss_7168C;
 
 /* fzgx:begin fn_9_3F0 */
 extern char lbl_9_data_2C[17];
@@ -414,11 +418,6 @@ struct CarColchgEntry {
     u32 value24;
     u32 value28;
 };
-
-extern struct CarColchgEntry lbl_9_data_1B8[];
-extern s16 lbl_1_bss_962;
-extern u32 lbl_1_bss_71688;
-extern u32 lbl_1_bss_7168C;
 
 void fn_9_1C54(void) {
     struct CarColchgEntry *entry;
