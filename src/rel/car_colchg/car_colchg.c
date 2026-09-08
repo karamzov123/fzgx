@@ -265,6 +265,55 @@ void fn_9_1054(void) {
 }
 /* fzgx:end fn_9_1054 */
 
+/* fzgx:begin fn_9_10BC */
+typedef signed char s8;
+typedef signed short s16;
+typedef signed long s32;
+typedef signed long long s64;
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned long u32;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+typedef int BOOL;
+typedef unsigned long size_t;
+struct Struct_lbl_1_bss_D58
+{
+  u8 pad[8];
+  u16 unk8;
+};
+extern struct Struct_lbl_1_bss_D58 lbl_1_bss_D58;
+extern u16 lbl_1_bss_96A;
+s32 fn_1_4C10(void);
+inline u16 *inline_fn(u16 *arg0)
+{
+  return arg0;
+}
+
+void fn_9_10BC(void)
+{
+  u16 value;
+  u16 *new_var;
+  u16 *p;
+  if (fn_1_4C10() == 0)
+  {
+    p = &lbl_1_bss_96A;
+    value = 0x73;
+    *p = value;
+    new_var = inline_fn(p);
+    if ((lbl_1_bss_D58.unk8 >> 9) & 1)
+    {
+      *new_var = 0x72;
+    }
+    if (((lbl_1_bss_D58.unk8 >> 8) & 1) != 0U)
+    {
+      lbl_1_bss_96A = 0x76;
+    }
+  }
+}
+/* fzgx:end fn_9_10BC */
+
 /* fzgx:begin fn_9_1124 */
 extern char lbl_9_data_2C[17];
 extern void fn_9_1160(void);
