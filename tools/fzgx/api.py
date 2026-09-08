@@ -14,7 +14,7 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from . import oracle
+from . import oracle, verify
 from .carve import carve
 from .context import build_context
 from .ledger import Ledger
@@ -88,7 +88,7 @@ def sync(p: Project) -> Dict[str, int]:
             for s in u.get("symbols", []):
                 row = l.get(s)
                 if row and row["status"] != "matched":
-                    l.db.execute("UPDATE functions SET status='matched', best_percent=100 WHERE symbol=?", (s,))
+                    l.db.execute("UPDATE functions SET status='matched', best_percent=100, link_state='verified' WHERE symbol=?", (s,))
                     matched += 1
     return {"functions": len(rows), "inserted": n, "marked_matched": matched}
 
@@ -303,37 +303,16 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
     if reason:
         return {"ok": False, "error": reason, "percent": res.percent, "diff": res.diff}
 
-    # A shadow (A/B) trial parks matched units as stubs; relinking meanwhile would fail every hash.
-    for _ in range(90):
-        active = l.db.execute("SELECT COUNT(*) FROM functions WHERE prev_status IS NOT NULL").fetchone()[0]
-        if not active:
-            break
-        time.sleep(10)
-    else:
-        return {"ok": False, "error": "shadow trial still active after 15 min; retry submit later", "percent": res.percent}
-    with oracle.build_lock():
+    # Accept on the per-object oracle; the batch relink (`fzgx verify`) checks every hash
+    # once for all accepted units and bisects the rare object that matches but does not link.
+    with oracle.build_lock("units.lock"):
         units = p.load_units()
         for u in units:
             if u["source"] == unit_src:
                 u["status"] = "matching"
         p.save_units(units)
-        cp = oracle.configure(p)
-        if cp.returncode == 0:
-            cp = oracle.relink(p)
-        if cp.returncode != 0:
-            for u in units:
-                if u["source"] == unit_src:
-                    u["status"] = "nonmatching"
-            p.save_units(units)
-            oracle.configure(p)
-            tail = "\n".join((cp.stdout + cp.stderr).splitlines()[-25:])
-            return {"ok": False, "error": "relink or hash check failed; unit reverted to nonmatching", "output": tail}
-        module_cfg = p.module_config_dir(sym.module)
-        files = [str(src_path), str(p.units_path), str(module_cfg / "splits.txt"), str(module_cfg / "symbols.txt")]
-        _git("add", *files)
-        msg = f"match: {sym.module}/{sym.name}" + (f" ({message})" if message else "")
-        cp = _git("commit", "-q", "-m", msg, "--", *files)
-        commit = _git("rev-parse", "--short", "HEAD").stdout.strip() if cp.returncode == 0 else None
+    commit = None
+    l.db.execute("UPDATE functions SET link_state='pending' WHERE symbol=?", (key,))
     if names:
         l.propose_names(key, agent, names)
     if row and row["status"] != "claimed":
@@ -341,7 +320,16 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
         l.db.execute("INSERT INTO attempts(symbol, agent, started) VALUES(?,?,?)", (key, agent, int(time.time())))
     l.finish(key, "matched", "matched", commit=commit, notes=message or "", model=model, harness=harness,
              tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd)
-    return {"ok": True, "symbol": symbol, "commit": commit, "unit": unit_src}
+    return {"ok": True, "symbol": symbol, "commit": commit, "unit": unit_src, "link": "pending"}
+
+
+def verify_links(p: Project, message: Optional[str] = None) -> Dict[str, Any]:
+    """Relink once for every accepted-but-unverified unit; commit; bisect on failure."""
+    for _ in range(90):  # a shadow trial parks units as stubs; wait it out
+        if not Ledger().db.execute("SELECT COUNT(*) FROM functions WHERE prev_status IS NOT NULL").fetchone()[0]:
+            break
+        time.sleep(10)
+    return verify.verify(p, message)
 
 
 def _set_unit_opts(p: Project, unit_src: str, mw_version: Optional[str], extra_cflags: Optional[str]) -> None:
@@ -386,7 +374,10 @@ def release(p: Project, symbol: str, reason: str, harness: Optional[str] = None,
         shutil.copy(best if best.exists() else ROOT / "src" / unit_src, dest)
         best.unlink(missing_ok=True)
         body_path = str(dest)
-        (ROOT / "src" / unit_src).write_text(STUB.format(symbol=symbol, note=f"best attempt saved to {dest.name}"))
+        # restore the committed file (the carve stub) so a release never dirties the tree
+        cp = _git("show", f"HEAD:src/{unit_src}")
+        (ROOT / "src" / unit_src).write_text(cp.stdout if cp.returncode == 0 else
+                                             STUB.format(symbol=symbol, note=f"best attempt saved to {dest.name}"))
     l.finish(key, "released", "unmatched", notes=reason, body_path=body_path, model=model,
              harness=harness, tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd)
     return {"ok": True, "symbol": symbol, "saved": body_path, "attempts": row["attempts"] + 1}
@@ -423,7 +414,8 @@ def report(p: Project) -> Dict[str, Any]:
         m = json.loads(rp.read_text()).get("measures", {})
         objdiff = {k: m.get(k) for k in ("matched_code_percent", "matched_functions", "total_functions",
                                           "complete_units", "total_units")}
-    return {"ledger": l.summary(), "costs": dict(l.costs()), "objdiff": objdiff}
+    pending = l.db.execute("SELECT COUNT(*) FROM functions WHERE link_state='pending'").fetchone()[0]
+    return {"ledger": l.summary(), "costs": dict(l.costs()), "objdiff": objdiff, "pending_link": pending}
 
 
 def snapshot(p: Project) -> Dict[str, Any]:

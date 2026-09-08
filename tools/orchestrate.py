@@ -233,11 +233,20 @@ def main(argv: Optional[List[str]] = None) -> int:
             print(f"  {r['outcome']:16s} {r['symbol']:14s} {'' if r['percent'] is None else f'{r['percent']:.1f}%':7s} "
                   f"checks={r['checks'] if r['checks'] is not None else '-'} turns={r['turns'] or '-'} "
                   f"${r['cost']:.3f} {r['secs']}s", flush=True)
+    ver = {"verified": [], "rejected": []}
+    if not a.shadow:
+        ver = api.verify_links(p, f"batch {a.batch}: link-verified matches")
+        print(f"verify: {len(ver.get('verified', []))} verified, {len(ver.get('rejected', []))} rejected"
+              + (f" ({ver.get('error')})" if ver.get("error") else ""), flush=True)
+        for r in results:
+            if r["outcome"] == "matched" and r["symbol"] in ver.get("rejected", []):
+                r["outcome"] = "link-mismatch"
     matched = [r for r in results if r["outcome"] == "matched"]
     released = [r for r in results if r["outcome"].startswith("released")]
     other = [r for r in results if r not in matched and r not in released]
     models = sorted({r.get("model") for r in results if r.get("model")})
     summary = {"batch": a.batch, "harness": a.harness, "model": model, "models_seen": models, "n": len(results), "matched": len(matched),
+               "link_rejected": len(ver.get("rejected", [])),
                "released": len(released), "failed": len(other), "cost_usd": round(spent, 3),
                "wall_s": round(time.time() - t0, 1), "results": results}
     # report + snapshot

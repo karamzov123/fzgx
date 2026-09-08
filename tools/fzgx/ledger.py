@@ -59,6 +59,9 @@ class Ledger:
         if "prev_status" not in fcols:
             # set while a shadow (A/B) claim is active; restored on finish
             self.db.execute("ALTER TABLE functions ADD COLUMN prev_status TEXT")
+        if "link_state" not in fcols:
+            # 'pending' = accepted on the object oracle, awaiting batch relink; 'verified' = hashes checked
+            self.db.execute("ALTER TABLE functions ADD COLUMN link_state TEXT")
 
     # ------------------------------------------------------------- inventory
     def sync_functions(self, rows: Iterable[dict]) -> int:

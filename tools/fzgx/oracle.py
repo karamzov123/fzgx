@@ -112,13 +112,10 @@ def check(project: Project, symbol: str, max_diff_lines: int = 80) -> CheckResul
     unit = project.objdiff_unit_name(sym.module, unit_src)
     base_obj = _base_object(project, unit)
 
-    # Same lock as submit/carve: a concurrent ninja would re-run `dtk split`
-    # (units.json changed) and rewrite split objects mid-link.
-    with build_lock():
-        cp = run(["ninja", project.rel(base_obj)])
-    if cp.returncode != 0:
-        err = "\n".join(l for l in (cp.stdout + cp.stderr).splitlines()
-                        if not l.startswith("[") and "Usage Warning" not in l)
+    # Direct mwcc compile into this unit's own object: no ninja, no build lock.
+    cp = compile_unit(project, unit, unit_src)
+    if cp.returncode != 0 or not base_obj.exists():
+        err = "\n".join(l for l in (cp.stdout + cp.stderr).splitlines() if "Usage Warning" not in l)
         return CheckResult(False, symbol, unit, error=err.strip()[-4000:])
 
     cp = run([str(OBJDIFF), "diff", "-p", str(ROOT), "-u", unit, "-o", "-", "--format", "json"])
@@ -146,6 +143,27 @@ def check(project: Project, symbol: str, max_diff_lines: int = 80) -> CheckResul
         else:
             res.diff = _render_diff(lrows, rrows, max_diff_lines)
     return res
+
+
+def compile_unit(project: Project, unit: str, unit_src: str) -> subprocess.CompletedProcess:
+    """Compile one unit straight with mwcc (via wibo) into its objdiff base object.
+
+    No ninja and no build lock: two agents compile two different files, so nothing
+    is shared. The flags come from objdiff.json (the same ones ninja uses) plus the
+    include dirs the ninja rule adds. ninja will still consider the object up to
+    date at relink time because the object is newer than its source.
+    """
+    meta = project.objdiff_units().get(unit, {})
+    flags = meta.get("scratch", {}).get("c_flags", "").replace(" -lang=c", "")
+    flags += f" -i include -i build/{project.version}/include"
+    units = {u["source"]: u for u in project.load_units()}
+    ucfg = units.get(unit_src, {})
+    mw = ucfg.get("mw_version") or ("GC/1.2.5n" if unit.startswith("main/") else "GC/1.3.2")
+    obj = _base_object(project, unit)
+    obj.parent.mkdir(parents=True, exist_ok=True)
+    cmd = [str(ROOT / "build" / "tools" / "wibo"), str(ROOT / "build" / "compilers" / mw / "mwcceppc.exe")]
+    cmd += shlex.split(flags) + ucfg.get("extra_cflags", []) + ["-c", f"src/{unit_src}", "-o", str(obj)]
+    return subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, timeout=120)
 
 
 CANDIDATE_VERSIONS = ["GC/1.2.5", "GC/1.2.5n", "GC/1.3", "GC/1.3.2", "GC/2.0", "GC/2.5", "GC/2.7"]

@@ -142,6 +142,11 @@ def cmd_compare(a, p):
     return 0
 
 
+def cmd_verify(a, p):
+    r = api.verify_links(p, a.message)
+    _print(r, a.json); return 0 if r.get("ok") else 1
+
+
 def cmd_names(a, p):
     _print(api.names(p), a.json); return 0
 
@@ -200,6 +205,8 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("restore", help="load state/ledger.json into the local ledger"); s.set_defaults(fn=cmd_restore)
     s = sub.add_parser("lint", help="shiftability/style lint"); s.set_defaults(fn=cmd_lint); s.add_argument("paths", nargs="*")
     s = sub.add_parser("names", help="pending name proposals for the librarian"); s.set_defaults(fn=cmd_names)
+    s = sub.add_parser("verify", help="relink once for all accepted units, verify hashes, commit; bisect on failure"); s.set_defaults(fn=cmd_verify)
+    s.add_argument("--message")
     s = sub.add_parser("compare", help="A/B table for two agent-id prefixes (e.g. b3c-claude vs shadow-b3c-codex)"); s.set_defaults(fn=cmd_compare)
     s.add_argument("--a", required=True); s.add_argument("--b", required=True)
     s = sub.add_parser("trivial", help="mechanically match single-blr and `li r3,N; blr` functions"); s.set_defaults(fn=cmd_trivial)
