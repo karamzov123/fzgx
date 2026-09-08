@@ -101,6 +101,59 @@ u8 fn_3_1443C(void) {
 }
 /* fzgx:end fn_3_1443C */
 
+/* fzgx:begin fn_3_14600 noprologue */
+#include "types.h"
+
+struct fn_3_14600_lbl_3_bss_A17D4_0_E24 {
+    u8 pad_0[0x4];
+    u8 unk_4;
+    u8 pad_5[0x1];
+    u8 unk_6;
+    u8 unk_7;
+    u8 unk_8;
+    u8 unk_9;
+    u8 unk_A;
+    u8 unk_B;
+    u8 pad_C[0xC];
+};
+struct fn_3_14600_lbl_3_bss_A17A0 {
+    u8 pad_0[0x8];
+    u8 unk_8;
+    u8 unk_9;
+    u8 unk_A;
+    u8 unk_B;
+    u8 pad_C[0x4];
+    s16 unk_10;
+    s16 unk_12;
+    u8 pad_14[0x6];
+    s16 unk_1A;
+    u8 unk_1C;
+};
+struct fn_3_14600_lbl_3_bss_A17D4 {
+    struct fn_3_14600_lbl_3_bss_A17D4_0_E24 unk_0[1];
+};
+
+extern struct fn_3_14600_lbl_3_bss_A17A0 lbl_3_bss_A17A0;
+extern struct fn_3_14600_lbl_3_bss_A17D4 lbl_3_bss_A17D4;
+
+s32 fn_3_14600(void) {
+    u8 v0;
+    u32 v1;
+    u8 v2;
+    v0 = lbl_3_bss_A17A0.unk_1C;
+    if (v0 == 11 || v0 == 16 || v0 == 15) {
+    v1 = 0;
+    return v1;
+    }
+    v2 = lbl_3_bss_A17A0.unk_B;
+    if (lbl_3_bss_A17A0.unk_10 == (s32)lbl_3_bss_A17D4.unk_0[lbl_3_bss_A17A0.unk_1A].unk_6 && lbl_3_bss_A17A0.unk_12 == (s32)lbl_3_bss_A17D4.unk_0[lbl_3_bss_A17A0.unk_1A].unk_7 && lbl_3_bss_A17A0.unk_8 == lbl_3_bss_A17D4.unk_0[lbl_3_bss_A17A0.unk_1A].unk_8 && lbl_3_bss_A17A0.unk_9 == lbl_3_bss_A17D4.unk_0[lbl_3_bss_A17A0.unk_1A].unk_9 && lbl_3_bss_A17A0.unk_A == lbl_3_bss_A17D4.unk_0[lbl_3_bss_A17A0.unk_1A].unk_A && lbl_3_bss_A17A0.unk_B == lbl_3_bss_A17D4.unk_0[lbl_3_bss_A17A0.unk_1A].unk_B && v0 == lbl_3_bss_A17D4.unk_0[lbl_3_bss_A17A0.unk_1A].unk_4) {
+    v2 = 1;
+    return v2;
+    }
+    return 0;
+}
+/* fzgx:end fn_3_14600 */
+
 /* fzgx:begin fn_3_146BC */
 // fn_3_146BC: empty in retail (single blr).
 void fn_3_146BC(void) {

@@ -62,3 +62,6 @@ rel/option/_prolog/fn_4_ADB0.c:
 
 rel/option/_prolog/fn_4_6678.c:
 	.text       start:0x00006678 end:0x00006720 align:4
+
+rel/option/name_entry/fn_4_D760.c:
+	.text       start:0x0000D760 end:0x0000D848 align:4
