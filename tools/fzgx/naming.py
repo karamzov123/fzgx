@@ -91,7 +91,7 @@ def bundle(p: Project, module: str, tu: str, only_matched: bool = True) -> str:
             parts.append("String literals in this TU's data block: " + ", ".join(own[:60]) + (" ..." if len(own) > 60 else ""))
             parts.append("")
     # the TU header: recovered layouts the sources are written against (offsets are proven)
-    hdr = ROOT / "include" / "rel" / module / f"{stem}.h"
+    hdr = ROOT / "include" / p.module_src_prefix(module) / f"{stem}.h"
     if hdr.exists():
         body = [l for l in hdr.read_text().splitlines() if not l.startswith(("#ifndef", "#define", "#endif", "#include"))]
         parts.append(f"Header `{hdr.relative_to(ROOT)}` (typedef names and field names may be proposed under \"structs\"; keep every offset):")

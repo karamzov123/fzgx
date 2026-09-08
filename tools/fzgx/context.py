@@ -123,7 +123,7 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
     parts.append("```")
 
     if fn.refs:
-        header = ROOT / "include" / "rel" / module / "globals.h"
+        header = ROOT / "include" / project.module_src_prefix(module) / "globals.h"
         hdr_text = header.read_text() if header.exists() else ""
         tu_stem = None
         tus_path = project.module_config_dir(module) / "tus.json"
@@ -132,7 +132,7 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
                 if symbol in t["functions"]:
                     tu_stem = t["file"].rsplit(".", 1)[0]
                     break
-        tu_header = ROOT / "include" / "rel" / module / f"{tu_stem}.h" if tu_stem else None
+        tu_header = ROOT / "include" / project.module_src_prefix(module) / f"{tu_stem}.h" if tu_stem else None
         tu_hdr_text = tu_header.read_text() if tu_header and tu_header.exists() else ""
         hdr_text = hdr_text + "\n" + tu_hdr_text
         shown_from_header = []
@@ -157,7 +157,7 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
                          "Declare them `extern const` as shown and use the symbol; writing the literal "
                          "in C emits a private constant with a different relocation and never matches.")
         if shown_from_header:
-            inc = f"rel/{module}/{tu_stem}.h" if tu_hdr_text else f"rel/{module}/globals.h"
+            inc = f"{project.module_src_prefix(module)}/{tu_stem}.h" if tu_hdr_text else f"{project.module_src_prefix(module)}/globals.h"
             parts.append(f"\nThese are declared in `include/{inc}` with recovered struct layouts; "
                          f"`#include \"{inc}\"` and use the typed fields (`unk_XX` names are offsets) "
                          f"instead of casts or your own extern:")

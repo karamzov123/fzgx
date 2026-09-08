@@ -108,7 +108,7 @@ def reconcile_tu(p: Project, tu_source: str, v) -> Dict[str, object]:
         b.flags = [f for f in b.flags if f != "noprologue"]
 
     # 1. headers
-    for h in (f"rel/{module}/globals.h", f"rel/{module}/{stem}.h"):
+    for h in (f"{p.module_src_prefix(module)}/globals.h", f"{p.module_src_prefix(module)}/{stem}.h"):
         line = f'#include "{h}"'
         if (ROOT / "include" / h).exists() and line not in {ln.strip() for ln in tf.prologue.splitlines()}:
             tf.prologue = tufile.merge_prologue(tf.prologue, [line])
