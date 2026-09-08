@@ -65,3 +65,30 @@ rel/option/_prolog/fn_4_6678.c:
 
 rel/option/name_entry/fn_4_D760.c:
 	.text       start:0x0000D760 end:0x0000D848 align:4
+
+rel/option/_prolog/fn_4_EA0.c:
+	.text       start:0x00000EA0 end:0x00000EF8 align:4
+
+rel/option/_prolog/fn_4_406C.c:
+	.text       start:0x0000406C end:0x000040C4 align:4
+
+rel/option/_prolog/fn_4_78E0.c:
+	.text       start:0x000078E0 end:0x00007938 align:4
+
+rel/option/_prolog/fn_4_7D94.c:
+	.text       start:0x00007D94 end:0x00007DEC align:4
+
+rel/option/_prolog/fn_4_8248.c:
+	.text       start:0x00008248 end:0x000082A0 align:4
+
+rel/option/_prolog/fn_4_898C.c:
+	.text       start:0x0000898C end:0x000089E4 align:4
+
+rel/option/_prolog/fn_4_9A78.c:
+	.text       start:0x00009A78 end:0x00009AD0 align:4
+
+rel/option/_prolog/fn_4_A734.c:
+	.text       start:0x0000A734 end:0x0000A78C align:4
+
+rel/option/_prolog/fn_4_9B20.c:
+	.text       start:0x00009B20 end:0x00009C14 align:4

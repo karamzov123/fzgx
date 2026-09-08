@@ -24,6 +24,44 @@ void fn_14_220(void) {
 }
 /* fzgx:end fn_14_220 */
 
+/* fzgx:begin fn_14_2FC */
+struct fn_14_2FC_lbl_1_bss_8B3A0 {
+    u8 pad_0[0x94];
+    u32 unk_94;
+};
+struct fn_14_2FC_lbl_14_bss_0 {
+    u32 unk_0;
+    u8 pad_4[0x20];
+    u32 unk_24;
+    u32 unk_28;
+    u32 unk_2C;
+    u32 unk_30;
+    u32 unk_34;
+};
+
+extern struct fn_14_2FC_lbl_14_bss_0 lbl_14_bss_0;
+extern struct fn_14_2FC_lbl_1_bss_8B3A0 lbl_1_bss_8B3A0;
+extern u32 fn_1_12F1E8(u32);
+extern u32 fn_1_A2D84(u32);
+
+void fn_14_2FC(void) {
+    u32 v0;
+    struct fn_14_2FC_lbl_1_bss_8B3A0 *p_lbl_1_bss_8B3A0;
+    p_lbl_1_bss_8B3A0 = &lbl_1_bss_8B3A0;
+    lbl_14_bss_0.unk_0 = 60;
+    v0 = p_lbl_1_bss_8B3A0->unk_94;
+    lbl_14_bss_0.unk_24 = 24;
+    lbl_14_bss_0.unk_28 = 24;
+    lbl_14_bss_0.unk_2C = 16;
+    lbl_14_bss_0.unk_30 = 16;
+    lbl_14_bss_0.unk_34 = 12;
+    p_lbl_1_bss_8B3A0->unk_94 = (v0 | 0x40000000);
+    fn_1_12F1E8(539);
+    p_lbl_1_bss_8B3A0->unk_94 = v0;
+    fn_1_A2D84(0xA9110000);
+}
+/* fzgx:end fn_14_2FC */
+
 /* fzgx:begin fn_14_900 */
 // fn_14_900: empty in retail (single blr).
 void fn_14_900(void) {

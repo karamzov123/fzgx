@@ -52,6 +52,62 @@ void fn_4_D10(void) {
 }
 /* fzgx:end fn_4_D10 */
 
+/* fzgx:begin fn_4_EA0 */
+struct fn_4_EA0_lbl_4_bss_0 {
+    u16 unk_0;
+};
+
+extern struct fn_4_EA0_lbl_4_bss_0 lbl_4_bss_0;
+extern u32 fn_1_426C(u32);
+extern u32 fn_1_435C(u32);
+extern u32 lbl_4_bss_8;
+
+void fn_4_EA0(u32 arg0) {
+    u32 v0;
+    u32 t0, t1;
+    v0 = arg0;
+    if (lbl_4_bss_0.unk_0 != 0) {
+    v0 = (u32)&lbl_4_bss_8;
+    v0 = *(u32 *)((u8 *)v0 + 0);
+    t0 = fn_1_435C(v0);
+    v0 = t0;
+    v0 = (u32)&lbl_4_bss_0;
+    v0 = *(u16 *)((u8 *)v0 + 0);
+    t1 = fn_1_426C(v0);
+    v0 = t1;
+    lbl_4_bss_0.unk_0 = 0;
+    }
+}
+/* fzgx:end fn_4_EA0 */
+
+/* fzgx:begin fn_4_406C */
+struct fn_4_406C_lbl_4_bss_0 {
+    u16 unk_0;
+};
+
+extern struct fn_4_406C_lbl_4_bss_0 lbl_4_bss_0;
+extern u32 fn_1_426C(u32);
+extern u32 fn_1_435C(u32);
+extern u32 lbl_4_bss_8;
+
+void fn_4_406C(u32 arg0) {
+    u32 v0;
+    u32 t0, t1;
+    v0 = arg0;
+    if (lbl_4_bss_0.unk_0 != 0) {
+    v0 = (u32)&lbl_4_bss_8;
+    v0 = *(u32 *)((u8 *)v0 + 0);
+    t0 = fn_1_435C(v0);
+    v0 = t0;
+    v0 = (u32)&lbl_4_bss_0;
+    v0 = *(u16 *)((u8 *)v0 + 0);
+    t1 = fn_1_426C(v0);
+    v0 = t1;
+    lbl_4_bss_0.unk_0 = 0;
+    }
+}
+/* fzgx:end fn_4_406C */
+
 /* fzgx:begin fn_4_4784 */
 extern struct fn_4_4784_lbl_4_bss_0 lbl_4_bss_0;
 extern u32 fn_1_3F8C(u32, u32, u32, u32);
@@ -177,6 +233,34 @@ void fn_4_6678(void) {
 }
 /* fzgx:end fn_4_6678 */
 
+/* fzgx:begin fn_4_78E0 */
+struct fn_4_78E0_lbl_4_bss_0 {
+    u16 unk_0;
+};
+
+extern struct fn_4_78E0_lbl_4_bss_0 lbl_4_bss_0;
+extern u32 fn_1_426C(u32);
+extern u32 fn_1_435C(u32);
+extern u32 lbl_4_bss_8;
+
+void fn_4_78E0(u32 arg0) {
+    u32 v0;
+    u32 t0, t1;
+    v0 = arg0;
+    if (lbl_4_bss_0.unk_0 != 0) {
+    v0 = (u32)&lbl_4_bss_8;
+    v0 = *(u32 *)((u8 *)v0 + 0);
+    t0 = fn_1_435C(v0);
+    v0 = t0;
+    v0 = (u32)&lbl_4_bss_0;
+    v0 = *(u16 *)((u8 *)v0 + 0);
+    t1 = fn_1_426C(v0);
+    v0 = t1;
+    lbl_4_bss_0.unk_0 = 0;
+    }
+}
+/* fzgx:end fn_4_78E0 */
+
 /* fzgx:begin fn_4_7C38 */
 extern struct fn_4_7C38_lbl_4_bss_0 lbl_4_bss_0;
 extern u32 fn_1_3F8C(u32, u32, u32, u32);
@@ -205,6 +289,34 @@ void fn_4_7C38(void) {
 }
 /* fzgx:end fn_4_7C38 */
 
+/* fzgx:begin fn_4_7D94 */
+struct fn_4_7D94_lbl_4_bss_0 {
+    u16 unk_0;
+};
+
+extern struct fn_4_7D94_lbl_4_bss_0 lbl_4_bss_0;
+extern u32 fn_1_426C(u32);
+extern u32 fn_1_435C(u32);
+extern u32 lbl_4_bss_8;
+
+void fn_4_7D94(u32 arg0) {
+    u32 v0;
+    u32 t0, t1;
+    v0 = arg0;
+    if (lbl_4_bss_0.unk_0 != 0) {
+    v0 = (u32)&lbl_4_bss_8;
+    v0 = *(u32 *)((u8 *)v0 + 0);
+    t0 = fn_1_435C(v0);
+    v0 = t0;
+    v0 = (u32)&lbl_4_bss_0;
+    v0 = *(u16 *)((u8 *)v0 + 0);
+    t1 = fn_1_426C(v0);
+    v0 = t1;
+    lbl_4_bss_0.unk_0 = 0;
+    }
+}
+/* fzgx:end fn_4_7D94 */
+
 /* fzgx:begin fn_4_80EC */
 extern struct fn_4_80EC_lbl_4_bss_0 lbl_4_bss_0;
 extern u32 fn_1_3F8C(u32, u32, u32, u32);
@@ -232,6 +344,34 @@ void fn_4_80EC(void) {
     fn_1_4A00(1, 15, p_lbl_4_bss_0->unk_8);
 }
 /* fzgx:end fn_4_80EC */
+
+/* fzgx:begin fn_4_8248 */
+struct fn_4_8248_lbl_4_bss_0 {
+    u16 unk_0;
+};
+
+extern struct fn_4_8248_lbl_4_bss_0 lbl_4_bss_0;
+extern u32 fn_1_426C(u32);
+extern u32 fn_1_435C(u32);
+extern u32 lbl_4_bss_8;
+
+void fn_4_8248(u32 arg0) {
+    u32 v0;
+    u32 t0, t1;
+    v0 = arg0;
+    if (lbl_4_bss_0.unk_0 != 0) {
+    v0 = (u32)&lbl_4_bss_8;
+    v0 = *(u32 *)((u8 *)v0 + 0);
+    t0 = fn_1_435C(v0);
+    v0 = t0;
+    v0 = (u32)&lbl_4_bss_0;
+    v0 = *(u16 *)((u8 *)v0 + 0);
+    t1 = fn_1_426C(v0);
+    v0 = t1;
+    lbl_4_bss_0.unk_0 = 0;
+    }
+}
+/* fzgx:end fn_4_8248 */
 
 /* fzgx:begin fn_4_869C */
 extern struct fn_4_869C_lbl_1_bss_718E0 lbl_1_bss_718E0;
@@ -273,6 +413,34 @@ void fn_4_869C(void) {
     fn_1_4A00(1, 15, p_lbl_4_bss_0->unk_8);
 }
 /* fzgx:end fn_4_869C */
+
+/* fzgx:begin fn_4_898C */
+struct fn_4_898C_lbl_4_bss_0 {
+    u16 unk_0;
+};
+
+extern struct fn_4_898C_lbl_4_bss_0 lbl_4_bss_0;
+extern u32 fn_1_426C(u32);
+extern u32 fn_1_435C(u32);
+extern u32 lbl_4_bss_8;
+
+void fn_4_898C(u32 arg0) {
+    u32 v0;
+    u32 t0, t1;
+    v0 = arg0;
+    if (lbl_4_bss_0.unk_0 != 0) {
+    v0 = (u32)&lbl_4_bss_8;
+    v0 = *(u32 *)((u8 *)v0 + 0);
+    t0 = fn_1_435C(v0);
+    v0 = t0;
+    v0 = (u32)&lbl_4_bss_0;
+    v0 = *(u16 *)((u8 *)v0 + 0);
+    t1 = fn_1_426C(v0);
+    v0 = t1;
+    lbl_4_bss_0.unk_0 = 0;
+    }
+}
+/* fzgx:end fn_4_898C */
 
 /* fzgx:begin fn_4_89E4 */
 extern struct fn_4_89E4_lbl_4_bss_0 lbl_4_bss_0;
@@ -337,6 +505,34 @@ void fn_4_8DC0(void) {
 }
 /* fzgx:end fn_4_8DC0 */
 
+/* fzgx:begin fn_4_9A78 */
+struct fn_4_9A78_lbl_4_bss_0 {
+    u16 unk_0;
+};
+
+extern struct fn_4_9A78_lbl_4_bss_0 lbl_4_bss_0;
+extern u32 fn_1_426C(u32);
+extern u32 fn_1_435C(u32);
+extern u32 lbl_4_bss_8;
+
+void fn_4_9A78(u32 arg0) {
+    u32 v0;
+    u32 t0, t1;
+    v0 = arg0;
+    if (lbl_4_bss_0.unk_0 != 0) {
+    v0 = (u32)&lbl_4_bss_8;
+    v0 = *(u32 *)((u8 *)v0 + 0);
+    t0 = fn_1_435C(v0);
+    v0 = t0;
+    v0 = (u32)&lbl_4_bss_0;
+    v0 = *(u16 *)((u8 *)v0 + 0);
+    t1 = fn_1_426C(v0);
+    v0 = t1;
+    lbl_4_bss_0.unk_0 = 0;
+    }
+}
+/* fzgx:end fn_4_9A78 */
+
 /* fzgx:begin fn_4_9AD0 */
 extern u32 fn_1_1380F0(u32);
 extern u32 fn_1_13ABA8(u32);
@@ -351,6 +547,113 @@ void fn_4_9AD0(void) {
     }
 }
 /* fzgx:end fn_4_9AD0 */
+
+/* fzgx:begin fn_4_9B20 */
+struct fn_4_9B20_lbl_4_bss_0 {
+    u16 unk_0;
+    u8 pad_2[0x6];
+    u32 unk_8;
+    u8 pad_C[0x285];
+    u8 unk_291;
+    u8 pad_292[0x2];
+    u8 unk_294;
+    u8 pad_295[0x5383];
+    u8 unk_5618;
+    u8 unk_5619;
+    u8 unk_561A;
+    u8 unk_561B;
+    u32 unk_561C;
+    u8 unk_5620;
+    u8 unk_5621;
+    u8 unk_5622;
+};
+
+extern struct fn_4_9B20_lbl_4_bss_0 lbl_4_bss_0;
+extern u32 fn_1_3F8C(u32, u32, u32, u32);
+extern u32 fn_1_435C(u32);
+extern u32 fn_1_B7E98(u32);
+extern u32 fn_1_B800C(u32);
+extern u32 fn_1_B80F0(u32);
+extern u32 fn_1_B8170(u32);
+extern u32 lbl_4_data_2DB4;
+extern void fn_4_9AD0(void);
+
+s32 fn_4_9B20(void) {
+    struct fn_4_9B20_lbl_4_bss_0 *p_lbl_4_bss_0;
+    u32 v0;
+    u32 t1, t2, t3, t4, t5;
+    p_lbl_4_bss_0 = (struct fn_4_9B20_lbl_4_bss_0 *)&lbl_4_bss_0;
+    fn_1_435C(p_lbl_4_bss_0->unk_8);
+    t1 = fn_1_3F8C((u32)&lbl_4_data_2DB4, (u32)fn_4_9AD0, 0, 5);
+    p_lbl_4_bss_0->unk_0 = t1;
+    p_lbl_4_bss_0->unk_5618 = 1;
+    p_lbl_4_bss_0->unk_5619 = 0;
+    p_lbl_4_bss_0->unk_561A = 0;
+    p_lbl_4_bss_0->unk_561B = 0;
+    p_lbl_4_bss_0->unk_294 = 0;
+    p_lbl_4_bss_0->unk_561C = 0;
+    t2 = fn_1_B7E98(0);
+    v0 = t2;
+    if ((s32)t2 != 0) {
+    v0 = 0;
+    v0 = (fn_1_B800C(v0));
+    if ((s32)v0 == 0) {
+    v0 = 0;
+    t4 = fn_1_B8170(v0);
+    v0 = t4;
+    if ((v0 & 0x2) == 0) {
+    v0 = 1;
+    p_lbl_4_bss_0->unk_561B = v0;
+    p_lbl_4_bss_0->unk_561C = 120;
+    p_lbl_4_bss_0->unk_5619 = v0;
+    p_lbl_4_bss_0->unk_291 = v0;
+    p_lbl_4_bss_0->unk_561A = v0;
+    }
+    }
+    v0 = 0;
+    t5 = fn_1_B80F0(v0);
+    v0 = t5;
+    v0 = 1;
+    p_lbl_4_bss_0->unk_5620 = v0;
+    p_lbl_4_bss_0->unk_5621 = v0;
+    p_lbl_4_bss_0->unk_5622 = 0;
+    } else {
+    v0 = 0;
+    p_lbl_4_bss_0->unk_5620 = v0;
+    p_lbl_4_bss_0->unk_5621 = v0;
+    p_lbl_4_bss_0->unk_5622 = 120;
+    }
+    return v0;
+}
+/* fzgx:end fn_4_9B20 */
+
+/* fzgx:begin fn_4_A734 */
+struct fn_4_A734_lbl_4_bss_0 {
+    u16 unk_0;
+};
+
+extern struct fn_4_A734_lbl_4_bss_0 lbl_4_bss_0;
+extern u32 fn_1_426C(u32);
+extern u32 fn_1_435C(u32);
+extern u32 lbl_4_bss_8;
+
+void fn_4_A734(u32 arg0) {
+    u32 v0;
+    u32 t0, t1;
+    v0 = arg0;
+    if (lbl_4_bss_0.unk_0 != 0) {
+    v0 = (u32)&lbl_4_bss_8;
+    v0 = *(u32 *)((u8 *)v0 + 0);
+    t0 = fn_1_435C(v0);
+    v0 = t0;
+    v0 = (u32)&lbl_4_bss_0;
+    v0 = *(u16 *)((u8 *)v0 + 0);
+    t1 = fn_1_426C(v0);
+    v0 = t1;
+    lbl_4_bss_0.unk_0 = 0;
+    }
+}
+/* fzgx:end fn_4_A734 */
 
 /* fzgx:begin fn_4_AB90 */
 extern u32 fn_1_B9C0C(void);

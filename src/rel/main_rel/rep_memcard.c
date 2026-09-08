@@ -61,6 +61,43 @@ u32 fn_1_154E34(u32 *arg0) {
 }
 /* fzgx:end fn_1_154E34 */
 
+/* fzgx:begin fn_1_154E4C noprologue */
+#include "types.h"
+
+struct fn_1_154E4C_lbl_1_bss_8EDF0 {
+    u8 pad_0[0x8];
+    u32 unk_8;
+    u32 unk_C;
+    u32 unk_10;
+    u8 pad_14[0xC];
+    u32 unk_20;
+    u32 unk_24;
+    f32 unk_28;
+    f32 unk_2C;
+    u32 unk_30;
+};
+
+extern f32 lbl_1_rodata_D598;
+extern f32 lbl_1_rodata_D59C;
+extern struct fn_1_154E4C_lbl_1_bss_8EDF0 lbl_1_bss_8EDF0;
+extern u32 fn_1_154FA8(f32);
+extern u32 memset(u32, u32, u32);
+
+void fn_1_154E4C(void) {
+    u32 v0;
+    memset((u32)&lbl_1_bss_8EDF0, 0, 304);
+    lbl_1_bss_8EDF0.unk_C = 0;
+    lbl_1_bss_8EDF0.unk_28 = lbl_1_rodata_D598;
+    lbl_1_bss_8EDF0.unk_30 = 2;
+    lbl_1_bss_8EDF0.unk_8 = ((lbl_1_bss_8EDF0.unk_8 & 0xFFFFFFFD));
+    lbl_1_bss_8EDF0.unk_10 = 0;
+    lbl_1_bss_8EDF0.unk_20 = 80;
+    lbl_1_bss_8EDF0.unk_24 = 385;
+    lbl_1_bss_8EDF0.unk_2C = lbl_1_rodata_D59C;
+    fn_1_154FA8(lbl_1_rodata_D598);
+}
+/* fzgx:end fn_1_154E4C */
+
 /* fzgx:begin fn_1_154ED0 */
 typedef struct {
     u8 pad_0[0x134];

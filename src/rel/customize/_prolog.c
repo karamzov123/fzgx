@@ -351,6 +351,40 @@ void fn_3_4A84(void) {
 }
 /* fzgx:end fn_3_4A84 */
 
+/* fzgx:begin fn_3_4BEC */
+struct fn_3_4BEC_lbl_3_data_B8 {
+    u32 unk_0;
+};
+
+extern struct fn_3_4BEC_lbl_3_data_B8 lbl_3_data_B8;
+extern u32 fn_1_426C(u32);
+extern u32 fn_1_435C(u32);
+extern u32 fn_3_4A84(void);
+extern u32 lbl_3_bss_20850;
+extern u32 lbl_3_bss_F0;
+
+void fn_3_4BEC(u32 arg0) {
+    u32 v0;
+    u32 t0, t1, t2;
+    v0 = arg0;
+    if ((lbl_3_bss_F0 & 0x10000000) == 0) {
+    t0 = fn_3_4A84();
+    v0 = t0;
+    if ((s32)lbl_3_data_B8.unk_0 != -1) {
+    v0 = (u32)&lbl_3_bss_20850;
+    v0 = *(u32 *)((u8 *)v0 + 0);
+    t1 = fn_1_435C(v0);
+    v0 = t1;
+    v0 = (u32)&lbl_3_data_B8;
+    v0 = *(u32 *)((u8 *)v0 + 0);
+    t2 = fn_1_426C(v0);
+    v0 = t2;
+    lbl_3_data_B8.unk_0 = -1;
+    }
+    }
+}
+/* fzgx:end fn_3_4BEC */
+
 /* fzgx:begin fn_3_5C4C */
 extern u8 lbl_1_bss_970[];
 extern u32 lbl_3_bss_20850;

@@ -600,6 +600,23 @@ void fn_1_F8AD4(u32 value) {
 }
 /* fzgx:end fn_1_F8AD4 */
 
+/* fzgx:begin fn_1_F8AFC noprologue */
+#include "types.h"
+
+struct fn_1_F8AFC_lbl_1_bss_7F0C0 {
+    u8 pad_0[0x4900];
+    u32 unk_4900;
+};
+
+extern struct fn_1_F8AFC_lbl_1_bss_7F0C0 lbl_1_bss_7F0C0;
+
+void fn_1_F8AFC(u32 arg0) {
+    u32 v0;
+    v0 = lbl_1_bss_7F0C0.unk_4900;
+    lbl_1_bss_7F0C0.unk_4900 = (v0 & ~((u32)0x80000000 >> ((arg0 & 0xFF) + 16)));
+}
+/* fzgx:end fn_1_F8AFC */
+
 /* fzgx:begin fn_1_F8B24 */
 void fn_1_F8B24(void) {
     fn_1_F8B64();

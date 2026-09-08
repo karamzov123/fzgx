@@ -134,6 +134,47 @@ void fn_1_7F934(void *arg0) {
 }
 /* fzgx:end fn_1_7F934 */
 
+/* fzgx:begin fn_1_7FA04 noprologue */
+#include "types.h"
+
+struct fn_1_7FA04_lbl_801A6410 {
+    u32 unk_0;
+};
+struct fn_1_7FA04_lbl_1_bss_6D82C {
+    u32 unk_0;
+};
+
+extern struct fn_1_7FA04_lbl_1_bss_6D82C lbl_1_bss_6D82C;
+extern struct fn_1_7FA04_lbl_801A6410 lbl_801A6410;
+extern u32 fn_1_46B4(u32, u32, u32, u32);
+extern u32 fn_1_7F658(u32);
+extern u32 fn_80071718(u32);
+extern u32 lbl_1_data_1FFF0;
+
+void fn_1_7FA04(u32 arg0) {
+    u32 v1;
+    s32 v0;
+    u32 v2;
+    u32 v3;
+    u32 t2;
+    v0 = 0;
+    v1 = arg0;
+    while ((s8)v0 < 41) {
+    fn_1_7F658(v1);
+    v1 += 1088;
+    v0++;
+    }
+    fn_1_46B4(lbl_801A6410.unk_0, arg0, (u32)&lbl_1_data_1FFF0, 709);
+    v2 = lbl_1_bss_6D82C.unk_0;
+    v3 = v2;
+    if (v2 != 0) {
+    t2 = fn_80071718(v3);
+    v3 = t2;
+    lbl_1_bss_6D82C.unk_0 = 0;
+    }
+}
+/* fzgx:end fn_1_7FA04 */
+
 /* fzgx:begin fn_1_7FFF0 */
 // Installs the default car-data entry used by the car registry.
 void fn_1_7FFF0(void) {
@@ -2715,6 +2756,32 @@ f32 fn_1_8C854(u32 index) {
     return *(f32 *)(ptr + 0x108);
 }
 /* fzgx:end fn_1_8C854 */
+
+/* fzgx:begin fn_1_8C884 noprologue */
+#include "types.h"
+
+struct fn_1_8C884_lbl_1_bss_6D838 {
+    u32 unk_0;
+};
+
+extern struct fn_1_8C884_lbl_1_bss_6D838 lbl_1_bss_6D838;
+
+u32 fn_1_8C884(u32 arg0) {
+    u32 v0;
+    s32 v1;
+    u32 v2;
+    v0 = lbl_1_bss_6D838.unk_0;
+    v1 = arg0;
+    v2 = v0;
+    if (v0 != 0) {
+    v1 = (v2 + (v1 * 1568));
+    v2 = *(u32 *)((u8 *)v1 + 1180);
+    } else {
+    v2 = 0;
+    }
+    return ((*(u32 *)((u8 *)v2 + 280) << 2) + __cntlzw(*(u32 *)((u8 *)v2 + 348)));
+}
+/* fzgx:end fn_1_8C884 */
 
 /* fzgx:begin fn_1_8C8DC */
 f32 fn_1_8C8DC(u32 index) {

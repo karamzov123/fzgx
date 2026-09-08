@@ -104,3 +104,6 @@ rel/story/story_mode/fn_7_4094.c:
 
 rel/story/story_mode/fn_7_24D8.c:
 	.text       start:0x000024D8 end:0x00002514 align:4
+
+rel/story/story_mode/fn_7_2114.c:
+	.text       start:0x00002114 end:0x00002170 align:4

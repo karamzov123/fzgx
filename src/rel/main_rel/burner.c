@@ -51,6 +51,39 @@ s16 fn_1_402A4(u32 index) {
 }
 /* fzgx:end fn_1_402A4 */
 
+/* fzgx:begin fn_1_981C4 noprologue */
+#include "types.h"
+
+struct fn_1_981C4_lbl_1_bss_6EA00 {
+    u8 pad_0[0x4];
+    u32 unk_4;
+    u32 unk_8;
+    u32 unk_C;
+};
+struct fn_1_981C4_lbl_801A6410 {
+    u32 unk_0;
+};
+
+extern struct fn_1_981C4_lbl_1_bss_6EA00 lbl_1_bss_6EA00;
+extern struct fn_1_981C4_lbl_801A6410 lbl_801A6410;
+extern u32 fn_1_4630(u32, u32, u32, u32);
+extern u32 lbl_1_data_27E08;
+
+void fn_1_981C4(void) {
+    struct fn_1_981C4_lbl_1_bss_6EA00 *p_lbl_1_bss_6EA00;
+    u32 v0;
+    u32 t0;
+    p_lbl_1_bss_6EA00 = (struct fn_1_981C4_lbl_1_bss_6EA00 *)&lbl_1_bss_6EA00;
+    t0 = fn_1_4630(lbl_801A6410.unk_0, (0x20000 + 12576), (u32)&lbl_1_data_27E08, 378);
+    p_lbl_1_bss_6EA00->unk_4 = t0;
+    *(u32 *)((u8 *)t0 + 4) = 0;
+    v0 = p_lbl_1_bss_6EA00->unk_4;
+    *(u32 *)((u8 *)v0 + 0) = 0;
+    p_lbl_1_bss_6EA00->unk_8 = 0;
+    p_lbl_1_bss_6EA00->unk_C = 0;
+}
+/* fzgx:end fn_1_981C4 */
+
 /* fzgx:begin fn_1_98230 */
 typedef struct BurnerNode BurnerNode;
 typedef struct BurnerEntry BurnerEntry;

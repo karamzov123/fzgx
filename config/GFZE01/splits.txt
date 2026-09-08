@@ -1876,3 +1876,21 @@ dol/fn_80043CCC.c:
 
 dol/fn_80044C0C.c:
 	.text       start:0x80044C0C end:0x80044C74 align:4
+
+dol/fn_80051CC0.c:
+	.text       start:0x80051CC0 end:0x80051DC4 align:4
+
+dol/fn_80023438.c:
+	.text       start:0x80023438 end:0x800234D0 align:4
+
+dol/fn_80070CF8.c:
+	.text       start:0x80070CF8 end:0x80070D60 align:4
+
+dol/WriteSramCallback.c:
+	.text       start:0x8000F610 end:0x8000F670 align:4
+
+dol/fn_800565F0.c:
+	.text       start:0x800565F0 end:0x800565FC align:4
+
+dol/fn_80023568.c:
+	.text       start:0x80023568 end:0x800235D4 align:4

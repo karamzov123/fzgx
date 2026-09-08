@@ -801,6 +801,34 @@ void fn_10_CA90(void) {
 }
 /* fzgx:end fn_10_CA90 */
 
+/* fzgx:begin fn_10_CD90 */
+struct fn_10_CD90_lbl_10_bss_51740 {
+    u32 unk_0;
+};
+
+extern struct fn_10_CD90_lbl_10_bss_51740 lbl_10_bss_51740;
+extern u32 fn_1_426C(u32);
+extern u32 fn_1_435C(u32);
+extern u32 lbl_10_bss_49388;
+
+void fn_10_CD90(u32 arg0) {
+    u32 v0;
+    u32 t0, t1;
+    v0 = arg0;
+    if ((s32)lbl_10_bss_51740.unk_0 != -1) {
+    v0 = (u32)&lbl_10_bss_49388;
+    v0 = *(u32 *)((u8 *)v0 + 0);
+    t0 = fn_1_435C(v0);
+    v0 = t0;
+    v0 = (u32)&lbl_10_bss_51740;
+    v0 = *(u32 *)((u8 *)v0 + 0);
+    t1 = fn_1_426C(v0);
+    v0 = t1;
+    lbl_10_bss_51740.unk_0 = -1;
+    }
+}
+/* fzgx:end fn_10_CD90 */
+
 /* fzgx:begin fn_10_CE5C */
 extern u16 lbl_1_bss_96A;
 

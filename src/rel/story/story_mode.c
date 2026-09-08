@@ -258,6 +258,42 @@ void fn_7_2110(void) {
 }
 /* fzgx:end fn_7_2110 */
 
+/* fzgx:begin fn_7_2114 */
+struct fn_7_2114_Arg0 {
+    u32 unk_0;
+    u8 pad_4[0xA8];
+    u32 unk_AC;
+    u8 pad_B0[0x18];
+    u32 unk_C8;
+};
+struct fn_7_2114_lbl_7_bss_0 {
+    u8 pad_0[0x20];
+    u32 unk_20;
+    u8 pad_24[0x274];
+    u32 unk_298;
+    u32 unk_29C;
+};
+
+extern struct fn_7_2114_lbl_7_bss_0 lbl_7_bss_0;
+extern void fn_7_2170(void);
+extern void fn_7_21C8(void);
+
+u32 fn_7_2114(struct fn_7_2114_Arg0 *arg0) {
+    struct fn_7_2114_lbl_7_bss_0 *p_lbl_7_bss_0;
+    p_lbl_7_bss_0 = (struct fn_7_2114_lbl_7_bss_0 *)&lbl_7_bss_0;
+    p_lbl_7_bss_0->unk_298 = 0;
+    p_lbl_7_bss_0->unk_29C = 0;
+    arg0->unk_AC = (u32)fn_7_21C8;
+    arg0->unk_C8 = (u32)fn_7_2170;
+    arg0->unk_0 = (arg0->unk_0 | 0x100000);
+    if ((s32)p_lbl_7_bss_0->unk_20 != 0) {
+    p_lbl_7_bss_0->unk_20 = 0;
+    return (u32)arg0;
+    }
+    arg0->unk_0 = (arg0->unk_0 | 512);
+}
+/* fzgx:end fn_7_2114 */
+
 /* fzgx:begin fn_7_2170 */
 extern struct fn_7_2170_lbl_7_bss_14 lbl_7_bss_14;
 extern u32 fn_7_4108(void *, u32, u32);
