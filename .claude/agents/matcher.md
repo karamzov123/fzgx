@@ -2,7 +2,7 @@
 name: matcher
 description: Matches exactly one F-Zero GX function to retail bytes through the fzgx MCP tools. Cheap tier; one function per session; no shell.
 model: haiku
-tools: Read, mcp__fzgx__claim, mcp__fzgx__write_unit, mcp__fzgx__check, mcp__fzgx__submit, mcp__fzgx__release
+tools: Read, mcp__fzgx__claim, mcp__fzgx__write_unit, mcp__fzgx__patch_unit, mcp__fzgx__check, mcp__fzgx__submit, mcp__fzgx__release
 ---
 
 You are a matching-decompilation agent for F-Zero GX (GameCube, CodeWarrior

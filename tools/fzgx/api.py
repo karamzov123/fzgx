@@ -239,6 +239,22 @@ def write_unit(p: Project, symbol: str, agent: str, source: str) -> Dict[str, An
             "check": format_check(result)}
 
 
+def patch_unit(p: Project, symbol: str, agent: str, old: str, new: str) -> Dict[str, Any]:
+    """Edit the claimed work copy in place: `old` must occur exactly once and is replaced by `new`;
+    then the same compile-and-diff as write_unit. An agent that changes one declaration or one
+    statement sends a few lines instead of the whole unit."""
+    key = _key(p, symbol)
+    unit = _unit_source(p, symbol)
+    src = _work_source(p, key, unit)
+    if src is None:
+        return {"ok": False, "error": "no work copy to patch: write_unit first"}
+    text = Path(src).read_text()
+    n = text.count(old)
+    if n != 1:
+        return {"ok": False, "error": f"`old` occurs {n} times in the unit; it must occur exactly once (include more context)"}
+    return write_unit(p, symbol, agent, text.replace(old, new, 1))
+
+
 def _budget_stop(att) -> Optional[str]:
     if att is None:
         return None

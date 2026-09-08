@@ -31,7 +31,7 @@ from fzgx.ledger import Ledger
 from fzgx.project import ROOT, STATE_DIR, Project
 
 RESULT_RE = re.compile(r"RESULT:\s*(matched|released)\s+(\S+)\s+([\d.]+)%(?:\s+checks=(\d+))?")
-MATCHER_TOOLS = ["Read", "mcp__fzgx__claim", "mcp__fzgx__write_unit", "mcp__fzgx__check",
+MATCHER_TOOLS = ["Read", "mcp__fzgx__claim", "mcp__fzgx__write_unit", "mcp__fzgx__patch_unit", "mcp__fzgx__check",
                  "mcp__fzgx__submit", "mcp__fzgx__release"]
 # The user's defaults are Fable 5.1 (claude) and GPT-6 Astra (codex); matchers must never run on those.
 EXPECTED_MODEL = {"claude": "claude-haiku-4-5", "codex": "gpt-5.6-luna"}
@@ -103,7 +103,7 @@ def codex_cmd(symbol: str, agent_id: str, model: str, fast: bool = False, revise
     cmd += ["-c", f'model_instructions_file="{CODEX_REVISE_INSTRUCTIONS if revise else CODEX_INSTRUCTIONS}"',
             "-c", "skills.include_instructions=false",                 # no <skills_instructions> block
             "-c", "project_doc_max_bytes=0",                            # no AGENTS.md concatenation (global + repo)
-            "-c", 'mcp_servers.fzgx.enabled_tools=["claim","write_unit","check","submit","release"]',
+            "-c", 'mcp_servers.fzgx.enabled_tools=["claim","write_unit","patch_unit","check","submit","release"]',
             "-c", "tools.web_search=false",
             "--disable", "shell_tool", "--disable", "unified_exec", "--disable", "view_image"]
     return cmd + [

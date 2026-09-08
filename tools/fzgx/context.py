@@ -258,6 +258,12 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
                     tips = [t for k, t in MODE_TIPS.items() if k in mode or k in counts or any(k in x for x in counts)]
                     if tips:
                         parts.append("What usually causes this kind of row, from functions that went on to match:\n- " + "\n- ".join(dict.fromkeys(tips)))
+                    try:
+                        from . import exemplars as _ex
+                        for e in _ex.nearest(mode, {k: v for k, v in counts.items() if ":" not in k}):
+                            parts.append(f"\n### Exemplar: `{e['symbol']}` went from {e.get('from') or 0:.0f}% to a match ({e.get('mode')}) with this edit\n```diff\n" + "\n".join(e["diff"]) + "\n```")
+                    except Exception:
+                        pass
             except Exception:
                 pass
 

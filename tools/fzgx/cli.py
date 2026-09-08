@@ -351,6 +351,20 @@ def cmd_write_unit(a, p):
     _print(r, a.json); return 0 if r["ok"] else 2
 
 
+def cmd_exemplars(a, p):
+    from . import exemplars
+    ex = exemplars.mine(p)
+    print(f"{len(ex)} exemplars -> .fzgx/exemplars.json")
+    for e in ex[:10]:
+        print(f"  {e['symbol']:24s} {e.get('from') or 0:5.1f}% -> match  mode={e.get('mode')} lines={e['lines']}")
+    return 0
+
+
+def cmd_patch_unit(a, p):
+    r = api.patch_unit(p, a.symbol, a.agent, Path(a.old_file).read_text(), Path(a.new_file).read_text())
+    _print(r, a.json); return 0 if r["ok"] else 2
+
+
 def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(prog="fzgx", description="F-Zero GX decomp agent CLI")
     ap.add_argument("--version", default="GFZE01")
@@ -372,6 +386,9 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("read-unit", help="print a carved unit's source"); s.set_defaults(fn=cmd_read_unit); s.add_argument("symbol")
     s = sub.add_parser("write-unit", help="replace a claimed unit's source from a file"); s.set_defaults(fn=cmd_write_unit)
     s.add_argument("symbol"); s.add_argument("--agent", required=True); s.add_argument("--file", required=True)
+    s = sub.add_parser("patch-unit", help="replace one unique span of a claimed unit's work copy, then check"); s.set_defaults(fn=cmd_patch_unit)
+    s.add_argument("symbol"); s.add_argument("--agent", required=True); s.add_argument("--old-file", required=True); s.add_argument("--new-file", required=True)
+    s = sub.add_parser("exemplars", help="mine (plateau -> match) edit pairs from the check history"); s.set_defaults(fn=cmd_exemplars)
     s = sub.add_parser("check", help="compile + objdiff one function"); s.set_defaults(fn=cmd_check)
     s.add_argument("symbol"); s.add_argument("--max-diff-lines", type=int, default=80)
     s.add_argument("--versions", help="'all' or comma list, e.g. GC/1.2.5n,GC/1.3.2: compile under each compiler and report %")

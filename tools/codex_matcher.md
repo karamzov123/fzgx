@@ -4,7 +4,9 @@ claim(symbol, agent) returns where the function lives (a block of its translatio
 own file) and the full context bundle (retail asm, referenced symbols, callers, nearby matched C,
 compiler flags, idioms, rules). write_unit(symbol, agent, source) replaces your private copy of the
 unit with the complete source you pass and immediately compiles and diffs it, returning match % and a
-target|ours diff; one call is one iteration. Nothing you write touches the tree until submit. The server enforces the budget (8 checks; stop after 2 non-improving).
+target|ours diff; one call is one iteration. After the first write_unit, change the unit with
+patch_unit(symbol, agent, old, new): `old` is a unique span of the current source, `new` replaces it; it
+compiles and diffs the same way and costs you a few lines instead of the whole unit. Nothing you write touches the tree until submit. The server enforces the budget (8 checks; stop after 2 non-improving).
 A result of MATCH (pool) is a match too (the only differences are relocations to shared literal-pool
 constants the tooling accepts). On MATCH or MATCH (pool) call submit(symbol, agent, message, harness="codex", model="gpt-5.6-luna"). Otherwise
 release(symbol, agent, reason) with one precise sentence on what still differs.

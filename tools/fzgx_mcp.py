@@ -84,6 +84,21 @@ async def write_unit(symbol: str, agent: str, source: str) -> dict:
 
 
 @mcp.tool()
+async def patch_unit(symbol: str, agent: str, old: str, new: str) -> dict:
+    """Edit the unit AGENT has claimed for SYMBOL in place: `old` must occur exactly once in the current source and is replaced by `new`; then compile and diff like write_unit (same budget, same `check` result). Use it for every change after the first write_unit: one declaration, one statement, one struct field, sent as a few lines instead of the whole unit."""
+    def go():
+        (ROOT / ".fzgx").mkdir(exist_ok=True)
+        with tempfile.NamedTemporaryFile("w", suffix=".old", delete=False, dir=ROOT / ".fzgx") as f1, \
+             tempfile.NamedTemporaryFile("w", suffix=".new", delete=False, dir=ROOT / ".fzgx") as f2:
+            f1.write(old); f2.write(new); p1, p2 = f1.name, f2.name
+        try:
+            return _cli("patch-unit", symbol, "--agent", agent, "--old-file", p1, "--new-file", p2)
+        finally:
+            Path(p1).unlink(missing_ok=True); Path(p2).unlink(missing_ok=True)
+    return await anyio.to_thread.run_sync(go)
+
+
+@mcp.tool()
 async def check(symbol: str, versions: Optional[str] = None, max_diff_lines: int = 80) -> str:
     """Compile SYMBOL's unit and diff against retail. Prints match % and a `target | ours` instruction diff. With versions='all' (or a comma list like 'GC/1.2.5n,GC/1.3.2') compiles under each CodeWarrior version and reports % per version instead."""
     args = ["check", symbol, "--max-diff-lines", str(max_diff_lines)]
