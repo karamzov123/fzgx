@@ -96,6 +96,12 @@ rel/main_rel/fn_1_49F0.c:
 rel/main_rel/fn_1_4C24.c:
 	.text       start:0x00004C24 end:0x00004CAC
 
+rel/main_rel/fn_1_4CC0.c:
+	.text       start:0x00004CC0 end:0x00004CD8
+
+rel/main_rel/fn_1_4D14.c:
+	.text       start:0x00004D14 end:0x00004DE0
+
 rel/main_rel/fn_1_4DE0.c:
 	.text       start:0x00004DE0 end:0x00004E60
 
@@ -107,6 +113,9 @@ rel/main_rel/fn_1_509C.c:
 
 rel/main_rel/fn_1_5104.c:
 	.text       start:0x00005104 end:0x00005124
+
+rel/main_rel/fn_1_52E0.c:
+	.text       start:0x000052E0 end:0x00005300
 
 rel/main_rel/fn_1_5300.c:
 	.text       start:0x00005300 end:0x00005328
@@ -159,8 +168,14 @@ rel/main_rel/fn_1_8628.c:
 rel/main_rel/fn_1_8660.c:
 	.text       start:0x00008660 end:0x00008708
 
+rel/main_rel/fn_1_8840.c:
+	.text       start:0x00008840 end:0x000088D8
+
 rel/main_rel/fn_1_8AF0.c:
 	.text       start:0x00008AF0 end:0x00008B00
+
+rel/main_rel/fn_1_8B00.c:
+	.text       start:0x00008B00 end:0x00008B10
 
 rel/main_rel/fn_1_B81C.c:
 	.text       start:0x0000B81C end:0x0000B85C
@@ -207,6 +222,9 @@ rel/main_rel/fn_1_1383C.c:
 rel/main_rel/fn_1_14F04.c:
 	.text       start:0x00014F04 end:0x00014F18
 
+rel/main_rel/fn_1_17A9C.c:
+	.text       start:0x00017A9C end:0x00017B5C
+
 rel/main_rel/fn_1_17C6C.c:
 	.text       start:0x00017C6C end:0x00017D5C
 
@@ -224,6 +242,9 @@ rel/main_rel/fn_1_20994.c:
 
 rel/main_rel/fn_1_2192C.c:
 	.text       start:0x0002192C end:0x00021950
+
+rel/main_rel/fn_1_21BE4.c:
+	.text       start:0x00021BE4 end:0x00021C5C
 
 rel/main_rel/fn_1_21CA0.c:
 	.text       start:0x00021CA0 end:0x00021CFC
@@ -251,6 +272,9 @@ rel/main_rel/fn_1_2C908.c:
 
 rel/main_rel/fn_1_35124.c:
 	.text       start:0x00035124 end:0x0003514C
+
+rel/main_rel/fn_1_3514C.c:
+	.text       start:0x0003514C end:0x00035174
 
 rel/main_rel/fn_1_35174.c:
 	.text       start:0x00035174 end:0x00035178
@@ -300,6 +324,12 @@ rel/main_rel/fn_1_3F1D4.c:
 rel/main_rel/fn_1_3F23C.c:
 	.text       start:0x0003F23C end:0x0003F250
 
+rel/main_rel/fn_1_3F250.c:
+	.text       start:0x0003F250 end:0x0003F264
+
+rel/main_rel/fn_1_3F264.c:
+	.text       start:0x0003F264 end:0x0003F2A0
+
 rel/main_rel/fn_1_3F7D0.c:
 	.text       start:0x0003F7D0 end:0x0003F7E0
 
@@ -309,8 +339,14 @@ rel/main_rel/fn_1_3F7E0.c:
 rel/main_rel/fn_1_3F800.c:
 	.text       start:0x0003F800 end:0x0003F810
 
+rel/main_rel/fn_1_3F810.c:
+	.text       start:0x0003F810 end:0x0003F834
+
 rel/main_rel/fn_1_3F834.c:
 	.text       start:0x0003F834 end:0x0003F844
+
+rel/main_rel/fn_1_3F844.c:
+	.text       start:0x0003F844 end:0x0003F854
 
 rel/main_rel/fn_1_3F854.c:
 	.text       start:0x0003F854 end:0x0003F864
@@ -351,14 +387,23 @@ rel/main_rel/fn_1_4100C.c:
 rel/main_rel/fn_1_41104.c:
 	.text       start:0x00041104 end:0x00041134
 
+rel/main_rel/fn_1_41134.c:
+	.text       start:0x00041134 end:0x000411A4
+
 rel/main_rel/fn_1_411A4.c:
 	.text       start:0x000411A4 end:0x000411D4
 
 rel/main_rel/fn_1_411D4.c:
 	.text       start:0x000411D4 end:0x000412A0
 
+rel/main_rel/fn_1_41328.c:
+	.text       start:0x00041328 end:0x00041418
+
 rel/main_rel/fn_1_41418.c:
 	.text       start:0x00041418 end:0x00041488
+
+rel/main_rel/fn_1_41B18.c:
+	.text       start:0x00041B18 end:0x00041BDC
 
 rel/main_rel/fn_1_42458.c:
 	.text       start:0x00042458 end:0x0004247C
@@ -369,6 +414,9 @@ rel/main_rel/fn_1_4300C.c:
 rel/main_rel/fn_1_43058.c:
 	.text       start:0x00043058 end:0x00043120
 
+rel/main_rel/fn_1_431B8.c:
+	.text       start:0x000431B8 end:0x0004322C
+
 rel/main_rel/fn_1_4322C.c:
 	.text       start:0x0004322C end:0x00043264
 
@@ -377,6 +425,9 @@ rel/main_rel/fn_1_449A8.c:
 
 rel/main_rel/fn_1_451D4.c:
 	.text       start:0x000451D4 end:0x000451E4
+
+rel/main_rel/fn_1_45890.c:
+	.text       start:0x00045890 end:0x000458A0
 
 rel/main_rel/fn_1_458A0.c:
 	.text       start:0x000458A0 end:0x00045964
@@ -398,6 +449,9 @@ rel/main_rel/fn_1_46EA8.c:
 
 rel/main_rel/fn_1_46EC8.c:
 	.text       start:0x00046EC8 end:0x00046ED8
+
+rel/main_rel/fn_1_471A0.c:
+	.text       start:0x000471A0 end:0x00047268
 
 rel/main_rel/fn_1_47268.c:
 	.text       start:0x00047268 end:0x00047330
@@ -465,6 +519,9 @@ rel/main_rel/fn_1_4AEB4.c:
 rel/main_rel/fn_1_4AF10.c:
 	.text       start:0x0004AF10 end:0x0004AF64
 
+rel/main_rel/fn_1_4B16C.c:
+	.text       start:0x0004B16C end:0x0004B1A0
+
 rel/main_rel/fn_1_4B1A0.c:
 	.text       start:0x0004B1A0 end:0x0004B1D4
 
@@ -473,6 +530,9 @@ rel/main_rel/fn_1_4B6D4.c:
 
 rel/main_rel/fn_1_4B8BC.c:
 	.text       start:0x0004B8BC end:0x0004B8CC
+
+rel/main_rel/fn_1_4B8CC.c:
+	.text       start:0x0004B8CC end:0x0004B8DC
 
 rel/main_rel/fn_1_4BD48.c:
 	.text       start:0x0004BD48 end:0x0004BD4C
@@ -507,8 +567,14 @@ rel/main_rel/fn_1_4DDB0.c:
 rel/main_rel/fn_1_4DE04.c:
 	.text       start:0x0004DE04 end:0x0004DE44
 
+rel/main_rel/fn_1_4DE44.c:
+	.text       start:0x0004DE44 end:0x0004DEC0
+
 rel/main_rel/fn_1_4E0A4.c:
 	.text       start:0x0004E0A4 end:0x0004E0F4
+
+rel/main_rel/fn_1_4E6F4.c:
+	.text       start:0x0004E6F4 end:0x0004E724
 
 rel/main_rel/fn_1_4F724.c:
 	.text       start:0x0004F724 end:0x0004F734
@@ -552,8 +618,17 @@ rel/main_rel/fn_1_52718.c:
 rel/main_rel/fn_1_52B68.c:
 	.text       start:0x00052B68 end:0x00052B8C
 
+rel/main_rel/fn_1_5417C.c:
+	.text       start:0x0005417C end:0x000541A8
+
+rel/main_rel/fn_1_541A8.c:
+	.text       start:0x000541A8 end:0x00054278
+
 rel/main_rel/fn_1_54278.c:
 	.text       start:0x00054278 end:0x0005428C
+
+rel/main_rel/fn_1_54298.c:
+	.text       start:0x00054298 end:0x000542A8
 
 rel/main_rel/fn_1_542A8.c:
 	.text       start:0x000542A8 end:0x000542B8
@@ -569,6 +644,9 @@ rel/main_rel/fn_1_547F8.c:
 
 rel/main_rel/fn_1_550A8.c:
 	.text       start:0x000550A8 end:0x000550E0
+
+rel/main_rel/fn_1_550E0.c:
+	.text       start:0x000550E0 end:0x00055118
 
 rel/main_rel/fn_1_556B8.c:
 	.text       start:0x000556B8 end:0x000556F8
@@ -720,6 +798,9 @@ rel/main_rel/fn_1_5C780.c:
 rel/main_rel/fn_1_5D010.c:
 	.text       start:0x0005D010 end:0x0005D014
 
+rel/main_rel/fn_1_5D014.c:
+	.text       start:0x0005D014 end:0x0005D020
+
 rel/main_rel/fn_1_5D374.c:
 	.text       start:0x0005D374 end:0x0005D378
 
@@ -737,6 +818,9 @@ rel/main_rel/fn_1_5EB08.c:
 
 rel/main_rel/fn_1_5F5C4.c:
 	.text       start:0x0005F5C4 end:0x0005F5C8
+
+rel/main_rel/fn_1_5F5C8.c:
+	.text       start:0x0005F5C8 end:0x0005F654
 
 rel/main_rel/fn_1_5FE24.c:
 	.text       start:0x0005FE24 end:0x0005FE28
@@ -792,11 +876,17 @@ rel/main_rel/fn_1_6312C.c:
 rel/main_rel/fn_1_63130.c:
 	.text       start:0x00063130 end:0x0006313C
 
+rel/main_rel/fn_1_632D4.c:
+	.text       start:0x000632D4 end:0x000633BC
+
 rel/main_rel/fn_1_633BC.c:
 	.text       start:0x000633BC end:0x000633C0
 
 rel/main_rel/fn_1_63514.c:
 	.text       start:0x00063514 end:0x00063518
+
+rel/main_rel/fn_1_63858.c:
+	.text       start:0x00063858 end:0x000638E8
 
 rel/main_rel/fn_1_645C8.c:
 	.text       start:0x000645C8 end:0x000645CC
@@ -815,6 +905,9 @@ rel/main_rel/fn_1_648D8.c:
 
 rel/main_rel/fn_1_65420.c:
 	.text       start:0x00065420 end:0x00065424
+
+rel/main_rel/fn_1_656C8.c:
+	.text       start:0x000656C8 end:0x00065748
 
 rel/main_rel/fn_1_65AAC.c:
 	.text       start:0x00065AAC end:0x00065AB0
@@ -848,6 +941,9 @@ rel/main_rel/fn_1_68B68.c:
 
 rel/main_rel/fn_1_69BBC.c:
 	.text       start:0x00069BBC end:0x00069BCC
+
+rel/main_rel/fn_1_71CA0.c:
+	.text       start:0x00071CA0 end:0x00071D0C
 
 rel/main_rel/fn_1_72848.c:
 	.text       start:0x00072848 end:0x000728B0
@@ -891,6 +987,9 @@ rel/main_rel/fn_1_7BCCC.c:
 rel/main_rel/fn_1_7C13C.c:
 	.text       start:0x0007C13C end:0x0007C1E8
 
+rel/main_rel/fn_1_7D694.c:
+	.text       start:0x0007D694 end:0x0007D6B8
+
 rel/main_rel/fn_1_7EAE8.c:
 	.text       start:0x0007EAE8 end:0x0007EB0C
 
@@ -927,6 +1026,9 @@ rel/main_rel/fn_1_801F8.c:
 rel/main_rel/fn_1_810E4.c:
 	.text       start:0x000810E4 end:0x00081164
 
+rel/main_rel/fn_1_81860.c:
+	.text       start:0x00081860 end:0x000818AC
+
 rel/main_rel/fn_1_835E0.c:
 	.text       start:0x000835E0 end:0x0008365C
 
@@ -943,11 +1045,17 @@ rel/main_rel/fn_1_847A8.c:
 	.text       start:0x000847A8 end:0x00084860
 	.data       start:0x000207F0 end:0x00020894
 
+rel/main_rel/fn_1_85F70.c:
+	.text       start:0x00085F70 end:0x00085F90
+
 rel/main_rel/fn_1_8616C.c:
 	.text       start:0x0008616C end:0x00086194
 
 rel/main_rel/fn_1_86194.c:
 	.text       start:0x00086194 end:0x000861B4
+
+rel/main_rel/fn_1_861B4.c:
+	.text       start:0x000861B4 end:0x0008623C
 
 rel/main_rel/fn_1_8623C.c:
 	.text       start:0x0008623C end:0x00086244
@@ -988,6 +1096,12 @@ rel/main_rel/fn_1_86810.c:
 rel/main_rel/fn_1_8682C.c:
 	.text       start:0x0008682C end:0x0008683C
 
+rel/main_rel/fn_1_8683C.c:
+	.text       start:0x0008683C end:0x00086854
+
+rel/main_rel/fn_1_86A10.c:
+	.text       start:0x00086A10 end:0x00086A2C
+
 rel/main_rel/fn_1_875EC.c:
 	.text       start:0x000875EC end:0x00087610
 
@@ -999,6 +1113,9 @@ rel/main_rel/fn_1_877E8.c:
 
 rel/main_rel/fn_1_87880.c:
 	.text       start:0x00087880 end:0x00087918
+
+rel/main_rel/fn_1_87918.c:
+	.text       start:0x00087918 end:0x000879B0
 
 rel/main_rel/fn_1_87AD8.c:
 	.text       start:0x00087AD8 end:0x00087B70
@@ -1032,6 +1149,9 @@ rel/main_rel/fn_1_88D24.c:
 
 rel/main_rel/fn_1_88DBC.c:
 	.text       start:0x00088DBC end:0x00088E54
+
+rel/main_rel/fn_1_88E54.c:
+	.text       start:0x00088E54 end:0x00088EEC
 
 rel/main_rel/fn_1_88EEC.c:
 	.text       start:0x00088EEC end:0x00088F84
@@ -1072,6 +1192,9 @@ rel/main_rel/fn_1_8C66C.c:
 rel/main_rel/fn_1_8C6D4.c:
 	.text       start:0x0008C6D4 end:0x0008C704
 
+rel/main_rel/fn_1_8C704.c:
+	.text       start:0x0008C704 end:0x0008C734
+
 rel/main_rel/fn_1_8C734.c:
 	.text       start:0x0008C734 end:0x0008C764
 
@@ -1089,6 +1212,9 @@ rel/main_rel/fn_1_8C90C.c:
 
 rel/main_rel/fn_1_8C994.c:
 	.text       start:0x0008C994 end:0x0008C9A4
+
+rel/main_rel/fn_1_8C9A4.c:
+	.text       start:0x0008C9A4 end:0x0008C9B8
 
 rel/main_rel/fn_1_8C9B8.c:
 	.text       start:0x0008C9B8 end:0x0008C9CC
@@ -1126,6 +1252,9 @@ rel/main_rel/fn_1_8DBA4.c:
 rel/main_rel/fn_1_8E1E8.c:
 	.text       start:0x0008E1E8 end:0x0008E244
 
+rel/main_rel/fn_1_8E3A4.c:
+	.text       start:0x0008E3A4 end:0x0008E448
+
 rel/main_rel/fn_1_8E448.c:
 	.text       start:0x0008E448 end:0x0008E450
 
@@ -1144,8 +1273,14 @@ rel/main_rel/fn_1_900C4.c:
 rel/main_rel/fn_1_924CC.c:
 	.text       start:0x000924CC end:0x0009250C
 
+rel/main_rel/fn_1_95210.c:
+	.text       start:0x00095210 end:0x00095238
+
 rel/main_rel/fn_1_956B8.c:
 	.text       start:0x000956B8 end:0x000956EC
+
+rel/main_rel/fn_1_961F0.c:
+	.text       start:0x000961F0 end:0x00096230
 
 rel/main_rel/fn_1_96664.c:
 	.text       start:0x00096664 end:0x000966A0
@@ -1165,11 +1300,17 @@ rel/main_rel/fn_1_9724C.c:
 rel/main_rel/fn_1_9818C.c:
 	.text       start:0x0009818C end:0x000981C4
 
+rel/main_rel/fn_1_98590.c:
+	.text       start:0x00098590 end:0x000985EC
+
 rel/main_rel/fn_1_985EC.c:
 	.text       start:0x000985EC end:0x00098634
 
 rel/main_rel/fn_1_98640.c:
 	.text       start:0x00098640 end:0x000986A4
+
+rel/main_rel/fn_1_98804.c:
+	.text       start:0x00098804 end:0x00098840
 
 rel/main_rel/fn_1_9885C.c:
 	.text       start:0x0009885C end:0x000988D8
@@ -1186,6 +1327,9 @@ rel/main_rel/fn_1_9A578.c:
 rel/main_rel/fn_1_9A770.c:
 	.text       start:0x0009A770 end:0x0009A7A8
 
+rel/main_rel/fn_1_9A7BC.c:
+	.text       start:0x0009A7BC end:0x0009A864
+
 rel/main_rel/fn_1_9A958.c:
 	.text       start:0x0009A958 end:0x0009AA2C
 
@@ -1200,6 +1344,9 @@ rel/main_rel/fn_1_9AD88.c:
 
 rel/main_rel/fn_1_9CC40.c:
 	.text       start:0x0009CC40 end:0x0009CC6C
+
+rel/main_rel/fn_1_9CC6C.c:
+	.text       start:0x0009CC6C end:0x0009CCE8
 
 rel/main_rel/fn_1_9CCE8.c:
 	.text       start:0x0009CCE8 end:0x0009CD6C
@@ -1222,6 +1369,12 @@ rel/main_rel/fn_1_9E170.c:
 rel/main_rel/fn_1_9E194.c:
 	.text       start:0x0009E194 end:0x0009E1B8
 
+rel/main_rel/fn_1_9E514.c:
+	.text       start:0x0009E514 end:0x0009E598
+
+rel/main_rel/fn_1_9E5B8.c:
+	.text       start:0x0009E5B8 end:0x0009E608
+
 rel/main_rel/fn_1_9FEE8.c:
 	.text       start:0x0009FEE8 end:0x0009FF50
 
@@ -1230,6 +1383,9 @@ rel/main_rel/fn_1_9FF50.c:
 
 rel/main_rel/fn_1_9FF54.c:
 	.text       start:0x0009FF54 end:0x0009FF58
+
+rel/main_rel/fn_1_9FF58.c:
+	.text       start:0x0009FF58 end:0x0009FF9C
 
 rel/main_rel/fn_1_9FF9C.c:
 	.text       start:0x0009FF9C end:0x0009FFD8
@@ -1242,6 +1398,9 @@ rel/main_rel/fn_1_A1360.c:
 
 rel/main_rel/fn_1_A2D84.c:
 	.text       start:0x000A2D84 end:0x000A2DC4
+
+rel/main_rel/fn_1_A4BC8.c:
+	.text       start:0x000A4BC8 end:0x000A4C9C
 
 rel/main_rel/fn_1_A50C8.c:
 	.text       start:0x000A50C8 end:0x000A514C
@@ -1321,8 +1480,14 @@ rel/main_rel/fn_1_A9764.c:
 rel/main_rel/fn_1_A9790.c:
 	.text       start:0x000A9790 end:0x000A97BC
 
+rel/main_rel/fn_1_A97E4.c:
+	.text       start:0x000A97E4 end:0x000A9810
+
 rel/main_rel/fn_1_A9810.c:
 	.text       start:0x000A9810 end:0x000A983C
+
+rel/main_rel/fn_1_AAEB0.c:
+	.text       start:0x000AAEB0 end:0x000AAF18
 
 rel/main_rel/fn_1_AAF18.c:
 	.text       start:0x000AAF18 end:0x000AAF1C
@@ -1332,6 +1497,9 @@ rel/main_rel/fn_1_AB434.c:
 
 rel/main_rel/fn_1_AB458.c:
 	.text       start:0x000AB458 end:0x000AB45C
+
+rel/main_rel/fn_1_AB598.c:
+	.text       start:0x000AB598 end:0x000AB5CC
 
 rel/main_rel/fn_1_AB5CC.c:
 	.text       start:0x000AB5CC end:0x000AB61C
@@ -1365,6 +1533,12 @@ rel/main_rel/fn_1_ABA24.c:
 
 rel/main_rel/fn_1_ABA9C.c:
 	.text       start:0x000ABA9C end:0x000ABAAC
+
+rel/main_rel/fn_1_ABAAC.c:
+	.text       start:0x000ABAAC end:0x000ABB24
+
+rel/main_rel/fn_1_ABDA8.c:
+	.text       start:0x000ABDA8 end:0x000ABDB8
 
 rel/main_rel/fn_1_ABE14.c:
 	.text       start:0x000ABE14 end:0x000ABE88
@@ -1432,6 +1606,9 @@ rel/main_rel/fn_1_AD09C.c:
 rel/main_rel/fn_1_AD0A0.c:
 	.text       start:0x000AD0A0 end:0x000AD140
 
+rel/main_rel/fn_1_AD140.c:
+	.text       start:0x000AD140 end:0x000AD164
+
 rel/main_rel/fn_1_AD164.c:
 	.text       start:0x000AD164 end:0x000AD168
 
@@ -1471,11 +1648,17 @@ rel/main_rel/fn_1_B8E84.c:
 rel/main_rel/fn_1_B9C38.c:
 	.text       start:0x000B9C38 end:0x000B9CCC
 
+rel/main_rel/fn_1_BF520.c:
+	.text       start:0x000BF520 end:0x000BF600
+
 rel/main_rel/fn_1_C17CC.c:
 	.text       start:0x000C17CC end:0x000C17D0
 
 rel/main_rel/fn_1_C2454.c:
 	.text       start:0x000C2454 end:0x000C24A4
+
+rel/main_rel/fn_1_C3688.c:
+	.text       start:0x000C3688 end:0x000C36EC
 
 rel/main_rel/fn_1_C36EC.c:
 	.text       start:0x000C36EC end:0x000C37A0
@@ -1509,6 +1692,12 @@ rel/main_rel/fn_1_D0DF8.c:
 
 rel/main_rel/fn_1_D0E08.c:
 	.text       start:0x000D0E08 end:0x000D0E18
+
+rel/main_rel/fn_1_D0E18.c:
+	.text       start:0x000D0E18 end:0x000D0E28
+
+rel/main_rel/fn_1_D0E28.c:
+	.text       start:0x000D0E28 end:0x000D0E34
 
 rel/main_rel/fn_1_D0E34.c:
 	.text       start:0x000D0E34 end:0x000D0E44
@@ -1630,6 +1819,9 @@ rel/main_rel/fn_1_DAAFC.c:
 rel/main_rel/fn_1_DAB1C.c:
 	.text       start:0x000DAB1C end:0x000DAB3C
 
+rel/main_rel/fn_1_DAB3C.c:
+	.text       start:0x000DAB3C end:0x000DAB5C
+
 rel/main_rel/fn_1_DAD68.c:
 	.text       start:0x000DAD68 end:0x000DAD6C
 
@@ -1638,6 +1830,9 @@ rel/main_rel/fn_1_DAE24.c:
 
 rel/main_rel/fn_1_DAEF8.c:
 	.text       start:0x000DAEF8 end:0x000DAEFC
+
+rel/main_rel/fn_1_DAEFC.c:
+	.text       start:0x000DAEFC end:0x000DAF90
 
 rel/main_rel/fn_1_DAF90.c:
 	.text       start:0x000DAF90 end:0x000DAF94
@@ -1659,6 +1854,9 @@ rel/main_rel/fn_1_DC3A0.c:
 
 rel/main_rel/fn_1_DC3A4.c:
 	.text       start:0x000DC3A4 end:0x000DC404
+
+rel/main_rel/fn_1_DC5E8.c:
+	.text       start:0x000DC5E8 end:0x000DC648
 
 rel/main_rel/fn_1_DC648.c:
 	.text       start:0x000DC648 end:0x000DC6FC
@@ -1696,6 +1894,9 @@ rel/main_rel/fn_1_E5768.c:
 rel/main_rel/fn_1_E57A4.c:
 	.text       start:0x000E57A4 end:0x000E57AC
 
+rel/main_rel/fn_1_E57AC.c:
+	.text       start:0x000E57AC end:0x000E57B4
+
 rel/main_rel/fn_1_E57B4.c:
 	.text       start:0x000E57B4 end:0x000E57BC
 
@@ -1726,8 +1927,14 @@ rel/main_rel/fn_1_E9C68.c:
 rel/main_rel/fn_1_EB080.c:
 	.text       start:0x000EB080 end:0x000EB0B0
 
+rel/main_rel/fn_1_EB200.c:
+	.text       start:0x000EB200 end:0x000EB248
+
 rel/main_rel/fn_1_EB248.c:
 	.text       start:0x000EB248 end:0x000EB29C
+
+rel/main_rel/fn_1_EC900.c:
+	.text       start:0x000EC900 end:0x000EC910
 
 rel/main_rel/fn_1_ECDFC.c:
 	.text       start:0x000ECDFC end:0x000ECE00
@@ -1780,11 +1987,17 @@ rel/main_rel/fn_1_EFA1C.c:
 rel/main_rel/fn_1_EFA4C.c:
 	.text       start:0x000EFA4C end:0x000EFA50
 
+rel/main_rel/fn_1_EFA50.c:
+	.text       start:0x000EFA50 end:0x000EFA88
+
 rel/main_rel/fn_1_EFA88.c:
 	.text       start:0x000EFA88 end:0x000EFA8C
 
 rel/main_rel/fn_1_F0164.c:
 	.text       start:0x000F0164 end:0x000F0168
+
+rel/main_rel/fn_1_F17B4.c:
+	.text       start:0x000F17B4 end:0x000F1864
 
 rel/main_rel/fn_1_F1864.c:
 	.text       start:0x000F1864 end:0x000F18C0
@@ -1804,14 +2017,23 @@ rel/main_rel/fn_1_F1F74.c:
 rel/main_rel/fn_1_F2008.c:
 	.text       start:0x000F2008 end:0x000F2060
 
+rel/main_rel/fn_1_F2060.c:
+	.text       start:0x000F2060 end:0x000F20B4
+
 rel/main_rel/fn_1_F20B4.c:
 	.text       start:0x000F20B4 end:0x000F210C
 
 rel/main_rel/fn_1_F210C.c:
 	.text       start:0x000F210C end:0x000F2160
 
+rel/main_rel/fn_1_F2160.c:
+	.text       start:0x000F2160 end:0x000F21B8
+
 rel/main_rel/fn_1_F2338.c:
 	.text       start:0x000F2338 end:0x000F23D8
+
+rel/main_rel/fn_1_F2780.c:
+	.text       start:0x000F2780 end:0x000F2820
 
 rel/main_rel/fn_1_F2CD8.c:
 	.text       start:0x000F2CD8 end:0x000F2D30
@@ -1858,6 +2080,9 @@ rel/main_rel/fn_1_F70C0.c:
 rel/main_rel/fn_1_F70C8.c:
 	.text       start:0x000F70C8 end:0x000F70D0
 
+rel/main_rel/fn_1_F7308.c:
+	.text       start:0x000F7308 end:0x000F7338
+
 rel/main_rel/fn_1_F7578.c:
 	.text       start:0x000F7578 end:0x000F75D8
 
@@ -1903,6 +2128,9 @@ rel/main_rel/fn_1_F8AD4.c:
 rel/main_rel/fn_1_F8B24.c:
 	.text       start:0x000F8B24 end:0x000F8B50
 
+rel/main_rel/fn_1_F8B50.c:
+	.text       start:0x000F8B50 end:0x000F8B64
+
 rel/main_rel/fn_1_F8B64.c:
 	.text       start:0x000F8B64 end:0x000F8B7C
 
@@ -1917,6 +2145,9 @@ rel/main_rel/fn_1_F8BD4.c:
 
 rel/main_rel/fn_1_F8C50.c:
 	.text       start:0x000F8C50 end:0x000F8C74
+
+rel/main_rel/fn_1_F8C74.c:
+	.text       start:0x000F8C74 end:0x000F8CA0
 
 rel/main_rel/fn_1_F8CA0.c:
 	.text       start:0x000F8CA0 end:0x000F8CCC
@@ -1963,6 +2194,9 @@ rel/main_rel/fn_1_F9EE4.c:
 rel/main_rel/fn_1_F9FEC.c:
 	.text       start:0x000F9FEC end:0x000FA004
 
+rel/main_rel/fn_1_FA004.c:
+	.text       start:0x000FA004 end:0x000FA01C
+
 rel/main_rel/fn_1_FA01C.c:
 	.text       start:0x000FA01C end:0x000FA038
 
@@ -2002,6 +2236,9 @@ rel/main_rel/fn_1_FB0B4.c:
 rel/main_rel/fn_1_FB180.c:
 	.text       start:0x000FB180 end:0x000FB18C
 
+rel/main_rel/fn_1_FB770.c:
+	.text       start:0x000FB770 end:0x000FB798
+
 rel/main_rel/fn_1_FB798.c:
 	.text       start:0x000FB798 end:0x000FB870
 
@@ -2016,6 +2253,9 @@ rel/main_rel/fn_1_FC410.c:
 
 rel/main_rel/fn_1_FC414.c:
 	.text       start:0x000FC414 end:0x000FC4E0
+
+rel/main_rel/fn_1_FCF50.c:
+	.text       start:0x000FCF50 end:0x000FCF74
 
 rel/main_rel/fn_1_FD324.c:
 	.text       start:0x000FD324 end:0x000FD388
@@ -2068,6 +2308,9 @@ rel/main_rel/fn_1_101448.c:
 rel/main_rel/fn_1_10144C.c:
 	.text       start:0x0010144C end:0x00101454
 
+rel/main_rel/fn_1_10240C.c:
+	.text       start:0x0010240C end:0x001024C4
+
 rel/main_rel/fn_1_1024C4.c:
 	.text       start:0x001024C4 end:0x001024F8
 
@@ -2080,11 +2323,17 @@ rel/main_rel/fn_1_10302C.c:
 rel/main_rel/fn_1_103054.c:
 	.text       start:0x00103054 end:0x00103058
 
+rel/main_rel/fn_1_103058.c:
+	.text       start:0x00103058 end:0x00103090
+
 rel/main_rel/fn_1_103AA8.c:
 	.text       start:0x00103AA8 end:0x00103AD4
 
 rel/main_rel/fn_1_103F10.c:
 	.text       start:0x00103F10 end:0x00103F58
+
+rel/main_rel/fn_1_104710.c:
+	.text       start:0x00104710 end:0x00104730
 
 rel/main_rel/fn_1_105724.c:
 	.text       start:0x00105724 end:0x00105744
@@ -2128,6 +2377,9 @@ rel/main_rel/fn_1_1088B8.c:
 rel/main_rel/fn_1_1154D0.c:
 	.text       start:0x001154D0 end:0x00115560
 
+rel/main_rel/fn_1_115B58.c:
+	.text       start:0x00115B58 end:0x00115BE8
+
 rel/main_rel/fn_1_1166EC.c:
 	.text       start:0x001166EC end:0x0011677C
 
@@ -2167,8 +2419,17 @@ rel/main_rel/fn_1_12AAC8.c:
 rel/main_rel/fn_1_12B3BC.c:
 	.text       start:0x0012B3BC end:0x0012B3F8
 
+rel/main_rel/fn_1_12B5B4.c:
+	.text       start:0x0012B5B4 end:0x0012B664
+
+rel/main_rel/fn_1_12BF7C.c:
+	.text       start:0x0012BF7C end:0x0012C000
+
 rel/main_rel/fn_1_12C000.c:
 	.text       start:0x0012C000 end:0x0012C060
+
+rel/main_rel/fn_1_12C0EC.c:
+	.text       start:0x0012C0EC end:0x0012C110
 
 rel/main_rel/fn_1_12C524.c:
 	.text       start:0x0012C524 end:0x0012C5E4
@@ -2182,8 +2443,14 @@ rel/main_rel/fn_1_12D354.c:
 rel/main_rel/fn_1_12E424.c:
 	.text       start:0x0012E424 end:0x0012E468
 
+rel/main_rel/fn_1_12F10C.c:
+	.text       start:0x0012F10C end:0x0012F118
+
 rel/main_rel/fn_1_12F128.c:
 	.text       start:0x0012F128 end:0x0012F150
+
+rel/main_rel/fn_1_12F194.c:
+	.text       start:0x0012F194 end:0x0012F1E8
 
 rel/main_rel/fn_1_12F308.c:
 	.text       start:0x0012F308 end:0x0012F30C
@@ -2238,6 +2505,9 @@ rel/main_rel/fn_1_13EDDC.c:
 
 rel/main_rel/fn_1_13F72C.c:
 	.text       start:0x0013F72C end:0x0013F7F8
+
+rel/main_rel/fn_1_13F848.c:
+	.text       start:0x0013F848 end:0x0013F8B0
 
 rel/main_rel/fn_1_13F8B0.c:
 	.text       start:0x0013F8B0 end:0x0013F8C4
@@ -2417,6 +2687,9 @@ rel/main_rel/fn_1_150650.c:
 rel/main_rel/fn_1_150C8C.c:
 	.text       start:0x00150C8C end:0x00150CEC
 
+rel/main_rel/fn_1_150ED0.c:
+	.text       start:0x00150ED0 end:0x00150F30
+
 rel/main_rel/fn_1_150F30.c:
 	.text       start:0x00150F30 end:0x00150F74
 
@@ -2453,11 +2726,20 @@ rel/main_rel/fn_1_153AF4.c:
 rel/main_rel/fn_1_1543E8.c:
 	.text       start:0x001543E8 end:0x00154410
 
+rel/main_rel/fn_1_154BE4.c:
+	.text       start:0x00154BE4 end:0x00154C84
+
 rel/main_rel/fn_1_154C84.c:
 	.text       start:0x00154C84 end:0x00154CC4
 
 rel/main_rel/fn_1_154D84.c:
 	.text       start:0x00154D84 end:0x00154E24
+
+rel/main_rel/fn_1_154E24.c:
+	.text       start:0x00154E24 end:0x00154E34
+
+rel/main_rel/fn_1_154F1C.c:
+	.text       start:0x00154F1C end:0x00154F74
 
 rel/main_rel/fn_1_154F74.c:
 	.text       start:0x00154F74 end:0x00154F88
@@ -2531,11 +2813,20 @@ rel/main_rel/fn_1_156598.c:
 rel/main_rel/fn_1_15659C.c:
 	.text       start:0x0015659C end:0x0015665C
 
+rel/main_rel/fn_1_15665C.c:
+	.text       start:0x0015665C end:0x001566F8
+
 rel/main_rel/fn_1_1567A8.c:
 	.text       start:0x001567A8 end:0x00156884
 
+rel/main_rel/fn_1_156884.c:
+	.text       start:0x00156884 end:0x001568C4
+
 rel/main_rel/fn_1_1568C4.c:
 	.text       start:0x001568C4 end:0x001569A0
+
+rel/main_rel/fn_1_1569A0.c:
+	.text       start:0x001569A0 end:0x001569E8
 
 rel/main_rel/fn_1_156B18.c:
 	.text       start:0x00156B18 end:0x00156C08
@@ -2585,11 +2876,17 @@ rel/main_rel/fn_1_15B51C.c:
 rel/main_rel/fn_1_15B540.c:
 	.text       start:0x0015B540 end:0x0015B544
 
+rel/main_rel/fn_1_15B544.c:
+	.text       start:0x0015B544 end:0x0015B588
+
 rel/main_rel/fn_1_15B588.c:
 	.text       start:0x0015B588 end:0x0015B5CC
 
 rel/main_rel/fn_1_15B698.c:
 	.text       start:0x0015B698 end:0x0015B70C
+
+rel/main_rel/fn_1_15BA78.c:
+	.text       start:0x0015BA78 end:0x0015BB34
 
 rel/main_rel/fn_1_15BB34.c:
 	.text       start:0x0015BB34 end:0x0015BBC4
@@ -2599,6 +2896,9 @@ rel/main_rel/fn_1_15E220.c:
 
 rel/main_rel/fn_1_15E434.c:
 	.text       start:0x0015E434 end:0x0015E44C
+
+rel/main_rel/fn_1_15E688.c:
+	.text       start:0x0015E688 end:0x0015E764
 
 rel/main_rel/fn_1_15F618.c:
 	.text       start:0x0015F618 end:0x0015F62C
