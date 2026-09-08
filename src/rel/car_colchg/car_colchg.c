@@ -37,6 +37,7 @@ u16 fn_1_3F8C(char *, void (*)(void), s32, s32);
 void fn_1_4A00(s32, s32, u32);
 extern void fn_9_1BCC(void);
 extern void fn_9_1AC4(void);
+extern u32 lbl_801A66A0;
 
 /* fzgx:begin _epilog */
 struct CarColchgState {
@@ -153,16 +154,9 @@ void fn_9_6F0(void) {
 }
 /* fzgx:end fn_9_6F0 */
 
-/* fzgx:begin fn_9_7DC noprologue */
+/* fzgx:begin fn_9_7DC */
 #include "types.h"
 #include "rel/car_colchg/globals.h"
-
-extern u32 lbl_9_bss_E0;
-extern s16 lbl_1_bss_96A;
-extern u32 lbl_801A66A0;
-extern struct Struct_lbl_1_bss_D58 lbl_1_bss_D58;
-s32 fn_1_4C10(void);
-extern struct Entry *lbl_1_data_1FB6C[];
 
 struct InputState {
     u8 pad[8];
