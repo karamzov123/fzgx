@@ -6265,7 +6265,7 @@
     "symbols": [
       "fn_1_FA070"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
