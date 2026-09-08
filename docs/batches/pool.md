@@ -57,6 +57,18 @@ unit held back before it bisects. Cause of the broken baseline: I ran configure
 and ninja by hand while a batch was running; two concurrent splits kill each
 other (exit 137). Rule recorded in CLAUDE.md.
 
+## Update, later the same day
+
+objput.c is collapsed: after `tu-include`, `tu-tidy` and `tu-hoist-decls` its
+five blocks compile as one unit at 5/5 and the unit links byte-exact in place
+of the five per-function ranges (`fzgx tu-collapse`, hash-verified, revert on
+failure). alloc.c compiles whole with 19/20 blocks identical; its pool function
+needs a retail object of the whole TU to be scored. Typing strings as `char`
+module-wide broke 29 matched blocks that had declared them `u8`, so it is a
+per-TU opt-in now, and `tu-reflag` re-decides every block's include set after
+a header change, down to a self-contained block carrying the declarations it
+matched under, copied from the committed headers.
+
 ## Next
 
 - Regenerate headers (small globals wider than their field are arrays now),
