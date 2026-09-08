@@ -1361,7 +1361,11 @@ def apply(p: Project, modules: Optional[List[str]] = None, max_size: int = 160, 
             target = p.target_object_for(sym) if sym else None
             if o is None or target is None:
                 results.append((s, size, t, False, -1)); continue
-            ok_, pct = oracle.function_score(p, sym.name, target, o)
+            tw_, ow_ = oracle.words(target, sym.name), oracle.words(o, sym.name)
+            if not tw_ or not ow_:
+                results.append((s, size, t, False, -1)); continue
+            pct, bad_ = oracle.word_score(tw_, ow_)
+            ok_ = not bad_ and len(ow_) == len(tw_)
             if ok_:
                 r = oracle.check(p, s, 4, source=src)
                 ok_ = r.ok and (r.matched or r.matched_pool) and oracle.unit_fully_matches(r) is None

@@ -16,59 +16,26 @@ from __future__ import annotations
 
 import itertools
 import re
-import struct
 import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 from . import oracle
-from .poolfix import Elf
 from .project import STATE_DIR, Project
 
-SHT_RELA = 4
-STT_FUNC = 2
-MASKS = {1: 0x00000000, 4: 0xFFFF0000, 5: 0xFFFF0000, 6: 0xFFFF0000, 10: 0xFC000003, 11: 0xFFFF0003, 109: 0xFFE00000}
 DECL_RE = re.compile(r"^\s*(?:register\s+)?(?:const\s+)?((?:struct\s+\w+\s*\*?|[A-Za-z_]\w*(?:\s*\*)?))(?:(?<=\*)\s*|\s+)([A-Za-z_]\w*)((?:\[[^\]]*\])*)\s*(?:=\s*([^;]+))?;\s*$")
 WORKERS = 12
 
 
 def masked_words(obj: Path, name: str) -> Optional[List[int]]:
-    """The function's machine words with every relocation field zeroed."""
-    try:
-        data = obj.read_bytes()
-        elf = Elf(data)
-    except (OSError, ValueError):
-        return None
-    text = elf.section(".text")
-    if text is None:
-        return None
-    sym = next((s for s in elf.symbols() if s["name"] == name and s["shndx"] == text["index"]), None)
-    if sym is None:
-        return None
-    lo, hi = sym["value"], sym["value"] + sym["size"]
-    buf = bytearray(data[text["offset"] + lo:text["offset"] + hi])
-    for s in elf.sections:
-        if s["type"] == SHT_RELA and s["info"] == text["index"]:
-            for i in range(s["size"] // 12):
-                off, info, _ = struct.unpack(">IIi", data[s["offset"] + 12 * i:s["offset"] + 12 * i + 12])
-                if lo <= off < hi and off + 4 <= hi:
-                    o = off - lo
-                    word = struct.unpack(">I", buf[o:o + 4])[0] & MASKS.get(info & 0xFF, 0)
-                    buf[o:o + 4] = struct.pack(">I", word)
-    return list(struct.unpack(f">{len(buf) // 4}I", bytes(buf[:len(buf) // 4 * 4])))
+    return oracle.words(obj, name)
 
 
 def score(target: List[int], ours: List[int]) -> Tuple[float, List[Tuple[int, int, int]]]:
-    """(percent of equal words, [(index, target word, our word)] for the unequal ones).
-    Positional: a shifted body scores low, which is right for a search whose
-    candidates only differ in register choice."""
-    n = max(len(target), len(ours))
-    if n == 0:
-        return 0.0, []
-    bad = [(i, t, o) for i, (t, o) in enumerate(zip(target, ours)) if t != o]
-    extra = abs(len(target) - len(ours))
-    return 100.0 * (n - len(bad) - extra) / n, bad
+    """(percent, [(index, target word, our word)]) for the unequal words."""
+    pct, bad = oracle.word_score(target, ours)
+    return pct, [(i, target[i], ours[i]) for i in bad if i < len(ours)]
 
 
 REG_FIELDS = 0x03FFF800  # bits 6..20: rD/rS, rA, rB

@@ -360,13 +360,22 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
     def taddr(row):
         ins_ = row.get("instruction") or {}
         return ins_.get("address")
-    base_diff = {taddr(l) for l, k in zip(lrows, kinds_rows) if k is not None and taddr(l) is not None}
+    # rows are addressed by word index into the retail function (objdiff rows carry the address)
+    def _addr(a):
+        if a is None:
+            return None
+        return int(a, 16) if isinstance(a, str) else int(a)
+    fn_addr = next((_addr(taddr(l)) for l in lrows if taddr(l) is not None), None)
+    def tidx(row):
+        a = _addr(taddr(row))
+        return None if a is None or fn_addr is None else (a - fn_addr) // 4
+    base_diff = {tidx(l) for l, k in zip(lrows, kinds_rows) if k is not None and tidx(l) is not None}
     base_extra = sum(1 for l, k in zip(lrows, kinds_rows) if k is not None and taddr(l) is None)
     def targets(fam: str):
         pats = FAMILY_KINDS.get(fam, ())
         if not pats:
             return set(base_diff)
-        return {taddr(l) for l, k in zip(lrows, kinds_rows) if k and taddr(l) is not None and any(k.startswith(pp) for pp in pats)}
+        return {tidx(l) for l, k in zip(lrows, kinds_rows) if k and tidx(l) is not None and any(k.startswith(pp) for pp in pats)}
 
     import difflib
     def spans_of(text: str):
@@ -383,6 +392,7 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
         return t
 
     target = p.target_object_for(sym)
+    tw = oracle.words(target, sym.name) if target else None
     bdir = STATE_DIR / "fixup" / "batch" / key.replace(":", "__")
     bdir.mkdir(parents=True, exist_ok=True)
 
@@ -393,17 +403,16 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
         srcs = []
         for i_, t_ in enumerate(texts):
             f = bdir / f"c{i_}.c"; f.write_text(t_); srcs.append(f)
-        objs = oracle.compile_many(p, sym.module, srcs, bdir / "obj") if target else {}
+        objs = oracle.compile_many(p, sym.module, srcs, bdir / "obj") if target and tw else {}
         res = []
         for i_, t_ in enumerate(texts):
             o = objs.get(srcs[i_])
-            rows = oracle.function_rows(p, sym.name, target, o) if o else None
-            if rows is None:
+            ow = oracle.words(o, sym.name) if o else None
+            if not ow:
                 res.append(None); continue
-            l2, r2, pct = rows
-            k2 = stuck.row_kinds(l2, r2)
-            now_diff = {taddr(l) for l, k in zip(l2, k2) if k is not None and taddr(l) is not None}
-            extra = sum(1 for l, k in zip(l2, k2) if k is not None and taddr(l) is None)
+            pct, bad = oracle.word_score(tw, ow)
+            now_diff = set(bad)
+            extra = max(0, len(ow) - len(tw))
             fixed = base_diff - now_diff
             broken = now_diff - base_diff
             res.append((pct, fixed, broken, extra))

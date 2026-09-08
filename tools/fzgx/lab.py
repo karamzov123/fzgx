@@ -244,31 +244,30 @@ def run(p: Project, min_pct: float = 97.0, limit: int = 400, budget_s: float = 6
             f = bdir / f"c{i}.c"; f.write_text(text); srcs.append(f)
         base_src = bdir / "base.c"; base_src.write_text(body)
         objs = oracle.compile_many(p, sym.module, [base_src] + srcs, bdir / "obj")
-        base_rows = oracle.function_rows(p, sym.name, tgt, objs[base_src]) if objs.get(base_src) else None
-        if not base_rows:
+        tw = oracle.words(tgt, sym.name)
+        bw = oracle.words(objs[base_src], sym.name) if objs.get(base_src) else None
+        if not tw or not bw:
             return None
-        def taddr(r):
-            return (r.get("instruction") or {}).get("address")
-        bk = stuck.row_kinds(base_rows[0], base_rows[1])
-        base_diff = {taddr(l) for l, k in zip(base_rows[0], bk) if k and taddr(l) is not None}
-        per_fn = {"symbol": s, "kind": kind, "base": base_rows[2], "closed_by": [], "improved_by": [], "tries": {}, "best_text": None}
+        base_pct, base_bad = oracle.word_score(tw, bw)
+        base_diff = set(base_bad)
+        per_fn = {"symbol": s, "kind": kind, "base": base_pct, "closed_by": [], "improved_by": [], "tries": {}, "best_text": None}
         best_text = None
         for i, (fam, label, text) in enumerate(pert):
             per_fn["tries"][fam] = per_fn["tries"].get(fam, 0) + 1
             o = objs.get(srcs[i])
             if not o:
                 continue
-            rows = oracle.function_rows(p, sym.name, tgt, o)
-            if not rows:
+            ow = oracle.words(o, sym.name)
+            if not ow:
                 continue
-            k2 = stuck.row_kinds(rows[0], rows[1])
-            now = {taddr(l) for l, k in zip(rows[0], k2) if k and taddr(l) is not None}
-            if rows[2] >= 100.0:
+            pct_, bad = oracle.word_score(tw, ow)
+            now = set(bad)
+            if not bad and len(ow) == len(tw):
                 per_fn["closed_by"].append((fam, label))
                 if best_text is None:
                     best_text = text
-            elif rows[2] > base_rows[2] + 0.05 and not (now - base_diff):
-                per_fn["improved_by"].append((fam, label, round(rows[2], 1)))
+            elif pct_ > base_pct + 0.05 and not (now - base_diff):
+                per_fn["improved_by"].append((fam, label, round(pct_, 1)))
         per_fn["best_text"] = best_text
         return per_fn
     with ThreadPoolExecutor(max_workers=12) as ex:

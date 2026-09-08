@@ -322,6 +322,50 @@ def compile_many(project: Project, module: str, sources: List[Path], out_dir: Pa
     return out
 
 
+_RELOC_MASKS = {1: 0x00000000, 4: 0xFFFF0000, 5: 0xFFFF0000, 6: 0xFFFF0000, 10: 0xFC000003, 11: 0xFFFF0003, 109: 0xFFE00000}
+
+
+def words(obj: Path, name: str) -> Optional[List[int]]:
+    """The function's machine words with every relocation field zeroed: the cheap, exact
+    comparison for candidate loops (no objdiff, ~0.3 ms). None when the object or symbol is missing."""
+    import struct
+    from .poolfix import Elf
+    try:
+        data = obj.read_bytes()
+        elf = Elf(data)
+    except (OSError, ValueError):
+        return None
+    text = elf.section(".text")
+    if text is None:
+        return None
+    sym = next((s_ for s_ in elf.symbols() if s_["name"] == name and s_["shndx"] == text["index"]), None)
+    if sym is None:
+        return None
+    lo, hi = sym["value"], sym["value"] + sym["size"]
+    buf = bytearray(data[text["offset"] + lo:text["offset"] + hi])
+    for s_ in elf.sections:
+        if s_["type"] == 4 and s_["info"] == text["index"]:  # SHT_RELA against .text
+            for i in range(s_["size"] // 12):
+                off, info, _ = struct.unpack(">IIi", data[s_["offset"] + 12 * i:s_["offset"] + 12 * i + 12])
+                if lo <= off < hi and off + 4 <= hi:
+                    o = off - lo
+                    word = struct.unpack(">I", buf[o:o + 4])[0] & _RELOC_MASKS.get(info & 0xFF, 0)
+                    buf[o:o + 4] = struct.pack(">I", word)
+    n = len(buf) // 4
+    return list(struct.unpack(f">{n}I", bytes(buf[:n * 4])))
+
+
+def word_score(target: List[int], ours: List[int]) -> Tuple[float, List[int]]:
+    """(percent of equal words, indices of the unequal ones). Positional: a shifted body
+    scores low, which is what candidate loops want (the objdiff verdict runs on the winner)."""
+    n = max(len(target), len(ours))
+    if n == 0:
+        return 0.0, []
+    bad = [i for i, (t, o) in enumerate(zip(target, ours)) if t != o]
+    extra = abs(len(target) - len(ours))
+    return 100.0 * (n - len(bad) - extra) / n, bad
+
+
 def function_score(project: Project, symbol_name: str, target: Path, obj: Path) -> Tuple[bool, float]:
     """(matched, positional score) from one objdiff run without the rendered diff: the cheap
     verdict for candidate loops (a pool match is not detected here; the full check is run on
