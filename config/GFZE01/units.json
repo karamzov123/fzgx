@@ -1675,6 +1675,16 @@
   },
   {
     "module": "main",
+    "source": "dol/GXInitTexCacheRegion.c",
+    "symbols": [
+      "GXInitTexCacheRegion"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/GXInvalidateVtxCache.c",
     "symbols": [
       "GXInvalidateVtxCache"
@@ -7690,6 +7700,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/bg_win/fn_1_15E434.c",
+    "symbols": [
+      "fn_1_15E434"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/bg_win.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/bg_win/fn_1_15E540.c",
     "symbols": [
       "fn_1_15E540"
@@ -8644,6 +8665,20 @@
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/camera.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_C038.c",
+    "symbols": [
+      "fn_1_C038"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/camera.c",
+    "pool": {
+      "@6": "lbl_1_rodata_478"
+    }
   },
   {
     "module": "main_rel",
@@ -10377,6 +10412,17 @@
     "source": "rel/main_rel/car/fn_1_92530.c",
     "symbols": [
       "fn_1_92530"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/car.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/car/fn_1_935E4.c",
+    "symbols": [
+      "fn_1_935E4"
     ],
     "status": "matching",
     "mw_version": null,
@@ -20793,6 +20839,17 @@
     "source": "rel/main_rel/spline/fn_1_F70D0.c",
     "symbols": [
       "fn_1_F70D0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/spline.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/spline/fn_1_F7128.c",
+    "symbols": [
+      "fn_1_F7128"
     ],
     "status": "matching",
     "mw_version": null,

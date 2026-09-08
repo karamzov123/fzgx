@@ -612,6 +612,30 @@ void camera_save_parameters(f32 first_parameter, f32 second_parameter) {
 }
 /* fzgx:end camera_save_parameters */
 
+/* fzgx:begin fn_1_C038 */
+extern f64 lbl_1_rodata_478;
+extern f32 lbl_1_rodata_49C;
+extern f32 lbl_1_bss_10C0[6];
+
+void fn_1_C038(s32 value, f32 start, f32 end) {
+    f32 difference;
+    f32 ratio;
+    f32 converted;
+
+    difference = end - start;
+    ratio = difference / (f32)(((u32)(value * value)) >> 2);
+
+    lbl_1_bss_10C0[0] = start;
+    lbl_1_bss_10C0[1] = end;
+    lbl_1_bss_10C0[4] = lbl_1_rodata_49C;
+
+    lbl_1_bss_10C0[5] = ratio;
+    converted = (f32)(u32)value;
+    lbl_1_bss_10C0[3] = converted;
+    lbl_1_bss_10C0[2] = converted;
+}
+/* fzgx:end fn_1_C038 */
+
 /* fzgx:begin camera_save_slot */
 typedef struct {
     u32 unk_0;

@@ -84,6 +84,16 @@ void fn_1_15E3E0(s32 index, u32 value) {
 }
 /* fzgx:end fn_1_15E3E0 */
 
+/* fzgx:begin fn_1_15E434 */
+extern u32 lbl_1_bss_8FEA0;
+extern u8 lbl_1_bss_8FE7C;
+
+void fn_1_15E434(u32 value) {
+    lbl_1_bss_8FE7C = 1;
+    lbl_1_bss_8FEA0 = value;
+}
+/* fzgx:end fn_1_15E434 */
+
 /* fzgx:begin fn_1_15E540 */
 // Initializes a background-window entry once, then marks it ready for reuse.
 void fn_1_15E540(s32 index, void *arg) {
