@@ -5,3 +5,54 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+rel/story/fn_7_51C.c:
+	.text       start:0x0000051C end:0x00000520
+
+rel/story/fn_7_FB0.c:
+	.text       start:0x00000FB0 end:0x00000FB4
+
+rel/story/fn_7_13FC.c:
+	.text       start:0x000013FC end:0x00001400
+
+rel/story/fn_7_1538.c:
+	.text       start:0x00001538 end:0x0000153C
+
+rel/story/fn_7_153C.c:
+	.text       start:0x0000153C end:0x00001540
+
+rel/story/fn_7_1540.c:
+	.text       start:0x00001540 end:0x00001544
+
+rel/story/fn_7_15B8.c:
+	.text       start:0x000015B8 end:0x000015BC
+
+rel/story/fn_7_170C.c:
+	.text       start:0x0000170C end:0x00001710
+
+rel/story/fn_7_1DB4.c:
+	.text       start:0x00001DB4 end:0x00001DB8
+
+rel/story/fn_7_1DB8.c:
+	.text       start:0x00001DB8 end:0x00001DBC
+
+rel/story/fn_7_20DC.c:
+	.text       start:0x000020DC end:0x000020E0
+
+rel/story/fn_7_20E0.c:
+	.text       start:0x000020E0 end:0x000020E4
+
+rel/story/fn_7_20F4.c:
+	.text       start:0x000020F4 end:0x000020F8
+
+rel/story/fn_7_20F8.c:
+	.text       start:0x000020F8 end:0x000020FC
+
+rel/story/fn_7_20FC.c:
+	.text       start:0x000020FC end:0x00002100
+
+rel/story/fn_7_2110.c:
+	.text       start:0x00002110 end:0x00002114
+
+rel/story/fn_7_2324.c:
+	.text       start:0x00002324 end:0x0000232C

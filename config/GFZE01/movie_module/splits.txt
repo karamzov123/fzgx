@@ -5,3 +5,222 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:32
+
+rel/movie_module/_epilog.c:
+	.text       start:0x000004D0 end:0x000004D4
+
+rel/movie_module/fn_12_3074.c:
+	.text       start:0x00003074 end:0x0000307C
+
+rel/movie_module/fn_12_35EC.c:
+	.text       start:0x000035EC end:0x000035F0
+
+rel/movie_module/fn_12_4934.c:
+	.text       start:0x00004934 end:0x00004938
+
+rel/movie_module/fn_12_6704.c:
+	.text       start:0x00006704 end:0x00006708
+
+rel/movie_module/fn_12_6708.c:
+	.text       start:0x00006708 end:0x0000670C
+
+rel/movie_module/fn_12_6A88.c:
+	.text       start:0x00006A88 end:0x00006A8C
+
+rel/movie_module/fn_12_6A8C.c:
+	.text       start:0x00006A8C end:0x00006A90
+
+rel/movie_module/fn_12_A9C0.c:
+	.text       start:0x0000A9C0 end:0x0000A9C4
+
+rel/movie_module/fn_12_CBC4.c:
+	.text       start:0x0000CBC4 end:0x0000CBC8
+
+rel/movie_module/fn_12_1258C.c:
+	.text       start:0x0001258C end:0x00012590
+
+rel/movie_module/fn_12_20168.c:
+	.text       start:0x00020168 end:0x00020170
+
+rel/movie_module/fn_12_20170.c:
+	.text       start:0x00020170 end:0x00020178
+
+rel/movie_module/fn_12_20178.c:
+	.text       start:0x00020178 end:0x0002017C
+
+rel/movie_module/fn_12_2017C.c:
+	.text       start:0x0002017C end:0x00020184
+
+rel/movie_module/fn_12_20184.c:
+	.text       start:0x00020184 end:0x00020188
+
+rel/movie_module/fn_12_20188.c:
+	.text       start:0x00020188 end:0x0002018C
+
+rel/movie_module/fn_12_204D4.c:
+	.text       start:0x000204D4 end:0x000204DC
+
+rel/movie_module/fn_12_2166C.c:
+	.text       start:0x0002166C end:0x00021674
+
+rel/movie_module/fn_12_218D0.c:
+	.text       start:0x000218D0 end:0x000218D8
+
+rel/movie_module/fn_12_219D8.c:
+	.text       start:0x000219D8 end:0x000219E0
+
+rel/movie_module/fn_12_219E0.c:
+	.text       start:0x000219E0 end:0x000219E8
+
+rel/movie_module/fn_12_22FB4.c:
+	.text       start:0x00022FB4 end:0x00022FB8
+
+rel/movie_module/fn_12_22FB8.c:
+	.text       start:0x00022FB8 end:0x00022FBC
+
+rel/movie_module/fn_12_24D78.c:
+	.text       start:0x00024D78 end:0x00024D80
+
+rel/movie_module/fn_12_24E28.c:
+	.text       start:0x00024E28 end:0x00024E30
+
+rel/movie_module/fn_12_24E30.c:
+	.text       start:0x00024E30 end:0x00024E38
+
+rel/movie_module/fn_12_24E38.c:
+	.text       start:0x00024E38 end:0x00024E40
+
+rel/movie_module/fn_12_24E40.c:
+	.text       start:0x00024E40 end:0x00024E48
+
+rel/movie_module/fn_12_24E48.c:
+	.text       start:0x00024E48 end:0x00024E50
+
+rel/movie_module/fn_12_24E50.c:
+	.text       start:0x00024E50 end:0x00024E58
+
+rel/movie_module/fn_12_24E84.c:
+	.text       start:0x00024E84 end:0x00024E8C
+
+rel/movie_module/fn_12_24E8C.c:
+	.text       start:0x00024E8C end:0x00024E94
+
+rel/movie_module/fn_12_2505C.c:
+	.text       start:0x0002505C end:0x00025064
+
+rel/movie_module/fn_12_25064.c:
+	.text       start:0x00025064 end:0x0002506C
+
+rel/movie_module/fn_12_2506C.c:
+	.text       start:0x0002506C end:0x00025074
+
+rel/movie_module/fn_12_25074.c:
+	.text       start:0x00025074 end:0x0002507C
+
+rel/movie_module/fn_12_25740.c:
+	.text       start:0x00025740 end:0x00025748
+
+rel/movie_module/fn_12_26C04.c:
+	.text       start:0x00026C04 end:0x00026C0C
+
+rel/movie_module/fn_12_26C1C.c:
+	.text       start:0x00026C1C end:0x00026C24
+
+rel/movie_module/fn_12_26C24.c:
+	.text       start:0x00026C24 end:0x00026C2C
+
+rel/movie_module/fn_12_2F19C.c:
+	.text       start:0x0002F19C end:0x0002F1A0
+
+rel/movie_module/fn_12_2F8A0.c:
+	.text       start:0x0002F8A0 end:0x0002F8A8
+
+rel/movie_module/fn_12_2F948.c:
+	.text       start:0x0002F948 end:0x0002F950
+
+rel/movie_module/fn_12_2F950.c:
+	.text       start:0x0002F950 end:0x0002F958
+
+rel/movie_module/fn_12_2F958.c:
+	.text       start:0x0002F958 end:0x0002F960
+
+rel/movie_module/fn_12_2F960.c:
+	.text       start:0x0002F960 end:0x0002F968
+
+rel/movie_module/fn_12_2F968.c:
+	.text       start:0x0002F968 end:0x0002F970
+
+rel/movie_module/fn_12_2FA80.c:
+	.text       start:0x0002FA80 end:0x0002FA88
+
+rel/movie_module/fn_12_2FA88.c:
+	.text       start:0x0002FA88 end:0x0002FA90
+
+rel/movie_module/fn_12_2FB54.c:
+	.text       start:0x0002FB54 end:0x0002FB5C
+
+rel/movie_module/fn_12_2FC68.c:
+	.text       start:0x0002FC68 end:0x0002FC70
+
+rel/movie_module/fn_12_2FC70.c:
+	.text       start:0x0002FC70 end:0x0002FC78
+
+rel/movie_module/fn_12_2FC78.c:
+	.text       start:0x0002FC78 end:0x0002FC80
+
+rel/movie_module/fn_12_2FC80.c:
+	.text       start:0x0002FC80 end:0x0002FC88
+
+rel/movie_module/fn_12_2FC88.c:
+	.text       start:0x0002FC88 end:0x0002FC90
+
+rel/movie_module/fn_12_2FC90.c:
+	.text       start:0x0002FC90 end:0x0002FC98
+
+rel/movie_module/fn_12_2FD8C.c:
+	.text       start:0x0002FD8C end:0x0002FD94
+
+rel/movie_module/fn_12_2FD94.c:
+	.text       start:0x0002FD94 end:0x0002FD9C
+
+rel/movie_module/fn_12_341BC.c:
+	.text       start:0x000341BC end:0x000341C0
+
+rel/movie_module/fn_12_341C0.c:
+	.text       start:0x000341C0 end:0x000341C4
+
+rel/movie_module/fn_12_34FFC.c:
+	.text       start:0x00034FFC end:0x00035004
+
+rel/movie_module/fn_12_35004.c:
+	.text       start:0x00035004 end:0x0003500C
+
+rel/movie_module/fn_12_3500C.c:
+	.text       start:0x0003500C end:0x00035010
+
+rel/movie_module/fn_12_35010.c:
+	.text       start:0x00035010 end:0x00035014
+
+rel/movie_module/fn_12_35014.c:
+	.text       start:0x00035014 end:0x00035018
+
+rel/movie_module/fn_12_35DB4.c:
+	.text       start:0x00035DB4 end:0x00035DBC
+
+rel/movie_module/fn_12_3D730.c:
+	.text       start:0x0003D730 end:0x0003D734
+
+rel/movie_module/fn_12_3D734.c:
+	.text       start:0x0003D734 end:0x0003D738
+
+rel/movie_module/fn_12_3D738.c:
+	.text       start:0x0003D738 end:0x0003D73C
+
+rel/movie_module/fn_12_3D73C.c:
+	.text       start:0x0003D73C end:0x0003D740
+
+rel/movie_module/fn_12_3DBDC.c:
+	.text       start:0x0003DBDC end:0x0003DBE0
+
+rel/movie_module/fn_12_3DCEC.c:
+	.text       start:0x0003DCEC end:0x0003DCF0

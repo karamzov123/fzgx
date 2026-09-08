@@ -5,3 +5,54 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:32
+
+rel/customize/fn_3_7864.c:
+	.text       start:0x00007864 end:0x00007868
+
+rel/customize/fn_3_7868.c:
+	.text       start:0x00007868 end:0x0000786C
+
+rel/customize/fn_3_786C.c:
+	.text       start:0x0000786C end:0x00007870
+
+rel/customize/fn_3_1304C.c:
+	.text       start:0x0001304C end:0x00013050
+
+rel/customize/fn_3_13050.c:
+	.text       start:0x00013050 end:0x00013054
+
+rel/customize/fn_3_13054.c:
+	.text       start:0x00013054 end:0x00013058
+
+rel/customize/fn_3_13058.c:
+	.text       start:0x00013058 end:0x0001305C
+
+rel/customize/fn_3_1305C.c:
+	.text       start:0x0001305C end:0x00013060
+
+rel/customize/fn_3_13060.c:
+	.text       start:0x00013060 end:0x00013064
+
+rel/customize/fn_3_13064.c:
+	.text       start:0x00013064 end:0x00013068
+
+rel/customize/fn_3_13068.c:
+	.text       start:0x00013068 end:0x0001306C
+
+rel/customize/fn_3_1306C.c:
+	.text       start:0x0001306C end:0x00013070
+
+rel/customize/fn_3_13070.c:
+	.text       start:0x00013070 end:0x00013074
+
+rel/customize/fn_3_13074.c:
+	.text       start:0x00013074 end:0x00013078
+
+rel/customize/fn_3_13078.c:
+	.text       start:0x00013078 end:0x0001307C
+
+rel/customize/fn_3_146BC.c:
+	.text       start:0x000146BC end:0x000146C0
+
+rel/customize/fn_3_2B774.c:
+	.text       start:0x0002B774 end:0x0002B778

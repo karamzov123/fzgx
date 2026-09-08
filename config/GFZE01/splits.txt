@@ -10,3 +10,183 @@ Sections:
 	.sbss       type:bss align:32
 	.sdata2     type:rodata align:4
 	.sbss2      type:bss align:4
+
+dol/fn_80008E30.c:
+	.text       start:0x80008E30 end:0x80008E34
+
+dol/fn_8000DD60.c:
+	.text       start:0x8000DD60 end:0x8000DD64
+
+dol/fn_8000DD64.c:
+	.text       start:0x8000DD64 end:0x8000DD68
+
+dol/fn_80010140.c:
+	.text       start:0x80010140 end:0x80010144
+
+dol/fn_800133DC.c:
+	.text       start:0x800133DC end:0x800133E0
+
+dol/fn_80017768.c:
+	.text       start:0x80017768 end:0x8001776C
+
+dol/fn_80020460.c:
+	.text       start:0x80020460 end:0x80020464
+
+dol/fn_80021910.c:
+	.text       start:0x80021910 end:0x80021914
+
+dol/fn_8002244C.c:
+	.text       start:0x8002244C end:0x80022450
+
+dol/fn_800230A0.c:
+	.text       start:0x800230A0 end:0x800230A4
+
+dol/fn_80025EE0.c:
+	.text       start:0x80025EE0 end:0x80025EE4
+
+dol/fn_80029824.c:
+	.text       start:0x80029824 end:0x80029828
+
+dol/fn_8002EDA0.c:
+	.text       start:0x8002EDA0 end:0x8002EDA8
+
+dol/fn_80038878.c:
+	.text       start:0x80038878 end:0x8003887C
+
+dol/fn_8004216C.c:
+	.text       start:0x8004216C end:0x80042170
+
+dol/fn_8004B79C.c:
+	.text       start:0x8004B79C end:0x8004B7A0
+
+dol/fn_8004BBC4.c:
+	.text       start:0x8004BBC4 end:0x8004BBC8
+
+dol/fn_8004BBC8.c:
+	.text       start:0x8004BBC8 end:0x8004BBCC
+
+dol/fn_8004ED80.c:
+	.text       start:0x8004ED80 end:0x8004ED84
+
+dol/fn_80050F64.c:
+	.text       start:0x80050F64 end:0x80050F6C
+
+dol/fn_80050F6C.c:
+	.text       start:0x80050F6C end:0x80050F74
+
+dol/fn_80053A30.c:
+	.text       start:0x80053A30 end:0x80053A38
+
+dol/fn_800555C0.c:
+	.text       start:0x800555C0 end:0x800555C4
+
+dol/fn_8005A678.c:
+	.text       start:0x8005A678 end:0x8005A680
+
+dol/fn_8005A680.c:
+	.text       start:0x8005A680 end:0x8005A688
+
+dol/fn_80071D2C.c:
+	.text       start:0x80071D2C end:0x80071D30
+
+dol/fn_800724C8.c:
+	.text       start:0x800724C8 end:0x800724CC
+
+dol/__end_critical_region.c:
+	.text       start:0x8007ED84 end:0x8007ED88
+
+dol/__begin_critical_region.c:
+	.text       start:0x8007ED88 end:0x8007ED8C
+
+dol/__kill_critical_regions.c:
+	.text       start:0x8007ED8C end:0x8007ED90
+
+dol/fn_8008580C.c:
+	.text       start:0x8008580C end:0x80085814
+
+dol/fn_80089380.c:
+	.text       start:0x80089380 end:0x80089388
+
+dol/usr_put_initialize.c:
+	.text       start:0x80089638 end:0x8008963C
+
+dol/TRKInitializeDispatcher.c:
+	.text       start:0x80089834 end:0x8008983C
+
+dol/fn_8008A5AC.c:
+	.text       start:0x8008A5AC end:0x8008A5B4
+
+dol/fn_8008A5B4.c:
+	.text       start:0x8008A5B4 end:0x8008A5BC
+
+dol/fn_8008AF40.c:
+	.text       start:0x8008AF40 end:0x8008AF48
+
+dol/fn_8008AF48.c:
+	.text       start:0x8008AF48 end:0x8008AF50
+
+dol/fn_8008AF50.c:
+	.text       start:0x8008AF50 end:0x8008AF58
+
+dol/TRKUARTInterruptHandler.c:
+	.text       start:0x8008D2AC end:0x8008D2B0
+
+dol/udp_cc_post_stop.c:
+	.text       start:0x8008DD88 end:0x8008DD90
+
+dol/udp_cc_pre_continue.c:
+	.text       start:0x8008DD90 end:0x8008DD98
+
+dol/udp_cc_peek.c:
+	.text       start:0x8008DD98 end:0x8008DDA0
+
+dol/udp_cc_write.c:
+	.text       start:0x8008DDA0 end:0x8008DDA8
+
+dol/udp_cc_read.c:
+	.text       start:0x8008DDA8 end:0x8008DDB0
+
+dol/udp_cc_close.c:
+	.text       start:0x8008DDB0 end:0x8008DDB8
+
+dol/udp_cc_open.c:
+	.text       start:0x8008DDB8 end:0x8008DDC0
+
+dol/udp_cc_shutdown.c:
+	.text       start:0x8008DDC0 end:0x8008DDC8
+
+dol/udp_cc_initialize.c:
+	.text       start:0x8008DDC8 end:0x8008DDD0
+
+dol/ddh_cc_close.c:
+	.text       start:0x8008E058 end:0x8008E060
+
+dol/ddh_cc_shutdown.c:
+	.text       start:0x8008E084 end:0x8008E08C
+
+dol/gdev_cc_close.c:
+	.text       start:0x8008E60C end:0x8008E614
+
+dol/gdev_cc_shutdown.c:
+	.text       start:0x8008E638 end:0x8008E640
+
+dol/fn_8008E76C.c:
+	.text       start:0x8008E76C end:0x8008E770
+
+dol/fn_8008F44C.c:
+	.text       start:0x8008F44C end:0x8008F450
+
+dol/fn_8008F450.c:
+	.text       start:0x8008F450 end:0x8008F454
+
+dol/fn_8008F454.c:
+	.text       start:0x8008F454 end:0x8008F458
+
+dol/fn_8008F458.c:
+	.text       start:0x8008F458 end:0x8008F45C
+
+dol/AMC_IsStub.c:
+	.text       start:0x8008FED4 end:0x8008FEDC
+
+dol/Hu_IsStub.c:
+	.text       start:0x8008FEDC end:0x8008FEE4

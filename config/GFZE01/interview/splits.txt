@@ -5,3 +5,15 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+rel/interview/fn_17_1794.c:
+	.text       start:0x00001794 end:0x00001798
+
+rel/interview/fn_17_49B8.c:
+	.text       start:0x000049B8 end:0x000049BC
+
+rel/interview/fn_17_4E50.c:
+	.text       start:0x00004E50 end:0x00004E54
+
+rel/interview/fn_17_72BC.c:
+	.text       start:0x000072BC end:0x000072C0

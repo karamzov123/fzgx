@@ -5,3 +5,75 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:32
+
+rel/title/fn_8_6FC.c:
+	.text       start:0x000006FC end:0x00000704
+
+rel/title/fn_8_BD8.c:
+	.text       start:0x00000BD8 end:0x00000BDC
+
+rel/title/fn_8_BDC.c:
+	.text       start:0x00000BDC end:0x00000BE0
+
+rel/title/fn_8_BE0.c:
+	.text       start:0x00000BE0 end:0x00000BE4
+
+rel/title/fn_8_1C08.c:
+	.text       start:0x00001C08 end:0x00001C0C
+
+rel/title/fn_8_1C0C.c:
+	.text       start:0x00001C0C end:0x00001C10
+
+rel/title/fn_8_1C10.c:
+	.text       start:0x00001C10 end:0x00001C14
+
+rel/title/fn_8_1C14.c:
+	.text       start:0x00001C14 end:0x00001C18
+
+rel/title/fn_8_2120.c:
+	.text       start:0x00002120 end:0x00002124
+
+rel/title/fn_8_4E8C.c:
+	.text       start:0x00004E8C end:0x00004E90
+
+rel/title/fn_8_520C.c:
+	.text       start:0x0000520C end:0x00005210
+
+rel/title/fn_8_5210.c:
+	.text       start:0x00005210 end:0x00005214
+
+rel/title/fn_8_5214.c:
+	.text       start:0x00005214 end:0x00005218
+
+rel/title/fn_8_5C4C.c:
+	.text       start:0x00005C4C end:0x00005C50
+
+rel/title/fn_8_5C50.c:
+	.text       start:0x00005C50 end:0x00005C54
+
+rel/title/fn_8_6558.c:
+	.text       start:0x00006558 end:0x00006560
+
+rel/title/fn_8_6560.c:
+	.text       start:0x00006560 end:0x00006568
+
+rel/title/fn_8_6568.c:
+	.text       start:0x00006568 end:0x00006570
+
+rel/title/fn_8_8C44.c:
+	.text       start:0x00008C44 end:0x00008C48
+
+rel/title/fn_8_9B40.c:
+	.text       start:0x00009B40 end:0x00009B44
+
+rel/title/fn_8_CF58.c:
+	.text       start:0x0000CF58 end:0x0000CF60
+
+rel/title/fn_8_CF60.c:
+	.text       start:0x0000CF60 end:0x0000CF68
+
+rel/title/fn_8_CF68.c:
+	.text       start:0x0000CF68 end:0x0000CF70
+
+rel/title/fn_8_D020.c:
+	.text       start:0x0000D020 end:0x0000D024

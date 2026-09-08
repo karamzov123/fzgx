@@ -5,3 +5,27 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:32
+
+rel/sel/fn_10_BEF0.c:
+	.text       start:0x0000BEF0 end:0x0000BEF4
+
+rel/sel/fn_10_BEF4.c:
+	.text       start:0x0000BEF4 end:0x0000BEF8
+
+rel/sel/fn_10_C954.c:
+	.text       start:0x0000C954 end:0x0000C958
+
+rel/sel/fn_10_C9F4.c:
+	.text       start:0x0000C9F4 end:0x0000C9F8
+
+rel/sel/fn_10_CA90.c:
+	.text       start:0x0000CA90 end:0x0000CA94
+
+rel/sel/fn_10_1B658.c:
+	.text       start:0x0001B658 end:0x0001B65C
+
+rel/sel/fn_10_1B65C.c:
+	.text       start:0x0001B65C end:0x0001B660
+
+rel/sel/fn_10_1B660.c:
+	.text       start:0x0001B660 end:0x0001B664

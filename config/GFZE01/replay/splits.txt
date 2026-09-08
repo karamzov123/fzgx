@@ -5,3 +5,21 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+rel/replay/fn_13_A40.c:
+	.text       start:0x00000A40 end:0x00000A48
+
+rel/replay/fn_13_AFC.c:
+	.text       start:0x00000AFC end:0x00000B00
+
+rel/replay/fn_13_B00.c:
+	.text       start:0x00000B00 end:0x00000B04
+
+rel/replay/_epilog.c:
+	.text       start:0x00000B04 end:0x00000B08
+
+rel/replay/fn_13_B78.c:
+	.text       start:0x00000B78 end:0x00000B7C
+
+rel/replay/fn_13_FA8.c:
+	.text       start:0x00000FA8 end:0x00000FAC

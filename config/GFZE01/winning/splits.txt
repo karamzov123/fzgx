@@ -5,3 +5,18 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+rel/winning/fn_15_B8C.c:
+	.text       start:0x00000B8C end:0x00000B90
+
+rel/winning/fn_15_2CEC.c:
+	.text       start:0x00002CEC end:0x00002CF0
+
+rel/winning/fn_15_3AFC.c:
+	.text       start:0x00003AFC end:0x00003B00
+
+rel/winning/fn_15_405C.c:
+	.text       start:0x0000405C end:0x00004060
+
+rel/winning/fn_15_545C.c:
+	.text       start:0x0000545C end:0x00005460

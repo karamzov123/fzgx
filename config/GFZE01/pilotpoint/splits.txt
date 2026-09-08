@@ -5,3 +5,21 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:32
+
+rel/pilotpoint/fn_14_900.c:
+	.text       start:0x00000900 end:0x00000904
+
+rel/pilotpoint/fn_14_258C.c:
+	.text       start:0x0000258C end:0x00002590
+
+rel/pilotpoint/fn_14_B480.c:
+	.text       start:0x0000B480 end:0x0000B484
+
+rel/pilotpoint/fn_14_C4F4.c:
+	.text       start:0x0000C4F4 end:0x0000C4F8
+
+rel/pilotpoint/fn_14_C698.c:
+	.text       start:0x0000C698 end:0x0000C69C
+
+rel/pilotpoint/fn_14_DC28.c:
+	.text       start:0x0000DC28 end:0x0000DC2C
