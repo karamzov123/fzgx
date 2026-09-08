@@ -1,0 +1,22 @@
+[
+  {
+    "module": "sample",
+    "source": "rel/sample/fn_18_40C.c",
+    "symbols": [
+      "fn_18_40C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "sample",
+    "source": "rel/sample/keygen.c",
+    "symbols": [
+      "fn_18_3FC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  }
+]
