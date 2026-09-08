@@ -1,4 +1,10 @@
 #include "types.h"
 
-// fn_1_F1864: main_rel .text:0x000F1864 size 0x5C
-// Carved by fzgx. Replace this file's body with the matching C.
+void fn_1_F1864(u32 *out, const u32 *x, const u32 *y, const u32 *z) {
+    out[0] = 0;
+    out[1] = 0;
+    out[0] += x[0] << 10;
+    out[0] += y[0] >> 11;
+    out[1] += y[0] << 21;
+    out[1] += z[0];
+}
