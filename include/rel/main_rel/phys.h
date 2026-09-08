@@ -57,13 +57,16 @@ typedef struct {
 extern Obj_1_bss_7AE88 lbl_1_bss_7AE88;
 
 // lbl_1_bss_7B188: .bss size 0x8, 6 refs from phys.c
-extern u32 lbl_1_bss_7B188[2];
+extern u32 lbl_1_bss_7B188;
 
 // lbl_1_data_3E52C: .data size 0x4, 5 refs from phys.c (own data block)
 extern u32 lbl_1_data_3E52C;
 
 // lbl_1_data_3E358: .data size 0xC, 5 refs from phys.c (own data block)
 extern u8 lbl_1_data_3E358[0xC];
+
+// lbl_1_data_3DC98: .data size 0x6, 4 refs from phys.c
+extern u32 lbl_1_data_3DC98;
 
 // lbl_1_bss_7AEB8: .bss size 0x294, 4 refs from phys.c
 typedef struct {
@@ -95,9 +98,6 @@ typedef struct {
 } Obj_1_bss_7AEB8;
 extern Obj_1_bss_7AEB8 lbl_1_bss_7AEB8;
 
-// lbl_1_data_3DC98: .data size 0x6, 4 refs from phys.c
-extern u32 lbl_1_data_3DC98;
-
 // lbl_1_data_3E184: .data size 0xC, 3 refs from phys.c (own data block)
 typedef struct {
     u8 pad_0[0x8];
@@ -108,9 +108,6 @@ extern Obj_1_data_3E184 lbl_1_data_3E184;
 // lbl_1_data_3DDB4: .data size 0x88, 3 refs from phys.c (own data block)
 extern u8 lbl_1_data_3DDB4[0x88];
 
-// lbl_1_data_3E538: .data size 0x4, 2 refs from phys.c (own data block)
-extern u32 lbl_1_data_3E538;
-
 // lbl_1_bss_7C85C: .bss size 0x71, 2 refs from phys.c
 typedef struct {
     u32 unk_0;  // 2 loads, 2 stores
@@ -118,26 +115,17 @@ typedef struct {
 } Obj_1_bss_7C85C;
 extern Obj_1_bss_7C85C lbl_1_bss_7C85C;
 
+// lbl_1_data_3E538: .data size 0x4, 2 refs from phys.c (own data block)
+extern u32 lbl_1_data_3E538;
+
 // lbl_1_data_3E5B4: .data size 0x78, 2 refs from phys.c (own data block)
 extern u8 lbl_1_data_3E5B4[0x78];
-
-// lbl_1_data_3E190: .data size 0x7, 1 refs from phys.c (own data block)
-extern u32 lbl_1_data_3E190;
 
 // lbl_1_data_3E434: .data size 0x44, 1 refs from phys.c (own data block)
 extern u8 lbl_1_data_3E434[0x44];
 
-// lbl_1_data_3E53C: .data size 0x78, 1 refs from phys.c (own data block)
-extern u8 lbl_1_data_3E53C[0x78];
-
-// lbl_1_data_3DE40: .data size 0x128, 1 refs from phys.c (own data block)
-extern u8 lbl_1_data_3DE40[0x128];
-
-// lbl_1_data_3E150: .data size 0x4, 1 refs from phys.c (own data block)
-extern u32 lbl_1_data_3E150;
-
 // lbl_1_data_3E530: .data size 0x8, 1 refs from phys.c (own data block)
-extern u32 lbl_1_data_3E530[2];
+extern u32 lbl_1_data_3E530;
 
 // lbl_1_data_3DE3C: .data size 0x4, 1 refs from phys.c (own data block)
 extern u32 lbl_1_data_3DE3C;
@@ -147,5 +135,17 @@ extern u8 lbl_1_data_3E154[0xC];
 
 // lbl_1_data_3E160: .data size 0x24, 1 refs from phys.c (own data block)
 extern u8 lbl_1_data_3E160[0x24];
+
+// lbl_1_data_3E53C: .data size 0x78, 1 refs from phys.c (own data block)
+extern u8 lbl_1_data_3E53C[0x78];
+
+// lbl_1_data_3E150: .data size 0x4, 1 refs from phys.c (own data block)
+extern u32 lbl_1_data_3E150;
+
+// lbl_1_data_3E190: .data size 0x7, 1 refs from phys.c (own data block)
+extern u32 lbl_1_data_3E190;
+
+// lbl_1_data_3DE40: .data size 0x128, 1 refs from phys.c (own data block)
+extern u8 lbl_1_data_3DE40[0x128];
 
 #endif  // REL_MAIN_REL_PHYS_H

@@ -13,14 +13,14 @@ extern u8 lbl_1_bss_7EFD4;
 // lbl_1_bss_7EFD0: .bss size 0x2, 4 refs from replay.c
 extern u16 lbl_1_bss_7EFD0;
 
-// lbl_1_bss_7F01C: .bss size 0x2, 2 refs from replay.c
-extern u16 lbl_1_bss_7F01C;
-
-// lbl_1_bss_7F020: .bss size 0x8, 2 refs from replay.c
-extern u32 lbl_1_bss_7F020[2];
-
 // lbl_1_data_3E8C8: .data size 0x9, 2 refs from replay.c (own data block)
 extern u8 lbl_1_data_3E8C8[0x9];
+
+// lbl_1_bss_7F020: .bss size 0x8, 2 refs from replay.c
+extern u32 lbl_1_bss_7F020;
+
+// lbl_1_bss_7F01C: .bss size 0x2, 2 refs from replay.c
+extern u16 lbl_1_bss_7F01C;
 
 // lbl_1_data_3E8D4: .data size 0xA, 1 refs from replay.c (own data block)
 extern u8 lbl_1_data_3E8D4[0xA];

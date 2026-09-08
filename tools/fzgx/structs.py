@@ -323,10 +323,8 @@ def header(p: Project, module: str, min_refs: int = 20, sections=(".data", ".bss
                 out.append(f"extern {pt} *{name};" + (f"  // array of 0x{info['stride']:X}-byte records" if info.get("stride") else ""))
             else:
                 f = nfields.get(0, {"width": min(sd.size, 4) or 4, "float": False})
-                w = f.get("width", 4) or 4
-                ctype = {1: "u8", 2: "u16", 4: "f32" if f.get("float") else "u32", 8: "f64"}.get(w, "u32")
-                n = sd.size // w if sd.size > w else 0
-                out.append(f"extern {ctype} {name}[{n}];" if n > 1 else f"extern {ctype} {name};")
+                ctype = {1: "u8", 2: "u16", 4: "f32" if f.get("float") else "u32", 8: "f64"}.get(f.get("width", 4), "u32")
+                out.append(f"extern {ctype} {name};")
         else:
             ptr_types = {}
             for poff, fl in sorted(info.get("pointees", {}).items()):
@@ -474,8 +472,9 @@ def tu_header(p: Project, module: str, tu: str, min_refs: int = 2) -> str:
                 f = nfields.get(0, {"width": min(sd.size, 4) or 4, "float": False})
                 w = f.get("width", 4) or 4
                 ctype = {1: "u8", 2: "s16" if f.get("signed") else "u16", 4: "f32" if f.get("float") else "u32", 8: "f64"}.get(w, "u32")
-                n = sd.size // w if w and sd.size > w else 0
-                out.append(f"extern {ctype} {name}[{n}];" if n > 1 else f"extern {ctype} {name};")
+                # size > width would suggest an array, but matched code reads such symbols as
+                # scalars far more often than it indexes them; the block that indexes is revised
+                out.append(f"extern {ctype} {name};")
         elif not nfields and sd.size:
             out.append(f"extern u8 {name}[0x{sd.size:X}];")
         else:

@@ -25,7 +25,7 @@ extern Obj_1_bss_6D7A8 lbl_1_bss_6D7A8;
 extern u8 lbl_1_data_1EEB0[0xC];
 
 // lbl_1_bss_6D7E8: .bss size 0x8, 2 refs from light.c
-extern u32 lbl_1_bss_6D7E8[2];
+extern u32 lbl_1_bss_6D7E8;
 
 // lbl_1_data_1EE44: .data size 0x2C, 1 refs from light.c (own data block)
 extern u8 lbl_1_data_1EE44[0x2C];

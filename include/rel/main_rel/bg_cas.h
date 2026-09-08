@@ -95,8 +95,15 @@ typedef struct {
 } Obj_1_bss_850C0;
 extern Obj_1_bss_850C0 lbl_1_bss_850C0;
 
+// lbl_1_bss_850C6: .bss size 0xE, 3 refs from bg_cas.c
+typedef struct {
+    u8 unk_0;  // 1 loads, 2 stores
+    u8 pad_1[0xD];
+} Obj_1_bss_850C6;
+extern Obj_1_bss_850C6 lbl_1_bss_850C6;
+
 // lbl_1_data_3EFA8: .data size 0x8, 3 refs from bg_cas.c (own data block)
-extern u32 lbl_1_data_3EFA8[2];
+extern u32 lbl_1_data_3EFA8;
 
 // lbl_1_bss_85250: .bss size 0x30, 3 refs from bg_cas.c
 typedef struct {
@@ -151,21 +158,11 @@ typedef struct {
 } Obj_1_bss_85250;
 extern Obj_1_bss_85250 lbl_1_bss_85250;
 
-// lbl_1_bss_850C6: .bss size 0xE, 3 refs from bg_cas.c
-typedef struct {
-    u8 unk_0;  // 1 loads, 2 stores
-    u8 pad_1[0xD];
-} Obj_1_bss_850C6;
-extern Obj_1_bss_850C6 lbl_1_bss_850C6;
+// lbl_1_bss_85204: .bss size 0x20, 2 refs from bg_cas.c
+extern u8 lbl_1_bss_85204[0x20];
 
-// lbl_1_bss_850D4: .bss size 0x4, 2 refs from bg_cas.c
-extern f32 lbl_1_bss_850D4;
-
-// lbl_1_bss_850D8: .bss size 0x8, 2 refs from bg_cas.c
-extern f32 lbl_1_bss_850D8[2];
-
-// lbl_1_data_3EFB8: .data size 0x108, 2 refs from bg_cas.c (own data block)
-extern u8 lbl_1_data_3EFB8[0x108];
+// lbl_1_data_3EFB0: .data size 0x8, 2 refs from bg_cas.c (own data block)
+extern u32 lbl_1_data_3EFB0;
 
 // lbl_1_bss_D58: .bss size 0x18, 2 refs from bg_cas.c
 typedef struct {
@@ -181,17 +178,20 @@ typedef struct {
 } Obj_1_bss_D58;
 extern Obj_1_bss_D58 lbl_1_bss_D58;
 
-// lbl_1_data_3EFB0: .data size 0x8, 2 refs from bg_cas.c (own data block)
-extern u32 lbl_1_data_3EFB0[2];
+// lbl_1_bss_850D4: .bss size 0x4, 2 refs from bg_cas.c
+extern f32 lbl_1_bss_850D4;
+
+// lbl_1_bss_850D8: .bss size 0x8, 2 refs from bg_cas.c
+extern f32 lbl_1_bss_850D8;
+
+// lbl_1_bss_85224: .bss size 0x2C, 2 refs from bg_cas.c
+extern u8 lbl_1_bss_85224[0x2C];
 
 // lbl_1_bss_84450: .bss size 0x1, 2 refs from bg_cas.c
 extern u8 lbl_1_bss_84450;
 
-// lbl_1_bss_85204: .bss size 0x20, 2 refs from bg_cas.c
-extern u8 lbl_1_bss_85204[0x20];
-
-// lbl_1_bss_85224: .bss size 0x2C, 2 refs from bg_cas.c
-extern u8 lbl_1_bss_85224[0x2C];
+// lbl_1_data_3EFB8: .data size 0x108, 2 refs from bg_cas.c (own data block)
+extern u8 lbl_1_data_3EFB8[0x108];
 
 // lbl_1_data_3EF90: .data size 0x9, 1 refs from bg_cas.c (own data block)
 extern u8 lbl_1_data_3EF90[0x9];

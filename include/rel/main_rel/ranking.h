@@ -180,6 +180,16 @@ extern u8 lbl_1_bss_8F588[0x2F0];
 // lbl_1_data_49B08: .data size 0xA, 2 refs from ranking.c (own data block)
 extern u8 lbl_1_data_49B08[0xA];
 
+// lbl_1_bss_8F3E4: .bss size 0x18, 2 refs from ranking.c
+typedef struct {
+    u32 unk_0;  // 1 loads, 1 stores
+    u8 pad_4[0x14];
+} Obj_1_bss_8F3E4;
+extern Obj_1_bss_8F3E4 lbl_1_bss_8F3E4;
+
+// lbl_1_bss_8F3E0: .bss size 0x4, 2 refs from ranking.c
+extern u32 lbl_1_bss_8F3E0;
+
 // lbl_1_data_FCD4: .data size 0x1D60, 2 refs from ranking.c
 typedef struct {
     u8 pad_0[0x4];
@@ -200,30 +210,20 @@ extern Obj_1_data_FCD4 lbl_1_data_FCD4;
 // lbl_1_bss_8F578: .bss size 0x4, 2 refs from ranking.c
 extern u32 lbl_1_bss_8F578;
 
-// lbl_1_bss_8F3E0: .bss size 0x4, 2 refs from ranking.c
-extern u32 lbl_1_bss_8F3E0;
-
-// lbl_1_bss_8F3E4: .bss size 0x18, 2 refs from ranking.c
-typedef struct {
-    u32 unk_0;  // 1 loads, 1 stores
-    u8 pad_4[0x14];
-} Obj_1_bss_8F3E4;
-extern Obj_1_bss_8F3E4 lbl_1_bss_8F3E4;
-
-// jumptable_1_data_4C7B0: .data size 0x1C, 1 refs from ranking.c (own data block)
-extern u8 jumptable_1_data_4C7B0[0x1C];
-
 // jumptable_1_data_4C794: .data size 0x1C, 1 refs from ranking.c (own data block)
 extern u8 jumptable_1_data_4C794[0x1C];
 
 // lbl_1_data_49B20: .data size 0x8, 1 refs from ranking.c (own data block)
-extern u32 lbl_1_data_49B20[2];
-
-// lbl_1_data_4C900: .data size 0x2E, 1 refs from ranking.c (own data block)
-extern u8 lbl_1_data_4C900[0x2E];
+extern u32 lbl_1_data_49B20;
 
 // lbl_1_data_49B14: .data size 0x9, 1 refs from ranking.c (own data block)
 extern u8 lbl_1_data_49B14[0x9];
+
+// jumptable_1_data_4C7B0: .data size 0x1C, 1 refs from ranking.c (own data block)
+extern u8 jumptable_1_data_4C7B0[0x1C];
+
+// lbl_1_data_4C900: .data size 0x2E, 1 refs from ranking.c (own data block)
+extern u8 lbl_1_data_4C900[0x2E];
 
 // lbl_1_data_4C788: .data size 0xC, 1 refs from ranking.c (own data block)
 extern u8 lbl_1_data_4C788[0xC];

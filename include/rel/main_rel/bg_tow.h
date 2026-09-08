@@ -28,10 +28,10 @@ typedef struct {
 } Obj_1_bss_8EDA4;
 extern Obj_1_bss_8EDA4 lbl_1_bss_8EDA4;
 
-// lbl_1_data_46408: .data size 0x60, 1 refs from bg_tow.c (own data block)
-extern u8 lbl_1_data_46408[0x60];
-
 // lbl_1_data_49AB0: .data size 0x4, 1 refs from bg_tow.c (own data block)
 extern u32 lbl_1_data_49AB0;
+
+// lbl_1_data_46408: .data size 0x60, 1 refs from bg_tow.c (own data block)
+extern u8 lbl_1_data_46408[0x60];
 
 #endif  // REL_MAIN_REL_BG_TOW_H

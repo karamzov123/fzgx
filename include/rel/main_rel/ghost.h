@@ -43,9 +43,6 @@ typedef struct {
 } Obj_1_bss_7C584;
 extern Obj_1_bss_7C584 lbl_1_bss_7C584;
 
-// lbl_1_bss_7B1A4: .bss size 0x8, 2 refs from ghost.c
-extern u32 lbl_1_bss_7B1A4[2];
-
 // lbl_1_bss_77380: .bss size 0x3000, 2 refs from ghost.c
 typedef struct {
     u32 unk_0;  // 10 loads, 11 stores
@@ -100,6 +97,9 @@ typedef struct {
 } Obj_1_bss_77380;
 extern Obj_1_bss_77380 lbl_1_bss_77380;
 
+// lbl_1_bss_7B1A4: .bss size 0x8, 2 refs from ghost.c
+extern u32 lbl_1_bss_7B1A4;
+
 // lbl_1_bss_7B1AC: .bss size 0x13D8, 2 refs from ghost.c
 typedef struct {
     u8 pad_0[0x1];
@@ -115,22 +115,22 @@ typedef struct {
 } Obj_1_bss_7ECFC;
 extern Obj_1_bss_7ECFC lbl_1_bss_7ECFC;
 
+// lbl_1_data_3E6AC: .data size 0x58, 1 refs from ghost.c (own data block)
+extern u8 lbl_1_data_3E6AC[0x58];
+
 // lbl_1_data_3E894: .data size 0x6, 1 refs from ghost.c (own data block)
 extern u32 lbl_1_data_3E894;
 
 // lbl_1_data_3E89C: .data size 0x4, 1 refs from ghost.c (own data block)
 extern u32 lbl_1_data_3E89C;
 
-// lbl_1_data_3E73C: .data size 0x158, 1 refs from ghost.c (own data block)
-extern u8 lbl_1_data_3E73C[0x158];
-
-// lbl_1_data_3E6AC: .data size 0x58, 1 refs from ghost.c (own data block)
-extern u8 lbl_1_data_3E6AC[0x58];
+// lbl_1_data_3E8A0: .data size 0x21, 1 refs from ghost.c (own data block)
+extern u8 lbl_1_data_3E8A0[0x21];
 
 // lbl_1_data_3E704: .data size 0x38, 1 refs from ghost.c (own data block)
 extern u8 lbl_1_data_3E704[0x38];
 
-// lbl_1_data_3E8A0: .data size 0x21, 1 refs from ghost.c (own data block)
-extern u8 lbl_1_data_3E8A0[0x21];
+// lbl_1_data_3E73C: .data size 0x158, 1 refs from ghost.c (own data block)
+extern u8 lbl_1_data_3E73C[0x158];
 
 #endif  // REL_MAIN_REL_GHOST_H
