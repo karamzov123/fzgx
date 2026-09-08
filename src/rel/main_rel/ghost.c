@@ -50,6 +50,8 @@ extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
+extern f64 lbl_1_rodata_6C88;
+extern void fn_80008BA8(u32 *out, const void *value, s32 size);
 
 /* fzgx:begin fn_1_EC900 */
 // Return the current ghost state value.
@@ -245,11 +247,8 @@ u32 fn_1_F1588(void) {
 }
 /* fzgx:end fn_1_F1588 */
 
-/* fzgx:begin fn_1_F17B4 noprologue */
+/* fzgx:begin fn_1_F17B4 */
 #include "types.h"
-
-extern f64 lbl_1_rodata_6C88;
-extern void fn_80008BA8(u32 *out, const void *value, s32 size);
 
 s32 fn_1_F17B4(const void *value) {
     u32 bits;

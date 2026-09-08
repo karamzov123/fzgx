@@ -11,6 +11,8 @@ extern u32 lbl_1_bss_8FE80[8];
 extern void *fn_1_435C(void *);
 extern void fn_1_15E220(u8 *value);
 extern void fn_1_3F8C(void *, void *, u8 *, s32);
+extern u32 lbl_1_bss_8FEA0;
+extern u8 lbl_1_bss_8FE7C;
 
 /* fzgx:begin fn_1_15BE38 */
 typedef struct {
@@ -85,9 +87,6 @@ void fn_1_15E3E0(s32 index, u32 value) {
 /* fzgx:end fn_1_15E3E0 */
 
 /* fzgx:begin fn_1_15E434 */
-extern u32 lbl_1_bss_8FEA0;
-extern u8 lbl_1_bss_8FE7C;
-
 void fn_1_15E434(u32 value) {
     lbl_1_bss_8FE7C = 1;
     lbl_1_bss_8FEA0 = value;

@@ -179,7 +179,6 @@ u32 fn_1_467F4(void) {
 
 /* fzgx:begin fn_1_469BC noprologue */
 #include "types.h"
-#include "rel/main_rel/globals.h"
 
 extern u32 lbl_1_bss_384C0[];
 

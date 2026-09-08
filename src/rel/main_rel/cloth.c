@@ -10,14 +10,12 @@ extern u32 lbl_1_bss_85288[2];
 extern void fn_1_103AD4(void);
 extern void fn_1_105768(void);
 extern void fn_1_9E5B8(void *);
-
-/* fzgx:begin fn_1_10240C */
 extern struct fn_1_10240C_lbl_801A6410 lbl_801A6410;
 extern u32 fn_1_45D0(u32, u32, void *, u32);
 extern u32 fn_1_46B4(u32, u32, void *, u32);
 extern u32 fn_80008BA8(u32, u32, u32);
-extern u32 lbl_1_data_3F17C;
 
+/* fzgx:begin fn_1_10240C */
 struct fn_1_10240C_lbl_801A6410 {
     u32 unk_0;
 };

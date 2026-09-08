@@ -534,8 +534,6 @@ void fn_1_9D2EC(void) {
 
 /* fzgx:begin fn_1_9D360 noprologue */
 #include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/burner.h"
 
 typedef struct {
     u8 pad[0x1e];

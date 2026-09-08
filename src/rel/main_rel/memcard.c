@@ -683,7 +683,6 @@ extern void CARDCheckAsync(u8 byte_val, int value);
 extern void CARDFormatAsync(u8 byte, int value);
 extern const f32 lbl_1_rodata_4CA8;
 extern const f64 lbl_1_rodata_4CB0;
-extern const f32 lbl_1_rodata_4CAC;
 extern void fn_80083DB0(void *dst, void *src);
 extern void strcat(void *dst, void *src);
 extern void CARDDeleteAsync(u8 byte, void *data, int arg);
@@ -703,8 +702,6 @@ extern int fn_8002A744(void);
 extern void fn_8002A74C(u16 value);
 extern int fn_8002DFE0(int arg0, u32 arg1, int arg2);
 extern int CARDCheck(int arg0);
-extern void fn_1_B9C38(s32 index);
-extern void fn_1_1596DC(u32);
 extern void fn_1_484CC(u32);
 extern void fn_80008BEC(void *dst, s32 value, s32 size);
 extern void fn_1_AA6D8(s32 arg0, u32 arg1, void *arg2);
@@ -1407,7 +1404,6 @@ extern void CARDCheckAsync(u8 byte_val, int value);
 extern void CARDFormatAsync(u8 byte, int value);
 extern const f32 lbl_1_rodata_4CA8;
 extern const f64 lbl_1_rodata_4CB0;
-extern const f32 lbl_1_rodata_4CAC;
 extern void fn_80083DB0(void *dst, void *src);
 extern void strcat(void *dst, void *src);
 extern void CARDDeleteAsync(u8 byte, void *data, int arg);
@@ -1427,8 +1423,6 @@ extern int fn_8002A744(void);
 extern void fn_8002A74C(u16 value);
 extern int fn_8002DFE0(int arg0, u32 arg1, int arg2);
 extern int CARDCheck(int arg0);
-extern void fn_1_B9C38(s32 index);
-extern void fn_1_1596DC(u32);
 extern void fn_1_484CC(u32);
 extern void fn_80008BEC(void *dst, s32 value, s32 size);
 extern void fn_1_AA6D8(s32 arg0, u32 arg1, void *arg2);
@@ -1685,7 +1679,7 @@ u32 fn_1_B7F08(void) {
 /* fzgx:end fn_1_B7F08 */
 
 /* fzgx:begin fn_1_B7F24 noprologue */
-#include "rel/main_rel/globals.h"
+#include "types.h"
 
 typedef struct {
     u8 pad_0[0x48];

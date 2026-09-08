@@ -156,8 +156,6 @@ s16 fn_1_97F1C(Fn197F1CObject *object, s16 index) {
 
 /* fzgx:begin fn_1_98104 noprologue */
 #include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/rob.h"
 
 extern u8 lbl_1_data_27C00[0xE0];
 extern u32 lbl_801A6410;

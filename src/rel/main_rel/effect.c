@@ -47,6 +47,11 @@ extern void fn_1_61E60(void);
 extern void fn_1_5489C(void *, void *);
 extern void fn_1_862D4(s16 value, void *result);
 extern void *fn_1_548AC(u32 size);
+extern int fn_1_3FC8C(void);
+extern int fn_1_3FC58(void);
+extern void *memcpy(void *, const void *, u32);
+extern const f32 lbl_1_rodata_29A4;
+extern f64 lbl_1_rodata_2988;
 
 /* fzgx:begin fn_1_58D38 */
 typedef struct fn_1_58D38_EffectEntry {
@@ -115,10 +120,6 @@ void fn_1_58D38(void) {
 /* fzgx:end fn_1_58D38 */
 
 /* fzgx:begin fn_1_59078 */
-extern int fn_1_3FC8C(void);
-extern int fn_1_3FC58(void);
-extern void *memcpy(void *, const void *, u32);
-
 s16 fn_1_59078(Obj_1_bss_6C84C_Target *arg0) {
     Obj_1_bss_6C84C_Target *obj;
     s32 i;
@@ -371,8 +372,6 @@ void fn_1_5B6F0(void) {
 /* fzgx:end fn_1_5B6F0 */
 
 /* fzgx:begin fn_1_5B780 */
-extern const f32 lbl_1_rodata_29A4;
-
 typedef struct Fn15B780 {
     u8 state;
     u8 _pad01[0x0f];
@@ -403,9 +402,6 @@ void fn_1_5BF6C(void) {
 /* fzgx:end fn_1_5BF6C */
 
 /* fzgx:begin fn_1_5BFF0 */
-extern f32 lbl_1_rodata_29A4;
-extern f64 lbl_1_rodata_2988;
-
 struct fn_1_5BFF0_Arg0 {
     u8 unk_0;
     u8 pad_1[0xF];
@@ -705,8 +701,6 @@ void fn_1_61CE8(void) {
 
 /* fzgx:begin fn_1_61E60 noprologue */
 #include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/effect.h"
 
 extern u8 lbl_1_data_1D62C[0x94];
 extern void *lbl_801A6410;

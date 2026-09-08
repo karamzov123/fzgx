@@ -61,6 +61,8 @@ extern void fn_1_FB18C(void);
 
 extern void fn_1_F8918(u8 *, u8 *);
 extern u16 lbl_1_data_414[36];
+extern void fn_8001D3E4(int index, int value);
+extern u32 lbl_801A66A0;
 
 /* fzgx:begin fn_1_F55C4 */
 void fn_1_F55C4(f32 *out, f32 *arg1, f32 *in, f32 *arg3) {
@@ -263,9 +265,6 @@ void fn_1_F70D0(void) {
 /* fzgx:end fn_1_F70D0 */
 
 /* fzgx:begin fn_1_F7128 */
-extern void fn_8001D3E4(int index, int value);
-extern u32 lbl_801A66A0;
-
 void fn_1_F7128(void) {
     int i;
     Obj_1_bss_7F03C *dst;
@@ -898,8 +897,6 @@ u32 fn_1_FA088(void) {
 
 /* fzgx:begin fn_1_FA1A8 noprologue */
 #include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/spline.h"
 
 extern s32 fn_1_FA69C(s16 value);
 

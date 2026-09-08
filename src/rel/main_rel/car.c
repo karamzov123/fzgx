@@ -3183,8 +3183,6 @@ void fn_1_96130(void *arg0) {
 
 /* fzgx:begin fn_1_9617C noprologue */
 #include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/car.h"
 
 extern u8 lbl_1_data_27BA4[0x5C];
 extern u32 lbl_1_data_278AC;

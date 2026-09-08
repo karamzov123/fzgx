@@ -14,11 +14,34 @@ extern void fn_1_43A4(void);
 extern u32 lbl_1_data_2C70;
 extern void fn_80008E84(u32 value);
 extern u32 lbl_1_bss_DAC;
-
-/* fzgx:begin fn_1_634 */
 extern struct fn_1_634_lbl_1_bss_54 lbl_1_bss_54;
 extern u32 fn_8006FFC4(u32);
+extern u32 fn_1_48780(void);
+extern u32 lbl_801A66B4;
+extern u32 lbl_801A66BC;
+extern struct fn_1_904_lbl_1_bss_4 lbl_1_bss_4;
+extern struct fn_1_914_lbl_1_bss_0 lbl_1_bss_0;
+extern u16 lbl_1_bss_96A;
+extern u32 fn_1_37E98(void);
+extern u32 lbl_1_bss_96C;
+extern u32 camera_set_state_flag(u32);
+extern u32 fn_1_D31E0(u32);
+extern struct fn_1_12B4_lbl_1_bss_962 lbl_1_bss_962;
+extern u32 lbl_1_data_2A20;
+extern u32 lbl_1_data_7C0;
+extern u32 fn_1_15659C(u32);
+extern u32 fn_80008BEC(void *, u32, u32);
+extern u8 lbl_1_bss_978[];
+extern u32 lbl_1_data_2B78;
+extern u32 OSGetTick(u32);
+extern u32 lbl_1_bss_D7C;
+extern u8 lbl_1_bss_DA4;
+extern char lbl_1_data_2C9C[20];
+extern char lbl_1_data_2CB0[31];
+extern void OSPanic(const char *message, int line, const char *file, ...);
+extern void fn_80009AA8(u32 value, u32 count, const char *file, int line);
 
+/* fzgx:begin fn_1_634 */
 struct fn_1_634_lbl_1_bss_54 {
     u32 unk_0;
 };
@@ -52,10 +75,6 @@ void fn_1_668(void) {
 /* fzgx:end fn_1_668 */
 
 /* fzgx:begin fn_1_8D4 */
-extern u32 fn_1_48780(void);
-extern u32 lbl_801A66B4;
-extern u32 lbl_801A66BC;
-
 void fn_1_8D4(void) {
     lbl_801A66B4 = lbl_801A66BC;
     fn_1_48780();
@@ -63,8 +82,6 @@ void fn_1_8D4(void) {
 /* fzgx:end fn_1_8D4 */
 
 /* fzgx:begin fn_1_904 */
-extern struct fn_1_904_lbl_1_bss_4 lbl_1_bss_4;
-
 struct fn_1_904_lbl_1_bss_4 {
     u32 unk_0;
 };
@@ -75,8 +92,6 @@ u32 fn_1_904(void) {
 /* fzgx:end fn_1_904 */
 
 /* fzgx:begin fn_1_914 */
-extern struct fn_1_914_lbl_1_bss_0 lbl_1_bss_0;
-
 struct fn_1_914_lbl_1_bss_0 {
     u32 unk_0;
 };
@@ -87,9 +102,6 @@ u32 fn_1_914(void) {
 /* fzgx:end fn_1_914 */
 
 /* fzgx:begin fn_1_924 */
-extern u16 lbl_1_bss_96A;
-extern u32 fn_1_37E98(void);
-
 u32 fn_1_924(void) {
     lbl_1_bss_96A = 36;
     return fn_1_37E98();
@@ -126,17 +138,12 @@ void fn_1_E78(void) {
 /* fzgx:end fn_1_E78 */
 
 /* fzgx:begin fn_1_1280 */
-extern u32 lbl_1_bss_96C;
-
 void fn_1_1280(u32 arg0) {
     lbl_1_bss_96C = arg0;
 }
 /* fzgx:end fn_1_1280 */
 
 /* fzgx:begin fn_1_128C */
-extern u32 camera_set_state_flag(u32);
-extern u32 fn_1_D31E0(u32);
-
 u32 fn_1_128C(void) {
     u32 t0;
     t0 = camera_set_state_flag(0);
@@ -145,10 +152,7 @@ u32 fn_1_128C(void) {
 /* fzgx:end fn_1_128C */
 
 /* fzgx:begin fn_1_12B4 */
-extern struct fn_1_12B4_lbl_1_bss_962 lbl_1_bss_962;
 extern u32 OSReport(void *, ...);
-extern u32 lbl_1_data_2A20;
-extern u32 lbl_1_data_7C0;
 
 struct fn_1_12B4_lbl_1_bss_962 {
     s16 unk_0;
@@ -174,10 +178,6 @@ void fn_1_1300(void) {
 /* fzgx:end fn_1_1300 */
 
 /* fzgx:begin fn_1_3238 */
-extern u32 fn_1_15659C(u32);
-extern u32 fn_80008BEC(void *, u32, u32);
-extern u8 lbl_1_bss_978[];
-
 void fn_1_3238(void) {
     u8 *p_lbl_1_bss_978;
     u32 t9;
@@ -197,8 +197,6 @@ void fn_1_3238(void) {
 /* fzgx:end fn_1_3238 */
 
 /* fzgx:begin fn_1_3BB0 */
-extern u32 lbl_1_data_2B78;
-
 u8 fn_1_3BB0(u32 arg0) {
     return *(u8 *)((u8 *)&lbl_1_data_2B78 + arg0);
 }
@@ -214,9 +212,6 @@ void fn_1_3BC0(void) {
 /* fzgx:end fn_1_3BC0 */
 
 /* fzgx:begin fn_1_3BDC */
-extern u32 OSGetTick(u32);
-extern u32 lbl_1_bss_D7C;
-
 void fn_1_3BDC(u32 arg0) {
     u32 t0;
     t0 = OSGetTick(arg0);
@@ -226,7 +221,6 @@ void fn_1_3BDC(u32 arg0) {
 
 /* fzgx:begin fn_1_3C78 */
 extern u8 lbl_1_bss_D78;
-extern u8 lbl_1_bss_DA4;
 
 void fn_1_3C78(void) {
     if (lbl_1_bss_D78 == 0) { return; }
@@ -590,11 +584,6 @@ s32 fn_1_45D0(u32 arg0, u32 arg1) {
 /* fzgx:end fn_1_45D0 */
 
 /* fzgx:begin fn_1_4730 */
-extern char lbl_1_data_2C9C[20];
-extern char lbl_1_data_2CB0[31];
-extern void OSPanic(const char *message, int line, const char *file, ...);
-extern void fn_80009AA8(u32 value, u32 count, const char *file, int line);
-
 typedef struct {
     u32 unk_00;
     u32 unk_04;

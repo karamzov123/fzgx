@@ -29,6 +29,12 @@ extern void fn_1_51E60(void *);
 extern const f32 lbl_1_rodata_5D6C;
 extern void fn_1_C8DC0(void);
 extern void fn_80008E84(u32);
+extern const f32 lbl_1_rodata_5D88;
+extern const f32 lbl_1_rodata_5D8C;
+extern void fn_1_4955C(f32, f32);
+extern const f32 lbl_1_rodata_5CD4;
+extern const f32 lbl_1_rodata_5D90;
+extern void fn_1_4966C(f32, f32);
 
 /* fzgx:begin fn_1_C47B4 */
 void fn_1_C47B4(void) {
@@ -142,10 +148,10 @@ void fn_1_CA218(EnemyCtrl_CA218 *self) {
 /* fzgx:begin fn_1_CA2A4 */
 typedef struct {
     u32 x[22];
-} LocalData;
+} fn_1_CA2A4_LocalData;
 
 void fn_1_CA2A4(void *self) {
-    LocalData local;
+    fn_1_CA2A4_LocalData local;
     s32 count;
     s32 max;
 
@@ -168,12 +174,12 @@ void fn_1_CA2A4(void *self) {
     fn_1_496FC(lbl_1_rodata_5D5C, lbl_1_rodata_5D60);
     fn_1_49728(1);
     fn_1_4AE0C(&lbl_1_data_3D574, max);
-    local = *(LocalData *)lbl_1_rodata_26F8;
+    local = *(fn_1_CA2A4_LocalData *)lbl_1_rodata_26F8;
     local.x[0] = 0x9429;
     ((f32 *)local.x)[1] = lbl_1_rodata_5D64;
     ((f32 *)local.x)[2] = lbl_1_rodata_5D68;
     fn_1_51E60(&local.x[0]);
-    local = *(LocalData *)lbl_1_rodata_26F8;
+    local = *(fn_1_CA2A4_LocalData *)lbl_1_rodata_26F8;
     local.x[0] = 0x9405;
     ((f32 *)local.x)[1] = lbl_1_rodata_5D6C;
     ((f32 *)local.x)[2] = lbl_1_rodata_5D68;
@@ -188,12 +194,6 @@ extern u32 fn_1_3F7E0(void);
 extern void fn_1_49410(void);
 extern void fn_1_494DC(u32);
 extern void fn_1_496FC(f32, f32);
-extern const f32 lbl_1_rodata_5D88;
-extern const f32 lbl_1_rodata_5D8C;
-extern void fn_1_4955C(f32, f32);
-extern const f32 lbl_1_rodata_5CD4;
-extern const f32 lbl_1_rodata_5D90;
-extern void fn_1_4966C(f32, f32);
 extern void fn_1_49728(u32);
 extern void fn_1_4AE0C(void *, ...);
 extern f32 lbl_1_rodata_26F8[22];
@@ -201,10 +201,10 @@ extern void fn_1_51E60(void *);
 
 typedef struct {
     u32 x[22];
-} LocalData;
+} fn_1_CA690_LocalData;
 
 void fn_1_CA690(void *self, s32 arg1, s32 arg2) {
-    LocalData local;
+    fn_1_CA690_LocalData local;
     s32 count;
     s32 max;
 
@@ -225,12 +225,12 @@ void fn_1_CA690(void *self, s32 arg1, s32 arg2) {
     fn_1_496FC(arg1 + 0x5c, arg2 + 0x1a);
     fn_1_49728(1);
     fn_1_4AE0C(&lbl_1_data_3D574, max);
-    local = *(LocalData *)lbl_1_rodata_26F8;
+    local = *(fn_1_CA690_LocalData *)lbl_1_rodata_26F8;
     local.x[0] = 0x9429;
     ((f32 *)local.x)[1] = arg1 + 0x4e;
     ((f32 *)local.x)[2] = arg2 + 0x1a;
     fn_1_51E60(&local.x[0]);
-    local = *(LocalData *)lbl_1_rodata_26F8;
+    local = *(fn_1_CA690_LocalData *)lbl_1_rodata_26F8;
     local.x[0] = 0x9405;
     ((f32 *)local.x)[1] = arg1 + 0x4e;
     ((f32 *)local.x)[2] = arg2 + 0xd;

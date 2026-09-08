@@ -22,6 +22,7 @@ extern void lbl_8006DB30(void);
 extern int fn_1_8C66C(short value);
 extern int fn_1_163BC(void *arg0, void *arg1, int mask, int value);
 extern void lbl_8006E1D8(void *arg0, f32 arg1, f32 arg2, f32 arg3);
+extern double lbl_1_rodata_910;
 
 /* fzgx:begin fn_1_14CB4 */
 void fn_1_14CB4(void) {
@@ -76,8 +77,6 @@ void fn_1_18FFC(int a, int b, int c, int d, int e, int f, int g) {
 
 /* fzgx:begin fn_1_1902C noprologue */
 #include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/stcoli.h"
 
 typedef struct StcoliNode StcoliNode;
 typedef struct StcoliVec {
@@ -259,8 +258,6 @@ void fn_1_21CA0(Fn_1_21CA0 *self, void *arg) {
 /* fzgx:end fn_1_21CA0 */
 
 /* fzgx:begin fn_1_22E8C */
-extern double lbl_1_rodata_910;
-
 typedef struct Fn_1_22E8CInput {
     unsigned char pad00[0x04];
     float field04;

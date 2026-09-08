@@ -97,6 +97,21 @@ extern u32 fn_80008BEC(u32 arg0, int arg1, int arg2);
 extern void fn_1_7F3AC(void* object);
 extern void fn_1_46B4(u32 config, void* object, u8* data, int size);
 extern void fn_1_149C2C();
+extern const f32 lbl_1_rodata_8658;
+extern const f32 lbl_1_rodata_8DCC;
+extern const f32 lbl_1_rodata_8840;
+extern const f32 lbl_1_rodata_87B4;
+extern const u32 lbl_1_rodata_8DC0;
+extern const f32 lbl_1_rodata_8818;
+extern const u32 lbl_1_rodata_8DC4;
+extern const f32 lbl_1_rodata_8DD0;
+extern const u32 lbl_1_rodata_8DC8;
+extern u32 fn_1_13EE60(u32, u32, void *, u32, u32);
+extern u32 fn_1_13EF64(u32, u32, u32, void *, u32, void *, u32, f32);
+extern u32 lbl_1_rodata_8E8C;
+extern u32 fn_1_141360(u32, u32, u32, u32, f32, f32);
+extern struct fn_1_149C64_lbl_1_bss_8E43C lbl_1_bss_8E43C;
+extern struct fn_1_149C64_lbl_1_bss_8E440 lbl_1_bss_8E440;
 
 /* fzgx:begin fn_1_133DBC */
 void fn_1_133DBC(void* arg0) {
@@ -150,8 +165,6 @@ void fn_1_135894(void* arg0, void* arg1, void* arg2, void* arg3,
 
 /* fzgx:begin fn_1_137288 noprologue */
 #include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/sel_static_disp.h"
 
 extern void* fn_1_12F118(void);
 extern void* fn_1_36AD0(void);
@@ -412,7 +425,6 @@ void fn_1_13EDDC(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4) {
 
 /* fzgx:begin fn_1_13F81C noprologue */
 #include "types.h"
-#include "rel/main_rel/globals.h"
 
 extern u32 lbl_1_bss_8E3E4[8];
 
@@ -680,7 +692,6 @@ void fn_1_14A00C(void) {
 
 /* fzgx:begin fn_1_14A17C noprologue */
 #include "types.h"
-#include "rel/main_rel/globals.h"
 
 typedef struct {
     u8 pad_0[0x18];
@@ -690,10 +701,10 @@ typedef struct {
     u32 unk_24;
     u32 unk_28;
     u32 unk_2c;
-} Obj_1_bss_8E518;
+} fn_1_14A17C_Obj_1_bss_8E518;
 
 extern const f32 lbl_1_rodata_99A4;
-extern Obj_1_bss_8E518 lbl_1_bss_8E518;
+extern fn_1_14A17C_Obj_1_bss_8E518 lbl_1_bss_8E518;
 
 // Reset the static display state to its initial values.
 void fn_1_14A17C(void) {
@@ -1262,8 +1273,6 @@ s16 fn_1_14F090(s16 value, s16 occurrence) {
 
 /* fzgx:begin fn_1_14F118 noprologue */
 #include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/sel_static_disp.h"
 
 extern s16 fn_1_14F090(void *table, s16 index);
 extern s16 fn_1_14F01C(void *table);

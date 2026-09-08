@@ -82,6 +82,7 @@ extern void fn_1_45850(void);
 extern void fn_1_565F4(void);
 extern void fn_80070D60(void *);
 extern u8 *lbl_801A66CC;
+extern void fn_80008BA8(void *, void *, u32);
 
 /* fzgx:begin fn_1_494CC */
 void fn_1_494CC(u8 value) {
@@ -749,7 +750,6 @@ typedef struct {
     u32 unk_0;
 } InputObject;
 
-extern void fn_80008BA8(void *, void *, u32);
 extern const f64 lbl_1_rodata_2778[2];
 
 s32 fn_1_4FC50(InputObject *obj, u32 arg1, u16 arg2, u16 arg3, u32 arg4) {
@@ -1017,8 +1017,6 @@ f32 fn_1_542B8(void) {
 
 /* fzgx:begin fn_1_542C4 noprologue */
 #include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/font.h"
 
 extern void fn_1_54320(void);
 
@@ -1050,8 +1048,6 @@ void fn_1_542C4(void *arg0, void *arg1, f32 arg2, f32 arg3, f32 arg4) {
 
 /* fzgx:begin fn_1_54320 noprologue */
 #include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/font.h"
 
 typedef struct fn_1_54320_FontState {
     u8 unk_0[0x30];
@@ -1166,8 +1162,6 @@ void fn_1_547F8(fn_1_547F8_node *node) {
 
 /* fzgx:begin fn_1_54848 noprologue */
 #include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/font.h"
 
 typedef struct fn_1_54848_FontState {
     u8 pad_1a0[0x1a0];
@@ -1188,8 +1182,6 @@ void fn_1_54848(void) {
 
 /* fzgx:begin fn_1_54868 noprologue */
 #include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/font.h"
 
 typedef struct fn_1_54868_FontState {
     u8 pad_1a0[0x1a0];

@@ -38,6 +38,11 @@ extern void OSReport(const unsigned char *, ...);
 extern f32 lbl_1_rodata_2E0[32];
 extern f32 lbl_8006D6FC(f32 *value, void *target);
 u32 fn_1_6514(u32);
+extern struct fn_1_6400_lbl_801A6410 lbl_801A6410;
+extern u32 fn_1_46B4(u32, u32, void *, u32);
+extern f64 lbl_1_rodata_478;
+extern f32 lbl_1_rodata_49C;
+extern f32 lbl_1_bss_10C0[6];
 
 /* fzgx:begin fn_1_6400 noprologue */
 #include "types.h"
@@ -613,10 +618,6 @@ void camera_save_parameters(f32 first_parameter, f32 second_parameter) {
 /* fzgx:end camera_save_parameters */
 
 /* fzgx:begin fn_1_C038 */
-extern f64 lbl_1_rodata_478;
-extern f32 lbl_1_rodata_49C;
-extern f32 lbl_1_bss_10C0[6];
-
 void fn_1_C038(s32 value, f32 start, f32 end) {
     f32 difference;
     f32 ratio;
@@ -687,7 +688,6 @@ void fn_1_C304(s32 arg) {
 
 /* fzgx:begin camera_snapshot noprologue */
 #include "types.h"
-#include "rel/main_rel/globals.h"
 
 typedef struct CameraGlobals {
     u8 pad_00[0x08];
@@ -789,8 +789,6 @@ u8* camera_get_state_storage(void) {
 
 /* fzgx:begin camera_get_extended_state_storage noprologue */
 #include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/camera.h"
 
 extern u8 lbl_1_bss_108C[52];
 

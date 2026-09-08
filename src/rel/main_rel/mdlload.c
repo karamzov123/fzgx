@@ -136,8 +136,6 @@ void fn_1_D38A4(void) {
 
 /* fzgx:begin fn_1_D3B6C noprologue */
 #include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/mdlload.h"
 
 extern void *OSGetArenaHi(void);
 

@@ -3,14 +3,11 @@
 #include "rel/main_rel/ptclput.h"
 
 extern u16 lbl_1_bss_6EA94;
-
-/* fzgx:begin fn_1_9F870 noprologue */
-#include "types.h"
-
-extern struct fn_1_9F870_lbl_1_bss_6EA88 lbl_1_bss_6EA88;
 extern struct fn_1_9F870_lbl_801A6410 lbl_801A6410;
 extern u32 fn_1_46B4(u32, u32, void *, u32);
-extern u32 lbl_1_data_2CD20;
+
+/* fzgx:begin fn_1_9F870 */
+#include "types.h"
 
 struct fn_1_9F870_lbl_1_bss_6EA88 {
     u32 unk_0;
