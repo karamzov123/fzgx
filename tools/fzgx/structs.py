@@ -42,7 +42,7 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
         if symbol not in fn.refs:
             continue
         used = False
-        base: Dict[str, str] = {}  # register -> "object" | "pointer"
+        base: Dict[str, tuple] = {}  # register -> (kind, delta): kind "object" | "pointer", delta added to offsets
         derived: Dict[str, tuple] = {}  # register -> ("field", kind, off): pointee of a pointer field
         pending_ha: Dict[str, bool] = {}
         for line in fn.asm:
@@ -53,7 +53,17 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
                 continue
             m = re.match(rf"^addi r(\d+), r(\d+), {re.escape(symbol)}@l", ins)
             if m and f"r{m.group(2)}" in pending_ha:
-                base[f"r{m.group(1)}"] = "object"
+                base[f"r{m.group(1)}"] = ("object", 0)
+                continue
+            m = re.match(r"^(addi|subi) r(\d+), r(\d+), (-?0x[0-9a-fA-F]+|-?\d+)$", ins)
+            if m and f"r{m.group(3)}" in base:
+                k, d = base[f"r{m.group(3)}"]
+                imm = int(m.group(4), 0) * (-1 if m.group(1) == "subi" else 1)
+                base[f"r{m.group(2)}"] = (k, d + imm)
+                continue
+            m = re.match(r"^mr r(\d+), r(\d+)$", ins)
+            if m and f"r{m.group(2)}" in base:
+                base[f"r{m.group(1)}"] = base[f"r{m.group(2)}"]
                 continue
             # direct access through the symbol, with an optional displacement: op rX, (sym+0x3c)@l(rA) or sym@l(rA)
             m = re.match(rf"^(lwz|lhz|lha|lbz|lfs|lfd|stw|sth|stb|stfs|stfd) [rf](\d+), \(?{re.escape(symbol)}(?:\s*\+\s*(0x[0-9a-fA-F]+|\d+))?\)?@l\(r(\d+)\)", ins)
@@ -64,7 +74,7 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
                 f["float"] = f["float"] or m.group(1) in ("lfs", "lfd", "stfs", "stfd")
                 f["loads" if m.group(1).startswith("l") else "stores"] += 1
                 if m.group(1) == "lwz":
-                    base[f"r{m.group(2)}"] = "pointer"
+                    base[f"r{m.group(2)}"] = ("pointer", 0)
                 kinds["object"] += 1
                 used = True
                 continue
@@ -72,18 +82,19 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
             if m:
                 op, w, _, rf, rn, off, rb = m.groups()
                 if rb in base:
-                    off = int(off, 0)
-                    key = (base[rb], off)
+                    bk, bd = base[rb]
+                    off = int(off, 0) + bd
+                    key = (bk, off)
                     f = fields[key]
                     f["width"] = max(f["width"], WIDTH[w])
                     f["float"] = f["float"] or w in ("fs", "fd")
                     f["loads" if op == "l" else "stores"] += 1
-                    kinds[base[rb]] += 1
+                    kinds[bk] += 1
                     used = True
-                    if op == "l" and w in ("wz", "w") and rf == "r" and isinstance(base[rb], str):
+                    if op == "l" and w in ("wz", "w") and rf == "r":
                         # pointer field: the loaded register now addresses the pointee; record its fields under ("field", off)
                         dest = f"r{rn}"
-                        tag = ("field", base[rb], off)
+                        tag = ("field", bk, off)
                         base.pop(dest, None)  # a load into the base register itself replaces it
                         derived[dest] = tag
                         pending_ha.pop(dest, None)
@@ -113,6 +124,7 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
         if used:
             users.append(fn.symbol.name)
     kind = "pointer" if kinds.get("pointer", 0) > kinds.get("object", 0) else "object"
+    size = p.symbols(module)[symbol].size if symbol in p.symbols(module) else 0
     out = {}
     pointees: Dict[int, Dict[int, Dict]] = defaultdict(dict)
     for key, f in fields.items():
@@ -121,9 +133,12 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
             if k == kind:
                 pointees[poff][off] = f
         elif key[0] == kind or (key[0] == "object" and key[1] == 0):
+            if key[1] < 0 or (kind == "object" and size and key[1] >= size):
+                continue  # indexed neighbour or array stride, not a field of this object
             out[key[1]] = f
     return {"symbol": symbol, "kind": kind, "fields": dict(sorted(out.items())), "users": users, "shapes": dict(kinds),
-            "pointees": {poff: dict(sorted(fl.items())) for poff, fl in pointees.items() if sum(x["loads"] + x["stores"] for x in fl.values()) >= 3}}
+            "pointees": {poff: {o: f for o, f in sorted(fl.items()) if o >= 0}
+                         for poff, fl in pointees.items() if sum(x["loads"] + x["stores"] for x in fl.values()) >= 3}}
 
 
 def typedef(info: Dict[str, object], name: Optional[str] = None, fields: Optional[Dict[int, Dict]] = None) -> str:
@@ -141,6 +156,8 @@ def typedef(info: Dict[str, object], name: Optional[str] = None, fields: Optiona
         ctype = {1: "u8", 2: "u16", 4: "f32" if f["float"] else "u32", 8: "f64"}[w]
         lines.append(f"    {ctype} unk_{off:X};  // {f['loads']} loads, {f['stores']} stores")
         cur = off + w
+    if len(lines) == 1:
+        lines.append("    u8 unk_0;  // no field accesses recovered")
     lines.append(f"}} {name};")
     return "\n".join(lines)
 
