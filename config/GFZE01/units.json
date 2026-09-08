@@ -5621,6 +5621,36 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/fn_1_E5734.c",
+    "symbols": [
+      "fn_1_E5734"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_E5748.c",
+    "symbols": [
+      "fn_1_E5748"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_E5750.c",
+    "symbols": [
+      "fn_1_E5750"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/fn_1_E5768.c",
     "symbols": [
       "fn_1_E5768"

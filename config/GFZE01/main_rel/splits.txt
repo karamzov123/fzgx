@@ -1063,6 +1063,15 @@ rel/main_rel/fn_1_E5724.c:
 rel/main_rel/fn_1_E572C.c:
 	.text       start:0x000E572C end:0x000E5734
 
+rel/main_rel/fn_1_E5734.c:
+	.text       start:0x000E5734 end:0x000E573C
+
+rel/main_rel/fn_1_E5748.c:
+	.text       start:0x000E5748 end:0x000E5750
+
+rel/main_rel/fn_1_E5750.c:
+	.text       start:0x000E5750 end:0x000E5758
+
 rel/main_rel/fn_1_E5768.c:
 	.text       start:0x000E5768 end:0x000E5770
 
