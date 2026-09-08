@@ -34,6 +34,10 @@ MATCHER_TOOLS = ["Read", "mcp__fzgx__claim", "mcp__fzgx__write_unit", "mcp__fzgx
                  "mcp__fzgx__submit", "mcp__fzgx__release"]
 # The user's defaults are Fable 5.1 (claude) and GPT-6 Astra (codex); matchers must never run on those.
 EXPECTED_MODEL = {"claude": "claude-haiku-4-5", "codex": "gpt-5.6-luna"}
+# $/M tokens from platform.openai.com/docs/pricing (2026-09-08): input, cached input, cache write, output.
+# Codex reports usage but no cost; Claude Code reports total_cost_usd itself.
+CODEX_PRICES = {"gpt-5.6-luna": (0.20, 0.02, 0.25, 1.20), "gpt-5.6-terra": (2.00, 0.20, 2.50, 12.00),
+                "gpt-5.6-sol": (4.00, 0.40, 5.00, 20.00), "gpt-6-astra": (10.00, 1.00, 12.50, 50.00)}
 CODEX_DISABLE = ["plugins", "recommended_plugins", "plugin_sharing", "remote_plugin", "apps", "browser_use",
                  "browser_use_external", "in_app_browser", "computer_use", "skill_search", "skill_mcp_dependency_install"]
 
@@ -103,6 +107,7 @@ def codex_session_model(thread_id: str) -> str:
 
 def parse_codex(out: str) -> Dict:
     text, tin, tout, model, thread = "", 0, 0, "", ""
+    cached = cache_w = 0
     for line in out.splitlines():
         if not line.startswith("{"):
             continue
@@ -117,11 +122,17 @@ def parse_codex(out: str) -> Dict:
             text = ev["item"].get("text", text)
         if t == "turn.completed":
             u = ev.get("usage", {})
-            tin += u.get("input_tokens", 0) + u.get("cached_input_tokens", 0)
+            # OpenAI usage: input_tokens already includes cached_input_tokens; output includes reasoning
+            tin += u.get("input_tokens", 0)
+            cached += u.get("cached_input_tokens", 0)
+            cache_w += u.get("cache_write_input_tokens", 0)
             tout += u.get("output_tokens", 0)
         model = ev.get("model", model) or model
-    return {"text": text or out[-2000:], "cost": 0.0, "turns": None, "tokens_in": tin, "tokens_out": tout,
-            "model": model or codex_session_model(thread)}
+    model = model or codex_session_model(thread)
+    pi, pc, pw, po = CODEX_PRICES.get(model, (0.0, 0.0, 0.0, 0.0))
+    cost = ((tin - cached) * pi + cached * pc + cache_w * pw + tout * po) / 1e6
+    return {"text": text or out[-2000:], "cost": round(cost, 6), "turns": None, "tokens_in": tin,
+            "tokens_out": tout, "model": model}
 
 
 def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout: int, batch: str,
