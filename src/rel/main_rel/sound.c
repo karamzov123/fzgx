@@ -53,12 +53,12 @@ extern void *lbl_801A6410;
 extern void *fn_80008E84();
 extern void fn_1_44A4(void);
 
-/* fzgx:begin fn_1_9FE74 */
 extern void *lbl_801A6410;
 extern void fn_1_44A4(void);
 extern void *fn_80008E84();
 extern u32 fn_1_45D0(void *arg0, void *arg1, u32 *arg2, int arg3);
 
+/* fzgx:begin fn_1_9FE74 */
 // Initialize the sound resource and register it with the sound system.
 u32 fn_1_9FE74(void *arg) {
     u32 result;

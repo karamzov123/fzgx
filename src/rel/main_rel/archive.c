@@ -30,6 +30,9 @@ extern void *lbl_801A6410;
 extern void fn_1_46B4(void *arg0, void *arg1, unsigned char *arg2, s32 arg3);
 extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
 
+extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
+extern s32 lbl_1_bss_8CA44[10];
+
 /* fzgx:begin fn_1_12A2D0 */
 extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
 
@@ -420,8 +423,6 @@ void fn_1_12F30C(void *arg0, Fn1_12F30CState *state) {
 /* fzgx:end fn_1_12F30C */
 
 /* fzgx:begin fn_1_130F98 */
-extern s32 lbl_1_bss_8CA44[10];
-
 // Promote a pending archive operation, then invoke its selected handler.
 void fn_1_130F98(void) {
     if (lbl_1_bss_8CA44[0] >= 0) {

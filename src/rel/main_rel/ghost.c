@@ -49,6 +49,8 @@ extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 
+extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
+
 /* fzgx:begin fn_1_EC900 */
 // Return the current ghost state value.
 u32 fn_1_EC900(void) {
@@ -442,8 +444,6 @@ void ghost_set_record_flag1(s32 arg) {
 /* fzgx:end ghost_set_record_flag1 */
 
 /* fzgx:begin ghost_set_record_flag2 */
-extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
-
 // Set the second flag on the record selected by the argument.
 void ghost_set_record_flag2(s32 arg) {
     s16 record_group;

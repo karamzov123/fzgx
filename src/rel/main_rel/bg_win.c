@@ -8,6 +8,10 @@ extern void fn_1_4060(void);
 
 extern u32 lbl_1_bss_8FE80[8];
 
+extern void *fn_1_435C(void *);
+extern void fn_1_15E220(u8 *value);
+extern void fn_1_3F8C(void *, void *, u8 *, s32);
+
 /* fzgx:begin fn_1_15BE38 */
 typedef struct {
     u32 count;
@@ -81,11 +85,6 @@ void fn_1_15E3E0(s32 index, u32 value) {
 /* fzgx:end fn_1_15E3E0 */
 
 /* fzgx:begin fn_1_15E540 */
-extern void *fn_1_435C(void *);
-extern unsigned char lbl_1_data_4C994[12];
-extern void fn_1_15E220(u8 *);
-extern void fn_1_3F8C(void *, void *, u8 *, s32);
-
 // Initializes a background-window entry once, then marks it ready for reuse.
 void fn_1_15E540(s32 index, void *arg) {
     if (!((&lbl_1_bss_8FDA8.unk_0)[index * 0x34] & 1)) {
