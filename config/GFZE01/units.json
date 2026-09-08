@@ -4185,7 +4185,7 @@
     "symbols": [
       "fn_1_8C734"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
