@@ -1,4 +1,8 @@
 #include "types.h"
 
-// fn_1_F1950: main_rel .text:0x000F1950 size 0x10
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u32 lbl_1_bss_7ECFC[23];
+
+void fn_1_F1950(void) {
+    lbl_1_bss_7ECFC[0] = 1;
+}
+
