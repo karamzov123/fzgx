@@ -11,7 +11,7 @@
 extern u32 lbl_9_bss_10;
 
 // lbl_9_bss_DC: .bss size 0x2, referenced by 10 functions, shape {'object': 10}
-extern u16 lbl_9_bss_DC;
+extern s16 lbl_9_bss_DC;
 
 // lbl_9_bss_8: .bss size 0x4, referenced by 10 functions, shape {'object': 26, 'pointer': 13}
 typedef struct {
@@ -28,107 +28,55 @@ extern Obj_9_bss_8_Target *lbl_9_bss_8;
 extern u32 lbl_9_bss_0;
 
 // lbl_9_data_0: .data size 0x2, referenced by 4 functions, shape {'object': 1}
-extern u16 lbl_9_data_0;
+extern s16 lbl_9_data_0;
 
 // lbl_9_bss_14: .bss size 0xC8, referenced by 3 functions, shape {}
-typedef struct {
-    u8 unk_0;  // no field accesses recovered
-    u8 pad_0[0xC8];
-} Obj_9_bss_14;
-extern Obj_9_bss_14 lbl_9_bss_14;
+extern u8 lbl_9_bss_14[0xC8];
 
 // lbl_9_bss_C: .bss size 0x4, referenced by 1 functions, shape {'object': 1}
 extern u32 lbl_9_bss_C;
 
 // lbl_9_data_4: .data size 0x28, referenced by 1 functions, shape {}
-typedef struct {
-    u8 unk_0;  // no field accesses recovered
-    u8 pad_0[0x28];
-} Obj_9_data_4;
-extern Obj_9_data_4 lbl_9_data_4;
+extern char lbl_9_data_4[0x28];  // 'car_colchg.c'
 
 // lbl_9_data_2C: .data size 0x11, referenced by 1 functions, shape {}
-typedef struct {
-    u8 unk_0;  // no field accesses recovered
-    u8 pad_0[0x11];
-} Obj_9_data_2C;
-extern Obj_9_data_2C lbl_9_data_2C;
+extern char lbl_9_data_2C[0x11];  // 'colchg_menu_disp'
 
 // lbl_9_data_40: .data size 0x13, referenced by 1 functions, shape {}
-typedef struct {
-    u8 unk_0;  // no field accesses recovered
-    u8 pad_0[0x13];
-} Obj_9_data_40;
-extern Obj_9_data_40 lbl_9_data_40;
+extern char lbl_9_data_40[0x13];  // 'colchg_selcar_disp'
 
 // lbl_9_data_54: .data size 0x14, referenced by 1 functions, shape {}
-typedef struct {
-    u8 unk_0;  // no field accesses recovered
-    u8 pad_0[0x14];
-} Obj_9_data_54;
-extern Obj_9_data_54 lbl_9_data_54;
+extern char lbl_9_data_54[0x14];  // 'colchg_selmate_disp'
 
 // lbl_9_bss_E0: .bss size 0x8, referenced by 1 functions, shape {'object': 2}
 extern u32 lbl_9_bss_E0;
 
 // lbl_9_data_68: .data size 0x13, referenced by 1 functions, shape {}
-typedef struct {
-    u8 unk_0;  // no field accesses recovered
-    u8 pad_0[0x13];
-} Obj_9_data_68;
-extern Obj_9_data_68 lbl_9_data_68;
+extern char lbl_9_data_68[0x13];  // 'colchg_chgcol_disp'
 
 // lbl_9_data_9C: .data size 0x12, referenced by 1 functions, shape {}
-typedef struct {
-    u8 unk_0;  // no field accesses recovered
-    u8 pad_0[0x12];
-} Obj_9_data_9C;
-extern Obj_9_data_9C lbl_9_data_9C;
+extern char lbl_9_data_9C[0x12];  // 'colchg_ezsel_disp'
 
 // lbl_9_data_B0: .data size 0x11, referenced by 1 functions, shape {}
-typedef struct {
-    u8 unk_0;  // no field accesses recovered
-    u8 pad_0[0x11];
-} Obj_9_data_B0;
-extern Obj_9_data_B0 lbl_9_data_B0;
+extern char lbl_9_data_B0[0x11];  // 'colchg_save_disp'
 
 // lbl_9_data_C4: .data size 0x8C, referenced by 1 functions, shape {}
-typedef struct {
-    u8 unk_0;  // no field accesses recovered
-    u8 pad_0[0x8C];
-} Obj_9_data_C4;
-extern Obj_9_data_C4 lbl_9_data_C4;
+extern char lbl_9_data_C4[0x8C];  // 'colchg_load_disp'
 
 // lbl_9_data_150: .data size 0x28, referenced by 1 functions, shape {}
-typedef struct {
-    u8 unk_0;  // no field accesses recovered
-    u8 pad_0[0x28];
-} Obj_9_data_150;
-extern Obj_9_data_150 lbl_9_data_150;
+extern u8 lbl_9_data_150[0x28];
 
 // lbl_9_data_178: .data size 0x14, referenced by 1 functions, shape {}
-typedef struct {
-    u8 unk_0;  // no field accesses recovered
-    u8 pad_0[0x14];
-} Obj_9_data_178;
-extern Obj_9_data_178 lbl_9_data_178;
+extern u8 lbl_9_data_178[0x14];
 
 // lbl_9_data_18C: .data size 0x10, referenced by 1 functions, shape {}
-typedef struct {
-    u8 unk_0;  // no field accesses recovered
-    u8 pad_0[0x10];
-} Obj_9_data_18C;
-extern Obj_9_data_18C lbl_9_data_18C;
+extern char lbl_9_data_18C[0x10];  // '%2d/%2d [%-16s]'
 
 // lbl_9_data_19C: .data size 0x7, referenced by 1 functions, shape {}
-extern u32 lbl_9_data_19C;
+extern char lbl_9_data_19C[0x7];  // 'Save?\n'
 
 // lbl_9_data_1A4: .data size 0x12, referenced by 1 functions, shape {}
-typedef struct {
-    u8 unk_0;  // no field accesses recovered
-    u8 pad_0[0x12];
-} Obj_9_data_1A4;
-extern Obj_9_data_1A4 lbl_9_data_1A4;
+extern char lbl_9_data_1A4[0x12];  // 'Select Load Data\n'
 
 // lbl_9_bss_4: .bss size 0x4, referenced by 1 functions, shape {'object': 1}
 extern u32 lbl_9_bss_4;

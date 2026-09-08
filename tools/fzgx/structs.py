@@ -315,7 +315,8 @@ def header(p: Project, module: str, min_refs: int = 20, sections=(".data", ".bss
         out.append(f"// {name}: {sd.section} size 0x{sd.size:X}, referenced by {n} functions, shape {info['shapes']}")
         nfields = info["fields"]
         pointee0 = info.get("pointees", {}).get(0) or {}
-        if sd.size <= 8 and (info["kind"] == "pointer" or len(nfields) <= 1 and 0 in nfields or not nfields):
+        scalar_size = sd.size in (1, 2, 4, 8)  # a 7-byte object with no accesses is a string, not a u32
+        if sd.size <= 8 and (info["kind"] == "pointer" or len(nfields) <= 1 and 0 in nfields or (not nfields and scalar_size)):
             elem = nfields if info["kind"] == "pointer" else pointee0
             if sd.size == 4 and elem and sum(x["loads"] + x["stores"] for x in elem.values()) >= 3:
                 pt = _tname(names, name, "target", f"{tname}_Target")
@@ -323,8 +324,14 @@ def header(p: Project, module: str, min_refs: int = 20, sections=(".data", ".bss
                 out.append(f"extern {pt} *{name};" + (f"  // array of 0x{info['stride']:X}-byte records" if info.get("stride") else ""))
             else:
                 f = nfields.get(0, {"width": min(sd.size, 4) or 4, "float": False})
-                ctype = {1: "u8", 2: "u16", 4: "f32" if f.get("float") else "u32", 8: "f64"}.get(f.get("width", 4), "u32")
+                w = f.get("width", 4) or 4
+                ctype = {1: "u8", 2: "s16" if f.get("signed") else "u16", 4: "f32" if f.get("float") else "u32", 8: "f64"}.get(w, "u32")
                 out.append(f"extern {ctype} {name};")
+        elif not nfields and sd.size:
+            # no field access recovered: an array, not a struct with an invented field; a
+            # printable string is char for modules whose TUs opted in (typedefs.json)
+            text = p.string_at(module, name) if names.get("__char_strings__") else None
+            out.append(f"extern char {name}[0x{sd.size:X}];  // {text!r}" if text else f"extern u8 {name}[0x{sd.size:X}];")
         else:
             ptr_types = {}
             for poff, fl in sorted(info.get("pointees", {}).items()):

@@ -34,6 +34,20 @@ TYPEDEF_NAME_RE = re.compile(r"^\}\s*([A-Za-z_]\w*)\s*;", re.M)
 TAG_RE = re.compile(r"^typedef\s+struct\s+([A-Za-z_]\w*)\s*\{", re.M)
 
 
+_EXTERN_RE = re.compile(r"^\s*extern\s+[^;=]*?\b([A-Za-z_]\w*)\s*(?:\[[^\]]*\])*\s*;", re.M)
+
+
+def _declared_in(p: Project, include_line: str) -> Set[str]:
+    """Names declared extern by a header, by the text itself (comments and hex sizes included)."""
+    m = re.search(r'#include\s+"([^"]+)"', include_line)
+    if not m:
+        return set()
+    path = ROOT / "include" / m.group(1)
+    if not path.exists():
+        return set()
+    return set(_EXTERN_RE.findall(path.read_text()))
+
+
 def _decls(body: str) -> List[Tuple[str, str]]:
     """(symbol, line) for every extern declaration line of a block body."""
     out = []
@@ -94,7 +108,7 @@ def reconcile_tu(p: Project, tu_source: str, v) -> Dict[str, object]:
             if u is None:
                 continue
             tufile.write_gen(p, u, tf)
-            if not v.matches(p, n):
+            if not v.matches(p, n, module):
                 return False
         return True
 
@@ -114,6 +128,16 @@ def reconcile_tu(p: Project, tu_source: str, v) -> Dict[str, object]:
             tf.prologue = tufile.merge_prologue(tf.prologue, [line])
             out["included"].append(h)
     header_names, header_typedefs = tutidy._header_names(p, tf.prologue)
+    # the headers are the file's truth: a prologue declaration of a symbol they declare goes
+    # (a different spelling would be a redeclaration error in every block)
+    kept = []
+    for ln in tf.prologue.splitlines():
+        n = tutidy._decl_name(ln) if tutidy.DECL_LINE_RE.match(ln) else None
+        if n and n in header_names:
+            out.setdefault("dropped_from_prologue", []).append(n)
+            continue
+        kept.append(ln)
+    tf.prologue = "\n".join(kept).rstrip("\n") + "\n"
 
     # 2. private typedefs that collide
     out["renamed"] = len(isolate_typedefs(tf, header_typedefs))
@@ -199,6 +223,8 @@ def reconcile_tu(p: Project, tu_source: str, v) -> Dict[str, object]:
             # the symbols this block names are contested: no prologue declaration for them, and
             # every block that had its private copy stripped in phase A gets it back
             for n in [n for n in variants if bname in where[n]]:
+                if n in header_names:
+                    continue  # the header declares it for everyone: only this block goes self-contained
                 out["contested"][n] = sorted(variants[n])
                 chosen[n] = None
             for other in tf.blocks:
@@ -216,15 +242,37 @@ def reconcile_tu(p: Project, tu_source: str, v) -> Dict[str, object]:
         if u is None:
             continue
         tufile.write_gen(p, u, tf)
-        if not v.matches(p, b.name):
+        if not v.matches(p, b.name, module):
             b.flags.append("noprologue")
-            inc, body = tufile.split_includes(b.body)
+            # from the block's own text as the agent wrote it: its private declarations (stripped
+            # in phase A when a header covered them) are what decide which headers it can include
+            inc, body = tufile.split_includes(original.get(b.name, b.body))
             incs = [ln.strip() for ln in tf.prologue.splitlines() if tufile.INCLUDE_RE.match(ln)]
-            keep = list(dict.fromkeys(incs + [ln.strip() for ln in inc]))
-            decls = tufile.materialize_old_decls(p, keep, body, tufile.prologue_decls(tf))
+            # a header that declares a symbol this block declares itself (differently, or it would
+            # have been hoisted) cannot be included: the block stays on its own declarations
+            own = {n for n, _ in _decls(body)}
+            safe = []
+            for ln in incs + [ln.strip() for ln in inc]:  # the prologue's includes and the block's own
+                # a self-contained block is one that does not compile under the file's environment:
+                # the module's generated headers stay out, every declaration it needs is materialised
+                if re.search(r'"rel/[^"]+\.h"', ln) or own & _declared_in(p, ln):
+                    out.setdefault("header_excluded", []).append((b.name, ln))
+                    continue
+                safe.append(ln)
+            keep = list(dict.fromkeys(safe))
+            # the declarations it matched under are the committed prologue's, not today's
+            # (a hoisted declaration the header has since replaced must come back into the block)
+            cp = subprocess.run(["git", "show", f"HEAD:src/{tu_source}"], cwd=ROOT, text=True, capture_output=True)
+            try:
+                old_tf = tufile.parse(cp.stdout) if cp.returncode == 0 else tf
+            except ValueError:
+                old_tf = tf
+            old_decls = tufile.prologue_decls(old_tf)
+            cur_decls = tufile.prologue_decls(tf)
+            decls = tufile.materialize_old_decls(p, keep, body, old_decls if old_decls else cur_decls)
             b.body = "\n".join(keep) + "\n\n" + (decls + "\n\n" if decls else "") + body
             tufile.write_gen(p, u, tf)
-            if not v.matches(p, b.name):
+            if not v.matches(p, b.name, module):
                 # keep the tree green with the committed block, whatever it was
                 b.body, b.flags = _committed_block(p, tu_source, b.name, b.body, b.flags)
                 tufile.write_gen(p, u, tf)

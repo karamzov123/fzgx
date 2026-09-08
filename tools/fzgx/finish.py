@@ -47,11 +47,17 @@ class Verifier:
         except ValueError:
             self.cache = {}
         self.hits = self.misses = 0
+        # a verdict depends on the headers too: the same generated text compiles differently
+        # once globals.h changes, so the include tree is part of every key
+        h = hashlib.sha256()
+        for f in sorted((ROOT / "include").rglob("*.h")):
+            h.update(f.read_bytes())
+        self.env = h.hexdigest()[:16]
 
     def _key(self, u: dict, kind: str) -> str:
         gen = tufile.gen_path(self.p, u["source"])
         text = gen.read_text() if gen.exists() else ""
-        h = hashlib.sha256((u["source"] + "\0" + (u.get("mw_version") or "") + "\0" + " ".join(u.get("extra_cflags") or [])
+        h = hashlib.sha256((self.env + "\0" + u["source"] + "\0" + (u.get("mw_version") or "") + "\0" + " ".join(u.get("extra_cflags") or [])
                             + "\0" + json.dumps(u.get("pool") or {}, sort_keys=True) + "\0" + text).encode()).hexdigest()
         return f"{kind}:{h}"
 
@@ -67,11 +73,19 @@ class Verifier:
             self.cache[k] = {"ok": ok}
         return ok
 
-    def matches(self, p: Project, name: str) -> bool:
+    def matches(self, p: Project, name: str, module: Optional[str] = None) -> bool:
+        """Verdict for a block by name; `module` disambiguates _prolog/_epilog, which every REL has."""
         with self.lock:
             if not hasattr(self, "_units"):
-                self._units = {x["symbols"][0]: x for x in p.load_units() if x.get("symbols")}
-            u = self._units.get(name)
+                self._units = {}
+                for x in p.load_units():
+                    if x.get("symbols"):
+                        self._units[(x["module"], x["symbols"][0])] = x
+                        self._units.setdefault((None, x["symbols"][0]), x)
+            u = self._units.get((module, name)) if module else None
+            if u is None and module is None:
+                cands = [x for (m, n), x in self._units.items() if n == name and m is not None]
+                u = cands[0] if len(cands) == 1 else None
         if u is None:
             return False
         k = self._key(u, "match")
@@ -80,7 +94,7 @@ class Verifier:
                 self.hits += 1
                 return self.cache[k]["ok"]
         self.misses += 1
-        res = oracle.check(p, name, 20)
+        res = oracle.check(p, f"{u['module']}:{name}", 20)  # _prolog/_epilog exist in every module
         ok = res.ok and (res.matched or res.matched_pool) and oracle.unit_fully_matches(res) is None
         with self.lock:
             self.cache[k] = {"ok": ok, "pool_map": res.pool_map if res.ok else {}}
