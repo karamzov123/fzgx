@@ -823,3 +823,21 @@ dol/AMC_IsStub.c:
 
 dol/Hu_IsStub.c:
 	.text       start:0x8008FEDC end:0x8008FEE4
+
+dol/fn_8004A53C.c:
+	.text       start:0x8004A53C end:0x8004A544 align:4
+
+dol/fn_8004A530.c:
+	.text       start:0x8004A530 end:0x8004A53C align:4
+
+dol/fn_8004A544.c:
+	.text       start:0x8004A544 end:0x8004A550 align:4
+
+dol/fn_8004A560.c:
+	.text       start:0x8004A560 end:0x8004A578 align:4
+
+dol/fn_8003D690.c:
+	.text       start:0x8003D690 end:0x8003D698 align:4
+
+dol/fn_8004115C.c:
+	.text       start:0x8004115C end:0x80041164 align:4
