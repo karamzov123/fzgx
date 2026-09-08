@@ -24,3 +24,10 @@ file from what actually unblocked functions; keep each item one or two lines.
   constants to `.rodata` in RELs (`-sdata2 0`) and `.sdata2` in the DOL.
 - `lis/addi` (`@ha/@l`) is a normal address materialisation, not a constant:
   declare the symbol and take its address.
+- A value loaded into `r4` (or `r5`...) right before a `bl`, while `r3` is left
+  untouched, means the callee takes the caller's first argument as its own
+  first parameter and the loaded value as the second: write
+  `callee(arg0, table[idx])`, not `callee(table[idx])`. Register choice here is
+  a signature question, never a compiler quirk.
+- The same in reverse: if you need a parameter in `r4`, add the preceding
+  parameter to the signature even when the function body ignores it.
