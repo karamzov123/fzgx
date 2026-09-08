@@ -69,6 +69,68 @@ void colchg_menu_init(void) {
 }
 /* fzgx:end colchg_menu_init */
 
+/* fzgx:begin fn_9_454 */
+typedef signed char s8;
+typedef signed short s16;
+typedef signed long s32;
+typedef signed long long s64;
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned long u32;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
+typedef int BOOL;
+typedef unsigned long size_t;
+struct Struct_lbl_1_bss_D58
+{
+  u8 pad0[8];
+  volatile u16 unk8;  // volatile: decomp-permuter found retail keeps this access order; a revise pass should express it without volatile
+  u8 padA[6];
+  volatile u16 unk10;  // volatile: decomp-permuter found retail keeps this access order; a revise pass should express it without volatile
+  volatile u16 unk12;  // volatile: decomp-permuter found retail keeps this access order; a revise pass should express it without volatile
+};
+struct Struct_lbl_1_bss_970
+{
+  u8 pad0[4];
+  u8 unk4;
+};
+extern struct Struct_lbl_1_bss_D58 lbl_1_bss_D58;
+extern struct Struct_lbl_1_bss_970 lbl_1_bss_970;
+extern u16 lbl_1_bss_96A;
+s32 fn_1_4C10(void);
+void fn_9_454(void)
+{
+  s32 value;
+  s8 delta;
+  if (fn_1_4C10() == 0)
+  {
+    delta = 0;
+    if (((lbl_1_bss_D58.unk10 >> 3) & 1) || ((long) ((lbl_1_bss_D58.unk12 >> 3) & 1)))
+    {
+      delta = -1;
+    }
+    if (((lbl_1_bss_D58.unk10 >> 2) & 1) || ((lbl_1_bss_D58.unk12 >> 2) & 1))
+    {
+      delta++;
+    }
+    if (1)
+    {
+      value = lbl_1_bss_970.unk4 + delta;
+      value = (lbl_1_bss_970.unk4 = (value > 0x73) ? (0x73) : ((value < 0x73) ? (0x73) : (value)));
+      if ((lbl_1_bss_D58.unk8 >> 8) & 1)
+      {
+        lbl_1_bss_96A = value;
+      }
+      if ((lbl_1_bss_D58.unk8 >> 9) & 1)
+      {
+        lbl_1_bss_96A = 0x75;
+      }
+    }
+  }
+}
+/* fzgx:end fn_9_454 */
+
 /* fzgx:begin fn_9_534 */
 extern u32 lbl_9_bss_10;
 extern s16 lbl_9_bss_DC;
@@ -125,6 +187,38 @@ void fn_9_6F0(void) {
     fn_1_426C(lbl_9_bss_DC);
 }
 /* fzgx:end fn_9_6F0 */
+
+/* fzgx:begin fn_9_A18 */
+extern u32 lbl_9_bss_0;
+struct Entry {
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+};
+extern struct Entry *lbl_1_data_1FB6C[];
+void fn_1_435C(u32);
+void fn_1_426C(s16);
+
+struct CarColchgState {
+    u8 pad0[8];
+    s16 *selection;
+    u32 padC;
+    u32 value10;
+    u8 pad14[0xC8];
+    s16 valueDC;
+    u32 valueE0;
+};
+
+void fn_9_A18(void) {
+    struct CarColchgState *state = (struct CarColchgState *)&lbl_9_bss_0;
+    struct Entry *entry;
+
+    entry = lbl_1_data_1FB6C[*state->selection];
+    fn_1_435C(state->value10);
+    fn_1_426C(state->valueDC);
+    entry[state->selection[2]].unk8 = state->valueE0;
+}
+/* fzgx:end fn_9_A18 */
 
 /* fzgx:begin fn_9_DC0 */
 extern u32 lbl_9_bss_10;

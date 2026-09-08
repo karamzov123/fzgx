@@ -15,11 +15,17 @@ rel/car_colchg/_prolog/fn_9_2E0.c:
 rel/car_colchg/car_colchg/colchg_menu_init.c:
 	.text       start:0x000003F0 end:0x00000454
 
+rel/car_colchg/car_colchg/fn_9_454.c:
+	.text       start:0x00000454 end:0x00000534
+
 rel/car_colchg/car_colchg/fn_9_534.c:
 	.text       start:0x00000534 end:0x00000570
 
 rel/car_colchg/car_colchg/fn_9_6F0.c:
 	.text       start:0x000006F0 end:0x0000072C
+
+rel/car_colchg/car_colchg/fn_9_A18.c:
+	.text       start:0x00000A18 end:0x00000A8C
 
 rel/car_colchg/car_colchg/fn_9_DC0.c:
 	.text       start:0x00000DC0 end:0x00000DFC
