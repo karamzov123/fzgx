@@ -23,6 +23,61 @@
   },
   {
     "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/colchg_ezsel_disp.c",
+    "symbols": [
+      "colchg_ezsel_disp"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/colchg_ezsel_init.c",
+    "symbols": [
+      "colchg_ezsel_init"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/colchg_menu_init.c",
+    "symbols": [
+      "colchg_menu_init"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/colchg_save_disp.c",
+    "symbols": [
+      "colchg_save_disp"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/colchg_save_init.c",
+    "symbols": [
+      "colchg_save_init"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
     "source": "rel/car_colchg/car_colchg/fn_9_1018.c",
     "symbols": [
       "fn_9_1018"
@@ -67,28 +122,6 @@
   },
   {
     "module": "car_colchg",
-    "source": "rel/car_colchg/car_colchg/fn_9_1A20.c",
-    "symbols": [
-      "fn_9_1A20"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": [],
-    "tu": "rel/car_colchg/car_colchg.c"
-  },
-  {
-    "module": "car_colchg",
-    "source": "rel/car_colchg/car_colchg/fn_9_1A8C.c",
-    "symbols": [
-      "fn_9_1A8C"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": [],
-    "tu": "rel/car_colchg/car_colchg.c"
-  },
-  {
-    "module": "car_colchg",
     "source": "rel/car_colchg/car_colchg/fn_9_1AC4.c",
     "symbols": [
       "fn_9_1AC4"
@@ -114,17 +147,6 @@
     "source": "rel/car_colchg/car_colchg/fn_9_1C54.c",
     "symbols": [
       "fn_9_1C54"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": [],
-    "tu": "rel/car_colchg/car_colchg.c"
-  },
-  {
-    "module": "car_colchg",
-    "source": "rel/car_colchg/car_colchg/fn_9_3F0.c",
-    "symbols": [
-      "fn_9_3F0"
     ],
     "status": "matching",
     "mw_version": null,
@@ -166,31 +188,9 @@
   },
   {
     "module": "car_colchg",
-    "source": "rel/car_colchg/car_colchg/fn_9_DFC.c",
-    "symbols": [
-      "fn_9_DFC"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": [],
-    "tu": "rel/car_colchg/car_colchg.c"
-  },
-  {
-    "module": "car_colchg",
     "source": "rel/car_colchg/car_colchg/fn_9_F38.c",
     "symbols": [
       "fn_9_F38"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": [],
-    "tu": "rel/car_colchg/car_colchg.c"
-  },
-  {
-    "module": "car_colchg",
-    "source": "rel/car_colchg/car_colchg/fn_9_F74.c",
-    "symbols": [
-      "fn_9_F74"
     ],
     "status": "matching",
     "mw_version": null,

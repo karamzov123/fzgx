@@ -225,6 +225,13 @@ def run(p: Project, symbol: str, threads: int = 8, seconds: int = 600, submit: b
     work.write_text(text if text.endswith("\n") else text + "\n")
     chk = api.check(p, symbol)
     result["check"] = chk.get("percent")
+    if not chk.get("matched"):
+        # the permuter may have added helpers outside the function (an inline_fn): the
+        # preprocessed output matched by construction, so keep it whole; a revise pass can tidy it
+        work.write_text(permuted if permuted.endswith("\n") else permuted + "\n")
+        chk = api.check(p, symbol)
+        result["check"] = chk.get("percent")
+        result["graft"] = "raw permuted source"
     if chk.get("ok") and chk.get("matched") and submit:
         result["submit"] = api.submit(p, symbol, agent="permuter", message="decomp-permuter",
                                       harness="permuter", model="decomp-permuter")
