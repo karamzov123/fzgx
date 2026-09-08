@@ -107,5 +107,5 @@ Rules that hold for everyone:
   converts a module once `tus.json` exists).
 - `include/` — shared headers (generated per module/TU; see readability tooling).
 - `tools/fzgx/` — ledger, carve, oracle, context, lint; `tools/linecrypt.py`, `tools/avlz.py`, `tools/prepare_orig.py`.
-- `docs/batches/` — per-milestone and per-batch reports; `state/ledger.json` — committed ledger snapshot.
+- `.fzgx/reports/` — per-batch reports (local, not committed, like SPEC.md); `state/ledger.json` — committed ledger snapshot.
 - `tests/` — `uv run --group dev pytest -q` (no game data needed).

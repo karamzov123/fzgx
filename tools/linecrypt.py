@@ -14,7 +14,7 @@ and truncated back to the original length, matching the loader's behaviour of
 operating on a padded buffer.
 
 Key constants per region come from CosmoCortney/Line__Crypt and are
-cross-checked against the loader's disassembly (see docs/batches/m0.md).
+cross-checked against the loader's disassembly (milestone 0 notes).
 The original tool also computes 64-bit multiply-high values and a 'salt' term
 that never feed back into the keystream; they are dead code and omitted here.
 """

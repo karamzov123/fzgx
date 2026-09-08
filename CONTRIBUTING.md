@@ -48,7 +48,6 @@ Full rules: `docs/CODING_RULES.md`. Compiler idioms that unblocked functions bef
 - `include/rel/<module>/globals.h` — generated (`fzgx headers`), never hand-edited: regenerate.
 - `config/GFZE01/` — decomp-toolkit configuration; `units.json` lists every C unit and is
   maintained by the tools.
-- `docs/batches/` — reports for every batch and milestone.
 
 ## Agents
 

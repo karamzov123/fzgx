@@ -8,7 +8,7 @@ Each worker spawns `claude -p --agent matcher` (or `codex exec`) with only the
 project MCP server, no skills, no other MCPs, and the matcher's tool list. The
 RESULT line is parsed from the harness output, real token usage and cost are
 written to the ledger, crashed or timed-out workers have their claim released,
-and a batch report lands in docs/batches/. The orchestrating model calls this
+and a batch report lands in .fzgx/reports/ (local, not committed). The orchestrating model calls this
 once per batch and acts on the summary.
 """
 
@@ -354,7 +354,7 @@ def main(argv: Optional[List[str]] = None) -> int:
                "released": len(released), "failed": len(other), "cost_usd": round(spent, 3),
                "wall_s": round(time.time() - t0, 1), "finish": finish_result, "results": results}
     # report + snapshot
-    rep = ROOT / "docs" / "batches" / f"{a.batch}{'-shadow' if a.shadow else ''}{'-revise' if a.revise else ''}{'-' + a.effort if a.effort else ''}.md"
+    rep = STATE_DIR / "reports" / f"{a.batch}{'-shadow' if a.shadow else ''}{'-revise' if a.revise else ''}{'-' + a.effort if a.effort else ''}.md"
     lines = [f"# Batch {a.batch}{' (shadow A/B trial)' if a.shadow else ''} — {a.harness}/{model}, {a.parallel} parallel",
              "", f"{len(results)} functions: {len(matched)} matched, {len(released)} released, {len(other)} failed; "
              f"${spent:.2f}; {summary['wall_s']} s wall.", "",
@@ -362,9 +362,10 @@ def main(argv: Optional[List[str]] = None) -> int:
     for r in sorted(results, key=lambda r: r["symbol"]):
         lines.append(f"| {r['symbol']} | {r['outcome']} | {'' if r['percent'] is None else r['percent']} | "
                      f"{r['checks'] if r['checks'] is not None else ''} | {r['turns'] or ''} | {r['cost']:.3f} | {r['secs']} |")
+    rep.parent.mkdir(parents=True, exist_ok=True)
     rep.write_text("\n".join(lines) + "\n")
     api.snapshot(p)
-    subprocess.run(["git", "add", str(rep), str(ROOT / "state" / "ledger.json")], cwd=ROOT, capture_output=True)
+    subprocess.run(["git", "add", str(ROOT / "state" / "ledger.json")], cwd=ROOT, capture_output=True)
     subprocess.run(["git", "commit", "-q", "-m", f"batch {a.batch}: {len(matched)}/{len(results)} matched ({a.harness}/{model})"],
                    cwd=ROOT, capture_output=True)
     print(json.dumps({k: v for k, v in summary.items() if k != "results"}))
