@@ -110,6 +110,43 @@ class Verifier:
             self.cache[k] = {"ok": ok, "pool_map": res.pool_map if res.ok else {}}
         return ok
 
+    def matches_many(self, p: Project, names: List[str], module: str) -> bool:
+        """`matches` for several blocks at once: the uncached verdicts come from one batched
+        compile+diff instead of one compiler process per block. True when every block matches."""
+        with self.lock:
+            if not hasattr(self, "_units"):
+                self._units = {}
+                for x in p.load_units():
+                    if x.get("symbols"):
+                        self._units[(x["module"], x["symbols"][0])] = x
+                        self._units.setdefault((None, x["symbols"][0]), x)
+        todo = []
+        for name in names:
+            u = self._units.get((module, name))
+            if u is None:
+                return False
+            k = self._key(u, "match")
+            with self.lock:
+                hit = self.cache.get(k)
+            if hit is not None:
+                self.hits += 1
+                if not hit["ok"]:
+                    return False
+                continue
+            todo.append((u, k))
+        if not todo:
+            return True
+        res = oracle.check_many(p, [(f"{u['module']}:{u['symbols'][0]}", None) for u, _ in todo], 20)
+        ok_all = True
+        with self.lock:
+            for u, k in todo:
+                r = res.get(f"{u['module']}:{u['symbols'][0]}")
+                ok = bool(r and r.ok and (r.matched or r.matched_pool) and oracle.unit_fully_matches(r) is None)
+                self.cache[k] = {"ok": ok, "pool_map": r.pool_map if r and r.ok else {}}
+                self.misses += 1
+                ok_all = ok_all and ok
+        return ok_all
+
     def prefetch(self, p: Project, module: str) -> int:
         """One batched compile+diff for every block of the module whose verdict is not cached:
         the per-block `matches` calls then hit the cache. Returns the number verified."""

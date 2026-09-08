@@ -103,14 +103,14 @@ def reconcile_tu(p: Project, tu_source: str, v) -> Dict[str, object]:
                               "included": []}
 
     def verify(names: List[str]) -> bool:
-        for n in names:
-            u = units.get(n)
-            if u is None:
-                continue
-            tufile.write_gen(p, u, tf)
-            if not v.matches(p, n, module):
-                return False
-        return True
+        present = [n for n in names if n in units]
+        for n in present:
+            tufile.write_gen(p, units[n], tf)
+        if not present:
+            return True
+        if hasattr(v, "matches_many"):
+            return v.matches_many(p, present, module)
+        return all(v.matches(p, n, module) for n in present)
 
     def restore_gens(names: List[str]) -> None:
         for n in names:
