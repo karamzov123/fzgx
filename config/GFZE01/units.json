@@ -4466,6 +4466,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80039AFC.c",
+    "symbols": [
+      "fn_80039AFC"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.2.5n",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80039B0C.c",
     "symbols": [
       "fn_80039B0C"
