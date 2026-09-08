@@ -12,7 +12,7 @@ rel/car_colchg/_prolog/fn_9_298.c:
 rel/car_colchg/_prolog/fn_9_2E0.c:
 	.text       start:0x000002E0 end:0x00000328
 
-rel/car_colchg/car_colchg/fn_9_3F0.c:
+rel/car_colchg/car_colchg/colchg_menu_init.c:
 	.text       start:0x000003F0 end:0x00000454
 
 rel/car_colchg/car_colchg/fn_9_534.c:
@@ -24,13 +24,13 @@ rel/car_colchg/car_colchg/fn_9_6F0.c:
 rel/car_colchg/car_colchg/fn_9_DC0.c:
 	.text       start:0x00000DC0 end:0x00000DFC
 
-rel/car_colchg/car_colchg/fn_9_DFC.c:
+rel/car_colchg/car_colchg/colchg_ezsel_init.c:
 	.text       start:0x00000DFC end:0x00000E4C
 
 rel/car_colchg/car_colchg/fn_9_F38.c:
 	.text       start:0x00000F38 end:0x00000F74
 
-rel/car_colchg/car_colchg/fn_9_F74.c:
+rel/car_colchg/car_colchg/colchg_save_init.c:
 	.text       start:0x00000F74 end:0x00000FD0
 
 rel/car_colchg/car_colchg/fn_9_FD0.c:
@@ -48,10 +48,10 @@ rel/car_colchg/car_colchg/fn_9_10BC.c:
 rel/car_colchg/car_colchg/fn_9_1124.c:
 	.text       start:0x00001124 end:0x00001160
 
-rel/car_colchg/car_colchg/fn_9_1A20.c:
+rel/car_colchg/car_colchg/colchg_ezsel_disp.c:
 	.text       start:0x00001A20 end:0x00001A8C
 
-rel/car_colchg/car_colchg/fn_9_1A8C.c:
+rel/car_colchg/car_colchg/colchg_save_disp.c:
 	.text       start:0x00001A8C end:0x00001AC4
 
 rel/car_colchg/car_colchg/fn_9_1AC4.c:
