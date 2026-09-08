@@ -30,6 +30,16 @@ from . import collapse, oracle, reconcile, tufile, tutrial
 from .project import ROOT, STATE_DIR, Project
 
 
+def _failed_units(out: str) -> List[str]:
+    """Unit stems (`rel/m/tu/fn`) named by a failed ninja run: single edges by their object,
+    grouped edges by the driver's `FAILED unit:` lines."""
+    found = re.findall(r"FAILED: \[code=\d+\] build/\S+/src/(\S+?)\.o", out)
+    for src in re.findall(r"FAILED unit: (\S+)", out):
+        src = re.sub(r"^build/[^/]+/gen/|^src/", "", src)
+        found.append(src.rsplit(".", 1)[0])
+    return list(dict.fromkeys(found))
+
+
 def _tus(p: Project, module: str) -> List[str]:
     return sorted({u["tu"] for u in p.load_units() if u.get("tu") and u["module"] == module})
 
@@ -166,7 +176,7 @@ def finish(p: Project, module: str, workers: int = 12) -> Dict[str, object]:
         if not linked:
             # name the culprits, restore only their TU files, keep the rest of the pass
             out = cp2.stdout + cp2.stderr
-            failed = re.findall(r"FAILED: \[code=\d+\] build/\S+/src/(\S+?)\.o", out)
+            failed = _failed_units(out)
             diag = {"failed_units": failed[:20], "errors": [l for l in out.splitlines() if l.startswith("#   ") and "Error" not in l][:12]}
             tmap = p.tu_map(module)
             units_by_src = {u["source"]: u for u in p.load_units()}
@@ -196,7 +206,7 @@ def finish(p: Project, module: str, workers: int = 12) -> Dict[str, object]:
             if linked:
                 restored = [u["symbols"][0] for u in bad_units]
                 diag["block_restored"] = restored
-            failed = [] if linked else re.findall(r"FAILED: \[code=\d+\] build/\S+/src/(\S+?)\.o", cp2.stdout + cp2.stderr)
+            failed = [] if linked else _failed_units(cp2.stdout + cp2.stderr)
             bad_tus = sorted({units_by_src[f + ".c"]["tu"] for f in failed if f + ".c" in units_by_src and units_by_src[f + ".c"].get("tu")})
         if not linked:
             if not failed:  # the link ran: a hash mismatch, name it by function

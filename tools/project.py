@@ -468,7 +468,7 @@ def generate_build_ninja(
     python_lib_dir = python_lib.parent
     n.comment("The arguments passed to configure.py, for rerunning it.")
     n.variable("configure_args", sys.argv[1:])
-    n.variable("python", f'"{sys.executable}"')
+    n.variable("python", "python3")  # a fixed name: a baked-in interpreter path changed with every caller and rebuilt every unit
     n.newline()
 
     ###
@@ -747,6 +747,21 @@ def generate_build_ninja(
     )
     n.newline()
 
+    # Many units of one directory (a TU's blocks, a module's standalone units) in one mwcc
+    # run: the process start is most of a single compile, so a full rebuild of thousands of
+    # small units is dominated by it. The driver retries one by one on failure to name the
+    # culprit, and writes one depfile for the group (ninja accepts several targets in it).
+    mwcc_batch_script = config.tools_dir / "mwcc_batch.sh"
+    n.comment("MWCC build, many units per invocation")
+    n.rule(
+        name="mwcc_batch",
+        command=f"sh {mwcc_batch_script} $depfile $basedir $in -- {wrapper_cmd}{mwcc} $cflags",
+        description="MWCC $basedir ($count units)",
+        depfile="$depfile",
+        deps="gcc",
+    )
+    n.newline()
+
     n.comment("MWCC build (with UTF-8 to Shift JIS wrapper)")
     n.rule(
         name="mwcc_sjis",
@@ -998,6 +1013,8 @@ def generate_build_ninja(
                 )
                 n.newline()
 
+        compile_groups: Dict[tuple, list] = {}
+
         def c_build(obj: Object, src_path: Path) -> Optional[Path]:
             # Avoid creating duplicate build rules
             if obj.src_obj_path is None or obj.src_obj_path in source_added:
@@ -1050,15 +1067,20 @@ def generate_build_ninja(
                 variables["extab_padding"] = "".join(
                     f"{i:02x}" for i in obj.options["extab_padding"]
                 )
-            n.comment(f"{obj.name}: {lib_name} (linked {obj.completed})")
-            n.build(
-                outputs=obj.src_obj_path,
-                rule=build_rule,
-                inputs=src_path,
-                variables=variables,
-                implicit=build_implcit,
-                order_only="pre-compile",
-            )
+            ungrouped = getattr(config, "ungrouped_sources", None) or set()
+            if build_rule == "mwcc" and str(src_path) not in ungrouped and os.name != "nt":
+                key = (variables["basedir"], str(variables["mw_version"]), cflags_str)
+                compile_groups.setdefault(key, []).append((obj.src_obj_path, src_path))
+            else:
+                n.comment(f"{obj.name}: {lib_name} (linked {obj.completed})")
+                n.build(
+                    outputs=obj.src_obj_path,
+                    rule=build_rule,
+                    inputs=src_path,
+                    variables=variables,
+                    implicit=build_implcit,
+                    order_only="pre-compile",
+                )
 
             # Add ctx build rule
             if obj.ctx_path is not None:
@@ -1194,6 +1216,27 @@ def generate_build_ninja(
                         module_link_step,
                     )
                 link_steps.append(module_link_step)
+        n.newline()
+
+        # the grouped compiles, at most GROUP units per mwcc run
+        GROUP = 48
+        for (basedir, mw_version, cflags_str), members in compile_groups.items():
+            for gi in range(0, len(members), GROUP):
+                part = members[gi:gi + GROUP]
+                n.build(
+                    outputs=[o for o, _ in part],
+                    rule="mwcc_batch",
+                    inputs=[src for _, src in part],
+                    variables={
+                        "mw_version": Path(mw_version),
+                        "cflags": cflags_str,
+                        "basedir": basedir,
+                        "depfile": f"{basedir}/_batch_{gi // GROUP}.d",
+                        "count": str(len(part)),
+                    },
+                    implicit=mwcc_implicit + [mwcc_batch_script],
+                    order_only="pre-compile",
+                )
         n.newline()
 
         # Check if all compiler versions exist

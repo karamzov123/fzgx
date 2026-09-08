@@ -527,6 +527,11 @@ config.progress_report_args = [
 
 if args.mode == "configure":
     # Write build.ninja and objdiff.json
+    # pool units keep their own edge: apply_pool_rules rewrites it to mwcc_pool by name
+    units_path = Path("config") / config.version / "units.json"
+    if units_path.exists():
+        config.ungrouped_sources = {"src/" + u["source"] if not u.get("tu") else f"build/{config.version}/gen/{u['source']}"
+                                    for u in json.loads(units_path.read_text()) if isinstance(u.get("pool"), dict) and u["pool"]}
     generate_build(config)
     add_pool_rules()
     name_auto_units_by_tu()
