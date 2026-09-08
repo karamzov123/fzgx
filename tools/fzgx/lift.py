@@ -15,7 +15,8 @@ from typing import Dict, List, Optional, Tuple
 from .project import Project
 
 WIDTH = {"lwz": 4, "lhz": 2, "lha": 2, "lbz": 1, "lfs": 4, "lfd": 8, "stw": 4, "sth": 2, "stb": 1, "stfs": 4, "stfd": 8}
-LOAD_T = {"lwz": "u32", "lhz": "u16", "lha": "s16", "lbz": "u8", "lfs": "f32", "lfd": "f64"}
+LOAD_T = {"lwz": "u32", "lhz": "u16", "lha": "s16", "lbz": "u8", "lfs": "f32", "lfd": "f64",
+          "lwzu": "u32", "lhzu": "u16", "lbzu": "u8", "lfsu": "f32", "lfdu": "f64"}
 STORE_T = {"stw": "u32", "sth": "u16", "stb": "u8", "stfs": "f32", "stfd": "f64"}
 LINE_RE = re.compile(r"^[0-9A-Fa-f]+:\s*(\S+)\s*(.*)$")
 MEM_RE = re.compile(r"^(-?0x[0-9a-f]+|-?\d+|[\w.]+@l|[\w.]+@sda21)\((r\d+)\)$")
@@ -91,19 +92,33 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
         raise Give()
 
     def sym_of(a: str) -> Optional[str]:
-        m = re.match(r"^([\w.]+)@(ha|h|l|sda21)$", a)
+        m = re.match(r"^([\w.]+)(?:[+-]0x[0-9a-fA-F]+)?@(ha|h|l|sda21)$", a)
         return m.group(1) if m else None
+
+    def sym_off(a: str) -> int:
+        m = re.match(r"^[\w.]+([+-]0x[0-9a-fA-F]+)?@", a)
+        return int(m.group(1), 16) if m and m.group(1) else 0
+
+    gfields: Dict[str, Dict[int, str]] = {}   # global symbol -> {offset: type} accessed as a struct
+    pfields: Dict[str, Dict[int, str]] = {}   # pointer global -> {offset: type} accessed through it
+    ptr_globals: set = set()
 
     far: set = set()  # data symbols retail addresses with lis/addi: declared with unknown size so
                       # MWCC's -sdata threshold (DOL) cannot move them into small data
 
-    def declare(s: str, t: str, far_ref: bool = False) -> None:
+    def lookup(s: str):
         sd = syms.get(s)
         if sd is None:
             # dtk exports a TU-local symbol under its address-suffixed name; that is the name
             # the retail object relocates against, so it is the name the C must use
             m = re.match(r"^(.*)_[0-9A-F]{8}$", s)
             sd = syms.get(m.group(1)) if m else None
+        if sd is None:
+            sd = p.find_symbol(s)  # another module: a REL imports from main.rel and the DOL
+        return sd
+
+    def declare(s: str, t: str, far_ref: bool = False) -> None:
+        sd = lookup(s)
         if sd is None:
             raise Give()
         if sd.kind == "function":
@@ -117,6 +132,25 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
     def ref(s: str) -> str:
         return f"{s}[0]" if s in far else s
 
+
+    locals_: Dict[str, str] = {}  # local pointer name -> global symbol it points at
+
+    def field_base(b: str, base_reg: str):
+        """Where a base+offset access lands: ("param", reg) / ("global", sym, k) / ("ptr", name) / None."""
+        if base_reg in params and re.fullmatch(r"arg\d+", b):
+            return ("param", base_reg, 0)
+        if b in locals_:
+            return ("global", locals_[b], 0)
+        m = re.fullmatch(r"&([A-Za-z_]\w*)", b)
+        if m:
+            return ("global", m.group(1), 0)
+        m = re.fullmatch(r"\(\(u8 \*\)&([A-Za-z_]\w*) \+ (\d+)\)", b)
+        if m:
+            return ("global", m.group(1), int(m.group(2)))
+        if re.fullmatch(r"[A-Za-z_]\w*", b) and b in externs:
+            return ("ptr", b, 0)
+        return None
+
     hi: Dict[str, str] = {}  # register holding sym@ha
     for i, (mn, a) in enumerate(ins):
         if mn == "blr":
@@ -124,12 +158,35 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
         if mn in ("stwu", "mflr", "mtlr") or (mn in ("stw", "lwz") and a and (a[0] == "r0" or SAVE_RE.match(a[0])) and "(r1)" in a[1]) or (mn == "addi" and a and a[0] == "r1"):
             frame = True
             continue
+        if mn in ("stfd", "lfd", "psq_st", "psq_l") and a and re.fullmatch(r"f(1[4-9]|2\d|3[01])", a[0]) and "(r1)" in a[1]:
+            frame = True
+            continue  # callee-saved float registers
+        if mn in ("crclr", "crset") or mn == "nop":
+            continue  # condition-register housekeeping around varargs calls: no source
         if mn == "lis" and sym_of(a[1]):
             hi[a[0]] = sym_of(a[1]); regs.pop(a[0], None); continue
         if mn == "lis":
             regs[a[0]] = f"0x{(_imm(a[1]) & 0xFFFF) << 16:X}"; rtype[a[0]] = "u32"; continue
         if mn == "addi" and sym_of(a[2]) and a[1] in hi:
-            s = sym_of(a[2]); declare(s, "u32"); regs[a[0]] = f"&{s}" if syms[s].kind != "function" else s; rtype[a[0]] = "void *"; continue
+            s = sym_of(a[2]); declare(s, "u32")
+            sd = lookup(s)
+            so = sym_off(a[2])
+            if sd is not None and sd.kind == "function":
+                regs[a[0]] = s
+            elif so:
+                regs[a[0]] = f"((u8 *)&{s} + {so})"
+            elif SAVE_RE.match(a[0]):
+                # kept in a callee-saved register: the source held it in a local pointer
+                ln = f"p_{s}"
+                locals_[ln] = s
+                declare(s, "struct", far_ref=True); gfields.setdefault(s, {})
+                # the cast is what keeps the address in the register across calls: MWCC
+                # rematerialises a plain `&sym` after each call, but not a cast of it
+                stmts.append(f"{ln} = (struct {name}_{s} *)&{s};")
+                regs[a[0]] = ln
+            else:
+                regs[a[0]] = f"&{s}"
+            rtype[a[0]] = "void *"; continue
         if mn in ("li",):
             regs[a[0]] = str(_imm(a[1])); rtype[a[0]] = "s32"; continue
         if mn == "mr":
@@ -141,18 +198,40 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
             off, base = m.group(1), m.group(2)
             t = LOAD_T[mn]
             if off.endswith("@l") and base in hi:
-                s = hi[base]; declare(s, t, far_ref=True); regs[a[0]] = ref(s); rtype[a[0]] = t
+                s = hi[base]; so = sym_off(off)
+                if so:
+                    declare(s, "struct", far_ref=True); gfields.setdefault(s, {})[so] = t; regs[a[0]] = f"{s}.unk_{so:X}"
+                else:
+                    declare(s, t, far_ref=True); regs[a[0]] = ref(s)
+                rtype[a[0]] = t
+                if mn.endswith("u"):
+                    regs[base] = f"&{s}" if not so else f"((u8 *)&{s} + {so})"; hi.pop(base, None)
+                continue
             elif off.endswith("@sda21"):
-                s = off[:-6]; declare(s, t); regs[a[0]] = s; rtype[a[0]] = t
+                s = sym_of(off); so = sym_off(off)
+                if so:
+                    declare(s, "struct"); gfields.setdefault(s, {})[so] = t; regs[a[0]] = f"{s}.unk_{so:X}"
+                else:
+                    declare(s, t); regs[a[0]] = s
+                rtype[a[0]] = t
             else:
                 o = _imm(off)
                 b = use(base)
-                if base in params and not regs[base].startswith("("):
-                    fields.setdefault(base, {})[o] = t
-                    regs[a[0]] = f"{b}->unk_{o:X}"
-                else:
+                fb = field_base(b, base)
+                if fb is None:
                     raise Give()
+                kind, key, k = fb
+                if kind == "param":
+                    fields.setdefault(key, {})[o] = t; regs[a[0]] = f"{b}->unk_{o:X}"
+                elif kind == "global" and b in locals_:
+                    gfields.setdefault(key, {})[o] = t; regs[a[0]] = f"{b}->unk_{o:X}"
+                elif kind == "global":
+                    declare(key, "struct", far_ref=True); gfields.setdefault(key, {})[o + k] = t; regs[a[0]] = f"{key}.unk_{o + k:X}"
+                else:
+                    ptr_globals.add(key); pfields.setdefault(key, {})[o] = t; regs[a[0]] = f"{key}->unk_{o:X}"
                 rtype[a[0]] = t
+            if mn.endswith("u"):  # update form: the base register advances
+                regs[base] = f"((u8 *){use(base)} + {_imm(off) if not off.endswith(('@l', '@sda21')) else 0})"
             continue
         if mn in STORE_T:
             m = MEM_RE.match(a[1])
@@ -162,16 +241,31 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
             t = STORE_T[mn]
             val = use(a[0])
             if off.endswith("@l") and base in hi:
-                s = hi[base]; declare(s, t, far_ref=True); stmts.append(f"{ref(s)} = {val};")
+                s = hi[base]; so = sym_off(off)
+                if so:
+                    declare(s, "struct", far_ref=True); gfields.setdefault(s, {})[so] = t; stmts.append(f"{s}.unk_{so:X} = {val};")
+                else:
+                    declare(s, t, far_ref=True); stmts.append(f"{ref(s)} = {val};")
             elif off.endswith("@sda21"):
-                s = off[:-6]; declare(s, t); stmts.append(f"{s} = {val};")
+                s = sym_of(off); so = sym_off(off)
+                if so:
+                    declare(s, "struct"); gfields.setdefault(s, {})[so] = t; stmts.append(f"{s}.unk_{so:X} = {val};")
+                else:
+                    declare(s, t); stmts.append(f"{s} = {val};")
             else:
                 o = _imm(off); b = use(base)
-                if base in params:
-                    fields.setdefault(base, {})[o] = t
-                    stmts.append(f"{b}->unk_{o:X} = {val};")
-                else:
+                fb = field_base(b, base)
+                if fb is None:
                     raise Give()
+                kind, key, k = fb
+                if kind == "param":
+                    fields.setdefault(key, {})[o] = t; stmts.append(f"{b}->unk_{o:X} = {val};")
+                elif kind == "global" and b in locals_:
+                    gfields.setdefault(key, {})[o] = t; stmts.append(f"{b}->unk_{o:X} = {val};")
+                elif kind == "global":
+                    declare(key, "struct", far_ref=True); gfields.setdefault(key, {})[o + k] = t; stmts.append(f"{key}.unk_{o + k:X} = {val};")
+                else:
+                    ptr_globals.add(key); pfields.setdefault(key, {})[o] = t; stmts.append(f"{key}->unk_{o:X} = {val};")
             continue
         if mn in ("extsh", "extsb", "clrlwi", "rlwinm", "slwi", "srwi", "srawi", "add", "subf", "sub", "mulli", "mullw", "neg", "or", "and", "xor", "ori", "andi.", "addis", "subi", "not", "extrwi", "extlwi"):
             d = a[0]
@@ -218,9 +312,50 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
             continue
         if mn == "addi":  # plain addi (not an address)
             regs[a[0]] = f"({use(a[1])} + {_imm(a[2])})"; rtype[a[0]] = "u32"; continue
+        if mn == "oris":
+            regs[a[0]] = f"({use(a[1])} | 0x{_imm(a[2]) << 16:X})"; rtype[a[0]] = "u32"; continue
+        if mn == "subfic":
+            regs[a[0]] = f"({_imm(a[2])} - {use(a[1])})"; rtype[a[0]] = "s32"; continue
+        if mn == "clrrwi":
+            n = _imm(a[2]); regs[a[0]] = f"({use(a[1])} & ~0x{(1 << n) - 1:X})"; rtype[a[0]] = "u32"; continue
+        if mn == "clrlslwi":
+            b, n = _imm(a[2]), _imm(a[3]); regs[a[0]] = f"(({use(a[1])} & 0x{(1 << (32 - b)) - 1:X}) << {n})"; rtype[a[0]] = "u32"; continue
+        if mn in ("lwzx", "lhzx", "lbzx", "lfsx"):
+            t = {"lwzx": "u32", "lhzx": "u16", "lbzx": "u8", "lfsx": "f32"}[mn]
+            b = use(a[1]); i2 = use(a[2])
+            regs[a[0]] = f"*({t} *)((u8 *){b} + {i2})"; rtype[a[0]] = t; continue
+        if mn in ("stwx", "sthx", "stbx", "stfsx"):
+            t = {"stwx": "u32", "sthx": "u16", "stbx": "u8", "stfsx": "f32"}[mn]
+            stmts.append(f"*({t} *)((u8 *){use(a[1])} + {use(a[2])}) = {use(a[0])};"); continue
+        if mn in ("fmuls", "fadds", "fsubs", "fdivs", "fmul", "fadd", "fsub", "fdiv"):
+            op = {"fmuls": "*", "fadds": "+", "fsubs": "-", "fdivs": "/", "fmul": "*", "fadd": "+", "fsub": "-", "fdiv": "/"}[mn]
+            t = "f32" if mn.endswith("s") else "f64"
+            regs[a[0]] = f"({use(a[1])} {op} {use(a[2])})"; rtype[a[0]] = t; continue
+        if mn in ("fmadds", "fmadd"):
+            regs[a[0]] = f"(({use(a[1])} * {use(a[2])}) + {use(a[3])})"; rtype[a[0]] = "f32" if mn.endswith("s") else "f64"; continue
+        if mn in ("fmsubs", "fmsub"):
+            regs[a[0]] = f"(({use(a[1])} * {use(a[2])}) - {use(a[3])})"; rtype[a[0]] = "f32" if mn.endswith("s") else "f64"; continue
+        if mn == "fmr":
+            regs[a[0]] = use(a[1]); rtype[a[0]] = rtype.get(a[1], "f32"); continue
+        if mn == "fneg":
+            regs[a[0]] = f"(-{use(a[1])})"; rtype[a[0]] = rtype.get(a[1], "f32"); continue
+        if mn == "frsp":
+            regs[a[0]] = f"(f32){use(a[1])}"; rtype[a[0]] = "f32"; continue
+        if mn == "nor":
+            regs[a[0]] = f"(~({use(a[1])} | {use(a[2])}))"; rtype[a[0]] = "u32"; continue
+        if mn == "slw":
+            regs[a[0]] = f"({use(a[1])} << {use(a[2])})"; rtype[a[0]] = "u32"; continue
+        if mn == "srw":
+            regs[a[0]] = f"((u32){use(a[1])} >> {use(a[2])})"; rtype[a[0]] = "u32"; continue
+        if mn == "sraw":
+            regs[a[0]] = f"((s32){use(a[1])} >> {use(a[2])})"; rtype[a[0]] = "s32"; continue
+        if mn == "mulhw":
+            regs[a[0]] = f"(u32)(((s64){use(a[1])} * (s64){use(a[2])}) >> 32)"; rtype[a[0]] = "s32"; continue
+        if mn == "cntlzw":
+            regs[a[0]] = f"__cntlzw({use(a[1])})"; rtype[a[0]] = "u32"; continue
         if mn == "bl":
             callee = a[0]
-            if callee not in syms:
+            if lookup(callee) is None:
                 raise Give()
             # arguments: r3..rN where N is the highest argument register set here; a lower
             # register never written is a parameter of ours passed straight through
@@ -239,11 +374,12 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
     # return value: whatever r3 holds at blr, when this function wrote r3 (an untouched first
     # parameter is not a return value; a parameter copied back after a call is)
     wrote_r3 = any(a and a[0] == "r3" and mn not in ("stw", "sth", "stb", "stfs", "stfd", "cmpwi", "cmpw", "cmplwi", "cmplw") for mn, a in ins)
-    if "r3" in regs and wrote_r3:
+    if "r3" in regs and wrote_r3 and not regs["r3"].startswith("__CALLRET__"):
         ret = regs["r3"]  # a call's result falls through in r3 either way: `void f(void) { g(); }`
     # a call whose result is returned becomes `return f(...)`; one whose result feeds later code
     # becomes a temporary; the rest are statements
     used_ret = {i for i in range(len(calls)) if any(f"__CALLRET__{i}" in st for st in stmts if not st.startswith(f"__CALL__{i}(")) or ret == f"__CALLRET__{i}"}
+    structs: List[str] = []
     body = []
     for st in stmts:
         m = re.match(r"__CALL__(\d+)\((.*)\);", st)
@@ -265,8 +401,10 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
     if decls:
         names = [re.match(r"u32 (t\d+)", b).group(1) for b in decls]
         body = [f"u32 {', '.join(names)};"] + [re.sub(r"^u32 (t\d+) = ", r"\1 = ", b) for b in body]
+    if locals_:
+        body = [f"struct {name}_{g} *{ln};" for ln, g in locals_.items()] + body
     # an address stored or passed is a pointer: cast, so u32 fields and parameters accept it
-    body = [re.sub(r"= (&[A-Za-z_]\w*(?:\[0\])?);", r"= (u32)\1;", b) for b in body]
+    body = [b if b.startswith("p_") else re.sub(r"= (&[A-Za-z_]\w*(?:\[0\])?);", r"= (u32)\1;", b) for b in body]
     body = [re.sub(r"(\(|, )(&[A-Za-z_]\w*(?:\[0\])?)(?=[,)])", r"\1(u32)\2", b) for b in body]
     fnames = {s for s, e in externs.items() if e.startswith("extern void ") and e.endswith("(void);")}
     for f in fnames:
@@ -276,10 +414,11 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
     rtype_c = "void"
     if any(b.startswith("return ") for b in body):
         rtype_c = rtype.get("r3", "u32")
+    if "f1" in regs and any(a and a[0] == "f1" for mn, a in ins if mn != "blr") and not any(b.startswith("return ") for b in body):
+        body.append(f"return {regs['f1']};"); rtype_c = rtype.get("f1", "f32")
         if rtype_c in ("s8", "s16"): rtype_c = "s32"
     # parameters and struct parameters
     decl_params = []
-    structs = []
     for i, r in enumerate(params):
         if r in fields:
             sname = f"{name}_Arg{i}"
@@ -299,6 +438,25 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
             decl_params.append(f"{ptypes[r]} arg{i}")
     if calls and not frame:
         raise Give()
+    def struct_text(sname: str, offs: Dict[int, str]) -> str:
+        lines = [f"struct {sname} {{"]
+        cur = 0
+        for o in sorted(offs):
+            if o > cur:
+                lines.append(f"    u8 pad_{cur:X}[0x{o - cur:X}];")
+            w = {"u8": 1, "s8": 1, "u16": 2, "s16": 2, "u32": 4, "f32": 4, "f64": 8}[offs[o]]
+            lines.append(f"    {offs[o]} unk_{o:X};")
+            cur = o + w
+        lines.append("};")
+        return "\n".join(lines)
+    for g, offs in gfields.items():
+        sname = f"{name}_{g}"
+        structs.append(struct_text(sname, offs))
+        externs[g] = f"extern struct {sname} {g};"
+    for g, offs in pfields.items():
+        sname = f"{name}_{g}_T"
+        structs.append(struct_text(sname, offs))
+        externs[g] = re.sub(r"^extern \S+ ", f"extern struct {sname} *", externs[g]) if g in externs else f"extern struct {sname} *{g};"
     text = ['#include "types.h"', ""]
     text += sorted(externs.values())
     if structs:
