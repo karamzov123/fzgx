@@ -1,5 +1,245 @@
 [
   {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_101448.c",
+    "symbols": [
+      "fn_1_101448"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_1024C4.c",
+    "symbols": [
+      "fn_1_1024C4"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_105744.c",
+    "symbols": [
+      "fn_1_105744"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_12F128.c",
+    "symbols": [
+      "fn_1_12F128"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_1310FC.c",
+    "symbols": [
+      "fn_1_1310FC"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_137548.c",
+    "symbols": [
+      "fn_1_137548"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_149BF4.c",
+    "symbols": [
+      "fn_1_149BF4"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_150574.c",
+    "symbols": [
+      "fn_1_150574"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_3EF8C.c",
+    "symbols": [
+      "fn_1_3EF8C"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_411A4.c",
+    "symbols": [
+      "fn_1_411A4"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_46EA8.c",
+    "symbols": [
+      "fn_1_46EA8"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_68B68.c",
+    "symbols": [
+      "fn_1_68B68"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_7899C.c",
+    "symbols": [
+      "fn_1_7899C"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_86194.c",
+    "symbols": [
+      "fn_1_86194"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_8CA20.c",
+    "symbols": [
+      "fn_1_8CA20"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_9818C.c",
+    "symbols": [
+      "fn_1_9818C"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_A96EC.c",
+    "symbols": [
+      "fn_1_A96EC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_AB5CC.c",
+    "symbols": [
+      "fn_1_AB5CC"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_B2770.c",
+    "symbols": [
+      "fn_1_B2770"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_D35B0.c",
+    "symbols": [
+      "fn_1_D35B0"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_D3F88.c",
+    "symbols": [
+      "fn_1_D3F88"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_D960.c",
+    "symbols": [
+      "fn_1_D960"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_FE5E0.c",
+    "symbols": [
+      "fn_1_FE5E0"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/fn_1_FE780.c",
+    "symbols": [
+      "fn_1_FE780"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
     "module": "sample",
     "source": "rel/sample/fn_18_40C.c",
     "symbols": [

@@ -5,3 +5,75 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:32
+
+rel/main_rel/fn_1_D960.c:
+	.text       start:0x0000D960 end:0x0000D96C
+
+rel/main_rel/fn_1_3EF8C.c:
+	.text       start:0x0003EF8C end:0x0003EFA8
+
+rel/main_rel/fn_1_411A4.c:
+	.text       start:0x000411A4 end:0x000411D4
+
+rel/main_rel/fn_1_46EA8.c:
+	.text       start:0x00046EA8 end:0x00046EB4
+
+rel/main_rel/fn_1_68B68.c:
+	.text       start:0x00068B68 end:0x00068B6C
+
+rel/main_rel/fn_1_7899C.c:
+	.text       start:0x0007899C end:0x000789AC
+
+rel/main_rel/fn_1_86194.c:
+	.text       start:0x00086194 end:0x000861B4
+
+rel/main_rel/fn_1_8CA20.c:
+	.text       start:0x0008CA20 end:0x0008CA34
+
+rel/main_rel/fn_1_9818C.c:
+	.text       start:0x0009818C end:0x000981C4
+
+rel/main_rel/fn_1_A96EC.c:
+	.text       start:0x000A96EC end:0x000A96FC
+
+rel/main_rel/fn_1_AB5CC.c:
+	.text       start:0x000AB5CC end:0x000AB61C
+
+rel/main_rel/fn_1_B2770.c:
+	.text       start:0x000B2770 end:0x000B277C
+
+rel/main_rel/fn_1_D35B0.c:
+	.text       start:0x000D35B0 end:0x000D35D4
+
+rel/main_rel/fn_1_D3F88.c:
+	.text       start:0x000D3F88 end:0x000D3FDC
+
+rel/main_rel/fn_1_FE5E0.c:
+	.text       start:0x000FE5E0 end:0x000FE5E4
+
+rel/main_rel/fn_1_FE780.c:
+	.text       start:0x000FE780 end:0x000FE784
+
+rel/main_rel/fn_1_101448.c:
+	.text       start:0x00101448 end:0x0010144C
+
+rel/main_rel/fn_1_1024C4.c:
+	.text       start:0x001024C4 end:0x001024F8
+
+rel/main_rel/fn_1_105744.c:
+	.text       start:0x00105744 end:0x00105768
+
+rel/main_rel/fn_1_12F128.c:
+	.text       start:0x0012F128 end:0x0012F150
+
+rel/main_rel/fn_1_1310FC.c:
+	.text       start:0x001310FC end:0x00131154
+
+rel/main_rel/fn_1_137548.c:
+	.text       start:0x00137548 end:0x00137584
+
+rel/main_rel/fn_1_149BF4.c:
+	.text       start:0x00149BF4 end:0x00149C2C
+
+rel/main_rel/fn_1_150574.c:
+	.text       start:0x00150574 end:0x001505B4
