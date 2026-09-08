@@ -1,4 +1,3 @@
 #include "types.h"
 
-// fn_1_97204: main_rel .text:0x00097204 size 0x48
-// Carved by fzgx. Replace this file's body with the matching C.
+// fn_1_97204: carved by fzgx; best attempt saved to fn_1_97204.1788838328.c
