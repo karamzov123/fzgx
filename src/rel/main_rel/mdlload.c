@@ -37,7 +37,7 @@ extern u32 lbl_801A6410;
 extern void *fn_1_45D0(u32 allocator, u32 size, const unsigned char *name, int mode);
 extern int fn_1_45850(void *buffer);
 extern void fn_1_12F78(void *owner, void *data);
-extern void DCFlushRange(void *address, u32 length);
+extern void DCFlushRange_OSCache(void *address, u32 length);
 extern void *fn_80071100(void *data, void *size, void *user);
 extern void fn_1_D3BE8(void);
 extern void fn_80071484(void);
@@ -115,7 +115,7 @@ int fn_1_D3768(void *owner, void *user) {
     }
 
     fn_1_12F78(owner, result);
-    DCFlushRange(result, aligned_size);
+    DCFlushRange_OSCache(result, aligned_size);
     result = (Fn80071100Result *)fn_80071100(result, data, user);
     result->flags &= ~1;
     return fn_1_D3B6C();

@@ -26,7 +26,7 @@ extern void fn_1_4060(void);
 extern u32 lbl_1_bss_8F57C[3];
 extern void fn_1_9AD88(void);
 extern void fn_1_1594AC(int index, int flag);
-extern void OSReport(const char *format, ...);
+extern void OSReport_OSError(const char *format, ...);
 extern void fn_1_465D0(void *object, int value);
 extern void fn_1_9AD54(void);
 
@@ -482,7 +482,7 @@ void fn_1_1594AC(int index, int flag) {
     // Activate the selected ranking entry and publish its referenced indices.
     entry = (Obj_1_data_4C810 *)((u8 *)&lbl_1_data_4C810 + index * 0x3c);
     if (entry->unk_2C >= 0x10) {
-        OSReport((const char *)lbl_1_data_4C900);
+        OSReport_OSError((const char *)lbl_1_data_4C900);
     }
 
     if (flag != 0) {

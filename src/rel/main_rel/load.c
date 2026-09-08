@@ -248,7 +248,7 @@ u32 fn_1_47184(void) {
 /* fzgx:end fn_1_47184 */
 
 /* fzgx:begin fn_1_479B0 */
-// Reset the loading state and clear the associated resource markers.
+// Reset_OSReset the loading state and clear the associated resource markers.
 void fn_1_479B0(void) {
     fn_1_47EE4(0);
     fn_1_485C8(0);

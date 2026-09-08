@@ -198,7 +198,7 @@ struct Fn198590Node {
     f32 unk_4A4;
 };
 
-// Reset each linked burner's timing values and advance the shared update slot.
+// Reset_OSReset each linked burner's timing values and advance the shared update slot.
 void fn_1_98590(void) {
     Fn198590Node *node = (Fn198590Node *)lbl_1_bss_6EA04->unk_4;
     f32 value = lbl_1_rodata_4104[0];
@@ -232,7 +232,7 @@ struct BurnerEntry {
     u32 flags;
 };
 
-// Reset matching burner entries while walking the global entry list.
+// Reset_OSReset matching burner entries while walking the global entry list.
 void fn_1_985EC(u32 key) {
     BurnerEntry *node = (BurnerEntry *)lbl_1_bss_6EA04->unk_4;
     f32 value = lbl_1_rodata_4104[0];

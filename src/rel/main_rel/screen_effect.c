@@ -124,7 +124,7 @@ extern void fn_1_76650(void *);
 void fn_1_72848(void) {
     u8 i;
 
-    // Reset each screen-effect entry before clearing the active-effect flag.
+    // Reset_OSReset each screen-effect entry before clearing the active-effect flag.
     for (i = 0; i < 8; i++) {
         fn_1_76650((u8 *)&lbl_1_bss_6C8EC + i * 0x10c);
     }
@@ -423,7 +423,7 @@ void fn_1_772E0(void) {
 /* fzgx:end fn_1_772E0 */
 
 /* fzgx:begin fn_1_78950 */
-// Reset the screen effect state and refresh its processing stages twice.
+// Reset_OSReset the screen effect state and refresh its processing stages twice.
 void fn_1_78950(void) {
     int i;
 
@@ -437,7 +437,7 @@ void fn_1_78950(void) {
 /* fzgx:end fn_1_78950 */
 
 /* fzgx:begin fn_1_7899C */
-// Reset the screen-effect state before the next effect begins.
+// Reset_OSReset the screen-effect state before the next effect begins.
 void fn_1_7899C(void) {
     lbl_1_bss_6D14C.unk_0 = 0;
 }

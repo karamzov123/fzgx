@@ -77,7 +77,7 @@ void fn_1_154ED0(Fn_1_154ED0_Arg *arg0) {
 /* fzgx:end fn_1_154ED0 */
 
 /* fzgx:begin fn_1_154F1C */
-// Reset the memory-card state and clear its backing buffer.
+// Reset_OSReset the memory-card state and clear its backing buffer.
 void fn_1_154F1C(void) {
     lbl_1_bss_8EDF0.unk_1C = 0;
     lbl_1_bss_8EDF0.unk_14 = 0;
