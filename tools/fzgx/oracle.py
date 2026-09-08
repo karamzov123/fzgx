@@ -340,6 +340,22 @@ def function_score(project: Project, symbol_name: str, target: Path, obj: Path) 
     return False, 0.0
 
 
+def function_rows(project: Project, symbol_name: str, target: Path, obj: Path):
+    """objdiff's aligned instruction rows (target, ours) for one object, or None."""
+    cp = run([str(OBJDIFF), "diff", "-1", str(target), "-2", str(obj), "-o", "-", "--format", "json", symbol_name])
+    if cp.returncode != 0:
+        return None
+    try:
+        data = json.loads(cp.stdout)
+    except ValueError:
+        return None
+    l = next((s_ for s_ in data.get("left", {}).get("symbols", []) if s_.get("name") == symbol_name), None)
+    r = next((s_ for s_ in data.get("right", {}).get("symbols", []) if s_.get("name") == symbol_name), None)
+    if l is None or r is None:
+        return None
+    return l.get("instructions", []), r.get("instructions", []), float(l.get("match_percent", 0.0))
+
+
 def compile_source(project: Project, module: str, source: Path, obj: Path,
                    mw_version: Optional[str] = None, extra_cflags: Optional[str] = None) -> subprocess.CompletedProcess:
     """Compile a standalone source with the module's flags into `obj` (no unit involved);

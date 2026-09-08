@@ -126,6 +126,8 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
     diffs = [(stuck._fmt(a), stuck._fmt(b)) for a, b in zip(lrows, rrows) if (a.get("diff_kind") or "DIFF_NONE") != "DIFF_NONE"]
     span = _function_span(body, sym.name)
     candidates: List[Tuple[str, str]] = []
+    fam_marks: List[Tuple[int, str]] = []
+    fam_marks.append((len(candidates), "type"))
     if span and _wants_type_flip(counts, diffs):
         sites = _decl_sites(body, span)
         for s, e, typ, name in sites:
@@ -134,6 +136,7 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
                 alts += WIDEN.get(typ, [])
             for alt in alts:
                 candidates.append((f"{name}:{typ}->{alt}", body[:s] + alt + body[e:]))
+    fam_marks.append((len(candidates), "decl"))
     # declaration variants: when a symbol this body declares is declared differently by another
     # block of the same TU (a contested prototype or extern type), each sibling variant is a
     # candidate: a matched neighbour usually already found the spelling the compiler wants
@@ -175,6 +178,7 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
             for n, alts in variants.items():
                 for alt in alts[:4]:
                     candidates.append((f"{n}: {mine[n]} -> {alt}", body.replace(mine[n], alt, 1)))
+    fam_marks.append((len(candidates), "sym"))
     # wrong callee / wrong data symbol: the same instruction with a different relocation target.
     # The retail name is known; the body names ours verbatim, so the substitution is exact.
     subs: Dict[str, str] = {}
@@ -196,6 +200,7 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
         for ours, retail in subs.items():
             text = re.sub(rf"\b{re.escape(ours)}\b", retail, text)
         candidates.append(("all symbol substitutions", text))
+    fam_marks.append((len(candidates), "float"))
     # float vs double: fsubs/fsub, frsp rows come from f32/f64 declarations and literal suffixes
     if any((t.split()[0] if t else "") in FLOAT_PAIRS or (o.split()[0] if o else "") in FLOAT_PAIRS or "frsp" in (t + o) for t, o in diffs):
         for a, b in (("f64", "f32"), ("f32", "f64"), ("double", "float"), ("float", "double")):
@@ -209,6 +214,7 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
         litf = list(re.finditer(r"(?<![\w.])(\d+\.\d*(?:[eE][-+]?\d+)?)f\b", body))
         if litf:
             candidates.append(("float literals lose f", re.sub(r"(?<![\w.])(\d+\.\d*(?:[eE][-+]?\d+)?)f\b", r"\1", body)))
+    fam_marks.append((len(candidates), "params"))
     # unused leading parameters: retail keeps r3..r5 alive (they were parameters) and uses r6 for a
     # temporary where we used r3; adding parameters the body ignores reproduces that
     if span:
@@ -222,6 +228,7 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
                 pads = ", ".join(f"u32 unused{n_cur + i}" for i in range(extra))
                 newp = pads if cur in ("", "void") else cur + ", " + pads
                 candidates.append((f"+{extra} unused parameter(s)", body[:m.start(1)] + newp + body[m.end(1):]))
+    fam_marks.append((len(candidates), "struct"))
     # struct layout: every field offset off by the same delta means padding is missing or extra
     # at the front of the block-private struct; two deltas mean two fields are in the wrong order
     deltas = set()
@@ -253,6 +260,7 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
                 candidates.append((f"swap fields {lines[a].strip()} <-> {lines[b].strip()}", body[:s0] + body[s0:e0].replace(inner, "\n".join(sw), 1) + body[e0:]))
                 if len(candidates) > max_candidates:
                     break
+    fam_marks.append((len(candidates), "branch"))
     # inverted branch: negate one `if` condition and swap its then/else blocks
     if any(t and o and (t.split()[0], o.split()[0]) in BRANCH_INV for t, o in diffs):
         for m in list(re.finditer(r"\bif\s*\(", body))[:16]:
@@ -284,56 +292,125 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
                 if "==" in cond or "!=" in cond:
                     c2 = cond.replace("==", "\0").replace("!=", "==").replace("\0", "!=")
                     candidates.append((f"flip ==/!= at {m.start()}", body[:m.end()] + c2 + body[i - 1:]))
-    best_text = None
-    # every candidate compiles in one mwcc run (the process start dominates a single compile),
-    # then each object is scored; the winner alone goes through the full check (pool rows etc.)
-    cand = candidates[:max_candidates]
-    if cand and time.time() - t0 < budget_s:
-        bdir = STATE_DIR / "fixup" / "batch" / key.replace(":", "__")
-        bdir.mkdir(parents=True, exist_ok=True)
+    def family_of(idx: int) -> str:
+        f = "misc"
+        for k, fam in fam_marks:
+            if k <= idx:
+                f = fam
+        return f
+    # the rows each family is meant to repair, by the kind classify_rows gives the base diff
+    FAMILY_KINDS = {"type": ("ins:ext", "ins:cmp", "op:cmp", "op:ext", "op:rlwinm", "op:extsh", "op:extsb"),
+                    "float": ("ins:float", "op:f"), "sym": ("reloc",), "struct": ("imm",), "branch": ("ins:branch", "op:b"),
+                    "params": ("regalloc",), "decl": (), "misc": ()}
+    kinds_rows = stuck.row_kinds(lrows, rrows)
+    def taddr(row):
+        ins_ = row.get("instruction") or {}
+        return ins_.get("address")
+    base_diff = {taddr(l) for l, k in zip(lrows, kinds_rows) if k is not None and taddr(l) is not None}
+    base_extra = sum(1 for l, k in zip(lrows, kinds_rows) if k is not None and taddr(l) is None)
+    def targets(fam: str):
+        pats = FAMILY_KINDS.get(fam, ())
+        if not pats:
+            return set(base_diff)
+        return {taddr(l) for l, k in zip(lrows, kinds_rows) if k and taddr(l) is not None and any(k.startswith(pp) for pp in pats)}
+
+    import difflib
+    def spans_of(text: str):
+        sm = difflib.SequenceMatcher(None, body, text, autojunk=False)
+        return [(i1, i2, text[j1:j2]) for tag, i1, i2, j1, j2 in sm.get_opcodes() if tag != "equal"]
+    def compose(edit_lists):
+        allspans = sorted((sp for e in edit_lists for sp in e), key=lambda x: x[0])
+        for a, b in zip(allspans, allspans[1:]):
+            if b[0] < a[1]:
+                return None  # overlapping: not composable
+        t = body
+        for s0, e0, rep in reversed(allspans):
+            t = t[:s0] + rep + t[e0:]
+        return t
+
+    target = p.target_object_for(sym)
+    bdir = STATE_DIR / "fixup" / "batch" / key.replace(":", "__")
+    bdir.mkdir(parents=True, exist_ok=True)
+
+    def evaluate(texts: List[str]):
+        """Batch compile, then per candidate: (score %, rows fixed, rows broken, extra rows)."""
         for old in bdir.glob("*.c"):
             old.unlink()
         srcs = []
-        for i, (label, text) in enumerate(cand):
-            f = bdir / f"c{i}.c"; f.write_text(text); srcs.append(f)
-        target = p.target_object_for(sym)
+        for i_, t_ in enumerate(texts):
+            f = bdir / f"c{i_}.c"; f.write_text(t_); srcs.append(f)
         objs = oracle.compile_many(p, sym.module, srcs, bdir / "obj") if target else {}
+        res = []
+        for i_, t_ in enumerate(texts):
+            o = objs.get(srcs[i_])
+            rows = oracle.function_rows(p, sym.name, target, o) if o else None
+            if rows is None:
+                res.append(None); continue
+            l2, r2, pct = rows
+            k2 = stuck.row_kinds(l2, r2)
+            now_diff = {taddr(l) for l, k in zip(l2, k2) if k is not None and taddr(l) is not None}
+            extra = sum(1 for l, k in zip(l2, k2) if k is not None and taddr(l) is None)
+            fixed = base_diff - now_diff
+            broken = now_diff - base_diff
+            res.append((pct, fixed, broken, extra))
+        return res
+
+    best_text, best_pct = None, out["best"]
+    cand = candidates[:max_candidates]
+    if cand and target and time.time() - t0 < budget_s:
+        singles = evaluate([t_ for _, t_ in cand])
         out["tried"] = len(cand)
-        scored = []
-        for i, (label, text) in enumerate(cand):
-            o = objs.get(srcs[i])
-            if o is None:
+        keepers = []
+        for i_, ((label, text), r_) in enumerate(zip(cand, singles)):
+            if r_ is None:
                 continue
-            ok_, pct = oracle.function_score(p, sym.name, target, o)
-            scored.append((pct, i, label, text))
-        scored.sort(key=lambda x: -x[0])
-        if scored and scored[0][0] > out["best"]:
-            pct, i, label, text = scored[0]
-            r = check(text)  # the full verdict: pool rows, adjusted percent
+            pct, fixed, broken, extra = r_
+            if pct >= 100.0:
+                best_text, best_pct = text, pct; out["label"] = label; break
+            if pct > best_pct:
+                best_pct, best_text = pct, text; out["best_label"] = label
+            own = fixed & targets(family_of(i_))
+            # a keeper repairs rows of its own kind without breaking any row that was right
+            if own and not broken and extra <= base_extra:
+                keepers.append((len(own), i_, label, spans_of(text)))
+        if best_pct < 100.0 and keepers:
+            keepers.sort(key=lambda x: -x[0])
+            # 1. the composition of every keeper (disjoint edits): the fixpoint of the single repairs
+            # 2. every pair among the top keepers, for the cases where two edits only pay together
+            combos = []
+            allk = compose([k[3] for k in keepers])
+            if allk is not None and len(keepers) > 1:
+                combos.append(("all keepers: " + " + ".join(k[2] for k in keepers[:6]), allk))
+            top = keepers[:12]
+            for x in range(len(top)):
+                for y in range(x + 1, len(top)):
+                    t_ = compose([top[x][3], top[y][3]])
+                    if t_ is not None:
+                        combos.append((f"{top[x][2]} + {top[y][2]}", t_))
+            if combos and time.time() - t0 < budget_s:
+                res2 = evaluate([t_ for _, t_ in combos])
+                out["tried"] += len(combos)
+                for (label, text), r_ in zip(combos, res2):
+                    if r_ and r_[0] > best_pct:
+                        best_pct, best_text = r_[0], text; out["best_label"] = label
+                    if r_ and r_[0] >= 100.0:
+                        out["label"] = label; break
+        if best_text is not None:
+            r = check(best_text)  # the full verdict on the winner: pool rows, adjusted percent
             if r.ok:
                 pct2 = r.percent_adjusted or r.percent
-                if pct2 > out["best"]:
-                    out["best"] = pct2; out["best_label"] = label; best_text = text
+                out["best"] = max(out["best"], pct2)
                 if r.matched or r.matched_pool:
-                    out.update(matched=True, body=text, label=label)
-        # a pool match can hide behind a lower positional score: check the next few too
-        if not out["matched"]:
-            for pct, i, label, text in scored[1:4]:
-                if pct < 90 or time.time() - t0 > budget_s:
-                    break
-                r = check(text)
-                if r.ok and (r.matched or r.matched_pool):
-                    out.update(matched=True, body=text, label=label, best=100.0)
-                    break
-    # a plateau usually has more than one cause: when a repair improved the body without
-    # matching, search again from the improved body (greedy, bounded by the budget)
-    if not out["matched"] and best_text is not None and out["best"] > out["base"] + 0.05 and _depth < 3:
+                    out.update(matched=True, body=best_text, label=out.get("label") or out.get("best_label"))
+    # a plateau usually has more than one cause: when repairs improved the body without matching,
+    # search again from the improved body (bounded by the budget)
+    if not out["matched"] and best_text is not None and out["best"] > out["base"] + 0.05 and _depth < 2:
         left = budget_s - (time.time() - t0)
         if left > 2:
             nxt = try_fix(p, symbol, best_text, budget_s=left, max_candidates=max_candidates, _depth=_depth + 1)
             out["tried"] += nxt["tried"]
             if nxt["best"] > out["best"]:
-                out["best"] = nxt["best"]; out["best_label"] = f"{label} + {nxt.get('best_label')}"
+                out["best"] = nxt["best"]; out["best_label"] = f"{out.get('best_label')} + {nxt.get('best_label')}"
             if nxt.get("matched"):
                 out.update(matched=True, body=nxt["body"], label=f"{out.get('best_label')} + {nxt.get('label')}")
             out["rounds"] = 1 + nxt.get("rounds", 0)

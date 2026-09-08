@@ -110,6 +110,19 @@ def classify_rows(lrows: List[dict], rrows: List[dict]) -> Dict[str, int]:
     return dict(c)
 
 
+def row_kinds(lrows: List[dict], rrows: List[dict]) -> List[Optional[str]]:
+    """One label per aligned row (None when equal), the same categories classify_rows counts."""
+    out: List[Optional[str]] = []
+    for l, r in zip(lrows, rrows):
+        lk, rk = l.get("diff_kind") or "DIFF_NONE", r.get("diff_kind") or "DIFF_NONE"
+        if lk == "DIFF_NONE" and rk == "DIFF_NONE":
+            out.append(None); continue
+        c = classify_rows([l], [r])
+        keys = [k for k in c if ":" in k] or [k for k in c]
+        out.append(keys[0] if keys else "other")
+    return out
+
+
 def _pure(counts: Dict[str, int], lrows: List[dict], rrows: List[dict]) -> str:
     """One word when a single kind of difference explains the whole diff."""
     kinds = {k for k in counts if ":" not in k}
