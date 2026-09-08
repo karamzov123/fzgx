@@ -1,5 +1,5 @@
 {
- "generated": 1788845706,
+ "generated": 1788846224,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -48566,9 +48566,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_649C",
+   "symbol": "camera_get_state",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_649C.c",
+   "unit": "rel/main_rel/camera/camera_get_state.c",
    "addr": 25756,
    "size": 36,
    "status": "matched",
@@ -48584,9 +48584,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_64C0",
+   "symbol": "camera_get_status",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_64C0.c",
+   "unit": "rel/main_rel/camera/camera_get_status.c",
    "addr": 25792,
    "size": 84,
    "status": "matched",
@@ -48620,9 +48620,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_660C",
+   "symbol": "camera_get_flags",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_660C.c",
+   "unit": "rel/main_rel/camera/camera_get_flags.c",
    "addr": 26124,
    "size": 40,
    "status": "matched",
@@ -48638,9 +48638,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_6634",
+   "symbol": "camera_update",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_6634.c",
+   "unit": "rel/main_rel/camera/camera_update.c",
    "addr": 26164,
    "size": 56,
    "status": "matched",
@@ -48656,9 +48656,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_666C",
+   "symbol": "camera_update_state",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_666C.c",
+   "unit": "rel/main_rel/camera/camera_update_state.c",
    "addr": 26220,
    "size": 76,
    "status": "matched",
@@ -48782,9 +48782,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_6A80",
+   "symbol": "camera_get_mode",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_6A80.c",
+   "unit": "rel/main_rel/camera/camera_get_mode.c",
    "addr": 27264,
    "size": 100,
    "status": "matched",
@@ -48800,9 +48800,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_6AE4",
+   "symbol": "camera_get_output",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_6AE4.c",
+   "unit": "rel/main_rel/camera/camera_get_output.c",
    "addr": 27364,
    "size": 100,
    "status": "matched",
@@ -48854,9 +48854,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_6CB4",
+   "symbol": "camera_set_result",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_6CB4.c",
+   "unit": "rel/main_rel/camera/camera_set_result.c",
    "addr": 27828,
    "size": 36,
    "status": "matched",
@@ -48872,9 +48872,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_6CD8",
+   "symbol": "camera_forward_status",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_6CD8.c",
+   "unit": "rel/main_rel/camera/camera_forward_status.c",
    "addr": 27864,
    "size": 84,
    "status": "matched",
@@ -48944,9 +48944,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_6F3C",
+   "symbol": "camera_is_mode_0x0b",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_6F3C.c",
+   "unit": "rel/main_rel/camera/camera_is_mode_0x0b.c",
    "addr": 28476,
    "size": 72,
    "status": "matched",
@@ -49016,9 +49016,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_713C",
+   "symbol": "camera_set_entry_field_0xa8",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_713C.c",
+   "unit": "rel/main_rel/camera/camera_set_entry_field_0xa8.c",
    "addr": 28988,
    "size": 32,
    "status": "matched",
@@ -49052,9 +49052,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_723C",
+   "symbol": "camera_get_entry_field_0xa8",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_723C.c",
+   "unit": "rel/main_rel/camera/camera_get_entry_field_0xa8.c",
    "addr": 29244,
    "size": 32,
    "status": "matched",
@@ -49070,9 +49070,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_725C",
+   "symbol": "camera_get_entry_field_0xa4",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_725C.c",
+   "unit": "rel/main_rel/camera/camera_get_entry_field_0xa4.c",
    "addr": 29276,
    "size": 32,
    "status": "matched",
@@ -49124,9 +49124,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_8250",
+   "symbol": "camera_compare_values",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_8250.c",
+   "unit": "rel/main_rel/camera/camera_compare_values.c",
    "addr": 33360,
    "size": 72,
    "status": "matched",
@@ -49196,9 +49196,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_8628",
+   "symbol": "camera_get_entry_field_0x2",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_8628.c",
+   "unit": "rel/main_rel/camera/camera_get_entry_field_0x2.c",
    "addr": 34344,
    "size": 32,
    "status": "matched",
@@ -49214,9 +49214,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_8648",
+   "symbol": "camera_set_selected_value",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_8648.c",
+   "unit": "rel/main_rel/camera/camera_set_selected_value.c",
    "addr": 34376,
    "size": 12,
    "status": "matched",
@@ -49232,9 +49232,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_8654",
+   "symbol": "camera_set_state_flag",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_8654.c",
+   "unit": "rel/main_rel/camera/camera_set_state_flag.c",
    "addr": 34388,
    "size": 12,
    "status": "matched",
@@ -49250,9 +49250,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_8660",
+   "symbol": "camera_get_values",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_8660.c",
+   "unit": "rel/main_rel/camera/camera_get_values.c",
    "addr": 34400,
    "size": 168,
    "status": "matched",
@@ -49286,9 +49286,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_8770",
+   "symbol": "live_camera_set_shake",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_8770.c",
+   "unit": "rel/main_rel/camera/live_camera_set_shake.c",
    "addr": 34672,
    "size": 208,
    "status": "matched",
@@ -49322,9 +49322,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_88D8",
+   "symbol": "game_camera_set_shake",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_88D8.c",
+   "unit": "rel/main_rel/camera/game_camera_set_shake.c",
    "addr": 35032,
    "size": 308,
    "status": "matched",
@@ -49358,9 +49358,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_8AC0",
+   "symbol": "camera_init",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_8AC0.c",
+   "unit": "rel/main_rel/camera/camera_init.c",
    "addr": 35520,
    "size": 48,
    "status": "matched",
@@ -49376,9 +49376,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_8AF0",
+   "symbol": "live_camera_get",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_8AF0.c",
+   "unit": "rel/main_rel/camera/live_camera_get.c",
    "addr": 35568,
    "size": 16,
    "status": "matched",
@@ -49394,9 +49394,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_8B00",
+   "symbol": "game_camera_get",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_8B00.c",
+   "unit": "rel/main_rel/camera/game_camera_get.c",
    "addr": 35584,
    "size": 16,
    "status": "matched",
@@ -49520,9 +49520,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_AD94",
+   "symbol": "camera_get_position_delta",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_AD94.c",
+   "unit": "rel/main_rel/camera/camera_get_position_delta.c",
    "addr": 44436,
    "size": 124,
    "status": "matched",
@@ -49538,9 +49538,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_AE10",
+   "symbol": "camera_reset_transition",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_AE10.c",
+   "unit": "rel/main_rel/camera/camera_reset_transition.c",
    "addr": 44560,
    "size": 40,
    "status": "matched",
@@ -49556,9 +49556,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_AE38",
+   "symbol": "camera_update_transition",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_AE38.c",
+   "unit": "rel/main_rel/camera/camera_update_transition.c",
    "addr": 44600,
    "size": 128,
    "status": "matched",
@@ -49610,9 +49610,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_B42C",
+   "symbol": "camera_get_target_orientation",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_B42C.c",
+   "unit": "rel/main_rel/camera/camera_get_target_orientation.c",
    "addr": 46124,
    "size": 168,
    "status": "matched",
@@ -49682,9 +49682,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_B85C",
+   "symbol": "camera_save_parameters",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_B85C.c",
+   "unit": "rel/main_rel/camera/camera_save_parameters.c",
    "addr": 47196,
    "size": 20,
    "status": "matched",
@@ -49772,9 +49772,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_C0A4",
+   "symbol": "camera_save_slot",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_C0A4.c",
+   "unit": "rel/main_rel/camera/camera_save_slot.c",
    "addr": 49316,
    "size": 104,
    "status": "matched",
@@ -49826,9 +49826,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_C228",
+   "symbol": "camera_report_position",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_C228.c",
+   "unit": "rel/main_rel/camera/camera_report_position.c",
    "addr": 49704,
    "size": 64,
    "status": "matched",
@@ -49880,9 +49880,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_C35C",
+   "symbol": "camera_snapshot",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_C35C.c",
+   "unit": "rel/main_rel/camera/camera_snapshot.c",
    "addr": 50012,
    "size": 92,
    "status": "matched",
@@ -49952,9 +49952,9 @@
    "link_state": null
   },
   {
-   "symbol": "fn_1_D960",
+   "symbol": "camera_get_state_object",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_D960.c",
+   "unit": "rel/main_rel/camera/camera_get_state_object.c",
    "addr": 55648,
    "size": 12,
    "status": "matched",
@@ -49970,9 +49970,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_D96C",
+   "symbol": "camera_get_state_field_0x4",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_D96C.c",
+   "unit": "rel/main_rel/camera/camera_get_state_field_0x4.c",
    "addr": 55660,
    "size": 16,
    "status": "matched",
@@ -49988,9 +49988,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_D97C",
+   "symbol": "camera_get_state_field_0x8",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_D97C.c",
+   "unit": "rel/main_rel/camera/camera_get_state_field_0x8.c",
    "addr": 55676,
    "size": 16,
    "status": "matched",
@@ -50006,9 +50006,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_D98C",
+   "symbol": "camera_get_state_field_0xc",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_D98C.c",
+   "unit": "rel/main_rel/camera/camera_get_state_field_0xc.c",
    "addr": 55692,
    "size": 16,
    "status": "matched",
@@ -50024,9 +50024,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_D99C",
+   "symbol": "camera_get_state_field_0x10",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_D99C.c",
+   "unit": "rel/main_rel/camera/camera_get_state_field_0x10.c",
    "addr": 55708,
    "size": 16,
    "status": "matched",
@@ -50042,9 +50042,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_D9AC",
+   "symbol": "camera_get_state_field_0x14",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_D9AC.c",
+   "unit": "rel/main_rel/camera/camera_get_state_field_0x14.c",
    "addr": 55724,
    "size": 16,
    "status": "matched",
@@ -50060,9 +50060,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_D9BC",
+   "symbol": "camera_get_state_field_0x18",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_D9BC.c",
+   "unit": "rel/main_rel/camera/camera_get_state_field_0x18.c",
    "addr": 55740,
    "size": 16,
    "status": "matched",
@@ -50078,9 +50078,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_D9CC",
+   "symbol": "camera_get_state_storage",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_D9CC.c",
+   "unit": "rel/main_rel/camera/camera_get_state_storage.c",
    "addr": 55756,
    "size": 12,
    "status": "matched",
@@ -50096,9 +50096,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_D9D8",
+   "symbol": "camera_get_extended_state_storage",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_D9D8.c",
+   "unit": "rel/main_rel/camera/camera_get_extended_state_storage.c",
    "addr": 55768,
    "size": 12,
    "status": "matched",
@@ -50114,9 +50114,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_D9E4",
+   "symbol": "camera_get_state_flag",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_D9E4.c",
+   "unit": "rel/main_rel/camera/camera_get_state_flag.c",
    "addr": 55780,
    "size": 16,
    "status": "matched",
@@ -50132,9 +50132,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_D9F4",
+   "symbol": "camera_enable_flags",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_D9F4.c",
+   "unit": "rel/main_rel/camera/camera_enable_flags.c",
    "addr": 55796,
    "size": 24,
    "status": "matched",
@@ -50150,9 +50150,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_DA0C",
+   "symbol": "camera_disable_flags",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_DA0C.c",
+   "unit": "rel/main_rel/camera/camera_disable_flags.c",
    "addr": 55820,
    "size": 24,
    "status": "matched",
@@ -50168,9 +50168,9 @@
    "link_state": "verified"
   },
   {
-   "symbol": "fn_1_DA24",
+   "symbol": "camera_are_flags_enabled",
    "module": "main_rel",
-   "unit": "rel/main_rel/camera/fn_1_DA24.c",
+   "unit": "rel/main_rel/camera/camera_are_flags_enabled.c",
    "addr": 55844,
    "size": 16,
    "status": "matched",
@@ -140061,7 +140061,7 @@
   },
   {
    "id": 449,
-   "symbol": "fn_1_D9D8",
+   "symbol": "camera_get_extended_state_storage",
    "agent": "b3-haiku-4",
    "harness": null,
    "model": null,
@@ -140194,7 +140194,7 @@
   },
   {
    "id": 456,
-   "symbol": "fn_1_D96C",
+   "symbol": "camera_get_state_field_0x4",
    "agent": "b3-haiku-11",
    "harness": null,
    "model": null,
@@ -141923,7 +141923,7 @@
   },
   {
    "id": 547,
-   "symbol": "fn_1_6AE4",
+   "symbol": "camera_get_output",
    "agent": "b4-codex-37",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -143101,7 +143101,7 @@
   },
   {
    "id": 609,
-   "symbol": "fn_1_D9CC",
+   "symbol": "camera_get_state_storage",
    "agent": "b6-codex-8",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -143158,7 +143158,7 @@
   },
   {
    "id": 612,
-   "symbol": "fn_1_D97C",
+   "symbol": "camera_get_state_field_0x8",
    "agent": "b6-codex-25",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -143557,7 +143557,7 @@
   },
   {
    "id": 633,
-   "symbol": "fn_1_8628",
+   "symbol": "camera_get_entry_field_0x2",
    "agent": "b6-codex-46",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -144754,7 +144754,7 @@
   },
   {
    "id": 696,
-   "symbol": "fn_1_6CD8",
+   "symbol": "camera_forward_status",
    "agent": "b6-codex-109",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -146996,7 +146996,7 @@
   },
   {
    "id": 814,
-   "symbol": "fn_1_DA24",
+   "symbol": "camera_are_flags_enabled",
    "agent": "b7-std-codex-13",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -147091,7 +147091,7 @@
   },
   {
    "id": 819,
-   "symbol": "fn_1_6CB4",
+   "symbol": "camera_set_result",
    "agent": "b7-std-codex-27",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -148915,7 +148915,7 @@
   },
   {
    "id": 915,
-   "symbol": "fn_1_8B00",
+   "symbol": "game_camera_get",
    "agent": "b8-fast-codex-10",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151024,7 +151024,7 @@
   },
   {
    "id": 1026,
-   "symbol": "fn_1_6634",
+   "symbol": "camera_update",
    "agent": "camera1-codex-6",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151043,7 +151043,7 @@
   },
   {
    "id": 1027,
-   "symbol": "fn_1_64C0",
+   "symbol": "camera_get_status",
    "agent": "camera1-codex-3",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151062,7 +151062,7 @@
   },
   {
    "id": 1028,
-   "symbol": "fn_1_660C",
+   "symbol": "camera_get_flags",
    "agent": "camera1-codex-5",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151100,7 +151100,7 @@
   },
   {
    "id": 1030,
-   "symbol": "fn_1_649C",
+   "symbol": "camera_get_state",
    "agent": "camera1-codex-2",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151119,7 +151119,7 @@
   },
   {
    "id": 1031,
-   "symbol": "fn_1_6F3C",
+   "symbol": "camera_is_mode_0x0b",
    "agent": "camera1-codex-19",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151138,7 +151138,7 @@
   },
   {
    "id": 1032,
-   "symbol": "fn_1_723C",
+   "symbol": "camera_get_entry_field_0xa8",
    "agent": "camera1-codex-24",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151195,7 +151195,7 @@
   },
   {
    "id": 1035,
-   "symbol": "fn_1_713C",
+   "symbol": "camera_set_entry_field_0xa8",
    "agent": "camera1-codex-22",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151233,7 +151233,7 @@
   },
   {
    "id": 1037,
-   "symbol": "fn_1_8648",
+   "symbol": "camera_set_selected_value",
    "agent": "camera1-codex-31",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151252,7 +151252,7 @@
   },
   {
    "id": 1038,
-   "symbol": "fn_1_666C",
+   "symbol": "camera_update_state",
    "agent": "camera1-codex-7",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151271,7 +151271,7 @@
   },
   {
    "id": 1039,
-   "symbol": "fn_1_725C",
+   "symbol": "camera_get_entry_field_0xa4",
    "agent": "camera1-codex-25",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151347,7 +151347,7 @@
   },
   {
    "id": 1043,
-   "symbol": "fn_1_8654",
+   "symbol": "camera_set_state_flag",
    "agent": "camera1-codex-32",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151404,7 +151404,7 @@
   },
   {
    "id": 1046,
-   "symbol": "fn_1_6A80",
+   "symbol": "camera_get_mode",
    "agent": "camera1-codex-13",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151423,7 +151423,7 @@
   },
   {
    "id": 1047,
-   "symbol": "fn_1_8250",
+   "symbol": "camera_compare_values",
    "agent": "camera1-codex-27",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151594,7 +151594,7 @@
   },
   {
    "id": 1056,
-   "symbol": "fn_1_8660",
+   "symbol": "camera_get_values",
    "agent": "camera1-codex-33",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151632,7 +151632,7 @@
   },
   {
    "id": 1058,
-   "symbol": "fn_1_8770",
+   "symbol": "live_camera_set_shake",
    "agent": "camera1-codex-35",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151651,7 +151651,7 @@
   },
   {
    "id": 1059,
-   "symbol": "fn_1_88D8",
+   "symbol": "game_camera_set_shake",
    "agent": "camera1-codex-36",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151689,7 +151689,7 @@
   },
   {
    "id": 1061,
-   "symbol": "fn_1_8AC0",
+   "symbol": "camera_init",
    "agent": "camera1-codex-38",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151708,7 +151708,7 @@
   },
   {
    "id": 1062,
-   "symbol": "fn_1_8AF0",
+   "symbol": "live_camera_get",
    "agent": "camera1-codex-39",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151803,7 +151803,7 @@
   },
   {
    "id": 1067,
-   "symbol": "fn_1_AD94",
+   "symbol": "camera_get_position_delta",
    "agent": "camera1-codex-44",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151822,7 +151822,7 @@
   },
   {
    "id": 1068,
-   "symbol": "fn_1_AE10",
+   "symbol": "camera_reset_transition",
    "agent": "camera1-codex-45",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151841,7 +151841,7 @@
   },
   {
    "id": 1069,
-   "symbol": "fn_1_AE38",
+   "symbol": "camera_update_transition",
    "agent": "camera1-codex-46",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151879,7 +151879,7 @@
   },
   {
    "id": 1071,
-   "symbol": "fn_1_B42C",
+   "symbol": "camera_get_target_orientation",
    "agent": "camera1-codex-48",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151917,7 +151917,7 @@
   },
   {
    "id": 1073,
-   "symbol": "fn_1_B85C",
+   "symbol": "camera_save_parameters",
    "agent": "camera1-codex-50",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -151936,7 +151936,7 @@
   },
   {
    "id": 1074,
-   "symbol": "fn_1_C0A4",
+   "symbol": "camera_save_slot",
    "agent": "camera1-codex-53",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152031,7 +152031,7 @@
   },
   {
    "id": 1079,
-   "symbol": "fn_1_C228",
+   "symbol": "camera_report_position",
    "agent": "camera1-codex-56",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152050,7 +152050,7 @@
   },
   {
    "id": 1080,
-   "symbol": "fn_1_C35C",
+   "symbol": "camera_snapshot",
    "agent": "camera1-codex-59",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152069,7 +152069,7 @@
   },
   {
    "id": 1081,
-   "symbol": "fn_1_D98C",
+   "symbol": "camera_get_state_field_0xc",
    "agent": "camera1-codex-60",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152126,7 +152126,7 @@
   },
   {
    "id": 1084,
-   "symbol": "fn_1_D99C",
+   "symbol": "camera_get_state_field_0x10",
    "agent": "camera1-codex-61",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152145,7 +152145,7 @@
   },
   {
    "id": 1085,
-   "symbol": "fn_1_D9AC",
+   "symbol": "camera_get_state_field_0x14",
    "agent": "camera1-codex-62",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152164,7 +152164,7 @@
   },
   {
    "id": 1086,
-   "symbol": "fn_1_D9BC",
+   "symbol": "camera_get_state_field_0x18",
    "agent": "camera1-codex-63",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152183,7 +152183,7 @@
   },
   {
    "id": 1087,
-   "symbol": "fn_1_D9E4",
+   "symbol": "camera_get_state_flag",
    "agent": "camera1-codex-64",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152202,7 +152202,7 @@
   },
   {
    "id": 1088,
-   "symbol": "fn_1_DA0C",
+   "symbol": "camera_disable_flags",
    "agent": "camera1-codex-66",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152221,7 +152221,7 @@
   },
   {
    "id": 1089,
-   "symbol": "fn_1_D9F4",
+   "symbol": "camera_enable_flags",
    "agent": "camera1-codex-65",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152240,7 +152240,7 @@
   },
   {
    "id": 1090,
-   "symbol": "fn_1_666C",
+   "symbol": "camera_update_state",
    "agent": "revise-camera-r1-codex-5",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152259,7 +152259,7 @@
   },
   {
    "id": 1091,
-   "symbol": "fn_1_AE38",
+   "symbol": "camera_update_transition",
    "agent": "revise-camera-r1-codex-26",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152278,7 +152278,7 @@
   },
   {
    "id": 1092,
-   "symbol": "fn_1_8250",
+   "symbol": "camera_compare_values",
    "agent": "revise-camera-r1-codex-14",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152297,7 +152297,7 @@
   },
   {
    "id": 1093,
-   "symbol": "fn_1_649C",
+   "symbol": "camera_get_state",
    "agent": "revise-camera-r1-codex-1",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152316,7 +152316,7 @@
   },
   {
    "id": 1094,
-   "symbol": "fn_1_725C",
+   "symbol": "camera_get_entry_field_0xa4",
    "agent": "revise-camera-r1-codex-13",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152335,7 +152335,7 @@
   },
   {
    "id": 1095,
-   "symbol": "fn_1_6634",
+   "symbol": "camera_update",
    "agent": "revise-camera-r1-codex-4",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152354,7 +152354,7 @@
   },
   {
    "id": 1096,
-   "symbol": "fn_1_8AF0",
+   "symbol": "live_camera_get",
    "agent": "revise-camera-r1-codex-22",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152373,7 +152373,7 @@
   },
   {
    "id": 1097,
-   "symbol": "fn_1_64C0",
+   "symbol": "camera_get_status",
    "agent": "revise-camera-r1-codex-2",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152392,7 +152392,7 @@
   },
   {
    "id": 1098,
-   "symbol": "fn_1_713C",
+   "symbol": "camera_set_entry_field_0xa8",
    "agent": "revise-camera-r1-codex-11",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152411,7 +152411,7 @@
   },
   {
    "id": 1099,
-   "symbol": "fn_1_C35C",
+   "symbol": "camera_snapshot",
    "agent": "revise-camera-r1-codex-31",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152430,7 +152430,7 @@
   },
   {
    "id": 1100,
-   "symbol": "fn_1_8654",
+   "symbol": "camera_set_state_flag",
    "agent": "revise-camera-r1-codex-17",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152449,7 +152449,7 @@
   },
   {
    "id": 1101,
-   "symbol": "fn_1_6CB4",
+   "symbol": "camera_set_result",
    "agent": "revise-camera-r1-codex-8",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152468,7 +152468,7 @@
   },
   {
    "id": 1102,
-   "symbol": "fn_1_C0A4",
+   "symbol": "camera_save_slot",
    "agent": "revise-camera-r1-codex-29",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152487,7 +152487,7 @@
   },
   {
    "id": 1103,
-   "symbol": "fn_1_8AC0",
+   "symbol": "camera_init",
    "agent": "revise-camera-r1-codex-21",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152506,7 +152506,7 @@
   },
   {
    "id": 1104,
-   "symbol": "fn_1_660C",
+   "symbol": "camera_get_flags",
    "agent": "revise-camera-r1-codex-3",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152525,7 +152525,7 @@
   },
   {
    "id": 1105,
-   "symbol": "fn_1_8648",
+   "symbol": "camera_set_selected_value",
    "agent": "revise-camera-r1-codex-16",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152544,7 +152544,7 @@
   },
   {
    "id": 1106,
-   "symbol": "fn_1_6F3C",
+   "symbol": "camera_is_mode_0x0b",
    "agent": "revise-camera-r1-codex-10",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152563,7 +152563,7 @@
   },
   {
    "id": 1107,
-   "symbol": "fn_1_AE10",
+   "symbol": "camera_reset_transition",
    "agent": "revise-camera-r1-codex-25",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152582,7 +152582,7 @@
   },
   {
    "id": 1108,
-   "symbol": "fn_1_88D8",
+   "symbol": "game_camera_set_shake",
    "agent": "revise-camera-r1-codex-20",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152601,7 +152601,7 @@
   },
   {
    "id": 1109,
-   "symbol": "fn_1_B85C",
+   "symbol": "camera_save_parameters",
    "agent": "revise-camera-r1-codex-28",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152620,7 +152620,7 @@
   },
   {
    "id": 1110,
-   "symbol": "fn_1_723C",
+   "symbol": "camera_get_entry_field_0xa8",
    "agent": "revise-camera-r1-codex-12",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152639,7 +152639,7 @@
   },
   {
    "id": 1111,
-   "symbol": "fn_1_6AE4",
+   "symbol": "camera_get_output",
    "agent": "revise-camera-r1-codex-7",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152658,7 +152658,7 @@
   },
   {
    "id": 1112,
-   "symbol": "fn_1_6CD8",
+   "symbol": "camera_forward_status",
    "agent": "revise-camera-r1-codex-9",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152677,7 +152677,7 @@
   },
   {
    "id": 1113,
-   "symbol": "fn_1_C228",
+   "symbol": "camera_report_position",
    "agent": "revise-camera-r1-codex-30",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152696,7 +152696,7 @@
   },
   {
    "id": 1114,
-   "symbol": "fn_1_6A80",
+   "symbol": "camera_get_mode",
    "agent": "revise-camera-r1-codex-6",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152715,7 +152715,7 @@
   },
   {
    "id": 1115,
-   "symbol": "fn_1_8770",
+   "symbol": "live_camera_set_shake",
    "agent": "revise-camera-r1-codex-19",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152734,7 +152734,7 @@
   },
   {
    "id": 1116,
-   "symbol": "fn_1_D960",
+   "symbol": "camera_get_state_object",
    "agent": "revise-camera-r1-codex-32",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152753,7 +152753,7 @@
   },
   {
    "id": 1117,
-   "symbol": "fn_1_8B00",
+   "symbol": "game_camera_get",
    "agent": "revise-camera-r1-codex-23",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152772,7 +152772,7 @@
   },
   {
    "id": 1118,
-   "symbol": "fn_1_8660",
+   "symbol": "camera_get_values",
    "agent": "revise-camera-r1-codex-18",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152791,7 +152791,7 @@
   },
   {
    "id": 1119,
-   "symbol": "fn_1_B42C",
+   "symbol": "camera_get_target_orientation",
    "agent": "revise-camera-r1-codex-27",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152810,7 +152810,7 @@
   },
   {
    "id": 1120,
-   "symbol": "fn_1_AD94",
+   "symbol": "camera_get_position_delta",
    "agent": "revise-camera-r1-codex-24",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152829,7 +152829,7 @@
   },
   {
    "id": 1121,
-   "symbol": "fn_1_8628",
+   "symbol": "camera_get_entry_field_0x2",
    "agent": "revise-camera-r1-codex-15",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152848,7 +152848,7 @@
   },
   {
    "id": 1122,
-   "symbol": "fn_1_D96C",
+   "symbol": "camera_get_state_field_0x4",
    "agent": "revise-camera-r1-codex-33",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152867,7 +152867,7 @@
   },
   {
    "id": 1123,
-   "symbol": "fn_1_D97C",
+   "symbol": "camera_get_state_field_0x8",
    "agent": "revise-camera-r1-codex-34",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152886,7 +152886,7 @@
   },
   {
    "id": 1124,
-   "symbol": "fn_1_D99C",
+   "symbol": "camera_get_state_field_0x10",
    "agent": "revise-camera-r1-codex-36",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152905,7 +152905,7 @@
   },
   {
    "id": 1125,
-   "symbol": "fn_1_D98C",
+   "symbol": "camera_get_state_field_0xc",
    "agent": "revise-camera-r1-codex-35",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152924,7 +152924,7 @@
   },
   {
    "id": 1126,
-   "symbol": "fn_1_D9AC",
+   "symbol": "camera_get_state_field_0x14",
    "agent": "revise-camera-r1-codex-37",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152943,7 +152943,7 @@
   },
   {
    "id": 1127,
-   "symbol": "fn_1_D9CC",
+   "symbol": "camera_get_state_storage",
    "agent": "revise-camera-r1-codex-39",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152962,7 +152962,7 @@
   },
   {
    "id": 1128,
-   "symbol": "fn_1_D9D8",
+   "symbol": "camera_get_extended_state_storage",
    "agent": "revise-camera-r1-codex-40",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -152981,7 +152981,7 @@
   },
   {
    "id": 1129,
-   "symbol": "fn_1_D9F4",
+   "symbol": "camera_enable_flags",
    "agent": "revise-camera-r1-codex-42",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153000,7 +153000,7 @@
   },
   {
    "id": 1130,
-   "symbol": "fn_1_D9E4",
+   "symbol": "camera_get_state_flag",
    "agent": "revise-camera-r1-codex-41",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153019,7 +153019,7 @@
   },
   {
    "id": 1131,
-   "symbol": "fn_1_D9BC",
+   "symbol": "camera_get_state_field_0x18",
    "agent": "revise-camera-r1-codex-38",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153038,7 +153038,7 @@
   },
   {
    "id": 1132,
-   "symbol": "fn_1_DA24",
+   "symbol": "camera_are_flags_enabled",
    "agent": "revise-camera-r1-codex-44",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153057,7 +153057,7 @@
   },
   {
    "id": 1133,
-   "symbol": "fn_1_DA0C",
+   "symbol": "camera_disable_flags",
    "agent": "revise-camera-r1-codex-43",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153361,7 +153361,7 @@
   },
   {
    "id": 1149,
-   "symbol": "fn_1_64C0",
+   "symbol": "camera_get_status",
    "agent": "revise-camera-r2-codex-2",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153380,7 +153380,7 @@
   },
   {
    "id": 1150,
-   "symbol": "fn_1_8250",
+   "symbol": "camera_compare_values",
    "agent": "revise-camera-r2-codex-14",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153399,7 +153399,7 @@
   },
   {
    "id": 1151,
-   "symbol": "fn_1_8628",
+   "symbol": "camera_get_entry_field_0x2",
    "agent": "revise-camera-r2-codex-15",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153418,7 +153418,7 @@
   },
   {
    "id": 1152,
-   "symbol": "fn_1_666C",
+   "symbol": "camera_update_state",
    "agent": "revise-camera-r2-codex-5",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153437,7 +153437,7 @@
   },
   {
    "id": 1153,
-   "symbol": "fn_1_6CD8",
+   "symbol": "camera_forward_status",
    "agent": "revise-camera-r2-codex-9",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153456,7 +153456,7 @@
   },
   {
    "id": 1154,
-   "symbol": "fn_1_6CB4",
+   "symbol": "camera_set_result",
    "agent": "revise-camera-r2-codex-8",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153475,7 +153475,7 @@
   },
   {
    "id": 1155,
-   "symbol": "fn_1_8648",
+   "symbol": "camera_set_selected_value",
    "agent": "revise-camera-r2-codex-16",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153494,7 +153494,7 @@
   },
   {
    "id": 1156,
-   "symbol": "fn_1_725C",
+   "symbol": "camera_get_entry_field_0xa4",
    "agent": "revise-camera-r2-codex-13",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153513,7 +153513,7 @@
   },
   {
    "id": 1157,
-   "symbol": "fn_1_713C",
+   "symbol": "camera_set_entry_field_0xa8",
    "agent": "revise-camera-r2-codex-11",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153532,7 +153532,7 @@
   },
   {
    "id": 1158,
-   "symbol": "fn_1_723C",
+   "symbol": "camera_get_entry_field_0xa8",
    "agent": "revise-camera-r2-codex-12",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153551,7 +153551,7 @@
   },
   {
    "id": 1159,
-   "symbol": "fn_1_6F3C",
+   "symbol": "camera_is_mode_0x0b",
    "agent": "revise-camera-r2-codex-10",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153570,7 +153570,7 @@
   },
   {
    "id": 1160,
-   "symbol": "fn_1_6634",
+   "symbol": "camera_update",
    "agent": "revise-camera-r2-codex-4",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153589,7 +153589,7 @@
   },
   {
    "id": 1161,
-   "symbol": "fn_1_649C",
+   "symbol": "camera_get_state",
    "agent": "revise-camera-r2-codex-1",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153608,7 +153608,7 @@
   },
   {
    "id": 1162,
-   "symbol": "fn_1_660C",
+   "symbol": "camera_get_flags",
    "agent": "revise-camera-r2-codex-3",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153627,7 +153627,7 @@
   },
   {
    "id": 1163,
-   "symbol": "fn_1_6A80",
+   "symbol": "camera_get_mode",
    "agent": "revise-camera-r2-codex-6",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153646,7 +153646,7 @@
   },
   {
    "id": 1164,
-   "symbol": "fn_1_6AE4",
+   "symbol": "camera_get_output",
    "agent": "revise-camera-r2-codex-7",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153665,7 +153665,7 @@
   },
   {
    "id": 1165,
-   "symbol": "fn_1_8654",
+   "symbol": "camera_set_state_flag",
    "agent": "revise-camera-r2-codex-17",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153684,7 +153684,7 @@
   },
   {
    "id": 1166,
-   "symbol": "fn_1_8770",
+   "symbol": "live_camera_set_shake",
    "agent": "revise-camera-r2-codex-19",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153703,7 +153703,7 @@
   },
   {
    "id": 1167,
-   "symbol": "fn_1_88D8",
+   "symbol": "game_camera_set_shake",
    "agent": "revise-camera-r2-codex-20",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153722,7 +153722,7 @@
   },
   {
    "id": 1168,
-   "symbol": "fn_1_8660",
+   "symbol": "camera_get_values",
    "agent": "revise-camera-r2-codex-18",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153741,7 +153741,7 @@
   },
   {
    "id": 1169,
-   "symbol": "fn_1_8AC0",
+   "symbol": "camera_init",
    "agent": "revise-camera-r2-codex-21",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153760,7 +153760,7 @@
   },
   {
    "id": 1170,
-   "symbol": "fn_1_8AF0",
+   "symbol": "live_camera_get",
    "agent": "revise-camera-r2-codex-22",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153779,7 +153779,7 @@
   },
   {
    "id": 1171,
-   "symbol": "fn_1_8B00",
+   "symbol": "game_camera_get",
    "agent": "revise-camera-r2-codex-23",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153798,7 +153798,7 @@
   },
   {
    "id": 1172,
-   "symbol": "fn_1_AD94",
+   "symbol": "camera_get_position_delta",
    "agent": "revise-camera-r2-codex-24",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153817,7 +153817,7 @@
   },
   {
    "id": 1173,
-   "symbol": "fn_1_AE10",
+   "symbol": "camera_reset_transition",
    "agent": "revise-camera-r2-codex-25",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153836,7 +153836,7 @@
   },
   {
    "id": 1174,
-   "symbol": "fn_1_B42C",
+   "symbol": "camera_get_target_orientation",
    "agent": "revise-camera-r2-codex-27",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153855,7 +153855,7 @@
   },
   {
    "id": 1175,
-   "symbol": "fn_1_B85C",
+   "symbol": "camera_save_parameters",
    "agent": "revise-camera-r2-codex-28",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153874,7 +153874,7 @@
   },
   {
    "id": 1176,
-   "symbol": "fn_1_AE38",
+   "symbol": "camera_update_transition",
    "agent": "revise-camera-r2-codex-26",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153893,7 +153893,7 @@
   },
   {
    "id": 1177,
-   "symbol": "fn_1_C0A4",
+   "symbol": "camera_save_slot",
    "agent": "revise-camera-r2-codex-29",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153912,7 +153912,7 @@
   },
   {
    "id": 1178,
-   "symbol": "fn_1_C228",
+   "symbol": "camera_report_position",
    "agent": "revise-camera-r2-codex-30",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153931,7 +153931,7 @@
   },
   {
    "id": 1179,
-   "symbol": "fn_1_C35C",
+   "symbol": "camera_snapshot",
    "agent": "revise-camera-r2-codex-31",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153950,7 +153950,7 @@
   },
   {
    "id": 1180,
-   "symbol": "fn_1_D960",
+   "symbol": "camera_get_state_object",
    "agent": "revise-camera-r2-codex-32",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153969,7 +153969,7 @@
   },
   {
    "id": 1181,
-   "symbol": "fn_1_D96C",
+   "symbol": "camera_get_state_field_0x4",
    "agent": "revise-camera-r2-codex-33",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -153988,7 +153988,7 @@
   },
   {
    "id": 1182,
-   "symbol": "fn_1_D97C",
+   "symbol": "camera_get_state_field_0x8",
    "agent": "revise-camera-r2-codex-34",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -154007,7 +154007,7 @@
   },
   {
    "id": 1183,
-   "symbol": "fn_1_D98C",
+   "symbol": "camera_get_state_field_0xc",
    "agent": "revise-camera-r2-codex-35",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -154026,7 +154026,7 @@
   },
   {
    "id": 1184,
-   "symbol": "fn_1_D99C",
+   "symbol": "camera_get_state_field_0x10",
    "agent": "revise-camera-r2-codex-36",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -154045,7 +154045,7 @@
   },
   {
    "id": 1185,
-   "symbol": "fn_1_D9AC",
+   "symbol": "camera_get_state_field_0x14",
    "agent": "revise-camera-r2-codex-37",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -154064,7 +154064,7 @@
   },
   {
    "id": 1186,
-   "symbol": "fn_1_D9BC",
+   "symbol": "camera_get_state_field_0x18",
    "agent": "revise-camera-r2-codex-38",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -154083,7 +154083,7 @@
   },
   {
    "id": 1187,
-   "symbol": "fn_1_D9CC",
+   "symbol": "camera_get_state_storage",
    "agent": "revise-camera-r2-codex-39",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -154102,7 +154102,7 @@
   },
   {
    "id": 1188,
-   "symbol": "fn_1_D9D8",
+   "symbol": "camera_get_extended_state_storage",
    "agent": "revise-camera-r2-codex-40",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -154121,7 +154121,7 @@
   },
   {
    "id": 1189,
-   "symbol": "fn_1_D9E4",
+   "symbol": "camera_get_state_flag",
    "agent": "revise-camera-r2-codex-41",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -154140,7 +154140,7 @@
   },
   {
    "id": 1190,
-   "symbol": "fn_1_DA24",
+   "symbol": "camera_are_flags_enabled",
    "agent": "revise-camera-r2-codex-44",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -154159,7 +154159,7 @@
   },
   {
    "id": 1191,
-   "symbol": "fn_1_DA0C",
+   "symbol": "camera_disable_flags",
    "agent": "revise-camera-r2-codex-43",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -154178,7 +154178,7 @@
   },
   {
    "id": 1192,
-   "symbol": "fn_1_D9F4",
+   "symbol": "camera_enable_flags",
    "agent": "revise-camera-r2-codex-42",
    "harness": "codex",
    "model": "gpt-5.6-luna",
@@ -154197,7 +154197,7 @@
   },
   {
    "id": 1193,
-   "symbol": "fn_1_725C",
+   "symbol": "camera_get_entry_field_0xa4",
    "agent": "revise-camera-r2b-codex-1",
    "harness": "codex",
    "model": "gpt-5.6-luna",

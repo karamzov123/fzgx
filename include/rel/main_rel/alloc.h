@@ -26,7 +26,7 @@ extern u32 lbl_1_data_2CD8;
 // lbl_1_bss_F58: .bss size 0x4, 3 refs from alloc.c
 extern u32 lbl_1_bss_F58;
 
-// lbl_1_bss_F70: .bss size 0x4, 2 refs from alloc.c
+// live_camera: .bss size 0x4, 2 refs from alloc.c
 typedef struct {
     u8 pad_0[0x2];
     s16 unk_2;  // 2 loads, 0 stores
@@ -46,8 +46,8 @@ typedef struct {
     f32 unk_E4;  // 0 loads, 2 stores
     f32 unk_E8;  // 0 loads, 2 stores
     f32 unk_EC;  // 0 loads, 2 stores
-} Obj_1_bss_F70_Target;
-extern Obj_1_bss_F70_Target *lbl_1_bss_F70;
+} LiveCamera;
+extern LiveCamera *live_camera;
 
 // lbl_1_bss_7AC40: .bss size 0x8, 2 refs from alloc.c
 extern u32 lbl_1_bss_7AC40;
@@ -59,16 +59,16 @@ typedef struct {
 } Obj_1_bss_7AC20;
 extern Obj_1_bss_7AC20 lbl_1_bss_7AC20;
 
-// lbl_1_data_32A8: .data size 0xC, 1 refs from alloc.c (own data block)
-extern u8 lbl_1_data_32A8[0xC];
-
-// lbl_1_data_3314: .data size 0x1, 1 refs from alloc.c (own data block)
-extern u8 lbl_1_data_3314;
-
 // lbl_1_data_2CEC: .data size 0xA, 1 refs from alloc.c (own data block)
 extern u8 lbl_1_data_2CEC[0xA];
 
 // lbl_1_data_2CD0: .data size 0x8, 1 refs from alloc.c (own data block)
 extern u32 lbl_1_data_2CD0;
+
+// lbl_1_data_3314: .data size 0x1, 1 refs from alloc.c (own data block)
+extern u8 lbl_1_data_3314;
+
+// lbl_1_data_32A8: .data size 0xC, 1 refs from alloc.c (own data block)
+extern u8 lbl_1_data_32A8[0xC];
 
 #endif  // REL_MAIN_REL_ALLOC_H

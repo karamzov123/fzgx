@@ -2831,6 +2831,406 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_are_flags_enabled.c",
+    "symbols": [
+      "camera_are_flags_enabled"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_compare_values.c",
+    "symbols": [
+      "camera_compare_values"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_disable_flags.c",
+    "symbols": [
+      "camera_disable_flags"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_enable_flags.c",
+    "symbols": [
+      "camera_enable_flags"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_forward_status.c",
+    "symbols": [
+      "camera_forward_status"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_entry_field_0x2.c",
+    "symbols": [
+      "camera_get_entry_field_0x2"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_entry_field_0xa4.c",
+    "symbols": [
+      "camera_get_entry_field_0xa4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_entry_field_0xa8.c",
+    "symbols": [
+      "camera_get_entry_field_0xa8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_extended_state_storage.c",
+    "symbols": [
+      "camera_get_extended_state_storage"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_flags.c",
+    "symbols": [
+      "camera_get_flags"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_mode.c",
+    "symbols": [
+      "camera_get_mode"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_output.c",
+    "symbols": [
+      "camera_get_output"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_position_delta.c",
+    "symbols": [
+      "camera_get_position_delta"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_state.c",
+    "symbols": [
+      "camera_get_state"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_state_field_0x10.c",
+    "symbols": [
+      "camera_get_state_field_0x10"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_state_field_0x14.c",
+    "symbols": [
+      "camera_get_state_field_0x14"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_state_field_0x18.c",
+    "symbols": [
+      "camera_get_state_field_0x18"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_state_field_0x4.c",
+    "symbols": [
+      "camera_get_state_field_0x4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_state_field_0x8.c",
+    "symbols": [
+      "camera_get_state_field_0x8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_state_field_0xc.c",
+    "symbols": [
+      "camera_get_state_field_0xc"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_state_flag.c",
+    "symbols": [
+      "camera_get_state_flag"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_state_object.c",
+    "symbols": [
+      "camera_get_state_object"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_state_storage.c",
+    "symbols": [
+      "camera_get_state_storage"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_status.c",
+    "symbols": [
+      "camera_get_status"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_target_orientation.c",
+    "symbols": [
+      "camera_get_target_orientation"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_get_values.c",
+    "symbols": [
+      "camera_get_values"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_init.c",
+    "symbols": [
+      "camera_init"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_is_mode_0x0b.c",
+    "symbols": [
+      "camera_is_mode_0x0b"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_report_position.c",
+    "symbols": [
+      "camera_report_position"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_reset_transition.c",
+    "symbols": [
+      "camera_reset_transition"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_save_parameters.c",
+    "symbols": [
+      "camera_save_parameters"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_save_slot.c",
+    "symbols": [
+      "camera_save_slot"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_set_entry_field_0xa8.c",
+    "symbols": [
+      "camera_set_entry_field_0xa8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_set_result.c",
+    "symbols": [
+      "camera_set_result"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_set_selected_value.c",
+    "symbols": [
+      "camera_set_selected_value"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_set_state_flag.c",
+    "symbols": [
+      "camera_set_state_flag"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_snapshot.c",
+    "symbols": [
+      "camera_snapshot"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_update.c",
+    "symbols": [
+      "camera_update"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_update_state.c",
+    "symbols": [
+      "camera_update_state"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/camera/camera_update_transition.c",
+    "symbols": [
+      "camera_update_transition"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/camera/fn_1_5370.c",
     "symbols": [
       "fn_1_5370"
@@ -2851,61 +3251,11 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_649C.c",
-    "symbols": [
-      "fn_1_649C"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_64C0.c",
-    "symbols": [
-      "fn_1_64C0"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
     "source": "rel/main_rel/camera/fn_1_6514.c",
     "symbols": [
       "fn_1_6514"
     ],
     "status": "nonmatching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_660C.c",
-    "symbols": [
-      "fn_1_660C"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_6634.c",
-    "symbols": [
-      "fn_1_6634"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_666C.c",
-    "symbols": [
-      "fn_1_666C"
-    ],
-    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
@@ -2971,26 +3321,6 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_6A80.c",
-    "symbols": [
-      "fn_1_6A80"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_6AE4.c",
-    "symbols": [
-      "fn_1_6AE4"
-    ],
-    "status": "matching",
-    "mw_version": "GC/1.3.2",
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
     "source": "rel/main_rel/camera/fn_1_6B48.c",
     "symbols": [
       "fn_1_6B48"
@@ -3007,26 +3337,6 @@
     ],
     "status": "nonmatching",
     "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_6CB4.c",
-    "symbols": [
-      "fn_1_6CB4"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_6CD8.c",
-    "symbols": [
-      "fn_1_6CD8"
-    ],
-    "status": "matching",
-    "mw_version": "GC/1.3.2",
     "extra_cflags": []
   },
   {
@@ -3056,16 +3366,6 @@
       "fn_1_6EC0"
     ],
     "status": "nonmatching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_6F3C.c",
-    "symbols": [
-      "fn_1_6F3C"
-    ],
-    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
@@ -3101,16 +3401,6 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_713C.c",
-    "symbols": [
-      "fn_1_713C"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
     "source": "rel/main_rel/camera/fn_1_715C.c",
     "symbols": [
       "fn_1_715C"
@@ -3121,41 +3411,11 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_723C.c",
-    "symbols": [
-      "fn_1_723C"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_725C.c",
-    "symbols": [
-      "fn_1_725C"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
     "source": "rel/main_rel/camera/fn_1_727C.c",
     "symbols": [
       "fn_1_727C"
     ],
     "status": "nonmatching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_8250.c",
-    "symbols": [
-      "fn_1_8250"
-    ],
-    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
@@ -3191,61 +3451,11 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_8628.c",
-    "symbols": [
-      "fn_1_8628"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_8648.c",
-    "symbols": [
-      "fn_1_8648"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_8654.c",
-    "symbols": [
-      "fn_1_8654"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_8660.c",
-    "symbols": [
-      "fn_1_8660"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
     "source": "rel/main_rel/camera/fn_1_8708.c",
     "symbols": [
       "fn_1_8708"
     ],
     "status": "nonmatching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_8770.c",
-    "symbols": [
-      "fn_1_8770"
-    ],
-    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
@@ -3261,51 +3471,11 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_88D8.c",
-    "symbols": [
-      "fn_1_88D8"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
     "source": "rel/main_rel/camera/fn_1_8A0C.c",
     "symbols": [
       "fn_1_8A0C"
     ],
     "status": "nonmatching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_8AC0.c",
-    "symbols": [
-      "fn_1_8AC0"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_8AF0.c",
-    "symbols": [
-      "fn_1_8AF0"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_8B00.c",
-    "symbols": [
-      "fn_1_8B00"
-    ],
-    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
@@ -3361,36 +3531,6 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_AD94.c",
-    "symbols": [
-      "fn_1_AD94"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_AE10.c",
-    "symbols": [
-      "fn_1_AE10"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_AE38.c",
-    "symbols": [
-      "fn_1_AE38"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
     "source": "rel/main_rel/camera/fn_1_AEB8.c",
     "symbols": [
       "fn_1_AEB8"
@@ -3406,16 +3546,6 @@
       "fn_1_AFC8"
     ],
     "status": "nonmatching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_B42C.c",
-    "symbols": [
-      "fn_1_B42C"
-    ],
-    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
@@ -3446,16 +3576,6 @@
       "fn_1_B81C"
     ],
     "status": "nonmatching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_B85C.c",
-    "symbols": [
-      "fn_1_B85C"
-    ],
-    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
@@ -3501,16 +3621,6 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_C0A4.c",
-    "symbols": [
-      "fn_1_C0A4"
-    ],
-    "status": "matching",
-    "mw_version": "GC/1.3.2",
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
     "source": "rel/main_rel/camera/fn_1_C10C.c",
     "symbols": [
       "fn_1_C10C"
@@ -3526,16 +3636,6 @@
       "fn_1_C178"
     ],
     "status": "nonmatching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_C228.c",
-    "symbols": [
-      "fn_1_C228"
-    ],
-    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
@@ -3561,16 +3661,6 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_C35C.c",
-    "symbols": [
-      "fn_1_C35C"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
     "source": "rel/main_rel/camera/fn_1_C3B8.c",
     "symbols": [
       "fn_1_C3B8"
@@ -3591,9 +3681,9 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_D960.c",
+    "source": "rel/main_rel/camera/game_camera_get.c",
     "symbols": [
-      "fn_1_D960"
+      "game_camera_get"
     ],
     "status": "matching",
     "mw_version": null,
@@ -3601,9 +3691,9 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_D96C.c",
+    "source": "rel/main_rel/camera/game_camera_set_shake.c",
     "symbols": [
-      "fn_1_D96C"
+      "game_camera_set_shake"
     ],
     "status": "matching",
     "mw_version": null,
@@ -3611,9 +3701,9 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_D97C.c",
+    "source": "rel/main_rel/camera/live_camera_get.c",
     "symbols": [
-      "fn_1_D97C"
+      "live_camera_get"
     ],
     "status": "matching",
     "mw_version": null,
@@ -3621,99 +3711,9 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_D98C.c",
+    "source": "rel/main_rel/camera/live_camera_set_shake.c",
     "symbols": [
-      "fn_1_D98C"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_D99C.c",
-    "symbols": [
-      "fn_1_D99C"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_D9AC.c",
-    "symbols": [
-      "fn_1_D9AC"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_D9BC.c",
-    "symbols": [
-      "fn_1_D9BC"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_D9CC.c",
-    "symbols": [
-      "fn_1_D9CC"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_D9D8.c",
-    "symbols": [
-      "fn_1_D9D8"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_D9E4.c",
-    "symbols": [
-      "fn_1_D9E4"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_D9F4.c",
-    "symbols": [
-      "fn_1_D9F4"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_DA0C.c",
-    "symbols": [
-      "fn_1_DA0C"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": []
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/camera/fn_1_DA24.c",
-    "symbols": [
-      "fn_1_DA24"
+      "live_camera_set_shake"
     ],
     "status": "matching",
     "mw_version": null,

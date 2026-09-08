@@ -60,14 +60,6 @@ extern u8 lbl_1_data_4C980[0x11];
 // lbl_1_data_4C994: .data size 0xC, 3 refs from bg_win.c (own data block)
 extern u8 lbl_1_data_4C994[0xC];
 
-// lbl_1_bss_8F8D0: .bss size 0x10, 2 refs from bg_win.c
-typedef struct {
-    u32 unk_0;  // 3 loads, 1 stores
-    u32 unk_4;  // 1 loads, 0 stores
-    u8 pad_8[0x8];
-} Obj_1_bss_8F8D0;
-extern Obj_1_bss_8F8D0 lbl_1_bss_8F8D0;
-
 // lbl_1_bss_26B1E: .bss size 0x2E, 2 refs from bg_win.c
 typedef struct {
     u8 unk_0;  // 3 loads, 0 stores
@@ -90,6 +82,14 @@ typedef struct {
     u8 pad_2[0x12];
 } Obj_1_bss_50EC;
 extern Obj_1_bss_50EC lbl_1_bss_50EC;
+
+// lbl_1_bss_8F8D0: .bss size 0x10, 2 refs from bg_win.c
+typedef struct {
+    u32 unk_0;  // 3 loads, 1 stores
+    u32 unk_4;  // 1 loads, 0 stores
+    u8 pad_8[0x8];
+} Obj_1_bss_8F8D0;
+extern Obj_1_bss_8F8D0 lbl_1_bss_8F8D0;
 
 // lbl_1_data_4C9A0: .data size 0xF, 1 refs from bg_win.c (own data block)
 extern u8 lbl_1_data_4C9A0[0xF];

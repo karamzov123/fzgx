@@ -207,14 +207,20 @@ class Project:
         stamp = max((f.stat().st_mtime for f in files), default=0)
         if cache.exists():
             data = json.loads(cache.read_text())
-            if data.get("stamp") == stamp:
+            if data.get("stamp") == stamp and data.get("v") == 2:
                 self._asm_index[module] = {
                     k: Function(self.symbols(module)[k], v["asm"], v["refs"], v["unit"])
                     for k, v in data["functions"].items() if k in self.symbols(module)
                 }
                 return self._asm_index[module]
         syms = self.symbols(module)
+        # the split output can lag a rename (symbols.txt already new, .s still old): key by address
+        by_addr = {s.addr: s for s in syms.values() if s.kind == "function"}
         result: Dict[str, Function] = {}
+        # dtk never deletes the .s of a renamed or moved unit; the stale file would shadow the
+        # fresh one (old symbol names in its refs). Per function address the file named after
+        # the current symbol wins, then an auto unit, then the newest file.
+        rank: Dict[int, tuple] = {}
         for f in files:
             unit = str(f.relative_to(self.module_build_dir(module) / "asm").with_suffix(""))
             cur: Optional[str] = None
@@ -225,8 +231,17 @@ class Project:
                     cur, lines = m.group("name"), []
                     continue
                 if cur and FN_END_RE.match(raw):
-                    if cur in syms:
-                        result[cur] = Function(syms[cur], lines, self._refs(lines, syms), unit)
+                    sym = syms.get(cur)
+                    if sym is None and lines:
+                        try:
+                            sym = by_addr.get(int(lines[0].split(":", 1)[0], 16))
+                        except ValueError:
+                            sym = None
+                    if sym is not None:
+                        score = (2 if f.stem == sym.name else 1 if f.name.startswith("auto_") else 0, f.stat().st_mtime)
+                        if score >= rank.get(sym.addr, (-1, 0)):
+                            rank[sym.addr] = score
+                            result[sym.name] = Function(sym, lines, self._refs(lines, syms), unit)
                     cur = None
                     continue
                 if cur is None:
@@ -238,7 +253,7 @@ class Project:
                     lines.append(raw.strip())  # local label
         cache.parent.mkdir(parents=True, exist_ok=True)
         cache.write_text(json.dumps({
-            "stamp": stamp,
+            "stamp": stamp, "v": 2,
             "functions": {k: {"asm": v.asm, "refs": v.refs, "unit": v.unit} for k, v in result.items()},
         }))
         self._asm_index[module] = result

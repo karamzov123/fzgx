@@ -18,8 +18,8 @@ typedef struct {
 } Obj_1_bss_6EA80_Target;
 extern Obj_1_bss_6EA80_Target *lbl_1_bss_6EA80;
 
-// lbl_1_data_2CB60: .data size 0x2C, 1 refs from background.c (own data block)
-extern u8 lbl_1_data_2CB60[0x2C];
+// lbl_1_data_2CC2C: .data size 0x4, 1 refs from background.c (own data block)
+extern u32 lbl_1_data_2CC2C;
 
 // lbl_1_data_2CC30: .data size 0x38, 1 refs from background.c (own data block)
 typedef struct {
@@ -37,7 +37,7 @@ typedef struct {
 } Obj_1_data_2CCBC;
 extern Obj_1_data_2CCBC lbl_1_data_2CCBC;
 
-// lbl_1_data_2CC2C: .data size 0x4, 1 refs from background.c (own data block)
-extern u32 lbl_1_data_2CC2C;
+// lbl_1_data_2CB60: .data size 0x2C, 1 refs from background.c (own data block)
+extern u8 lbl_1_data_2CB60[0x2C];
 
 #endif  // REL_MAIN_REL_BACKGROUND_H

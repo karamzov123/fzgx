@@ -33,24 +33,6 @@ typedef struct {
 } Obj_1_bss_6D82C;
 extern Obj_1_bss_6D82C lbl_1_bss_6D82C;
 
-// lbl_1_bss_6E958: .bss size 0x8, 3 refs from car.c
-typedef struct {
-    u32 unk_0;  // 3 loads, 2 stores
-    u32 unk_4;  // 3 loads, 2 stores
-} Obj_1_bss_6E958;
-extern Obj_1_bss_6E958 lbl_1_bss_6E958;
-
-// lbl_1_bss_6E960: .bss size 0x18, 3 refs from car.c
-typedef struct {
-    u32 unk_0;  // 30 loads, 7 stores
-    u32 unk_4;  // 15 loads, 3 stores
-    u32 unk_8;  // 6 loads, 3 stores
-    u32 unk_C;  // 6 loads, 3 stores
-    u32 unk_10;  // 6 loads, 3 stores
-    u32 unk_14;  // 8 loads, 3 stores
-} Obj_1_bss_6E960;
-extern Obj_1_bss_6E960 lbl_1_bss_6E960;
-
 // lbl_1_bss_D58: .bss size 0x18, 3 refs from car.c
 typedef struct {
     u16 unk_0;  // 4 loads, 0 stores
@@ -65,6 +47,24 @@ typedef struct {
 } Obj_1_bss_D58;
 extern Obj_1_bss_D58 lbl_1_bss_D58;
 
+// lbl_1_bss_6E960: .bss size 0x18, 3 refs from car.c
+typedef struct {
+    u32 unk_0;  // 30 loads, 7 stores
+    u32 unk_4;  // 15 loads, 3 stores
+    u32 unk_8;  // 6 loads, 3 stores
+    u32 unk_C;  // 6 loads, 3 stores
+    u32 unk_10;  // 6 loads, 3 stores
+    u32 unk_14;  // 8 loads, 3 stores
+} Obj_1_bss_6E960;
+extern Obj_1_bss_6E960 lbl_1_bss_6E960;
+
+// lbl_1_bss_6E958: .bss size 0x8, 3 refs from car.c
+typedef struct {
+    u32 unk_0;  // 3 loads, 2 stores
+    u32 unk_4;  // 3 loads, 2 stores
+} Obj_1_bss_6E958;
+extern Obj_1_bss_6E958 lbl_1_bss_6E958;
+
 // lbl_1_data_27BA4: .data size 0x5C, 3 refs from car.c (own data block)
 extern u8 lbl_1_data_27BA4[0x5C];
 
@@ -74,14 +74,8 @@ extern u32 lbl_1_data_278AC;
 // lbl_1_data_2065C: .data size 0x1, 2 refs from car.c (own data block)
 extern u8 lbl_1_data_2065C;
 
-// lbl_1_data_20700: .data size 0x11, 2 refs from car.c (own data block)
-extern u8 lbl_1_data_20700[0x11];
-
 // lbl_1_bss_6D864: .bss size 0x4, 2 refs from car.c
 extern u32 lbl_1_bss_6D864;
-
-// lbl_1_bss_6D9A0: .bss size 0xBC, 2 refs from car.c
-extern u8 lbl_1_bss_6D9A0[0xBC];
 
 // lbl_1_bss_525C: .bss size 0x198, 2 refs from car.c
 typedef struct {
@@ -98,9 +92,6 @@ typedef struct {
     u8 pad_193[0x5];
 } Obj_1_bss_525C;
 extern Obj_1_bss_525C lbl_1_bss_525C;
-
-// lbl_1_bss_6D824: .bss size 0x4, 2 refs from car.c
-extern u32 lbl_1_bss_6D824;
 
 // lbl_1_bss_C70: .bss size 0x50, 2 refs from car.c
 typedef struct {
@@ -120,8 +111,51 @@ typedef struct {
 } Obj_1_bss_A88;
 extern Obj_1_bss_A88 lbl_1_bss_A88;
 
+// lbl_1_bss_6D9A0: .bss size 0xBC, 2 refs from car.c
+extern u8 lbl_1_bss_6D9A0[0xBC];
+
+// lbl_1_data_20700: .data size 0x11, 2 refs from car.c (own data block)
+extern u8 lbl_1_data_20700[0x11];
+
 // lbl_1_bss_6D868: .bss size 0x1, 2 refs from car.c
 extern u8 lbl_1_bss_6D868;
+
+// lbl_1_bss_6D824: .bss size 0x4, 2 refs from car.c
+extern u32 lbl_1_bss_6D824;
+
+// lbl_1_data_208A8: .data size 0x64, 1 refs from car.c (own data block)
+extern u8 lbl_1_data_208A8[0x64];
+
+// lbl_1_data_27920: .data size 0x4, 1 refs from car.c (own data block)
+extern u32 lbl_1_data_27920;
+
+// lbl_1_data_27924: .data size 0x108, 1 refs from car.c (own data block)
+typedef struct {
+    u32 unk_0;  // 0 loads, 1 stores
+    u8 pad_4[0x104];
+} Obj_1_data_27924;
+extern Obj_1_data_27924 lbl_1_data_27924;
+
+// lbl_1_data_20660: .data size 0x1, 1 refs from car.c (own data block)
+extern u8 lbl_1_data_20660;
+
+// lbl_1_data_27874: .data size 0x38, 1 refs from car.c (own data block)
+extern u8 lbl_1_data_27874[0x38];
+
+// lbl_1_data_2786C: .data size 0x4, 1 refs from car.c (own data block)
+extern u32 lbl_1_data_2786C;
+
+// lbl_1_data_2090C: .data size 0x88, 1 refs from car.c (own data block)
+extern u8 lbl_1_data_2090C[0x88];
+
+// lbl_1_data_22A24: .data size 0x5, 1 refs from car.c (own data block)
+extern u32 lbl_1_data_22A24;
+
+// lbl_1_data_20594: .data size 0x12, 1 refs from car.c (own data block)
+extern u8 lbl_1_data_20594[0x12];
+
+// lbl_1_data_205A8: .data size 0xB4, 1 refs from car.c (own data block)
+extern u8 lbl_1_data_205A8[0xB4];
 
 // lbl_1_data_20994: .data size 0x12, 1 refs from car.c (own data block)
 extern u8 lbl_1_data_20994[0x12];
@@ -129,11 +163,11 @@ extern u8 lbl_1_data_20994[0x12];
 // lbl_1_data_209A8: .data size 0x12, 1 refs from car.c (own data block)
 extern u8 lbl_1_data_209A8[0x12];
 
-// lbl_1_data_27870: .data size 0x4, 1 refs from car.c (own data block)
-extern u32 lbl_1_data_27870;
+// jumptable_1_data_207F0: .data size 0xA4, 1 refs from car.c (own data block)
+extern u8 jumptable_1_data_207F0[0xA4];
 
-// lbl_1_data_20660: .data size 0x1, 1 refs from car.c (own data block)
-extern u8 lbl_1_data_20660;
+// lbl_1_data_2785C: .data size 0x10, 1 refs from car.c (own data block)
+extern u8 lbl_1_data_2785C[0x10];
 
 // lbl_1_data_20664: .data size 0x74, 1 refs from car.c (own data block)
 typedef struct {
@@ -143,35 +177,17 @@ typedef struct {
 } Obj_1_data_20664;
 extern Obj_1_data_20664 lbl_1_data_20664;
 
+// lbl_1_data_2057C: .data size 0x16, 1 refs from car.c (own data block)
+extern u8 lbl_1_data_2057C[0x16];
+
+// lbl_1_data_27870: .data size 0x4, 1 refs from car.c (own data block)
+extern u32 lbl_1_data_27870;
+
 // lbl_1_data_20714: .data size 0xA, 1 refs from car.c (own data block)
 extern u8 lbl_1_data_20714[0xA];
 
-// lbl_1_data_2090C: .data size 0x88, 1 refs from car.c (own data block)
-extern u8 lbl_1_data_2090C[0x88];
-
-// lbl_1_data_2785C: .data size 0x10, 1 refs from car.c (own data block)
-extern u8 lbl_1_data_2785C[0x10];
-
-// lbl_1_data_20594: .data size 0x12, 1 refs from car.c (own data block)
-extern u8 lbl_1_data_20594[0x12];
-
-// lbl_1_data_205A8: .data size 0xB4, 1 refs from car.c (own data block)
-extern u8 lbl_1_data_205A8[0xB4];
-
-// jumptable_1_data_207F0: .data size 0xA4, 1 refs from car.c (own data block)
-extern u8 jumptable_1_data_207F0[0xA4];
-
-// lbl_1_data_22A24: .data size 0x5, 1 refs from car.c (own data block)
-extern u32 lbl_1_data_22A24;
-
 // jumptable_1_data_27A2C: .data size 0x38, 1 refs from car.c (own data block)
 extern u8 jumptable_1_data_27A2C[0x38];
-
-// lbl_1_data_27874: .data size 0x38, 1 refs from car.c (own data block)
-extern u8 lbl_1_data_27874[0x38];
-
-// lbl_1_data_2786C: .data size 0x4, 1 refs from car.c (own data block)
-extern u32 lbl_1_data_2786C;
 
 // lbl_1_data_26B60: .data size 0xB4, 1 refs from car.c (own data block)
 extern u8 lbl_1_data_26B60[0xB4];
@@ -191,23 +207,7 @@ extern u32 lbl_1_data_24EF0;
 // lbl_1_data_206D8: .data size 0x28, 1 refs from car.c (own data block)
 extern u8 lbl_1_data_206D8[0x28];
 
-// lbl_1_data_27920: .data size 0x4, 1 refs from car.c (own data block)
-extern u32 lbl_1_data_27920;
-
-// lbl_1_data_27924: .data size 0x108, 1 refs from car.c (own data block)
-typedef struct {
-    u32 unk_0;  // 0 loads, 1 stores
-    u8 pad_4[0x104];
-} Obj_1_data_27924;
-extern Obj_1_data_27924 lbl_1_data_27924;
-
 // lbl_1_data_278B0: .data size 0x70, 1 refs from car.c (own data block)
 extern u8 lbl_1_data_278B0[0x70];
-
-// lbl_1_data_2057C: .data size 0x16, 1 refs from car.c (own data block)
-extern u8 lbl_1_data_2057C[0x16];
-
-// lbl_1_data_208A8: .data size 0x64, 1 refs from car.c (own data block)
-extern u8 lbl_1_data_208A8[0x64];
 
 #endif  // REL_MAIN_REL_CAR_H

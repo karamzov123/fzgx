@@ -63,6 +63,13 @@ extern Obj_1_bss_85250 lbl_1_bss_85250;
 // lbl_1_data_3F17C: .data size 0x8, 3 refs from cloth.c (own data block)
 extern u32 lbl_1_data_3F17C;
 
+// lbl_1_bss_85280: .bss size 0x8, 2 refs from cloth.c
+typedef struct {
+    u32 unk_0;  // 3 loads, 2 stores
+    u32 unk_4;  // 5 loads, 2 stores
+} Obj_1_bss_85280;
+extern Obj_1_bss_85280 lbl_1_bss_85280;
+
 // lbl_1_bss_38460: .bss size 0x54, 2 refs from cloth.c
 typedef struct {
     u8 pad_0[0x8];
@@ -80,12 +87,18 @@ typedef struct {
 } Obj_1_bss_38460;
 extern Obj_1_bss_38460 lbl_1_bss_38460;
 
-// lbl_1_bss_85280: .bss size 0x8, 2 refs from cloth.c
+// lbl_1_data_3F284: .data size 0x8, 1 refs from cloth.c (own data block)
 typedef struct {
-    u32 unk_0;  // 3 loads, 2 stores
-    u32 unk_4;  // 5 loads, 2 stores
-} Obj_1_bss_85280;
-extern Obj_1_bss_85280 lbl_1_bss_85280;
+    u32 unk_0;  // 1 loads, 1 stores
+    u32 unk_4;  // 1 loads, 1 stores
+} Obj_1_data_3F284;
+extern Obj_1_data_3F284 lbl_1_data_3F284;
+
+// lbl_1_data_3F244: .data size 0x40, 1 refs from cloth.c (own data block)
+extern u8 lbl_1_data_3F244[0x40];
+
+// lbl_1_data_3F188: .data size 0xC, 1 refs from cloth.c (own data block)
+extern u8 lbl_1_data_3F188[0xC];
 
 // lbl_1_data_3F28C: .data size 0x60, 1 refs from cloth.c (own data block)
 typedef struct {
@@ -105,18 +118,5 @@ typedef struct {
     u8 pad_C[0x54];
 } Obj_1_data_3F2EC;
 extern Obj_1_data_3F2EC lbl_1_data_3F2EC;
-
-// lbl_1_data_3F284: .data size 0x8, 1 refs from cloth.c (own data block)
-typedef struct {
-    u32 unk_0;  // 1 loads, 1 stores
-    u32 unk_4;  // 1 loads, 1 stores
-} Obj_1_data_3F284;
-extern Obj_1_data_3F284 lbl_1_data_3F284;
-
-// lbl_1_data_3F244: .data size 0x40, 1 refs from cloth.c (own data block)
-extern u8 lbl_1_data_3F244[0x40];
-
-// lbl_1_data_3F188: .data size 0xC, 1 refs from cloth.c (own data block)
-extern u8 lbl_1_data_3F188[0xC];
 
 #endif  // REL_MAIN_REL_CLOTH_H

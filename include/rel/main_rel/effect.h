@@ -13,15 +13,15 @@ extern u8 lbl_1_bss_6C848;
 // lbl_1_data_1D1D8: .data size 0x114, 7 refs from effect.c
 extern u8 lbl_1_data_1D1D8[0x114];
 
+// lbl_1_data_1D62C: .data size 0x94, 6 refs from effect.c (own data block)
+extern u8 lbl_1_data_1D62C[0x94];
+
 // lbl_1_bss_6C850: .bss size 0xC, 6 refs from effect.c
 typedef struct {
     s16 unk_0;  // 16 loads, 16 stores
     u8 pad_2[0xA];
 } Obj_1_bss_6C850;
 extern Obj_1_bss_6C850 lbl_1_bss_6C850;
-
-// lbl_1_data_1D62C: .data size 0x94, 6 refs from effect.c (own data block)
-extern u8 lbl_1_data_1D62C[0x94];
 
 // lbl_1_data_1C698: .data size 0x5D0, 5 refs from effect.c
 extern u8 lbl_1_data_1C698[0x5D0];
@@ -60,6 +60,9 @@ typedef struct {
 } Obj_1_data_1D730;
 extern Obj_1_data_1D730 lbl_1_data_1D730;
 
+// lbl_1_data_1D8A4: .data size 0x4, 1 refs from effect.c (own data block)
+extern f32 lbl_1_data_1D8A4;
+
 // lbl_1_data_1D6C0: .data size 0x70, 1 refs from effect.c (own data block)
 typedef struct {
     u8 pad_0[0x8];
@@ -68,8 +71,5 @@ typedef struct {
     u8 pad_10[0x60];
 } Obj_1_data_1D6C0;
 extern Obj_1_data_1D6C0 lbl_1_data_1D6C0;
-
-// lbl_1_data_1D8A4: .data size 0x4, 1 refs from effect.c (own data block)
-extern f32 lbl_1_data_1D8A4;
 
 #endif  // REL_MAIN_REL_EFFECT_H

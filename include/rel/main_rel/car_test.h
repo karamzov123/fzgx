@@ -53,9 +53,6 @@ typedef struct {
 } Obj_1_bss_6D620;
 extern Obj_1_bss_6D620 lbl_1_bss_6D620;
 
-// lbl_1_data_1F1D8: .data size 0x8, 1 refs from car_test.c (own data block)
-extern u32 lbl_1_data_1F1D8;
-
 // lbl_1_data_1FFDC: .data size 0x4, 1 refs from car_test.c (own data block)
 extern u32 lbl_1_data_1FFDC;
 
@@ -70,5 +67,8 @@ extern u8 lbl_1_data_1F4FC[0xA4];
 
 // lbl_1_data_1F5A0: .data size 0xA4, 1 refs from car_test.c (own data block)
 extern u8 lbl_1_data_1F5A0[0xA4];
+
+// lbl_1_data_1F1D8: .data size 0x8, 1 refs from car_test.c (own data block)
+extern u32 lbl_1_data_1F1D8;
 
 #endif  // REL_MAIN_REL_CAR_TEST_H

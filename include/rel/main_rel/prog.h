@@ -18,9 +18,6 @@ typedef struct {
 } Obj_1_bss_6F608;
 extern Obj_1_bss_6F608 lbl_1_bss_6F608;
 
-// lbl_1_bss_6F5F0: .bss size 0x4, 3 refs from prog.c
-extern u32 lbl_1_bss_6F5F0;
-
 // lbl_1_data_341B8: .data size 0x4, 3 refs from prog.c
 typedef struct {
     u32 unk_0;  // 2 loads, 5 stores
@@ -29,6 +26,9 @@ typedef struct {
     s16 unk_6;  // 3 loads, 7 stores
 } Obj_1_data_341B8_Target;
 extern Obj_1_data_341B8_Target *lbl_1_data_341B8;
+
+// lbl_1_bss_6F5F0: .bss size 0x4, 3 refs from prog.c
+extern u32 lbl_1_bss_6F5F0;
 
 // lbl_1_bss_6F620: .bss size 0x18, 2 refs from prog.c
 typedef struct {

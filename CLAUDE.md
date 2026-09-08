@@ -51,6 +51,17 @@ Rules that hold for everyone:
   offset self-checked under MWCC), `fzgx rename`, `fzgx naming-bundle`/`naming-apply`,
   `fzgx oversize` (dtk under-sized symbols). Agent ids prefixed `revise-` rewrite a
   matched unit and keep it only if still 100%; `shadow-` run A/B trials without committing.
+- Naming: `fzgx naming-bundle <tu.c>` (sources, header, retail strings, assert hints) →
+  a cheap model answers JSON → `fzgx naming-apply --file p.json`, which renames symbols,
+  records typedef names in `config/GFZE01/<module>/typedefs.json`, re-splits, regenerates
+  every header of the module (offset self-check) and relinks. Headers are generated:
+  never hand-edit `include/rel/<module>/*.h`; change the analyzer or the name map.
+- Header changes can alter a matched unit's code. `ninja build/GFZE01/ok` must pass after
+  regenerating; if a REL fails, byte-diff `build/GFZE01/<m>/<m>.rel` against `orig/` and
+  map the first divergence to a function.
+- `tools/seeds/asserts.py` → `state/seeds/asserts_<module>.json` (file:line + message per
+  assert call); `tools/seeds/debug_strings.py --write` refreshes `tus.json` from `__FILE__`
+  anchors (then `fzgx tu-organize` and regenerate headers).
 - Batches: `uv run tools/orchestrate.py --harness codex|claude ...` (headless, one report
   per batch, `fzgx verify` relinks once at the end). Never use in-process subagents.
 

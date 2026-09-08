@@ -106,6 +106,14 @@ def rename(p: Project, old: str, new: str, verify: bool = True) -> Dict[str, obj
     module = sym.module
     changed: List[str] = []
     with oracle.build_lock():
+        # chosen typedef names are keyed by symbol
+        tpath = p.module_config_dir(module) / "typedefs.json"
+        if tpath.exists():
+            d = json.loads(tpath.read_text())
+            if old in d:
+                d[new] = d.pop(old)
+                tpath.write_text(json.dumps(d, indent=1, sort_keys=True) + "\n")
+                changed.append(str(tpath.relative_to(ROOT)))
         # symbols.txt
         spath = p.module_config_dir(module) / "symbols.txt"
         s = spath.read_text()
@@ -162,7 +170,7 @@ def rename(p: Project, old: str, new: str, verify: bool = True) -> Dict[str, obj
     return {"ok": ok, "old": old, "new": new, "changed": changed}
 
 
-def rename_many(p: Project, mapping: Dict[str, str]) -> Dict[str, object]:
+def rename_many(p: Project, mapping: Dict[str, str], verify: bool = True) -> Dict[str, object]:
     """Apply many renames, one relink at the end."""
     results = []
     for old, new in mapping.items():
@@ -170,5 +178,7 @@ def rename_many(p: Project, mapping: Dict[str, str]) -> Dict[str, object]:
         results.append(r)
         if not r.get("ok"):
             break
-    ok = oracle.configure(p).returncode == 0 and oracle.relink(p).returncode == 0
+    ok = True
+    if verify:
+        ok = oracle.configure(p).returncode == 0 and oracle.relink(p).returncode == 0
     return {"ok": ok, "applied": sum(1 for r in results if r.get("ok")), "results": results}

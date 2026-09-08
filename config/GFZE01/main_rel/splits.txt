@@ -139,22 +139,22 @@ rel/main_rel/alloc/fn_1_63D4.c:
 rel/main_rel/camera/fn_1_6400.c:
 	.text       start:0x00006400 end:0x0000649C
 
-rel/main_rel/camera/fn_1_649C.c:
+rel/main_rel/camera/camera_get_state.c:
 	.text       start:0x0000649C end:0x000064C0
 
-rel/main_rel/camera/fn_1_64C0.c:
+rel/main_rel/camera/camera_get_status.c:
 	.text       start:0x000064C0 end:0x00006514
 
 rel/main_rel/camera/fn_1_6514.c:
 	.text       start:0x00006514 end:0x0000660C
 
-rel/main_rel/camera/fn_1_660C.c:
+rel/main_rel/camera/camera_get_flags.c:
 	.text       start:0x0000660C end:0x00006634
 
-rel/main_rel/camera/fn_1_6634.c:
+rel/main_rel/camera/camera_update.c:
 	.text       start:0x00006634 end:0x0000666C
 
-rel/main_rel/camera/fn_1_666C.c:
+rel/main_rel/camera/camera_update_state.c:
 	.text       start:0x0000666C end:0x000066B8
 
 rel/main_rel/camera/fn_1_66B8.c:
@@ -175,10 +175,10 @@ rel/main_rel/camera/fn_1_6990.c:
 rel/main_rel/camera/fn_1_6A0C.c:
 	.text       start:0x00006A0C end:0x00006A80
 
-rel/main_rel/camera/fn_1_6A80.c:
+rel/main_rel/camera/camera_get_mode.c:
 	.text       start:0x00006A80 end:0x00006AE4
 
-rel/main_rel/camera/fn_1_6AE4.c:
+rel/main_rel/camera/camera_get_output.c:
 	.text       start:0x00006AE4 end:0x00006B48
 
 rel/main_rel/camera/fn_1_6B48.c:
@@ -187,10 +187,10 @@ rel/main_rel/camera/fn_1_6B48.c:
 rel/main_rel/camera/fn_1_6BC0.c:
 	.text       start:0x00006BC0 end:0x00006CB4
 
-rel/main_rel/camera/fn_1_6CB4.c:
+rel/main_rel/camera/camera_set_result.c:
 	.text       start:0x00006CB4 end:0x00006CD8
 
-rel/main_rel/camera/fn_1_6CD8.c:
+rel/main_rel/camera/camera_forward_status.c:
 	.text       start:0x00006CD8 end:0x00006D2C
 
 rel/main_rel/camera/fn_1_6D2C.c:
@@ -202,7 +202,7 @@ rel/main_rel/camera/fn_1_6DD0.c:
 rel/main_rel/camera/fn_1_6EC0.c:
 	.text       start:0x00006EC0 end:0x00006F3C
 
-rel/main_rel/camera/fn_1_6F3C.c:
+rel/main_rel/camera/camera_is_mode_0x0b.c:
 	.text       start:0x00006F3C end:0x00006F84
 
 rel/main_rel/camera/fn_1_6F84.c:
@@ -214,22 +214,22 @@ rel/main_rel/camera/fn_1_7000.c:
 rel/main_rel/camera/fn_1_707C.c:
 	.text       start:0x0000707C end:0x0000713C
 
-rel/main_rel/camera/fn_1_713C.c:
+rel/main_rel/camera/camera_set_entry_field_0xa8.c:
 	.text       start:0x0000713C end:0x0000715C
 
 rel/main_rel/camera/fn_1_715C.c:
 	.text       start:0x0000715C end:0x0000723C
 
-rel/main_rel/camera/fn_1_723C.c:
+rel/main_rel/camera/camera_get_entry_field_0xa8.c:
 	.text       start:0x0000723C end:0x0000725C
 
-rel/main_rel/camera/fn_1_725C.c:
+rel/main_rel/camera/camera_get_entry_field_0xa4.c:
 	.text       start:0x0000725C end:0x0000727C
 
 rel/main_rel/camera/fn_1_727C.c:
 	.text       start:0x0000727C end:0x0000739C
 
-rel/main_rel/camera/fn_1_8250.c:
+rel/main_rel/camera/camera_compare_values.c:
 	.text       start:0x00008250 end:0x00008298
 
 rel/main_rel/camera/fn_1_8298.c:
@@ -241,40 +241,40 @@ rel/main_rel/camera/fn_1_847C.c:
 rel/main_rel/camera/fn_1_857C.c:
 	.text       start:0x0000857C end:0x00008628
 
-rel/main_rel/camera/fn_1_8628.c:
+rel/main_rel/camera/camera_get_entry_field_0x2.c:
 	.text       start:0x00008628 end:0x00008648
 
-rel/main_rel/camera/fn_1_8648.c:
+rel/main_rel/camera/camera_set_selected_value.c:
 	.text       start:0x00008648 end:0x00008654
 
-rel/main_rel/camera/fn_1_8654.c:
+rel/main_rel/camera/camera_set_state_flag.c:
 	.text       start:0x00008654 end:0x00008660
 
-rel/main_rel/camera/fn_1_8660.c:
+rel/main_rel/camera/camera_get_values.c:
 	.text       start:0x00008660 end:0x00008708
 
 rel/main_rel/camera/fn_1_8708.c:
 	.text       start:0x00008708 end:0x00008770
 
-rel/main_rel/camera/fn_1_8770.c:
+rel/main_rel/camera/live_camera_set_shake.c:
 	.text       start:0x00008770 end:0x00008840
 
 rel/main_rel/camera/fn_1_8840.c:
 	.text       start:0x00008840 end:0x000088D8
 
-rel/main_rel/camera/fn_1_88D8.c:
+rel/main_rel/camera/game_camera_set_shake.c:
 	.text       start:0x000088D8 end:0x00008A0C
 
 rel/main_rel/camera/fn_1_8A0C.c:
 	.text       start:0x00008A0C end:0x00008AC0
 
-rel/main_rel/camera/fn_1_8AC0.c:
+rel/main_rel/camera/camera_init.c:
 	.text       start:0x00008AC0 end:0x00008AF0
 
-rel/main_rel/camera/fn_1_8AF0.c:
+rel/main_rel/camera/live_camera_get.c:
 	.text       start:0x00008AF0 end:0x00008B00
 
-rel/main_rel/camera/fn_1_8B00.c:
+rel/main_rel/camera/game_camera_get.c:
 	.text       start:0x00008B00 end:0x00008B10
 
 rel/main_rel/camera/fn_1_8B10.c:
@@ -292,13 +292,13 @@ rel/main_rel/camera/fn_1_AA54.c:
 rel/main_rel/camera/fn_1_ABAC.c:
 	.text       start:0x0000ABAC end:0x0000AD94
 
-rel/main_rel/camera/fn_1_AD94.c:
+rel/main_rel/camera/camera_get_position_delta.c:
 	.text       start:0x0000AD94 end:0x0000AE10
 
-rel/main_rel/camera/fn_1_AE10.c:
+rel/main_rel/camera/camera_reset_transition.c:
 	.text       start:0x0000AE10 end:0x0000AE38
 
-rel/main_rel/camera/fn_1_AE38.c:
+rel/main_rel/camera/camera_update_transition.c:
 	.text       start:0x0000AE38 end:0x0000AEB8
 
 rel/main_rel/camera/fn_1_AEB8.c:
@@ -307,7 +307,7 @@ rel/main_rel/camera/fn_1_AEB8.c:
 rel/main_rel/camera/fn_1_AFC8.c:
 	.text       start:0x0000AFC8 end:0x0000B42C
 
-rel/main_rel/camera/fn_1_B42C.c:
+rel/main_rel/camera/camera_get_target_orientation.c:
 	.text       start:0x0000B42C end:0x0000B4D4
 
 rel/main_rel/camera/fn_1_B4D4.c:
@@ -319,7 +319,7 @@ rel/main_rel/camera/fn_1_B724.c:
 rel/main_rel/camera/fn_1_B81C.c:
 	.text       start:0x0000B81C end:0x0000B85C
 
-rel/main_rel/camera/fn_1_B85C.c:
+rel/main_rel/camera/camera_save_parameters.c:
 	.text       start:0x0000B85C end:0x0000B870
 
 rel/main_rel/camera/fn_1_B870.c:
@@ -334,7 +334,7 @@ rel/main_rel/camera/fn_1_BFA0.c:
 rel/main_rel/camera/fn_1_C038.c:
 	.text       start:0x0000C038 end:0x0000C0A4
 
-rel/main_rel/camera/fn_1_C0A4.c:
+rel/main_rel/camera/camera_save_slot.c:
 	.text       start:0x0000C0A4 end:0x0000C10C
 
 rel/main_rel/camera/fn_1_C10C.c:
@@ -343,7 +343,7 @@ rel/main_rel/camera/fn_1_C10C.c:
 rel/main_rel/camera/fn_1_C178.c:
 	.text       start:0x0000C178 end:0x0000C228
 
-rel/main_rel/camera/fn_1_C228.c:
+rel/main_rel/camera/camera_report_position.c:
 	.text       start:0x0000C228 end:0x0000C268
 
 rel/main_rel/camera/fn_1_C268.c:
@@ -352,7 +352,7 @@ rel/main_rel/camera/fn_1_C268.c:
 rel/main_rel/camera/fn_1_C304.c:
 	.text       start:0x0000C304 end:0x0000C35C
 
-rel/main_rel/camera/fn_1_C35C.c:
+rel/main_rel/camera/camera_snapshot.c:
 	.text       start:0x0000C35C end:0x0000C3B8
 
 rel/main_rel/camera/fn_1_C3B8.c:
@@ -361,43 +361,43 @@ rel/main_rel/camera/fn_1_C3B8.c:
 rel/main_rel/camera/fn_1_C770.c:
 	.text       start:0x0000C770 end:0x0000CC5C
 
-rel/main_rel/camera/fn_1_D960.c:
+rel/main_rel/camera/camera_get_state_object.c:
 	.text       start:0x0000D960 end:0x0000D96C
 
-rel/main_rel/camera/fn_1_D96C.c:
+rel/main_rel/camera/camera_get_state_field_0x4.c:
 	.text       start:0x0000D96C end:0x0000D97C
 
-rel/main_rel/camera/fn_1_D97C.c:
+rel/main_rel/camera/camera_get_state_field_0x8.c:
 	.text       start:0x0000D97C end:0x0000D98C
 
-rel/main_rel/camera/fn_1_D98C.c:
+rel/main_rel/camera/camera_get_state_field_0xc.c:
 	.text       start:0x0000D98C end:0x0000D99C
 
-rel/main_rel/camera/fn_1_D99C.c:
+rel/main_rel/camera/camera_get_state_field_0x10.c:
 	.text       start:0x0000D99C end:0x0000D9AC
 
-rel/main_rel/camera/fn_1_D9AC.c:
+rel/main_rel/camera/camera_get_state_field_0x14.c:
 	.text       start:0x0000D9AC end:0x0000D9BC
 
-rel/main_rel/camera/fn_1_D9BC.c:
+rel/main_rel/camera/camera_get_state_field_0x18.c:
 	.text       start:0x0000D9BC end:0x0000D9CC
 
-rel/main_rel/camera/fn_1_D9CC.c:
+rel/main_rel/camera/camera_get_state_storage.c:
 	.text       start:0x0000D9CC end:0x0000D9D8
 
-rel/main_rel/camera/fn_1_D9D8.c:
+rel/main_rel/camera/camera_get_extended_state_storage.c:
 	.text       start:0x0000D9D8 end:0x0000D9E4
 
-rel/main_rel/camera/fn_1_D9E4.c:
+rel/main_rel/camera/camera_get_state_flag.c:
 	.text       start:0x0000D9E4 end:0x0000D9F4
 
-rel/main_rel/camera/fn_1_D9F4.c:
+rel/main_rel/camera/camera_enable_flags.c:
 	.text       start:0x0000D9F4 end:0x0000DA0C
 
-rel/main_rel/camera/fn_1_DA0C.c:
+rel/main_rel/camera/camera_disable_flags.c:
 	.text       start:0x0000DA0C end:0x0000DA24
 
-rel/main_rel/camera/fn_1_DA24.c:
+rel/main_rel/camera/camera_are_flags_enabled.c:
 	.text       start:0x0000DA24 end:0x0000DA34
 
 rel/main_rel/live_camera/fn_1_DA34.c:

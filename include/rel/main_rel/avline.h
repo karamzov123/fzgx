@@ -10,12 +10,6 @@
 // lbl_1_bss_6C840: .bss size 0x4, 4 refs from avline.c
 extern u32 lbl_1_bss_6C840;
 
-// lbl_1_bss_6C848: .bss size 0x2, 3 refs from avline.c
-extern u8 lbl_1_bss_6C848;
-
-// lbl_1_data_1D514: .data size 0x114, 3 refs from avline.c (own data block)
-extern u8 lbl_1_data_1D514[0x114];
-
 // lbl_1_data_1CC74: .data size 0x4, 3 refs from avline.c (own data block)
 typedef struct {
     f32 unk_0;  // 3 loads, 0 stores
@@ -23,6 +17,12 @@ typedef struct {
     f32 unk_8;  // 3 loads, 0 stores
 } Obj_1_data_1CC74_Target;
 extern Obj_1_data_1CC74_Target *lbl_1_data_1CC74;
+
+// lbl_1_bss_6C848: .bss size 0x2, 3 refs from avline.c
+extern u8 lbl_1_bss_6C848;
+
+// lbl_1_data_1D514: .data size 0x114, 3 refs from avline.c (own data block)
+extern u8 lbl_1_data_1D514[0x114];
 
 // lbl_1_bss_6C844: .bss size 0x2, 3 refs from avline.c
 extern u16 lbl_1_bss_6C844;

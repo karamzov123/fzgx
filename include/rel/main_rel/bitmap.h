@@ -39,9 +39,6 @@ typedef struct {
 } Obj_1_data_6CA0;
 extern Obj_1_data_6CA0 lbl_1_data_6CA0;
 
-// lbl_1_data_1BCC4: .data size 0x4, 2 refs from bitmap.c (own data block)
-extern u32 lbl_1_data_1BCC4;
-
 // lbl_1_bss_3E058: .bss size 0x4, 2 refs from bitmap.c
 extern u32 lbl_1_bss_3E058;
 
@@ -72,6 +69,9 @@ typedef struct {
     u8 pad_2[0xAD6];
 } Obj_1_data_1A3B8;
 extern Obj_1_data_1A3B8 lbl_1_data_1A3B8;
+
+// lbl_1_data_1BCC4: .data size 0x4, 2 refs from bitmap.c (own data block)
+extern u32 lbl_1_data_1BCC4;
 
 // lbl_1_data_1A390: .data size 0x1A, 1 refs from bitmap.c (own data block)
 extern u8 lbl_1_data_1A390[0x1A];

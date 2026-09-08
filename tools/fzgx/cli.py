@@ -191,23 +191,12 @@ def cmd_oversize(a, p):
 
 
 def cmd_headers(a, p):
-    text = structs.tu_header(p, a.module, a.tu) if a.tu else structs.header(p, a.module, a.min_refs)
     if a.write:
-        out = Path("include") / "rel" / a.module / (f"{a.tu.rsplit('.', 1)[0]}.h" if a.tu else "globals.h")
-        out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(text); print("wrote", out, len(text), "bytes")
-        # prove every field offset under the real compiler before anyone relies on it
-        import subprocess
-        chk = Path(".fzgx") / "header_selfcheck.c"
-        chk.write_text(structs.selfcheck(text, f"rel/{a.module}/{out.name}"))
-        cp = subprocess.run(["build/tools/wibo", "build/compilers/GC/1.3.2/mwcceppc.exe", "-nodefaults", "-proc", "gekko",
-                             "-i", "include", "-c", str(chk), "-o", str(chk.with_suffix(".o"))], text=True, capture_output=True)
-        if cp.returncode != 0:
-            print("SELF-CHECK FAILED:\n" + "\n".join(l for l in (cp.stdout + cp.stderr).splitlines() if "check_" in l or "Error" in l)[:3000])
-            return 1
-        print("self-check: every field offset verified under MWCC")
-    else:
-        print(text)
+        err = structs.write_header(p, a.module, a.tu, a.min_refs)
+        if err:
+            print("SELF-CHECK FAILED:\n" + err); return 1
+        print("self-check: every field offset verified under MWCC"); return 0
+    print(structs.tu_header(p, a.module, a.tu) if a.tu else structs.header(p, a.module, a.min_refs))
     return 0
 
 
