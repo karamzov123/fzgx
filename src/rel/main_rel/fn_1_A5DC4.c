@@ -1,4 +1,10 @@
 #include "types.h"
 
-// fn_1_A5DC4: main_rel .text:0x000A5DC4 size 0x28
-// Carved by fzgx. Replace this file's body with the matching C.
+extern s32 lbl_1_bss_6F5F0;
+
+s32 fn_1_A5DC4(void) {
+    if (lbl_1_bss_6F5F0 == 1 || lbl_1_bss_6F5F0 == 2) {
+        return 1;
+    }
+    return 0;
+}
