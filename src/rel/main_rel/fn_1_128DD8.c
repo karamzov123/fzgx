@@ -1,4 +1,16 @@
 #include "types.h"
 
-// fn_1_128DD8: main_rel .text:0x00128DD8 size 0x38
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u8 lbl_1_data_405C0[8];
+
+u8 fn_1_128DD8(u8 value) {
+    u8 i;
+
+    i = 0;
+    while (i < 6) {
+        if (lbl_1_data_405C0[i] == value) {
+            return i;
+        }
+        i++;
+    }
+    return i;
+}
