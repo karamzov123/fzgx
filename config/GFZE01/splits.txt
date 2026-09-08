@@ -1552,3 +1552,159 @@ dol/AIGetDSPSampleRate.c:
 
 dol/GXInitTlutRegion.c:
 	.text       start:0x800364FC end:0x80036544 align:4
+
+dol/fn_8002201C.c:
+	.text       start:0x8002201C end:0x80022028 align:4
+
+dol/fn_80022E5C.c:
+	.text       start:0x80022E5C end:0x80022E68 align:4
+
+dol/fn_80071CB4.c:
+	.text       start:0x80071CB4 end:0x80071CC0 align:4
+
+dol/fn_80020EA0.c:
+	.text       start:0x80020EA0 end:0x80020EBC align:4
+
+dol/fn_80020F50.c:
+	.text       start:0x80020F50 end:0x80020F6C align:4
+
+dol/fn_80020F6C.c:
+	.text       start:0x80020F6C end:0x80020F88 align:4
+
+dol/fn_80020F88.c:
+	.text       start:0x80020F88 end:0x80020FA4 align:4
+
+dol/fn_80020EBC.c:
+	.text       start:0x80020EBC end:0x80020EDC align:4
+
+dol/fn_80020EDC.c:
+	.text       start:0x80020EDC end:0x80020EFC align:4
+
+dol/fn_80020EFC.c:
+	.text       start:0x80020EFC end:0x80020F1C align:4
+
+dol/fn_80026D70.c:
+	.text       start:0x80026D70 end:0x80026D90 align:4
+
+dol/fn_80026D90.c:
+	.text       start:0x80026D90 end:0x80026DB8 align:4
+
+dol/fn_80026E2C.c:
+	.text       start:0x80026E2C end:0x80026E54 align:4
+
+dol/fn_80026FB8.c:
+	.text       start:0x80026FB8 end:0x80026FE0 align:4
+
+dol/fn_80050670.c:
+	.text       start:0x80050670 end:0x80050698 align:4
+
+dol/fn_80057D60.c:
+	.text       start:0x80057D60 end:0x80057D88 align:4
+
+dol/fn_800586E4.c:
+	.text       start:0x800586E4 end:0x8005870C align:4
+
+dol/fn_80006FE0.c:
+	.text       start:0x80006FE0 end:0x8000700C align:4
+
+dol/fn_800424B8.c:
+	.text       start:0x800424B8 end:0x800424E8 align:4
+
+dol/fn_8004E4AC.c:
+	.text       start:0x8004E4AC end:0x8004E4DC align:4
+
+dol/TRK_board_display.c:
+	.text       start:0x8008D308 end:0x8008D338 align:4
+
+dol/fn_80020E4C.c:
+	.text       start:0x80020E4C end:0x80020E80 align:4
+
+dol/fn_80020F1C.c:
+	.text       start:0x80020F1C end:0x80020F50 align:4
+
+dol/fn_80026EAC.c:
+	.text       start:0x80026EAC end:0x80026EE0 align:4
+
+dol/fn_800424E8.c:
+	.text       start:0x800424E8 end:0x8004251C align:4
+
+dol/fn_80045FEC.c:
+	.text       start:0x80045FEC end:0x80046020 align:4
+
+dol/fn_8004B7A0.c:
+	.text       start:0x8004B7A0 end:0x8004B7D4 align:4
+
+dol/fn_80072344.c:
+	.text       start:0x80072344 end:0x80072378 align:4
+
+dol/fn_8004BE98.c:
+	.text       start:0x8004BE98 end:0x8004BED0 align:4
+
+dol/fn_80056730.c:
+	.text       start:0x80056730 end:0x8005676C align:4
+
+dol/fn_800567AC.c:
+	.text       start:0x800567AC end:0x800567EC align:4
+
+dol/fn_80056BE0.c:
+	.text       start:0x80056BE0 end:0x80056C20 align:4
+
+dol/fn_800482B8.c:
+	.text       start:0x800482B8 end:0x800482FC align:4
+
+dol/fn_800482FC.c:
+	.text       start:0x800482FC end:0x80048340 align:4
+
+dol/fn_80088B00.c:
+	.text       start:0x80088B00 end:0x80088B44 align:4
+
+dol/fn_80045FA4.c:
+	.text       start:0x80045FA4 end:0x80045FEC align:4
+
+dol/fn_8007174C.c:
+	.text       start:0x8007174C end:0x80071794 align:4
+
+dol/fn_80077B64.c:
+	.text       start:0x80077B64 end:0x80077BAC align:4
+
+dol/fn_80077B14.c:
+	.text       start:0x80077B14 end:0x80077B64 align:4
+
+dol/fn_80057D0C.c:
+	.text       start:0x80057D0C end:0x80057D60 align:4
+
+dol/fn_80058754.c:
+	.text       start:0x80058754 end:0x800587A8 align:4
+
+dol/fn_8004C05C.c:
+	.text       start:0x8004C05C end:0x8004C0B4 align:4
+
+dol/fn_8004C0B4.c:
+	.text       start:0x8004C0B4 end:0x8004C10C align:4
+
+dol/fn_8004C10C.c:
+	.text       start:0x8004C10C end:0x8004C164 align:4
+
+dol/fn_80051958.c:
+	.text       start:0x80051958 end:0x800519B0 align:4
+
+dol/fn_8008D154.c:
+	.text       start:0x8008D154 end:0x8008D1AC align:4
+
+dol/fn_8004BF0C.c:
+	.text       start:0x8004BF0C end:0x8004BF68 align:4
+
+dol/fn_80054608.c:
+	.text       start:0x80054608 end:0x8005466C align:4
+
+dol/fn_800891B4.c:
+	.text       start:0x800891B4 end:0x80089218 align:4
+
+dol/fn_8007A150.c:
+	.text       start:0x8007A150 end:0x8007A1C0 align:4
+
+dol/ddh_cc_initialize.c:
+	.text       start:0x8008E08C end:0x8008E114 align:4
+
+dol/gdev_cc_initialize.c:
+	.text       start:0x8008E640 end:0x8008E6C8 align:4
