@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 from typing import List, Optional
 
-from . import api, naming, trivial, tu
+from . import api, naming, structs, trivial, tu
 from .project import Project
 
 
@@ -167,6 +167,29 @@ def cmd_naming_apply(a, p):
     _print(naming.apply(p, json.loads(Path(a.file).read_text()), a.by), a.json); return 0
 
 
+def cmd_structs(a, p):
+    info = structs.analyze(p, a.module, a.symbol)
+    if a.json:
+        _print(info, True)
+    else:
+        print(f"{a.symbol}: kind={info['kind']} users={len(info['users'])} shapes={info['shapes']}")
+        print(structs.typedef(info))
+        for poff, fl in sorted(info.get("pointees", {}).items()):
+            print(f"// pointee at +0x{poff:X}:"); print(structs.typedef(info, f"At{poff:X}", fl))
+    return 0
+
+
+def cmd_headers(a, p):
+    text = structs.header(p, a.module, a.min_refs)
+    if a.write:
+        out = Path("include") / "rel" / a.module / "globals.h"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(text); print("wrote", out, len(text), "bytes")
+    else:
+        print(text)
+    return 0
+
+
 def cmd_names(a, p):
     _print(api.names(p), a.json); return 0
 
@@ -233,6 +256,10 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("tu"); s.add_argument("--module", default="main_rel"); s.add_argument("--all", action="store_true")
     s = sub.add_parser("naming-apply", help="apply a librarian proposal JSON (renames + structs)"); s.set_defaults(fn=cmd_naming_apply)
     s.add_argument("--file", required=True); s.add_argument("--by", default="librarian")
+    s = sub.add_parser("structs", help="recover a global's struct layout from all accesses in the module"); s.set_defaults(fn=cmd_structs)
+    s.add_argument("symbol"); s.add_argument("--module", default="main_rel")
+    s = sub.add_parser("headers", help="generate include/rel/<module>/globals.h for the most-referenced globals"); s.set_defaults(fn=cmd_headers)
+    s.add_argument("--module", default="main_rel"); s.add_argument("--min-refs", type=int, default=20); s.add_argument("--write", action="store_true")
     s = sub.add_parser("verify", help="relink once for all accepted units, verify hashes, commit; bisect on failure"); s.set_defaults(fn=cmd_verify)
     s.add_argument("--message")
     s = sub.add_parser("compare", help="A/B table for two agent-id prefixes (e.g. b3c-claude vs shadow-b3c-codex)"); s.set_defaults(fn=cmd_compare)
