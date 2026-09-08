@@ -135,7 +135,7 @@
     "symbols": [
       "fn_1_86194"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
