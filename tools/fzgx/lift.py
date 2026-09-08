@@ -816,6 +816,15 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 run.append(x); x += 1; continue
             if ins[x][0] in CHAIN_OK and ins[x][1] and not ins[x][1][-1].startswith(".L_"):
                 x += 1; continue
+            if ins[x][0] == "bl" and ins[x][1] and not re.fullmatch(r"_(save|rest)(gpr|fpr)_\d+", ins[x][1][0]):
+                # a call in a condition: its result must be what the next compare tests
+                y = x + 1
+                while y < len(ins) and ins[y][0] in ("extsb", "extsh", "clrlwi", "rlwinm", "srwi"):
+                    y += 1
+                if y < len(ins) and ins[y][0] in ("cmpwi", "cmpw", "cmplwi", "cmplw", "andi.", "clrlwi.", "rlwinm.", "extsb.", "mr.") and ins[y][1] and ins[y][1][-1 if ins[y][0] == "mr." else 0] == "r3" or (y < len(ins) and ins[y][0] == "mr." and ins[y][1][1] == "r3"):
+                    x += 1; continue
+                if y < len(ins) and ins[y][0] in ("cmpwi", "cmplwi", "cmpw", "cmplw") and ins[y][1][0] == "r3":
+                    x += 1; continue
             break
         # the longest prefix of at least two branches that reads as one condition
         best = None
@@ -1322,6 +1331,20 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                                 R = term
                             else:
                                 R = f"{term} || ({R})" if "&&" in R else f"{term} || {R}"
+                    # calls whose results the condition tests are evaluated inside it
+                    for m_c in re.finditer(r"__CALLRET__(\d+)", R):
+                        n_c = int(m_c.group(1))
+                        for si in range(len(stmts) - 1, -1, -1):
+                            m_s = re.match(rf"__CALL__{n_c}\((.*)\);$", stmts[si])
+                            if m_s:
+                                R = R.replace(f"__CALLRET__{n_c}", f"__INLINECALL__{n_c}({m_s.group(1)})")
+                                stmts.pop(si)
+                                # a local initialised from that result has no value before the condition
+                                stmts[:] = [st for st in stmts if not re.fullmatch(rf"\w+ = __CALLRET__{n_c};", st)]
+                                for r_ in list(regs):
+                                    if regs[r_] == f"__CALLRET__{n_c}":
+                                        regs.pop(r_)
+                                break
                     enter_text = R
                     skip_text = f"!({R})"
                     tgt = ch["E"]
@@ -1986,6 +2009,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 body.append(f"{call};")
         else:
             body.append(st)
+    body = [re.sub(r"__INLINECALL__(\d+)\(", lambda m_: f"{calls[int(m_.group(1))]}(", b) for b in body]
     body = [re.sub(r"__CALLRET__(\d+)", r"t\1", b) for b in body]
     if ret is not None:
         ret = re.sub(r"__CALLRET__(\d+)", r"t\1", ret)
@@ -2145,6 +2169,15 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     for g in empty_globals:
         sname = f"{name}_{g}"
         body = [b.replace(f"struct {sname} *", "u8 *").replace(f"(struct {sname} *)", "(u8 *)") for b in body]
+    for g, offs in list(gfields.items()):
+        if not offs:
+            continue
+        pat = re.compile(rf"(?<![\w.>&]){re.escape(g)}\b(?![\w.\[]|\s*=\s*\(struct)")
+        if any(pat.search(b) for b in body):
+            offs.setdefault(0, "u32")
+            body = [pat.sub(f"{g}.unk_0", b) for b in body]
+    for g in pfields:
+        body = [re.sub(rf"^{re.escape(g)} = (?!\(struct)", f"{g} = (struct {name}_{g}_T *)", b) for b in body]
     ptr_names = [f"arg{i}" for i, r in enumerate(params) if r in fields] + [ln for ln in locals_ if ln.startswith("p_")] + list(pfields)
     decl_line = re.compile(r"^\s*(?!return\b)(struct\s+\w+\s*\*+|[A-Za-z_]\w*\s*\*+|[A-Za-z_]\w*\s+)\s*[A-Za-z_]\w*(\[[^\]]*\])*;$")
     for pn in ptr_names:
