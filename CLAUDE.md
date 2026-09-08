@@ -46,6 +46,13 @@ Rules that hold for everyone:
   exist in every module and must be written `module:name` (e.g. `title:_epilog`).
 - `fzgx trivial` matches single-`blr` and `li r3,N; blr` functions mechanically
   (419 landed on 2026-09-08); run it before spending agents on tiny functions.
+- Readability tooling: `fzgx tu-organize` (TU directories from `tus.json`),
+  `fzgx structs`/`headers` (layouts from disassembly → `include/rel/<module>/globals.h`,
+  offset self-checked under MWCC), `fzgx rename`, `fzgx naming-bundle`/`naming-apply`,
+  `fzgx oversize` (dtk under-sized symbols). Agent ids prefixed `revise-` rewrite a
+  matched unit and keep it only if still 100%; `shadow-` run A/B trials without committing.
+- Batches: `uv run tools/orchestrate.py --harness codex|claude ...` (headless, one report
+  per batch, `fzgx verify` relinks once at the end). Never use in-process subagents.
 
 ## Layout
 
