@@ -64,6 +64,8 @@ def lift(p: Project, module: str, name: str) -> Optional[str]:
             continue
         if mn == "b" and a and a[-1].startswith(".L_") and labels.get(a[-1], -1) > i:
             continue  # a forward jump: the end of a then-block or a loop entry (checked when lifted)
+        if mn == "bdnz":
+            continue  # a counted loop: the struct-copy idiom explains it, or _lift gives up
         m = re.fullmatch(r"b(\w+)", mn)
         if not (m and m.group(1) in COND and a and a[-1].startswith(".L_")):
             return None
@@ -228,13 +230,36 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 frame_size = -int(m_.group(1), 0)
             break
     saved_slots: set = set()
+    seen_written: set = set()
     for mn_, a_ in ins:
-        if mn_ in ("stw", "stfd", "psq_st") and a_ and (SAVE_RE.match(a_[0]) or re.fullmatch(r"f(1[4-9]|2\d|3[01])", a_[0])) and "(r1)" in a_[1]:
+        # a callee-saved register's prologue save: stored before the function writes it
+        if mn_ in ("stw", "stfd", "psq_st") and a_ and (SAVE_RE.match(a_[0]) or re.fullmatch(r"f(1[4-9]|2\d|3[01])", a_[0])) and "(r1)" in a_[1] and a_[0] not in seen_written:
             m_ = re.match(r"^(-?0x[0-9a-f]+|-?\d+)\(r1\)$", a_[1])
             if m_:
                 saved_slots.add(int(m_.group(1), 0))
+        if a_ and mn_ not in STORE_T and not mn_.startswith(("st", "cmp", "b")) and mn_ not in ("mtlr", "mtspr", "mtctr"):
+            seen_written.add(a_[0])
     slocals: Dict[int, Dict[str, object]] = {}  # frame offset -> {"w": width or 0 (address only), "t": type}
-    taken = sorted({_imm(a_[2]) for mn_, a_ in ins if mn_ == "addi" and len(a_) == 3 and a_[1] == "r1"})
+    # struct copies through the count register: recognised up front so their address setup
+    # (dst-4 / src-4) is not mistaken for locals or pointer arithmetic
+    copies: Dict[int, Tuple[int, str, str, int]] = {}  # index of `li rN, K` -> (K, rD, rS, bdnz index)
+    for j_, (mn_, a_) in enumerate(ins):
+        if mn_ == "mtctr" and a_:
+            li_ = next((x for x in range(j_ - 1, max(-1, j_ - 6), -1) if ins[x][0] == "li" and ins[x][1][0] == a_[0]), None)
+            body_ = ins[j_ + 1:j_ + 6]
+            if li_ is not None and len(body_) == 5 and [m for m, _ in body_] == ["lwz", "lwzu", "stw", "stwu", "bdnz"]:
+                (l1, l2, s1, s2, _) = body_
+                rS = re.search(r"\((r\d+)\)$", l1[1][1]).group(1); rD = re.search(r"\((r\d+)\)$", s1[1][1]).group(1)
+                if l1[1][1].startswith("0x4(") and l2[1][1].startswith("0x8(") and s1[1][1].startswith("0x4(") and s2[1][1].startswith("0x8("):
+                    copies[li_] = (_imm(ins[li_][1][1]), rD, rS, j_ + 5)
+    struct_syms = {sym_of(a_[2]) for mn_, a_ in ins if mn_ == "addi" and len(a_) == 3 and sym_of(a_[2]) and not a_[1] == "r1"}
+    copy_dst_locals: Dict[int, int] = {}  # frame offset of a copied-into local -> size
+    for li_, (K, rD, rS, end_) in copies.items():
+        for x in range(li_, end_):
+            if ins[x][0] == "addi" and ins[x][1][0] == rD and ins[x][1][1] == "r1":
+                copy_dst_locals[_imm(ins[x][1][2]) + 4] = 8 * K
+    taken = sorted({_imm(a_[2]) for mn_, a_ in ins if mn_ == "addi" and len(a_) == 3 and a_[1] == "r1"
+                    and _imm(a_[2]) + 4 not in copy_dst_locals} | set(copy_dst_locals))
     top_of_locals = min(saved_slots) if saved_slots else frame_size
 
     def owner(off: int):
@@ -268,6 +293,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     temps: List[str] = []
     written_since_call: set = set()
     variadic_next = [False]
+    copy_types: set = set()
     magic_div: Dict[str, Tuple[str, int]] = {}  # register holding mulhwu(x, magic) -> (x, magic)
     pending_div: Dict[int, Tuple[str, str]] = {}  # index of the idiom's last instruction -> (register, quotient expression)
     conv_slots: Dict[int, Tuple[str, Optional[str]]] = {}  # stack slot -> int/float conversion in progress
@@ -307,6 +333,11 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             for ln_, asg in list(pending_ptr.items()):
                 if re.search(rf"\b{re.escape(ln_)}\b", st) and st != asg:
                     del pending_ptr[ln_]; super().append(asg)
+            # an address assigned to an integer temporary is cast (temporaries are integers unless
+            # they hold a struct pointer, see the declarations)
+            m_ = re.fullmatch(r"(v\d+) = (\(\(u8 \*\).*|\(u8 \*\).*|&[A-Za-z_]\w*.*);", st)
+            if m_:
+                st = f"{m_.group(1)} = (u32){m_.group(2)};"
             super().append(st)
     stmts = _Stmts(stmts)
     fnames_seen: set = set()
@@ -364,7 +395,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         if i > 0:
             pm, pa = ins[i - 1]
             pd = pa[0] if pa and pm not in STORE_T and not pm.startswith(("st", "cmp", "b")) and pm not in ("mtlr", "mtspr", "bl") else None
-            if pd and pd in regs and pd not in carried and not re.fullmatch(r"[A-Za-z_]\w*|-?\d+|&[A-Za-z_]\w*", regs[pd]) and not regs[pd].startswith(("(struct ", "__CALLRET__", "((u8 *)&", "&")):
+            if pd and pd in regs and pd not in carried and not re.fullmatch(r"[A-Za-z_]\w*|-?\d+|0x[0-9A-Fa-f]+|&[A-Za-z_]\w*", regs[pd]) and not regs[pd].startswith(("(struct ", "__CALLRET__", "((u8 *)&", "&")):
                 uses = 0
                 for x in range(i, len(ins)):
                     if reads(x, pd) or (ins[x][0] == "bl" and re.fullmatch(r"r([3-9]|10)|f[1-8]", pd)):
@@ -383,7 +414,10 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             if regs.get(r_) is None:
                 regs[r_] = tn  # cleared by a call: the local still holds the value
             elif regs.get(r_) != tn:
-                stmts.append(f"{tn} = {regs.get(r_)};"); regs[r_] = tn
+                e_ = regs.get(r_)
+                if e_.startswith(("((u8 *)", "(u8 *)", "&", "(struct ")):
+                    e_ = f"(u32){e_}"  # a register reused for an address: the local is an integer
+                stmts.append(f"{tn} = {e_};"); regs[r_] = tn
         if a and mn not in STORE_T and not mn.startswith(("st", "cmp", "b")) and mn not in ("mtlr", "mtspr"):
             temps_written.append((a[0], i)); written_since_call.add(a[0])
         if mn == "bl":
@@ -393,7 +427,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         if i > 0:
             pm, pa = ins[i - 1]
             pd = pa[0] if pa and pm not in STORE_T and not pm.startswith(("st", "cmp", "b")) and pm not in ("mtlr", "mtspr") else None
-            if pd and SAVE_RE.match(pd) and pd not in carried and pd in regs and not re.fullmatch(r"[A-Za-z_]\w*|-?\d+|&[A-Za-z_]\w*", regs[pd]) and not regs[pd].startswith("(struct "):
+            if pd and SAVE_RE.match(pd) and pd not in carried and pd in regs and not re.fullmatch(r"[A-Za-z_]\w*|-?\d+|0x[0-9A-Fa-f]+|&[A-Za-z_]\w*", regs[pd]) and not regs[pd].startswith("(struct "):
                 call_before_use = False
                 for x in range(i, len(ins)):
                     if ins[x][0] == "bl":
@@ -408,6 +442,31 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         if i in pending_div:
             d_, e_ = pending_div.pop(i)
             regs[d_] = e_; rtype[d_] = "u32"
+        if i in copies:
+            K, rD, rS, end_ = copies[i]
+            size = 8 * K
+            dst = src = None
+            for x in range(i + 1, end_):
+                mn_x, a_x = ins[x]
+                if mn_x == "addi" and a_x[0] == rD and a_x[1] == "r1":
+                    off_ = _imm(a_x[2]) + 4
+                    slocals.setdefault(off_, {"w": 4, "t": "u32", "addr": True, "elems": {}})
+                    dst = f"loc_{off_:X}"
+                elif mn_x in ("subi", "addi") and a_x[0] == rD:
+                    base_e = use(a_x[1]); k_ = _imm(a_x[2]) * (-1 if mn_x == "subi" else 1) + 4
+                    dst = f"*(struct {name}_Copy{size} *)((u8 *){base_e} + {k_})" if k_ else f"*(struct {name}_Copy{size} *){base_e}"
+                elif mn_x in ("subi", "addi") and a_x[0] == rS:
+                    base_e = use(a_x[1]); k_ = _imm(a_x[2]) * (-1 if mn_x == "subi" else 1) + 4
+                    src = f"*(struct {name}_Copy{size} *)((u8 *){base_e} + {k_})" if k_ else f"*(struct {name}_Copy{size} *){base_e}"
+            if dst is None or src is None:
+                raise Give()
+            copy_types.add(size)
+            stmts.append(f"{dst} = {src};")
+            for x in range(i, end_ + 1):
+                skip.add(x)
+            for r_ in (rD, rS, "r0", "r3"):
+                regs.pop(r_, None)
+            continue
         if i in skip:
             continue
         if i in loop_by_entry:
@@ -560,7 +619,11 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             open_ifs.sort(key=lambda x: -x[0])  # smallest index on top: every closer pops at its index
             continue
         lr_slot = f"0x{frame_size + 4:x}(r1)" if frame_size else None
-        if mn in ("stwu", "mflr", "mtlr") or (mn in ("stw", "lwz") and a and ((a[0] == "r0" and a[1] == lr_slot) or SAVE_RE.match(a[0])) and "(r1)" in a[1]) or (mn == "addi" and a and a[0] == "r1"):
+        slot_ = None
+        if a and len(a) > 1 and a[1].endswith("(r1)"):
+            m_s = re.match(r"^(-?0x[0-9a-f]+|-?\d+)", a[1])
+            slot_ = int(m_s.group(1), 0) if m_s else None
+        if mn in ("stwu", "mflr", "mtlr") or (mn in ("stw", "lwz") and a and ((a[0] == "r0" and a[1] == lr_slot) or (SAVE_RE.match(a[0]) and slot_ in saved_slots))) or (mn == "addi" and a and a[0] == "r1"):
             frame = True
             continue
         if mn == "addi" and len(a) == 3 and a[1] == "r1":
@@ -596,7 +659,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 frame = True; continue
             stmts.append(f"{local_at(off_, WIDTH[mn], t)} = {use(a[0])};"); frame = True
             continue
-        if mn in ("stfd", "lfd", "psq_st", "psq_l") and a and re.fullmatch(r"f(1[4-9]|2\d|3[01])", a[0]) and "(r1)" in a[1]:
+        if mn in ("stfd", "lfd", "psq_st", "psq_l") and a and re.fullmatch(r"f(1[4-9]|2\d|3[01])", a[0]) and slot_ in saved_slots:
             frame = True
             continue  # callee-saved float registers
         if mn in ("crclr", "crset") or mn == "nop":
@@ -640,7 +703,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             t = LOAD_T[mn]
             if off.endswith("@l") and base in hi:
                 s = hi[base]; so = sym_off(off)
-                if so:
+                if so or s in struct_syms:
                     declare(s, "struct", far_ref=True); gfields.setdefault(s, {})[so] = t; regs[a[0]] = f"{s}.unk_{so:X}"
                 else:
                     declare(s, t, far_ref=True); regs[a[0]] = ref(s)
@@ -701,7 +764,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             val = use(a[0])
             if off.endswith("@l") and base in hi:
                 s = hi[base]; so = sym_off(off)
-                if so:
+                if so or s in struct_syms:
                     declare(s, "struct", far_ref=True); gfields.setdefault(s, {})[so] = t; stmts.append(f"{s}.unk_{so:X} = {val};")
                 else:
                     declare(s, t, far_ref=True); stmts.append(f"{ref(s)} = {val};")
@@ -957,7 +1020,20 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             # register never written is a parameter of ours passed straight through
             # an argument register counts only if this function wrote it since the last call
             # (a stale value from earlier code is not an argument), or passes a parameter through
-            set_regs = [k for k in range(3, 11) if f"r{k}" in regs and (f"r{k}" in written_since_call or f"r{k}" in params and regs[f"r{k}"] == f"arg{params.index(f'r{k}')}")]
+            # an argument is a register written since the last call whose value is not consumed
+            # by the caller before the call (a register read after its last write was a temporary)
+            def is_arg(rk: str) -> bool:
+                if rk not in regs:
+                    return False
+                if rk in params and regs[rk] == f"arg{params.index(rk)}":
+                    return True
+                if rk not in written_since_call:
+                    return False
+                last_w = max((x for x, (m_, a_) in enumerate(ins[:i]) if a_ and a_[0] == rk and m_ not in STORE_T and not m_.startswith(("st", "cmp", "b"))), default=None)
+                if last_w is None:
+                    return True
+                return not any(reads(x, rk) for x in range(last_w + 1, i))
+            set_regs = [k for k in range(3, 11) if is_arg(f"r{k}")]
             top = max(set_regs) if set_regs else 2
             # registers below the lowest temporary this function used are parameters passed
             # straight through to the callee: a temporary in r6 with r3..r5 untouched means
@@ -966,23 +1042,28 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             temp_low = min((w for w in written if f"r{w}" not in params), default=None)
             if temp_low is not None and temp_low - 1 > top:
                 top = temp_low - 1
-            args = [use(f"r{k}") for k in range(3, top + 1)]
             fset = [k for k in range(1, 9) if f"f{k}" in regs and (f"f{k}" in written_since_call or f"f{k}" in params)]
             ftop = max(fset) if fset else 0
             fargs = [use(f"f{k}") for k in range(1, ftop + 1)]
             ptypes_ = []
             for k in range(3, top + 1):
                 e = regs.get(f"r{k}", "")
-                is_addr = rtype.get(f"r{k}") == "void *" or e.startswith(("&", "(u8 *)", "((u8 *)")) or e in fnames_seen or e.startswith("&loc_") or (e.startswith("loc_") and slocals.get(int(e[4:], 16), {}).get("addr"))
-                ptypes_.append("void *" if is_addr else "u32")
+                stack_addr = e.startswith("&loc_") or (e.startswith("loc_") and e[4:].split("[")[0].isalnum() and slocals.get(int(e[4:].split("[")[0], 16), {}).get("addr"))
+                other_addr = rtype.get(f"r{k}") == "void *" or e.startswith(("&", "(u8 *)", "((u8 *)", "(struct ")) or e in fnames_seen or e in ptr_globals
+                if stack_addr:
+                    ptypes_.append("void *")  # `&x` with a pointer parameter is recomputed per call
+                else:
+                    if other_addr and not e.startswith("(u32)"):
+                        regs[f"r{k}"] = f"(u32){e}"
+                    ptypes_.append("u32")
             for k in range(1, ftop + 1):
                 ptypes_.append(rtype.get(f"f{k}", "f32"))
-            args = args + fargs
+            args = [use(f"r{k}") for k in range(3, top + 1)] + fargs  # after the casts
             seen_args: Dict[str, int] = {}
             for e in args:
                 seen_args[e] = seen_args.get(e, 0) + 1
             for e, n_ in seen_args.items():
-                if site_temps and n_ >= 2 and not re.fullmatch(r"[A-Za-z_]\w*|-?\d+", e):
+                if site_temps and n_ >= 2 and not re.fullmatch(r"[A-Za-z_]\w*|-?\d+|0x[0-9A-Fa-f]+", e):
                     tn = f"v{len(temps)}"
                     tt = next((rtype.get(r_) for r_, ex in regs.items() if ex == e), "u32") or "u32"
                     temps.append(f"{tt} {tn};"); stmts.append(f"{tn} = {e};")
@@ -1051,6 +1132,8 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             nxt = offs[i_ + 1] if i_ + 1 < len(offs) else top
             size = max(nxt - off_, ent["w"] or 1)
             w = ent["w"] or 1
+            if off_ in copy_dst_locals:
+                decls.append((off_, f"struct {name}_Copy{copy_dst_locals[off_]} loc_{off_:X};", "struct")); continue
             if not ent["w"] and size in (1, 2, 4, 8):  # address only: a scalar of that size
                 ent["t"] = {1: "u8", 2: "u16", 4: "u32", 8: "f64"}[size]; w = size
             elif not ent["w"] and size % 4 == 0:
@@ -1074,17 +1157,23 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             return re.sub(r"&(loc_[0-9A-F]+)\b", lambda m: m.group(1) if m.group(1) in arrays else f"&{m.group(1)}", b)
         body = [fix_addr(b) if not b.startswith(("u8 loc", "u32 loc", "f32 loc", "s16 loc", "u16 loc", "s8 loc", "f64 loc", "struct {")) else b for b in body]
     if temps:
-        # a temporary that holds a pointer global's value is a pointer of that type
+        # a temporary's type follows its first assignment: a pointer global's struct pointer,
+        # `u8 *` for byte arithmetic and addresses, a struct pointer for the cast form
         ptr_types = {g: f"struct {name}_{g}_T *" for g in pfields}
         fixed_temps = []
         for tdecl in temps:
+            tdecl = tdecl.replace("void * v", "u32 v")  # an address in an integer temporary
             m_ = re.fullmatch(r"(\S+) (v\d+);", tdecl)
             if m_:
-                init_line = next((b for b in body if re.fullmatch(rf"{m_.group(2)} = ([A-Za-z_]\w*);", b)), None)
+                init_line = next((b for b in body if re.match(rf"{m_.group(2)} = ", b)), None)
                 if init_line:
-                    src_ = re.fullmatch(rf"{m_.group(2)} = ([A-Za-z_]\w*);", init_line).group(1)
-                    if src_ in ptr_types:
-                        tdecl = f"{ptr_types[src_]}{m_.group(2)};"
+                    rhs = init_line[len(m_.group(2)) + 3:].rstrip(";")
+                    if rhs in ptr_types:
+                        tdecl = f"{ptr_types[rhs]}{m_.group(2)};"
+                    else:
+                        ms = re.match(r"\(struct (\w+) \*\)", rhs)
+                        if ms:
+                            tdecl = f"struct {ms.group(1)} *{m_.group(2)};"
             fixed_temps.append(tdecl)
         body = fixed_temps + body
     if locals_:
@@ -1152,6 +1241,8 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         lines.append("};")
         return "\n".join(lines)
     empty_globals = [g for g, offs in gfields.items() if not offs]
+    for size in sorted(copy_types):
+        structs.append(f"struct {name}_Copy{size} {{ u32 a[{size // 4}]; }};")
     for g, offs in gfields.items():
         sname = f"{name}_{g}"
         if not offs:

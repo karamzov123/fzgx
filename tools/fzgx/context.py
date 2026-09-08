@@ -10,7 +10,7 @@ from typing import List, Optional
 
 from .ledger import Ledger
 from . import tufile
-from .project import ROOT, Function, Project, Symbol
+from .project import STATE_DIR, ROOT, Function, Project, Symbol
 
 RULES = ROOT / "docs" / "CODING_RULES.md"
 IDIOMS = ROOT / "docs" / "MWCC_IDIOMS.md"
@@ -260,6 +260,37 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
                         parts.append("What usually causes this kind of row, from functions that went on to match:\n- " + "\n- ".join(dict.fromkeys(tips)))
             except Exception:
                 pass
+
+    # the lifter's draft: a mechanical translation of the disassembly, structurally right by
+    # construction (calls, layouts, loops), shown with the rows it still misses so the agent
+    # starts from it instead of from nothing
+    if ledger and row and row["status"] != "matched" and not (row["claimed_by"] or "").startswith("shadow-"):
+        try:
+            from . import lift as _lift, oracle as _oracle
+            variants = _lift.lift_variants(project, module, symbol)
+            tgt = project.target_object_for(sym)
+            best = None
+            if variants and tgt:
+                ddir = STATE_DIR / "lift" / "ctx"; ddir.mkdir(parents=True, exist_ok=True)
+                srcs = []
+                for vi, vt in enumerate(variants):
+                    f = ddir / f"{project.key(sym).replace(':', '__')}_{vi}.c"; f.write_text(vt); srcs.append(f)
+                objs = _oracle.compile_many(project, module, srcs, ddir / "obj")
+                for vt, f in zip(variants, srcs):
+                    o = objs.get(f)
+                    rows = _oracle.function_rows(project, symbol, tgt, o) if o else None
+                    if rows and (best is None or rows[2] > best[0]):
+                        best = (rows[2], vt, rows)
+            if best and best[0] >= 60:
+                pct, vt, (lr, rr, _) = best
+                diffs = [(i, stuck._fmt(a), stuck._fmt(b)) for i, (a, b) in enumerate(zip(lr, rr)) if (a.get("diff_kind") or "DIFF_NONE") != "DIFF_NONE" or (b.get("diff_kind") or "DIFF_NONE") != "DIFF_NONE"]
+                lines = [f"{i:4d}  {t:38s} | {o}" for i, t, o in diffs[:20]]
+                parts.append(f"\n## Mechanical draft ({pct:.1f}%): lifted from the disassembly, verified to this score\n"
+                             "Its calls, struct layouts, locals and loops are taken from the retail code; what it misses is\n"
+                             "in the rows below (target | draft). Start from it: rename, restructure, fix those rows.\n```c\n" + vt + "\n```\n"
+                             + ("```\n" + "\n".join(lines) + ("\n..." if len(diffs) > 20 else "") + "\n```" if diffs else ""))
+        except Exception:
+            pass
 
     if IDIOMS.exists():
         parts.append("\n## MWCC idioms\n" + IDIOMS.read_text().strip())

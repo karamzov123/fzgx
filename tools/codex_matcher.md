@@ -18,4 +18,7 @@ local structs for field offsets only when the headers have none; the function. N
 A "Best prior attempt" in the context is a plateau, shown with the rows that still differ and their kind:
 resubmitting it unchanged is worthless (the oracle already scored it). Change what those rows come from:
 the declaration style, the expression shape, the locals, the control flow.
+A "Mechanical draft" in the context is C lifted from the disassembly and scored by the oracle: its
+calls, struct layouts, locals and loops are right by construction. Start from it, fix the rows listed
+under it, and rename; do not rewrite it from scratch.
 Finish with exactly one line and nothing else: RESULT: matched|released SYMBOL <percent>% checks=<n>

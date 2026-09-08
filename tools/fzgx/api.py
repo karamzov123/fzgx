@@ -262,6 +262,21 @@ def check(p: Project, symbol: str, max_diff_lines: int = 80, versions: Optional[
     src = _work_source(p, key, unit)
     res = oracle.check(p, symbol, max_diff_lines, source=src)
     out = res.to_json()
+    if src is not None:
+        # every checked body is kept with its score: the (before, after) pairs of a function that
+        # went on to match are the exemplars a prompt with examples needs
+        try:
+            hdir = STATE_DIR / "checks" / key.replace(":", "__")
+            hdir.mkdir(parents=True, exist_ok=True)
+            n = len(list(hdir.glob("*.c")))
+            body = Path(src).read_text()
+            (hdir / f"{n:03d}.c").write_text(body)
+            with (hdir / "index.jsonl").open("a") as f:
+                f.write(json.dumps({"n": n, "t": int(time.time()), "ok": res.ok, "percent": res.percent if res.ok else None,
+                                    "adjusted": res.percent_adjusted if res.ok else None, "matched": bool(res.ok and (res.matched or res.matched_pool)),
+                                    "rows": res.pool_rows if res.ok else None}) + "\n")
+        except OSError:
+            pass
     if res.ok and src is not None:
         conflict = _prologue_conflict(p, key, unit) if unit else None
         if conflict:
