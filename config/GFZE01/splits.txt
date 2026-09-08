@@ -1750,3 +1750,18 @@ dol/fn_8007A23C.c:
 
 dol/fn_80044E7C.c:
 	.text       start:0x80044E7C end:0x80044EF8 align:4
+
+dol/fn_8002805C.c:
+	.text       start:0x8002805C end:0x80028090 align:4
+
+dol/OSDisableScheduler.c:
+	.text       start:0x800102EC end:0x8001032C align:4
+
+dol/fn_800280F0.c:
+	.text       start:0x800280F0 end:0x80028130 align:4
+
+dol/fn_80023638.c:
+	.text       start:0x80023638 end:0x80023684 align:4
+
+dol/fn_80033E20.c:
+	.text       start:0x80033E20 end:0x80033E7C align:4

@@ -1889,6 +1889,16 @@
   },
   {
     "module": "main",
+    "source": "dol/OSDisableScheduler.c",
+    "symbols": [
+      "OSDisableScheduler"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/OSEnableScheduler.c",
     "symbols": [
       "OSEnableScheduler"
@@ -3499,6 +3509,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80023638.c",
+    "symbols": [
+      "fn_80023638"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80024E3C.c",
     "symbols": [
       "fn_80024E3C"
@@ -3669,9 +3689,29 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_8002805C.c",
+    "symbols": [
+      "fn_8002805C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80028090.c",
     "symbols": [
       "fn_80028090"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_800280F0.c",
+    "symbols": [
+      "fn_800280F0"
     ],
     "status": "matching",
     "mw_version": null,
@@ -3922,6 +3962,16 @@
     "source": "dol/fn_80032368.c",
     "symbols": [
       "fn_80032368"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80033E20.c",
+    "symbols": [
+      "fn_80033E20"
     ],
     "status": "matching",
     "mw_version": null,
