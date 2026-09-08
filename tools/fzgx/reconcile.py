@@ -139,10 +139,15 @@ def reconcile_tu(p: Project, tu_source: str, v) -> Dict[str, object]:
                 continue  # names a block-private type: cannot leave the block
             variants.setdefault(n, Counter())[ln] += 1
             where.setdefault(n, set()).add(b.name)
-    # the block that defines a symbol must agree with whatever the prologue says about it
+    # every block that names the symbol is affected by its prologue declaration: the definer,
+    # and callers that never declared it (an implicit declaration is a declaration too)
     for n in list(variants):
         if n in definer:
             where[n].add(definer[n])
+        pat = re.compile(rf"\b{re.escape(n)}\b")
+        for b in tf.blocks:
+            if b.name not in where[n] and pat.search(b.body):
+                where[n].add(b.name)
     prologue_decl_names = set(tufile._header_items(tufile.prologue_decls(tf)))
 
     def strip_decl(b, n):
