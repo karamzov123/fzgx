@@ -1054,3 +1054,417 @@ dol/fn_8004E204.c:
 
 dol/fn_80022E68.c:
 	.text       start:0x80022E68 end:0x80022EA4 align:4
+
+dol/fn_80009FB4.c:
+	.text       start:0x80009FB4 end:0x80009FBC align:4
+
+dol/fn_800209FC.c:
+	.text       start:0x800209FC end:0x80020A0C align:4
+
+dol/fn_800563F8.c:
+	.text       start:0x800563F8 end:0x8005640C align:4
+
+dol/fn_8005A588.c:
+	.text       start:0x8005A588 end:0x8005A59C align:4
+
+dol/fn_8005A614.c:
+	.text       start:0x8005A614 end:0x8005A628 align:4
+
+dol/fn_8008B484.c:
+	.text       start:0x8008B484 end:0x8008B49C align:4
+
+dol/fn_80006C2C.c:
+	.text       start:0x80006C2C end:0x80006C4C align:4
+
+dol/fn_800206FC.c:
+	.text       start:0x800206FC end:0x8002071C align:4
+
+dol/fn_80046718.c:
+	.text       start:0x80046718 end:0x80046738 align:4
+
+dol/fn_80046738.c:
+	.text       start:0x80046738 end:0x80046758 align:4
+
+dol/fn_8004B7D4.c:
+	.text       start:0x8004B7D4 end:0x8004B7F4 align:4
+
+dol/fn_8004BBA4.c:
+	.text       start:0x8004BBA4 end:0x8004BBC4 align:4
+
+dol/fn_8004E1E4.c:
+	.text       start:0x8004E1E4 end:0x8004E204 align:4
+
+dol/fn_8004E7B4.c:
+	.text       start:0x8004E7B4 end:0x8004E7D4 align:4
+
+dol/fn_8004EBB4.c:
+	.text       start:0x8004EBB4 end:0x8004EBD4 align:4
+
+dol/fn_8004EBD4.c:
+	.text       start:0x8004EBD4 end:0x8004EBF4 align:4
+
+dol/fn_8004EBF4.c:
+	.text       start:0x8004EBF4 end:0x8004EC14 align:4
+
+dol/fn_8004EC14.c:
+	.text       start:0x8004EC14 end:0x8004EC34 align:4
+
+dol/fn_8004ED3C.c:
+	.text       start:0x8004ED3C end:0x8004ED5C align:4
+
+dol/fn_8004ED84.c:
+	.text       start:0x8004ED84 end:0x8004EDA4 align:4
+
+dol/fn_8004EDA4.c:
+	.text       start:0x8004EDA4 end:0x8004EDC4 align:4
+
+dol/fn_8004EDC4.c:
+	.text       start:0x8004EDC4 end:0x8004EDE4 align:4
+
+dol/fn_8004EDE4.c:
+	.text       start:0x8004EDE4 end:0x8004EE04 align:4
+
+dol/fn_8004EE04.c:
+	.text       start:0x8004EE04 end:0x8004EE24 align:4
+
+dol/fn_8004EE24.c:
+	.text       start:0x8004EE24 end:0x8004EE44 align:4
+
+dol/fn_8004EE44.c:
+	.text       start:0x8004EE44 end:0x8004EE64 align:4
+
+dol/fn_8004EE64.c:
+	.text       start:0x8004EE64 end:0x8004EE84 align:4
+
+dol/fn_8004EE84.c:
+	.text       start:0x8004EE84 end:0x8004EEA4 align:4
+
+dol/fn_8004EEA4.c:
+	.text       start:0x8004EEA4 end:0x8004EEC4 align:4
+
+dol/fn_8004EEC4.c:
+	.text       start:0x8004EEC4 end:0x8004EEE4 align:4
+
+dol/fn_8004EF28.c:
+	.text       start:0x8004EF28 end:0x8004EF48 align:4
+
+dol/fn_8004EF48.c:
+	.text       start:0x8004EF48 end:0x8004EF68 align:4
+
+dol/fn_8004EF68.c:
+	.text       start:0x8004EF68 end:0x8004EF88 align:4
+
+dol/fn_8004EF88.c:
+	.text       start:0x8004EF88 end:0x8004EFA8 align:4
+
+dol/fn_8004F7F8.c:
+	.text       start:0x8004F7F8 end:0x8004F818 align:4
+
+dol/fn_800566F0.c:
+	.text       start:0x800566F0 end:0x80056710 align:4
+
+dol/fn_80056710.c:
+	.text       start:0x80056710 end:0x80056730 align:4
+
+dol/fn_80058A20.c:
+	.text       start:0x80058A20 end:0x80058A40 align:4
+
+dol/fn_8005A628.c:
+	.text       start:0x8005A628 end:0x8005A648 align:4
+
+dol/fn_8005A648.c:
+	.text       start:0x8005A648 end:0x8005A668 align:4
+
+dol/fn_8005BE48.c:
+	.text       start:0x8005BE48 end:0x8005BE68 align:4
+
+dol/fn_80071CC0.c:
+	.text       start:0x80071CC0 end:0x80071CE0 align:4
+
+dol/fn_80071D0C.c:
+	.text       start:0x80071D0C end:0x80071D2C align:4
+
+dol/fn_800723B8.c:
+	.text       start:0x800723B8 end:0x800723D8 align:4
+
+dol/fn_800723D8.c:
+	.text       start:0x800723D8 end:0x800723F8 align:4
+
+dol/fn_80088538.c:
+	.text       start:0x80088538 end:0x80088558 align:4
+
+dol/fn_80088558.c:
+	.text       start:0x80088558 end:0x80088578 align:4
+
+dol/fn_80088578.c:
+	.text       start:0x80088578 end:0x80088598 align:4
+
+dol/fn_80088598.c:
+	.text       start:0x80088598 end:0x800885B8 align:4
+
+dol/EnableMetroTRKInterrupts.c:
+	.text       start:0x8008D1AC end:0x8008D1CC align:4
+
+dol/fn_80006B4C.c:
+	.text       start:0x80006B4C end:0x80006B70 align:4
+
+dol/fn_80041330.c:
+	.text       start:0x80041330 end:0x80041354 align:4
+
+dol/fn_80041354.c:
+	.text       start:0x80041354 end:0x80041378 align:4
+
+dol/fn_800413A4.c:
+	.text       start:0x800413A4 end:0x800413C8 align:4
+
+dol/fn_800413C8.c:
+	.text       start:0x800413C8 end:0x800413EC align:4
+
+dol/fn_800413EC.c:
+	.text       start:0x800413EC end:0x80041410 align:4
+
+dol/fn_80041410.c:
+	.text       start:0x80041410 end:0x80041434 align:4
+
+dol/fn_80041434.c:
+	.text       start:0x80041434 end:0x80041458 align:4
+
+dol/fn_80041530.c:
+	.text       start:0x80041530 end:0x80041554 align:4
+
+dol/fn_80041554.c:
+	.text       start:0x80041554 end:0x80041578 align:4
+
+dol/fn_800415AC.c:
+	.text       start:0x800415AC end:0x800415D0 align:4
+
+dol/fn_800415D0.c:
+	.text       start:0x800415D0 end:0x800415F4 align:4
+
+dol/fn_800415F4.c:
+	.text       start:0x800415F4 end:0x80041618 align:4
+
+dol/fn_80041618.c:
+	.text       start:0x80041618 end:0x8004163C align:4
+
+dol/fn_8004163C.c:
+	.text       start:0x8004163C end:0x80041660 align:4
+
+dol/fn_80041660.c:
+	.text       start:0x80041660 end:0x80041684 align:4
+
+dol/fn_80041684.c:
+	.text       start:0x80041684 end:0x800416A8 align:4
+
+dol/fn_800416A8.c:
+	.text       start:0x800416A8 end:0x800416CC align:4
+
+dol/fn_8004E2DC.c:
+	.text       start:0x8004E2DC end:0x8004E300 align:4
+
+dol/fn_8004ECF4.c:
+	.text       start:0x8004ECF4 end:0x8004ED18 align:4
+
+dol/fn_8004ED18.c:
+	.text       start:0x8004ED18 end:0x8004ED3C align:4
+
+dol/fn_8004ED5C.c:
+	.text       start:0x8004ED5C end:0x8004ED80 align:4
+
+dol/fn_80071CE8.c:
+	.text       start:0x80071CE8 end:0x80071D0C align:4
+
+dol/TRKDestructEvent.c:
+	.text       start:0x80088740 end:0x80088764 align:4
+
+dol/TRKTerminateNub.c:
+	.text       start:0x80088990 end:0x800889B4 align:4
+
+dol/ddh_cc_initinterrupts.c:
+	.text       start:0x8008DDD0 end:0x8008DDF4 align:4
+
+dol/ddh_cc_post_stop.c:
+	.text       start:0x8008DE64 end:0x8008DE88 align:4
+
+dol/ddh_cc_pre_continue.c:
+	.text       start:0x8008DE88 end:0x8008DEAC align:4
+
+dol/ddh_cc_open.c:
+	.text       start:0x8008E060 end:0x8008E084 align:4
+
+dol/gdev_cc_initinterrupts.c:
+	.text       start:0x8008E37C end:0x8008E3A0 align:4
+
+dol/gdev_cc_post_stop.c:
+	.text       start:0x8008E410 end:0x8008E434 align:4
+
+dol/gdev_cc_pre_continue.c:
+	.text       start:0x8008E434 end:0x8008E458 align:4
+
+dol/gdev_cc_open.c:
+	.text       start:0x8008E614 end:0x8008E638 align:4
+
+dol/fn_8008E718.c:
+	.text       start:0x8008E718 end:0x8008E73C align:4
+
+dol/fn_80008F60.c:
+	.text       start:0x80008F60 end:0x80008F88 align:4
+
+dol/fn_80008F88.c:
+	.text       start:0x80008F88 end:0x80008FB0 align:4
+
+dol/fn_80042170.c:
+	.text       start:0x80042170 end:0x80042198 align:4
+
+dol/fn_80042198.c:
+	.text       start:0x80042198 end:0x800421C0 align:4
+
+dol/fn_80071C64.c:
+	.text       start:0x80071C64 end:0x80071C8C align:4
+
+dol/fn_80071C8C.c:
+	.text       start:0x80071C8C end:0x80071CB4 align:4
+
+dol/fn_800057CC.c:
+	.text       start:0x800057CC end:0x800057F8 align:4
+
+dol/fn_80041378.c:
+	.text       start:0x80041378 end:0x800413A4 align:4
+
+dol/fn_80047548.c:
+	.text       start:0x80047548 end:0x80047578 align:4
+
+dol/fn_8004E324.c:
+	.text       start:0x8004E324 end:0x8004E354 align:4
+
+dol/fn_800504BC.c:
+	.text       start:0x800504BC end:0x800504EC align:4
+
+dol/fn_800570DC.c:
+	.text       start:0x800570DC end:0x8005710C align:4
+
+dol/fn_8008E73C.c:
+	.text       start:0x8008E73C end:0x8008E76C align:4
+
+dol/fn_80007C2C.c:
+	.text       start:0x80007C2C end:0x80007C60 align:4
+
+dol/fn_80008BEC.c:
+	.text       start:0x80008BEC end:0x80008C20 align:4
+
+dol/fn_80041578.c:
+	.text       start:0x80041578 end:0x800415AC align:4
+
+dol/fn_8004342C.c:
+	.text       start:0x8004342C end:0x80043460 align:4
+
+dol/fn_8004E1B0.c:
+	.text       start:0x8004E1B0 end:0x8004E1E4 align:4
+
+dol/TRKTargetContinue.c:
+	.text       start:0x8008D77C end:0x8008D7B0 align:4
+
+dol/fn_80006CE4.c:
+	.text       start:0x80006CE4 end:0x80006D1C align:4
+
+dol/fn_800420F4.c:
+	.text       start:0x800420F4 end:0x8004212C align:4
+
+dol/fn_80045354.c:
+	.text       start:0x80045354 end:0x8004538C align:4
+
+dol/fn_8004E278.c:
+	.text       start:0x8004E278 end:0x8004E2B0 align:4
+
+dol/fn_800541EC.c:
+	.text       start:0x800541EC end:0x80054224 align:4
+
+dol/TRKEXICallBack.c:
+	.text       start:0x8008D744 end:0x8008D77C align:4
+
+dol/fn_80006DAC.c:
+	.text       start:0x80006DAC end:0x80006DE8 align:4
+
+dol/fn_800079C4.c:
+	.text       start:0x800079C4 end:0x80007A00 align:4
+
+dol/fn_80005AD0.c:
+	.text       start:0x80005AD0 end:0x80005B10 align:4
+
+dol/fn_8004212C.c:
+	.text       start:0x8004212C end:0x8004216C align:4
+
+dol/fn_80089174.c:
+	.text       start:0x80089174 end:0x800891B4 align:4
+
+dol/fn_80008E84.c:
+	.text       start:0x80008E84 end:0x80008EC8 align:4
+
+dol/fn_8004EEE4.c:
+	.text       start:0x8004EEE4 end:0x8004EF28 align:4
+
+dol/fn_800791A4.c:
+	.text       start:0x800791A4 end:0x800791E8 align:4
+
+dol/fn_8004530C.c:
+	.text       start:0x8004530C end:0x80045354 align:4
+
+dol/fn_8004541C.c:
+	.text       start:0x8004541C end:0x80045468 align:4
+
+dol/fn_80045468.c:
+	.text       start:0x80045468 end:0x800454B4 align:4
+
+dol/fn_8007001C.c:
+	.text       start:0x8007001C end:0x80070068 align:4
+
+dol/fn_80070D94.c:
+	.text       start:0x80070D94 end:0x80070DE0 align:4
+
+dol/fn_8008C6E4.c:
+	.text       start:0x8008C6E4 end:0x8008C730 align:4
+
+dol/TRKInitializeTarget.c:
+	.text       start:0x8008CFDC end:0x8008D028 align:4
+
+dol/fn_80058448.c:
+	.text       start:0x80058448 end:0x80058498 align:4
+
+dol/fn_8008E324.c:
+	.text       start:0x8008E324 end:0x8008E374 align:4
+
+dol/fn_8007A294.c:
+	.text       start:0x8007A294 end:0x8007A2E8 align:4
+
+dol/fn_800583DC.c:
+	.text       start:0x800583DC end:0x80058434 align:4
+
+dol/fn_80072808.c:
+	.text       start:0x80072808 end:0x80072864 align:4
+
+dol/fn_8006FCB4.c:
+	.text       start:0x8006FCB4 end:0x8006FD1C align:4
+
+dol/fn_80051DC4.c:
+	.text       start:0x80051DC4 end:0x80051E30 align:4
+
+dol/fn_80080974.c:
+	.text       start:0x80080974 end:0x800809E0 align:4
+
+dol/fn_800777D4.c:
+	.text       start:0x800777D4 end:0x80077848 align:4
+
+dol/fn_80054224.c:
+	.text       start:0x80054224 end:0x800542B4 align:4
+
+dol/fn_80072778.c:
+	.text       start:0x80072778 end:0x80072808 align:4
+
+dol/fn_80077654.c:
+	.text       start:0x80077654 end:0x80077714 align:4
+
+dol/fn_80077714.c:
+	.text       start:0x80077714 end:0x800777D4 align:4
+
+dol/fn_80051678.c:
+	.text       start:0x80051678 end:0x8005174C align:4
