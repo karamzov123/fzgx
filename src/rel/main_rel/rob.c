@@ -16,6 +16,7 @@ extern void fn_80008BEC(void *, u32, u32);
 extern const char *lbl_1_data_20D1C[];
 extern void fn_8008069C(char *buffer, u8 *format, ...);
 extern s32 fn_1_12A32C(char *buffer);
+extern s16 fn_1_98104(void);
 
 /* fzgx:begin fn_1_961F0 */
 typedef struct Fn1961F0Owner Fn1961F0Owner;
@@ -129,8 +130,6 @@ s32 fn_1_97174(Fn197174Owner *owner, void *arg1, void *arg2) {
 /* fzgx:end fn_1_97174 */
 
 /* fzgx:begin fn_1_9724C */
-extern s16 fn_1_98104(void);
-
 // Loads the active resource value when the initialization check has not completed.
 void fn_1_9724C(void) {
     if (fn_1_98104() == 0) {
@@ -155,7 +154,16 @@ s16 fn_1_97F1C(Fn197F1CObject *object, s16 index) {
 }
 /* fzgx:end fn_1_97F1C */
 
-/* fzgx:begin fn_1_98104 */
+/* fzgx:begin fn_1_98104 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/rob.h"
+
+extern u8 lbl_1_data_27C00[0xE0];
+extern u32 lbl_801A6410;
+extern void fn_1_46B4(u32, u32, u8 *, u32);
+extern void fn_80008BEC(void *, u32, u32);
+
 typedef struct Fn198104Obj {
     u8 unk_00[0x1C];
     u32 value_1C;

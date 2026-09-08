@@ -42,9 +42,11 @@ extern s32 fn_1_54E34(void *object, f32 value);
 extern void fn_1_65748(void);
 extern const f32 lbl_1_rodata_2A70[12];
 extern void fn_1_64388(void);
+extern void *fn_1_5448C(void *);
+extern void fn_1_61E60(void);
 
 /* fzgx:begin fn_1_58D38 */
-typedef struct EffectEntry {
+typedef struct fn_1_58D38_EffectEntry {
     s8 unk_00;
     u8 pad_01[7];
     u32 unk_08;
@@ -52,24 +54,24 @@ typedef struct EffectEntry {
     u8 pad_0E[0x0C];
     u16 unk_1A;
     u8 pad_1C[0xCC];
-} EffectEntry;
+} fn_1_58D38_EffectEntry;
 
-typedef struct EffectState {
-    EffectEntry *unk_00;
-    EffectEntry *unk_04;
+typedef struct fn_1_58D38_EffectState {
+    fn_1_58D38_EffectEntry *unk_00;
+    fn_1_58D38_EffectEntry *unk_04;
     u8 pad_08[8];
     u32 unk_10;
-} EffectState;
+} fn_1_58D38_EffectState;
 
-extern void fn_1_62360(EffectEntry *arg0);
+extern void fn_1_62360(fn_1_58D38_EffectEntry *arg0);
 
 void fn_1_58D38(void) {
-    EffectState *state;
+    fn_1_58D38_EffectState *state;
     s32 count;
-    EffectEntry *entry;
+    fn_1_58D38_EffectEntry *entry;
     u32 max_count;
 
-    state = (EffectState *)&lbl_1_bss_6C848;
+    state = (fn_1_58D38_EffectState *)&lbl_1_bss_6C848;
     if (state->unk_00 != 0) {
         fn_1_3BDC(9);
 
@@ -401,7 +403,16 @@ void fn_1_5D918(void) {
 }
 /* fzgx:end fn_1_5D918 */
 
-/* fzgx:begin fn_1_5EB08 */
+/* fzgx:begin fn_1_5EB08 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/effect.h"
+
+extern void lbl_8006DCA4(void);
+extern f32 lbl_1_rodata_2AF4[14];
+extern s32 fn_1_54E34(void *object, f32 value);
+extern void fn_1_5EB98(void);
+
 typedef struct FnObj {
     u8 pad18[0x18];
     s16 value;
@@ -475,12 +486,12 @@ typedef struct {
     f32 rate;
     u8 unk2C[0x10];
     u8 field3C[1];
-} FZeroObject;
+} fn_1_5FE30_FZeroObject;
 
 typedef struct {
     u8 unk0[4];
     void (*callback)(void);
-    FZeroObject *owner;
+    fn_1_5FE30_FZeroObject *owner;
 } FZeroEvent;
 
 extern void fn_1_862D4(s16 value, void *result);
@@ -488,7 +499,7 @@ extern void *fn_1_5448C(void *result);
 extern void *fn_1_548AC(u32 size);
 extern void fn_1_5489C(void *callback, FZeroEvent *event);
 
-void fn_1_5FE30(FZeroObject *object) {
+void fn_1_5FE30(fn_1_5FE30_FZeroObject *object) {
     u8 result[8];
     void *callback;
     FZeroEvent *event;
@@ -517,10 +528,10 @@ void fn_1_5FFAC(void) {
 typedef struct {
     u8 unk[0x38];
     void *field38;
-} FZeroObject;
+} fn_1_60170_FZeroObject;
 
 // Submit the effect data when this object has an associated field.
-void fn_1_60170(FZeroObject *object) {
+void fn_1_60170(fn_1_60170_FZeroObject *object) {
     if (object->field38 != 0) {
         fn_1_46B4((u32)lbl_801A6410, object->field38, lbl_1_data_1D62C, 0x1261);
     }
@@ -601,14 +612,21 @@ void fn_1_61CC8(void) {
 /* fzgx:end fn_1_61CC8 */
 
 /* fzgx:begin fn_1_61CE8 */
-extern void fn_1_61E60(void);
-
 void fn_1_61CE8(void) {
     fn_1_61E60();
 }
 /* fzgx:end fn_1_61CE8 */
 
-/* fzgx:begin fn_1_61E60 */
+/* fzgx:begin fn_1_61E60 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/effect.h"
+
+extern u8 lbl_1_data_1D62C[0x94];
+extern void *lbl_801A6410;
+extern void fn_1_46B4(u32 value, void *field, u8 *data, s32 code);
+extern void fn_1_4730(void *arg0, void *arg1, int arg2, u8 *arg3, int arg4);
+
 typedef struct {
     u8 pad20[0x20];
     void *unk_20;
@@ -725,16 +743,16 @@ extern void *fn_1_5448C(void *);
 extern void *fn_1_548AC(s32);
 extern void fn_1_5489C(void *, void *);
 
-typedef struct EffectState {
+typedef struct fn_1_642E8_EffectState {
     char bytes[0x14];
-} EffectState;
+} fn_1_642E8_EffectState;
 
-typedef struct EffectObject {
+typedef struct fn_1_642E8_EffectObject {
     char pad0[0x28];
     f32 value;
     char pad2c[0x10];
-    EffectState state;
-} EffectObject;
+    fn_1_642E8_EffectState state;
+} fn_1_642E8_EffectObject;
 
 typedef struct EffectNode {
     char pad0[4];
@@ -742,7 +760,7 @@ typedef struct EffectNode {
     void *owner;
 } EffectNode;
 
-void fn_1_642E8(EffectObject *self) {
+void fn_1_642E8(fn_1_642E8_EffectObject *self) {
     f32 value;
     void *state;
     EffectNode *node;
@@ -792,11 +810,6 @@ void fn_1_648D8(void) {
 /* fzgx:end fn_1_648D8 */
 
 /* fzgx:begin fn_1_65268 */
-extern void fn_1_862D4(s16 value, void *result);
-extern void *fn_1_5448C(void *object);
-extern void *fn_1_548AC(s32 size);
-extern void fn_1_5489C(void *object, void *event);
-
 typedef struct {
     u32 pad_00;
     void (*vtable)(void);
@@ -838,10 +851,6 @@ void fn_1_65420(void) {
 /* fzgx:end fn_1_65420 */
 
 /* fzgx:begin fn_1_656C8 */
-extern void *fn_1_5448C(void *object);
-extern void *fn_1_548AC(s32 size);
-extern void fn_1_5489C(void *object, void *event);
-
 typedef struct {
     u32 unk_00;
     void (*unk_04)(void);
@@ -853,10 +862,10 @@ typedef struct {
     f32 unk_28;
     u8 unk_2c[0x10];
     u8 unk_3c[1];
-} EffectObject;
+} fn_1_656C8_EffectObject;
 
 // Initializes the effect and queues an event when its embedded state is ready.
-void fn_1_656C8(EffectObject *object) {
+void fn_1_656C8(fn_1_656C8_EffectObject *object) {
     void *result;
     EffectEvent *event;
 
@@ -936,28 +945,24 @@ void fn_1_6767C(void) {
 /* fzgx:end fn_1_6767C */
 
 /* fzgx:begin fn_1_68054 */
-extern void *fn_1_5448C(void *object);
-extern void *fn_1_548AC(int size);
-extern void fn_1_5489C(void *object, void *entry);
-
-typedef struct EffectObject {
+typedef struct fn_1_68054_EffectObject {
     u8 pad0[0x28];
     f32 value;
     u8 pad1[0x10];
     u8 subobject;
-} EffectObject;
+} fn_1_68054_EffectObject;
 
-typedef struct EffectEntry {
+typedef struct fn_1_68054_EffectEntry {
     u8 pad0[4];
     void (*callback)(void);
-    EffectObject *owner;
-} EffectEntry;
+    fn_1_68054_EffectObject *owner;
+} fn_1_68054_EffectEntry;
 
 // Advances the effect and queues its completion callback when it finishes.
-void fn_1_68054(EffectObject *effect) {
+void fn_1_68054(fn_1_68054_EffectObject *effect) {
     f32 progress;
     void *source;
-    EffectEntry *completion;
+    fn_1_68054_EffectEntry *completion;
 
     progress = effect->value / lbl_1_rodata_2A70[0];
     lbl_8006DCA4();
@@ -967,7 +972,7 @@ void fn_1_68054(EffectObject *effect) {
     }
 
     source = fn_1_5448C(&effect->subobject);
-    completion = (EffectEntry *)fn_1_548AC(0xc);
+    completion = (fn_1_68054_EffectEntry *)fn_1_548AC(0xc);
     if (completion == 0) {
         return;
     }

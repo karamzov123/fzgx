@@ -77,10 +77,9 @@ extern void fn_1_D3BE8(void);
 extern void fn_1_D3BE8(void);
 
 extern void fn_1_D3BE8(void);
-
-/* fzgx:begin fn_1_D3768 */
 extern int fn_1_D3B6C(void);
 
+/* fzgx:begin fn_1_D3768 */
 typedef struct {
     u8 _pad[0x10];
     u32 flags;
@@ -135,7 +134,13 @@ void fn_1_D38A4(void) {
 }
 /* fzgx:end fn_1_D38A4 */
 
-/* fzgx:begin fn_1_D3B6C */
+/* fzgx:begin fn_1_D3B6C noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/mdlload.h"
+
+extern void *OSGetArenaHi(void);
+
 extern void fn_1_D3BE8();
 
 typedef struct {

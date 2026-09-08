@@ -35,6 +35,7 @@ extern void fn_1_1568C4(void *entry);
 extern u32 lbl_801A6410[];
 extern void fn_1_46B4(u32, Obj_1_bss_8EF20_At0 *, u8 *, u32);
 extern Obj_1_bss_8EF20_At0 *fn_1_4630(u32, u32, u8 *, u32);
+extern void fn_1_1569E8(void *entry);
 
 /* fzgx:begin fn_1_1554D0 */
 // Rebuild the ranking object when the previous one has been consumed.
@@ -249,8 +250,6 @@ void fn_1_156730(s32 index) {
 /* fzgx:end fn_1_156730 */
 
 /* fzgx:begin fn_1_156754 */
-extern void fn_1_1569E8(void *entry);
-
 // Processes the indexed ranking entry unless its status marks it as unused.
 void fn_1_156754(s32 index) {
     u32 *entry = &lbl_1_bss_8F428.unk_0 + index * 0x14;
@@ -281,9 +280,9 @@ typedef struct {
     u32 flags;
     u8 _pad04[4];
     void *data;
-} State;
+} fn_1_1569A0_State;
 
-void fn_1_1569A0(State *state) {
+void fn_1_1569A0(fn_1_1569A0_State *state) {
     if (state->flags & 1) {
         fn_8006B7B4(state->data);
         state->flags &= ~1;
@@ -291,7 +290,14 @@ void fn_1_1569A0(State *state) {
 }
 /* fzgx:end fn_1_1569A0 */
 
-/* fzgx:begin fn_1_1569E8 */
+/* fzgx:begin fn_1_1569E8 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/ranking.h"
+
+extern void fn_8006B7B4(void *);
+extern void fn_8006B870(void);
+
 typedef struct {
     u32 unk_00;
     u8 _pad04[8];
@@ -304,10 +310,10 @@ typedef struct {
     u8 _pad24[4];
     void *unk_28;
     void *unk_2c;
-} State;
+} fn_1_1569E8_State;
 
 /* Releases pending ranking resources and resets their status flags. */
-void fn_1_1569E8(State *state) {
+void fn_1_1569E8(fn_1_1569E8_State *state) {
     if (state->unk_00 & 4) {
         fn_8006B7B4(state->unk_10);
         state->unk_00 &= ~4;
@@ -354,9 +360,9 @@ typedef struct {
     s32 value;
     void *data3;
     void *data4;
-} State;
+} fn_1_156B18_State;
 
-void fn_1_156B18(State *state) {
+void fn_1_156B18(fn_1_156B18_State *state) {
     if (state->flags & 4) {
         fn_8006B7B4(state->data1);
         state->flags &= ~4;
@@ -447,13 +453,13 @@ typedef struct {
     u32 unk_30;
     u32 unk_34;
     u8 pad_38[0x4];
-} RankingEntry;
+} fn_1_159440_RankingEntry;
 
 // Preserve the current ranking entry before refreshing its state.
 void fn_1_159440(int index, int flag) {
-    RankingEntry *entry;
+    fn_1_159440_RankingEntry *entry;
 
-    entry = &((RankingEntry *)&lbl_1_data_4C810)[index];
+    entry = &((fn_1_159440_RankingEntry *)&lbl_1_data_4C810)[index];
     entry->unk_34 = entry->unk_30;
     fn_1_1594AC(index, flag);
 }
@@ -581,19 +587,19 @@ void fn_1_15B540(void) {
 typedef struct {
     u32 flags;
     u8 pad_04[0x3c];
-} RankingEntry;
+} fn_1_15B544_RankingEntry;
 
 // Set the high flag on each ranking entry managed by the singleton.
 void fn_1_15B544(void) {
     s16 i;
-    RankingEntry *entry;
+    fn_1_15B544_RankingEntry *entry;
 
     i = 0;
-    entry = (RankingEntry *)lbl_1_bss_3BE0->unk_54;
+    entry = (fn_1_15B544_RankingEntry *)lbl_1_bss_3BE0->unk_54;
     while (i < (s32)lbl_1_bss_3BE0->unk_48) {
         entry->flags |= 0x80000000u;
         i++;
-        entry = (RankingEntry *)((u8 *)entry + 0x40);
+        entry = (fn_1_15B544_RankingEntry *)((u8 *)entry + 0x40);
     }
 }
 /* fzgx:end fn_1_15B544 */

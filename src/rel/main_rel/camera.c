@@ -487,33 +487,33 @@ void camera_get_position_delta(u32 index, Vec3 *out) {
 /* fzgx:end camera_get_position_delta */
 
 /* fzgx:begin camera_reset_transition */
-typedef struct Camera {
+typedef struct camera_reset_transition_Camera {
     u8 pad_00[0xA4];
     s16 unk_A4;
-} Camera;
+} camera_reset_transition_Camera;
 
-extern void fn_1_AEB8(Camera *);
+extern void fn_1_AEB8(camera_reset_transition_Camera *);
 
 // Resets the camera transition state before refreshing the camera.
-void camera_reset_transition(Camera *camera) {
+void camera_reset_transition(camera_reset_transition_Camera *camera) {
     camera->unk_A4 = 0;
     fn_1_AEB8(camera);
 }
 /* fzgx:end camera_reset_transition */
 
 /* fzgx:begin camera_update_transition */
-typedef struct Camera {
+typedef struct camera_update_transition_Camera {
     u8 pad_00[0x78];
     s16 unk_78;
     u8 pad_7A[0x2A];
     s16 unk_A4;
-} Camera;
+} camera_update_transition_Camera;
 
-extern void fn_1_AEB8(Camera *);
-extern void fn_1_AFC8(Camera *);
+extern void fn_1_AEB8(camera_update_transition_Camera *);
+extern void fn_1_AFC8(camera_update_transition_Camera *);
 
 // Advances the camera's transition state and updates its active view.
-void camera_update_transition(Camera *camera) {
+void camera_update_transition(camera_update_transition_Camera *camera) {
     if (camera->unk_78 == 0) {
         camera->unk_A4++;
         if (camera->unk_A4 >= camera_transition_count) {

@@ -36,6 +36,7 @@ extern void fn_80008BA8(void *arg0, const void *arg1, int arg2);
 extern u32 lbl_1_rodata_4210;
 extern void fn_80007AB4(u32 *arg0);
 extern void fn_1_9CC6C(void *arg0, s32 arg1);
+extern void fn_1_9D360(void);
 
 /* fzgx:begin fn_1_402A4 */
 s16 fn_1_402A4(u32 index) {
@@ -415,24 +416,24 @@ void fn_1_9CCE8(s32 arg0) {
 typedef struct {
     u32 unk_00;
     const char *name;
-} BurnerEntry;
+} fn_1_9CE1C_BurnerEntry;
 
 typedef struct {
     s32 count;
     u32 unk_04;
-    BurnerEntry *entries;
-} BurnerTable;
+    fn_1_9CE1C_BurnerEntry *entries;
+} fn_1_9CE1C_BurnerTable;
 
 s32 fn_1_9CE1C(const char *arg0, s32 arg1) {
-    BurnerTable *table;
-    BurnerEntry *entries;
+    fn_1_9CE1C_BurnerTable *table;
+    fn_1_9CE1C_BurnerEntry *entries;
     s32 found;
     s32 count;
     const char *entry;
     s32 input_length;
     s32 entry_length;
 
-    table = *(BurnerTable **)&lbl_1_bss_384B4;
+    table = *(fn_1_9CE1C_BurnerTable **)&lbl_1_bss_384B4;
     if (table == 0) {
         return 0;
     }
@@ -531,7 +532,11 @@ void fn_1_9D2EC(void) {
 }
 /* fzgx:end fn_1_9D2EC */
 
-/* fzgx:begin fn_1_9D360 */
+/* fzgx:begin fn_1_9D360 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/burner.h"
+
 typedef struct {
     u8 pad[0x1e];
     u8 count;
@@ -540,13 +545,13 @@ typedef struct {
 typedef struct {
     u8 pad[8];
     u8 *entries;
-} BurnerTable;
+} fn_1_9D360_BurnerTable;
 
 extern void *fn_80077A18(Burner *);
 extern void fn_80077F8C(Burner *);
 
 // Builds the burner's entry pointers from its index list, then finalizes it.
-void fn_1_9D360(Burner *burner, BurnerTable *table, u8 *indices) {
+void fn_1_9D360(Burner *burner, fn_1_9D360_BurnerTable *table, u8 *indices) {
     void **out;
     s32 i;
 
@@ -562,8 +567,6 @@ void fn_1_9D360(Burner *burner, BurnerTable *table, u8 *indices) {
 /* fzgx:end fn_1_9D360 */
 
 /* fzgx:begin fn_1_9D3E8 */
-extern void fn_1_9D360(void);
-
 void fn_1_9D3E8(void *arg0, s32 arg1, s32 arg2) {
     fn_1_55A84(fn_1_9D360, arg0, arg1, arg2);
 }
@@ -581,18 +584,18 @@ typedef struct {
     u8 pad_81ad[7];
     u8 unk_81b4;
     u8 pad_81b5[0xb];
-} BurnerEntry;
+} fn_1_13EE60_BurnerEntry;
 
 void fn_1_13EE60(s16 arg0, s16 arg1, void *arg2) {
     void *base;
-    BurnerEntry *entry;
+    fn_1_13EE60_BurnerEntry *entry;
 
     if (arg0 >= 0x29) {
         base = fn_1_12F118();
         if (base == fn_1_36AD0()) {
-            entry = &((BurnerEntry *)base)[arg1];
+            entry = &((fn_1_13EE60_BurnerEntry *)base)[arg1];
         } else {
-            entry = &((BurnerEntry *)base)[arg0 - 0x29];
+            entry = &((fn_1_13EE60_BurnerEntry *)base)[arg0 - 0x29];
         }
         if ((entry->flags & 0x40000000) != 0) {
             fn_1_14F6F8(entry->unk_81a4, entry->unk_81ac,

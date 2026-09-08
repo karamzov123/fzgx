@@ -45,6 +45,7 @@ extern void (*lbl_1_bss_71684)(void);
 extern void (*lbl_1_bss_71688)(void);
 
 extern void (*lbl_1_bss_7168C)(void);
+extern void fn_1_A8528(void *arg0, void *arg1);
 
 /* fzgx:begin fn_1_A7728 */
 typedef struct FnA7728Resource {
@@ -88,8 +89,6 @@ void fn_1_A7728(FnA7728Object *objects) {
 /* fzgx:end fn_1_A7728 */
 
 /* fzgx:begin fn_1_A77DC */
-extern void fn_1_A8528(void *arg0, void *arg1);
-
 typedef struct FnA77DCObject {
     u8 pad_32c[0x32c];
     void *field_32c;
@@ -152,7 +151,21 @@ void fn_1_A7A70(void) {
 }
 /* fzgx:end fn_1_A7A70 */
 
-/* fzgx:begin fn_1_A8528 */
+/* fzgx:begin fn_1_A8528 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/driver.h"
+
+extern void lbl_8006DAEC(void);
+extern void lbl_8006DBAC(void *arg0);
+extern void lbl_8006E0A4(void *arg0);
+extern void fn_8006F6A8(void *arg0);
+extern void lbl_8006DB30(void);
+extern void fn_1_A861C(void *arg0, void *arg1);
+extern void fn_1_A8834(void *arg0, void *arg1);
+extern void fn_1_A89B0(void *arg0, void *arg1, s32 arg2);
+extern void (*lbl_1_bss_7168C)(void);
+
 typedef struct FnA8528Object {
     u8 pad_ea[0xea];
     s16 unk_ea;

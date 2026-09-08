@@ -89,6 +89,7 @@ extern void fn_1_1030A4(void *entry);
 extern void fn_1_103264(void *entry, void *arg);
 extern void fn_1_151668(void *self);
 extern const f32 lbl_1_rodata_CF40[];
+extern void fn_1_150F74(void *self);
 
 /* fzgx:begin fn_1_133DBC */
 void fn_1_133DBC(void* arg0) {
@@ -1079,19 +1080,19 @@ typedef struct {
     u8 unk0[2];
     s16 value;
     u8 unk4[12];
-} Entry;
+} fn_1_14F01C_Entry;
 
 typedef struct {
-    Entry entries[75];
-} Table;
+    fn_1_14F01C_Entry entries[75];
+} fn_1_14F01C_Table;
 
 // Count entries in the static display table whose value matches the argument.
 s16 fn_1_14F01C(s16 value) {
-    Table table;
+    fn_1_14F01C_Table table;
     s16 count;
     s16 i;
 
-    table = *(Table *)lbl_1_rodata_B8D8;
+    table = *(fn_1_14F01C_Table *)lbl_1_rodata_B8D8;
     i = 0;
     count = 0;
     while (i < 75) {
@@ -1109,19 +1110,19 @@ typedef struct {
     u8 unk0[2];
     s16 value;
     u8 unk4[12];
-} Entry;
+} fn_1_14F090_Entry;
 
 typedef struct {
-    Entry entries[75];
-} Table;
+    fn_1_14F090_Entry entries[75];
+} fn_1_14F090_Table;
 
 // Finds the index of the requested occurrence of a value in the static table.
 s16 fn_1_14F090(s16 value, s16 occurrence) {
-    Table table;
+    fn_1_14F090_Table table;
     s16 i;
     s16 count;
 
-    table = *(Table *)lbl_1_rodata_BD88;
+    table = *(fn_1_14F090_Table *)lbl_1_rodata_BD88;
     i = 0;
     count = 0;
     while (i < 75) {
@@ -1200,16 +1201,16 @@ typedef struct {
     u8 unk0[2];
     s16 value;
     u8 unk4[12];
-} Entry;
+} fn_1_14F344_Entry;
 
 typedef struct {
-    Entry entries[75];
-} Table;
+    fn_1_14F344_Entry entries[75];
+} fn_1_14F344_Table;
 
 s16 fn_1_14F344(s16 index) {
-    Table table;
+    fn_1_14F344_Table table;
 
-    table = *(Table *)lbl_1_rodata_C6E8;
+    table = *(fn_1_14F344_Table *)lbl_1_rodata_C6E8;
     return table.entries[index].value;
 }
 /* fzgx:end fn_1_14F344 */
@@ -1317,22 +1318,22 @@ void fn_1_150650(void) {
 /* fzgx:end fn_1_150650 */
 
 /* fzgx:begin fn_1_150C8C */
-typedef struct Entry {
+typedef struct fn_1_150C8C_Entry {
     u8 pad[0x68];
     u32 active;
     u8 tail[0x40];
-} Entry;
+} fn_1_150C8C_Entry;
 
-typedef struct Object {
+typedef struct fn_1_150C8C_Object {
     u8 pad_84[0x84];
     s32 count;
-    Entry entries[1];
-} Object;
+    fn_1_150C8C_Entry entries[1];
+} fn_1_150C8C_Object;
 
 // Marks each static display entry active before updating it.
-void fn_1_150C8C(Object *obj) {
+void fn_1_150C8C(fn_1_150C8C_Object *obj) {
     s32 count;
-    Entry *entry;
+    fn_1_150C8C_Entry *entry;
 
     count = obj->count;
     entry = obj->entries;
@@ -1346,19 +1347,19 @@ void fn_1_150C8C(Object *obj) {
 /* fzgx:end fn_1_150C8C */
 
 /* fzgx:begin fn_1_150CEC */
-typedef struct Entry {
+typedef struct fn_1_150CEC_Entry {
     u8 data[0xac];
-} Entry;
+} fn_1_150CEC_Entry;
 
-typedef struct Object {
+typedef struct fn_1_150CEC_Object {
     u8 pad_84[0x84];
     s32 count;
-    Entry entries[1];
-} Object;
+    fn_1_150CEC_Entry entries[1];
+} fn_1_150CEC_Object;
 
-void fn_1_150CEC(Object *obj) {
+void fn_1_150CEC(fn_1_150CEC_Object *obj) {
     s32 count;
-    Entry *entry;
+    fn_1_150CEC_Entry *entry;
 
     count = obj->count;
     entry = obj->entries;
@@ -1371,19 +1372,19 @@ void fn_1_150CEC(Object *obj) {
 /* fzgx:end fn_1_150CEC */
 
 /* fzgx:begin fn_1_150ED0 */
-typedef struct Entry {
+typedef struct fn_1_150ED0_Entry {
     u8 data[0xac];
-} Entry;
+} fn_1_150ED0_Entry;
 
-typedef struct Object {
+typedef struct fn_1_150ED0_Object {
     u8 pad_84[0x84];
     s32 count;
-    Entry entries[1];
-} Object;
+    fn_1_150ED0_Entry entries[1];
+} fn_1_150ED0_Object;
 
-void fn_1_150ED0(Object *obj, void *arg) {
+void fn_1_150ED0(fn_1_150ED0_Object *obj, void *arg) {
     s32 count;
-    Entry *entry;
+    fn_1_150ED0_Entry *entry;
 
     count = obj->count;
     entry = obj->entries;
@@ -1396,8 +1397,6 @@ void fn_1_150ED0(Object *obj, void *arg) {
 /* fzgx:end fn_1_150ED0 */
 
 /* fzgx:begin fn_1_150F30 */
-extern void fn_1_150F74(void *self);
-
 typedef struct StaticDisp {
     u8 pad_2728[0x2728];
     s32 unk_2728;
@@ -1413,8 +1412,14 @@ void fn_1_150F30(StaticDisp *self) {
 }
 /* fzgx:end fn_1_150F30 */
 
-/* fzgx:begin fn_1_150F74 */
-typedef struct Object {
+/* fzgx:begin fn_1_150F74 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/sel_static_disp.h"
+
+extern const f32 lbl_1_rodata_CF40[];
+
+typedef struct fn_1_150F74_Object {
     u8 pad_0[0x2730];
     f32 value_2730;
     f32 value_2734;
@@ -1422,9 +1427,9 @@ typedef struct Object {
     f32 value_273c;
     u8 pad_2740[4];
     f32 value_2744;
-} Object;
+} fn_1_150F74_Object;
 
-typedef struct Entry {
+typedef struct fn_1_150F74_Entry {
     u8 pad_0[0x1824];
     f32 value_1824;
     f32 value_1828;
@@ -1442,12 +1447,12 @@ typedef struct Entry {
     u8 flag_185d;
     u8 flag_185e;
     u8 flag_185f;
-} Entry;
+} fn_1_150F74_Entry;
 
 // Initialize display values and propagate enabled display flags across all entries.
-void fn_1_150F74(Object *obj) {
+void fn_1_150F74(fn_1_150F74_Object *obj) {
     const f32 *constants;
-    Entry *entry;
+    fn_1_150F74_Entry *entry;
     u32 *bit_flags;
     s32 index;
 
@@ -1458,7 +1463,7 @@ void fn_1_150F74(Object *obj) {
     obj->value_273c = constants[59];
     obj->value_2744 = constants[60];
 
-    entry = (Entry *)obj;
+    entry = (fn_1_150F74_Entry *)obj;
     for (index = 0; index < 0x40; index++) {
         bit_flags = entry->bits;
         if (entry->flag_185c != 0) {
@@ -1484,7 +1489,7 @@ void fn_1_150F74(Object *obj) {
         if (entry->flag_185f != 0) {
             *bit_flags &= 0x7fffffff;
         }
-        entry = (Entry *)((u8 *)entry + 0x3c);
+        entry = (fn_1_150F74_Entry *)((u8 *)entry + 0x3c);
     }
 }
 /* fzgx:end fn_1_150F74 */

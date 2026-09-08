@@ -13,6 +13,7 @@ extern u32 lbl_1_bss_DA8;
 extern void fn_1_43A4(void);
 extern u32 lbl_1_data_2C70;
 extern void fn_80008E84(u32 value);
+extern u32 lbl_1_bss_DAC;
 
 /* fzgx:begin fn_1_668 */
 struct ArenaData {
@@ -86,7 +87,12 @@ void fn_1_3CC4(void) {
 }
 /* fzgx:end fn_1_3CC4 */
 
-/* fzgx:begin fn_1_3F8C */
+/* fzgx:begin fn_1_3F8C noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
+extern u32 lbl_1_bss_DB0[2];
+
 typedef struct Fn1_3F8C_Entry Fn1_3F8C_Entry;
 
 struct Fn1_3F8C_Entry {
@@ -142,8 +148,6 @@ s32 fn_1_3F8C(u32 arg3, u32 arg0, u32 arg1, u32 index) {
 /* fzgx:end fn_1_3F8C */
 
 /* fzgx:begin fn_1_41A8 */
-extern u32 lbl_1_bss_DAC;
-
 typedef struct Node Node;
 struct Node {
     u32 field_0;

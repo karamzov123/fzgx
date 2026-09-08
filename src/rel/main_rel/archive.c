@@ -34,6 +34,7 @@ extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
 extern s32 lbl_1_bss_8CA44[10];
 
 extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
+extern void fn_1_435C();
 
 /* fzgx:begin fn_1_12A2D0 */
 extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
@@ -391,8 +392,6 @@ s32 fn_1_12F258(void) {
 /* fzgx:end fn_1_12F258 */
 
 /* fzgx:begin fn_1_12F28C */
-extern void fn_1_435C(void *value);
-
 void fn_1_12F28C(void *arg0, void **result, void *arg2, u8 *arg3) {
     fn_1_7B2E8(*arg3);
     fn_1_435C(arg0);
@@ -451,8 +450,6 @@ void fn_1_131000(void) {
 /* fzgx:end fn_1_131000 */
 
 /* fzgx:begin fn_1_131004 */
-extern void fn_1_435C();
-
 struct Fn131004State {
     u8 pad_00[0x1C];
     u32 unk_1C;

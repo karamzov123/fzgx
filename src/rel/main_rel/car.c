@@ -291,9 +291,9 @@ typedef struct {
     s16 id;
     u8 pad4[8];
     u32 flags;
-} Obj;
+} fn_1_81860_Obj;
 
-s32 fn_1_81860(Obj *a, Obj *b) {
+s32 fn_1_81860(fn_1_81860_Obj *a, fn_1_81860_Obj *b) {
     u32 flags_a = a->flags & 0xF0000000;
     if (flags_a != 0 && (b->flags & 0xF0000000) == 0) {
         return 1;
@@ -309,9 +309,9 @@ s32 fn_1_81860(Obj *a, Obj *b) {
 typedef struct {
     u8 pad0[0x320];
     s16 value;
-} Obj;
+} fn_1_818AC_Obj;
 
-s32 fn_1_818AC(Obj *a, Obj *b) {
+s32 fn_1_818AC(fn_1_818AC_Obj *a, fn_1_818AC_Obj *b) {
     return a->value - b->value;
 }
 /* fzgx:end fn_1_818AC */
@@ -3137,6 +3137,9 @@ void fn_1_96130(void *arg0) {
 #include "types.h"
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/car.h"
+
+extern u8 lbl_1_data_27BA4[0x5C];
+extern u32 lbl_1_data_278AC;
 
 extern void fn_1_12AB38(void *resource);
 extern int fn_1_12A8A4(void *resource, void *destination);

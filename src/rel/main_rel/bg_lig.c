@@ -226,22 +226,22 @@ typedef struct {
     u8 pad_000[0x3f0];
     u8 callback_data[0x24];
     f32 scale;
-} LigEntry;
+} fn_1_D8784_LigEntry;
 
 typedef struct {
     u8 pad_000[0x6c0];
     f32 threshold;
-} LigObject;
+} fn_1_D8784_LigObject;
 
-extern u32 fn_1_58C4(LigObject *obj);
+extern u32 fn_1_58C4(fn_1_D8784_LigObject *obj);
 
 // Queues callbacks for eligible lig entries.
-void fn_1_D8784(LigObject *obj) {
+void fn_1_D8784(fn_1_D8784_LigObject *obj) {
     void *callback_data;
     void *owner;
     u8 i;
     f32 factor;
-    LigEntry *entry;
+    fn_1_D8784_LigEntry *entry;
 
     if (fn_1_58C4(obj) >= 2) {
         return;
@@ -254,7 +254,7 @@ void fn_1_D8784(LigObject *obj) {
     i = 0;
     for (; i < 0xf; i++) {
         lbl_8006DCA4();
-        entry = (LigEntry *)((u8 *)obj + (i * 0x30));
+        entry = (fn_1_D8784_LigEntry *)((u8 *)obj + (i * 0x30));
         callback_data = entry->callback_data;
         if (fn_1_54E34(callback_data, factor * entry->scale) != 0) {
             owner = fn_1_54448(0);
@@ -276,19 +276,19 @@ typedef struct {
     u8 pad_00[0x68];
     u32 field_68;
     u8 pad_6c[0x40];
-} LigEntry;
+} fn_1_D8CA8_LigEntry;
 
 typedef struct {
     u8 pad_00[0x6d4];
     s32 count;
-    LigEntry entries[1];
-} LigObject;
+    fn_1_D8CA8_LigEntry entries[1];
+} fn_1_D8CA8_LigObject;
 
-extern void fn_1_103090(LigEntry *entry);
+extern void fn_1_103090(fn_1_D8CA8_LigEntry *entry);
 
-void fn_1_D8CA8(LigObject *obj) {
+void fn_1_D8CA8(fn_1_D8CA8_LigObject *obj) {
     s32 count = obj->count;
-    LigEntry *entry = obj->entries;
+    fn_1_D8CA8_LigEntry *entry = obj->entries;
 
     while (count > 0) {
         entry->field_68 = 1;
@@ -302,19 +302,19 @@ void fn_1_D8CA8(LigObject *obj) {
 /* fzgx:begin fn_1_D8D08 */
 typedef struct {
     u8 data[0xac];
-} LigEntry;
+} fn_1_D8D08_LigEntry;
 
 typedef struct {
     u8 pad[0x6d4];
     s32 count;
-    LigEntry entries[1];
+    fn_1_D8D08_LigEntry entries[1];
 } LigContainer;
 
-extern void fn_1_1030A4(LigEntry *entry);
+extern void fn_1_1030A4(fn_1_D8D08_LigEntry *entry);
 
 void fn_1_D8D08(LigContainer *container) {
     s32 count = container->count;
-    LigEntry *entry = container->entries;
+    fn_1_D8D08_LigEntry *entry = container->entries;
 
     while (count > 0) {
         fn_1_1030A4(entry);
@@ -327,20 +327,20 @@ void fn_1_D8D08(LigContainer *container) {
 /* fzgx:begin fn_1_D8EEC */
 typedef struct {
     u8 unk_0[0xac];
-} LigEntry;
+} fn_1_D8EEC_LigEntry;
 
 typedef struct {
     u8 unk_0[0x6d4];
     s32 unk_6d4;
-    LigEntry unk_6d8[1];
-} LigObject;
+    fn_1_D8EEC_LigEntry unk_6d8[1];
+} fn_1_D8EEC_LigObject;
 
-extern void fn_1_103264(LigEntry *entry, void *arg);
+extern void fn_1_103264(fn_1_D8EEC_LigEntry *entry, void *arg);
 
 // Applies the operation to each entry in the object.
-void fn_1_D8EEC(LigObject *obj, void *arg) {
+void fn_1_D8EEC(fn_1_D8EEC_LigObject *obj, void *arg) {
     s32 count = obj->unk_6d4;
-    LigEntry *entry = obj->unk_6d8;
+    fn_1_D8EEC_LigEntry *entry = obj->unk_6d8;
 
     while (count > 0) {
         fn_1_103264(entry, arg);

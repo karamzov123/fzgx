@@ -1,5 +1,8 @@
 #include "types.h"
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/bg_san.h"
+extern void fn_1_DC6FC(void *context);
+extern void fn_1_DC5E8(Obj_1_data_2A7E0_At3C *, s32);
 
 /* fzgx:begin fn_1_DA7B8 */
 #include "rel/main_rel/bg_san.h"
@@ -340,12 +343,6 @@ void fn_1_DC2F8(void) {
 /* fzgx:begin fn_1_DC33C */
 #include "rel/main_rel/bg_san.h"
 
-extern s32 fn_1_9D260(Obj_1_data_2A7E0 *);
-extern void fn_1_103F58(void *);
-extern void fn_1_DC6FC(Obj_1_data_2A7E0_At3C *);
-extern void fn_1_DC5E8(Obj_1_data_2A7E0_At3C *, s32);
-extern void fn_1_9AD88(void);
-
 // Refreshes the active background object and commits the generated scene data.
 void fn_1_DC33C(void) {
     Obj_1_data_2A7E0_At3C *obj;
@@ -369,21 +366,21 @@ void fn_1_DC3A0(void) {
 /* fzgx:begin fn_1_DC3A4 */
 extern void fn_1_103090(void *);
 
-typedef struct Entry {
+typedef struct fn_1_DC3A4_Entry {
     u8 unk00[0x68];
     s32 initialized;
     u8 unk6c[0x40];
-} Entry;
+} fn_1_DC3A4_Entry;
 
-typedef struct Container {
+typedef struct fn_1_DC3A4_Container {
     s32 count;
-    Entry entries[1];
-} Container;
+    fn_1_DC3A4_Entry entries[1];
+} fn_1_DC3A4_Container;
 
 // Marks each entry as initialized and processes all entries in the container.
-void fn_1_DC3A4(Container *container) {
+void fn_1_DC3A4(fn_1_DC3A4_Container *container) {
     s32 count;
-    Entry *entry;
+    fn_1_DC3A4_Entry *entry;
 
     count = container->count;
     entry = container->entries;
@@ -400,18 +397,18 @@ void fn_1_DC3A4(Container *container) {
 extern void fn_1_1030A4(void *);
 
 // Calls the cleanup routine for each entry in the container.
-typedef struct Entry {
+typedef struct fn_1_DC404_Entry {
     u8 data[0xac];
-} Entry;
+} fn_1_DC404_Entry;
 
-typedef struct Container {
+typedef struct fn_1_DC404_Container {
     s32 count;
-    Entry entries[1];
-} Container;
+    fn_1_DC404_Entry entries[1];
+} fn_1_DC404_Container;
 
-void fn_1_DC404(Container *container) {
+void fn_1_DC404(fn_1_DC404_Container *container) {
     s32 count;
-    Entry *entry;
+    fn_1_DC404_Entry *entry;
 
     count = container->count;
     entry = container->entries;
@@ -423,22 +420,26 @@ void fn_1_DC404(Container *container) {
 }
 /* fzgx:end fn_1_DC404 */
 
-/* fzgx:begin fn_1_DC5E8 */
+/* fzgx:begin fn_1_DC5E8 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/bg_san.h"
+
 extern void fn_1_103264(void *, void *);
 
-typedef struct Entry {
+typedef struct fn_1_DC5E8_Entry {
     u8 unk_00[0xac];
-} Entry;
+} fn_1_DC5E8_Entry;
 
-typedef struct Container {
+typedef struct fn_1_DC5E8_Container {
     s32 unk_00;
-    Entry unk_04[1];
-} Container;
+    fn_1_DC5E8_Entry unk_04[1];
+} fn_1_DC5E8_Container;
 
 // Process each entry in the container with the supplied argument.
-void fn_1_DC5E8(Container *container, void *arg) {
+void fn_1_DC5E8(fn_1_DC5E8_Container *container, void *arg) {
     s32 count;
-    Entry *entry;
+    fn_1_DC5E8_Entry *entry;
 
     entry = container->unk_04;
     count = container->unk_00;
@@ -483,23 +484,23 @@ void fn_1_DC6FC(void *context) {
 extern const f64 lbl_1_rodata_6748;
 extern void fn_1_D6C10(void *, f32);
 
-typedef struct Entry {
+typedef struct fn_1_DCB10_Entry {
     u8 pad_00[0x20];
     u32 flags;
-} Entry;
+} fn_1_DCB10_Entry;
 
-typedef struct Container {
+typedef struct fn_1_DCB10_Container {
     u8 pad_00[0xa4];
     s32 count;
-    Entry *entries;
-} Container;
+    fn_1_DCB10_Entry *entries;
+} fn_1_DCB10_Container;
 
 void fn_1_DCB10(void) {
-    Container **global;
+    fn_1_DCB10_Container **global;
     s32 i;
-    Entry *entry;
+    fn_1_DCB10_Entry *entry;
 
-    global = (Container **)&lbl_1_bss_3BE0;
+    global = (fn_1_DCB10_Container **)&lbl_1_bss_3BE0;
     i = 0;
     entry = (*global)->entries;
     while (i < (*global)->count) {

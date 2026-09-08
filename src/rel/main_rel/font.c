@@ -81,6 +81,7 @@ extern void fn_1_458A0(void);
 extern void fn_1_45850(void);
 extern void fn_1_565F4(void);
 extern void fn_80070D60(void *);
+extern u8 *lbl_801A66CC;
 
 /* fzgx:begin fn_1_494CC */
 void fn_1_494CC(u8 value) {
@@ -713,8 +714,14 @@ f32 fn_1_542B8(void) {
 }
 /* fzgx:end fn_1_542B8 */
 
-/* fzgx:begin fn_1_542C4 */
-typedef struct FontState {
+/* fzgx:begin fn_1_542C4 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/font.h"
+
+extern void fn_1_54320(void);
+
+typedef struct fn_1_542C4_FontState {
     u8 pad30[0x30];
     void *unk_30;
     void *unk_34;
@@ -723,10 +730,10 @@ typedef struct FontState {
     f32 unk_40;
     u8 pad44[8];
     f32 unk_4C;
-} FontState;
+} fn_1_542C4_FontState;
 
 // Volatile preserves the repeated loads of the shared font state.
-extern volatile FontState *lbl_801A66CC;
+extern volatile fn_1_542C4_FontState *lbl_801A66CC;
 
 // Store the current font parameters and notify the font system.
 void fn_1_542C4(void *arg0, void *arg1, f32 arg2, f32 arg3, f32 arg4) {
@@ -740,22 +747,26 @@ void fn_1_542C4(void *arg0, void *arg1, f32 arg2, f32 arg3, f32 arg4) {
 }
 /* fzgx:end fn_1_542C4 */
 
-/* fzgx:begin fn_1_54320 */
-typedef struct FontState {
+/* fzgx:begin fn_1_54320 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/font.h"
+
+typedef struct fn_1_54320_FontState {
     u8 unk_0[0x30];
     u8 *unk_30;
     s32 unk_34;
     u8 unk_38[0x0C];
     void *unk_44;
     void *unk_48;
-} FontState;
+} fn_1_54320_FontState;
 
-extern FontState *lbl_801A66CC;
+extern fn_1_54320_FontState *lbl_801A66CC;
 extern void fn_1_54668(u8 *, s32, s32);
 
 // Initializes the font buffer and records its current and end positions.
 void fn_1_54320(void) {
-    FontState *state;
+    fn_1_54320_FontState *state;
 
     state = lbl_801A66CC;
     fn_1_54668(state->unk_30, state->unk_34, 1);
@@ -765,7 +776,14 @@ void fn_1_54320(void) {
 }
 /* fzgx:end fn_1_54320 */
 
-/* fzgx:begin fn_1_545B8 */
+/* fzgx:begin fn_1_545B8 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/font.h"
+
+extern void fn_1_9FA18(void);
+extern void fn_1_58248(void);
+
 typedef struct fn_1_545B8_manager {
     u8 unk_00[0x30];
     void *unk_30;
@@ -848,17 +866,21 @@ void fn_1_547F8(fn_1_547F8_node *node) {
 }
 /* fzgx:end fn_1_547F8 */
 
-/* fzgx:begin fn_1_54868 */
-typedef struct FontState {
+/* fzgx:begin fn_1_54868 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/font.h"
+
+typedef struct fn_1_54868_FontState {
     u8 pad_1a0[0x1a0];
     u32 unk_1a0;
     u32 unk_1a4;
     u32 unk_1a8;
     u32 unk_1ac;
-} FontState;
+} fn_1_54868_FontState;
 
 // Volatile preserves the retail's repeated font-state global loads.
-extern volatile FontState *lbl_801A66CC;
+extern volatile fn_1_54868_FontState *lbl_801A66CC;
 
 // Copies the current font state's two counter values into its active fields.
 void fn_1_54868(u32 arg0, u32 arg1) {
@@ -877,7 +899,11 @@ void fn_1_5489C(void **arg0, void **arg1) {
 }
 /* fzgx:end fn_1_5489C */
 
-/* fzgx:begin fn_1_548AC */
+/* fzgx:begin fn_1_548AC noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/font.h"
+
 typedef struct FontCounterState {
     u8 pad_1a0[0x1a0];
     u32 field_1a0;
@@ -905,32 +931,24 @@ u32 fn_1_548AC(u32 amount) {
 /* fzgx:end fn_1_548AC */
 
 /* fzgx:begin fn_1_54DCC */
-extern void *lbl_801A66CC;
-
 void fn_1_54DCC(u8 *data) {
     fn_800794F0(data, (u8 *)lbl_801A66CC + 0x50, 0x84);
 }
 /* fzgx:end fn_1_54DCC */
 
 /* fzgx:begin fn_1_54E00 */
-extern void *lbl_801A66CC;
-
 void fn_1_54E00(void *value) {
     fn_800794F0((u8 *)lbl_801A66CC + 0x50, value, 0x84);
 }
 /* fzgx:end fn_1_54E00 */
 
 /* fzgx:begin fn_1_550A8 */
-extern void *lbl_801A66CC;
-
 void fn_1_550A8(void) {
     fn_800794F0(lbl_1_bss_6C710, (u8 *)lbl_801A66CC + 0x50, 0x84);
 }
 /* fzgx:end fn_1_550A8 */
 
 /* fzgx:begin fn_1_550E0 */
-extern void *lbl_801A66CC;
-
 void fn_1_550E0(void) {
     fn_800794F0((u8 *)lbl_801A66CC + 0x50, lbl_1_bss_6C710, 0x84);
 }
@@ -1078,8 +1096,6 @@ void fn_1_56000(u8 value0, u8 value1, u8 value2) {
 /* fzgx:end fn_1_56000 */
 
 /* fzgx:begin fn_1_560F0 */
-extern u8 *lbl_801A66CC;
-
 // Marks the selected font resource as active before handing it to the loader.
 void fn_1_560F0(s32 index, void *arg) {
     if (arg != NULL) {
