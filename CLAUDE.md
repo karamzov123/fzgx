@@ -59,6 +59,13 @@ Rules that hold for everyone:
   link run for 20 min (139 real units link in seconds, so it was the stubs' mis-sectioned
   `.init` range, not the count as such). Keep units at matched count regardless.
   `fzgx uncarve --stubs` removes any unit without matched code (verify uncarves what it rejects).
+- Plateaus are data, not agent work. `fzgx stuck` classifies every saved best body at 80%+ by
+  failure mode from the object diff (`.fzgx/stuck.json`, rows included). `fzgx sweep` re-checks
+  them 12-wide, memoised by body + headers + split, and submits what matches; `release` runs the
+  same deterministic fixup (`tools/fzgx/fixup.py`, type flips for compare/sign-extension diffs,
+  a few seconds) on an agent's best body and submits a match in the agent's name. A unit may carry
+  its own `mw_version`/`extra_cflags` (an `-O` override replaces the module's); `check`/`submit`
+  honour them before the carve. The permuter is offline only (150 s, one hit in three).
 - `fzgx trivial` matches single-`blr` and `li r3,N; blr` functions mechanically
   (419 landed on 2026-09-08); run it before spending agents on tiny functions.
 - Readability tooling: `fzgx tu-organize` (TU directories from `tus.json`),
