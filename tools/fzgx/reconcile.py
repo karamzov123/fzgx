@@ -196,12 +196,17 @@ def reconcile_tu(p: Project, tu_source: str, v) -> Dict[str, object]:
             if fixed:
                 break
         if not fixed:
-            # the block keeps its own declarations; the symbols it declares are contested
-            b.body = original[bname]
+            # the symbols this block names are contested: no prologue declaration for them, and
+            # every block that had its private copy stripped in phase A gets it back
             for n in [n for n in variants if bname in where[n]]:
                 out["contested"][n] = sorted(variants[n])
-                if chosen[n] is not None:
-                    chosen[n] = None  # no prologue declaration for a contested symbol
+                chosen[n] = None
+            for other in tf.blocks:
+                if other.name in original:
+                    other.body = original[other.name]
+                    for n in variants:
+                        if chosen[n] is not None and other.name in where[n]:
+                            strip_decl(other, n)
             tf.prologue = render_prologue()
     out["hoisted"] = [n for n, c in chosen.items() if n not in out["contested"]]
     # every block is re-checked once more under the final prologue in step 4
