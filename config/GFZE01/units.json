@@ -5635,7 +5635,7 @@
     "symbols": [
       "fn_1_E57B4"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
