@@ -1910,12 +1910,20 @@ def apply(p: Project, modules: Optional[List[str]] = None, max_size: int = 160, 
     # near misses get the deterministic fixup (type flips, symbol substitutions, layout edits)
     from . import fixup
     fixed = 0
-    for idx, (s, size, t, ok, pct) in enumerate(results):
-        if ok or pct < 90:
-            continue
-        fx = fixup.try_fix(p, s, t, budget_s=10.0)
-        if fx.get("matched") and fx.get("body"):
-            results[idx] = (s, size, fx["body"], True, 100.0); fixed += 1
+    todo_fx = [idx for idx, (s, size, t, ok, pct) in enumerate(results) if not ok and pct >= 60]
+
+    def fix_one(idx):
+        s, size, t, ok, pct = results[idx]
+        try:
+            return idx, fixup.try_fix(p, s, t, budget_s=10.0)
+        except Exception:
+            return idx, {}
+    # the repairs land on drafts from 60% up (register order and declaration style close them)
+    with ThreadPoolExecutor(max_workers=6) as ex:
+        for idx, fx in ex.map(fix_one, todo_fx):
+            if fx.get("matched") and fx.get("body"):
+                s, size, t, ok, pct = results[idx]
+                results[idx] = (s, size, fx["body"], True, 100.0); fixed += 1
     best: Dict[str, tuple] = {}
     for s, size, t, ok, pct in results:
         if s not in best or (ok, pct) > (best[s][3], best[s][4]):
