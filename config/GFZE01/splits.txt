@@ -940,3 +940,48 @@ dol/__OSReschedule.c:
 
 dol/fn_80020530.c:
 	.text       start:0x80020530 end:0x800205A0 align:4
+
+dol/fn_80006904.c:
+	.text       start:0x80006904 end:0x80006914 align:4
+
+dol/fn_8001989C.c:
+	.text       start:0x8001989C end:0x800198AC align:4
+
+dol/fn_8006CD40.c:
+	.text       start:0x8006CD40 end:0x8006CD50 align:4
+
+dol/fn_8006FFCC.c:
+	.text       start:0x8006FFCC end:0x8006FFDC align:4
+
+dol/fn_80070DE0.c:
+	.text       start:0x80070DE0 end:0x80070DF0 align:4
+
+dol/fn_80070DF0.c:
+	.text       start:0x80070DF0 end:0x80070E00 align:4
+
+dol/fn_80074A7C.c:
+	.text       start:0x80074A7C end:0x80074A8C align:4
+
+dol/fn_80074D08.c:
+	.text       start:0x80074D08 end:0x80074D18 align:4
+
+dol/fn_80077BAC.c:
+	.text       start:0x80077BAC end:0x80077BBC align:4
+
+dol/fn_8001A78C.c:
+	.text       start:0x8001A78C end:0x8001A7D0 align:4
+
+dol/fn_8001A7D0.c:
+	.text       start:0x8001A7D0 end:0x8001A814 align:4
+
+dol/fn_8001DF00.c:
+	.text       start:0x8001DF00 end:0x8001DF44 align:4
+
+dol/fn_800321D8.c:
+	.text       start:0x800321D8 end:0x8003221C align:4
+
+dol/fn_80034378.c:
+	.text       start:0x80034378 end:0x800343BC align:4
+
+dol/fn_80034444.c:
+	.text       start:0x80034444 end:0x80034488 align:4

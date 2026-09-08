@@ -122,3 +122,9 @@ rel/title/title/fn_8_5810.c:
 
 rel/title/title/fn_8_55CC.c:
 	.text       start:0x000055CC end:0x00005608 align:4
+
+rel/title/title/fn_8_516C.c:
+	.text       start:0x0000516C end:0x0000520C align:4
+
+rel/title/title/fn_8_5514.c:
+	.text       start:0x00005514 end:0x000055CC align:4

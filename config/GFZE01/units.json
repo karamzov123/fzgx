@@ -2104,6 +2104,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80006904.c",
+    "symbols": [
+      "fn_80006904"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80006914.c",
     "symbols": [
       "fn_80006914"
@@ -2394,6 +2404,36 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_8001989C.c",
+    "symbols": [
+      "fn_8001989C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8001A78C.c",
+    "symbols": [
+      "fn_8001A78C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8001A7D0.c",
+    "symbols": [
+      "fn_8001A7D0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8001BE6C.c",
     "symbols": [
       "fn_8001BE6C"
@@ -2407,6 +2447,16 @@
     "source": "dol/fn_8001D3E4.c",
     "symbols": [
       "fn_8001D3E4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8001DF00.c",
+    "symbols": [
+      "fn_8001DF00"
     ],
     "status": "matching",
     "mw_version": null,
@@ -2954,6 +3004,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_800321D8.c",
+    "symbols": [
+      "fn_800321D8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8003228C.c",
     "symbols": [
       "fn_8003228C"
@@ -2997,6 +3057,26 @@
     "source": "dol/fn_800342E8.c",
     "symbols": [
       "fn_800342E8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80034378.c",
+    "symbols": [
+      "fn_80034378"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80034444.c",
+    "symbols": [
+      "fn_80034444"
     ],
     "status": "matching",
     "mw_version": null,
@@ -4064,6 +4144,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_8006CD40.c",
+    "symbols": [
+      "fn_8006CD40"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8006F774.c",
     "symbols": [
       "fn_8006F774"
@@ -4114,6 +4204,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_8006FFCC.c",
+    "symbols": [
+      "fn_8006FFCC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_800700F4.c",
     "symbols": [
       "fn_800700F4"
@@ -4137,6 +4237,26 @@
     "source": "dol/fn_80070D60.c",
     "symbols": [
       "fn_80070D60"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80070DE0.c",
+    "symbols": [
+      "fn_80070DE0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80070DF0.c",
+    "symbols": [
+      "fn_80070DF0"
     ],
     "status": "matching",
     "mw_version": null,
@@ -4214,6 +4334,26 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80074A7C.c",
+    "symbols": [
+      "fn_80074A7C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80074D08.c",
+    "symbols": [
+      "fn_80074D08"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80074D18.c",
     "symbols": [
       "fn_80074D18"
@@ -4267,6 +4407,16 @@
     "source": "dol/fn_80077B04.c",
     "symbols": [
       "fn_80077B04"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80077BAC.c",
+    "symbols": [
+      "fn_80077BAC"
     ],
     "status": "matching",
     "mw_version": null,
@@ -20004,6 +20154,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/sound/fn_1_A2DF4.c",
+    "symbols": [
+      "fn_1_A2DF4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/sound.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/sound/fn_1_A2E24.c",
     "symbols": [
       "fn_1_A2E24"
@@ -27128,6 +27289,28 @@
     "source": "rel/title/title/fn_8_1F64.c",
     "symbols": [
       "fn_8_1F64"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/title.c"
+  },
+  {
+    "module": "title",
+    "source": "rel/title/title/fn_8_516C.c",
+    "symbols": [
+      "fn_8_516C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/title.c"
+  },
+  {
+    "module": "title",
+    "source": "rel/title/title/fn_8_5514.c",
+    "symbols": [
+      "fn_8_5514"
     ],
     "status": "matching",
     "mw_version": null,

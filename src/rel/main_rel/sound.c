@@ -185,6 +185,19 @@ void fn_1_A2DC4(u32 arg0) {
 }
 /* fzgx:end fn_1_A2DC4 */
 
+/* fzgx:begin fn_1_A2DF4 noprologue */
+#include "types.h"
+
+extern u32 fn_80063094(u32, u32, u32);
+extern u8 lbl_1_bss_6EAC6;
+
+void fn_1_A2DF4(u32 arg0, u32 arg1, u32 arg2) {
+    if (lbl_1_bss_6EAC6 != 0) {
+    fn_80063094(arg0, arg1, arg2);
+    }
+}
+/* fzgx:end fn_1_A2DF4 */
+
 /* fzgx:begin fn_1_A2E24 */
 // Notifies the sound system when sound processing is enabled.
 void fn_1_A2E24(u32 arg0, u32 arg1, s32 arg2) {
