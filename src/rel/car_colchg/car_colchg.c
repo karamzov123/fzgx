@@ -19,6 +19,13 @@ extern char lbl_9_data_1A4[18];
 extern u32 lbl_9_bss_4;
 void fn_1_80058(s8, struct CarColchgEntry *);
 void fn_1_80C18(u32, struct CarColchgEntry *, s32);
+void fn_1_426C(s16);
+s32 fn_1_4C10(void);
+void fn_1_A8EB0(s32, s32);
+s32 fn_1_7F49C(s16, s32, void *);
+void fn_1_A8DD4(const char *, ...);
+void fn_1_80058(s8, struct CarColchgEntry *);
+void fn_1_80C18(u32, struct CarColchgEntry *, s32);
 
 /* fzgx:begin fn_9_3F0 */
 extern char lbl_9_data_2C[17];
