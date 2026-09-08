@@ -1864,3 +1864,15 @@ dol/fn_800775EC.c:
 
 dol/DVDGetDriveStatus.c:
 	.text       start:0x800197F0 end:0x8001989C align:4
+
+dol/OnReset_CARDBios.c:
+	.text       start:0x8002AB70 end:0x8002ABC0 align:4
+
+dol/fn_80042568.c:
+	.text       start:0x80042568 end:0x800425D0 align:4
+
+dol/fn_80043CCC.c:
+	.text       start:0x80043CCC end:0x80043D34 align:4
+
+dol/fn_80044C0C.c:
+	.text       start:0x80044C0C end:0x80044C74 align:4

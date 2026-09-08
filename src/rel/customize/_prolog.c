@@ -695,3 +695,41 @@ void fn_3_7B94(void) {
     fn_1_48140(0x7d);
 }
 /* fzgx:end fn_3_7B94 */
+
+/* fzgx:begin fn_3_968C */
+struct fn_3_968C_lbl_3_data_11D8 {
+    u32 unk_0;
+};
+
+extern struct fn_3_968C_lbl_3_data_11D8 lbl_3_data_11D8;
+extern u32 fn_1_12A2B8(u32);
+extern u32 fn_1_12A2D0(u32);
+extern u32 fn_1_12A734(u32);
+extern u32 fn_1_14DC68(u32, u32);
+extern u32 fn_3_7B94(void);
+extern u32 lbl_3_bss_6DE20;
+
+void fn_3_968C(u32 arg0) {
+    u32 v0;
+    u32 v1;
+    u32 t0, t1;
+    v0 = arg0;
+    if ((s32)lbl_3_data_11D8.unk_0 != -1) {
+    v0 = 1;
+    t0 = fn_1_12A2B8(v0);
+    v0 = t0;
+    v0 = (u32)&lbl_3_data_11D8;
+    v0 = *(u32 *)((u8 *)v0 + 0);
+    t1 = fn_1_12A2D0(v0);
+    v0 = t1;
+    }
+    fn_1_14DC68((u32)&lbl_3_bss_6DE20, 25);
+    fn_1_12A2B8(0);
+    v1 = lbl_3_data_11D8.unk_0;
+    if ((s32)v1 != -1) {
+    fn_1_12A734(v1);
+    }
+    lbl_3_data_11D8.unk_0 = -1;
+    fn_3_7B94();
+}
+/* fzgx:end fn_3_968C */

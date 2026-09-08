@@ -496,6 +496,17 @@
   },
   {
     "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_968C.c",
+    "symbols": [
+      "fn_3_968C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
     "source": "rel/customize/_prolog/fn_3_AF8.c",
     "symbols": [
       "fn_3_AF8"
@@ -2024,6 +2035,16 @@
     "source": "dol/OSSetArenaLo.c",
     "symbols": [
       "OSSetArenaLo"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/OnReset_CARDBios.c",
+    "symbols": [
+      "OnReset_CARDBios"
     ],
     "status": "matching",
     "mw_version": null,
@@ -4751,6 +4772,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80042568.c",
+    "symbols": [
+      "fn_80042568"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8004342C.c",
     "symbols": [
       "fn_8004342C"
@@ -4761,9 +4792,29 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80043CCC.c",
+    "symbols": [
+      "fn_80043CCC"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80043FA4.c",
     "symbols": [
       "fn_80043FA4"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80044C0C.c",
+    "symbols": [
+      "fn_80044C0C"
     ],
     "status": "matching",
     "mw_version": "GC/1.3.2",
@@ -26009,6 +26060,26 @@
     "source": "rel/movie_module/fn_12_23120.c",
     "symbols": [
       "fn_12_23120"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
+    "source": "rel/movie_module/fn_12_231A0.c",
+    "symbols": [
+      "fn_12_231A0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
+    "source": "rel/movie_module/fn_12_231F8.c",
+    "symbols": [
+      "fn_12_231F8"
     ],
     "status": "matching",
     "mw_version": null,
