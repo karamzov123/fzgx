@@ -87,7 +87,12 @@ def tidy_block(body: str, names: Set[str], typedefs: Set[str]) -> tuple:
     return text, removed
 
 
-def tidy(p: Project, tu_source: str, dry_run: bool = False) -> Dict[str, object]:
+def _verdict(p: Project, name: str) -> bool:
+    res = oracle.check(p, name, 20)
+    return res.ok and (res.matched or res.matched_pool) and oracle.unit_fully_matches(res) is None
+
+
+def tidy(p: Project, tu_source: str, dry_run: bool = False, check_fn=None) -> Dict[str, object]:
     module = tu_source.split("/")[1] if tu_source.startswith("rel/") else "main"
     tf = tufile.load(p, tu_source)
     names, typedefs = _header_names(p, tf.prologue)
@@ -115,15 +120,14 @@ def tidy(p: Project, tu_source: str, dry_run: bool = False) -> Dict[str, object]
         b.flags = [f for f in b.flags if f != "noprologue"]
         tufile._write_atomic(tufile.tu_path(p, tu_source), tf.render())
         tufile.write_gen(p, u, tf)
-        res = oracle.check(p, b.name, 20)
-        ok = res.ok and (res.matched or res.matched_pool) and oracle.unit_fully_matches(res) is None
+        ok = (check_fn or _verdict)(p, b.name)
         if ok:
             kept.append((b.name, removed + (["noprologue"] if was_noprologue else [])))
         else:
             b.body, b.flags = old_body, old_flags
             tufile._write_atomic(tufile.tu_path(p, tu_source), tf.render())
             tufile.write_gen(p, u, tf)
-            reverted.append((b.name, removed, res.error[-160:] if not res.ok else f"{res.percent:.1f}%"))
+            reverted.append((b.name, removed, "no longer matches"))
     return {"tu": tu_source, "tidied": kept, "reverted": reverted, "untouched": untouched}
 
 
@@ -135,7 +139,7 @@ def _decl_name(line: str) -> Optional[str]:
     return m.group(1) if m else None
 
 
-def hoist_decls(p: Project, tu_source: str) -> Dict[str, object]:
+def hoist_decls(p: Project, tu_source: str, check_fn=None) -> Dict[str, object]:
     """Move block-level `extern` declarations (data and prototypes) into the TU prologue.
 
     Per symbol the declaration used by most blocks wins (ties: the longest). Every block
@@ -186,8 +190,7 @@ def hoist_decls(p: Project, tu_source: str) -> Dict[str, object]:
             continue
         tufile._write_atomic(path, tf.render())
         tufile.write_gen(p, u, tf)
-        res = oracle.check(p, b.name, 20)
-        ok = res.ok and (res.matched or res.matched_pool) and oracle.unit_fully_matches(res) is None
+        ok = (check_fn or _verdict)(p, b.name)
         if ok:
             hoisted.append(b.name)
         else:
