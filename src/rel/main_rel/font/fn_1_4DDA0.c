@@ -1,7 +1,6 @@
-#include "types.h"
+#include "rel/main_rel/globals.h"
 
-extern u32 lbl_1_bss_4C688[2048];
-
+ // Return the byte address six bytes into the shared font state.
 u8 *fn_1_4DDA0(void) {
-    return (u8 *)lbl_1_bss_4C688 + 6;
+    return &lbl_1_bss_4C688.pad_4[2];
 }

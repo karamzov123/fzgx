@@ -1,7 +1,6 @@
-#include "types.h"
-
-extern u32 lbl_1_bss_4C688[2048];
+#include "rel/main_rel/globals.h"
 
 u8 *fn_1_4DD50(void) {
-    return (u8 *)lbl_1_bss_4C688 + 0x41;
+    // Return the byte address used by the font data at offset 0x41.
+    return &lbl_1_bss_4C688.pad_4[0x3d];
 }

@@ -1,17 +1,17 @@
-#include "types.h"
+#include "rel/main_rel/globals.h"
 
-extern u32 lbl_1_data_2A7E0[62];
-
+// Clears the high bit of each ranking entry flag.
 void fn_1_15B588(void) {
     u8 *entry;
     s16 i;
-    u8 *obj;
+    Obj_1_data_2A7E0_At3C *obj;
 
-    obj = (u8 *)lbl_1_data_2A7E0[15];
-    entry = obj;
+    obj = lbl_1_data_2A7E0.unk_3C;
+    entry = (u8 *)obj;
     i = 0;
-    while (i < *(u8 *)(obj + 0x5e)) {
+    while (i < obj->unk_5E) {
         u32 *value = *(u32 **)(entry + 0xc4);
+
         entry += 4;
         i++;
         *value &= 0x7fffffff;

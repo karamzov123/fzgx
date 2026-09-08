@@ -1,7 +1,6 @@
-#include "types.h"
+#include "rel/main_rel/globals.h"
 
-extern u32 lbl_1_bss_6D838;
-
+// Return the value stored in the indexed car's nested state object.
 u32 fn_1_8C66C(u32 index) {
     u32 base;
     u32 addr;

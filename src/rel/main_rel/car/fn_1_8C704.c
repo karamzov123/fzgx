@@ -1,7 +1,6 @@
-#include "types.h"
+#include "rel/main_rel/globals.h"
 
-extern u32 lbl_1_bss_6D838;
-
+// Returns the selected car's value at offset 0xd8.
 u32 fn_1_8C704(u32 index) {
     u32 base;
     u32 addr;

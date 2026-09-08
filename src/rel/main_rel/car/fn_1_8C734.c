@@ -1,7 +1,6 @@
-#include "types.h"
+#include "rel/main_rel/globals.h"
 
-extern u32 lbl_1_bss_6D838;
-
+// Return the selected car's float field, or the null object's field when unavailable.
 f32 fn_1_8C734(u32 index) {
     u32 base;
     u32 addr;

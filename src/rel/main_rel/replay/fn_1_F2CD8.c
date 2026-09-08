@@ -1,26 +1,24 @@
-#include "types.h"
+#include "rel/main_rel/globals.h"
 
-extern u32 lbl_1_bss_7EFD8[17];
-
-void fn_1_F2CD8(u32 value, u32 *cursor, u32 index) {
+void fn_1_F2CD8(u8 *value, u8 **cursor, u32 index) {
     s32 target;
-    u8 *p;
-    u8 *end;
+    Obj_1_bss_7EFD8_At40 *entries_end;
+    u8 *entry;
 
-    target = index | 4;
-    end = (u8 *)lbl_1_bss_7EFD8[16] + 0xa4;
+    // Move backward through replay entries until the requested flag or boundary is found.
+    target = (index | 4) & 0xff;
+    entries_end = lbl_1_bss_7EFD8.unk_40 + 1;
     *cursor = value;
 
-    while (*cursor >= (u32)end) {
-        p = (u8 *)*cursor;
-        if ((p[0] & 7) == (target & 0xff)) {
+    while (*cursor >= (u8 *)entries_end) {
+        entry = *cursor;
+        if ((entry[0] & 7) == target) {
             break;
         }
         *cursor -= 7;
     }
 
-    if (*cursor >= (u32)end) {
-        return;
+    if (*cursor < (u8 *)entries_end) {
+        *cursor = value;
     }
-    *cursor = value;
 }

@@ -1,7 +1,6 @@
-#include "types.h"
+#include "rel/main_rel/globals.h"
 
-extern u32 lbl_1_bss_4C688[2048];
-
+// Returns the address of the font data embedded in the global object.
 u8 *fn_1_4DCD0(void) {
-    return (u8 *)lbl_1_bss_4C688 + 0xc;
+    return (u8 *)&lbl_1_bss_4C688.unk_C;
 }

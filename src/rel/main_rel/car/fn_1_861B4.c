@@ -1,10 +1,10 @@
-#include "types.h"
+#include "rel/main_rel/globals.h"
 
-extern u32 lbl_1_bss_6D838;
 extern u8 lbl_1_bss_6D84A[6];
 extern void fn_1_C489C(void *);
 extern void fn_1_C40A0(void *);
 
+// Processes each active car entry, then finalizes the car table.
 void fn_1_861B4(void) {
     u32 i;
     u8 *entry;

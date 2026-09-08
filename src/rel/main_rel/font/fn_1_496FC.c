@@ -1,9 +1,8 @@
-#include "types.h"
+#include "rel/main_rel/globals.h"
 
-extern u32 lbl_1_bss_4B9CC[23];
-
+ // Store the two font coordinates in the shared state.
 void fn_1_496FC(f32 value1, f32 value2) {
-    *(f32 *)((u8 *)lbl_1_bss_4B9CC + 0x4) = value1;
-    *(f32 *)((u8 *)lbl_1_bss_4B9CC + 0x0) = value1;
-    *(f32 *)((u8 *)lbl_1_bss_4B9CC + 0x8) = value2;
+    lbl_1_bss_4B9CC.unk_4 = value1;
+    lbl_1_bss_4B9CC.unk_0 = value1;
+    lbl_1_bss_4B9CC.unk_8 = value2;
 }

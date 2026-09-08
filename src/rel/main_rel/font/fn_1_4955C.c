@@ -1,12 +1,13 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
 
-extern u32 lbl_1_bss_4B9CC[23];
-extern u32 lbl_1_data_1AEA8[616];
+extern f32 lbl_1_data_1AEA8[616];
 
 void fn_1_4955C(f32 value1, f32 value2) {
-    s16 index = *(s16 *)((u8 *)lbl_1_bss_4B9CC + 0xc);
-    f32 scale = *(f32 *)((u8 *)lbl_1_data_1AEA8 + index * 0x38 + 0x34);
+    s16 index = *(s16 *)&lbl_1_bss_4B9CC.unk_C;
+    f32 scale = ((f32 *)lbl_1_data_1AEA8)[index * 14 + 13];
 
-    *(f32 *)((u8 *)lbl_1_bss_4B9CC + 0x1c) = value1 * scale;
-    *(f32 *)((u8 *)lbl_1_bss_4B9CC + 0x20) = value2 * scale;
+    // Scale both font dimensions using the active font's metrics.
+    lbl_1_bss_4B9CC.unk_1C = value1 * scale;
+    lbl_1_bss_4B9CC.unk_20 = value2 * scale;
 }

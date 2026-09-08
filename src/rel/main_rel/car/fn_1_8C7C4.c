@@ -1,7 +1,6 @@
-#include "types.h"
+#include "rel/main_rel/globals.h"
 
-extern u32 lbl_1_bss_6D838;
-
+// Return the selected car's status byte, or the null-entry status when unavailable.
 u8 fn_1_8C7C4(u32 index) {
     u32 base;
     u32 addr;

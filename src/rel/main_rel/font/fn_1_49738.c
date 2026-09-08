@@ -1,8 +1,6 @@
-#include "types.h"
+#include "rel/main_rel/globals.h"
 
-extern u32 lbl_1_bss_4B9CC[23];
-
-// fn_1_49738: store value to BSS at offset 0x54
+ // Store the supplied value in the font state used by subsequent rendering.
 void fn_1_49738(u32 value) {
-    *(u32 *)((u8 *)lbl_1_bss_4B9CC + 0x54) = value;
+    lbl_1_bss_4B9CC.unk_54 = value;
 }
