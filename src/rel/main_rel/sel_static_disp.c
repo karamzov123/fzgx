@@ -401,7 +401,6 @@ void fn_1_13E054(void* arg0, void* arg1, void* arg2, int arg3) {
 /* fzgx:end fn_1_13E054 */
 
 /* fzgx:begin fn_1_13EDDC */
-extern const f32 lbl_1_rodata_85F0;
 extern u32 fn_1_13EE60(u32 arg0, u32 arg1, void *result, u32 arg3, u32 arg4);
 extern u32 fn_1_13EF64(u32 arg0, u32 arg1, u32 arg2, void *arg3, u32 arg4, void *arg5, u32 arg6, f32 arg7);
 extern u32 lbl_1_rodata_8E8C;
