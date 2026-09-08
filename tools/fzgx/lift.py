@@ -323,8 +323,11 @@ def apply(p: Project, modules: Optional[List[str]] = None, max_size: int = 160, 
     if modules:
         q += " and module in (%s)" % ",".join("?" * len(modules)); args += list(modules)
     rows = db.execute(q + " order by size limit ?", args + [limit or 2000]).fetchall()
+    linkfail = {s for (s,) in db.execute("select symbol from attempts a where id = (select max(id) from attempts b where b.symbol = a.symbol) and outcome = 'link-mismatch'")}
     lifted = []
     for s, m, size in rows:
+        if s in linkfail:
+            continue  # matched the object and failed the link before: the same body fails again
         name = s.split(":", 1)[1] if ":" in s else s
         try:
             t = lift(p, m, name)
