@@ -29,7 +29,9 @@ from tools.project import (
 # Game versions
 DEFAULT_VERSION = 0
 VERSIONS = [
-    "GAMEID",  # 0
+    "GFZE01",  # 0: NTSC-U (primary)
+    "GFZP01",  # 1: PAL (scaffold only until a dump exists)
+    "GFZJ01",  # 2: NTSC-J (scaffold only until a dump exists)
 ]
 
 parser = argparse.ArgumentParser()
@@ -159,9 +161,9 @@ if not config.non_matching:
 config.binutils_tag = "2.42-2"
 config.compilers_tag = "20251118"
 config.dtk_tag = "v1.8.3"
-config.objdiff_tag = "v3.6.1"
+config.objdiff_tag = "v3.8.1"
 config.sjiswrap_tag = "v1.2.2"
-config.wibo_tag = "1.0.3"
+config.wibo_tag = "1.2.0"
 
 # Project
 config.config_path = Path("config") / config.version / "config.yml"
@@ -247,7 +249,12 @@ cflags_rel = [
     "-sdata2 0",
 ]
 
+# Linker/compiler versions are provisional until M1 verifies them against
+# retail codegen (see docs/TOOLCHAIN.md). The existing GFZE01 project links
+# with GC/1.3 and compiles most units with GC/1.2.5n or GC/1.3.
 config.linker_version = "GC/1.3.2"
+# Object name used to link RELs that have no configured units yet.
+config.rel_empty_file = "rel/empty.c"
 
 
 # Helper function for Dolphin libraries
@@ -282,6 +289,7 @@ def MatchingFor(*versions):
     return config.version in versions
 
 
+config.shift_jis = config.version == "GFZJ01"
 config.warn_missing_config = True
 config.warn_missing_source = False
 config.libs = [

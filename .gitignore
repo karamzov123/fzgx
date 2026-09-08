@@ -17,3 +17,26 @@ __pycache__/
 .DS_Store
 # Private planning docs
 SPEC.md
+# IDE folders
+.idea/
+.vs/
+# Caches
+__pycache__
+.mypy_cache
+.cache/
+# Original files
+orig/*/*
+!orig/*/.gitkeep
+*.elf
+*.o
+*.map
+*.MAP
+# Build files
+# decompctx output
+ctx.*
+*.ctx
+# Generated configs
+compile_commands.json
+# Miscellaneous
+/*.txt
+*.exe
