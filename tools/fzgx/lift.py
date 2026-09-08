@@ -619,6 +619,95 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     loop_by_entry = {b - 1: (b, t, k) for b, t, k in loop_regions}
     loop_end_by_index = {k: (b, t, k) for b, t, k in loop_regions}
     in_loop: List[Tuple[int, int, int]] = []
+    # do-while: a backward conditional branch no entry jump explained; the test is the run of
+    # compares (and sign extensions) just before it
+    dowhile_by_entry: Dict[int, Tuple[int, int, int]] = {}
+    dowhile_test: Dict[int, Tuple[int, int, int]] = {}
+    ctr_loops: Dict[int, Tuple[int, int]] = {}  # mtctr index -> (body start, bdnz index)
+    for k_, (mn_, a_) in enumerate(ins):
+        m_ = re.fullmatch(r"b(\w+)", mn_)
+        if mn_ == "bdnz" and a_ and a_[-1].startswith(".L_"):
+            t_ = labels.get(a_[-1])
+            if t_ is not None and t_ <= k_:
+                mt = next((x for x in range(t_ - 1, max(-1, t_ - 4), -1) if ins[x][0] == "mtctr"), None)
+                if mt is not None and mt not in copies and not any(mt == li for li in copies):
+                    ctr_loops[mt] = (t_, k_)
+            continue
+        if not (m_ and m_.group(1) in COND and a_ and a_[-1].startswith(".L_")):
+            continue
+        t_ = labels.get(a_[-1])
+        if t_ is None or t_ > k_ or k_ in loop_end_by_index:
+            continue
+        ts = k_
+        while ts - 1 > t_ and ins[ts - 1][0] in ("cmpwi", "cmpw", "cmplwi", "cmplw", "extsb", "extsh"):
+            ts -= 1
+        if ts == k_:
+            continue  # no compare feeds the branch: a record-form test, not lifted here
+        dowhile_by_entry[t_] = (t_, ts, k_)
+        dowhile_test[ts] = (t_, ts, k_)
+    ctr_expr: List[Optional[str]] = [None]
+    fn_typedefs: List[str] = []
+
+    def load_expr(mn_x: str, a_x: List[str]) -> Optional[str]:
+        """The value of a plain load as an expression (fields registered), for loop tests."""
+        m_ = MEM_RE.match(a_x[1])
+        if not m_:
+            return None
+        off, base = m_.group(1), m_.group(2)
+        t = LOAD_T[mn_x]
+        if off.endswith("@sda21"):
+            s_ = sym_of(off); so = sym_off(off)
+            if so:
+                declare(s_, "struct"); gfields.setdefault(s_, {})[so] = t; return f"{s_}.unk_{so:X}"
+            declare(s_, t); return s_
+        if off.endswith("@l") and base in hi:
+            s_ = hi[base]; so = sym_off(off)
+            declare(s_, "struct", far_ref=True); gfields.setdefault(s_, {})[so] = t; return f"{s_}.unk_{so:X}"
+        o = _imm(off); b = use(base)
+        fb = field_base(b, base) if o >= 0 else None
+        if fb is None:
+            return f"*({t} *)((u8 *){b} + {o})"
+        kind, key, k = fb
+        if kind == "param":
+            fields.setdefault(key, {})[o] = t; return f"{b}->unk_{o:X}"
+        if kind == "global" and b in locals_:
+            gfields.setdefault(key, {})[o] = t; return f"{b}->unk_{o:X}"
+        if kind == "global":
+            declare(key, "struct", far_ref=True); gfields.setdefault(key, {})[o + k] = t; return f"{key}.unk_{o + k:X}"
+        if kind == "ptr":
+            ptr_globals.add(key); pfields.setdefault(key, {})[o] = t; return f"{key}->unk_{o:X}"
+        return None
+
+    def loop_locals(b_: int, t_: int, k_: int) -> None:
+        """Registers written inside the loop and read inside before written, or read by its
+        test, are loop-carried: locals initialised from their pre-loop value."""
+        def writes(x):
+            mn_x, a_x = ins[x]
+            return a_x[0] if a_x and mn_x not in STORE_T and not mn_x.startswith(("st", "cmp", "b")) and mn_x not in ("mtlr", "mtspr", "mtctr") else None
+        def reads_of(x):
+            mn_x, a_x = ins[x]
+            srcs = a_x[1:] if mn_x not in STORE_T and not mn_x.startswith(("st", "cmp", "b")) else a_x
+            return set(re.findall(r"\b([rf]\d+)\b", " ".join(srcs)))
+        written_in = {writes(x) for x in range(b_, k_ + 1) if writes(x)}
+        live_in, seen_w = set(), set()
+        for x in range(b_, t_):
+            live_in |= (reads_of(x) - seen_w)
+            w_ = writes(x)
+            if w_:
+                seen_w.add(w_)
+        test_reads = set()
+        for x in range(t_, k_ + 1):
+            test_reads |= reads_of(x)
+        for r_ in sorted((live_in | test_reads) & written_in):
+            if r_ in ("r1", "r0") or r_ in carried:
+                continue
+            tn = f"v{len(temps)}"
+            init = regs.get(r_)
+            if init is None:
+                init = use(r_) if re.fullmatch(r"r([3-9]|10)|f[1-8]", r_) else "0"
+            temps.append(f"{rtype.get(r_, 'u32')} {tn};")
+            stmts.append(f"{tn} = {init};")
+            regs[r_] = tn; carried[r_] = tn
     for i, (mn, a) in enumerate(ins):
         try:
             # a value used more than once (before its register is redefined) lives in a local: the
@@ -719,6 +808,49 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 continue
             if i in skip:
                 continue
+            if i in dowhile_by_entry or i in ctr_loops:
+                if i in ctr_loops:
+                    b_, k_ = ctr_loops[i]; t_ = k_
+                    count = use(a[0])
+                    tn = f"v{len(temps)}"; temps.append(f"u32 {tn};")
+                    loop_locals(b_, t_, k_)
+                    stmts.append(f"for ({tn} = {count}; {tn} != 0; {tn}--) {{")
+                    skip.add(k_)
+                    open_ifs.append((k_, "}"))
+                    open_ifs.sort(key=lambda x: -x[0])
+                    in_loop.append((b_, t_, k_))
+                    continue
+                b_, t_, k_ = dowhile_by_entry[i]
+                loop_locals(b_, t_, k_)
+                stmts.append("do {")
+                in_loop.append((b_, t_, k_))
+            if i in dowhile_test:
+                b_, t_, k_ = dowhile_test[i]
+                cond_expr = None
+                for x in range(t_, k_):
+                    mn_x, a_x = ins[x]
+                    if mn_x in ("cmpwi", "cmpw", "cmplwi", "cmplw"):
+                        lhs = use(a_x[0]); rhs = str(_imm(a_x[1])) if mn_x.endswith("i") else use(a_x[1])
+                        uns = mn_x.startswith("cmpl")
+                        tt = rtype.get(a_x[0], "u32")
+                        if uns and tt not in ("u32", "u16", "u8"):
+                            lhs = f"(u32){lhs}"
+                        elif not uns and tt not in ("s32", "s16", "s8"):
+                            lhs = f"(s32){lhs}"
+                        cond_expr = (lhs, rhs)
+                    elif mn_x == "extsb":
+                        regs[a_x[0]] = f"(s8){use(a_x[1])}"; rtype[a_x[0]] = "s8"
+                    elif mn_x == "extsh":
+                        regs[a_x[0]] = f"(s16){use(a_x[1])}"; rtype[a_x[0]] = "s16"
+                if cond_expr is None:
+                    raise Give("do-while test")
+                op = COND[re.fullmatch(r"b(\w+)", ins[k_][0]).group(1)]
+                stmts.append(f"}} while ({cond_expr[0]} {op} {cond_expr[1]});")
+                for x in range(t_, k_ + 1):
+                    skip.add(x)
+                if in_loop:
+                    in_loop.pop()
+                continue
             if i in loop_by_entry:
                 b_, t_, k_ = loop_by_entry[i]
                 # loop-carried registers: written inside [b_, k_] and read inside before written, or read by the test
@@ -770,10 +902,13 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                         regs[a_x[0]] = f"(s8){use(a_x[1])}"; rtype[a_x[0]] = "s8"
                     elif mn_x == "extsh":
                         regs[a_x[0]] = f"(s16){use(a_x[1])}"; rtype[a_x[0]] = "s16"
-                    elif mn_x in LOAD_T and a_x and not a_x[1].endswith("(r1)"):
-                        raise Give()  # a load in the test: keep the region out of the lifter for now
+                    elif mn_x in LOAD_T and a_x and not a_x[1].endswith("(r1)") and not mn_x.endswith("u"):
+                        e_ = load_expr(mn_x, a_x)
+                        if e_ is None:
+                            raise Give("load in loop test")
+                        regs[a_x[0]] = e_; rtype[a_x[0]] = LOAD_T[mn_x]
                     else:
-                        raise Give()
+                        raise Give("loop test shape")
                 if cond_expr is None:
                     raise Give()
                 m_ = re.fullmatch(r"b(\w+)", ins[k_][0])
@@ -926,6 +1061,8 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 continue  # callee-saved float registers
             if mn in ("stmw", "lmw"):
                 frame = True; continue  # the callee-saved block save/restore
+            if mn == "stw" and a and a[0] == "r0" and a[1] == "0x4(r1)" and i > 0 and ins[i - 1][0] == "mflr":
+                frame = True; continue  # the 1.2.5n prologue saves LR before it moves the stack pointer
             if mn in ("crclr", "crset") or mn == "nop":
                 if mn == "crclr":
                     variadic_next[0] = True  # `crclr cr1eq`: the callee is variadic (no float varargs)
@@ -1177,6 +1314,26 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 continue
             if mn == "oris":
                 regs[a[0]] = f"({use(a[1])} | 0x{_imm(a[2]) << 16:X})"; rtype[a[0]] = "u32"; continue
+            if mn == "rlwimi" and len(a) == 5:
+                sh, mb, me = _imm(a[2]), _imm(a[3]), _imm(a[4])
+                mask = ((0xFFFFFFFF >> mb) & (0xFFFFFFFF << (31 - me))) & 0xFFFFFFFF if mb <= me else ((0xFFFFFFFF >> mb) | (0xFFFFFFFF << (31 - me))) & 0xFFFFFFFF
+                if sh and mask & ((1 << sh) - 1):
+                    raise Give("rlwimi rotate")
+                rot = f"({use(a[1])} << {sh})" if sh else use(a[1])
+                regs[a[0]] = f"(({use(a[0])} & ~0x{mask:X}) | ({rot} & 0x{mask:X}))"; rtype[a[0]] = "u32"; continue
+            if mn == "addze":
+                m_ = re.fullmatch(r"\(\(s32\)(.+) >> (\d+)\)", regs.get(a[1], ""))
+                if m_ and i > 0 and ins[i - 1][0] == "srawi" and ins[i - 1][1][0] == a[1]:
+                    regs[a[0]] = f"((s32){m_.group(1)} / {1 << int(m_.group(2))})"; rtype[a[0]] = "s32"; continue
+                raise Give("addze")
+            if mn == "xori":
+                regs[a[0]] = f"({use(a[1])} ^ {_imm(a[2])})"; rtype[a[0]] = "u32"; continue
+            if mn == "subis" and not sym_of(a[2]):
+                regs[a[0]] = f"({use(a[1])} - 0x{(_imm(a[2]) << 16) & 0xFFFFFFFF:X})"; rtype[a[0]] = "u32"; continue
+            if mn == "divw":
+                regs[a[0]] = f"((s32){use(a[1])} / (s32){use(a[2])})"; rtype[a[0]] = "s32"; continue
+            if mn == "divwu":
+                regs[a[0]] = f"((u32){use(a[1])} / (u32){use(a[2])})"; rtype[a[0]] = "u32"; continue
             if mn == "subfic":
                 regs[a[0]] = f"({_imm(a[2])} - {use(a[1])})"; rtype[a[0]] = "s32"; continue
             if mn == "clrrwi":
@@ -1329,10 +1486,14 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 regs[a[0]] = f"__FCTIWZ__({use(a[1])})"; rtype[a[0]] = "f64"; continue
             if mn == "cntlzw":
                 regs[a[0]] = f"__cntlzw({use(a[1])})"; rtype[a[0]] = "u32"; continue
-            if mn == "bl":
-                callee = a[0]
-                if lookup(callee) is None:
+            if mn == "mtctr" and i not in ctr_loops and i not in copies:
+                ctr_expr[0] = use(a[0]); continue
+            if mn in ("bl", "bctrl"):
+                callee = a[0] if mn == "bl" else None
+                if callee is not None and lookup(callee) is None:
                     raise Give(f"unknown callee {callee}")
+                if callee is None and ctr_expr[0] is None:
+                    raise Give("bctrl without a pointer")
                 # arguments: r3..rN where N is the highest argument register set here; a lower
                 # register never written is a parameter of ours passed straight through
                 # an argument register counts only if this function wrote it since the last call
@@ -1359,10 +1520,11 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 temp_low = min((w for w in written if f"r{w}" not in params), default=None)
                 if temp_low is not None and temp_low - 1 > top:
                     top = temp_low - 1
-                want = ARITY_HINT[0].get(callee)
+                want = ARITY_HINT[0].get(callee) if callee else None
                 if want is not None and 2 + want > top and all(f"r{k}" in regs for k in range(top + 1, 3 + want)):
                     top = 2 + want
-                ARITY_SEEN[0].setdefault(callee, []).append(top - 2)
+                if callee:
+                    ARITY_SEEN[0].setdefault(callee, []).append(top - 2)
                 fset = [k for k in range(1, 9) if f"f{k}" in regs and (f"f{k}" in written_since_call or f"f{k}" in params)]
                 ftop = max(fset) if fset else 0
                 fargs = [use(f"f{k}") for k in range(1, ftop + 1)]
@@ -1392,9 +1554,16 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                         for r_ in list(regs):
                             if regs[r_] == e:
                                 regs[r_] = tn
+                if callee is None:
+                    tname = f"{name}_Fn{len(fn_typedefs)}"
+                    fn_typedefs.append(f"typedef u32 (*{tname})({', '.join(ptypes_) or 'void'});")
+                    callee = f"(({tname}){ctr_expr[0]})"
+                    ctr_expr[0] = None
                 calls.append(callee)
                 written_since_call.clear()
-                if variadic_next[0]:
+                if callee.startswith("(("):
+                    pass  # a pointer call: the typedef carries the prototype
+                elif variadic_next[0]:
                     variadic_next[0] = False
                     proto = f"extern u32 {callee}({ptypes_[0] if ptypes_ else 'void *'}, ...);"
                     externs[callee] = proto
@@ -1564,6 +1733,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         return f"{t} unk_{o:X};"
 
     structs.extend(elem_struct_texts())
+    structs = fn_typedefs + structs
     # parameters and struct parameters
     decl_params = []
     for i, r in enumerate(params):
