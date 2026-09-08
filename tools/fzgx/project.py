@@ -11,6 +11,7 @@ Address conventions follow dtk: DOL symbols use absolute addresses
 from __future__ import annotations
 
 import json
+import struct
 import os
 import re
 import time
@@ -289,6 +290,40 @@ class Project:
         return out[:limit]
 
     # -------------------------------------------------------------------- units
+    # ------------------------------------------------------------ retail objects
+    def target_object_for(self, sym: Symbol) -> Optional[Path]:
+        """The retail split object (dtk output) that defines this function: its own unit's
+        object if carved, else the auto unit's. Indexed by symbol name across build/<v>/obj."""
+        if not hasattr(self, "_obj_index"):
+            from .poolfix import Elf  # scoped: avoids the project<->poolfix import cycle at load
+            cache = STATE_DIR / f"obj_index_{self.version}.json"
+            # the DOL's split objects live in build/<v>/obj, each REL's in build/<v>/<module>/obj
+            objs = sorted(set((self.build_dir / "obj").rglob("*.o")) | set(self.build_dir.glob("*/obj/**/*.o")))
+            stamp = max((o.stat().st_mtime for o in objs), default=0)
+            idx: Dict[str, str] = {}
+            if cache.exists():
+                try:
+                    d = json.loads(cache.read_text())
+                    if d.get("stamp") == stamp:
+                        idx = d["index"]
+                except ValueError:
+                    idx = {}
+            if not idx:
+                for o in objs:
+                    try:
+                        elf = Elf(o.read_bytes())
+                    except (ValueError, IndexError, struct.error):
+                        continue
+                    text = elf.section(".text")
+                    for e in elf.symbols():
+                        if (e["info"] & 0xF) == 2 and text is not None and e["shndx"] == text["index"]:
+                            idx.setdefault(e["name"], str(o.relative_to(ROOT)))
+                cache.parent.mkdir(parents=True, exist_ok=True)
+                cache.write_text(json.dumps({"stamp": stamp, "index": idx}))
+            self._obj_index = idx
+        rel = self._obj_index.get(sym.name)
+        return ROOT / rel if rel else None
+
     # -------------------------------------------------------------------- units
     def unit_record(self, unit_source: str) -> Optional[dict]:
         """units.json entry for a split unit name (the `source` field), if configured."""

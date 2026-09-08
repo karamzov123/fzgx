@@ -109,7 +109,7 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
                          "if one of them is wrong for the retail bytes of your function, say so in your release reason.\n"
                          "```c\n" + tf.prologue.strip() + "\n```")
     else:
-        parts.append(f"- unit: `src/{unit_src}`" if unit_src else "- unit: NOT CARVED (run `fzgx carve`)")
+        parts.append(f"- unit: `src/{unit_src}`" if unit_src else "- unit: created when the function matches (write the complete unit; checks diff it against the retail object)")
     if row and not (row["claimed_by"] or "").startswith("shadow-"):
         parts.append(f"- attempts so far: {row['attempts']}  best: {row['best_percent']:.1f}%")
     parts.append(f"- hints: {_sig_hint(fn)}")

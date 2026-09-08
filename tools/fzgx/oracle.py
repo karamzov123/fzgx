@@ -19,7 +19,7 @@ import sys
 from contextlib import contextmanager
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 from . import poolfix
 from .project import ROOT, STATE_DIR, Project
@@ -48,6 +48,7 @@ class CheckResult:
     # private literal -> retail pooled symbol, applied to the object after compiling (poolfix);
     # with this the function matches outright and links from C
     pool_map: Dict[str, str] = field(default_factory=dict)
+    uncarved: bool = False           # diffed against the retail auto object: this symbol only
     pool_rows: int = 0               # differing rows that are only pool relocations
     percent_adjusted: float = 0.0    # match % with the pool rows counted as matching
 
@@ -128,7 +129,29 @@ def check(project: Project, symbol: str, max_diff_lines: int = 80, source: Optio
     symbol = sym.name  # objdiff symbol name is the bare C name
     unit_src = project.unit_of(sym)
     if not unit_src:
-        return CheckResult(False, symbol, "", error="function is not carved into a unit (fzgx carve)")
+        # not carved: nothing in the link yet. Diff the work copy against the retail auto
+        # object that already contains the function (two-object mode, this symbol only).
+        if source is None:
+            return CheckResult(False, symbol, "", error="not matched yet and no work copy to check")
+        target = project.target_object_for(sym)
+        if target is None or not target.exists():
+            return CheckResult(False, symbol, "", error="no retail object defines this function (run ninja)")
+        base_obj = STATE_DIR / "work" / (project.key(sym).replace(":", "__") + ".o")
+        cp = compile_source(project, sym.module, source, base_obj)
+        if cp.returncode != 0 or not base_obj.exists():
+            err = "\n".join(l for l in (cp.stdout + cp.stderr).splitlines() if "Usage Warning" not in l)
+            return CheckResult(False, symbol, "", error=err.strip()[-4000:])
+        res = _diff(project, sym.module, symbol, "", max_diff_lines, target=target, base=base_obj)
+        if res.ok and res.matched_pool:
+            mapping = {private: pooled for private, pooled, _ in res._pool_pairs}
+            r = poolfix.apply(base_obj, mapping)
+            if not r["skipped"] and r["rodata_emptied"]:
+                res2 = _diff(project, sym.module, symbol, "", max_diff_lines, target=target, base=base_obj)
+                if res2.ok and res2.matched:
+                    res2.pool_map, res2.pool = mapping, res.pool
+                    return res2
+        res.uncarved = True
+        return res
     unit = project.objdiff_unit_name(sym.module, unit_src)
     base_obj = _base_object(project, unit)
 
@@ -152,8 +175,12 @@ def check(project: Project, symbol: str, max_diff_lines: int = 80, source: Optio
     return res
 
 
-def _diff(project: Project, module: str, symbol: str, unit: str, max_diff_lines: int) -> CheckResult:
-    cp = run([str(OBJDIFF), "diff", "-p", str(ROOT), "-u", unit, "-o", "-", "--format", "json"])
+def _diff(project: Project, module: str, symbol: str, unit: str, max_diff_lines: int,
+          target: Optional[Path] = None, base: Optional[Path] = None) -> CheckResult:
+    if target is not None:
+        cp = run([str(OBJDIFF), "diff", "-1", str(target), "-2", str(base), "-o", "-", "--format", "json", symbol])
+    else:
+        cp = run([str(OBJDIFF), "diff", "-p", str(ROOT), "-u", unit, "-o", "-", "--format", "json"])
     if cp.returncode != 0:
         return CheckResult(False, symbol, unit, error=(cp.stderr or cp.stdout).strip()[-4000:])
     data = json.loads(cp.stdout)
@@ -162,6 +189,9 @@ def _diff(project: Project, module: str, symbol: str, unit: str, max_diff_lines:
     res._pool_pairs = []
     left_syms = {s["name"]: s for s in left.get("symbols", []) if s.get("kind") == "SYMBOL_FUNCTION"}
     right_syms = {s["name"]: s for s in right.get("symbols", []) if s.get("kind") == "SYMBOL_FUNCTION"}
+    if target is not None:  # the retail auto object holds many functions; only ours is in question
+        left_syms = {k: v for k, v in left_syms.items() if k == symbol}
+        right_syms = {k: v for k, v in right_syms.items() if k == symbol}
     for name, s in left_syms.items():
         res.symbols[name] = float(s.get("match_percent", 0.0))
     res.missing_in_base = sorted(set(left_syms) - set(right_syms))
@@ -228,6 +258,29 @@ def _pool_rows(project: Project, module: str, left: dict, right: dict,
         if pair not in pairs:
             pairs.append(pair)
     return rows, pairs
+
+
+def module_flags(project: Project, module: str) -> Tuple[str, str]:
+    """(compiler flags, mw version) of a module, from any configured unit of it."""
+    for name, meta in project.objdiff_units().items():
+        if name.split("/", 1)[0] == module and meta.get("scratch", {}).get("c_flags"):
+            flags = meta["scratch"]["c_flags"].replace(" -lang=c", "") + f" -i include -i build/{project.version}/include"
+            return flags, ("GC/1.2.5n" if module == "main" else "GC/1.3.2")
+    flags = ("-nodefaults -proc gekko -align powerpc -enum int -fp hardware -Cpp_exceptions off -O4,p -inline auto "
+             '-pragma "cats off" -pragma "warn_notinlined off" -maxerrors 1 -nosyspath -RTTI off -fp_contract on '
+             f"-str reuse -multibyte -i include -i build/{project.version}/include -DBUILD_VERSION=0 -DVERSION_{project.version} -DNDEBUG=1")
+    if module != "main":
+        flags += " -sdata 0 -sdata2 0"
+    return flags, ("GC/1.2.5n" if module == "main" else "GC/1.3.2")
+
+
+def compile_source(project: Project, module: str, source: Path, obj: Path) -> subprocess.CompletedProcess:
+    """Compile a standalone source with the module's flags into `obj` (no unit involved)."""
+    flags, mw = module_flags(project, module)
+    obj.parent.mkdir(parents=True, exist_ok=True)
+    cmd = [str(ROOT / "build" / "tools" / "wibo"), str(ROOT / "build" / "compilers" / mw / "mwcceppc.exe")]
+    cmd += shlex.split(flags) + ["-c", str(source), "-o", str(obj)]
+    return subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, timeout=120)
 
 
 def unit_source_path(project: Project, unit_src: str) -> Path:
@@ -316,6 +369,8 @@ def unit_fully_matches(res: CheckResult) -> Optional[str]:
     """Reason the unit may not be flipped to Matching, or None if it is safe."""
     if not res.ok:
         return res.error or "check failed"
+    if res.uncarved:  # only this symbol was compared, against the retail auto object
+        return None if (res.matched or res.matched_pool) else f"{res.symbol}={res.percent:.1f}%"
     bad = [f"{n}={p:.1f}%" for n, p in res.symbols.items() if p < 100.0 and not (res.matched_pool and n == res.symbol)]
     if bad:
         return "functions below 100%: " + ", ".join(bad)

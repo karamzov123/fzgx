@@ -76,7 +76,7 @@ def carve(project: Project, symbol: str, dry_run: bool = False) -> CarveResult:
         raise LookupError(f"{symbol}: no disassembly found under build/ (run ninja first)")
 
     res = CarveResult(sym.name, module, source, created=True)
-    res.ranges.append((".text", sym.addr, sym.end, 4))
+    res.ranges.append((sym.section, sym.addr, sym.end, 4))  # .init functions in the DOL are not .text
     for section, objs in exclusive_data(project, fn).items():
         objs.sort(key=lambda s: s.addr)
         contiguous = all(objs[i].end <= objs[i + 1].addr <= objs[i].end + 32 for i in range(len(objs) - 1))

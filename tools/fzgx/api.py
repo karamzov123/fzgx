@@ -156,22 +156,13 @@ def claim(p: Project, symbol: str, agent: str, ttl: int = DEFAULT_TTL,
         row = l.claim(key, agent, ttl, max_attempts, shadow=shadow)
     except (LookupError, PermissionError) as e:
         return {"ok": False, "error": str(e)}
+    # nothing is carved before it matches: a unit (split range, object in the link) is
+    # created at submit. Until then checks diff the work copy against the retail object.
     res = None
-    if shadow:
-        unit_src = _unit_source(p, symbol)
-        if not unit_src:
-            l.finish(key, "carve-failed", "unmatched", notes="shadow claim on an uncarved function", shadow=True)
-            return {"ok": False, "error": "shadow claims need an already carved unit"}
-    elif not no_carve:
-        try:
-            res = carve(p, symbol)
-            l.db.execute("UPDATE functions SET unit=? WHERE symbol=?", (res.source, key))
-            if res.created:
-                _reconfigure_and_split(p)
-        except Exception as e:  # release the claim so nobody is stuck
-            l.finish(key, "carve-failed", "unmatched", notes=str(e))
-            return {"ok": False, "error": f"carve failed: {e}"}
-    unit = res.source if res else (row["unit"] or _unit_source(p, symbol))
+    if shadow and not _unit_source(p, symbol):
+        l.finish(key, "carve-failed", "unmatched", notes="shadow claim on an unmatched function", shadow=True)
+        return {"ok": False, "error": "shadow claims need a matched function"}
+    unit = _unit_source(p, symbol)
     # the agent's private copy: the current source for a rewrite, a stub otherwise
     work = p.work_path(key)
     work.parent.mkdir(parents=True, exist_ok=True)
@@ -180,8 +171,9 @@ def claim(p: Project, symbol: str, agent: str, ttl: int = DEFAULT_TTL,
         work.write_text(_canonical_text(p, unit) or STUB.format(symbol=name, note="nothing to revise"))
     else:
         work.write_text(STUB.format(symbol=name, note="write the complete unit with write_unit"))
-    out = {"ok": True, "symbol": symbol, "unit": unit, "path": _unit_label(p, unit) if unit else None,
-           "ranges": res.ranges if res else [], "notes": res.notes if res else [],
+    tu_src = tufile.tu_source_for(p, p.resolve(symbol))
+    out = {"ok": True, "symbol": symbol, "unit": unit,
+           "path": _unit_label(p, unit) if unit else (f"src/{tu_src}#{name} (block created at submit)" if tu_src else f"src/{p.module_src_prefix(p.resolve(symbol).module)}/{name}.c (created at submit)"),
            "attempt": row["attempts"] + 1, "max_attempts": max_attempts, "ttl": ttl,
            "budget": f"{MAX_CHECKS} checks per attempt; stop after {MAX_STALE} checks without improvement"}
     try:
@@ -215,11 +207,9 @@ def context(p: Project, symbol: str, budget_tokens: int = 6000) -> str:
 
 def read_unit(p: Project, symbol: str) -> Dict[str, Any]:
     unit = _unit_source(p, symbol)
-    if not unit:
-        return {"ok": False, "error": "not carved"}
     work = p.work_path(_key(p, symbol))
-    text = work.read_text() if work.exists() else _canonical_text(p, unit)
-    return {"ok": True, "path": _unit_label(p, unit), "source": text}
+    text = work.read_text() if work.exists() else (_canonical_text(p, unit) if unit else "")
+    return {"ok": True, "path": _unit_label(p, unit) if unit else "(work copy)", "source": text}
 
 
 def write_unit(p: Project, symbol: str, agent: str, source: str) -> Dict[str, Any]:
@@ -232,8 +222,6 @@ def write_unit(p: Project, symbol: str, agent: str, source: str) -> Dict[str, An
     if row["status"] != "claimed" or row["claimed_by"] != agent:
         return {"ok": False, "error": f"{symbol} is not claimed by {agent} (status {row['status']}, by {row['claimed_by']})"}
     unit = _unit_source(p, symbol)
-    if not unit:
-        return {"ok": False, "error": "not carved"}
     if "asm" in source and ("asm {" in source or "asm(" in source or "asm void" in source):
         return {"ok": False, "error": "inline asm is not allowed"}
     att = l.current_attempt(key)
@@ -245,7 +233,7 @@ def write_unit(p: Project, symbol: str, agent: str, source: str) -> Dict[str, An
     work.write_text(source if source.endswith("\n") else source + "\n")
     findings = lint_paths([work])
     result = check(p, symbol)
-    return {"ok": True, "path": _unit_label(p, unit), "bytes": len(source),
+    return {"ok": True, "path": _unit_label(p, unit) if unit else "(work copy)", "bytes": len(source),
             "lint": [{"rule": r, "line": ln, "msg": m} for _, r, ln, m in findings],
             "check": format_check(result)}
 
@@ -270,11 +258,11 @@ def check(p: Project, symbol: str, max_diff_lines: int = 80, versions: Optional[
                 "note": "-1 compiler missing, -2 compile error, -3 diff error"}
     key = _key(p, symbol)
     unit = _unit_source(p, symbol)
-    src = _work_source(p, key, unit) if unit else None
+    src = _work_source(p, key, unit)
     res = oracle.check(p, symbol, max_diff_lines, source=src)
     out = res.to_json()
     if res.ok and src is not None:
-        conflict = _prologue_conflict(p, key, unit)
+        conflict = _prologue_conflict(p, key, unit) if unit else None
         if conflict:
             out["prologue_conflict"] = conflict
             oracle.compile_unit(p, res.unit, unit, src)  # the probe overwrote the object; restore ours
@@ -364,25 +352,35 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
         return {"ok": False, "error": "unknown or ambiguous symbol"}
     key = p.key(sym)
     unit_src = p.unit_of(sym)
-    if not unit_src:
-        return {"ok": False, "error": "not carved"}
     row = l.get(key)
     if row and row["status"] == "claimed" and row["claimed_by"] not in (agent, None):
         return {"ok": False, "error": f"claimed by {row['claimed_by']}, not {agent}"}
     work = p.work_path(key)
-    src = _work_source(p, key, unit_src)
+    src = _work_source(p, key, unit_src or "")
+    if not unit_src and src is None:
+        return {"ok": False, "error": "nothing to submit: no work copy"}
     findings = lint_paths([src or oracle.unit_source_path(p, unit_src)])
     if findings:
         return {"ok": False, "error": "lint", "findings": findings}
-    if mw_version or extra_cflags:
+    if unit_src and (mw_version or extra_cflags):
         _set_unit_opts(p, unit_src, mw_version, extra_cflags)
         _reconfigure_and_split(p)
     res = oracle.check(p, symbol, max_diff_lines, source=src)
     reason = oracle.unit_fully_matches(res)
+    if not reason and not unit_src and not _is_shadow(agent):
+        # accepted: now it gets a unit (split range + entry); the batch verify does the one split+relink
+        try:
+            cr = carve(p, symbol)
+            unit_src = cr.source
+            l.db.execute("UPDATE functions SET unit=? WHERE symbol=?", (unit_src, key))
+            if mw_version or extra_cflags:
+                _set_unit_opts(p, unit_src, mw_version, extra_cflags)
+        except Exception as e:
+            return {"ok": False, "error": f"carve failed: {e}"}
     if _is_revise(agent):
         # a rewrite is only worth keeping if it also compiles under the file's prologue:
         # that is what the revise pass exists to achieve
-        if not reason and src is not None:
+        if not reason and src is not None and unit_src:
             conflict = _prologue_conflict(p, key, unit_src)
             if conflict:
                 oracle.compile_unit(p, res.unit, unit_src, src)

@@ -306,13 +306,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     if not a.no_trivial and not a.shadow and not a.revise:
         triv = trivial.apply(p)
         print(f"trivial pass: {triv.get('applied', 0)} matched mechanically")
-    if not a.shadow and not a.revise:
-        carved = api.carve_many(p, symbols)
-        n_new = sum(1 for c in carved if c.get('created'))
-        print(f"carved {n_new} new units")
-        if n_new:
-            subprocess.run(["git", "add", "src", "config"], cwd=ROOT, capture_output=True)
-            subprocess.run(["git", "commit", "-q", "-m", f"carve: {n_new} units for batch {a.batch}"], cwd=ROOT, capture_output=True)
+    # nothing is carved up front: a unit exists only once a function matches (submit carves it)
 
     t0 = time.time()
     results, spent = fan_out(p, a, model, symbols, a.batch, a.revise)

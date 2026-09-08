@@ -1,0 +1,434 @@
+{
+ "sdk": "build/tools/smb-decomp",
+ "mw": "GC/1.2.5n",
+ "compiled": 117,
+ "failed": [],
+ "sdk_functions": 1719,
+ "dol_functions": 1982,
+ "hits": [
+  {
+   "dol": "__OSUnlockSram",
+   "size": 36,
+   "addr": 2147548284,
+   "sdk": [
+    "u_play_sound_0"
+   ],
+   "sources": [
+    "src/sound.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "fn_80017A38",
+   "size": 40,
+   "addr": 2147580472,
+   "sdk": [
+    "_epilog"
+   ],
+   "sources": [
+    "src/rel_sample.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_80017EA8",
+   "size": 40,
+   "addr": 2147581608,
+   "sdk": [
+    "_epilog"
+   ],
+   "sources": [
+    "src/rel_sample.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_800186C0",
+   "size": 40,
+   "addr": 2147583680,
+   "sdk": [
+    "_epilog"
+   ],
+   "sources": [
+    "src/rel_sample.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_8006CFF8",
+   "size": 76,
+   "addr": 2147930104,
+   "sdk": [
+    "mathutil_init"
+   ],
+   "sources": [
+    "src/mathutil.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_8006E324",
+   "size": 116,
+   "addr": 2147935012,
+   "sdk": [
+    "mathutil_mtxA_rotate_x"
+   ],
+   "sources": [
+    "src/mathutil.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_8006E398",
+   "size": 140,
+   "addr": 2147935128,
+   "sdk": [
+    "mathutil_mtxA_rotate_y"
+   ],
+   "sources": [
+    "src/mathutil.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_8006E424",
+   "size": 116,
+   "addr": 2147935268,
+   "sdk": [
+    "mathutil_mtxA_rotate_z"
+   ],
+   "sources": [
+    "src/mathutil.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_8006E498",
+   "size": 168,
+   "addr": 2147935384,
+   "sdk": [
+    "mathutil_mtxA_from_quat"
+   ],
+   "sources": [
+    "src/mathutil.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_8006E540",
+   "size": 116,
+   "addr": 2147935552,
+   "sdk": [
+    "mathutil_quat_mult"
+   ],
+   "sources": [
+    "src/mathutil.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_8006E5B4",
+   "size": 72,
+   "addr": 2147935668,
+   "sdk": [
+    "func_80008378"
+   ],
+   "sources": [
+    "src/mathutil.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_800724CC",
+   "size": 140,
+   "addr": 2147951820,
+   "sdk": [
+    "u_gxutil_upload_some_mtx"
+   ],
+   "sources": [
+    "src/gxutil.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_80078D48",
+   "size": 24,
+   "addr": 2147978568,
+   "sdk": [
+    "func_8008D6BC"
+   ],
+   "sources": [
+    "src/avdisp.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "TRKTargetSetInputPendingPtr",
+   "size": 16,
+   "addr": 2148054132,
+   "sdk": [
+    "func_800569B4"
+   ],
+   "sources": [
+    "src/background.c"
+   ],
+   "named": true
+  }
+ ],
+ "ambiguous": [
+  {
+   "dol": "fn_80074CF4",
+   "size": 20,
+   "addr": 2147962100,
+   "sdk": [
+    "nl2ngc_set_ambient",
+    "nl2ngc_set_material_color"
+   ],
+   "sources": [
+    "src/nl2ngc.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "fn_80031FF4",
+   "size": 32,
+   "addr": 2147688436,
+   "sdk": [
+    "bg_end_draw",
+    "call_bitmap_free_group",
+    "call_bitmap_load_group",
+    "ev_info_dest",
+    "func_80017140",
+    "func_8004A800",
+    "func_8004B334",
+    "func_80093E28",
+    "func_800948F4",
+    "gxutil_begin_display_list",
+    "gxutil_end_display_list",
+    "lbl_800890B4",
+    "name_entry_init",
+    "nl2ngc_draw_model_alpha_sort_all_alt",
+    "nl2ngc_draw_model_sort_none_alt",
+    "nl2ngc_draw_model_sort_none_alt2",
+    "nl2ngc_draw_model_sort_translucent_alt",
+    "nl2ngc_draw_model_sort_translucent_alt2",
+    "polydisp_init",
+    "ranking_screen_sprite_draw",
+    "stobj_bumper_bgspecial_coli",
+    "stobj_bumper_bgspecial_main",
+    "stobj_goalbag_exmaster_coli",
+    "stobj_goalbag_exmaster_draw",
+    "stobj_goalbag_exmaster_init",
+    "stobj_goalbag_exmaster_main",
+    "submode_mini_test0_init_func",
+    "submode_mini_test0_main_func"
+   ],
+   "sources": [
+    "src/bg_end.c",
+    "src/game.c",
+    "src/gxutil.c",
+    "src/info.c",
+    "src/mini.c",
+    "src/mini_3.c",
+    "src/name_entry.c",
+    "src/nl2ngc.c",
+    "src/polydisp.c",
+    "src/ranking_screen.c",
+    "src/recplay.c",
+    "src/recplay_2.c",
+    "src/sprite.c",
+    "src/stobj.c",
+    "src/stobj_goal.c"
+   ],
+   "named": false
+  },
+  {
+   "dol": "__init_user",
+   "size": 32,
+   "addr": 2147555464,
+   "sdk": [
+    "bg_end_draw",
+    "call_bitmap_free_group",
+    "call_bitmap_load_group",
+    "ev_info_dest",
+    "func_80017140",
+    "func_8004A800",
+    "func_8004B334",
+    "func_80093E28",
+    "func_800948F4",
+    "gxutil_begin_display_list",
+    "gxutil_end_display_list",
+    "lbl_800890B4",
+    "name_entry_init",
+    "nl2ngc_draw_model_alpha_sort_all_alt",
+    "nl2ngc_draw_model_sort_none_alt",
+    "nl2ngc_draw_model_sort_none_alt2",
+    "nl2ngc_draw_model_sort_translucent_alt",
+    "nl2ngc_draw_model_sort_translucent_alt2",
+    "polydisp_init",
+    "ranking_screen_sprite_draw",
+    "stobj_bumper_bgspecial_coli",
+    "stobj_bumper_bgspecial_main",
+    "stobj_goalbag_exmaster_coli",
+    "stobj_goalbag_exmaster_draw",
+    "stobj_goalbag_exmaster_init",
+    "stobj_goalbag_exmaster_main",
+    "submode_mini_test0_init_func",
+    "submode_mini_test0_main_func"
+   ],
+   "sources": [
+    "src/bg_end.c",
+    "src/game.c",
+    "src/gxutil.c",
+    "src/info.c",
+    "src/mini.c",
+    "src/mini_3.c",
+    "src/name_entry.c",
+    "src/nl2ngc.c",
+    "src/polydisp.c",
+    "src/ranking_screen.c",
+    "src/recplay.c",
+    "src/recplay_2.c",
+    "src/sprite.c",
+    "src/stobj.c",
+    "src/stobj_goal.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "_ExitProcess",
+   "size": 32,
+   "addr": 2147555580,
+   "sdk": [
+    "bg_end_draw",
+    "call_bitmap_free_group",
+    "call_bitmap_load_group",
+    "ev_info_dest",
+    "func_80017140",
+    "func_8004A800",
+    "func_8004B334",
+    "func_80093E28",
+    "func_800948F4",
+    "gxutil_begin_display_list",
+    "gxutil_end_display_list",
+    "lbl_800890B4",
+    "name_entry_init",
+    "nl2ngc_draw_model_alpha_sort_all_alt",
+    "nl2ngc_draw_model_sort_none_alt",
+    "nl2ngc_draw_model_sort_none_alt2",
+    "nl2ngc_draw_model_sort_translucent_alt",
+    "nl2ngc_draw_model_sort_translucent_alt2",
+    "polydisp_init",
+    "ranking_screen_sprite_draw",
+    "stobj_bumper_bgspecial_coli",
+    "stobj_bumper_bgspecial_main",
+    "stobj_goalbag_exmaster_coli",
+    "stobj_goalbag_exmaster_draw",
+    "stobj_goalbag_exmaster_init",
+    "stobj_goalbag_exmaster_main",
+    "submode_mini_test0_init_func",
+    "submode_mini_test0_main_func"
+   ],
+   "sources": [
+    "src/bg_end.c",
+    "src/game.c",
+    "src/gxutil.c",
+    "src/info.c",
+    "src/mini.c",
+    "src/mini_3.c",
+    "src/name_entry.c",
+    "src/nl2ngc.c",
+    "src/polydisp.c",
+    "src/ranking_screen.c",
+    "src/recplay.c",
+    "src/recplay_2.c",
+    "src/sprite.c",
+    "src/stobj.c",
+    "src/stobj_goal.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "SIProbe",
+   "size": 36,
+   "addr": 2147561816,
+   "sdk": [
+    "chkstatus_main",
+    "func_8000E180"
+   ],
+   "sources": [
+    "src/polydisp.c",
+    "src/pool.c"
+   ],
+   "named": true
+  },
+  {
+   "dol": "fn_8000F5F0",
+   "size": 32,
+   "addr": 2147546608,
+   "sdk": [
+    "bg_end_draw",
+    "call_bitmap_free_group",
+    "call_bitmap_load_group",
+    "ev_info_dest",
+    "func_80017140",
+    "func_8004A800",
+    "func_8004B334",
+    "func_80093E28",
+    "func_800948F4",
+    "gxutil_begin_display_list",
+    "gxutil_end_display_list",
+    "lbl_800890B4",
+    "name_entry_init",
+    "nl2ngc_draw_model_alpha_sort_all_alt",
+    "nl2ngc_draw_model_sort_none_alt",
+    "nl2ngc_draw_model_sort_none_alt2",
+    "nl2ngc_draw_model_sort_translucent_alt",
+    "nl2ngc_draw_model_sort_translucent_alt2",
+    "polydisp_init",
+    "ranking_screen_sprite_draw",
+    "stobj_bumper_bgspecial_coli",
+    "stobj_bumper_bgspecial_main",
+    "stobj_goalbag_exmaster_coli",
+    "stobj_goalbag_exmaster_draw",
+    "stobj_goalbag_exmaster_init",
+    "stobj_goalbag_exmaster_main",
+    "submode_mini_test0_init_func",
+    "submode_mini_test0_main_func"
+   ],
+   "sources": [
+    "src/bg_end.c",
+    "src/game.c",
+    "src/gxutil.c",
+    "src/info.c",
+    "src/mini.c",
+    "src/mini_3.c",
+    "src/name_entry.c",
+    "src/nl2ngc.c",
+    "src/polydisp.c",
+    "src/ranking_screen.c",
+    "src/recplay.c",
+    "src/recplay_2.c",
+    "src/sprite.c",
+    "src/stobj.c",
+    "src/stobj_goal.c"
+   ],
+   "named": false
+  }
+ ],
+ "summary": {
+  "hits": 14,
+  "bytes": 1140,
+  "unnamed_hits": 12,
+  "unnamed_bytes": 1088,
+  "ambiguous": 6,
+  "by_lib": {
+   "mathutil.c": 804,
+   "gxutil.c": 140,
+   "rel_sample.c": 120,
+   "sound.c": 36,
+   "avdisp.c": 24,
+   "background.c": 16
+  }
+ }
+}
