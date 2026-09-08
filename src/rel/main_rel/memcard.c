@@ -15,12 +15,12 @@ extern void fn_80083DB0(void *dst, void *src);
 extern void strcat(void *dst, void *src);
 extern void CARDDeleteAsync(u8 byte, void *data, int arg);
 extern s32 CARDFreeBlocks(u8 byte_val, void *arg1, void *arg2);
-extern s32 fn_8002EBD4(u8 byte_val, void *arg1, void *arg2);
+extern s32 CARDOpen(u8 byte_val, void *arg1, void *arg2);
 extern void CARDFastDeleteAsync(u8 byte_val, void *arg, s32 zero);
 extern void CARDCreateAsync(u8 byte_val, void *arg1, void *arg2, void *arg3, u32 arg4);
 extern void CARDSetStatusAsync(u8 id, void *arg, void *data, int zero);
 extern void CARDRenameAsync(u8 id, void *data1, void *data2, int zero);
-extern void fn_8002F428(void *arg0, void *arg1, void *arg2, int arg3, int arg4);
+extern void CARDReadAsync(void *arg0, void *arg1, void *arg2, int arg3, int arg4);
 extern const f64 lbl_1_rodata_4CC8;
 extern void fn_80030754(u8 value, void *data, int size, int mode);
 extern u8 lbl_1_bss_71810[161];
@@ -452,7 +452,7 @@ void fn_1_ABAAC(fn_1_ABAAC_ArgStruct *arg) {
     fn_80083DB0(local, (u8 *)arg->ptr_0x24 + 0x98);
     strcat(local, lbl_1_data_3C7C4);
     arg->ptr_0x24->field_0x4 =
-        fn_8002EBD4(arg->byte_0, local, arg->data_0x10);
+        CARDOpen(arg->byte_0, local, arg->data_0x10);
     if (arg->ptr_0x24->field_0x4 != -1) {
         arg->ptr_0x24->field_0x2 = 0;
     }
@@ -618,7 +618,7 @@ typedef struct {
 // Loads the payload into its result buffer and clears the stale offset on success.
 void fn_1_ABDB8(fn_1_ABDB8_ArgStruct *arg) {
     arg->ptr_0x24->unk_0x4 =
-        fn_8002FE54(arg->byte_0x0, arg->ptr_0x14, arg->ptr_0x24->unk_0x20);
+        CARDGetStatus(arg->byte_0x0, arg->ptr_0x14, arg->ptr_0x24->unk_0x20);
     if (arg->ptr_0x24->unk_0x4 != -1) {
         arg->ptr_0x24->unk_0x2 = 0;
     }
@@ -659,7 +659,7 @@ void fn_1_ABF44(Fn1ABF44Object *arg) {
     arg->state->field_0x2 = 300;
     fn_80083DB0(work, (u8 *)arg->state + 0x98);
     strcat(work, lbl_1_data_3C7C4);
-    value = fn_8002EBD4(arg->id, work, arg->data_0x10);
+    value = CARDOpen(arg->id, work, arg->data_0x10);
     arg->state->field_0x4 = value;
     arg->value_0x30 = fn_8002C0A0(arg->id);
     arg->value_0x38 = lbl_1_rodata_4CA8;
@@ -688,12 +688,12 @@ extern void fn_80083DB0(void *dst, void *src);
 extern void strcat(void *dst, void *src);
 extern void CARDDeleteAsync(u8 byte, void *data, int arg);
 extern s32 CARDFreeBlocks(u8 byte_val, void *arg1, void *arg2);
-extern s32 fn_8002EBD4(u8 byte_val, void *arg1, void *arg2);
+extern s32 CARDOpen(u8 byte_val, void *arg1, void *arg2);
 extern void CARDFastDeleteAsync(u8 byte_val, void *arg, s32 zero);
 extern void CARDCreateAsync(u8 byte_val, void *arg1, void *arg2, void *arg3, u32 arg4);
 extern void CARDSetStatusAsync(u8 id, void *arg, void *data, int zero);
 extern void CARDRenameAsync(u8 id, void *data1, void *data2, int zero);
-extern void fn_8002F428(void *arg0, void *arg1, void *arg2, int arg3, int arg4);
+extern void CARDReadAsync(void *arg0, void *arg1, void *arg2, int arg3, int arg4);
 extern const f64 lbl_1_rodata_4CC8;
 extern void fn_80030754(u8 value, void *data, int size, int mode);
 extern u8 lbl_1_bss_71810[161];
@@ -984,7 +984,7 @@ void fn_1_AC700(void) {
 /* fzgx:begin fn_1_AC704 */
 void fn_1_AC704(void *r3) {
     *(u16 *)((u8 *)*(void **)((u8 *)r3 + 0x24) + 0x2) = 0x12c;
-    fn_8002F428((u8 *)r3 + 0x10,
+    CARDReadAsync((u8 *)r3 + 0x10,
                 *(void **)((u8 *)*(void **)((u8 *)r3 + 0x24) + 0x94),
                 *(void **)((u8 *)*(void **)((u8 *)r3 + 0x24) + 0xc),
                 0,
@@ -1054,7 +1054,7 @@ struct MemcardObject {
 void fn_1_AC960(struct MemcardObject *obj) {
     s32 result;
 
-    result = fn_8002FE54(obj->id, obj->state,
+    result = CARDGetStatus(obj->id, obj->state,
                           (void *)((u8 *)obj->data + 0x20));
     obj->data->result = result;
     obj->progress = (f32)((f64)obj->state / lbl_1_rodata_4CC8);
@@ -1102,7 +1102,7 @@ typedef struct fn_1_ACA1C_MemCardState {
 } fn_1_ACA1C_MemCardState;
 
 void fn_1_ACA1C(fn_1_ACA1C_MemCardState *state) {
-    state->data->value = fn_8002FE54(state->id, state->slot,
+    state->data->value = CARDGetStatus(state->id, state->slot,
         (u8 *)state->data + 0x20);
     if (state->slot == 0x7e) {
         *(u16 *)((u8 *)state->data + 2) = 0;
@@ -1412,12 +1412,12 @@ extern void fn_80083DB0(void *dst, void *src);
 extern void strcat(void *dst, void *src);
 extern void CARDDeleteAsync(u8 byte, void *data, int arg);
 extern s32 CARDFreeBlocks(u8 byte_val, void *arg1, void *arg2);
-extern s32 fn_8002EBD4(u8 byte_val, void *arg1, void *arg2);
+extern s32 CARDOpen(u8 byte_val, void *arg1, void *arg2);
 extern void CARDFastDeleteAsync(u8 byte_val, void *arg, s32 zero);
 extern void CARDCreateAsync(u8 byte_val, void *arg1, void *arg2, void *arg3, u32 arg4);
 extern void CARDSetStatusAsync(u8 id, void *arg, void *data, int zero);
 extern void CARDRenameAsync(u8 id, void *data1, void *data2, int zero);
-extern void fn_8002F428(void *arg0, void *arg1, void *arg2, int arg3, int arg4);
+extern void CARDReadAsync(void *arg0, void *arg1, void *arg2, int arg3, int arg4);
 extern const f64 lbl_1_rodata_4CC8;
 extern void fn_80030754(u8 value, void *data, int size, int mode);
 extern u8 lbl_1_bss_71810[161];
