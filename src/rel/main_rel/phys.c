@@ -38,6 +38,11 @@ extern void fn_1_484CC(s32);
 extern void fn_80008BEC(void *dst, void *value, u32 size);
 extern void fn_80008BA8(void *dst, void *value, u32 size);
 
+extern f32 lbl_1_rodata_67A8;
+extern u32 lbl_1_rodata_6A8C[3];
+extern void fn_80008BA8(void *dst, void *value, u32 size);
+extern void fn_1_12EF80(s16 arg, s16 *out_group, s16 *out_entry);
+
 /* fzgx:begin fn_1_E50F0 */
 void fn_1_E50F0(void *base, void *arg) {
     struct {
@@ -254,8 +259,6 @@ void fn_1_E5840(void *base, const void *value) {
 /* fzgx:end fn_1_E5840 */
 
 /* fzgx:begin fn_1_E5884 */
-extern f32 lbl_1_rodata_67A8;
-
 // Resets the object's three-component value or copies a replacement into it.
 void fn_1_E5884(void *base, void *value) {
     if (value == 0) {
@@ -271,9 +274,6 @@ void fn_1_E5884(void *base, void *value) {
 /* fzgx:end fn_1_E5884 */
 
 /* fzgx:begin fn_1_E58CC */
-extern u32 lbl_1_rodata_6A8C[3];
-extern void fn_80008BA8(void *dst, void *value, u32 size);
-
 // Copies the supplied three-word value, or the shared default when no value is provided.
 void fn_1_E58CC(void *base, const void *value) {
     if (value == 0) {
@@ -618,9 +618,6 @@ void fn_1_EFA1C(void) {
 /* fzgx:end fn_1_EFA1C */
 
 /* fzgx:begin fn_1_F22E4 */
-extern void fn_1_12EF80(s16 arg, s16 *out_group, s16 *out_entry);
-extern u8 lbl_1_data_3E53C[120];
-
 // Maps a course selection to its associated data value.
 s16 fn_1_F22E4(s32 arg) {
     s16 group;

@@ -13,6 +13,14 @@ extern u32 lbl_1_bss_8CA6C[1605];
 extern void fn_1_1324C4(void *arg0);
 extern void fn_1_132774(void *arg0);
 
+extern u32 lbl_801A6410;
+extern u8 fn_1_B7C00(void);
+extern s32 fn_1_B7CD4(void);
+extern s32 fn_1_B7C5C(void);
+extern void OSReport(const char* format, ...);
+extern void fn_80008BA8(void*, void*, s32);
+extern void fn_1_46B4(u32 arg0, void* arg1, u8* arg2, s32 arg3);
+
 /* fzgx:begin fn_1_1312F0 */
 // Reset the memcard state after reporting an unavailable card.
 
@@ -38,15 +46,6 @@ void fn_1_1312F0(void) {
 /* fzgx:end fn_1_1312F0 */
 
 /* fzgx:begin fn_1_1314A4 */
-extern u32 lbl_801A6410;
-extern u8 fn_1_B7C00(void);
-extern s32 fn_1_B7CD4(void);
-extern s32 fn_1_B7C5C(void);
-extern void OSReport(const char* format, ...);
-extern void fn_80008BA8(void*, void*, s32);
-extern void fn_1_46B4(u32, void*, u8*, s32);
-extern u8 lbl_1_data_40EA4[84];
-
 // Reset the card state and release the card after an unavailable-card report.
 void fn_1_1314A4(void) {
     u8* state = (u8*)&lbl_1_bss_8CA40;
@@ -87,13 +86,6 @@ u8 fn_1_1318B8(void) {
 /* fzgx:end fn_1_1318B8 */
 
 /* fzgx:begin fn_1_1318D4 */
-extern u8 fn_1_B7C00(void);
-extern s32 fn_1_B7CD4(void);
-extern s32 fn_1_B7C5C(void);
-extern u32 lbl_801A6410;
-extern void OSReport(const char* format, ...);
-extern void fn_1_46B4(u32 arg0, void* arg1, u8* arg2, s32 arg3);
-
 // Completes the pending memory-card operation and clears its active flag.
 s32 fn_1_1318D4(void) {
     s32 error;

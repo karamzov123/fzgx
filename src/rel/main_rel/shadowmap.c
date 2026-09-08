@@ -15,11 +15,10 @@ extern void fn_80074660(u32);
 extern void fn_80073898(u32);
 extern void fn_80074788(u32);
 
-/* fzgx:begin fn_1_56858 */
-extern unsigned char lbl_1_data_1C660[12];
 extern void *lbl_801A6410;
 extern void fn_1_46B4(void *, void *, unsigned char *, int);
 
+/* fzgx:begin fn_1_56858 */
 typedef struct ShadowMapEntry {
     char pad_00[0x3c];
     void *unk_3c;

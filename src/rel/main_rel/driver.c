@@ -42,6 +42,8 @@ extern u32 lbl_1_bss_71670;
 
 extern void (*lbl_1_bss_71684)(void);
 
+extern void (*lbl_1_bss_71688)(void);
+
 /* fzgx:begin fn_1_A7728 */
 typedef struct FnA7728Resource {
     u8 pad_104[0x104];
@@ -256,23 +258,6 @@ void fn_1_A8EF8(u16 arg0, u16 arg1) {
 }
 /* fzgx:end fn_1_A8EF8 */
 
-/* fzgx:begin fn_1_A8F40 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/driver.h"
-
-extern void (*lbl_1_bss_7167C)(void);
-
-extern void fn_1_A9420(int);
-extern void fn_1_A942C(int);
-
-// Reset the driver state, then apply the supplied driver mode.
-void fn_1_A8F40(int arg) {
-    fn_1_A9420(0);
-    fn_1_A942C(arg);
-}
-/* fzgx:end fn_1_A8F40 */
-
 /* fzgx:begin fn_1_A8F78 */
 void fn_1_A8F78(void) {
     fn_1_A9420(0);
@@ -357,8 +342,6 @@ void fn_1_A97E4(void) {
 /* fzgx:end fn_1_A97E4 */
 
 /* fzgx:begin fn_1_A9810 */
-extern void (*lbl_1_bss_71688)(void);
-
 void fn_1_A9810(void) {
     lbl_1_bss_71688();
 }

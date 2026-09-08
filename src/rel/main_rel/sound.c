@@ -42,6 +42,13 @@ extern int fn_8004BBCC(u32 obj);
 extern void fn_8004BC0C(u32 obj, int arg);
 extern int fn_1_3FC38(void);
 
+extern void fn_1_A2DF4(s32, void *, s32);
+extern void fn_80008BEC(void *, s32, s32);
+extern s32 fn_1_86690(s32 value);
+extern void fn_80067344(s32 arg0, s32 arg1, u32 arg2, s32 arg3);
+extern void fn_80067898(u32 value);
+extern void *lbl_1_rodata_4820[41];
+
 /* fzgx:begin fn_1_9FE74 noprologue */
 #include "types.h"
 #include "rel/main_rel/globals.h"
@@ -121,9 +128,6 @@ void fn_1_A04AC(void) {
 /* fzgx:end fn_1_A04AC */
 
 /* fzgx:begin fn_1_A0C68 */
-extern void fn_1_A2DF4(s32, void *, s32);
-extern void fn_80008BEC(void *, s32, s32);
-
 enum {
     ADDR_A6000000 = 0xA6000000,
     ADDR_A5100000 = 0xA5100000,
@@ -361,11 +365,6 @@ void fn_1_A5330(u8 value, s16 index) {
 /* fzgx:end fn_1_A5330 */
 
 /* fzgx:begin fn_1_A5470 */
-extern s32 fn_1_86690(s32 value);
-extern void fn_80067344(s32 arg0, s32 arg1, u32 arg2, s32 arg3);
-extern void fn_80067898(u32 value);
-extern void *lbl_1_rodata_4820[41];
-
 // Starts the requested sound and suppresses playback when the channel limit is reached.
 void fn_1_A5470(s32 value) {
     s32 sound_id;

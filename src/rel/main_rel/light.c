@@ -4,6 +4,16 @@
 
 extern u16 lbl_1_bss_6D7C0[20];
 
+extern void *lbl_801A6410;
+extern u32 fn_1_4630(u32, int, void *, int);
+extern void fn_800793D4(u32, int, int);
+extern void fn_1_7C13C(void *);
+extern void fn_1_7C1E8(u32);
+extern u8 fn_1_816E8(void *, u8);
+extern const f32 lbl_1_rodata_33A8;
+extern void fn_1_495D8(int, int, f32);
+extern void fn_1_495FC(void);
+
 /* fzgx:begin fn_1_7BE94 */
 u16 fn_1_7BE94(void) {
     return lbl_1_bss_6D7C0[0] - 1;
@@ -27,16 +37,6 @@ typedef struct {
     u32 unk_20;
     u8 unk_24;
 } LightState;
-
-extern void *lbl_801A6410;
-extern u32 fn_1_4630(u32, int, void *, int);
-extern void fn_800793D4(u32, int, int);
-extern void fn_1_7C13C(void *);
-extern void fn_1_7C1E8(u32);
-extern u8 fn_1_816E8(void *, u8);
-extern const f32 lbl_1_rodata_33A8;
-extern void fn_1_495D8(int, int, f32);
-extern void fn_1_495FC(void);
 
 // Initialize the shared light state and its required resources.
 void fn_1_7BF9C(void *arg, s8 flag) {

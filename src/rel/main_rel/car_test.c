@@ -12,6 +12,9 @@ extern void fn_80008BEC(void *, s32, s32);
 extern void fn_1_80F80(void *, u8, void *);
 extern void fn_1_1502BC(void *, void *, void *);
 
+extern void fn_80083DB0(void* arg0, u32 arg1);
+extern void fn_1_801F8(s16 arg0, void* arg1);
+
 /* fzgx:begin fn_1_7D694 */
 typedef struct {
     u8 _pad4[4];
@@ -107,10 +110,6 @@ void *fn_1_7F254(void *arg0, void *arg1) {
 /* fzgx:end fn_1_7F254 */
 
 /* fzgx:begin fn_1_7F518 */
-extern u8 lbl_1_data_1F4FC[164];
-extern void fn_80083DB0(void* arg0, u32 arg1);
-extern void fn_1_801F8(s16 arg0, void* arg1);
-
 // Initializes the car test entry and optionally performs its follow-up setup.
 void* fn_1_7F518(s16 car_type, void* car, s32 initialize) {
     fn_80083DB0(car, ((u32 *)lbl_1_data_1F4FC)[car_type]);

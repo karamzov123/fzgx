@@ -26,6 +26,10 @@ extern void fn_1_1540B0(Obj_1_data_2A7E0_At3C *value);
 extern void fn_1_9AD88(void);
 extern void fn_80008BEC(void *arg0, u32 arg1, u32 arg2);
 
+extern void fn_1_153AF8(u32 *entries);
+extern void fn_1_153D48(void *background);
+extern void fn_1_9A508(void);
+
 /* fzgx:begin fn_1_151AF0 */
 int fn_1_151AF0(void *arg0, int mode, void *arg2, void *arg3, void *arg4, void *arg5) {
     u8 local_8[4];
@@ -154,10 +158,6 @@ void fn_1_153988(void) {
 /* fzgx:end fn_1_153988 */
 
 /* fzgx:begin fn_1_15398C */
-extern void fn_1_153AF8(u32 *entries);
-extern void fn_1_153D48(void *background);
-extern void fn_1_9A508(void);
-
 // Prepares the shared background object and advances the background system.
 void fn_1_15398C(void) {
     Obj_1_data_2A7E0_At3C *background = lbl_1_data_2A7E0.unk_3C;

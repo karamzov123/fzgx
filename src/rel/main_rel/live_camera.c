@@ -11,6 +11,9 @@ extern u8 lbl_1_bss_1810[8984];
 extern void fn_8000659C(void);
 extern u32 fn_800102B8(u8 *);
 
+extern void fn_1_6DD0(void *);
+extern u32 *fn_1_1289C(u32 *);
+
 /* fzgx:begin fn_1_DA34 */
 // Reports the camera source location and message used by this routine.
 void fn_1_DA34(void) {
@@ -25,9 +28,6 @@ typedef struct {
 } Fn1EE04Context;
 
 typedef void (*Fn1EE04Handler)(Fn1EE04Context *, void *);
-
-extern u8 lbl_1_data_4440[68];
-extern void fn_1_6DD0(void *);
 
 // Dispatch the active live-camera handler, then advance camera processing.
 void fn_1_EE04(Fn1EE04Context *context) {
@@ -68,9 +68,6 @@ u8 fn_1_12850(void) {
 /* fzgx:end fn_1_12850 */
 
 /* fzgx:begin fn_1_12860 */
-extern u8 lbl_1_bss_1800[16];
-extern u32 *fn_1_1289C(u32 *);
-
 // Initializes the live-camera state before returning the active camera result.
 u32 fn_1_12860(u32 arg0, u32 arg1) {
     u32 *state = (u32 *)lbl_1_bss_1800;

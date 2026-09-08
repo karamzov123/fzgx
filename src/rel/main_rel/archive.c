@@ -25,6 +25,11 @@ extern void fn_1_C2454(void);
 extern s32 fn_1_C24A4(void);
 extern u8 fn_1_B7C00(void);
 
+extern s32 lbl_1_bss_897A4;
+extern void *lbl_801A6410;
+extern void fn_1_46B4(void *arg0, void *arg1, unsigned char *arg2, s32 arg3);
+extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
+
 /* fzgx:begin fn_1_12A2D0 noprologue */
 #include "types.h"
 #include "rel/main_rel/globals.h"
@@ -75,11 +80,6 @@ void fn_1_12AAC8(void *arg0) {
 /* fzgx:end fn_1_12AAC8 */
 
 /* fzgx:begin fn_1_12ABB4 */
-extern s32 lbl_1_bss_897A4;
-extern void *lbl_801A6410;
-extern unsigned char lbl_1_data_40608[10];
-extern void fn_1_46B4(void *arg0, void *arg1, unsigned char *arg2, s32 arg3);
-
 // Register the archive table only on its first use.
 void fn_1_12ABB4(void *archive) {
     if (lbl_1_bss_897A4 == 0) {
@@ -242,8 +242,6 @@ void fn_1_12C6BC(void *arg) {
 /* fzgx:end fn_1_12C6BC */
 
 /* fzgx:begin fn_1_12D354 */
-extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
-
 // Registers an object in the first available archive slot and reports overflow.
 void fn_1_12D354(void *arg0, void *arg1, void *arg2) {
     u8 *archive_data = lbl_1_data_40798;

@@ -13,6 +13,10 @@ extern u32 lbl_801A6410;
 extern void fn_1_46B4(u32, u32, u8 *, u32);
 extern void fn_80008BEC(void *, u32, u32);
 
+extern const char *lbl_1_data_20D1C[];
+extern void fn_8008069C(char *buffer, u8 *format, ...);
+extern s32 fn_1_12A32C(char *buffer);
+
 /* fzgx:begin fn_1_961F0 */
 typedef struct Fn1961F0Owner Fn1961F0Owner;
 
@@ -140,11 +144,6 @@ typedef struct {
     u8 unk_000[0x4A4];
     s32 unk_4A4;
 } Fn197F1CObject;
-
-extern const char *lbl_1_data_20D1C[];
-extern u8 lbl_1_data_27D90[80];
-extern void fn_8008069C(char *buffer, u8 *format, ...);
-extern s32 fn_1_12A32C(char *buffer);
 
 /* Formats the indexed message and stores its parsed value in the object. */
 s16 fn_1_97F1C(Fn197F1CObject *object, s16 index) {

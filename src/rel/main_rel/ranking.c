@@ -32,11 +32,11 @@ extern void fn_1_9AD54(void);
 
 extern void fn_1_1568C4(void *entry);
 
-/* fzgx:begin fn_1_1554D0 */
 extern u32 lbl_801A6410[];
 extern void fn_1_46B4(u32, Obj_1_bss_8EF20_At0 *, u8 *, u32);
 extern Obj_1_bss_8EF20_At0 *fn_1_4630(u32, u32, u8 *, u32);
 
+/* fzgx:begin fn_1_1554D0 */
 // Rebuild the ranking object when the previous one has been consumed.
 void fn_1_1554D0(void) {
     Obj_1_bss_8EF20_At0 *obj = lbl_1_bss_8EF20.unk_0;

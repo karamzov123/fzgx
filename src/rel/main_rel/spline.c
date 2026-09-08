@@ -59,6 +59,9 @@ extern void fn_1_FB180(int *value);
 extern void fn_1_9AD54(void);
 extern void fn_1_FB18C(void);
 
+extern void fn_1_F8918(u8 *, u8 *);
+extern u16 lbl_1_data_414[36];
+
 /* fzgx:begin fn_1_F55C4 */
 void fn_1_F55C4(f32 *out, f32 *arg1, f32 *in, f32 *arg3) {
     f32 temp[4];
@@ -301,9 +304,6 @@ s32 fn_1_F7954(void) {
 /* fzgx:end fn_1_F7954 */
 
 /* fzgx:begin fn_1_F79C8 */
-extern void fn_1_F8918(u8 *, u8 *);
-extern u16 lbl_1_data_414[36];
-
 // Initialize spline data and publish the active spline region.
 void fn_1_F79C8(void) {
     fn_1_F8918(&lbl_1_bss_718E0.pad_1A2[0x1e], (u8 *)&lbl_1_bss_7F0C0);

@@ -34,6 +34,15 @@ extern void fn_1_652F4(void);
 extern void fn_1_65748(void);
 extern void fn_1_8636C(s16, void *);
 
+extern void *lbl_801A6410;
+extern void fn_1_46B4(u32 value, void *field, u8 *data, s32 code);
+extern void fn_1_4730(void *arg0, void *arg1, int arg2, u8 *arg3, int arg4);
+extern void lbl_8006DCA4(void);
+extern s32 fn_1_54E34(void *object, f32 value);
+extern void fn_1_65748(void);
+extern const f32 lbl_1_rodata_2A70[12];
+extern void fn_1_64388(void);
+
 /* fzgx:begin fn_1_58D38 */
 typedef struct EffectEntry {
     s8 unk_00;
@@ -510,8 +519,6 @@ typedef struct {
     void *field38;
 } FZeroObject;
 
-extern void *lbl_801A6410;
-
 // Submit the effect data when this object has an associated field.
 void fn_1_60170(FZeroObject *object) {
     if (object->field38 != 0) {
@@ -556,9 +563,6 @@ void fn_1_60F80(void) {
 /* fzgx:end fn_1_60F80 */
 
 /* fzgx:begin fn_1_61760 */
-extern void *lbl_801A6410;
-extern void fn_1_46B4(u32 value, void *field, u8 *data, s32 code);
-
 struct Fn1_61760Object {
     u8 _pad38[0x38];
     void *effect_resource;
@@ -605,11 +609,6 @@ void fn_1_61CE8(void) {
 /* fzgx:end fn_1_61CE8 */
 
 /* fzgx:begin fn_1_61E60 */
-extern void *lbl_801A6410;
-extern void fn_1_46B4(u32 value, void *field, u8 *data, s32 code);
-extern void fn_1_4730(void *arg0, void *arg1, int arg2, u8 *arg3, int arg4);
-extern u8 lbl_1_data_1D62C[148];
-
 typedef struct {
     u8 pad20[0x20];
     void *unk_20;
@@ -839,12 +838,9 @@ void fn_1_65420(void) {
 /* fzgx:end fn_1_65420 */
 
 /* fzgx:begin fn_1_656C8 */
-extern void lbl_8006DCA4(void);
-extern s32 fn_1_54E34(void *object, f32 value);
 extern void *fn_1_5448C(void *object);
 extern void *fn_1_548AC(s32 size);
 extern void fn_1_5489C(void *object, void *event);
-extern void fn_1_65748(void);
 
 typedef struct {
     u32 unk_00;
@@ -940,11 +936,9 @@ void fn_1_6767C(void) {
 /* fzgx:end fn_1_6767C */
 
 /* fzgx:begin fn_1_68054 */
-extern const f32 lbl_1_rodata_2A70[12];
 extern void *fn_1_5448C(void *object);
 extern void *fn_1_548AC(int size);
 extern void fn_1_5489C(void *object, void *entry);
-extern void fn_1_64388(void);
 
 typedef struct EffectObject {
     u8 pad0[0x28];

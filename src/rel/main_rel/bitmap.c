@@ -17,6 +17,8 @@ extern void fn_1_47AD4(Obj_1_data_FCD4 *obj, u8 value, int arg2, int arg3);
 extern f32 lbl_1_rodata_10C0[5];
 extern f32 lbl_1_bss_3E05C;
 
+extern void *fn_1_48730(u32 value);
+
 /* fzgx:begin fn_1_4811C */
 // Enables the bitmap entry identified by the caller.
 void fn_1_4811C(int arg) {
@@ -118,8 +120,6 @@ u32 fn_1_485A8(s32 index) {
 /* fzgx:end fn_1_485A8 */
 
 /* fzgx:begin fn_1_48690 */
-extern void *fn_1_48730(u32 value);
-
 // Return the current bitmap width, or the default width when no bitmap is active.
 u16 fn_1_48690(u32 unused) {
     void *bitmap = fn_1_48730(unused);
@@ -145,8 +145,6 @@ u16 fn_1_486C4(u32 value) {
 /* fzgx:end fn_1_486C4 */
 
 /* fzgx:begin fn_1_486F8 */
-extern void *fn_1_48730(u32 value);
-
 // Return the bitmap entry flags for the slot identified by value.
 u32 fn_1_486F8(u32 value) {
     void *bitmap = fn_1_48730(value);

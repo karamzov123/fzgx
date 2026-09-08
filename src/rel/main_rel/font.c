@@ -74,6 +74,14 @@ extern void fn_1_45850(void);
 extern void fn_1_565F4(void);
 extern void fn_80070D60(void *);
 
+extern u8 *fn_1_565E8(void);
+extern void fn_1_45730(void);
+extern void fn_1_45B2C(void);
+extern void fn_1_458A0(void);
+extern void fn_1_45850(void);
+extern void fn_1_565F4(void);
+extern void fn_80070D60(void *);
+
 /* fzgx:begin fn_1_494CC */
 void fn_1_494CC(u8 value) {
     lbl_1_bss_4B9CC.unk_44 = value;
@@ -1157,14 +1165,6 @@ void fn_1_565F4(void) {
 /* fzgx:end fn_1_565F4 */
 
 /* fzgx:begin fn_1_565F8 */
-extern u8 *fn_1_565E8(void);
-extern void fn_1_45730(void);
-extern void fn_1_45B2C(void);
-extern void fn_1_458A0(void);
-extern void fn_1_45850(void);
-extern void fn_1_565F4(void);
-extern void fn_80070D60(void *);
-
 // Registers the font initialization callbacks with the shared dispatcher.
 void fn_1_565F8(void) {
     void (*callbacks[6])(void);

@@ -76,6 +76,26 @@ extern void fn_8008069C(char *buffer, u32 *format, ...);
 extern u32 strlen(const char *str);
 extern int fn_80083BCC(const char *left, const char *right);
 
+extern u16 lbl_1_bss_26B7A[3];
+extern u16 lbl_1_bss_26300;
+extern void fn_1_4A00(u32 arg0, u32 arg1, u32 arg2);
+extern void fn_1_5370(u32 arg0, u32 arg1);
+extern void fn_1_15E27C(void);
+extern void fn_1_D0790(void);
+extern void fn_1_4811C(s32 value);
+extern void fn_1_48004(u32 arg0, u32 arg1);
+extern void *fn_1_435C(void *value);
+extern void fn_1_4310(s32 value);
+extern void fn_1_A1588(u32 arg0, u32 arg1);
+extern u32 lbl_801A6CE0;
+extern u32 lbl_1_bss_38454;
+extern u32 fn_80070DE0(void (*)(void));
+extern void fn_1_40F54(void *arg0);
+extern void *fn_1_D3884(u8 *arg0);
+extern void *fn_1_D358C(u8 *arg0, void *arg1);
+extern void fn_1_41134(void *unused, char *value);
+extern void fn_1_411D4(u32 index, char *message);
+
 /* fzgx:begin fn_1_35124 */
 void fn_1_35124(void) {
     OSGetTick();
@@ -99,9 +119,6 @@ void fn_1_35174(void) {
 /* fzgx:end fn_1_35174 */
 
 /* fzgx:begin fn_1_35178 */
-extern u16 lbl_1_bss_26B7A[3];
-extern u16 lbl_1_bss_26300;
-
 // Decrement the counter while the associated state is active.
 void fn_1_35178(u32* arg0) {
     if (fn_1_3EFA8() == 0) {
@@ -142,16 +159,6 @@ void fn_1_36ADC(void) {
 /* fzgx:end fn_1_36ADC */
 
 /* fzgx:begin fn_1_3DDAC */
-extern void fn_1_4A00(u32 arg0, u32 arg1, u32 arg2);
-extern void fn_1_5370(u32 arg0, u32 arg1);
-extern void fn_1_15E27C(void);
-extern void fn_1_D0790(void);
-extern void fn_1_4811C(s32 value);
-extern void fn_1_48004(u32 arg0, u32 arg1);
-extern void *fn_1_435C(void *value);
-extern void fn_1_4310(s32 value);
-extern void fn_1_A1588(u32 arg0, u32 arg1);
-
 // Initializes global game state and configures startup resources.
 void fn_1_3DDAC(void) {
     fn_1_4A00(1, 0x1e, lbl_1_bss_5100);
@@ -351,9 +358,6 @@ u8 fn_1_3F13C(void) {
 /* fzgx:end fn_1_3F13C */
 
 /* fzgx:begin fn_1_3F164 */
-extern u8 lbl_1_bss_3C00;
-extern u32 lbl_1_bss_26B50;
-
 typedef struct {
     u8 unk_00[0x12];
     u8 unk_12;
@@ -794,13 +798,6 @@ void fn_1_40F54(void *arg0) {
 /* fzgx:end fn_1_40F54 */
 
 /* fzgx:begin fn_1_40F78 */
-extern u32 lbl_801A6CE0;
-extern u32 lbl_1_bss_38454;
-extern u32 fn_80070DE0(void (*)(void));
-extern void fn_1_40F54(void *arg0);
-extern void *fn_1_D3884(u8 *arg0);
-extern void *fn_1_D358C(u8 *arg0, void *arg1);
-
 // Initializes the shared resource handles when the subsystem is enabled.
 void fn_1_40F78(void) {
     u32 resource_handle;
@@ -854,8 +851,11 @@ void fn_1_410A0(void) {
 }
 /* fzgx:end fn_1_410A0 */
 
-/* fzgx:begin fn_1_41104 */
-extern u8 lbl_1_data_66A0[32];
+/* fzgx:begin fn_1_41104 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/game.h"
+
 extern void fn_1_41134(u32 index, char *value);
 
 // Forwards the selected message entry to the formatter.
@@ -878,9 +878,6 @@ void fn_1_41134(void *unused, char *value) {
 /* fzgx:end fn_1_41134 */
 
 /* fzgx:begin fn_1_411A4 */
-extern u8 lbl_1_data_66A0[32];
-extern void fn_1_411D4(u32 index, char *message);
-
 // Forwards the indexed message entry to the follow-up handler.
 void fn_1_411A4(u32 index) {
     fn_1_411D4(index, ((char **)lbl_1_data_66A0)[index]);

@@ -58,6 +58,11 @@ extern void fn_1_46EA8(int value);
 extern void fn_1_12620(void *object);
 extern void fn_1_46DC4(void *obj);
 
+extern void fn_1_727BC();
+extern void fn_8006FDEC(void);
+extern void fn_80071718(void *);
+extern void fn_800711A8(void *);
+
 /* fzgx:begin fn_1_72648 */
 void fn_1_72648(void) {
     if (lbl_1_bss_6C8DC[0] != 0) {
@@ -88,8 +93,6 @@ void fn_1_7269C(u32 arg0, u32 arg1, void *arg2) {
 /* fzgx:end fn_1_7269C */
 
 /* fzgx:begin fn_1_72714 */
-extern void fn_1_727BC();
-
 // Initialize the effect system and return the requested slot subregion.
 void *fn_1_72714(u8 slot, u32 subregion) {
     Obj_1_bss_6C8EC *entry;
@@ -585,10 +588,6 @@ void fn_1_7B184(void *arg) {
 /* fzgx:end fn_1_7B184 */
 
 /* fzgx:begin fn_1_7B4C0 */
-extern void fn_8006FDEC(void);
-extern void fn_80071718(void *);
-extern void fn_800711A8(void *);
-
 // Releases active screen effects and resets the effect state.
 void fn_1_7B4C0(void) {
     if (lbl_1_bss_6D770 != 0 || lbl_1_bss_6D774 != 0) {

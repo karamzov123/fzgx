@@ -6,11 +6,10 @@ extern void fn_1_6F90C(void *arg0, void *arg1);
 extern s16 fn_1_72318(void);
 extern void fn_1_71D0C(void *arg0, void *arg1);
 
-/* fzgx:begin fn_1_68248 */
 extern void *lbl_801A6410;
-extern u8 lbl_1_data_1D8A8[13];
 extern void fn_1_46B4(u32 value, void *field, u8 *data, s32 code);
 
+/* fzgx:begin fn_1_68248 */
 typedef struct Fn1_68248Arg {
     u8 pad0[0x34];
     void *unk_34;

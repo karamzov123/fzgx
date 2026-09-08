@@ -33,6 +33,10 @@ extern void *fn_1_36AD0(void);
 extern void fn_1_14F6F8(u8 arg0, u8 arg1, u8 arg2, void *arg3);
 extern void fn_80008BA8(void *arg0, const void *arg1, int arg2);
 
+extern u32 lbl_1_rodata_4210;
+extern void fn_80007AB4(u32 *arg0);
+extern void fn_1_9CC6C(void *arg0, s32 arg1);
+
 /* fzgx:begin fn_1_402A4 */
 s16 fn_1_402A4(u32 index) {
     u8 *table0;
@@ -347,10 +351,6 @@ void fn_1_9AD54(void) {
 /* fzgx:end fn_1_9AD54 */
 
 /* fzgx:begin fn_1_9AD88 */
-extern u32 lbl_1_rodata_4210;
-extern void fn_80007AB4(u32 *arg0);
-extern void fn_1_9CC6C(void *arg0, s32 arg1);
-
 // Seed the temporary value, then notify the active burner using its shared state.
 void fn_1_9AD88(void) {
     u32 value = lbl_1_rodata_4210;

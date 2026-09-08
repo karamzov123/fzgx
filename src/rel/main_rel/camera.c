@@ -35,6 +35,9 @@ extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
 extern void fn_1_8A0C(s16 index);
 extern void OSReport(const unsigned char *, ...);
 
+extern f32 lbl_1_rodata_2E0[32];
+extern f32 lbl_8006D6FC(f32 *value, void *target);
+
 /* fzgx:begin camera_get_state */
 // Return the camera state byte, or -1 when no camera state is active.
 s32 camera_get_state(void) {
@@ -552,10 +555,8 @@ typedef struct CameraObject {
     Transform *unk_49C;
 } CameraObject;
 
-extern f32 lbl_1_rodata_2E0[32];
 extern Transform *lbl_801A6D00;
 extern CameraStateLocal *lbl_801A66CC;
-extern f32 lbl_8006D6FC(f32 *value, void *target);
 
 // Updates the camera orientation from the active target transform.
 f32 camera_get_target_orientation(CameraObject *camera) {

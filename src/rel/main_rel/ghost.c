@@ -44,6 +44,9 @@ extern u32 lbl_1_bss_7ED58[158];
 
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 
+extern void OSReport(const char *, ...);
+extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
+
 /* fzgx:begin fn_1_EC900 */
 // Return the current ghost state value.
 u32 fn_1_EC900(void) {
@@ -475,10 +478,6 @@ s32 fn_1_F21B8(s32 arg) {
 /* fzgx:end fn_1_F21B8 */
 
 /* fzgx:begin fn_1_F220C */
-extern void OSReport(const char *, ...);
-extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
-extern u8 lbl_1_data_3E8A0[33];
-
 // Logs the resolved course coordinates and marks the corresponding course as visited.
 void fn_1_F220C(s32 arg) {
     s16 a;

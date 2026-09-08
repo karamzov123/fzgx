@@ -18,6 +18,10 @@ extern void fn_1_48140(s32 value);
 extern void fn_1_4DDC0(void);
 extern void fn_1_4F724(void);
 
+extern u8 lbl_1_bss_3E024[52];
+extern char lbl_1_data_1A3AC[5];
+extern void fn_80083DB0(void *arg0, void *arg1);
+
 /* fzgx:begin fn_1_45890 */
 // Clear the load-state flag before starting a new load.
 void fn_1_45890(void) {
@@ -274,12 +278,6 @@ void fn_1_47A60(s16 index) {
 /* fzgx:end fn_1_47A60 */
 
 /* fzgx:begin fn_1_485E8 */
-extern u8 lbl_1_data_19FC4[752];
-extern u8 lbl_1_data_19098[752];
-extern u8 lbl_1_bss_3E024[52];
-extern char lbl_1_data_1A3AC[5];
-extern void fn_80083DB0(void *arg0, void *arg1);
-
 // Find the resource matching value, load its data, and return the destination buffer.
 void *fn_1_485E8(s32 index, s32 value) {
     s32 entry = 0;
