@@ -159,9 +159,9 @@ def claim(p: Project, symbol: str, agent: str, ttl: int = DEFAULT_TTL,
     # nothing is carved before it matches: a unit (split range, object in the link) is
     # created at submit. Until then checks diff the work copy against the retail object.
     res = None
-    if shadow and not _unit_source(p, symbol):
-        l.finish(key, "carve-failed", "unmatched", notes="shadow claim on an unmatched function", shadow=True)
-        return {"ok": False, "error": "shadow claims need a matched function"}
+    if _is_revise(agent) and not _unit_source(p, symbol):
+        l.finish(key, "carve-failed", "unmatched", notes="revise claim on an unmatched function", shadow=True)
+        return {"ok": False, "error": "revise needs a matched function"}
     unit = _unit_source(p, symbol)
     # the agent's private copy: the current source for a rewrite, a stub otherwise
     work = p.work_path(key)

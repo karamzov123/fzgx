@@ -83,7 +83,8 @@ def claude_cmd(symbol: str, agent_id: str, model: str) -> List[str]:
             "--allowedTools", ",".join(MATCHER_TOOLS)]
 
 
-def codex_cmd(symbol: str, agent_id: str, model: str, fast: bool = False, revise: bool = False) -> List[str]:
+def codex_cmd(symbol: str, agent_id: str, model: str, fast: bool = False, revise: bool = False,
+              effort: Optional[str] = None) -> List[str]:
     prompt = (f"SYMBOL={symbol}  AGENT_ID={agent_id}. Rewrite this matched function for readability following your loop."
               if revise else f"SYMBOL={symbol}  AGENT_ID={agent_id}. Match this function following your loop.")
     # --ignore-user-config: no user MCP servers/skills (480k -> 125k input tokens on a smoke test)
@@ -94,6 +95,8 @@ def codex_cmd(symbol: str, agent_id: str, model: str, fast: bool = False, revise
         cmd += ["--disable", feat]
     if fast:
         cmd += ["-c", 'service_tier="fast"']
+    if effort:
+        cmd += ["-c", f'model_reasoning_effort="{effort}"']
     # context trims measured on a smoke run: 13.3k -> ~8k tokens on the first call
     cmd += ["-c", f'model_instructions_file="{CODEX_REVISE_INSTRUCTIONS if revise else CODEX_INSTRUCTIONS}"',
             "-c", "skills.include_instructions=false",                 # no <skills_instructions> block
@@ -173,7 +176,7 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
     agent_id = f"{prefix}{batch}-{harness}-{idx}"
     if harness == "claude" and revise:
         raise SystemExit("--revise is implemented for the codex harness only")
-    cmd = claude_cmd(symbol, agent_id, model) if harness == "claude" else codex_cmd(symbol, agent_id, model, fast, revise)
+    cmd = claude_cmd(symbol, agent_id, model) if harness == "claude" else codex_cmd(symbol, agent_id, model, fast, revise, EFFORT.get("level"))
     t0 = time.time()
     try:
         cp = subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, timeout=timeout,
@@ -209,6 +212,9 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
     return {"symbol": symbol, "outcome": outcome, "percent": pct, "checks": checks, "cost": info["cost"], "model": info["model"],
             "tokens_in": info["tokens_in"], "tokens_out": info["tokens_out"], "turns": info["turns"],
             "secs": round(time.time() - t0, 1), "rc": rc}
+
+
+EFFORT: Dict[str, Optional[str]] = {"level": None}
 
 
 def fan_out(p: Project, a, model: str, symbols: List[str], batch: str, revise: bool) -> tuple:
@@ -282,6 +288,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--no-trivial", action="store_true", help="skip the mechanical blr/li pass first")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--fast", action="store_true", help="codex: service_tier=fast (2x price, faster generation)")
+    ap.add_argument("--effort", choices=["minimal", "low", "medium", "high", "xhigh"], help="codex: model_reasoning_effort")
     ap.add_argument("--shadow", action="store_true",
                     help="A/B trial: run on already-matched functions without relinking or committing")
     ap.add_argument("--finish", action="store_true", help="after the batch: TU-finish pass, revise round on its queue, pass again")
@@ -290,6 +297,7 @@ def main(argv: Optional[List[str]] = None) -> int:
                     help="rewrite already-matched functions for readability; kept only if still 100%%")
     a = ap.parse_args(argv)
     model = a.model or ("haiku" if a.harness == "claude" else "gpt-5.6-luna")
+    EFFORT["level"] = a.effort
     p = Project()
 
     if a.finish_only:
@@ -335,7 +343,7 @@ def main(argv: Optional[List[str]] = None) -> int:
                "released": len(released), "failed": len(other), "cost_usd": round(spent, 3),
                "wall_s": round(time.time() - t0, 1), "finish": finish_result, "results": results}
     # report + snapshot
-    rep = ROOT / "docs" / "batches" / f"{a.batch}{'-shadow' if a.shadow else ''}{'-revise' if a.revise else ''}.md"
+    rep = ROOT / "docs" / "batches" / f"{a.batch}{'-shadow' if a.shadow else ''}{'-revise' if a.revise else ''}{'-' + a.effort if a.effort else ''}.md"
     lines = [f"# Batch {a.batch}{' (shadow A/B trial)' if a.shadow else ''} — {a.harness}/{model}, {a.parallel} parallel",
              "", f"{len(results)} functions: {len(matched)} matched, {len(released)} released, {len(other)} failed; "
              f"${spent:.2f}; {summary['wall_s']} s wall.", "",
