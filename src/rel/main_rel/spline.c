@@ -780,20 +780,6 @@ u32 fn_1_FA088(void) {
 }
 /* fzgx:end fn_1_FA088 */
 
-/* fzgx:begin fn_1_FA1A8 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/spline.h"
-
-extern s32 fn_1_FA69C(s16 value);
-
-// Return whether the signed result from the spline lookup is nonzero.
-u32 fn_1_FA1A8(s32 value) {
-    s32 lookup = fn_1_FA69C((s16)value);
-    return (u32)(lookup != 0);
-}
-/* fzgx:end fn_1_FA1A8 */
-
 /* fzgx:begin fn_1_FA450 */
 // Store the value when initialization permits the update.
 void fn_1_FA450(u8 value) {

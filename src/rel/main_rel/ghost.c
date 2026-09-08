@@ -47,6 +47,8 @@ extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 extern void OSReport(const char *, ...);
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 
+extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
+
 /* fzgx:begin fn_1_EC900 */
 // Return the current ghost state value.
 u32 fn_1_EC900(void) {
@@ -458,8 +460,6 @@ void ghost_set_record_flag2(s32 arg) {
 /* fzgx:end ghost_set_record_flag2 */
 
 /* fzgx:begin fn_1_F21B8 */
-extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
-
 // Return the selected record's second flag bit after decoding its table position.
 s32 fn_1_F21B8(s32 arg) {
     s16 a;
@@ -489,8 +489,6 @@ void fn_1_F220C(s32 arg) {
 /* fzgx:end fn_1_F220C */
 
 /* fzgx:begin fn_1_F2280 */
-extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
-
 // Returns the flag for the state selected by the converted coordinates.
 s32 fn_1_F2280(s32 arg) {
     s16 group;

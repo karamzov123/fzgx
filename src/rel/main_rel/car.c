@@ -85,6 +85,31 @@ extern void fn_1_12A2D0(s32 value);
 extern void fn_8008069C(char *buffer, const char *format, ...);
 extern void fn_1_A7B5C(void *arg0, s32 arg1, void *arg2, s8 arg3, void *arg4);
 
+extern void fn_1_7F658(void *arg0);
+extern void fn_1_465D0(void *arg0, s32 arg1);
+extern u32 lbl_1_bss_6D970;
+extern u32 lbl_1_bss_6D974;
+extern void fn_1_435C(void *);
+extern void fn_1_43E8(s32 arg0);
+extern void fn_1_850C4(void);
+extern u32 fn_1_3F8C(void *arg0, void *arg1, Obj_1_bss_6D838_Target *arg2, s32 arg3);
+extern void fn_1_8B8A4(s32);
+extern void fn_1_43F4(void);
+extern f32 lbl_1_rodata_3518[6];
+extern void fn_1_85934();
+extern u32 lbl_801A6410;
+extern void *fn_1_45D0(u32 arg0, s32 arg1, void *arg2, s32 arg3);
+extern void fn_1_C487C(Obj_1_bss_6D838_Target *arg0);
+extern void fn_1_C4ABC(void);
+extern u32 lbl_1_bss_6D86C[34];
+extern u8 lbl_1_data_34348[12];
+extern void fn_1_12A2B8(s32 value);
+extern void fn_1_12A2C4(s32 value);
+extern void fn_1_12A2D0(s32 value);
+extern void fn_1_12AB38(void *value);
+extern void fn_8008069C(char *buffer, const char *format, ...);
+extern void fn_1_A7B5C(void *arg0, s32 arg1, void *arg2, s8 arg3, void *arg4);
+
 /* fzgx:begin fn_1_7F428 */
 u32 fn_1_7F428(u32 arg0) {
     s32 index;
@@ -103,8 +128,6 @@ u32 fn_1_7F428(u32 arg0) {
 /* fzgx:end fn_1_7F428 */
 
 /* fzgx:begin fn_1_7F934 */
-extern void fn_1_7F658(void *arg0);
-
 // Forwards the caller's context to the common car initialization routine.
 void fn_1_7F934(void *arg0) {
     fn_1_7F658(arg0);
@@ -112,9 +135,6 @@ void fn_1_7F934(void *arg0) {
 /* fzgx:end fn_1_7F934 */
 
 /* fzgx:begin fn_1_7FFF0 */
-extern u8 lbl_1_data_2057C[22];
-extern void fn_1_465D0(void *arg0, s32 arg1);
-
 // Installs the default car-data entry used by the car registry.
 void fn_1_7FFF0(void) {
     fn_1_465D0(lbl_1_data_2057C, 1);
@@ -297,16 +317,6 @@ s32 fn_1_818AC(Obj *a, Obj *b) {
 /* fzgx:end fn_1_818AC */
 
 /* fzgx:begin fn_1_835E0 */
-extern u32 lbl_1_bss_6D970;
-extern u8 lbl_1_data_20714[10];
-extern u32 lbl_1_bss_6D974;
-extern void fn_1_435C(void *);
-extern void fn_1_43E8(s32);
-extern void fn_1_850C4(void);
-extern void fn_1_3F8C(u8 *, void (*)(void), void *, s32);
-extern void fn_1_8B8A4(s32);
-extern void fn_1_43F4(void);
-
 // Registers the car callbacks and publishes the supplied car context.
 void fn_1_835E0(void *car_context, void *initial_state, void *callback_context) {
     fn_1_435C(initial_state);
@@ -439,9 +449,6 @@ void fn_1_85F70(void) {
 /* fzgx:end fn_1_85F70 */
 
 /* fzgx:begin fn_1_8616C */
-extern f32 lbl_1_rodata_3518[6];
-extern void fn_1_85934();
-
 // Passes the default handling value to the car update routine.
 void fn_1_8616C(void) {
     fn_1_85934(lbl_1_rodata_3518[0]);
@@ -2859,17 +2866,6 @@ u32 fn_1_8D690(s16 arg0) {
 /* fzgx:end fn_1_8D690 */
 
 /* fzgx:begin fn_1_8D894 */
-extern u32 lbl_801A6410;
-extern u8 lbl_1_data_1FFF0[12];
-extern void *fn_1_45D0(u32 arg0, s32 arg1, void *arg2, s32 arg3);
-extern void fn_1_C487C(Obj_1_bss_6D838_Target *arg0);
-extern void fn_1_43E8(s32 arg0);
-extern u32 fn_1_3F8C(void *arg0, void *arg1, Obj_1_bss_6D838_Target *arg2, s32 arg3);
-extern void fn_1_43F4(void);
-extern void fn_1_C4ABC(void);
-extern u32 lbl_1_bss_6D86C[34];
-extern u8 lbl_1_bss_6D868;
-
 void fn_1_8D894(Obj_1_bss_6D838_Target *car) {
     u32 value;
     u32 obj;
@@ -3335,15 +3331,6 @@ u16 fn_1_96BC0(Fn196BC0Object *object, void *arg1) {
 /* fzgx:end fn_1_96BC0 */
 
 /* fzgx:begin fn_1_A7E60 */
-extern u8 lbl_1_data_34348[12];
-
-extern void fn_1_12A2B8(s32 value);
-extern void fn_1_12A2C4(s32 value);
-extern void fn_1_12A2D0(s32 value);
-extern void fn_1_12AB38(void *value);
-extern void fn_8008069C(char *buffer, const char *format, ...);
-extern void fn_1_A7B5C(void *arg0, s32 arg1, void *arg2, s8 arg3, void *arg4);
-
 typedef struct FnA7E60Object {
     u8 pad_fc[0xfc];
     s32 unk_fc;
