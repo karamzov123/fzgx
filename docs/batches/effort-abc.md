@@ -39,3 +39,7 @@ relaunches a capacity-killed agent after a pause, and 12 parallel ran clean unti
 
 Next: finish the 56 after the quota resets; try `gemini-3.8-flash-low` to cut the
 thinking share; `patch_unit` to cut the rewrite share.
+
+The agy harness was removed the same day: at ~40× the per-function cost of Luna and a
+subscription quota that stops a batch after two dozen functions, it is not a tier this
+workflow can use. The numbers above stay as the record of the trial.
