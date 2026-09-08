@@ -3,7 +3,7 @@ name = "fzgx-tools"
 version = "0.1.0"
 description = "Tooling for the F-Zero GX (GFZE01) matching decompilation"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = ["mcp>=1.2,<2", "anyio>=4"]
 
 [dependency-groups]
 dev = ["pytest>=8", "capstone>=5", "pyyaml>=6"]

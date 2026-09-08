@@ -12,7 +12,7 @@ import time
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional
 
-from .project import ROOT
+from .project import ROOT, STATE_DIR
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS functions (
@@ -44,7 +44,7 @@ CREATE INDEX IF NOT EXISTS idx_attempts_symbol ON attempts(symbol);
 
 class Ledger:
     def __init__(self, path: Optional[Path] = None) -> None:
-        self.path = path or ROOT / "build" / "fzgx" / "ledger.db"
+        self.path = path or STATE_DIR / "ledger.db"
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.db = sqlite3.connect(self.path, timeout=30, isolation_level=None)
         self.db.row_factory = sqlite3.Row

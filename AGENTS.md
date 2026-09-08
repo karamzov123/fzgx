@@ -5,25 +5,32 @@ same work. Read `CLAUDE.md` for the project overview; this file is the
 contract a subagent must follow. The Claude Code versions of these roles live
 in `.claude/agents/*.md` and say the same things.
 
-## Matcher (one function per session; model: GPT 5.6 Luna or equivalent cheap tier)
+## Matcher (one function per session; cheap tier: GPT 5.6 Luna, Haiku 4.5)
 
-Given `SYMBOL` and `AGENT_ID`:
+Matchers get **no shell**. Their only tools are the `fzgx` MCP server
+(`tools/fzgx_mcp.py`, registered in `.mcp.json` for Claude Code; for Codex add
+to `~/.codex/config.toml`:
 
-```sh
-uv run tools/fzgx.py claim SYMBOL --agent AGENT_ID        # carves src/<unit>.c
-uv run tools/fzgx.py context SYMBOL                        # retail asm, symbols, neighbours, idioms, rules
-# edit src/<unit>.c  (only this file; no hardcoded addresses; no inline asm)
-uv run tools/fzgx.py check SYMBOL                          # ≤ 8 times; prints % and a target|ours diff
-uv run tools/fzgx.py submit SYMBOL --agent AGENT_ID --harness codex --model gpt-5.6-luna --message "<one line>" [--names names.json]
-# or
-uv run tools/fzgx.py release SYMBOL --reason "<what is left>"
+```toml
+[mcp_servers.fzgx]
+command = "uv"
+args = ["run", "tools/fzgx_mcp.py"]
+cwd = "/path/to/fzero_gx"
 ```
 
-End your output with `RESULT: matched|released SYMBOL <percent>%`.
+) plus a read-only file tool. Tools: `claim`, `context`, `read_unit`,
+`write_unit`, `check`, `submit`, `release`. `write_unit` only accepts the unit
+the caller has claimed; `submit` relinks all 16 targets and verifies every
+hash before committing. The same operations exist as CLI subcommands
+(`uv run tools/fzgx.py ...`) for humans and the orchestrator.
 
-Never run ninja, dtk, objdiff or git directly. Never edit `include/`,
-`config/`, or another unit. Names you infer go in the `--names` sidecar:
-`[{"kind":"function|object|struct|field","target":"SYMBOL","name":"...","rationale":"..."}]`.
+Loop: `claim` → `context` → `write_unit` (complete file: `#include "types.h"`,
+externs, minimal structs, the function) → `check` (≤ 8; `versions="all"` to
+probe compiler versions) → `submit(..., names=[...])` or `release(reason)`.
+End the transcript with `RESULT: matched|released SYMBOL <percent>% checks=<n>`.
+
+Rules enforced by the tools, not by prose: no hardcoded addresses (lint A1/A2),
+no inline asm, no edits outside the claimed unit, no build or git access.
 
 ## Librarian (serial; stronger model)
 

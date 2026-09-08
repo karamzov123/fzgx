@@ -40,3 +40,6 @@ compile_commands.json
 # Miscellaneous
 /*.txt
 *.exe
+
+# fzgx local state (ledger, locks, attempts); committed snapshot lives in state/
+.fzgx/

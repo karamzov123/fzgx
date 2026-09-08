@@ -20,6 +20,8 @@ from typing import Dict, Iterable, List, Optional
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 DEFAULT_VERSION = "GFZE01"
+# Ledger, locks, saved attempts and caches: outside build/ on purpose (a build wipe must not lose state).
+STATE_DIR = ROOT / ".fzgx"
 
 # "name = .section:0xADDR; // type:function size:0x10 scope:global align:4 data:4byte"
 SYMBOL_RE = re.compile(
@@ -177,7 +179,7 @@ class Project:
         if module in self._asm_index:
             return self._asm_index[module]
         files = self._asm_files(module)
-        cache = ROOT / "build" / "fzgx" / f"asm_index_{self.version}_{module}.json"
+        cache = STATE_DIR / f"asm_index_{self.version}_{module}.json"
         stamp = max((f.stat().st_mtime for f in files), default=0)
         if cache.exists():
             data = json.loads(cache.read_text())

@@ -11,6 +11,7 @@ from __future__ import annotations
 import fcntl
 import json
 import os
+import shlex
 import subprocess
 import sys
 from contextlib import contextmanager
@@ -18,7 +19,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from .project import ROOT, Project
+from .project import ROOT, STATE_DIR, Project
 
 OBJDIFF = ROOT / "build" / "tools" / "objdiff-cli"
 
@@ -47,7 +48,7 @@ def run(cmd: List[str], cwd: Path = ROOT, timeout: int = 600) -> subprocess.Comp
 
 @contextmanager
 def build_lock(name: str = "build.lock"):
-    path = ROOT / "build" / "fzgx" / name
+    path = STATE_DIR / name
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w") as f:
         fcntl.flock(f, fcntl.LOCK_EX)
@@ -62,8 +63,13 @@ def configure(project: Project) -> subprocess.CompletedProcess:
 
 
 def relink(project: Project) -> subprocess.CompletedProcess:
-    """Full build; the CHECK step fails unless every target hashes identical."""
-    return run(["ninja"], timeout=1800)
+    """Relink every target and verify build.sha1.
+
+    Targets `build/<VERSION>/ok` (the dtk shasum check) rather than the default
+    target, so only Matching units are compiled: another agent's broken
+    in-progress unit cannot fail this step.
+    """
+    return run(["ninja", project.rel(project.build_dir / "ok")], timeout=1800)
 
 
 def _base_object(project: Project, unit: str) -> Path:
@@ -137,6 +143,56 @@ def check(project: Project, symbol: str, max_diff_lines: int = 80) -> CheckResul
         else:
             res.diff = _render_diff(lrows, rrows, max_diff_lines)
     return res
+
+
+CANDIDATE_VERSIONS = ["GC/1.2.5", "GC/1.2.5n", "GC/1.3", "GC/1.3.2", "GC/2.0", "GC/2.5", "GC/2.7"]
+
+
+def check_versions(project: Project, symbol: str, versions: List[str]) -> Dict[str, float]:
+    """Compile the unit under several compiler versions; return symbol match % per version.
+
+    Uses the unit's flags from objdiff.json, wibo + build/compilers/<ver>/mwcceppc.exe,
+    and objdiff-cli in two-object mode. Never touches the ninja build.
+    """
+    sym = project.find_symbol(symbol)
+    unit_src = project.unit_of(sym) if sym else None
+    if not sym or not unit_src:
+        return {}
+    unit = project.objdiff_unit_name(sym.module, unit_src)
+    meta = project.objdiff_units().get(unit, {})
+    # objdiff's scratch flags omit the include dirs the ninja rule adds per unit
+    flags = meta.get("scratch", {}).get("c_flags", "").replace(" -lang=c", "")
+    flags += f" -i include -i build/{project.version}/include"
+    target = ROOT / meta.get("target_path", "")
+    src = ROOT / "src" / unit_src
+    wibo = ROOT / "build" / "tools" / "wibo"
+    out: Dict[str, float] = {}
+    tmp = STATE_DIR / "versions" / symbol
+    tmp.mkdir(parents=True, exist_ok=True)
+    for ver in versions:
+        mwcc = ROOT / "build" / "compilers" / ver / "mwcceppc.exe"
+        if not mwcc.exists():
+            out[ver] = -1.0
+            continue
+        obj = tmp / (ver.replace("/", "_") + ".o")
+        # flags carry quoted pragmas: -pragma "cats off"
+        cmd = [str(wibo), str(mwcc)] + shlex.split(flags) + ["-c", str(src), "-o", str(obj)]
+        cp = subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True)
+        if cp.returncode != 0 or not obj.exists():
+            (tmp / (ver.replace("/", "_") + ".err")).write_text(cp.stdout + cp.stderr)
+            out[ver] = -2.0
+            continue
+        cp = run([str(OBJDIFF), "diff", "-1", str(target), "-2", str(obj), "-o", "-", "--format", "json"])
+        if cp.returncode != 0:
+            out[ver] = -3.0
+            continue
+        data = json.loads(cp.stdout)
+        pct = 0.0
+        for s in data.get("left", {}).get("symbols", []):
+            if s.get("name") == symbol and "match_percent" in s:
+                pct = float(s["match_percent"])
+        out[ver] = pct
+    return out
 
 
 def unit_fully_matches(res: CheckResult) -> Optional[str]:

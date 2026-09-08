@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(rm -r *)",
+      "Bash(rm -fr *)",
+      "Bash(rm -Rf *)",
+      "Bash(rm *build*)",
+      "Bash(rmdir *)",
+      "Bash(git push*)",
+      "Bash(git clean*)",
+      "Bash(git checkout*)",
+      "Bash(git restore*)",
+      "Bash(git reset*)",
+      "Bash(git stash*)",
+      "Bash(git rebase*)",
+      "Bash(ninja -t clean*)",
+      "Bash(ninja clean*)"
+    ]
+  }
+}
