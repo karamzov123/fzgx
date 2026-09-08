@@ -266,7 +266,40 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             ent["w"] = w; ent["t"] = t
         return f"loc_{off:X}"
     temps: List[str] = []
+    written_since_call: set = set()
     variadic_next = [False]
+    magic_div: Dict[str, Tuple[str, int]] = {}  # register holding mulhwu(x, magic) -> (x, magic)
+    pending_div: Dict[int, Tuple[str, str]] = {}  # index of the idiom's last instruction -> (register, quotient expression)
+    conv_slots: Dict[int, Tuple[str, Optional[str]]] = {}  # stack slot -> int/float conversion in progress
+
+    def divisor_of(magic: int, post_shift: int, add: bool) -> Optional[int]:
+        """The d for which MWCC's magicu(d) is (magic, add, post_shift): search small divisors."""
+        for d in range(2, 1 << 20):
+            # Hacker's Delight magicu
+            nc = (1 << 32) - 1 - (((1 << 32) - d) % d)
+            p_ = 31; q1 = (1 << 31) // nc; r1 = (1 << 31) - q1 * nc; q2 = ((1 << 31) - 1) // d; r2 = ((1 << 31) - 1) - q2 * d
+            a_ = False
+            while True:
+                p_ += 1
+                if r1 >= nc - r1:
+                    q1 = 2 * q1 + 1; r1 = 2 * r1 - nc
+                else:
+                    q1 = 2 * q1; r1 = 2 * r1
+                if r2 + 1 >= d - r2:
+                    if q2 >= (1 << 31) - 1: a_ = True
+                    q2 = 2 * q2 + 1; r2 = 2 * r2 + 1 - d
+                else:
+                    if q2 >= (1 << 31): a_ = True
+                    q2 = 2 * q2; r2 = 2 * r2 + 1
+                delta = d - 1 - r2
+                if not (p_ < 64 and (q1 < delta or (q1 == delta and r1 == 0))):
+                    break
+            M = (q2 + 1) & 0xFFFFFFFF; sh = p_ - 32
+            if M == magic and a_ == add and sh == post_shift:
+                return d
+            if d > 4096 and d % 1000 != 0:
+                continue
+        return None
     pending_ptr: Dict[str, str] = {}
 
     class _Stmts(list):
@@ -331,7 +364,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         if i > 0:
             pm, pa = ins[i - 1]
             pd = pa[0] if pa and pm not in STORE_T and not pm.startswith(("st", "cmp", "b")) and pm not in ("mtlr", "mtspr", "bl") else None
-            if pd and pd in regs and pd not in carried and not re.fullmatch(r"[A-Za-z_]\w*|-?\d+|&[A-Za-z_]\w*", regs[pd]) and not regs[pd].startswith(("(struct ", "__CALLRET__")):
+            if pd and pd in regs and pd not in carried and not re.fullmatch(r"[A-Za-z_]\w*|-?\d+|&[A-Za-z_]\w*", regs[pd]) and not regs[pd].startswith(("(struct ", "__CALLRET__", "((u8 *)&", "&")):
                 uses = 0
                 for x in range(i, len(ins)):
                     if reads(x, pd) or (ins[x][0] == "bl" and re.fullmatch(r"r([3-9]|10)|f[1-8]", pd)):
@@ -352,7 +385,9 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             elif regs.get(r_) != tn:
                 stmts.append(f"{tn} = {regs.get(r_)};"); regs[r_] = tn
         if a and mn not in STORE_T and not mn.startswith(("st", "cmp", "b")) and mn not in ("mtlr", "mtspr"):
-            temps_written.append((a[0], i))
+            temps_written.append((a[0], i)); written_since_call.add(a[0])
+        if mn == "bl":
+            pass  # cleared after the call is processed (see the bl branch)
         # the previous instruction wrote a callee-saved register with a computed value that a
         # call will intervene before its use: the source kept it in a local
         if i > 0:
@@ -370,6 +405,9 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     stmts.append(f"{tn} = {regs[pd]};"); regs[pd] = tn
         while open_ifs and open_ifs[-1][0] == i:
             stmts.append(open_ifs.pop()[1])
+        if i in pending_div:
+            d_, e_ = pending_div.pop(i)
+            regs[d_] = e_; rtype[d_] = "u32"
         if i in skip:
             continue
         if i in loop_by_entry:
@@ -437,6 +475,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             for x in range(t_, k_ + 1):
                 skip.add(x)
             open_ifs.append((k_ + 1, "}"))
+            open_ifs.sort(key=lambda x: -x[0])
             in_loop.append((b_, t_, k_))
             continue
         if mn == "b":
@@ -471,6 +510,42 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             if ins[tgt][0] == "blr" or tgt == len(ins) - 1:
                 stmts.append(f"if ({l} {op} {r_}) {{ return __RET__; }}")
             else:
+                # every register the region writes and code after it may read is a local: its
+                # writes become statements inside the branches, reads after use the local
+                region_end = tgt
+                pm0, pa0 = ins[tgt - 1]
+                if pm0 == "b" and pa0 and pa0[-1].startswith(".L_") and labels.get(pa0[-1], -1) > tgt:
+                    region_end = labels[pa0[-1]]
+                written = []
+                for x in range(i + 1, region_end):
+                    mn_x, a_x = ins[x]
+                    if a_x and mn_x not in STORE_T and not mn_x.startswith(("st", "cmp", "b")) and mn_x not in ("mtlr", "mtspr", "mtctr"):
+                        if a_x[0] not in written:
+                            written.append(a_x[0])
+                for rw in written:
+                    if rw in ("r0", "r1") or rw in carried or not re.fullmatch(r"r([3-9]|1\d|2\d|3[01])|f([1-9]|1\d|2\d|3[01])", rw):
+                        continue
+                    read_after = any(reads(x, rw) or (ins[x][0] == "bl" and re.fullmatch(r"r([3-9]|10)|f[1-8]", rw)) or (ins[x][0] == "blr" and rw in ("r3", "f1"))
+                                     for x in range(region_end, len(ins)))
+                    read_inside_first = False
+                    for x in range(i + 1, region_end):
+                        if reads(x, rw):
+                            read_inside_first = True; break
+                        if ins[x][1] and ins[x][1][0] == rw and ins[x][0] not in STORE_T and not ins[x][0].startswith(("st", "cmp", "b")):
+                            break
+                    if not (read_after or read_inside_first):
+                        continue
+                    init0 = regs.get(rw)
+                    if init0 is not None and (re.fullmatch(r"&[A-Za-z_]\w*", init0) or init0.startswith("((u8 *)&") or init0.startswith("(struct ")):
+                        continue  # MWCC rematerialises addresses: no local
+                    tn = f"v{len(temps)}"
+                    init = regs.get(rw)
+                    if init is None and re.fullmatch(r"r([3-9]|10)|f[1-8]", rw):
+                        init = use(rw)
+                    temps.append(f"{rtype.get(rw, 'u32')} {tn};")
+                    if init is not None:
+                        stmts.append(f"{tn} = {init};")
+                    regs[rw] = tn; carried[rw] = tn
                 # `if (c) { then } else { else }` when the then-block ends with a forward jump
                 # over the else-block; otherwise a plain if
                 pm, pa = ins[tgt - 1]
@@ -482,6 +557,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     open_ifs.append((end, "}")); open_ifs.append((tgt - 1, "} else {"))
                 else:
                     stmts.append(f"if ({l} {inv} {r_}) {{"); open_ifs.append((tgt, "}"))
+            open_ifs.sort(key=lambda x: -x[0])  # smallest index on top: every closer pops at its index
             continue
         lr_slot = f"0x{frame_size + 4:x}(r1)" if frame_size else None
         if mn in ("stwu", "mflr", "mtlr") or (mn in ("stw", "lwz") and a and ((a[0] == "r0" and a[1] == lr_slot) or SAVE_RE.match(a[0])) and "(r1)" in a[1]) or (mn == "addi" and a and a[0] == "r1"):
@@ -492,6 +568,22 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             local_at(off_, 0, "u8"); slocals[off_]["addr"] = True
             regs[a[0]] = f"&loc_{off_:X}"; rtype[a[0]] = "void *"; frame = True
             continue
+        if mn in ("stw", "stfd") and a and a[1].endswith("(r1)"):
+            off_ = _imm(a[1][:-4])
+            e_ = regs.get(a[0], "")
+            if mn == "stw" and e_ in ("0x43300000", "1127219200"):
+                conv_slots[off_] = ("hi", None); frame = True; continue
+            if mn == "stw" and off_ - 4 in conv_slots and conv_slots[off_ - 4][0] == "hi":
+                conv_slots[off_ - 4] = ("pair", e_); frame = True; continue
+            if mn == "stfd" and e_.startswith("__FCTIWZ__("):
+                conv_slots[off_] = ("fctiwz", e_[len("__FCTIWZ__("):-1]); frame = True; continue
+        if mn == "lfd" and a and a[1].endswith("(r1)") and _imm(a[1][:-4]) in conv_slots and conv_slots[_imm(a[1][:-4])][0] == "pair":
+            x = conv_slots[_imm(a[1][:-4])][1]
+            m_ = re.fullmatch(r"__XORIS__\((.+), 32768\)", x)
+            regs[a[0]] = f"__I2D__({m_.group(1)}, signed)" if m_ else f"__I2D__({x}, unsigned)"
+            rtype[a[0]] = "f64"; frame = True; continue
+        if mn == "lwz" and a and a[1].endswith("(r1)") and _imm(a[1][:-4]) - 4 in conv_slots and conv_slots[_imm(a[1][:-4]) - 4][0] == "fctiwz":
+            regs[a[0]] = f"(s32){conv_slots[_imm(a[1][:-4]) - 4][1]}"; rtype[a[0]] = "s32"; frame = True; continue
         if mn in LOAD_T and a and a[1].endswith("(r1)"):
             off_ = _imm(a[1][:-4]); t = LOAD_T[mn]
             if off_ in saved_slots or off_ >= frame_size:
@@ -578,6 +670,8 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     fields.setdefault(key, {})[o] = t; regs[a[0]] = f"{b}->unk_{o:X}"
                 elif kind == "global" and b in locals_:
                     gfields.setdefault(key, {})[o] = t; regs[a[0]] = f"{b}->unk_{o:X}"
+                elif kind == "global" and key in ptr_globals and o + k == 0 and t == "u32":
+                    regs[a[0]] = key  # the pointer variable itself, read through its address
                 elif kind == "global":
                     declare(key, "struct", far_ref=True); gfields.setdefault(key, {})[o + k] = t; regs[a[0]] = f"{key}.unk_{o + k:X}"
                 elif kind == "abs":
@@ -627,6 +721,8 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     fields.setdefault(key, {})[o] = t; stmts.append(f"{b}->unk_{o:X} = {val};")
                 elif kind == "global" and b in locals_:
                     gfields.setdefault(key, {})[o] = t; stmts.append(f"{b}->unk_{o:X} = {val};")
+                elif kind == "global" and key in ptr_globals and o + k == 0 and t == "u32":
+                    stmts.append(f"{key} = {val};")
                 elif kind == "global":
                     declare(key, "struct", far_ref=True); gfields.setdefault(key, {})[o + k] = t; stmts.append(f"{key}.unk_{o + k:X} = {val};")
                 elif kind == "abs":
@@ -652,7 +748,23 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             elif mn == "clrlwi":
                 n = 32 - _imm(a[2]); regs[d] = f"({use(a[1])} & 0x{(1 << n) - 1:X})" if n < 32 else use(a[1]); rtype[d] = "u32"
             elif mn == "slwi": regs[d] = f"({use(a[1])} << {_imm(a[2])})"; rtype[d] = "u32"
-            elif mn == "srwi": regs[d] = f"((u32){use(a[1])} >> {_imm(a[2])})"; rtype[d] = "u32"
+            elif mn == "srwi":
+                src_e = regs.get(a[1], "")
+                m_ = re.fullmatch(r"\(\(\((.+) - __MULHU__\((.+), (\d+)\)\) >> 1\) \+ __MULHU__\(\2, \3\)\)", src_e) if src_e else None
+                if m_ and m_.group(1) == m_.group(2):  # the add form: x - q >> 1 + q, then >> (s-1)
+                    dv = divisor_of(int(m_.group(3)), _imm(a[2]) + 1, True)
+                    if dv is None:
+                        raise Give()
+                    regs[d] = f"({m_.group(1)} / {dv})"; rtype[d] = "u32"
+                else:
+                    m2 = re.fullmatch(r"__MULHU__\((.+), (\d+)\)", src_e) if src_e else None
+                    if m2:
+                        dv = divisor_of(int(m2.group(2)), _imm(a[2]), False)
+                        if dv is None:
+                            raise Give()
+                        regs[d] = f"({m2.group(1)} / {dv})"; rtype[d] = "u32"
+                    else:
+                        regs[d] = f"((u32){use(a[1])} >> {_imm(a[2])})"; rtype[d] = "u32"
             elif mn == "srawi": regs[d] = f"((s32){use(a[1])} >> {_imm(a[2])})"; rtype[d] = "s32"
             elif mn == "add":
                 x, y = use(a[1]), use(a[2])
@@ -755,6 +867,12 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         if mn in ("fmuls", "fadds", "fsubs", "fdivs", "fmul", "fadd", "fsub", "fdiv"):
             op = {"fmuls": "*", "fadds": "+", "fsubs": "-", "fdivs": "/", "fmul": "*", "fadd": "+", "fsub": "-", "fdiv": "/"}[mn]
             t = "f32" if mn.endswith("s") else "f64"
+            m_ = re.fullmatch(r"__I2D__\((.+), (signed|unsigned)\)", regs.get(a[1], ""))
+            if m_ and op == "-":
+                cast = "(s32)" if m_.group(2) == "signed" else "(u32)"
+                regs[a[0]] = f"({t}){cast}{m_.group(1)}"; rtype[a[0]] = t
+                written_since_call.discard(a[2]); regs.pop(a[2], None)  # the constant, not an argument
+                continue
             regs[a[0]] = f"({use(a[1])} {op} {use(a[2])})"; rtype[a[0]] = t; continue
         if mn in ("fmadds", "fmadd"):
             regs[a[0]] = f"(({use(a[1])} * {use(a[2])}) + {use(a[3])})"; rtype[a[0]] = "f32" if mn.endswith("s") else "f64"; continue
@@ -766,6 +884,55 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             regs[a[0]] = f"(-{use(a[1])})"; rtype[a[0]] = rtype.get(a[1], "f32"); continue
         if mn == "frsp":
             regs[a[0]] = f"(f32){use(a[1])}"; rtype[a[0]] = "f32"; continue
+        if mn == "andc":
+            regs[a[0]] = f"({use(a[1])} & ~{use(a[2])})"; rtype[a[0]] = "u32"; continue
+        if mn == "mulhwu":
+            # unsigned division by a constant: q = mulhu(x, m) then the fix-up sequence; the
+            # divisor is recovered from the magic number (Hacker's Delight magicu). The whole
+            # idiom is matched here by looking ahead, so its steps never leak into expressions.
+            m_expr = regs.get(a[1]); x_reg = a[2]; x_expr = use(x_reg)
+            if m_expr is None:
+                raise Give()
+            try:
+                magic = int(eval(m_expr, {"__builtins__": {}})) & 0xFFFFFFFF if re.fullmatch(r"[0-9x\s()+\-*A-Fa-f]+", m_expr) else None
+            except Exception:
+                magic = None
+            if magic is None:
+                raise Give()
+            q = a[0]
+            # the fix-up steps may be interleaved with unrelated instructions: find them in order
+            def find(start, pred):
+                for x in range(start, min(len(ins), start + 12)):
+                    if pred(ins[x][0], ins[x][1]):
+                        return x
+                return None
+            j1 = find(i + 1, lambda m_, a_: m_ == "subf" and len(a_) == 3 and a_[1] == q and a_[2] == x_reg)
+            if j1 is not None:
+                t1 = ins[j1][1][0]
+                j2 = find(j1 + 1, lambda m_, a_: m_ == "srwi" and a_[1] == t1 and _imm(a_[2]) == 1)
+                if j2 is not None:
+                    t2 = ins[j2][1][0]
+                    j3 = find(j2 + 1, lambda m_, a_: m_ == "add" and set(a_[1:]) == {t2, q})
+                    if j3 is not None:
+                        t3 = ins[j3][1][0]
+                        j4 = find(j3 + 1, lambda m_, a_: m_ == "srwi" and a_[1] == t3)
+                        if j4 is not None:
+                            dv = divisor_of(magic, _imm(ins[j4][1][2]) + 1, True)
+                            if dv is None:
+                                raise Give()
+                            for x in (j1, j2, j3, j4):
+                                skip.add(x)
+                            pending_div[j4] = (ins[j4][1][0], f"({x_expr} / {dv})")
+                            continue
+            j1 = find(i + 1, lambda m_, a_: m_ == "srwi" and a_[1] == q)
+            if j1 is not None:
+                dv = divisor_of(magic, _imm(ins[j1][1][2]), False)
+                if dv is None:
+                    raise Give()
+                skip.add(j1)
+                pending_div[j1] = (ins[j1][1][0], f"({x_expr} / {dv})")
+                continue
+            raise Give()
         if mn == "nor":
             regs[a[0]] = f"(~({use(a[1])} | {use(a[2])}))"; rtype[a[0]] = "u32"; continue
         if mn == "slw":
@@ -776,6 +943,10 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             regs[a[0]] = f"((s32){use(a[1])} >> {use(a[2])})"; rtype[a[0]] = "s32"; continue
         if mn == "mulhw":
             regs[a[0]] = f"(u32)(((s64){use(a[1])} * (s64){use(a[2])}) >> 32)"; rtype[a[0]] = "s32"; continue
+        if mn == "xoris":
+            regs[a[0]] = f"__XORIS__({use(a[1])}, {_imm(a[2])})"; rtype[a[0]] = "u32"; continue
+        if mn == "fctiwz":
+            regs[a[0]] = f"__FCTIWZ__({use(a[1])})"; rtype[a[0]] = "f64"; continue
         if mn == "cntlzw":
             regs[a[0]] = f"__cntlzw({use(a[1])})"; rtype[a[0]] = "u32"; continue
         if mn == "bl":
@@ -784,7 +955,9 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 raise Give()
             # arguments: r3..rN where N is the highest argument register set here; a lower
             # register never written is a parameter of ours passed straight through
-            set_regs = [k for k in range(3, 11) if f"r{k}" in regs]
+            # an argument register counts only if this function wrote it since the last call
+            # (a stale value from earlier code is not an argument), or passes a parameter through
+            set_regs = [k for k in range(3, 11) if f"r{k}" in regs and (f"r{k}" in written_since_call or f"r{k}" in params and regs[f"r{k}"] == f"arg{params.index(f'r{k}')}")]
             top = max(set_regs) if set_regs else 2
             # registers below the lowest temporary this function used are parameters passed
             # straight through to the callee: a temporary in r6 with r3..r5 untouched means
@@ -794,7 +967,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             if temp_low is not None and temp_low - 1 > top:
                 top = temp_low - 1
             args = [use(f"r{k}") for k in range(3, top + 1)]
-            fset = [k for k in range(1, 9) if f"f{k}" in regs]
+            fset = [k for k in range(1, 9) if f"f{k}" in regs and (f"f{k}" in written_since_call or f"f{k}" in params)]
             ftop = max(fset) if fset else 0
             fargs = [use(f"f{k}") for k in range(1, ftop + 1)]
             ptypes_ = []
@@ -818,6 +991,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                         if regs[r_] == e:
                             regs[r_] = tn
             calls.append(callee)
+            written_since_call.clear()
             if variadic_next[0]:
                 variadic_next[0] = False
                 proto = f"extern u32 {callee}({ptypes_[0] if ptypes_ else 'void *'}, ...);"
@@ -900,7 +1074,19 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             return re.sub(r"&(loc_[0-9A-F]+)\b", lambda m: m.group(1) if m.group(1) in arrays else f"&{m.group(1)}", b)
         body = [fix_addr(b) if not b.startswith(("u8 loc", "u32 loc", "f32 loc", "s16 loc", "u16 loc", "s8 loc", "f64 loc", "struct {")) else b for b in body]
     if temps:
-        body = temps + body
+        # a temporary that holds a pointer global's value is a pointer of that type
+        ptr_types = {g: f"struct {name}_{g}_T *" for g in pfields}
+        fixed_temps = []
+        for tdecl in temps:
+            m_ = re.fullmatch(r"(\S+) (v\d+);", tdecl)
+            if m_:
+                init_line = next((b for b in body if re.fullmatch(rf"{m_.group(2)} = ([A-Za-z_]\w*);", b)), None)
+                if init_line:
+                    src_ = re.fullmatch(rf"{m_.group(2)} = ([A-Za-z_]\w*);", init_line).group(1)
+                    if src_ in ptr_types:
+                        tdecl = f"{ptr_types[src_]}{m_.group(2)};"
+            fixed_temps.append(tdecl)
+        body = fixed_temps + body
     if locals_:
         body = [f"struct {name}_{g} *{ln};" for ln, g in locals_.items()] + body
     # an address stored or passed is a pointer: cast, so u32 fields and parameters accept it
@@ -910,6 +1096,8 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         body = [re.sub(rf"(= ){re.escape(f)}(?=;)", rf"\1(u32){f}", b) for b in body]
     if ret is not None:
         body.append(f"return {ret};")
+    if any(("__MULHU__" in b or "__I2D__" in b or "__XORIS__" in b or "__FCTIWZ__" in b) for b in body) or (ret and any(x in ret for x in ("__MULHU__", "__I2D__", "__XORIS__", "__FCTIWZ__"))):
+        raise Give()
     def peephole(b: str) -> str:
         m = re.fullmatch(r"(\S.*?) = \((\S.*?) ([+-]) (\d+)\);", b)
         if m and m.group(1) == m.group(2):
@@ -919,6 +1107,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             return f"{m.group(1)} {m.group(3)}= {k};"
         return b
     body = [peephole(b) for b in body]
+    body = [re.sub(r"\((\S+) - \(\(\1 / (\d+)\) \* \2\)\)", r"(\1 % \2)", b) for b in body]
     rtype_c = "void"
     if any(b.startswith("return ") for b in body):
         rtype_c = rtype.get("r3", "u32")
@@ -973,7 +1162,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     for g, offs in pfields.items():
         sname = f"{name}_{g}_T"
         structs.append(struct_text(sname, offs))
-        externs[g] = re.sub(r"^extern \S+ ", f"extern struct {sname} *", externs[g]) if g in externs else f"extern struct {sname} *{g};"
+        externs[g] = f"extern struct {sname} *{g};"
     for g in empty_globals:
         sname = f"{name}_{g}"
         body = [b.replace(f"struct {sname} *", "u8 *").replace(f"(struct {sname} *)", "(u8 *)") for b in body]
