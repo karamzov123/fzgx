@@ -155,3 +155,6 @@ rel/title/title/fn_8_6594.c:
 
 rel/title/name_entry/fn_8_FF9C.c:
 	.text       start:0x0000FF9C end:0x00010084 align:4
+
+rel/title/operation/fn_8_8C48.c:
+	.text       start:0x00008C48 end:0x00008C80 align:4

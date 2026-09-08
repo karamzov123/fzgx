@@ -32,3 +32,6 @@ rel/profile/fn_16_DC8.c:
 
 rel/profile/fn_16_24A4.c:
 	.text       start:0x000024A4 end:0x000024FC align:4
+
+rel/profile/fn_16_96C.c:
+	.text       start:0x0000096C end:0x000009EC align:4

@@ -126,6 +126,33 @@ void fn_8_8C44(void) {
 }
 /* fzgx:end fn_8_8C44 */
 
+/* fzgx:begin fn_8_8C48 */
+struct fn_8_8C48_lbl_8_bss_2A8 {
+    u8 pad_0[0x124];
+    u32 unk_124;
+    u8 pad_128[0x4];
+    u32 unk_12C;
+    u32 unk_130;
+    u32 unk_134;
+    u32 unk_138;
+};
+
+extern struct fn_8_8C48_lbl_8_bss_2A8 lbl_8_bss_2A8;
+extern u32 lbl_1_bss_26C60;
+extern void fn_8_5FD4(void);
+
+void fn_8_8C48(void) {
+    struct fn_8_8C48_lbl_8_bss_2A8 *p_lbl_8_bss_2A8;
+    p_lbl_8_bss_2A8 = (struct fn_8_8C48_lbl_8_bss_2A8 *)&lbl_8_bss_2A8;
+    lbl_1_bss_26C60 = (u32)fn_8_5FD4;
+    p_lbl_8_bss_2A8->unk_12C = 0;
+    p_lbl_8_bss_2A8->unk_124 = 0;
+    p_lbl_8_bss_2A8->unk_130 = 0;
+    p_lbl_8_bss_2A8->unk_134 = -1;
+    p_lbl_8_bss_2A8->unk_138 = 0;
+}
+/* fzgx:end fn_8_8C48 */
+
 /* fzgx:begin fn_8_9B04 */
 extern struct fn_8_9B04_lbl_8_bss_2A8 lbl_8_bss_2A8;
 extern u32 fn_80008BA8(u32, u32, u32);

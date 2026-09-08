@@ -472,6 +472,36 @@ void fn_4_89E4(void) {
 }
 /* fzgx:end fn_4_89E4 */
 
+/* fzgx:begin fn_4_8AE0 */
+struct fn_4_8AE0_lbl_4_bss_0 {
+    u16 unk_0;
+};
+
+extern struct fn_4_8AE0_lbl_4_bss_0 lbl_4_bss_0;
+extern u32 fn_1_426C(u32);
+extern u32 fn_1_435C(u32);
+extern u32 fn_4_AB90(void);
+extern u32 lbl_4_bss_8;
+
+void fn_4_8AE0(u32 arg0) {
+    u32 v0;
+    u32 t1, t2;
+    fn_4_AB90();
+    v0 = arg0;
+    if (lbl_4_bss_0.unk_0 != 0) {
+    v0 = (u32)&lbl_4_bss_8;
+    v0 = *(u32 *)((u8 *)v0 + 0);
+    t1 = fn_1_435C(v0);
+    v0 = t1;
+    v0 = (u32)&lbl_4_bss_0;
+    v0 = *(u16 *)((u8 *)v0 + 0);
+    t2 = fn_1_426C(v0);
+    v0 = t2;
+    lbl_4_bss_0.unk_0 = 0;
+    }
+}
+/* fzgx:end fn_4_8AE0 */
+
 /* fzgx:begin fn_4_8DC0 */
 extern struct fn_4_8DC0_lbl_4_bss_0 lbl_4_bss_0;
 extern u32 fn_1_3F8C(u32, u32, u32, u32);

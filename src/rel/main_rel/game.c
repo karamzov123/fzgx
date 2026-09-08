@@ -394,6 +394,23 @@ s32 fn_1_3F164(void) {
 }
 /* fzgx:end fn_1_3F164 */
 
+/* fzgx:begin fn_1_3F1AC noprologue */
+#include "types.h"
+
+extern u32 lbl_1_bss_3C30[];
+extern u8 lbl_1_bss_3C12;
+
+u32 fn_1_3F1AC(u32 arg0) {
+    u32 v0;
+    v0 = arg0;
+    if (lbl_1_bss_3C12 == 0) {
+    v0 = 0;
+    return v0;
+    }
+    return ((lbl_1_bss_3C30[0] >> 1) & 0x1);
+}
+/* fzgx:end fn_1_3F1AC */
+
 /* fzgx:begin fn_1_3F1D4 */
 // Return the stored status byte when the game state is initialized.
 s32 fn_1_3F1D4(void) {

@@ -43,6 +43,22 @@ extern u32 lbl_1_rodata_6A8C[3];
 extern void fn_80008BA8(void *dst, void *value, u32 size);
 extern void fn_1_12EF80(s16 arg, s16 *out_group, s16 *out_entry);
 
+/* fzgx:begin fn_1_E49D4 */
+extern u32 fn_1_E3C38(u32, u32);
+extern u32 fn_1_E5430(u32);
+extern u32 fn_1_E54A8(u32, u32);
+
+void fn_1_E49D4(void) {
+    s32 v0;
+    u32 t0, t1;
+    v0 = 0;
+    while ((s16)v0 < 6) {
+    fn_1_E3C38((fn_1_E54A8(v0, 0)), (fn_1_E5430(v0)));
+    v0++;
+    }
+}
+/* fzgx:end fn_1_E49D4 */
+
 /* fzgx:begin fn_1_E50F0 */
 void fn_1_E50F0(void *base, void *arg) {
     struct {

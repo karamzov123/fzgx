@@ -120,6 +120,113 @@ void fn_1_A04AC(void) {
 }
 /* fzgx:end fn_1_A04AC */
 
+/* fzgx:begin fn_1_A04C4 noprologue */
+#include "types.h"
+
+struct fn_1_A04C4_lbl_1_bss_6EA98 {
+    u8 pad_0[0xD];
+    u8 unk_D;
+    u8 unk_E;
+    u8 pad_F[0x9];
+    u8 unk_18;
+    u8 pad_19[0x3];
+    u32 unk_1C;
+    u16 unk_20;
+    u8 pad_22[0x2];
+    f32 unk_24;
+    f32 unk_28;
+    u8 unk_2C;
+    u8 unk_2D;
+    u8 pad_2E[0x2];
+    u32 unk_30;
+    u8 pad_34[0x4];
+    u32 unk_38;
+};
+
+extern f32 lbl_1_rodata_42E0;
+extern struct fn_1_A04C4_lbl_1_bss_6EA98 lbl_1_bss_6EA98;
+extern u32 OSGetSoundMode(void);
+extern u32 fn_1_44A4(void);
+extern u32 fn_1_A2E24(u32, u32, u32);
+extern u32 fn_80008BEC(u32, u32, u32);
+extern u32 fn_80022014(u32);
+extern u32 fn_80025D50(u32, u32);
+extern u32 fn_8004B7D4(u32);
+extern u32 fn_8004BBA4(u32, u32);
+extern u32 fn_8004C698(u32);
+extern u32 fn_8004CAC8(u32);
+extern u32 fn_8004CD70(u32, u32, u32);
+extern u32 fn_8004E59C(u32);
+extern u32 fn_8004EC34(u32);
+extern u32 fn_80065890(void);
+extern u32 fn_8006589C(u32);
+extern u32 fn_800658A8(u32);
+extern void fn_1_9FE74(void);
+extern void fn_1_9FEE8(void);
+extern void fn_1_9FF50(void);
+extern void fn_1_9FF54(void);
+extern void fn_1_9FF58(void);
+extern void fn_1_A04AC(void);
+
+void fn_1_A04C4(void) {
+    struct fn_1_A04C4_lbl_1_bss_6EA98 *p_lbl_1_bss_6EA98;
+    u32 v0;
+    u32 v1;
+    u32 v2;
+    u32 v3;
+    u32 v4;
+    u32 t1, t2, t15, t16, t17, t18, t19, t20;
+    p_lbl_1_bss_6EA98 = (struct fn_1_A04C4_lbl_1_bss_6EA98 *)&lbl_1_bss_6EA98;
+    p_lbl_1_bss_6EA98->unk_E = 0;
+    fn_80025D50((u32)fn_1_9FE74, (u32)fn_1_9FEE8);
+    t1 = fn_80022014((u32)fn_1_9FF58);
+    t2 = fn_8004EC34(0);
+    fn_8004E59C(0);
+    fn_8004BBA4((u32)fn_1_9FF50, 0);
+    p_lbl_1_bss_6EA98->unk_1C = 0;
+    p_lbl_1_bss_6EA98->unk_20 = 0;
+    p_lbl_1_bss_6EA98->unk_24 = lbl_1_rodata_42E0;
+    p_lbl_1_bss_6EA98->unk_28 = lbl_1_rodata_42E0;
+    p_lbl_1_bss_6EA98->unk_2C = 255;
+    p_lbl_1_bss_6EA98->unk_2D = 0;
+    fn_80008BEC((p_lbl_1_bss_6EA98->unk_30), 0, (0x30000 + -32768));
+    fn_800658A8((u32)fn_1_A04AC);
+    fn_8006589C((u32)fn_1_9FF54);
+    fn_1_44A4();
+    fn_80065890();
+    fn_8004C698(*(u32 *)((u8 *)p_lbl_1_bss_6EA98->unk_38 + 0));
+    fn_8004CAC8(*(u32 *)((u8 *)p_lbl_1_bss_6EA98->unk_38 + 0));
+    fn_8004C698(*(u32 *)((u8 *)p_lbl_1_bss_6EA98->unk_38 + 4));
+    fn_8004CAC8(*(u32 *)((u8 *)p_lbl_1_bss_6EA98->unk_38 + 4));
+    fn_80008BEC(p_lbl_1_bss_6EA98->unk_38, 0, (0x90000 + 29856));
+    t15 = fn_8004CD70(2, (p_lbl_1_bss_6EA98->unk_38 + 16), (0x50000 - 23992));
+    v1 = p_lbl_1_bss_6EA98->unk_38;
+    *(u32 *)((u8 *)v1 + 0) = t15;
+    t16 = fn_8004CD70(2, ((p_lbl_1_bss_6EA98->unk_38 + 0x50000) - 23976), (0x50000 - 23992));
+    v2 = p_lbl_1_bss_6EA98->unk_38;
+    *(u32 *)((u8 *)v2 + 4) = t16;
+    *(u32 *)((u8 *)p_lbl_1_bss_6EA98->unk_38 + 8) = 0;
+    v3 = p_lbl_1_bss_6EA98->unk_38;
+    *(u32 *)((u8 *)v3 + 12) = 0;
+    t17 = OSGetSoundMode();
+    v4 = t17;
+    if (t17 == 0) {
+    v4 = 0;
+    t18 = fn_1_A2E24(v4, (0xA0000000 + 2304), 0);
+    v4 = t18;
+    v4 = 1;
+    t19 = fn_8004B7D4(v4);
+    v4 = t19;
+    } else {
+    v4 = 0;
+    t20 = fn_1_A2E24(v4, (0xA0000000 + 2048), 0);
+    v4 = t20;
+    }
+    p_lbl_1_bss_6EA98->unk_18 = 1;
+    p_lbl_1_bss_6EA98->unk_D = 0;
+}
+/* fzgx:end fn_1_A04C4 */
+
 /* fzgx:begin fn_1_A0C68 */
 enum {
     ADDR_A6000000 = 0xA6000000,

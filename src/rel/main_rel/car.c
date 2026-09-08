@@ -3123,6 +3123,49 @@ u32 fn_1_900B4(void) {
 }
 /* fzgx:end fn_1_900B4 */
 
+/* fzgx:begin fn_1_900C4 noprologue */
+#include "types.h"
+
+struct fn_1_900C4_lbl_1_bss_6E960 {
+    u32 unk_0;
+    u32 unk_4;
+    u32 unk_8;
+    u32 unk_C;
+    u32 unk_10;
+    u32 unk_14;
+    u32 unk_18;
+    u32 unk_1C;
+    u32 unk_20;
+};
+struct fn_1_900C4_lbl_1_data_27920 {
+    u32 unk_0;
+};
+
+extern struct fn_1_900C4_lbl_1_bss_6E960 lbl_1_bss_6E960;
+extern struct fn_1_900C4_lbl_1_data_27920 lbl_1_data_27920;
+extern u32 fn_1_95210(u32);
+extern u32 lbl_1_data_27924;
+
+void fn_1_900C4(void) {
+    struct fn_1_900C4_lbl_1_bss_6E960 *p_lbl_1_bss_6E960;
+    p_lbl_1_bss_6E960 = (struct fn_1_900C4_lbl_1_bss_6E960 *)&lbl_1_bss_6E960;
+    p_lbl_1_bss_6E960->unk_1C = 1;
+{
+    u32 v0;
+    p_lbl_1_bss_6E960->unk_18 = 0;
+    p_lbl_1_bss_6E960->unk_20 = 0;
+    p_lbl_1_bss_6E960->unk_0 = 0;
+    p_lbl_1_bss_6E960->unk_4 = 0;
+    p_lbl_1_bss_6E960->unk_8 = 0;
+    p_lbl_1_bss_6E960->unk_C = 0;
+    lbl_1_data_27924 = 1;
+    p_lbl_1_bss_6E960->unk_10 = 0;
+    p_lbl_1_bss_6E960->unk_14 = 0;
+    fn_1_95210((lbl_1_data_27920.unk_0));
+}
+}
+/* fzgx:end fn_1_900C4 */
+
 /* fzgx:begin fn_1_924CC */
 void fn_1_924CC(void) {
     u32 value;

@@ -488,6 +488,37 @@ void fn_1_131050(u32 value, u32 state) {
 }
 /* fzgx:end fn_1_131050 */
 
+/* fzgx:begin fn_1_131084 noprologue */
+#include "types.h"
+
+struct fn_1_131084_lbl_1_bss_8CA40 {
+    u32 unk_0;
+    u32 unk_4;
+    u32 unk_8;
+    u8 pad_C[0x4];
+    u32 unk_10;
+    u8 pad_14[0x18];
+    u32 unk_2C;
+};
+
+extern struct fn_1_131084_lbl_1_bss_8CA40 lbl_1_bss_8CA40;
+
+void fn_1_131084(u32 arg0, u32 arg1) {
+    struct fn_1_131084_lbl_1_bss_8CA40 *p_lbl_1_bss_8CA40;
+    p_lbl_1_bss_8CA40 = (struct fn_1_131084_lbl_1_bss_8CA40 *)&lbl_1_bss_8CA40;
+    if (arg0 == 0) { return; }
+{
+    u32 v0;
+    v0 = p_lbl_1_bss_8CA40->unk_0;
+    p_lbl_1_bss_8CA40->unk_10 = arg0;
+    p_lbl_1_bss_8CA40->unk_8 = arg1;
+    p_lbl_1_bss_8CA40->unk_2C = arg1;
+    if ((s32)v0 != -1) { return; }
+}
+    p_lbl_1_bss_8CA40->unk_4 = 4;
+}
+/* fzgx:end fn_1_131084 */
+
 /* fzgx:begin fn_1_1310E0 */
 s32 fn_1_1310E0(void) {
     return lbl_1_bss_8CA40 != -1;
