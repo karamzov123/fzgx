@@ -43,3 +43,13 @@ compile_commands.json
 
 # fzgx local state (ledger, locks, attempts); committed snapshot lives in state/
 .fzgx/
+
+# Editors, caches, per-user settings
+.vscode/
+.idea/
+.claude/settings.local.json
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+*.pyc
