@@ -64,3 +64,11 @@ void fn_1_154F88(f32 value) {
     lbl_1_bss_8EDF0[11] = value;
 }
 /* fzgx:end fn_1_154F88 */
+
+/* fzgx:begin fn_1_154FC0 */
+#include "rel/main_rel/rep_memcard.h"
+
+void fn_1_154FC0(void) {
+    lbl_1_bss_8EDF0.unk_8 &= ~4;
+}
+/* fzgx:end fn_1_154FC0 */
