@@ -358,6 +358,34 @@ def cmd_lab(a, p):
     return 0
 
 
+def cmd_regalloc(a, p):
+    from . import regalloc
+    if a.corpus is not None:
+        out = regalloc.run(p, a.corpus, a.limit, submit=not a.no_submit)
+        print(f"{out['bodies']} bodies, {len(out['matched'])} matched, {out['improved']} improved, {out['candidates']} candidates, {out['secs']} s")
+        for s_, label in out["matched"]:
+            print(f"  {s_:24s} {label}")
+        return 0
+    body = None
+    if a.body:
+        body = Path(a.body).read_text()
+    else:
+        import sqlite3
+        from .project import STATE_DIR
+        db = sqlite3.connect(str(STATE_DIR / "ledger.db"))
+        row = db.execute("select best_body_path from attempts where symbol=? and best_body_path is not null order by best_in_attempt desc limit 1",
+                         (a.symbol.split(":")[-1],)).fetchone()
+        if row and Path(row[0]).exists():
+            body = Path(row[0]).read_text()
+    if body is None:
+        print("no body: pass --body or have a saved attempt"); return 2
+    r = regalloc.search(p, a.symbol, body, budget_s=a.budget)
+    print(json.dumps({k: v for k, v in r.items() if k != "body"}, indent=1))
+    if r.get("body") and a.out:
+        Path(a.out).write_text(r["body"]); print(f"wrote {a.out}")
+    return 0 if r.get("matched") else 1
+
+
 def cmd_exemplars(a, p):
     from . import exemplars
     ex = exemplars.mine(p)
@@ -397,6 +425,9 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("symbol"); s.add_argument("--agent", required=True); s.add_argument("--old-file", required=True); s.add_argument("--new-file", required=True)
     s = sub.add_parser("lab", help="perturbation lab: which source rewrite closes a 97%+ body; submits matches"); s.set_defaults(fn=cmd_lab)
     s.add_argument("--min-percent", type=float, default=97.0); s.add_argument("--limit", type=int, default=400); s.add_argument("--no-submit", action="store_true")
+    s = sub.add_parser("regalloc", help="register-allocation search on a near-match body (declaration order, scope, initializer splits); --corpus runs every 90%+ attempt and submits matches"); s.set_defaults(fn=cmd_regalloc)
+    s.add_argument("symbol", nargs="?"); s.add_argument("--body"); s.add_argument("--out"); s.add_argument("--budget", type=float, default=8.0)
+    s.add_argument("--corpus", type=float, help="minimum best percent of the attempts to search"); s.add_argument("--limit", type=int, default=2000); s.add_argument("--no-submit", action="store_true")
     s = sub.add_parser("exemplars", help="mine (plateau -> match) edit pairs from the check history"); s.set_defaults(fn=cmd_exemplars)
     s = sub.add_parser("check", help="compile + objdiff one function"); s.set_defaults(fn=cmd_check)
     s.add_argument("symbol"); s.add_argument("--max-diff-lines", type=int, default=80)

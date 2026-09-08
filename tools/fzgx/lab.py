@@ -21,7 +21,7 @@ from typing import Dict, List, Optional, Tuple
 from . import fixup, lift, oracle, stuck
 from .project import STATE_DIR, Project
 
-DECL_RE = re.compile(r"^\s*(?:const\s+)?((?:struct\s+\w+\s*\*?|[A-Za-z_]\w*(?:\s*\*)?))\s+([A-Za-z_]\w*)((?:\[[^\]]*\])*)\s*;\s*$")
+DECL_RE = re.compile(r"^\s*(?:const\s+)?((?:struct\s+\w+\s*\*?|[A-Za-z_]\w*(?:\s*\*)?))(?:(?<=\*)\s*|\s+)([A-Za-z_]\w*)((?:\[[^\]]*\])*)\s*;\s*$")
 FLIP = {"s32": "u32", "u32": "s32", "s16": "u16", "u16": "s16", "s8": "u8", "u8": "s8", "f32": "f64", "f64": "f32", "int": "u32"}
 
 

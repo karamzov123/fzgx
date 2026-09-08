@@ -122,6 +122,16 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
         return out
     counts = _kinds(base)
     out["kinds"] = {k: v for k, v in counts.items()}
+    # first, a fraction of a second: the register-allocation search (declaration order, scope,
+    # initializer splits) on a body that is already close; the type families come after
+    if base.percent >= 85.0 and _depth == 0:
+        from . import regalloc
+        ra = regalloc.search(p, symbol, body, budget_s=min(budget_s, 8.0))
+        out["regalloc"] = {"tried": ra.get("tried"), "best": ra.get("best"), "secs": ra.get("secs")}
+        if ra.get("matched") and ra.get("body"):
+            out.update(matched=True, body=ra["body"], tried=ra.get("tried", 0), best=100.0,
+                       label=f"regalloc {ra.get('stage')}: {ra.get('label')}", secs=round(time.time() - t0, 2))
+            return out
     lrows, rrows = base._rows
     diffs = [(stuck._fmt(a), stuck._fmt(b)) for a, b in zip(lrows, rrows) if (a.get("diff_kind") or "DIFF_NONE") != "DIFF_NONE"]
     span = _function_span(body, sym.name)
