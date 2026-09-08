@@ -125,3 +125,79 @@ def tidy(p: Project, tu_source: str, dry_run: bool = False) -> Dict[str, object]
             tufile.write_gen(p, u, tf)
             reverted.append((b.name, removed, res.error[-160:] if not res.ok else f"{res.percent:.1f}%"))
     return {"tu": tu_source, "tidied": kept, "reverted": reverted, "untouched": untouched}
+
+
+DECL_LINE_RE = re.compile(r"^\s*extern\b[^{]*;\s*$")
+
+
+def _decl_name(line: str) -> Optional[str]:
+    m = PROTO_RE.match(line) if "(" in line else EXTERN_RE.match(line)
+    return m.group(1) if m else None
+
+
+def hoist_decls(p: Project, tu_source: str) -> Dict[str, object]:
+    """Move block-level `extern` declarations (data and prototypes) into the TU prologue.
+
+    Per symbol the declaration used by most blocks wins (ties: the longest). Every block
+    is re-checked; a block that stops matching keeps its own declaration and is flagged
+    `noprologue` so the tree stays green: it is the revise pass's queue, with the
+    prologue's declaration as the target."""
+    from collections import Counter
+    module = tu_source.split("/")[1] if tu_source.startswith("rel/") else "main"
+    tf = tufile.load(p, tu_source)
+    units = {u["symbols"][0]: u for u in p.load_units() if u.get("tu") == tu_source}
+    # types defined inside blocks are invisible to the prologue: declarations naming them stay
+    private = set()
+    for b in tf.blocks:
+        private.update(m.group(1) for m in re.finditer(r"^\}\s*([A-Za-z_]\w*)\s*;", b.body, re.M))
+        private.update(m.group(1) for m in re.finditer(r"^typedef\s+[^{;]*?\b([A-Za-z_]\w*)\s*;", b.body, re.M))
+    private.update(m.group(1) for m in re.finditer(r"^\}\s*([A-Za-z_]\w*)\s*;", tf.prologue, re.M))
+    variants: Dict[str, Counter] = {}
+    order: List[str] = []
+    for b in tf.blocks:
+        if "noprologue" in b.flags:
+            continue
+        for ln in b.body.splitlines():
+            if DECL_LINE_RE.match(ln):
+                n = _decl_name(ln)
+                if n and not (set(re.findall(r"[A-Za-z_]\w*", ln)) & private):
+                    variants.setdefault(n, Counter())[ln.strip()] += 1
+                    if n not in order:
+                        order.append(n)
+    if not variants:
+        return {"hoisted": [], "flagged": [], "conflicts": {}}
+    canon = {n: max(c.items(), key=lambda kv: (kv[1], len(kv[0])))[0] for n, c in variants.items()}
+    conflicts = {n: sorted(c) for n, c in variants.items() if len(c) > 1}
+    old_incs = [ln.strip() for ln in tf.prologue.splitlines() if tufile.INCLUDE_RE.match(ln)]
+    pro = tf.prologue.rstrip("\n") + "\n\n" + "\n".join(canon[n] for n in order) + "\n"
+    tf.prologue = pro
+    flagged, hoisted = [], []
+    path = tufile.tu_path(p, tu_source)
+    for b in tf.blocks:
+        if "noprologue" in b.flags:
+            continue
+        kept = [ln for ln in b.body.splitlines() if not (DECL_LINE_RE.match(ln) and _decl_name(ln) in canon)]
+        if len(kept) == len(b.body.splitlines()):
+            continue
+        old_body = b.body
+        b.body = re.sub(r"\n{3,}", "\n\n", "\n".join(kept)).strip("\n") + "\n"
+        u = units.get(b.name)
+        if u is None:
+            continue
+        tufile._write_atomic(path, tf.render())
+        tufile.write_gen(p, u, tf)
+        res = oracle.check(p, b.name, 20)
+        ok = res.ok and (res.matched or res.matched_pool) and oracle.unit_fully_matches(res) is None
+        if ok:
+            hoisted.append(b.name)
+        else:
+            b.body = old_body
+            b.flags.append("noprologue")
+            inc, body = tufile.split_includes(b.body)
+            keep = list(dict.fromkeys(old_incs + [ln.strip() for ln in inc]))
+            b.body = "\n".join(keep) + "\n\n" + body
+            tufile._write_atomic(path, tf.render())
+            tufile.write_gen(p, u, tf)
+            flagged.append(b.name)
+    tufile._write_atomic(path, tf.render())
+    return {"hoisted": hoisted, "flagged": flagged, "conflicts": conflicts, "prologue_decls": len(canon)}

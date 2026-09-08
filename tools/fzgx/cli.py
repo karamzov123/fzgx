@@ -240,6 +240,12 @@ def cmd_tu_include(a, p):
     _print(r, a.json); return 0
 
 
+def cmd_tu_hoist_decls(a, p):
+    from . import tutidy  # scoped: librarian pass only when asked
+    r = tutidy.hoist_decls(p, a.tu)
+    _print(r, a.json); return 0
+
+
 def cmd_gen(a, p):
     from . import tufile  # scoped: same
     print(f"{tufile.regenerate(p)} generated units")
@@ -353,6 +359,8 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("tu"); s.add_argument("--dry-run", action="store_true")
     s = sub.add_parser("tu-include", help="add a header to a TU prologue; blocks that stop compiling are flagged noprologue"); s.set_defaults(fn=cmd_tu_include)
     s.add_argument("tu"); s.add_argument("include", help='e.g. rel/main_rel/alloc.h')
+    s = sub.add_parser("tu-hoist-decls", help="move block extern declarations into the TU prologue (canonical per symbol); disagreeing blocks flagged"); s.set_defaults(fn=cmd_tu_hoist_decls)
+    s.add_argument("tu")
     s = sub.add_parser("gen", help="regenerate every per-function unit from the TU files"); s.set_defaults(fn=cmd_gen)
     s = sub.add_parser("permute", help="decomp-permuter on a plateaued attempt; submits on a byte-identical result"); s.set_defaults(fn=cmd_permute)
     s.add_argument("symbol", nargs="?"); s.add_argument("--threads", type=int, default=8); s.add_argument("--seconds", type=int, default=600)

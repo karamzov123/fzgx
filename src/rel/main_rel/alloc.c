@@ -2,6 +2,29 @@
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/alloc.h"
 
+extern char lbl_1_data_2C9C[20];
+extern void fn_8000C49C(const char *message, int line, const char *file, ...);
+extern void fn_80009AA8(u32 value, u32 count, const char *file, int line);
+extern u32 fn_1_435C(u32 value);
+extern void fn_1_426C(s16 value);
+extern f32 lbl_1_rodata_160;
+extern f32 lbl_1_rodata_164[2];
+extern u32 lbl_1_bss_F5C;
+extern u32 lbl_1_bss_F60[2];
+extern s32 fn_8008023C(Obj_1_bss_7AC20 *, u32 *, u32);
+extern u32 lbl_801A6410;
+extern Obj_1_bss_F68_Target *fn_1_45D0(u32, u32, u8 *, u32);
+extern void fn_800793D4(Obj_1_bss_F68_Target *, u32, u32);
+extern u16 fn_1_3F8C(u8 *, void (*)(void), u32, u32);
+extern void fn_1_6394(void);
+extern void fn_1_63D4(void);
+extern void fn_1_DF74(void);
+extern u8 lbl_1_bss_F76;
+extern void fn_1_DA6C(LiveCamera *);
+extern void fn_1_DE14(LiveCamera *);
+extern void fn_1_E174(void);
+extern void fn_1_F3D0(LiveCamera *);
+
 /* fzgx:begin fn_1_4928 */
 #include "rel/main_rel/alloc.h"
 
@@ -12,9 +35,6 @@ typedef struct {
 } Fn1_4928Entry;
 
 extern Fn1_4928Entry lbl_1_bss_DCC[32];
-extern char lbl_1_data_2C9C[20];
-extern void fn_8000C49C(const char *message, int line, const char *file, ...);
-extern void fn_80009AA8(u32 value, u32 count, const char *file, int line);
 
 void fn_1_4928(void) {
     u32 value;
@@ -54,9 +74,6 @@ void fn_1_49F0(u32 *value) {
 /* fzgx:begin fn_1_4BB0 */
 #include "rel/main_rel/alloc.h"
 
-extern u32 fn_1_435C(u32 value);
-extern void fn_1_426C(s16 value);
-
 void fn_1_4BB0(void) {
     if (lbl_1_data_2CDC.unk_3 & 1) {
         u32 value = fn_1_435C(lbl_1_data_2CDC.unk_C);
@@ -92,9 +109,6 @@ void fn_1_4CC0(void) {
 /* fzgx:end fn_1_4CC0 */
 
 /* fzgx:begin fn_1_4D14 pool */
-extern f32 lbl_1_rodata_160;
-extern f32 lbl_1_rodata_164[2];
-
 typedef struct Fn14D14Data {
     u8 value0;
     u8 value1;
@@ -138,9 +152,6 @@ void fn_1_4FEC(void) {
 /* fzgx:end fn_1_4FEC */
 
 /* fzgx:begin fn_1_4FFC */
-extern u32 lbl_1_bss_F5C;
-extern u32 lbl_1_bss_F60[2];
-
 s32 fn_1_3FC28(void);
 void fn_1_3EF14(u32 *);
 
@@ -169,8 +180,6 @@ void fn_1_4FFC(void) {
 /* fzgx:end fn_1_4FFC */
 
 /* fzgx:begin fn_1_509C */
-extern s32 fn_8008023C(Obj_1_bss_7AC20 *, u32 *, u32);
-
 // Initialize the allocation state and report whether initialization succeeded.
 s32 fn_1_509C(void) {
     lbl_1_bss_7AC40 = lbl_1_bss_F58;
@@ -202,16 +211,6 @@ typedef struct {
     u8 pad_C[2];
     u8 unk_E;
 } InitState;
-
-extern u32 lbl_801A6410;
-extern void fn_8000C49C(const char *, ...);
-extern Obj_1_bss_F68_Target *fn_1_45D0(u32, u32, u8 *, u32);
-extern void fn_800793D4(Obj_1_bss_F68_Target *, u32, u32);
-extern void fn_1_435C(u32);
-extern u16 fn_1_3F8C(u8 *, void (*)(void), u32, u32);
-extern void fn_1_6394(void);
-extern void fn_1_63D4(void);
-extern void fn_1_DF74(void);
 
 void fn_1_5124(u32 arg0, u32 arg1) {
     InitState *state = (InitState *)&lbl_1_bss_F68;
@@ -251,8 +250,6 @@ void fn_1_5124(u32 arg0, u32 arg1) {
 /* fzgx:end fn_1_5124 */
 
 /* fzgx:begin fn_1_52E0 */
-extern u8 lbl_1_bss_F76;
-
 // Update the shared flag and the live object state when it exists.
 void fn_1_52E0(u8 value) {
     lbl_1_bss_F76 = value;
@@ -339,10 +336,6 @@ u8 fn_1_5910(void) {
 /* fzgx:begin fn_1_6394 */
 #include "rel/main_rel/alloc.h"
 
-extern void fn_1_DA6C(LiveCamera *);
-extern void fn_1_DE14(LiveCamera *);
-extern void fn_1_E174(void);
-
 void fn_1_6394(void) {
     fn_1_DA6C(live_camera);
     fn_1_DE14(live_camera);
@@ -351,8 +344,6 @@ void fn_1_6394(void) {
 /* fzgx:end fn_1_6394 */
 
 /* fzgx:begin fn_1_63D4 */
-extern void fn_1_F3D0(LiveCamera *);
-
  // Update the camera using the active camera object.
 void fn_1_63D4(void) {
     fn_1_F3D0(live_camera);
