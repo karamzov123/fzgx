@@ -236,6 +236,29 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 return sd, addr - sd.addr
         return None
 
+    def rlwinm_expr(x: str, sh: int, mb: int, me: int) -> Optional[str]:
+        """rotate-left-and-mask as C, when the rotate does not wrap through the mask."""
+        if mb <= me:
+            mask = ((0xFFFFFFFF >> mb) & (0xFFFFFFFF << (31 - me))) & 0xFFFFFFFF
+        else:
+            mask = ((0xFFFFFFFF >> mb) | (0xFFFFFFFF << (31 - me))) & 0xFFFFFFFF
+        if sh == 0:
+            return f"({x} & 0x{mask:X})"
+        if mask & ((1 << sh) - 1) == 0:
+            if mask == (0xFFFFFFFF << sh) & 0xFFFFFFFF:
+                return f"({x} << {sh})"
+            return f"(({x} << {sh}) & 0x{mask:X})"
+        if mask < (1 << sh):
+            if mask == (1 << sh) - 1:
+                return f"((u32){x} >> {32 - sh})"
+            return f"(((u32){x} >> {32 - sh}) & 0x{mask:X})"
+        return None
+
+    def raw_ok(addr: int) -> bool:
+        """Memory no symbol names that the source addressed by number: the OS globals below the
+        first DOL section, and the hardware registers (the lint allows both with a comment)."""
+        return 0x80000000 <= addr < 0x80003100 or 0xCC000000 <= addr <= 0xCC00FFFF
+
     def const_of(b: str) -> Optional[int]:
         m = re.fullmatch(r"0x([0-9A-Fa-f]+)", b) or re.fullmatch(r"\((0x[0-9A-Fa-f]+) \+ (-?\d+)\)", b)
         if not m:
@@ -355,6 +378,12 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     saved_slots: set = set()
     seen_written: set = set()
     for mn_, a_ in ins:
+        if mn_ == "stmw" and a_ and len(a_) >= 2:  # rN..r31 saved at consecutive slots
+            m_ = re.match(r"^(-?0x[0-9a-f]+|-?\d+)\(r1\)$", a_[1])
+            if m_:
+                first = int(a_[0][1:]); base_ = int(m_.group(1), 0)
+                for k_ in range(32 - first):
+                    saved_slots.add(base_ + 4 * k_)
         # a callee-saved register's prologue save: stored before the function writes it
         if mn_ in ("stw", "stfd", "psq_st") and a_ and (SAVE_RE.match(a_[0]) or re.fullmatch(r"f(1[4-9]|2\d|3[01])", a_[0])) and "(r1)" in a_[1] and a_[0] not in seen_written:
             m_ = re.match(r"^(-?0x[0-9a-f]+|-?\d+)\(r1\)$", a_[1])
@@ -895,6 +924,8 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             if mn in ("stfd", "lfd", "psq_st", "psq_l") and a and re.fullmatch(r"f(1[4-9]|2\d|3[01])", a[0]) and slot_ in saved_slots:
                 frame = True
                 continue  # callee-saved float registers
+            if mn in ("stmw", "lmw"):
+                frame = True; continue  # the callee-saved block save/restore
             if mn in ("crclr", "crset") or mn == "nop":
                 if mn == "crclr":
                     variadic_next[0] = True  # `crclr cr1eq`: the callee is variadic (no float varargs)
@@ -928,6 +959,14 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 regs[a[0]] = str(_imm(a[1])); rtype[a[0]] = "s32"; continue
             if mn == "mr":
                 regs[a[0]] = use(a[1]); rtype[a[0]] = rtype.get(a[1], "u32"); continue
+            if mn == "mr.":
+                regs[a[0]] = use(a[1]); rtype[a[0]] = rtype.get(a[1], "u32")
+                cond = (regs[a[0]], "0", rtype[a[0]] in ("u32", "u16", "u8", "void *")); continue
+            if mn == "addis" and not sym_of(a[2]) and a[1] != "r0":
+                imm_ = (_imm(a[2]) << 16) & 0xFFFFFFFF
+                regs[a[0]] = f"({use(a[1])} + 0x{imm_:X})"; rtype[a[0]] = "u32"; continue
+            if mn in ("fcmpo", "fcmpu") and len(a) >= 3:
+                cond = (use(a[1]), use(a[2]), False); continue
             if mn in LOAD_T:
                 m = MEM_RE.match(a[1])
                 if not m:
@@ -980,7 +1019,15 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     elif kind == "abs":
                         hit = symbol_at(key + o)
                         if hit is None:
-                            raise Give(f"unnamed memory 0x{key + o:X}")  # hardware or unnamed memory: nothing the lint would accept
+                            if not raw_ok(key + o):
+                                raise Give(f"unnamed memory 0x{key + o:X}")
+                            regs[a[0]] = f"*({t} *)0x{key + o:08X}"; rtype[a[0]] = t
+                            if mn.endswith("u"):
+                                regs[base] = f"0x{key + o:08X}"
+                            if reused_after_store(i, a[0], a[1]):
+                                tn = f"v{len(temps)}"; temps.append(f"{t} {tn};")
+                                stmts.append(f"{tn} = {regs[a[0]]};"); regs[a[0]] = tn
+                            continue
                         sd, so = hit
                         if so == 0 and sd.size <= 8:
                             declare(sd.name, t, far_ref=True); regs[a[0]] = ref(sd.name)
@@ -1045,7 +1092,9 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     elif kind == "abs":
                         hit = symbol_at(key + o)
                         if hit is None:
-                            raise Give()
+                            if not raw_ok(key + o):
+                                raise Give(f"unnamed memory 0x{key + o:X}")
+                            stmts.append(f"*({t} *)0x{key + o:08X} = {val};"); continue
                         sd, so = hit
                         if so == 0 and sd.size <= 8:
                             declare(sd.name, t, far_ref=True); stmts.append(f"{ref(sd.name)} = {val};")
@@ -1113,18 +1162,10 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     regs[d] = f"({x_} & {_imm(a[2])})"; rtype[d] = "u32"
                 elif mn == "not": regs[d] = f"(~{use(a[1])})"; rtype[d] = "u32"
                 elif mn == "rlwinm":
-                    sh, mb, me = _imm(a[2]), _imm(a[3]), _imm(a[4])
-                    if sh == 0 and mb == 0:
-                        n = me + 1; regs[d] = f"({use(a[1])} & 0x{(0xFFFFFFFF << (32 - n)) & 0xFFFFFFFF:X})"
-                    elif sh == 0 and me == 31:
-                        regs[d] = f"({use(a[1])} & 0x{(1 << (32 - mb)) - 1:X})"
-                    elif mb == 0 and me == 31 - sh:
-                        regs[d] = f"({use(a[1])} << {sh})"
-                    elif me == 31 and mb == 32 - sh and sh:
-                        regs[d] = f"((u32){use(a[1])} >> {32 - sh})"
-                    else:
-                        raise Give()
-                    rtype[d] = "u32"
+                    e_ = rlwinm_expr(use(a[1]), _imm(a[2]), _imm(a[3]), _imm(a[4]))
+                    if e_ is None:
+                        raise Give("rlwinm rotate")
+                    regs[d] = e_; rtype[d] = "u32"
                 else:
                     raise Give()
                 continue
@@ -1142,7 +1183,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 n = _imm(a[2]); regs[a[0]] = f"({use(a[1])} & ~0x{(1 << n) - 1:X})"; rtype[a[0]] = "u32"; continue
             if mn == "clrlslwi":
                 b, n = _imm(a[2]), _imm(a[3]); regs[a[0]] = f"(({use(a[1])} & 0x{(1 << (32 - b)) - 1:X}) << {n})"; rtype[a[0]] = "u32"; continue
-            if mn.endswith(".") and mn[:-1] in ("extrwi", "rlwinm", "andi", "extsb", "extsh", "clrlwi", "subic", "addic", "and", "or", "subf", "add", "neg", "srawi", "cntlzw", "xor", "mulli", "slwi", "srwi"):
+            if mn.endswith(".") and mn[:-1] in ("extrwi", "rlwinm", "andi", "extsb", "extsh", "clrlwi", "clrrwi", "subic", "addic", "and", "or", "subf", "add", "neg", "srawi", "cntlzw", "xor", "mulli", "slwi", "srwi"):
                 # record form: the result is also compared with zero for the branch that follows
                 base_mn = mn[:-1]
                 ins_i = (base_mn, a)
@@ -1159,6 +1200,12 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     regs[a[0]] = f"(s16){use(a[1])}"; rtype[a[0]] = "s16"; handled = True
                 elif base_mn == "clrlwi":
                     n = 32 - _imm(a[2]); regs[a[0]] = f"({use(a[1])} & 0x{(1 << n) - 1:X})"; rtype[a[0]] = "u32"; handled = True
+                elif base_mn == "rlwinm":
+                    e_ = rlwinm_expr(use(a[1]), _imm(a[2]), _imm(a[3]), _imm(a[4]))
+                    if e_ is not None:
+                        regs[a[0]] = e_; rtype[a[0]] = "u32"; handled = True
+                elif base_mn == "clrrwi":
+                    n = _imm(a[2]); regs[a[0]] = f"({use(a[1])} & ~0x{(1 << n) - 1:X})"; rtype[a[0]] = "u32"; handled = True
                 elif base_mn in ("subic", "addic"):
                     k = _imm(a[2]); regs[a[0]] = f"({use(a[1])} {'-' if base_mn == 'subic' else '+'} {k})"; rtype[a[0]] = rtype.get(a[1], "s32"); handled = True
                 elif base_mn == "and":
@@ -1569,6 +1616,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     for pn in ptr_names:
         body = [re.sub(rf"(?<![\w>.*])({re.escape(pn)})\b(?!\s*->|\s*=\s*\(struct)", r"(u32)\1", b)
                 if not (b.startswith(f"{pn} = ") or decl_line.match(b)) else b for b in body]
+    body = [b + "  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */" if re.search(r"\(\s*[\w\s]+\*\s*\)\s*0[xX][0-9A-Fa-f]{8}", b) else b for b in body]
     text = ['#include "types.h"', ""]
     text += sorted(externs.values())
     if structs:

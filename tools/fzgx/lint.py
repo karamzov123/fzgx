@@ -20,7 +20,7 @@ from .project import ROOT
 
 HEX_RE = re.compile(r"\b0[xX]([0-9A-Fa-f]{8})\b")
 PTR_CAST_RE = re.compile(r"\(\s*[\w\s]+\*\s*\)\s*0[xX][0-9A-Fa-f]+")
-ALLOW_RE = re.compile(r"fzgx-allow:\s*(\w+)")
+ALLOW_RE = re.compile(r"fzgx-allow:\s*(\w+(?:,\w+)*)")
 RANGES = [(0x80000000, 0x817FFFFF), (0xC0000000, 0xC17FFFFF), (0xCC000000, 0xCC00FFFF)]
 EXEMPT = {"include/dolphin/hw_regs.h"}
 
@@ -40,20 +40,20 @@ def lint_file(path: Path) -> List[Tuple[str, int, str]]:
     for i, line in enumerate(lines, 1):
         code = line.split("//", 1)[0]
         allowed = ALLOW_RE.search(line)
-        allow = allowed.group(1) if allowed else None
+        allow = set(allowed.group(1).split(",")) if allowed else set()
         prev = lines[i - 2] if i >= 2 else ""
         justified = "//" in line or "//" in prev or "/*" in line or "/*" in prev
         for m in HEX_RE.finditer(code):
             v = int(m.group(1), 16)
             if v == 0x80000000:
                 continue  # the sign-bit mask, not an address (nothing is addressed at the RAM base itself)
-            if any(lo <= v <= hi for lo, hi in RANGES) and allow != "A1":
+            if any(lo <= v <= hi for lo, hi in RANGES) and "A1" not in allow:
                 findings.append(("A1", i, f"hardcoded address 0x{v:08X}; use a symbol"))
-        if PTR_CAST_RE.search(code) and allow != "A2":
+        if PTR_CAST_RE.search(code) and "A2" not in allow:
             findings.append(("A2", i, "literal cast to pointer; declare an extern symbol"))
-        if re.search(r"\bgoto\b", code) and not justified and allow != "S1":
+        if re.search(r"\bgoto\b", code) and not justified and "S1" not in allow:
             findings.append(("S1", i, "goto without a justification comment"))
-        if re.search(r"\bvolatile\b", code) and not justified and allow != "S2":
+        if re.search(r"\bvolatile\b", code) and not justified and "S2" not in allow:
             findings.append(("S2", i, "volatile without a justification comment"))
     return findings
 
