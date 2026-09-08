@@ -194,8 +194,25 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
             "SELECT * FROM attempts WHERE symbol=? AND ended IS NOT NULL ORDER BY final_percent DESC, id DESC LIMIT 1",
             (symbol,)).fetchone()
         if att and att["best_body_path"] and Path(att["best_body_path"]).exists():
-            parts.append(f"\n## Best prior attempt ({att['final_percent'] or 0:.1f}%, notes: {att['notes'] or '-'})\n```c\n"
-                         f"{Path(att['best_body_path']).read_text()}\n```")
+            body = Path(att["best_body_path"]).read_text()
+            parts.append(f"\n## Best prior attempt ({att['final_percent'] or 0:.1f}%, notes: {att['notes'] or '-'})\n```c\n{body}\n```")
+            # the plateau itself: which rows still differ and what kind of difference they are, so the
+            # next attempt changes their cause instead of resubmitting the same body
+            try:
+                from . import oracle, stuck
+                res = oracle.check(project, symbol, 0, source=Path(att["best_body_path"]))
+                if res.ok and not res.matched:
+                    lrows, rrows = getattr(res, "_rows", ([], []))
+                    counts = stuck.classify_rows(lrows, rrows)
+                    mode = stuck._pure(counts, lrows, rrows)
+                    diffs = [(i, stuck._fmt(a), stuck._fmt(b)) for i, (a, b) in enumerate(zip(lrows, rrows))
+                             if (a.get("diff_kind") or "DIFF_NONE") != "DIFF_NONE" or (b.get("diff_kind") or "DIFF_NONE") != "DIFF_NONE"]
+                    kinds = ", ".join(f"{k} {v}" for k, v in counts.items() if ":" not in k)
+                    lines = [f"{i:4d}  {t:38s} | {o}" for i, t, o in diffs[:24]]
+                    parts.append(f"\n### Why it plateaued: {mode} ({kinds}); {len(diffs)} rows differ (target | prior attempt)\n```\n"
+                                 + "\n".join(lines) + ("\n..." if len(diffs) > 24 else "") + "\n```")
+            except Exception:
+                pass
 
     if IDIOMS.exists():
         parts.append("\n## MWCC idioms\n" + IDIOMS.read_text().strip())

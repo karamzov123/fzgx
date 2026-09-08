@@ -15,4 +15,7 @@ them, and treat a PROLOGUE CONFLICT in a check as something to fix. Declare glob
 matched neighbours in the same file do (plain externs by symbol, the header's types); a private struct overlay
 on a bss/data symbol the header already declares changes address materialisation and rarely matches. Unit shape: the includes named in the context; extern declarations for referenced symbols; minimal
 local structs for field offsets only when the headers have none; the function. No hardcoded addresses, no inline asm, no system headers.
+A "Best prior attempt" in the context is a plateau, shown with the rows that still differ and their kind:
+resubmitting it unchanged is worthless (the oracle already scored it). Change what those rows come from:
+the declaration style, the expression shape, the locals, the control flow.
 Finish with exactly one line and nothing else: RESULT: matched|released SYMBOL <percent>% checks=<n>
