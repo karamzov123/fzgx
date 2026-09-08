@@ -14,6 +14,7 @@
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any, Dict, List
@@ -372,11 +373,18 @@ def add_pool_rules() -> None:
         return
     ninja_path = Path("build.ninja")
     text = ninja_path.read_text()
+    # derive from the generated mwcc rule so compiler/wibo paths (which differ in CI) stay right
+    m = re.search(r"^rule mwcc\n((?:  .*\n)+)", text, re.M)
+    if not m:
+        sys.exit("build.ninja: no mwcc rule to derive mwcc_pool from")
+    body = m.group(1)
+    cmd = re.search(r"^  command = (.*?)(?=^  \w+ = |\Z)", body, re.M | re.S).group(1)
+    cmd = " ".join(l.strip().rstrip("$").strip() for l in cmd.splitlines()).strip()
+    rest = re.sub(r"^  command = .*?(?=^  \w+ = |\Z)", "", body, flags=re.M | re.S)
     rule = ("\n# MWCC build, then retarget private literal-pool constants to the retail pooled symbols\n"
             "rule mwcc_pool\n"
-            "  command = build/tools/wibo build/compilers/$mw_version/mwcceppc.exe $cflags -MMD -c $in -o $basedir "
-            "&& $python tools/transform_dep.py $basefile.d $basefile.d && $python tools/fzgx/poolfix.py $out $poolmap\n"
-            "  description = MWCC+POOL $out\n  depfile = $basefile.d\n  deps = gcc\n")
+            f"  command = {cmd} && $python tools/fzgx/poolfix.py $out $poolmap\n"
+            + rest.replace("MWCC $out", "MWCC+POOL $out"))
     if "rule mwcc_pool" not in text:
         text = text.replace("\n# MWCC build (with UTF-8 to Shift JIS wrapper)", rule + "\n# MWCC build (with UTF-8 to Shift JIS wrapper)", 1)
     n = 0
