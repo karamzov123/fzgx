@@ -263,40 +263,85 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
 
     def indexed_field(b: str, o: int, t: str) -> Optional[str]:
         """`(base + (idx << k))` / `(base + (idx * n))` with a displacement is an array field of the
-        struct the base points to: `base->unk_off[idx]` (elements of the access width), or, when
-        the stride is wider, an array of element structs `base->unk_off[idx].unk_0`. MWCC then
-        emits the retail `add; load disp(r)` instead of an indexed load."""
-        m = re.fullmatch(r"\((arg\d+|p_[A-Za-z_]\w*) \+ \((.+?) (<<|\*) (\d+)\)\)", b) or \
-            re.fullmatch(r"\(\((.+?) (<<|\*) (\d+)\) \+ (arg\d+|p_[A-Za-z_]\w*)\)", b)
-        if not m:
-            return None
-        g = m.groups()
-        if g[0].startswith(("arg", "p_")):
-            bexpr, idx, op, n = g
+        struct the base points to: `base->unk_K[idx]` (elements of the access width), or, when the
+        stride is wider, an array of element structs `base->unk_K[idx].unk_o` whose fields collect
+        across accesses. MWCC then emits the retail `add; load disp(r)` instead of an indexed load."""
+        BASE = r"(arg\d+|p_[A-Za-z_]\w*|&[A-Za-z_]\w*|\(\(u8 \*\)&[A-Za-z_]\w* \+ \d+\)|\(\(u8 \*\)arg\d+ \+ \d+\)|\(\(u8 \*\)p_[A-Za-z_]\w* \+ \d+\))"
+        IDX = r"\((.+?) (<<|\*) (\d+)\)"
+        m = re.fullmatch(rf"\({BASE} \+ {IDX}\)", b) or re.fullmatch(rf"\(\(u8 \*\){BASE} \+ {IDX}\)", b)
+        if m:
+            bexpr, idx, op, n = m.groups()
         else:
-            idx, op, n, bexpr = g
+            m = re.fullmatch(rf"\({IDX} \+ {BASE}\)", b)
+            if not m:
+                return None
+            idx, op, n, bexpr = m.groups()
         stride = (1 << int(n)) if op == "<<" else int(n)
         w = {"u8": 1, "s8": 1, "u16": 2, "s16": 2, "u32": 4, "f32": 4, "f64": 8}[t]
         if stride < w or o < 0:
             return None
-        if bexpr.startswith("arg"):
-            k = int(bexpr[3:])
-            if k >= len(params):
+        # a displacement beyond the stride puts the array further in: the element field is o mod
+        # stride and the array starts stride*(o div stride) later (the address is the same)
+        shift = (o // stride) * stride if o >= stride else 0
+        o -= shift
+        if o + w > stride:
+            return None
+        # the base: a global (with a constant offset K), a parameter, or a local pointer
+        K = 0; tag = None
+        mg = re.fullmatch(r"&([A-Za-z_]\w*)", bexpr) or re.fullmatch(r"\(\(u8 \*\)&([A-Za-z_]\w*) \+ (\d+)\)", bexpr)
+        mp = re.fullmatch(r"(arg\d+|p_[A-Za-z_]\w*)", bexpr) or re.fullmatch(r"\(\(u8 \*\)(arg\d+|p_[A-Za-z_]\w*) \+ (\d+)\)", bexpr)
+        if mg:
+            gsym = mg.group(1); K = (int(mg.group(2)) if mg.lastindex and mg.lastindex >= 2 else 0) + shift
+            declare(gsym, "struct", far_ref=True)
+            tab = gfields.setdefault(gsym, {}); acc = f"{gsym}.unk_{K:X}"; tag = gsym
+        elif mp:
+            pname = mp.group(1); K = (int(mp.group(2)) if mp.lastindex and mp.lastindex >= 2 else 0) + shift
+            if pname.startswith("arg"):
+                k = int(pname[3:])
+                if k >= len(params):
+                    return None
+                tab = fields.setdefault(params[k], {})
+            elif pname in locals_:
+                tab = gfields.setdefault(locals_[pname], {})
+            else:
                 return None
-            key = params[k]
-            tab = fields.setdefault(key, {})
-        elif bexpr in locals_:
-            tab = gfields.setdefault(locals_[bexpr], {})
+            acc = f"{pname}->unk_{K:X}"; tag = pname
         else:
             return None
-        if stride == w:
-            tab[o] = f"arr:{t}:{stride}"
-            return f"{bexpr}->unk_{o:X}[{idx}]"
-        tab[o] = f"arr:struct {name}_E{stride}_{t}:{stride}"
-        elem_structs[(stride, t)] = f"struct {name}_E{stride}_{t} {{ {t} unk_0; u8 pad_{w:X}[0x{stride - w:X}]; }};"
-        return f"{bexpr}->unk_{o:X}[{idx}].unk_0"
+        existing = tab.get(K)
+        if existing is not None and not (str(existing).startswith("arr:") and str(existing).endswith(f":{stride}")):
+            return None  # the offset is already a scalar field, or an array of another stride
+        if stride == w and o == 0 and (existing is None or existing == f"arr:{t}:{stride}"):
+            tab[K] = f"arr:{t}:{stride}"
+            return f"{acc}[{idx}]"
+        ename = f"{name}_{tag}_{K:X}_E{stride}"
+        if existing is not None and existing != f"arr:struct {ename}:{stride}":
+            return None
+        elem = elem_fields.setdefault(ename, {"stride": stride, "fields": {}})
+        if elem["fields"].get(o, t) != t:
+            return None
+        elem["fields"][o] = t
+        tab[K] = f"arr:struct {ename}:{stride}"
+        return f"{acc}[{idx}].unk_{o:X}"
 
-    elem_structs: Dict[Tuple[int, str], str] = {}
+    def elem_struct_texts() -> List[str]:
+        out = []
+        for ename, e in elem_fields.items():
+            lines = [f"struct {ename} {{"]
+            cur = 0
+            for o in sorted(e["fields"]):
+                if o > cur:
+                    lines.append(f"    u8 pad_{cur:X}[0x{o - cur:X}];")
+                t_ = e["fields"][o]
+                lines.append(f"    {t_} unk_{o:X};")
+                cur = o + {"u8": 1, "s8": 1, "u16": 2, "s16": 2, "u32": 4, "f32": 4, "f64": 8}[t_]
+            if cur < e["stride"]:
+                lines.append(f"    u8 pad_{cur:X}[0x{e['stride'] - cur:X}];")
+            lines.append("};")
+            out.append("\n".join(lines))
+        return out
+
+    elem_fields: Dict[str, dict] = {}
 
     hi: Dict[str, str] = {}  # register holding sym@ha
     labels = LABELS[0]
@@ -372,6 +417,65 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     written_since_call: set = set()
     variadic_next = [False]
     copy_types: set = set()
+
+    def inline_copy_at(i0: int):
+        """A run of `lwz rX, k+4j(rS)` / `stw rX, k'+4j(rD)` over consecutive words, in ordinal
+        order (MWCC's small struct assignment): (end index exclusive, words, rS, k, rD, k')."""
+        mn0, a0 = ins[i0]
+        if mn0 != "lwz" or not a0 or len(a0) < 2:
+            return None
+        m0 = MEM_RE.match(a0[1])
+        if not m0 or m0.group(1).endswith(("@l", "@sda21", "@ha")):
+            return None
+        rS = m0.group(2); k = _imm(m0.group(1))
+        loads: List[Tuple[str, int]] = []   # (reg, ordinal)
+        stores = 0; rD = None; kD = None
+        x = i0
+        while x < len(ins):
+            mn_, a_ = ins[x]
+            if mn_ == "lwz" and a_ and len(a_) >= 2:
+                m_ = MEM_RE.match(a_[1])
+                if not m_ or m_.group(2) != rS or m_.group(1).endswith(("@l", "@sda21", "@ha")):
+                    break
+                if _imm(m_.group(1)) != k + 4 * len(loads):
+                    break
+                loads.append((a_[0], len(loads))); x += 1; continue
+            if mn_ == "stw" and a_ and len(a_) >= 2:
+                m_ = MEM_RE.match(a_[1])
+                if not m_ or m_.group(1).endswith(("@l", "@sda21", "@ha")):
+                    break
+                if rD is None:
+                    rD = m_.group(2); kD = _imm(m_.group(1))
+                    if rD == rS:
+                        break
+                if m_.group(2) != rD or _imm(m_.group(1)) != kD + 4 * stores:
+                    break
+                if stores >= len(loads) or loads[stores][0] != a_[0]:
+                    break
+                stores += 1; x += 1
+                if stores == len(loads) and (x >= len(ins) or ins[x][0] != "lwz"):
+                    break
+                continue
+            break
+        if rD is None or stores < 2 or stores != len(loads):
+            return None
+        # the loaded registers are dead after the run
+        for r_, _ in loads:
+            if x < len(ins) and reads(x, r_):
+                return None
+        return x, stores, rS, k, rD, kD
+
+    inline_copies: Dict[int, tuple] = {}
+
+    def scan_inline_copies() -> None:  # after `reads` exists (it is defined further down)
+        _x = 0
+        while _x < len(ins):
+            _c = inline_copy_at(_x)
+            if _c:
+                inline_copies[_x] = _c; _x = _c[0]
+            else:
+                _x += 1
+        inline_copies.setdefault(-1, ())
     magic_div: Dict[str, Tuple[str, int]] = {}  # register holding mulhwu(x, magic) -> (x, magic)
     pending_div: Dict[int, Tuple[str, str]] = {}  # index of the idiom's last instruction -> (register, quotient expression)
     conv_slots: Dict[int, Tuple[str, Optional[str]]] = {}  # stack slot -> int/float conversion in progress
@@ -539,6 +643,25 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             if i in pending_div:
                 d_, e_ = pending_div.pop(i)
                 regs[d_] = e_; rtype[d_] = "u32"
+            if -1 not in inline_copies:
+                scan_inline_copies()
+            if i in inline_copies:
+                end_, nw, rS, k, rD, kD = inline_copies[i]
+                size = 4 * nw
+                def copy_ref(reg: str, off: int) -> str:
+                    b_ = use(reg)
+                    fb_ = field_base(b_, reg)
+                    if fb_ and fb_[0] == "param":
+                        return f"*(struct {name}_Copy{size} *)((u8 *){b_} + {off})" if off else f"*(struct {name}_Copy{size} *){b_}"
+                    return f"*(struct {name}_Copy{size} *)((u8 *){b_} + {off})" if off else f"*(struct {name}_Copy{size} *){b_}"
+                src_e = copy_ref(rS, k); dst_e = copy_ref(rD, kD)
+                copy_types.add(size)
+                stmts.append(f"{dst_e} = {src_e};")
+                for x in range(i, end_):
+                    skip.add(x)
+                for r_, _ in ((a_[0], 0) for mn_, a_ in ins[i:end_] if mn_ == "lwz"):
+                    regs.pop(r_, None)
+                continue
             if i in copies:
                 K, rD, rS, end_ = copies[i]
                 size = 8 * K
@@ -1053,10 +1176,19 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             if mn in ("lwzx", "lhzx", "lbzx", "lfsx", "lhax"):
                 t = {"lwzx": "u32", "lhzx": "u16", "lbzx": "u8", "lfsx": "f32", "lhax": "s16"}[mn]
                 b = use(a[1]); i2 = use(a[2])
+                ax = indexed_field(f"({b} + {i2})", 0, t) or indexed_field(f"({i2} + {b})", 0, t)
+                if ax is None and t == "u8" and re.fullmatch(r"arg\d+|p_[A-Za-z_]\w*|&[A-Za-z_]\w*|\(\(u8 \*\)&[A-Za-z_]\w* \+ \d+\)", b):
+                    ax = indexed_field(f"({b} + ({i2} * 1))", 0, t)
+                if ax is not None:
+                    regs[a[0]] = ax; rtype[a[0]] = t; continue
                 regs[a[0]] = f"*({t} *)((u8 *){b} + {i2})"; rtype[a[0]] = t; continue
             if mn in ("stwx", "sthx", "stbx", "stfsx"):
                 t = {"stwx": "u32", "sthx": "u16", "stbx": "u8", "stfsx": "f32"}[mn]
-                stmts.append(f"*({t} *)((u8 *){use(a[1])} + {use(a[2])}) = {use(a[0])};"); continue
+                b = use(a[1]); i2 = use(a[2])
+                ax = indexed_field(f"({b} + {i2})", 0, t) or indexed_field(f"({i2} + {b})", 0, t)
+                if ax is not None:
+                    stmts.append(f"{ax} = {use(a[0])};"); continue
+                stmts.append(f"*({t} *)((u8 *){b} + {i2}) = {use(a[0])};"); continue
             if mn in ("fmuls", "fadds", "fsubs", "fdivs", "fmul", "fadd", "fsub", "fdiv"):
                 op = {"fmuls": "*", "fadds": "+", "fsubs": "-", "fdivs": "/", "fmul": "*", "fadd": "+", "fsub": "-", "fdiv": "/"}[mn]
                 t = "f32" if mn.endswith("s") else "f64"
@@ -1373,7 +1505,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             return f"{et} unk_{o:X}[1];"
         return f"{t} unk_{o:X};"
 
-    structs.extend(elem_structs.values())
+    structs.extend(elem_struct_texts())
     # parameters and struct parameters
     decl_params = []
     for i, r in enumerate(params):
