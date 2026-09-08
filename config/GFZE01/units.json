@@ -4445,7 +4445,7 @@
     "symbols": [
       "fn_1_9A770"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },

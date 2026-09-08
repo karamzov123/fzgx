@@ -1,4 +1,16 @@
 #include "types.h"
 
-// fn_1_9A770: main_rel .text:0x0009A770 size 0x38
-// Carved by fzgx. Replace this file's body with the matching C.
+typedef void (*fn_1_9A770_callback)(void);
+
+struct fn_1_9A770_data {
+    u8 pad[0x38];
+    fn_1_9A770_callback callback;
+};
+
+extern struct fn_1_9A770_data lbl_1_data_2A7E0;
+
+void fn_1_9A770(void) {
+    if (lbl_1_data_2A7E0.callback != 0) {
+        lbl_1_data_2A7E0.callback();
+    }
+}
