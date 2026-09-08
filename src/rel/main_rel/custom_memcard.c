@@ -35,6 +35,10 @@ void fn_1_1312F0(void) {
 /* fzgx:begin fn_1_1314A4 */
 #include "rel/main_rel/custom_memcard.h"
 
+extern u8 lbl_1_data_40EA4[0x54];
+extern u32 lbl_1_bss_8CA40;
+extern u8 lbl_1_data_40EF8[0x11];
+
 typedef struct {
     s32 unk_00;
     u8 unk_04[4];

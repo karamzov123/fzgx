@@ -275,8 +275,18 @@ void fn_1_76BF8(void) {
 }
 /* fzgx:end fn_1_76BF8 */
 
-/* fzgx:begin fn_1_76C60 */
-#include "rel/main_rel/screen_effect.h"
+/* fzgx:begin fn_1_76C60 noprologue */
+#include "types.h"
+
+extern u8 lbl_1_data_1DAC0[0x44];
+typedef struct {
+    u8 pad_0[0x5];
+    u8 unk_5;  // 3 loads, 0 stores
+    u8 pad_6[0x102];
+} Obj_1_data_1D9B8;
+extern Obj_1_data_1D9B8 lbl_1_data_1D9B8;
+extern u32 lbl_1_bss_6C8E4;
+extern u32 lbl_1_bss_6C8E8;
 
 extern u32 fn_80008E84(u32 arg);
 extern void fn_1_46B4(u32 arg0, u32 arg1, void *arg2, u32 arg3);

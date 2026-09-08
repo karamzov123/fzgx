@@ -60,8 +60,24 @@ void fn_1_98230(void) {
 }
 /* fzgx:end fn_1_98230 */
 
-/* fzgx:begin fn_1_982C4 */
-#include "rel/main_rel/burner.h"
+/* fzgx:begin fn_1_982C4 noprologue */
+#include "types.h"
+
+typedef struct {
+    u32 unk_0;  // 0 loads, 1 stores
+    u32 unk_4;  // 7 loads, 2 stores
+    u8 pad_8[0x4A4];
+} Obj_1_bss_6EA04_Target;
+extern Obj_1_bss_6EA04_Target *lbl_1_bss_6EA04;  // array of 0x4AC-byte records
+typedef struct {
+    u8 pad_0[0x4];
+    u32 unk_4;  // 2 loads, 0 stores
+    u32 unk_8;  // 1 loads, 0 stores
+    u32 unk_C;  // 1 loads, 0 stores
+    u8 pad_10[0x18];
+} Obj_1_data_27DE0;
+extern Obj_1_data_27DE0 lbl_1_data_27DE0;
+extern u8 lbl_1_data_27E08[0x9];
 
 typedef struct Fn1982C4Node Fn1982C4Node;
 

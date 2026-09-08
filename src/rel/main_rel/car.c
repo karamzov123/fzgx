@@ -3281,8 +3281,17 @@ void fn_1_8DBA4(u8 value) {
 }
 /* fzgx:end fn_1_8DBA4 */
 
-/* fzgx:begin fn_1_8E188 */
-#include "rel/main_rel/car.h"
+/* fzgx:begin fn_1_8E188 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
+typedef struct {
+    u32 unk_0;  // 3 loads, 2 stores
+    u32 unk_4;  // 3 loads, 2 stores
+} Obj_1_bss_6E958;
+extern Obj_1_bss_6E958 lbl_1_bss_6E958;
+extern u8 lbl_1_data_20994[0x12];
+extern u8 lbl_1_data_209A8[0x12];
 
 extern u32 fn_1_12AC00(unsigned char *value);
 extern u32 fn_1_12ADA0(unsigned char *value, u32 arg);
@@ -3544,6 +3553,9 @@ void fn_1_956B8(Fn1956B8Data *data) {
 
 /* fzgx:begin fn_1_96130 */
 #include "rel/main_rel/car.h"
+
+extern u8 lbl_1_data_27BA4[0x5C];
+extern u32 lbl_1_data_278AC;
 
 extern u8 lbl_1_data_27BA4[92];
 extern void fn_1_12AB38(void *arg0);

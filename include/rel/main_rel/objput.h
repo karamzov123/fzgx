@@ -8,6 +8,6 @@
 // functions or living in its .data block), layouts recovered from every access in the module.
 
 // lbl_1_data_1C650: .data size 0x9, 2 refs from objput.c (own data block)
-extern u8 lbl_1_data_1C650[0x9];
+extern char lbl_1_data_1C650[0x9];  // 'objput.c'
 
 #endif  // REL_MAIN_REL_OBJPUT_H

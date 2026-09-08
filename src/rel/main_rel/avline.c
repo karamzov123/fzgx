@@ -3,6 +3,9 @@
 /* fzgx:begin fn_1_58114 */
 #include "rel/main_rel/avline.h"
 
+extern u32 lbl_1_bss_6C840;
+extern u8 lbl_1_data_1C68C[0x9];
+
 extern u32 lbl_801A6410;
 extern u32 fn_1_45D0(u32, u32, unsigned char *, u32);
 

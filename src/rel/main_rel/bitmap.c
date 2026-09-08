@@ -53,8 +53,18 @@ void fn_1_481E8(void *arg0) {
 }
 /* fzgx:end fn_1_481E8 */
 
-/* fzgx:begin fn_1_48418 */
-#include "rel/main_rel/bitmap.h"
+/* fzgx:begin fn_1_48418 noprologue */
+#include "types.h"
+
+extern u8 lbl_1_data_1A368[0x9];
+typedef struct {
+    u32 unk_0;  // 3 loads, 2 stores
+    u32 unk_4;  // 2 loads, 1 stores
+    u32 unk_8;  // 2 loads, 0 stores
+    u8 pad_C[0x18];
+} Obj_1_data_6CA0;
+extern Obj_1_data_6CA0 lbl_1_data_6CA0;
+extern u8 lbl_1_data_1A390[0x1A];
 
 typedef struct {
     s32 unk_0;

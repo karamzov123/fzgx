@@ -19,9 +19,6 @@ extern u8 lbl_1_data_40EF8[0x11];
 // lbl_1_bss_8E380: .bss size 0x1, 3 refs from custom_memcard.c
 extern u8 lbl_1_bss_8E380;
 
-// lbl_1_bss_962: .bss size 0x2, 2 refs from custom_memcard.c
-extern s16 lbl_1_bss_962;
-
 // lbl_1_data_1E5C0: .data size 0x34, 2 refs from custom_memcard.c
 typedef struct {
     u32 unk_0;  // 1 loads, 0 stores
@@ -47,17 +44,8 @@ typedef struct {
 } Obj_1_bss_8E384;
 extern Obj_1_bss_8E384 lbl_1_bss_8E384;
 
-// lbl_1_data_41930: .data size 0x10, 1 refs from custom_memcard.c (own data block)
-extern u8 lbl_1_data_41930[0x10];
-
-// lbl_1_data_40F0C: .data size 0x22, 1 refs from custom_memcard.c (own data block)
-extern u8 lbl_1_data_40F0C[0x22];
-
-// lbl_1_data_40F30: .data size 0x22, 1 refs from custom_memcard.c (own data block)
-extern u8 lbl_1_data_40F30[0x22];
-
-// lbl_1_data_41928: .data size 0x6, 1 refs from custom_memcard.c (own data block)
-extern u32 lbl_1_data_41928;
+// lbl_1_bss_962: .bss size 0x2, 2 refs from custom_memcard.c
+extern s16 lbl_1_bss_962;
 
 // lbl_1_data_416B8: .data size 0x1EC, 1 refs from custom_memcard.c (own data block)
 typedef struct {
@@ -71,11 +59,23 @@ extern Obj_1_data_416B8 lbl_1_data_416B8;
 // lbl_1_data_418D4: .data size 0x54, 1 refs from custom_memcard.c (own data block)
 extern u8 lbl_1_data_418D4[0x54];
 
+// lbl_1_data_40F30: .data size 0x22, 1 refs from custom_memcard.c (own data block)
+extern u8 lbl_1_data_40F30[0x22];
+
+// lbl_1_data_41928: .data size 0x6, 1 refs from custom_memcard.c (own data block)
+extern u32 lbl_1_data_41928;
+
 // lbl_1_data_414D8: .data size 0x1E0, 1 refs from custom_memcard.c (own data block)
 typedef struct {
     u32 unk_0;  // 1 loads, 0 stores
     u8 pad_4[0x1DC];
 } Obj_1_data_414D8;
 extern Obj_1_data_414D8 lbl_1_data_414D8;
+
+// lbl_1_data_41930: .data size 0x10, 1 refs from custom_memcard.c (own data block)
+extern u8 lbl_1_data_41930[0x10];
+
+// lbl_1_data_40F0C: .data size 0x22, 1 refs from custom_memcard.c (own data block)
+extern u8 lbl_1_data_40F0C[0x22];
 
 #endif  // REL_MAIN_REL_CUSTOM_MEMCARD_H

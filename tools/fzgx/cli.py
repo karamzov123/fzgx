@@ -252,6 +252,17 @@ def cmd_tu_collapse(a, p):
     _print(r, a.json); return 0 if r.get("ok") else 1
 
 
+def cmd_tu_reflag(a, p):
+    from . import oracle, tufile  # scoped: keeps the CLI import graph light
+    ok_fn = lambda u: oracle.compile_unit(p, p.objdiff_unit_name(u["module"], u["source"]), u["source"]).returncode == 0
+    tus = [a.tu] if a.tu else sorted({u["tu"] for u in p.load_units() if u.get("tu")})
+    tot_f, tot_u = [], []
+    for tu in tus:
+        r = tufile.reflag(p, tu, ok_fn)
+        tot_f += r["flagged"]; tot_u += r["unflagged"]
+    _print({"tus": len(tus), "flagged": tot_f, "unflagged": tot_u}, a.json); return 0
+
+
 def cmd_gen(a, p):
     from . import tufile  # scoped: same
     print(f"{tufile.regenerate(p)} generated units")
@@ -369,6 +380,8 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("tu")
     s = sub.add_parser("tu-collapse", help="replace a complete TU's per-function units by one unit (hash-verified; reverts on failure)"); s.set_defaults(fn=cmd_tu_collapse)
     s.add_argument("tu"); s.add_argument("--plan", action="store_true", help="compute the ranges only"); s.add_argument("--keep", action="store_true", help="keep the collapsed config even if the hash fails")
+    s = sub.add_parser("tu-reflag", help="after a header change: flag blocks that stopped compiling under the prologue, unflag those that compile again"); s.set_defaults(fn=cmd_tu_reflag)
+    s.add_argument("tu", nargs="?")
     s = sub.add_parser("gen", help="regenerate every per-function unit from the TU files"); s.set_defaults(fn=cmd_gen)
     s = sub.add_parser("permute", help="decomp-permuter on a plateaued attempt; submits on a byte-identical result"); s.set_defaults(fn=cmd_permute)
     s.add_argument("symbol", nargs="?"); s.add_argument("--threads", type=int, default=8); s.add_argument("--seconds", type=int, default=600)

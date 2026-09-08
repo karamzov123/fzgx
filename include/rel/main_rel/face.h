@@ -43,19 +43,19 @@ extern u32 lbl_1_bss_7ACE8;
 // lbl_1_bss_7ACF0: .bss size 0x8, 2 refs from face.c
 extern u32 lbl_1_bss_7ACF0;
 
-// lbl_1_data_3DB40: .data size 0x18, 1 refs from face.c (own data block)
-extern u8 lbl_1_data_3DB40[0x18];
-
-// lbl_1_data_3DB00: .data size 0x2C, 1 refs from face.c (own data block)
-extern u8 lbl_1_data_3DB00[0x2C];
-
-// lbl_1_data_3DB2C: .data size 0x12, 1 refs from face.c (own data block)
-extern u8 lbl_1_data_3DB2C[0x12];
-
 // lbl_1_data_3DB58: .data size 0x33, 1 refs from face.c (own data block)
 extern u8 lbl_1_data_3DB58[0x33];
 
 // lbl_1_data_3DB8C: .data size 0x33, 1 refs from face.c (own data block)
 extern u8 lbl_1_data_3DB8C[0x33];
+
+// lbl_1_data_3DB00: .data size 0x2C, 1 refs from face.c (own data block)
+extern u8 lbl_1_data_3DB00[0x2C];
+
+// lbl_1_data_3DB40: .data size 0x18, 1 refs from face.c (own data block)
+extern u8 lbl_1_data_3DB40[0x18];
+
+// lbl_1_data_3DB2C: .data size 0x12, 1 refs from face.c (own data block)
+extern u8 lbl_1_data_3DB2C[0x12];
 
 #endif  // REL_MAIN_REL_FACE_H

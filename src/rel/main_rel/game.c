@@ -886,6 +886,10 @@ void fn_1_40F54(void *arg0) {
 /* fzgx:begin fn_1_40F78 */
 #include "rel/main_rel/game.h"
 
+extern u32 lbl_1_bss_38450;
+extern u8 lbl_1_data_66C0[0x10];
+extern u8 lbl_1_data_66D0[0x10];
+
 extern u32 lbl_801A6CE0;
 extern u32 lbl_1_bss_38450;
 extern u32 lbl_1_bss_38454;
@@ -922,8 +926,21 @@ void fn_1_4100C(void) {
 }
 /* fzgx:end fn_1_4100C */
 
-/* fzgx:begin fn_1_41048 */
-#include "rel/main_rel/game.h"
+/* fzgx:begin fn_1_41048 noprologue */
+#include "types.h"
+
+typedef struct {
+    u8 pad_0[0x8];
+    u32 unk_8;  // 58 loads, 0 stores
+} Obj_1_bss_38458_Target;
+extern u32 lbl_1_bss_3845C;
+extern u8 lbl_1_data_66E0[0x10];
+extern u8 lbl_1_data_66F0[0x10];
+extern Obj_1_bss_38458_Target *lbl_1_bss_38458;
+
+extern u32 lbl_1_bss_3845C;
+extern u8 lbl_1_data_66E0[0x10];
+extern u8 lbl_1_data_66F0[0x10];
 
 extern void *fn_1_D3884(u8 *arg0);
 extern void *fn_1_D358C(u8 *arg0, void *arg1);

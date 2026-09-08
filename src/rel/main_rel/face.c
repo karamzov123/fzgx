@@ -3,6 +3,10 @@
 /* fzgx:begin fn_1_D1780 */
 #include "rel/main_rel/face.h"
 
+extern u32 lbl_1_data_3D924;
+extern u8 lbl_1_data_3DA2C[0xD4];
+extern u32 lbl_1_bss_7ACF0;
+
 extern u32 lbl_801A6410;
 extern u32 lbl_1_bss_7ACEC;
 extern u8 lbl_1_data_3DA2C[212];
@@ -35,8 +39,30 @@ void fn_1_D17E8(void) {
 }
 /* fzgx:end fn_1_D17E8 */
 
-/* fzgx:begin fn_1_D1F88 */
-#include "rel/main_rel/face.h"
+/* fzgx:begin fn_1_D1F88 noprologue */
+#include "types.h"
+
+typedef struct {
+    u32 unk_0;  // 8 loads, 8 stores
+    u32 unk_4;  // 13 loads, 4 stores
+    u32 unk_8;  // 0 loads, 3 stores
+    u8 pad_C[0x4];
+    u32 unk_10;  // 7 loads, 4 stores
+    u32 unk_14;  // 7 loads, 4 stores
+    u32 unk_18;  // 0 loads, 6 stores
+    u32 unk_1C;  // 2 loads, 5 stores
+    u8 pad_20[0xC];
+    u32 unk_2C;  // 0 loads, 1 stores
+    u32 unk_30;  // 0 loads, 1 stores
+    u32 unk_34;  // 0 loads, 1 stores
+    u32 unk_38;  // 3 loads, 5 stores
+    u32 unk_3C;  // 1 loads, 8 stores
+    u8 pad_40[0x20];
+    u32 unk_60;  // 4 loads, 2 stores
+} Obj_1_bss_7ACD8_Target;
+extern Obj_1_bss_7ACD8_Target *lbl_1_bss_7ACD8;
+extern u32 lbl_1_data_3D924;
+extern u8 lbl_1_data_3DA2C[0xD4];
 
 extern void fn_1_D2F50(void);
 extern void fn_1_46B4(u32, u32, u8*, s32);

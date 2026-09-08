@@ -1,8 +1,47 @@
 #include "types.h"
 #include "rel/main_rel/globals.h"
 
-/* fzgx:begin fn_1_1554D0 */
-#include "rel/main_rel/ranking.h"
+/* fzgx:begin fn_1_1554D0 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
+typedef struct {
+    f32 unk_0;  // 12 loads, 6 stores
+    u32 unk_4;  // 2 loads, 0 stores
+    f64 unk_8;  // 8 loads, 6 stores
+    f64 unk_10;  // 8 loads, 6 stores
+    u16 unk_18;  // 10 loads, 6 stores
+    u8 unk_1A;  // 2 loads, 0 stores
+    u8 pad_1B[0x5];
+    f64 unk_20;  // 8 loads, 6 stores
+    f64 unk_28;  // 8 loads, 6 stores
+    f64 unk_30;  // 9 loads, 10 stores
+    u32 unk_38;  // 2 loads, 0 stores
+    u8 pad_3C[0x16];
+    u8 unk_52;  // 2 loads, 0 stores
+    u8 pad_53[0x15];
+    u8 unk_68;  // 0 loads, 4 stores
+    u8 pad_69[0x7];
+    u32 unk_70;  // 1 loads, 0 stores
+    u8 pad_74[0x2C];
+    u8 unk_A0;  // 0 loads, 2 stores
+    u8 pad_A1[0x7];
+    u32 unk_A8;  // 1 loads, 0 stores
+    u8 pad_AC[0x2C];
+    u8 unk_D8;  // 0 loads, 2 stores
+    u8 pad_D9[0x7];
+    u32 unk_E0;  // 1 loads, 0 stores
+    u8 pad_E4[0x2C];
+    u8 unk_110;  // 0 loads, 2 stores
+} Obj_1_bss_8EF20_At0;
+typedef struct {
+    Obj_1_bss_8EF20_At0 *unk_0;  // 17 loads, 3 stores
+    u8 pad_4[0x3C];
+    u32 unk_40;  // 1 loads, 2 stores
+    u8 pad_44[0x4];
+} Obj_1_bss_8EF20;
+extern Obj_1_bss_8EF20 lbl_1_bss_8EF20;
+extern u8 lbl_1_data_49B08[0xA];
 
 extern u32 lbl_801A6410;
 
@@ -22,8 +61,47 @@ void fn_1_1554D0(void) {
 }
 /* fzgx:end fn_1_1554D0 */
 
-/* fzgx:begin fn_1_15555C */
-#include "rel/main_rel/ranking.h"
+/* fzgx:begin fn_1_15555C noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
+typedef struct {
+    f32 unk_0;  // 12 loads, 6 stores
+    u32 unk_4;  // 2 loads, 0 stores
+    f64 unk_8;  // 8 loads, 6 stores
+    f64 unk_10;  // 8 loads, 6 stores
+    u16 unk_18;  // 10 loads, 6 stores
+    u8 unk_1A;  // 2 loads, 0 stores
+    u8 pad_1B[0x5];
+    f64 unk_20;  // 8 loads, 6 stores
+    f64 unk_28;  // 8 loads, 6 stores
+    f64 unk_30;  // 9 loads, 10 stores
+    u32 unk_38;  // 2 loads, 0 stores
+    u8 pad_3C[0x16];
+    u8 unk_52;  // 2 loads, 0 stores
+    u8 pad_53[0x15];
+    u8 unk_68;  // 0 loads, 4 stores
+    u8 pad_69[0x7];
+    u32 unk_70;  // 1 loads, 0 stores
+    u8 pad_74[0x2C];
+    u8 unk_A0;  // 0 loads, 2 stores
+    u8 pad_A1[0x7];
+    u32 unk_A8;  // 1 loads, 0 stores
+    u8 pad_AC[0x2C];
+    u8 unk_D8;  // 0 loads, 2 stores
+    u8 pad_D9[0x7];
+    u32 unk_E0;  // 1 loads, 0 stores
+    u8 pad_E4[0x2C];
+    u8 unk_110;  // 0 loads, 2 stores
+} Obj_1_bss_8EF20_At0;
+typedef struct {
+    Obj_1_bss_8EF20_At0 *unk_0;  // 17 loads, 3 stores
+    u8 pad_4[0x3C];
+    u32 unk_40;  // 1 loads, 2 stores
+    u8 pad_44[0x4];
+} Obj_1_bss_8EF20;
+extern Obj_1_bss_8EF20 lbl_1_bss_8EF20;
+extern u8 lbl_1_data_49B08[0xA];
 
 extern u32 lbl_801A6410[];
 extern void fn_1_46B4(u32, Obj_1_bss_8EF20_At0 *, u8 *, int);

@@ -251,7 +251,77 @@ s32 camera_compare_values(const u8 *lhs_index, const u8 *rhs_index) {
 }
 /* fzgx:end camera_compare_values */
 
-/* fzgx:begin fn_1_8298 */
+/* fzgx:begin fn_1_8298 noprologue */
+#include "types.h"
+
+extern s8 fn_1_86624(void);
+extern s8 fn_1_86634(s32 index);
+extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
+
+extern s8 fn_1_86624(void);
+extern s8 fn_1_86634(s32 index);
+extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
+
+extern s8 fn_1_86624(void);
+extern s8 fn_1_86634(s32 index);
+extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
+
+extern s8 fn_1_86624(void);
+extern s8 fn_1_86634(s32 index);
+extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
+
+typedef struct {
+    u32 unk_0;  // 10 loads, 1 stores
+    u16 unk_4;  // 0 loads, 2 stores
+    u8 pad_6[0x1C];
+    s16 unk_22;  // 4 loads, 4 stores
+    u16 unk_24;  // 0 loads, 1 stores
+    u8 pad_26[0x1E];
+    s16 unk_44;  // 1 loads, 1 stores
+    u16 unk_46;  // 0 loads, 1 stores
+    u8 unk_48;  // 30 loads, 13 stores
+    u8 unk_49;  // 2 loads, 1 stores
+    u8 unk_4A;  // 2 loads, 1 stores
+    u8 unk_4B;  // 2 loads, 2 stores
+    u8 unk_4C;  // 2 loads, 2 stores
+    u8 unk_4D;  // 1 loads, 1 stores
+    u8 pad_4E[0x2];
+    u32 unk_50;  // 5 loads, 1 stores
+    u32 unk_54;  // 2 loads, 1 stores
+    f32 unk_58;  // 0 loads, 3 stores
+    f32 unk_5C;  // 1 loads, 3 stores
+} Obj_1_bss_F68_Target;
+extern Obj_1_bss_F68_Target *lbl_1_bss_F68;
+typedef struct {
+    u8 pad_0[0x2];
+    s16 unk_2;  // 3 loads, 6 stores
+    u8 pad_4[0xA0];
+    s16 unk_A4;  // 1 loads, 1 stores
+    u8 pad_A6[0x2];
+    s16 unk_A8;  // 4 loads, 1 stores
+    u8 pad_AA[0x62];
+    u32 unk_10C;  // 0 loads, 2 stores
+    u32 unk_110;  // 1 loads, 3 stores
+    u8 pad_114[0xC];
+    f32 unk_120;  // 0 loads, 1 stores
+    f32 unk_124;  // 0 loads, 1 stores
+    f32 unk_128;  // 0 loads, 1 stores
+    f32 unk_12C;  // 1 loads, 2 stores
+    f32 unk_130;  // 1 loads, 2 stores
+    f32 unk_134;  // 1 loads, 2 stores
+    u8 pad_138[0xC];
+    f32 unk_144;  // 0 loads, 2 stores
+    f32 unk_148;  // 0 loads, 2 stores
+    f32 unk_14C;  // 0 loads, 2 stores
+    f32 unk_150;  // 1 loads, 1 stores
+    f32 unk_154;  // 1 loads, 1 stores
+    f32 unk_158;  // 1 loads, 1 stores
+    u8 pad_15C[0xA0];
+} GameCameraEntry;
+extern GameCameraEntry *game_camera_entries;  // array of 0x1FC-byte records
+extern u8 lbl_1_data_3318[0xB4];
+extern u8 lbl_1_data_35E8[0x13];
+
 // Initializes camera entry selections and updates the camera mode from the available entries.
 void fn_1_8298(void) {
     s8 found;
@@ -369,7 +439,42 @@ s32 camera_get_values(f32 *value0, f32 *value1) {
 }
 /* fzgx:end camera_get_values */
 
-/* fzgx:begin live_camera_set_shake */
+/* fzgx:begin live_camera_set_shake noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
+extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
+
+extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
+
+extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
+
+extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
+
+extern u8 lbl_1_data_3318[0xB4];
+typedef struct {
+    u8 pad_0[0x2];
+    s16 unk_2;  // 2 loads, 0 stores
+    u8 pad_4[0x2];
+    s16 unk_6;  // 1 loads, 0 stores
+    u8 pad_8[0xA4];
+    u32 unk_AC;  // 0 loads, 2 stores
+    u32 unk_B0;  // 1 loads, 3 stores
+    u8 pad_B4[0xC];
+    f32 unk_C0;  // 0 loads, 1 stores
+    f32 unk_C4;  // 0 loads, 1 stores
+    f32 unk_C8;  // 0 loads, 1 stores
+    f32 unk_CC;  // 1 loads, 2 stores
+    f32 unk_D0;  // 1 loads, 2 stores
+    f32 unk_D4;  // 1 loads, 2 stores
+    u8 pad_D8[0xC];
+    f32 unk_E4;  // 0 loads, 2 stores
+    f32 unk_E8;  // 0 loads, 2 stores
+    f32 unk_EC;  // 0 loads, 2 stores
+} LiveCamera;
+extern LiveCamera *live_camera;
+extern u8 lbl_1_data_360C[0x23];
+
 // Marks the camera state active, accumulates a position delta, and tracks the highest value.
 void live_camera_set_shake(s32 value, const f32 *delta) {
     LiveCamera *state;
@@ -392,7 +497,52 @@ void live_camera_set_shake(s32 value, const f32 *delta) {
 }
 /* fzgx:end live_camera_set_shake */
 
-/* fzgx:begin game_camera_set_shake */
+/* fzgx:begin game_camera_set_shake noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
+extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
+extern void fn_1_8A0C(s16 index);
+
+extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
+extern void fn_1_8A0C(s16 index);
+
+extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
+extern void fn_1_8A0C(s16 index);
+
+extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
+extern void fn_1_8A0C(s16 index);
+
+typedef struct {
+    u8 pad_0[0x2];
+    s16 unk_2;  // 3 loads, 6 stores
+    u8 pad_4[0xA0];
+    s16 unk_A4;  // 1 loads, 1 stores
+    u8 pad_A6[0x2];
+    s16 unk_A8;  // 4 loads, 1 stores
+    u8 pad_AA[0x62];
+    u32 unk_10C;  // 0 loads, 2 stores
+    u32 unk_110;  // 1 loads, 3 stores
+    u8 pad_114[0xC];
+    f32 unk_120;  // 0 loads, 1 stores
+    f32 unk_124;  // 0 loads, 1 stores
+    f32 unk_128;  // 0 loads, 1 stores
+    f32 unk_12C;  // 1 loads, 2 stores
+    f32 unk_130;  // 1 loads, 2 stores
+    f32 unk_134;  // 1 loads, 2 stores
+    u8 pad_138[0xC];
+    f32 unk_144;  // 0 loads, 2 stores
+    f32 unk_148;  // 0 loads, 2 stores
+    f32 unk_14C;  // 0 loads, 2 stores
+    f32 unk_150;  // 1 loads, 1 stores
+    f32 unk_154;  // 1 loads, 1 stores
+    f32 unk_158;  // 1 loads, 1 stores
+    u8 pad_15C[0xA0];
+} GameCameraEntry;
+extern GameCameraEntry *game_camera_entries;  // array of 0x1FC-byte records
+extern u8 lbl_1_data_3318[0xB4];
+extern u8 lbl_1_data_3654[0x23];
+
 // Updates the selected camera state with a movement delta and tracks its highest value.
 void game_camera_set_shake(s16 index, s16 mode, s32 value, const f32 *delta) {
     GameCameraEntry *camera;
@@ -605,7 +755,42 @@ void camera_save_slot(u8 index) {
 }
 /* fzgx:end camera_save_slot */
 
-/* fzgx:begin camera_report_position */
+/* fzgx:begin camera_report_position noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
+extern void OSReport(const unsigned char *, ...);
+
+extern void OSReport(const unsigned char *, ...);
+
+extern void OSReport(const unsigned char *, ...);
+
+extern void OSReport(const unsigned char *, ...);
+
+typedef struct {
+    u32 unk_0;  // 0 loads, 1 stores
+    f32 unk_4;  // 3 loads, 1 stores
+    f32 unk_8;  // 3 loads, 1 stores
+    f32 unk_C;  // 3 loads, 1 stores
+    f32 unk_10;  // 3 loads, 1 stores
+    f32 unk_14;  // 3 loads, 1 stores
+    f32 unk_18;  // 3 loads, 1 stores
+    f32 unk_1C;  // 3 loads, 1 stores
+    s16 unk_20;  // 3 loads, 1 stores
+    u8 pad_22[0x6];
+    f32 unk_28;  // 2 loads, 0 stores
+    f32 unk_2C;  // 2 loads, 0 stores
+    f32 unk_30;  // 2 loads, 0 stores
+    f32 unk_34;  // 1 loads, 0 stores
+    f32 unk_38;  // 1 loads, 0 stores
+    f32 unk_3C;  // 1 loads, 0 stores
+    f32 unk_40;  // 1 loads, 0 stores
+    s16 unk_44;  // 1 loads, 0 stores
+    u8 pad_46[0x2A];
+} CameraParameters;
+extern CameraParameters lbl_1_bss_10D8;
+extern u8 lbl_1_data_4128[0x1C];
+
 // Reports the camera's current position values for debugging.
 void camera_report_position(void) {
     OSReport(lbl_1_data_4128, lbl_1_bss_10D8.unk_10,
@@ -613,7 +798,42 @@ void camera_report_position(void) {
 }
 /* fzgx:end camera_report_position */
 
-/* fzgx:begin fn_1_C304 */
+/* fzgx:begin fn_1_C304 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
+extern void OSReport(const unsigned char *, ...);
+
+extern void OSReport(const unsigned char *, ...);
+
+extern void OSReport(const unsigned char *, ...);
+
+extern void OSReport(const unsigned char *, ...);
+
+typedef struct {
+    u32 unk_0;  // 0 loads, 1 stores
+    f32 unk_4;  // 3 loads, 1 stores
+    f32 unk_8;  // 3 loads, 1 stores
+    f32 unk_C;  // 3 loads, 1 stores
+    f32 unk_10;  // 3 loads, 1 stores
+    f32 unk_14;  // 3 loads, 1 stores
+    f32 unk_18;  // 3 loads, 1 stores
+    f32 unk_1C;  // 3 loads, 1 stores
+    s16 unk_20;  // 3 loads, 1 stores
+    u8 pad_22[0x6];
+    f32 unk_28;  // 2 loads, 0 stores
+    f32 unk_2C;  // 2 loads, 0 stores
+    f32 unk_30;  // 2 loads, 0 stores
+    f32 unk_34;  // 1 loads, 0 stores
+    f32 unk_38;  // 1 loads, 0 stores
+    f32 unk_3C;  // 1 loads, 0 stores
+    f32 unk_40;  // 1 loads, 0 stores
+    s16 unk_44;  // 1 loads, 0 stores
+    u8 pad_46[0x2A];
+} CameraParameters;
+extern CameraParameters lbl_1_bss_10D8;
+extern u8 lbl_1_data_4198[0x220];
+
 extern void OSReport(const unsigned char *, ...);
 
 // Reports the camera parameters and caller-supplied value for debugging.

@@ -40,8 +40,19 @@ s32 fn_1_12A6D8(void *arg0) {
 }
 /* fzgx:end fn_1_12A6D8 */
 
-/* fzgx:begin fn_1_12AAC8 */
-#include "rel/main_rel/archive.h"
+/* fzgx:begin fn_1_12AAC8 noprologue */
+#include "types.h"
+
+extern u32 lbl_1_bss_897A0;
+extern u8 lbl_1_data_40608[0xA];
+typedef struct {
+    u32 unk_0;  // 1 loads, 0 stores
+    u8 pad_4[0x64];
+    u32 unk_68;  // 2 loads, 0 stores
+    u8 pad_6C[0x1AC8];
+} Obj_1_bss_897AC;
+extern Obj_1_bss_897AC lbl_1_bss_897AC;
+extern u8 lbl_1_data_4076C[0x28];
 
 extern s32 fn_8006A480(void *arg0, void *arg1, void *arg2);
 extern void fn_8006A9AC(void *arg0);

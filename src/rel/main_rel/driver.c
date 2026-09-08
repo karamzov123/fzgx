@@ -96,6 +96,9 @@ void fn_1_A7968(void) {
 /* fzgx:begin fn_1_A7A70 */
 #include "rel/main_rel/driver.h"
 
+extern u32 lbl_1_bss_6F638;
+extern u8 lbl_1_data_34354[0x48];
+
 extern u8 lbl_1_data_34354[72];
 extern void *lbl_801A6410;
 extern void fn_1_46B4(void *arg0, void *arg1, void *arg2, s32 arg3);

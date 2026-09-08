@@ -159,16 +159,24 @@ def unit_text(p: Project, unit: dict) -> str:
         b = tf.get(unit["symbols"][0])
         if b is None:
             return ""
-        return b.body if "noprologue" in b.flags else tf.prologue + "\n" + b.body
+        return gen_text(tf, unit["symbols"][0])
     path = ROOT / "src" / unit["source"]
     return path.read_text() if path.exists() else ""
+
+
+def prologue_decls(tf: TuFile) -> str:
+    """The prologue without its includes: declarations hoisted out of the blocks."""
+    lines = [ln for ln in tf.prologue.splitlines() if not INCLUDE_RE.match(ln)]
+    return "\n".join(lines).strip("\n")
 
 
 def gen_text(tf: TuFile, name: str) -> str:
     b = tf.get(name)
     if b is None:
         return STUB.format(name=name)
-    return b.body if "noprologue" in b.flags else tf.prologue + "\n" + b.body
+    if "noprologue" in b.flags:
+        return b.body  # self-contained: its own includes and declarations
+    return tf.prologue + "\n" + b.body
 
 
 def write_gen(p: Project, unit: dict, tf: Optional[TuFile] = None) -> Path:
@@ -346,3 +354,139 @@ def add_include(p: Project, tu_source: str, include: str, compile_fn) -> Dict[st
     finally:
         lock.close()
     return {"added": True, "flagged": flagged}
+
+
+def reflag(p: Project, tu_source: str, compile_fn) -> Dict[str, object]:
+    """After a header change, re-decide every block's include set: under the prologue if
+    that compiles (flag dropped), else `noprologue` with the widest include set that does
+    (types.h alone always works for a self-contained block)."""
+    path = tu_path(p, tu_source)
+    units = {u["symbols"][0]: u for u in p.load_units() if u.get("tu") == tu_source}
+    lock = _lock(path)
+    try:
+        tf = parse(path.read_text())
+        incs = [ln.strip() for ln in tf.prologue.splitlines() if INCLUDE_RE.match(ln)]
+        flagged, unflagged, unresolved = [], [], []
+        for b in tf.blocks:
+            u = units.get(b.name)
+            if u is None:
+                continue
+            was = "noprologue" in b.flags
+            inc, body = split_includes(b.body)
+            own = list(dict.fromkeys([ln.strip() for ln in inc] + committed_block_includes(p, tu_source, b.name)))
+            extra = [ln for ln in own if ln not in incs]
+            # 1. under the prologue
+            b.flags = [f for f in b.flags if f != "noprologue"]
+            b.body = ("\n".join(extra) + "\n\n" + body) if extra else body
+            write_gen(p, u, tf)
+            if compile_fn(u):
+                if was:
+                    unflagged.append(b.name)
+                continue
+            # 2. on its own, widest include set first, plus the prologue declarations it uses
+            b.flags.append("noprologue")
+            done = False
+            pdecls = materialize_old_decls(p, [], body, prologue_decls(tf))
+            for keep in (list(dict.fromkeys(incs + own)),
+                         [i for i in dict.fromkeys(incs + own) if "globals.h" in i or "types.h" in i],
+                         ['#include "types.h"']):
+                b.body = "\n".join(keep) + "\n\n" + (pdecls + "\n\n" if pdecls else "") + body
+                write_gen(p, u, tf)
+                if compile_fn(u):
+                    done = True
+                    break
+            if not done:
+                # 3. self-contained: the declarations it uses, from the prologue (hoisted out of
+                # the blocks) and from the last committed headers (the types it matched under)
+                decls = materialize_old_decls(p, incs + own, body, prologue_decls(tf))
+                b.body = '#include "types.h"\n\n' + decls + ("\n\n" if decls else "") + body
+                write_gen(p, u, tf)
+                if not compile_fn(u):
+                    unresolved.append(b.name)
+            if not was:
+                flagged.append(b.name)
+        _write_atomic(path, tf.render())
+    finally:
+        lock.close()
+    return {"tu": tu_source, "flagged": flagged, "unflagged": unflagged, "unresolved": unresolved}
+
+
+def committed_block_includes(p: Project, tu_source: str, name: str) -> List[str]:
+    """Includes the block carried in the last committed TU file (an earlier reflag may have
+    narrowed the working copy's)."""
+    cp = subprocess.run(["git", "show", f"HEAD:src/{tu_source}"], cwd=ROOT, text=True, capture_output=True)
+    if cp.returncode != 0:
+        return []
+    try:
+        b = parse(cp.stdout).get(name)
+    except ValueError:
+        return []
+    if b is None:
+        return []
+    inc, _ = split_includes(b.body)
+    return [ln.strip() for ln in inc]
+
+
+def _header_items(text: str) -> Dict[str, str]:
+    """name -> declaration text (extern lines and typedef struct blocks) of a header."""
+    items: Dict[str, str] = {}
+    lines = text.splitlines()
+    i = 0
+    while i < len(lines):
+        ln = lines[i]
+        if re.match(r"^typedef\s+struct\b.*\{\s*$", ln):
+            j = i
+            while j < len(lines) and not re.match(r"^\}\s*[A-Za-z_]\w*\s*;", lines[j]):
+                j += 1
+            if j < len(lines):
+                name = re.match(r"^\}\s*([A-Za-z_]\w*)\s*;", lines[j]).group(1)
+                items[name] = "\n".join(lines[i:j + 1])
+            i = j + 1
+            continue
+        m = re.match(r"^extern\s+[^;(]*?\b([A-Za-z_]\w*)\s*(?:\[[^\]]*\])*\s*;", ln) or \
+            re.match(r"^extern\s+[^;]*?\b([A-Za-z_]\w*)\s*\(", ln)
+        if m:
+            items[m.group(1)] = ln
+        i += 1
+    return items
+
+
+def materialize_old_decls(p: Project, includes: List[str], body: str, prologue_text: str = "") -> str:
+    """Declarations the block uses, copied from the TU prologue and from the last committed
+    versions of its headers (types.h excluded), with the typedefs those declarations need."""
+    items: Dict[str, str] = {}
+    if prologue_text:
+        items.update(_header_items(prologue_text))
+    seen: set = set()
+
+    def walk(rel: str) -> None:  # headers include headers (every TU header pulls globals.h)
+        if rel in seen or rel == "types.h":
+            return
+        seen.add(rel)
+        cp = subprocess.run(["git", "show", f"HEAD:include/{rel}"], cwd=ROOT, text=True, capture_output=True)
+        text = cp.stdout if cp.returncode == 0 else ((ROOT / "include" / rel).read_text() if (ROOT / "include" / rel).exists() else "")
+        for k, v in _header_items(text).items():
+            items.setdefault(k, v)
+        for m2 in re.finditer(r'^\s*#\s*include\s+"([^"]+)"', text, re.M):
+            walk(m2.group(1))
+
+    for inc in includes:
+        m = re.match(r'#\s*include\s+"([^"]+)"', inc)
+        if m:
+            walk(m.group(1))
+    used = set(re.findall(r"[A-Za-z_]\w*", body))
+    need = [k for k in items if k in used]
+    # typedefs referenced by the chosen declarations, transitively
+    changed = True
+    while changed:
+        changed = False
+        for k in list(need):
+            for tok in set(re.findall(r"[A-Za-z_]\w*", items[k])):
+                if tok in items and tok not in need and tok != k:
+                    need.append(tok)
+                    changed = True
+    order = {k: i for i, k in enumerate(items)}
+    # typedefs first (declarations name them), each group in header order
+    types = [k for k in need if items[k].startswith("typedef")]
+    rest = [k for k in need if k not in types]
+    return "\n".join(items[k] for k in sorted(types, key=lambda k: order[k]) + sorted(rest, key=lambda k: order[k]))

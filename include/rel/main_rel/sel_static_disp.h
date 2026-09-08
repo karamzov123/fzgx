@@ -50,6 +50,14 @@ typedef struct {
 } Obj_1_bss_25BA0;
 extern Obj_1_bss_25BA0 lbl_1_bss_25BA0;
 
+// lbl_1_data_2B0D4: .data size 0x70, 6 refs from sel_static_disp.c
+typedef struct {
+    u8 pad_0[0xA];
+    s16 unk_A;  // 1 loads, 0 stores
+    u8 pad_C[0x64];
+} Obj_1_data_2B0D4;
+extern Obj_1_data_2B0D4 lbl_1_data_2B0D4;
+
 // lbl_1_data_419E0: .data size 0x12, 6 refs from sel_static_disp.c (own data block)
 extern u8 lbl_1_data_419E0[0x12];
 
@@ -67,34 +75,29 @@ typedef struct {
 } Obj_1_bss_D58;
 extern Obj_1_bss_D58 lbl_1_bss_D58;
 
-// lbl_1_data_2B0D4: .data size 0x70, 6 refs from sel_static_disp.c
-typedef struct {
-    u8 pad_0[0xA];
-    s16 unk_A;  // 1 loads, 0 stores
-    u8 pad_C[0x64];
-} Obj_1_data_2B0D4;
-extern Obj_1_data_2B0D4 lbl_1_data_2B0D4;
+// lbl_1_data_2BD54: .data size 0xA68, 5 refs from sel_static_disp.c
+extern u8 lbl_1_data_2BD54[0xA68];
 
 // lbl_1_data_41A30: .data size 0x4, 5 refs from sel_static_disp.c (own data block)
 extern u32 lbl_1_data_41A30;
 
-// lbl_1_data_2BD54: .data size 0xA68, 5 refs from sel_static_disp.c
-extern u8 lbl_1_data_2BD54[0xA68];
+// lbl_1_data_2AA24: .data size 0x58, 4 refs from sel_static_disp.c
+extern u8 lbl_1_data_2AA24[0x58];
 
 // lbl_1_bss_8E3E4: .bss size 0x20, 4 refs from sel_static_disp.c
 extern u8 lbl_1_bss_8E3E4[0x20];
 
-// lbl_1_data_40F58: .data size 0x4, 4 refs from sel_static_disp.c
-extern u32 lbl_1_data_40F58;
-
 // lbl_1_bss_8E404: .bss size 0x20, 4 refs from sel_static_disp.c
 extern u8 lbl_1_bss_8E404[0x20];
+
+// lbl_1_bss_8E52C: .bss size 0x1, 4 refs from sel_static_disp.c
+extern u8 lbl_1_bss_8E52C;
 
 // lbl_1_data_42198: .data size 0x4, 4 refs from sel_static_disp.c (own data block)
 extern u32 lbl_1_data_42198;
 
-// lbl_1_data_2AA24: .data size 0x58, 4 refs from sel_static_disp.c
-extern u8 lbl_1_data_2AA24[0x58];
+// lbl_1_data_40F58: .data size 0x4, 4 refs from sel_static_disp.c
+extern u32 lbl_1_data_40F58;
 
 // lbl_1_data_212A8: .data size 0xB4, 4 refs from sel_static_disp.c
 typedef struct {
@@ -103,11 +106,11 @@ typedef struct {
 } Obj_1_data_212A8;
 extern Obj_1_data_212A8 lbl_1_data_212A8;
 
-// lbl_1_bss_8E52C: .bss size 0x1, 4 refs from sel_static_disp.c
-extern u8 lbl_1_bss_8E52C;
-
 // lbl_1_bss_8E540: .bss size 0x4, 3 refs from sel_static_disp.c
 extern u32 lbl_1_bss_8E540;
+
+// lbl_1_bss_8E548: .bss size 0x8, 3 refs from sel_static_disp.c
+extern u8 lbl_1_bss_8E548;
 
 // lbl_1_data_42878: .data size 0x4, 3 refs from sel_static_disp.c (own data block)
 extern u32 lbl_1_data_42878;
@@ -119,23 +122,14 @@ typedef struct {
 } Obj_1_bss_6D82C;
 extern Obj_1_bss_6D82C lbl_1_bss_6D82C;
 
-// lbl_1_bss_8E548: .bss size 0x8, 3 refs from sel_static_disp.c
-extern u8 lbl_1_bss_8E548;
+// lbl_1_data_42478: .data size 0x2, 2 refs from sel_static_disp.c (own data block)
+extern u16 lbl_1_data_42478;
+
+// lbl_1_data_4247C: .data size 0x2, 2 refs from sel_static_disp.c (own data block)
+extern u16 lbl_1_data_4247C;
 
 // lbl_1_bss_8E544: .bss size 0x4, 2 refs from sel_static_disp.c
 extern u32 lbl_1_bss_8E544;
-
-// lbl_1_data_42488: .data size 0x18, 2 refs from sel_static_disp.c (own data block)
-extern u8 lbl_1_data_42488[0x18];
-
-// lbl_1_data_45204: .data size 0xF, 2 refs from sel_static_disp.c (own data block)
-extern u8 lbl_1_data_45204[0xF];
-
-// lbl_1_data_45200: .data size 0x3, 2 refs from sel_static_disp.c (own data block)
-extern u32 lbl_1_data_45200;
-
-// lbl_1_bss_3C04: .bss size 0x4, 2 refs from sel_static_disp.c
-extern u32 lbl_1_bss_3C04;
 
 // lbl_1_bss_26314: .bss size 0x7F0, 2 refs from sel_static_disp.c
 typedef struct {
@@ -155,17 +149,11 @@ typedef struct {
 } Obj_1_bss_26314;
 extern Obj_1_bss_26314 lbl_1_bss_26314;
 
+// lbl_1_bss_3C04: .bss size 0x4, 2 refs from sel_static_disp.c
+extern u32 lbl_1_bss_3C04;
+
 // lbl_1_bss_8E520: .bss size 0x4, 2 refs from sel_static_disp.c
 extern u32 lbl_1_bss_8E520;
-
-// lbl_1_data_42478: .data size 0x2, 2 refs from sel_static_disp.c (own data block)
-extern u16 lbl_1_data_42478;
-
-// lbl_1_data_4247C: .data size 0x2, 2 refs from sel_static_disp.c (own data block)
-extern u16 lbl_1_data_4247C;
-
-// lbl_1_bss_8E559: .bss size 0x1, 2 refs from sel_static_disp.c
-extern u8 lbl_1_bss_8E559;
 
 // lbl_1_bss_8EF68: .bss size 0x478, 2 refs from sel_static_disp.c
 typedef struct {
@@ -183,14 +171,50 @@ typedef struct {
 } Obj_1_bss_8EF68;
 extern Obj_1_bss_8EF68 lbl_1_bss_8EF68;
 
-// jumptable_1_data_41A60: .data size 0x2C, 1 refs from sel_static_disp.c (own data block)
-extern u8 jumptable_1_data_41A60[0x2C];
+// lbl_1_data_45204: .data size 0xF, 2 refs from sel_static_disp.c (own data block)
+extern u8 lbl_1_data_45204[0xF];
 
-// jumptable_1_data_462DC: .data size 0x24, 1 refs from sel_static_disp.c (own data block)
-extern u8 jumptable_1_data_462DC[0x24];
+// lbl_1_data_45200: .data size 0x3, 2 refs from sel_static_disp.c (own data block)
+extern u32 lbl_1_data_45200;
 
-// lbl_1_data_41DE4: .data size 0x3, 1 refs from sel_static_disp.c (own data block)
-extern u32 lbl_1_data_41DE4;
+// lbl_1_data_42488: .data size 0x18, 2 refs from sel_static_disp.c (own data block)
+extern u8 lbl_1_data_42488[0x18];
+
+// lbl_1_bss_8E559: .bss size 0x1, 2 refs from sel_static_disp.c
+extern u8 lbl_1_bss_8E559;
+
+// lbl_1_data_4244C: .data size 0x2C, 1 refs from sel_static_disp.c (own data block)
+extern u8 lbl_1_data_4244C[0x2C];
+
+// lbl_1_data_42194: .data size 0x4, 1 refs from sel_static_disp.c (own data block)
+extern u32 lbl_1_data_42194;
+
+// lbl_1_data_41B24: .data size 0x18, 1 refs from sel_static_disp.c (own data block)
+extern u8 lbl_1_data_41B24[0x18];
+
+// lbl_1_data_424CC: .data size 0x4, 1 refs from sel_static_disp.c (own data block)
+extern u32 lbl_1_data_424CC;
+
+// lbl_1_data_41A10: .data size 0x20, 1 refs from sel_static_disp.c (own data block)
+extern u8 lbl_1_data_41A10[0x20];
+
+// lbl_1_data_42808: .data size 0x5, 1 refs from sel_static_disp.c (own data block)
+extern u32 lbl_1_data_42808;
+
+// lbl_1_data_42810: .data size 0x68, 1 refs from sel_static_disp.c (own data block)
+extern u8 lbl_1_data_42810[0x68];
+
+// lbl_1_data_4634C: .data size 0x7C, 1 refs from sel_static_disp.c (own data block)
+extern u8 lbl_1_data_4634C[0x7C];
+
+// lbl_1_data_424A0: .data size 0xC, 1 refs from sel_static_disp.c (own data block)
+extern u8 lbl_1_data_424A0[0xC];
+
+// lbl_1_data_41ACC: .data size 0x2, 1 refs from sel_static_disp.c (own data block)
+extern u16 lbl_1_data_41ACC;
+
+// lbl_1_data_41AF8: .data size 0x24, 1 refs from sel_static_disp.c (own data block)
+extern u8 lbl_1_data_41AF8[0x24];
 
 // jumptable_1_data_41DF0: .data size 0x2C, 1 refs from sel_static_disp.c (own data block)
 extern u8 jumptable_1_data_41DF0[0x2C];
@@ -198,20 +222,11 @@ extern u8 jumptable_1_data_41DF0[0x2C];
 // lbl_1_data_41DEC: .data size 0x4, 1 refs from sel_static_disp.c (own data block)
 extern u32 lbl_1_data_41DEC;
 
-// lbl_1_data_4244C: .data size 0x2C, 1 refs from sel_static_disp.c (own data block)
-extern u8 lbl_1_data_4244C[0x2C];
+// lbl_1_data_41AB8: .data size 0x7, 1 refs from sel_static_disp.c (own data block)
+extern u32 lbl_1_data_41AB8;
 
-// jumptable_1_data_41A34: .data size 0x2C, 1 refs from sel_static_disp.c (own data block)
-extern u8 jumptable_1_data_41A34[0x2C];
-
-// lbl_1_data_419F4: .data size 0x1B, 1 refs from sel_static_disp.c (own data block)
-extern u8 lbl_1_data_419F4[0x1B];
-
-// lbl_1_data_41ACC: .data size 0x2, 1 refs from sel_static_disp.c (own data block)
-extern u16 lbl_1_data_41ACC;
-
-// jumptable_1_data_41AD0: .data size 0x28, 1 refs from sel_static_disp.c (own data block)
-extern u8 jumptable_1_data_41AD0[0x28];
+// lbl_1_data_41DE4: .data size 0x3, 1 refs from sel_static_disp.c (own data block)
+extern u32 lbl_1_data_41DE4;
 
 // jumptable_1_data_42174: .data size 0x20, 1 refs from sel_static_disp.c (own data block)
 extern u8 jumptable_1_data_42174[0x20];
@@ -222,29 +237,23 @@ extern u8 jumptable_1_data_42154[0x20];
 // jumptable_1_data_42134: .data size 0x20, 1 refs from sel_static_disp.c (own data block)
 extern u8 jumptable_1_data_42134[0x20];
 
-// lbl_1_data_41AF8: .data size 0x24, 1 refs from sel_static_disp.c (own data block)
-extern u8 lbl_1_data_41AF8[0x24];
+// lbl_1_data_41E1C: .data size 0x8, 1 refs from sel_static_disp.c (own data block)
+extern u32 lbl_1_data_41E1C;
 
-// lbl_1_data_41AC0: .data size 0x5, 1 refs from sel_static_disp.c (own data block)
-extern u32 lbl_1_data_41AC0;
+// lbl_1_data_41E24: .data size 0xF, 1 refs from sel_static_disp.c (own data block)
+extern u8 lbl_1_data_41E24[0xF];
 
-// lbl_1_data_41AC8: .data size 0x4, 1 refs from sel_static_disp.c (own data block)
-extern u32 lbl_1_data_41AC8;
+// lbl_1_data_42570: .data size 0x58, 1 refs from sel_static_disp.c (own data block)
+extern u8 lbl_1_data_42570[0x58];
 
-// lbl_1_data_41B1C: .data size 0x6, 1 refs from sel_static_disp.c (own data block)
-extern u32 lbl_1_data_41B1C;
+// lbl_1_data_419F4: .data size 0x1B, 1 refs from sel_static_disp.c (own data block)
+extern u8 lbl_1_data_419F4[0x1B];
 
-// jumptable_1_data_41A8C: .data size 0x2C, 1 refs from sel_static_disp.c (own data block)
-extern u8 jumptable_1_data_41A8C[0x2C];
+// jumptable_1_data_41B54: .data size 0x3C, 1 refs from sel_static_disp.c (own data block)
+extern u8 jumptable_1_data_41B54[0x3C];
 
-// lbl_1_data_41AB8: .data size 0x7, 1 refs from sel_static_disp.c (own data block)
-extern u32 lbl_1_data_41AB8;
-
-// lbl_1_data_41B3C: .data size 0x18, 1 refs from sel_static_disp.c (own data block)
-extern u8 lbl_1_data_41B3C[0x18];
-
-// lbl_1_data_41B24: .data size 0x18, 1 refs from sel_static_disp.c (own data block)
-extern u8 lbl_1_data_41B24[0x18];
+// jumptable_1_data_462DC: .data size 0x24, 1 refs from sel_static_disp.c (own data block)
+extern u8 jumptable_1_data_462DC[0x24];
 
 // lbl_1_data_42B94: .data size 0xB0, 1 refs from sel_static_disp.c (own data block)
 typedef struct {
@@ -254,14 +263,26 @@ typedef struct {
 } Obj_1_data_42B94;
 extern Obj_1_data_42B94 lbl_1_data_42B94;
 
-// lbl_1_data_42808: .data size 0x5, 1 refs from sel_static_disp.c (own data block)
-extern u32 lbl_1_data_42808;
+// lbl_1_data_41B3C: .data size 0x18, 1 refs from sel_static_disp.c (own data block)
+extern u8 lbl_1_data_41B3C[0x18];
 
-// lbl_1_data_42810: .data size 0x68, 1 refs from sel_static_disp.c (own data block)
-extern u8 lbl_1_data_42810[0x68];
+// lbl_1_data_424AC: .data size 0x20, 1 refs from sel_static_disp.c (own data block)
+extern u8 lbl_1_data_424AC[0x20];
 
-// lbl_1_data_42194: .data size 0x4, 1 refs from sel_static_disp.c (own data block)
-extern u32 lbl_1_data_42194;
+// jumptable_1_data_41A8C: .data size 0x2C, 1 refs from sel_static_disp.c (own data block)
+extern u8 jumptable_1_data_41A8C[0x2C];
+
+// jumptable_1_data_41EA8: .data size 0x20, 1 refs from sel_static_disp.c (own data block)
+extern u8 jumptable_1_data_41EA8[0x20];
+
+// lbl_1_data_462A0: .data size 0x2, 1 refs from sel_static_disp.c (own data block)
+extern u16 lbl_1_data_462A0;
+
+// lbl_1_data_462A4: .data size 0x14, 1 refs from sel_static_disp.c (own data block)
+extern u8 lbl_1_data_462A4[0x14];
+
+// jumptable_1_data_41A34: .data size 0x2C, 1 refs from sel_static_disp.c (own data block)
+extern u8 jumptable_1_data_41A34[0x2C];
 
 // lbl_1_data_42480: .data size 0x6, 1 refs from sel_static_disp.c (own data block)
 extern u32 lbl_1_data_42480;
@@ -269,49 +290,28 @@ extern u32 lbl_1_data_42480;
 // lbl_1_data_422B0: .data size 0x8, 1 refs from sel_static_disp.c (own data block)
 extern u32 lbl_1_data_422B0;
 
+// lbl_1_data_41AC0: .data size 0x5, 1 refs from sel_static_disp.c (own data block)
+extern u32 lbl_1_data_41AC0;
+
+// lbl_1_data_41AC8: .data size 0x4, 1 refs from sel_static_disp.c (own data block)
+extern u32 lbl_1_data_41AC8;
+
 // lbl_1_data_425C8: .data size 0xE, 1 refs from sel_static_disp.c (own data block)
 extern u8 lbl_1_data_425C8[0xE];
 
 // lbl_1_data_425D8: .data size 0xE, 1 refs from sel_static_disp.c (own data block)
 extern u8 lbl_1_data_425D8[0xE];
 
-// lbl_1_data_4634C: .data size 0x7C, 1 refs from sel_static_disp.c (own data block)
-extern u8 lbl_1_data_4634C[0x7C];
+// jumptable_1_data_41AD0: .data size 0x28, 1 refs from sel_static_disp.c (own data block)
+extern u8 jumptable_1_data_41AD0[0x28];
 
-// lbl_1_data_41E1C: .data size 0x8, 1 refs from sel_static_disp.c (own data block)
-extern u32 lbl_1_data_41E1C;
-
-// lbl_1_data_41E24: .data size 0xF, 1 refs from sel_static_disp.c (own data block)
-extern u8 lbl_1_data_41E24[0xF];
-
-// lbl_1_data_424CC: .data size 0x4, 1 refs from sel_static_disp.c (own data block)
-extern u32 lbl_1_data_424CC;
-
-// lbl_1_data_424A0: .data size 0xC, 1 refs from sel_static_disp.c (own data block)
-extern u8 lbl_1_data_424A0[0xC];
-
-// lbl_1_data_41A10: .data size 0x20, 1 refs from sel_static_disp.c (own data block)
-extern u8 lbl_1_data_41A10[0x20];
-
-// lbl_1_data_424AC: .data size 0x20, 1 refs from sel_static_disp.c (own data block)
-extern u8 lbl_1_data_424AC[0x20];
-
-// jumptable_1_data_41B54: .data size 0x3C, 1 refs from sel_static_disp.c (own data block)
-extern u8 jumptable_1_data_41B54[0x3C];
-
-// lbl_1_data_42570: .data size 0x58, 1 refs from sel_static_disp.c (own data block)
-extern u8 lbl_1_data_42570[0x58];
-
-// jumptable_1_data_41EA8: .data size 0x20, 1 refs from sel_static_disp.c (own data block)
-extern u8 jumptable_1_data_41EA8[0x20];
+// lbl_1_data_41B1C: .data size 0x6, 1 refs from sel_static_disp.c (own data block)
+extern u32 lbl_1_data_41B1C;
 
 // lbl_1_data_41DE8: .data size 0x4, 1 refs from sel_static_disp.c (own data block)
 extern f32 lbl_1_data_41DE8;
 
-// lbl_1_data_462A0: .data size 0x2, 1 refs from sel_static_disp.c (own data block)
-extern u16 lbl_1_data_462A0;
-
-// lbl_1_data_462A4: .data size 0x14, 1 refs from sel_static_disp.c (own data block)
-extern u8 lbl_1_data_462A4[0x14];
+// jumptable_1_data_41A60: .data size 0x2C, 1 refs from sel_static_disp.c (own data block)
+extern u8 jumptable_1_data_41A60[0x2C];
 
 #endif  // REL_MAIN_REL_SEL_STATIC_DISP_H

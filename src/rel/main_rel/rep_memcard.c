@@ -8,8 +8,16 @@ void fn_1_154CC4(u32 arg0) {
 }
 /* fzgx:end fn_1_154CC4 */
 
-/* fzgx:begin fn_1_154CD0 */
-#include "rel/main_rel/rep_memcard.h"
+/* fzgx:begin fn_1_154CD0 noprologue */
+#include "types.h"
+
+extern u32 lbl_1_bss_8ED90;
+typedef struct {
+    u32 unk_0;  // 2 loads, 3 stores
+    u8 pad_4[0x8];
+} Obj_1_bss_8ED94;
+extern Obj_1_bss_8ED94 lbl_1_bss_8ED94;
+extern u8 lbl_1_data_49AC8[0xE];
 
 extern u32 lbl_801A6410;
 

@@ -26,8 +26,6 @@ extern void fn_1_E174(void);
 extern void fn_1_F3D0(LiveCamera *);
 
 /* fzgx:begin fn_1_4928 */
-#include "rel/main_rel/alloc.h"
-
 typedef struct {
     u32 unk_00;
     u32 unk_04;
@@ -72,8 +70,6 @@ void fn_1_49F0(u32 *value) {
 /* fzgx:end fn_1_49F0 */
 
 /* fzgx:begin fn_1_4BB0 */
-#include "rel/main_rel/alloc.h"
-
 void fn_1_4BB0(void) {
     if (lbl_1_data_2CDC.unk_3 & 1) {
         u32 value = fn_1_435C(lbl_1_data_2CDC.unk_C);
@@ -84,8 +80,6 @@ void fn_1_4BB0(void) {
 /* fzgx:end fn_1_4BB0 */
 
 /* fzgx:begin fn_1_4C10 */
-#include "rel/main_rel/alloc.h"
-
 int fn_1_4C10(void) {
     u8 value = lbl_1_data_2CDC.unk_3;
     return value & 1;
@@ -93,16 +87,12 @@ int fn_1_4C10(void) {
 /* fzgx:end fn_1_4C10 */
 
 /* fzgx:begin fn_1_4CAC */
-#include "rel/main_rel/alloc.h"
-
 u32 fn_1_4CAC(void) {
     return (lbl_1_data_2CDC.unk_3 >> 1) & 1;
 }
 /* fzgx:end fn_1_4CAC */
 
 /* fzgx:begin fn_1_4CC0 */
-#include "rel/main_rel/alloc.h"
-
 void fn_1_4CC0(void) {
     lbl_1_data_2CDC.unk_3 &= 0xfe;
 }
@@ -193,8 +183,6 @@ s32 fn_1_509C(void) {
 /* fzgx:end fn_1_509C */
 
 /* fzgx:begin fn_1_5104 */
-#include "rel/main_rel/alloc.h"
-
 void fn_1_5104(void) {
     lbl_1_bss_F58 = lbl_1_bss_7AC40;
     lbl_1_bss_7AC20.unk_0 = lbl_1_bss_7AC40;
@@ -298,8 +286,6 @@ u8 fn_1_5348(void) {
 /* fzgx:end fn_1_5348 */
 
 /* fzgx:begin fn_1_58C4 */
-#include "rel/main_rel/alloc.h"
-
 u8 fn_1_58C4(void) {
     Obj_1_bss_F68_Target *obj = lbl_1_bss_F68;
 
@@ -317,8 +303,6 @@ u8 fn_1_58C4(void) {
 /* fzgx:end fn_1_58C4 */
 
 /* fzgx:begin fn_1_5910 */
-#include "rel/main_rel/alloc.h"
-
 u8 fn_1_5910(void) {
     Obj_1_bss_F68_Target *obj;
 
@@ -334,8 +318,6 @@ u8 fn_1_5910(void) {
 /* fzgx:end fn_1_5910 */
 
 /* fzgx:begin fn_1_6394 */
-#include "rel/main_rel/alloc.h"
-
 void fn_1_6394(void) {
     fn_1_DA6C(live_camera);
     fn_1_DE14(live_camera);

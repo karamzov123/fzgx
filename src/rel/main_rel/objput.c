@@ -5,10 +5,7 @@
 extern u32 lbl_1_bss_6C79C;
 extern void fn_80037D40(u8);
 
-/* fzgx:begin fn_1_56664 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
+/* fzgx:begin fn_1_56664 */
 extern void *lbl_801A6410;
 extern char lbl_1_data_1C650[9];
 extern void fn_1_45D0(void *, void *, char *, int);
@@ -19,10 +16,7 @@ void fn_1_56664(void *arg) {
 }
 /* fzgx:end fn_1_56664 */
 
-/* fzgx:begin fn_1_566A0 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
+/* fzgx:begin fn_1_566A0 */
 extern void *lbl_801A6410;
 extern char lbl_1_data_1C650[9];
 extern void fn_1_46B4(void *, void *, char *, int);
@@ -40,8 +34,6 @@ u32 fn_1_566DC(void) {
 /* fzgx:end fn_1_566DC */
 
 /* fzgx:begin fn_1_566EC */
-#include "rel/main_rel/objput.h"
-
 void fn_1_566EC(int arg0, int arg1) {
     lbl_1_bss_6C7A4.unk_10 = arg0;
     lbl_1_bss_6C7A4.unk_11 = arg1;

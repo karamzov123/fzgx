@@ -476,7 +476,12 @@ def tu_header(p: Project, module: str, tu: str, min_refs: int = 2) -> str:
                 # scalars far more often than it indexes them; the block that indexes is revised
                 out.append(f"extern {ctype} {name};")
         elif not nfields and sd.size:
-            out.append(f"extern u8 {name}[0x{sd.size:X}];")
+            # strings are char only for TUs opted in (typedefs.json "__char_strings__"): the
+            # switch breaks blocks that declared the string u8, so it is made per TU, when the
+            # TU is being taken to a whole-unit compile and its blocks get revised
+            opt = set(names.get("__char_strings__", []))
+            text = p.string_at(module, name) if own and tu.rsplit(".", 1)[0] in opt else None
+            out.append(f"extern char {name}[0x{sd.size:X}];  // {text!r}" if text else f"extern u8 {name}[0x{sd.size:X}];")
         else:
             ptr_types = {}
             for poff, fl in sorted(info.get("pointees", {}).items()):
