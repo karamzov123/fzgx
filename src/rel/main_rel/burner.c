@@ -346,21 +346,17 @@ void fn_1_9AD54(void) {
 }
 /* fzgx:end fn_1_9AD54 */
 
-/* fzgx:begin fn_1_9AD88 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/burner.h"
-
+/* fzgx:begin fn_1_9AD88 */
 extern u32 lbl_1_rodata_4210;
 extern void fn_80007AB4(u32 *arg0);
-extern void fn_1_9CC6C(u32 arg0, u32 arg1);
+extern void fn_1_9CC6C(void *arg0, s32 arg1);
 
-// Initialize the shared value, then pass the active burner fields to the follow-up routine.
+// Seed the temporary value, then notify the active burner using its shared state.
 void fn_1_9AD88(void) {
     u32 value = lbl_1_rodata_4210;
 
     fn_80007AB4(&value);
-    fn_1_9CC6C(lbl_1_bss_3BE0->unk_54, lbl_1_bss_3BE0->unk_48);
+    fn_1_9CC6C((void *)lbl_1_bss_3BE0->unk_54, lbl_1_bss_3BE0->unk_48);
 }
 /* fzgx:end fn_1_9AD88 */
 

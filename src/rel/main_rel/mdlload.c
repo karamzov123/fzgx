@@ -31,16 +31,13 @@ extern void fn_1_D6748(void *obj, u32 *arg1, s16 arg2);
 extern u32 lbl_801A63C0;
 extern void fn_1_D550C(void *);
 
-/* fzgx:begin fn_1_D3768 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
+/* fzgx:begin fn_1_D3768 */
 extern int fn_1_45730(void *owner, void *buffer);
 extern u8 lbl_1_bss_3BC0[32];
 extern int fn_1_458A0(void *buffer, void *work, int size, int mode);
-extern char lbl_1_data_3DBD8[10];
+extern unsigned char lbl_1_data_3DBD8[10];
 extern u32 lbl_801A6410;
-extern void *fn_1_45D0(u32 allocator, u32 size, const char *name, int mode);
+extern void *fn_1_45D0(u32 allocator, u32 size, const unsigned char *name, int mode);
 extern int fn_1_45850(void *buffer);
 extern void fn_1_12F78(void *owner, void *data);
 extern void DCFlushRange(void *address, u32 length);
@@ -101,36 +98,31 @@ void fn_1_D38A4(void) {
 }
 /* fzgx:end fn_1_D38A4 */
 
-/* fzgx:begin fn_1_D3B6C noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/mdlload.h"
-
-extern void *OSGetArenaHi(void);
-extern void fn_1_D3BE8(void *);
+/* fzgx:begin fn_1_D3B6C */
+extern void fn_1_D3BE8();
 
 typedef struct {
-    u32 unk0;
-    void *value;
-} FnD3B6CEntry;
+    u32 unk_00;
+    void *resource;
+} ModelReleaseEntry;
 
 typedef struct {
-    s32 count;
-    u8 pad[4];
-    FnD3B6CEntry *entries;
-} FnD3B6CObject;
+    s32 entry_count;
+    u8 unk_04[4];
+    ModelReleaseEntry *entry_table;
+} ModelReleaseList;
 
-// Release each model entry when the object lies above the arena high-water mark.
-void *fn_1_D3B6C(FnD3B6CObject *object) {
-    s32 i;
+// Release the list's resources only when it resides above the arena high-water mark.
+void *fn_1_D3B6C(ModelReleaseList *list) {
+    s32 index;
 
-    if (object != 0 && object > (FnD3B6CObject *)OSGetArenaHi()) {
-        for (i = 0; i < object->count; i++) {
-            fn_1_D3BE8(object->entries[i].value);
+    if (list != 0 && list > (ModelReleaseList *)OSGetArenaHi()) {
+        for (index = 0; index < list->entry_count; index++) {
+            fn_1_D3BE8(list->entry_table[index].resource);
         }
     }
 
-    return object;
+    return list;
 }
 /* fzgx:end fn_1_D3B6C */
 
@@ -164,29 +156,46 @@ void fn_1_D3DDC(void) {
 }
 /* fzgx:end fn_1_D3DDC */
 
-/* fzgx:begin fn_1_D3E08 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/mdlload.h"
-
+/* fzgx:begin fn_1_D3E08 */
+extern void fn_80071484(void);
+extern void fn_80071678(void);
+extern void *OSGetArenaHi(void);
+extern void fn_1_D3BE8(void);
+extern u8 lbl_1_bss_7AD58[8];
+extern void fn_1_9A508(void);
+extern void fn_1_D3F24(void *base);
+extern void fn_1_D3F88(void *base);
 extern f32 lbl_1_rodata_6168[112];
 extern u32 fn_1_5910(void);
 extern void fn_1_9AD88(Obj_1_data_2A7E0 *obj);
 extern u32 fn_1_9D260(void);
 extern s32 fn_1_D3E90(void);
 extern void fn_1_1067A8(void *obj, f32 value, f32 limit);
-extern void fn_1_D4174(Obj_1_data_2A7E0_At3C *obj, u32 value);
+extern void fn_1_D4174(void *base, void *arg);
+extern s16 camera_get_mode(void);
+extern s32 fn_1_6EC0(u8 value);
+extern u32 fn_1_864E8(s32 value);
+extern s32 fn_1_7000(void);
+extern void fn_1_681C(u8 value, void *out);
+extern s32 fn_1_1FB80(void *value, s32 mode);
+extern void fn_1_103090(void *ptr);
+extern void fn_1_1030A4(void *ptr);
+extern void fn_1_103264(void *item, void *arg);
+extern s16 fn_1_3F0C8(void);
+extern void fn_1_D6748(void *obj, u32 *arg1, s16 arg2);
+extern u32 lbl_801A63C0;
+extern void fn_1_D550C(void *);
 
 // Refreshes the model state and applies the indexed limit when loading is inactive.
 void fn_1_D3E08(void) {
     u32 model_index;
     Obj_1_data_2A7E0_At3C *model;
-    u32 update_value;
+    void *update_value;
 
     model_index = fn_1_5910();
     model = lbl_1_data_2A7E0.unk_3C;
     fn_1_9AD88(&lbl_1_data_2A7E0);
-    update_value = fn_1_9D260();
+    update_value = (void *)fn_1_9D260();
 
     if (fn_1_D3E90() == 0) {
         fn_1_1067A8(&model->unk_20, ((f32 *)model)[model_index],

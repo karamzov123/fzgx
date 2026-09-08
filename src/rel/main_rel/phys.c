@@ -242,36 +242,24 @@ void fn_1_E57FC(void *object, void *source) {
 }
 /* fzgx:end fn_1_E57FC */
 
-/* fzgx:begin fn_1_E5840 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/phys.h"
-
-extern void fn_80008BEC(void *dst, int value, int size);
-extern void fn_80008BA8(void *dst, const void *src, int size);
-
-// Copies a 12-byte value into the object's field, clearing it when no value is supplied.
+/* fzgx:begin fn_1_E5840 */
+// Clears or copies the object's 12-byte value at offset 0x78.
 void fn_1_E5840(void *base, const void *value) {
     if (value == 0) {
         fn_80008BEC((char *)base + 0x78, 0, 0xc);
     } else {
-        fn_80008BA8((char *)base + 0x78, value, 0xc);
+        fn_80008BA8((char *)base + 0x78, (void *)value, 0xc);
     }
 }
 /* fzgx:end fn_1_E5840 */
 
-/* fzgx:begin fn_1_E5884 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/phys.h"
+/* fzgx:begin fn_1_E5884 */
+extern f32 lbl_1_rodata_67A8;
 
-extern f32 lbl_1_rodata_67A8[3];
-extern void fn_80008BA8(void *dst, const void *src, u32 size);
-
-// Resets the three-component value or copies a replacement into it.
-void fn_1_E5884(void *base, const void *value) {
+// Resets the object's three-component value or copies a replacement into it.
+void fn_1_E5884(void *base, void *value) {
     if (value == 0) {
-        f32 reset_value = lbl_1_rodata_67A8[0];
+        f32 reset_value = lbl_1_rodata_67A8;
 
         *(f32 *)((char *)base + 0xfc) = reset_value;
         *(f32 *)((char *)base + 0xf8) = reset_value;
@@ -282,15 +270,11 @@ void fn_1_E5884(void *base, const void *value) {
 }
 /* fzgx:end fn_1_E5884 */
 
-/* fzgx:begin fn_1_E58CC noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/phys.h"
-
+/* fzgx:begin fn_1_E58CC */
 extern u32 lbl_1_rodata_6A8C[3];
-extern void fn_80008BA8(void *dst, const void *src, u32 size);
+extern void fn_80008BA8(void *dst, void *value, u32 size);
 
-// Copies the caller's value into the object, falling back to the shared default when absent.
+// Copies the supplied three-word value, or the shared default when no value is provided.
 void fn_1_E58CC(void *base, const void *value) {
     if (value == 0) {
         u32 default_value[3];
@@ -300,7 +284,7 @@ void fn_1_E58CC(void *base, const void *value) {
         default_value[2] = lbl_1_rodata_6A8C[2];
         fn_80008BA8((char *)base + 0x128, default_value, 0xc);
     } else {
-        fn_80008BA8((char *)base + 0x128, value, 0xc);
+        fn_80008BA8((char *)base + 0x128, (void *)value, 0xc);
     }
 }
 /* fzgx:end fn_1_E58CC */
@@ -633,14 +617,11 @@ void fn_1_EFA1C(void) {
 }
 /* fzgx:end fn_1_EFA1C */
 
-/* fzgx:begin fn_1_F22E4 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
+/* fzgx:begin fn_1_F22E4 */
 extern void fn_1_12EF80(s16 arg, s16 *out_group, s16 *out_entry);
-extern s32 lbl_1_data_3E53C[];
+extern u8 lbl_1_data_3E53C[120];
 
- // Maps a course selection to its associated data value.
+// Maps a course selection to its associated data value.
 s16 fn_1_F22E4(s32 arg) {
     s16 group;
     s16 entry;
@@ -648,7 +629,7 @@ s16 fn_1_F22E4(s32 arg) {
 
     fn_1_12EF80((s16)arg, &group, &entry);
     index = (group - 1) * 6 + entry;
-    return (s16)lbl_1_data_3E53C[index];
+    return (s16)((s32 *)lbl_1_data_3E53C)[index];
 }
 /* fzgx:end fn_1_F22E4 */
 

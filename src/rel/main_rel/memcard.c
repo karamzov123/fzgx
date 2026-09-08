@@ -627,11 +627,11 @@ typedef struct {
 
 // Loads the result data and clears its metadata when the load succeeds.
 void fn_1_ABDB8(ArgStruct *arg) {
-    s32 result;
+    s32 loaded_result;
 
-    result = fn_8002FE54(arg->byte_0x0, arg->ptr_0x14,
-                         arg->ptr_0x24->data_0x20);
-    arg->ptr_0x24->unk_0x4 = result;
+    loaded_result = fn_8002FE54(arg->byte_0x0, arg->ptr_0x14,
+                                arg->ptr_0x24->data_0x20);
+    arg->ptr_0x24->unk_0x4 = loaded_result;
     if (arg->ptr_0x24->unk_0x4 != -1) {
         arg->ptr_0x24->unk_0x2 = 0;
     }
@@ -1169,7 +1169,7 @@ extern int fn_8002E0C4(u8 value);
 extern void fn_1_46B4(void *arg0, void *arg1, void *arg2, int arg3);
 extern void *lbl_801A6410;
 
-// Reset the card state and publish the completed memory-card operation.
+// Clear pending card work and mark the operation ready for the next state.
 void fn_1_ACD04(Fn1Acd04Obj *obj) {
     int value;
 
@@ -1181,8 +1181,10 @@ void fn_1_ACD04(Fn1Acd04Obj *obj) {
         fn_1_46B4(lbl_801A6410, obj->unk_c, &lbl_1_data_3C7B8, 0x3c8);
         obj->unk_7 = 0;
         obj->unk_c = 0;
+
         {
             Fn1Acd04Inner *inner = obj->unk_24;
+
             inner->unk_1c = 0;
             inner->unk_18 = 0;
         }
@@ -1392,9 +1394,9 @@ void fn_1_AD09C(void) {
 
 extern int fn_1_B7FDC(u8 value);
 
-// Passes the stored memory-card value to the common handler.
+// Forwards the saved memory-card byte to the common handler.
 int fn_1_AD140(const u8 *value) {
-    return fn_1_B7FDC(value[0]);
+    return fn_1_B7FDC(*value);
 }
 /* fzgx:end fn_1_AD140 */
 
@@ -1425,22 +1427,22 @@ void fn_1_AD168(Fn1AD168Obj *obj) {
 /* fzgx:begin fn_1_AD1AC */
 #include "rel/main_rel/globals.h"
 
-typedef struct Fn1AD1ACOut {
-    u8 pad0[4];
-    void *field4;
-} Fn1AD1ACOut;
+typedef struct Fn1AD1ACOutput {
+    u8 unk_00[4];
+    void *unk_04;
+} Fn1AD1ACOutput;
 
-typedef struct Fn1AD1AC {
-    u8 field0;
-    u8 pad1[0x23];
-    Fn1AD1ACOut *field24;
-} Fn1AD1AC;
+typedef struct Fn1AD1ACObject {
+    u8 unk_00;
+    u8 unk_01[0x23];
+    Fn1AD1ACOutput *unk_24;
+} Fn1AD1ACObject;
 
 extern void *fn_8002A958(u8 arg0);
 
-// Store the generated value in the object's output slot.
-void fn_1_AD1AC(Fn1AD1AC *obj) {
-    obj->field24->field4 = fn_8002A958(obj->field0);
+// Generate the object's value and publish it through the output slot.
+void fn_1_AD1AC(Fn1AD1ACObject *obj) {
+    obj->unk_24->unk_04 = fn_8002A958(obj->unk_00);
 }
 /* fzgx:end fn_1_AD1AC */
 
@@ -1628,11 +1630,11 @@ u8 fn_1_B7CD4(void) {
 #include "rel/main_rel/memcard.h"
 #include "rel/main_rel/globals.h"
 
-// Copy the caller's memory-card state into the global work area.
+// Save the caller's memory-card state in the global work area.
 void fn_80083D6C(void *dst, const void *src, int size);
 
-void fn_1_B7E14(void *state) {
-    fn_80083D6C(lbl_1_bss_716C8.pad_54, state, 0x20);
+void fn_1_B7E14(void *memory_card_state) {
+    fn_80083D6C(lbl_1_bss_716C8.pad_54, memory_card_state, 0x20);
 }
 /* fzgx:end fn_1_B7E14 */
 
@@ -1772,6 +1774,7 @@ int fn_1_B800C(int index) {
 /* fzgx:end fn_1_B800C */
 
 /* fzgx:begin fn_1_B80F0 */
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/memcard.h"
 
 extern int fn_8002E0C4(int);
@@ -1783,10 +1786,7 @@ void fn_1_B80F0(int index) {
     Obj_1_bss_716C8 *entry =
         (Obj_1_bss_716C8 *)((u8 *)&lbl_1_bss_716C8 + index * 0xa0);
 
-    for (;;) {
-        if (fn_8002E0C4(index) != -1) {
-            break;
-        }
+    while (fn_8002E0C4(index) == -1) {
     }
 
     if (entry->unk_C != 0) {
@@ -1894,7 +1894,7 @@ void fn_1_C17CC(void) {
 #include "rel/main_rel/memcard.h"
 
 extern void fn_1_F755C(u8 value);
-extern void fn_80008BA8(const void *src, void *dst, u32 size);
+extern void fn_80008BA8(const void *dst, void *src, u32 size);
 extern void fn_1_A6840(u8 value);
 extern void fn_8000C49C(void *arg0, ...);
 extern void fn_1_F79C8(void);
@@ -1943,13 +1943,14 @@ extern void fn_8000C49C(void *arg0, u32 arg1, ...);
 
 // Serializes the current memory-card data into the active buffer.
 void fn_1_C36EC(void) {
-    u8 *buffer = (u8 *)lbl_1_bss_718C0.unk_0 + 4;
+    u8 *serialized_data = &lbl_1_bss_718C0.unk_0->unk_4;
 
-    fn_80008BA8(buffer, &lbl_1_bss_8B3A0.unk_9F, 4);
-    fn_80008BA8(buffer + 4, &lbl_1_bss_8B3A0.unk_8C, 6);
-    fn_80008BA8(buffer + 0xA, (u8 *)&lbl_1_bss_8B3A0 + 0xC, 0x80);
+    fn_80008BA8(serialized_data, &lbl_1_bss_8B3A0.unk_9F, 4);
+    fn_80008BA8(serialized_data + 4, &lbl_1_bss_8B3A0.unk_8C, 6);
+    fn_80008BA8(serialized_data + 0xA, (u8 *)&lbl_1_bss_8B3A0 + 0xC, 0x80);
 
-    if ((u32)(buffer + 0x8A - ((u8 *)lbl_1_bss_718C0.unk_0 + 4)) != 0x8A) {
+    if ((u32)(serialized_data + 0x8A -
+              ((u8 *)lbl_1_bss_718C0.unk_0 + 4)) != 0x8A) {
         fn_8000C49C(&lbl_1_data_3C7B8, 0x3578, lbl_1_data_3D124);
     }
 }

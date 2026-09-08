@@ -273,12 +273,9 @@ void fn_1_47A60(s16 index) {
 }
 /* fzgx:end fn_1_47A60 */
 
-/* fzgx:begin fn_1_485E8 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
-extern s16 *lbl_1_data_19FC4[188];
-extern void **lbl_1_data_19098[188];
+/* fzgx:begin fn_1_485E8 */
+extern u8 lbl_1_data_19FC4[752];
+extern u8 lbl_1_data_19098[752];
 extern u8 lbl_1_bss_3E024[52];
 extern char lbl_1_data_1A3AC[5];
 extern void fn_80083DB0(void *arg0, void *arg1);
@@ -287,9 +284,10 @@ extern void fn_80083DB0(void *arg0, void *arg1);
 void *fn_1_485E8(s32 index, s32 value) {
     s32 entry = 0;
 
-    while (lbl_1_data_19FC4[index][entry] != -1) {
-        if (lbl_1_data_19FC4[index][entry] == value) {
-            fn_80083DB0(lbl_1_bss_3E024, lbl_1_data_19098[index][entry]);
+    while (((s16 **)lbl_1_data_19FC4)[index][entry] != -1) {
+        if (((s16 **)lbl_1_data_19FC4)[index][entry] == value) {
+            fn_80083DB0(lbl_1_bss_3E024,
+                        ((void ***)lbl_1_data_19098)[index][entry]);
             return lbl_1_bss_3E024;
         }
         entry++;

@@ -102,27 +102,20 @@ u32 fn_1_7F428(u32 arg0) {
 }
 /* fzgx:end fn_1_7F428 */
 
-/* fzgx:begin fn_1_7F934 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/car.h"
+/* fzgx:begin fn_1_7F934 */
+extern void fn_1_7F658(void *arg0);
 
-extern void fn_1_7F658(void);
-
-// Starts the car initialization sequence.
-void fn_1_7F934(void) {
-    fn_1_7F658();
+// Forwards the caller's context to the common car initialization routine.
+void fn_1_7F934(void *arg0) {
+    fn_1_7F658(arg0);
 }
 /* fzgx:end fn_1_7F934 */
 
-/* fzgx:begin fn_1_7FFF0 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
+/* fzgx:begin fn_1_7FFF0 */
+extern u8 lbl_1_data_2057C[22];
+extern void fn_1_465D0(void *arg0, s32 arg1);
 
-extern char lbl_1_data_2057C[22];
-extern void fn_1_465D0(char *arg0, s32 arg1);
-
-// Registers the default car-data entry.
+// Installs the default car-data entry used by the car registry.
 void fn_1_7FFF0(void) {
     fn_1_465D0(lbl_1_data_2057C, 1);
 }
@@ -303,18 +296,15 @@ s32 fn_1_818AC(Obj *a, Obj *b) {
 }
 /* fzgx:end fn_1_818AC */
 
-/* fzgx:begin fn_1_835E0 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
+/* fzgx:begin fn_1_835E0 */
 extern u32 lbl_1_bss_6D970;
-extern char lbl_1_data_20714[10];
+extern u8 lbl_1_data_20714[10];
 extern u32 lbl_1_bss_6D974;
 extern void fn_1_435C(void *);
 extern void fn_1_43E8(s32);
 extern void fn_1_850C4(void);
-extern void fn_1_3F8C(char *, void (*)(void), void *, s32);
-extern void fn_1_8B8A4(void);
+extern void fn_1_3F8C(u8 *, void (*)(void), void *, s32);
+extern void fn_1_8B8A4(s32);
 extern void fn_1_43F4(void);
 
 // Registers the car callbacks and publishes the supplied car context.
@@ -448,15 +438,11 @@ void fn_1_85F70(void) {
 }
 /* fzgx:end fn_1_85F70 */
 
-/* fzgx:begin fn_1_8616C noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/car.h"
-
+/* fzgx:begin fn_1_8616C */
 extern f32 lbl_1_rodata_3518[6];
-extern void fn_1_85934(f32);
+extern void fn_1_85934();
 
-// Supplies the default car parameter to the car update routine.
+// Passes the default handling value to the car update routine.
 void fn_1_8616C(void) {
     fn_1_85934(lbl_1_rodata_3518[0]);
 }
@@ -2920,18 +2906,11 @@ void fn_1_8E188(void) {
 }
 /* fzgx:end fn_1_8E188 */
 
-/* fzgx:begin fn_1_8E1E8 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/car.h"
-
-extern void fn_80071718(u32 value);
-extern void fn_800711A8(u32 value);
-
+/* fzgx:begin fn_1_8E1E8 */
 // Releases both pending resource handles when the secondary handle is active.
 void fn_1_8E1E8(void) {
     if (lbl_1_bss_6E958.unk_4 != 0) {
-        fn_80071718(lbl_1_bss_6E958.unk_4);
+        fn_80071718((void *)lbl_1_bss_6E958.unk_4);
         fn_800711A8(lbl_1_bss_6E958.unk_0);
         lbl_1_bss_6E958.unk_4 = 0;
         lbl_1_bss_6E958.unk_0 = 0;
@@ -3229,22 +3208,16 @@ void fn_1_967A8(Fn1967A8Object *arg0, void *arg1) {
 }
 /* fzgx:end fn_1_967A8 */
 
-/* fzgx:begin fn_1_96968 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/car.h"
-
+/* fzgx:begin fn_1_96968 */
 typedef struct Fn196968Object Fn196968Object;
 
 struct Fn196968Object {
     u8 unk_00[0x28];
-    void *unk_28;
+    u32 unk_28;
     u8 unk_2C[0x144];
     void *unk_170;
     void *unk_174;
 };
-
-extern void *fn_1_41488(void *arg0, void *arg1);
 
 // Cache the resource key and return the requested resource sequence number.
 u16 fn_1_96968(Fn196968Object *object, void *arg1) {
@@ -3349,11 +3322,7 @@ u16 fn_1_96BC0(Fn196BC0Object *object, void *arg1) {
 }
 /* fzgx:end fn_1_96BC0 */
 
-/* fzgx:begin fn_1_A7E60 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/car.h"
-
+/* fzgx:begin fn_1_A7E60 */
 extern u8 lbl_1_data_34348[12];
 
 extern void fn_1_12A2B8(s32 value);
@@ -3361,8 +3330,6 @@ extern void fn_1_12A2C4(s32 value);
 extern void fn_1_12A2D0(s32 value);
 extern void fn_1_12AB38(void *value);
 extern void fn_8008069C(char *buffer, const char *format, ...);
-extern s32 fn_1_12AC00(const char *buffer);
-extern s32 fn_1_12ADA0(const char *buffer, s32 value);
 extern void fn_1_A7B5C(void *arg0, s32 arg1, void *arg2, s8 arg3, void *arg4);
 
 typedef struct FnA7E60Object {
@@ -3396,9 +3363,9 @@ void fn_1_A7E60(void *arg0, s8 arg1, FnA7E60Object *object, s32 arg3, void *arg4
     fn_1_12AB38(data + 0x40);
     format_value = ((s32 *)lbl_1_data_20D1C)[index];
     fn_8008069C(buffer, (const char *)(data + 0x18), format_value);
-    object->unk_108 = fn_1_12AC00(buffer);
+    object->unk_108 = fn_1_12AC00((unsigned char *)buffer);
     fn_8008069C(buffer, (const char *)(data + 0x48), format_value);
-    object->unk_104 = fn_1_12ADA0(buffer, object->unk_108);
+    object->unk_104 = fn_1_12ADA0((unsigned char *)buffer, object->unk_108);
     fn_1_12AB38(data + 0x3c);
     fn_1_12A2B8(0);
     fn_1_12A2C4(0);

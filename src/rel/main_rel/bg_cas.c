@@ -217,16 +217,16 @@ void fn_1_FE780(void) {
 #include "rel/main_rel/bg_cas.h"
 #include "rel/main_rel/globals.h"
 
-// Initialize the background object, update it when active, and finalize processing.
+// Refresh the background object and process it when its update state is active.
 void fn_1_FE784(void) {
-    Obj_1_data_2A7E0_At3C *background;
+    Obj_1_data_2A7E0_At3C *background_object;
 
-    background = lbl_1_data_2A7E0.unk_3C;
+    background_object = lbl_1_data_2A7E0.unk_3C;
     fn_1_9AD88(&lbl_1_data_2A7E0);
-    if ((s32)background->unk_10 != 0) {
-        fn_1_10069C(background);
+    if ((s32)background_object->unk_10 != 0) {
+        fn_1_10069C(background_object);
     }
-    fn_1_FF038(background);
+    fn_1_FF038(background_object);
 }
 /* fzgx:end fn_1_FE784 */
 

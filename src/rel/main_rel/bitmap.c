@@ -17,27 +17,17 @@ extern void fn_1_47AD4(Obj_1_data_FCD4 *obj, u8 value, int arg2, int arg3);
 extern f32 lbl_1_rodata_10C0[5];
 extern f32 lbl_1_bss_3E05C;
 
-/* fzgx:begin fn_1_4811C noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/bitmap.h"
-
-extern void fn_1_48214(void *arg, int value);
-
-void fn_1_4811C(void *arg) {
+/* fzgx:begin fn_1_4811C */
+// Enables the bitmap entry identified by the caller.
+void fn_1_4811C(int arg) {
     fn_1_48214(arg, 1);
 }
 /* fzgx:end fn_1_4811C */
 
-/* fzgx:begin fn_1_48140 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/bitmap.h"
-
-extern void fn_1_48214(void *, int);
-
-void fn_1_48140(void *arg) {
-    fn_1_48214(arg, 0);
+/* fzgx:begin fn_1_48140 */
+// Disables the bitmap entry supplied by the caller.
+void fn_1_48140(int index) {
+    fn_1_48214(index, 0);
 }
 /* fzgx:end fn_1_48140 */
 
@@ -57,16 +47,9 @@ void fn_1_48164(int value) {
 }
 /* fzgx:end fn_1_48164 */
 
-/* fzgx:begin fn_1_481E8 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/bitmap.h"
-
-extern void fn_1_48214(void *arg0, int arg1);
-extern void fn_1_4DDC0(void);
-extern void fn_1_4F724(void);
-
-void fn_1_481E8(void *arg0) {
+/* fzgx:begin fn_1_481E8 */
+// Initializes the bitmap entry and refreshes the related bitmap state.
+void fn_1_481E8(int arg0) {
     fn_1_48214(arg0, 0);
     fn_1_4DDC0();
     fn_1_4F724();
@@ -134,49 +117,39 @@ u32 fn_1_485A8(s32 index) {
 }
 /* fzgx:end fn_1_485A8 */
 
-/* fzgx:begin fn_1_48690 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/bitmap.h"
-
-extern void *fn_1_48730(void);
+/* fzgx:begin fn_1_48690 */
+extern void *fn_1_48730(u32 value);
 
 // Return the current bitmap width, or the default width when no bitmap is active.
-u16 fn_1_48690(void) {
-    void *value = fn_1_48730();
-    if (value != 0) {
-        return *(u16 *)((u8 *)value + 8);
+u16 fn_1_48690(u32 unused) {
+    void *bitmap = fn_1_48730(unused);
+
+    if (bitmap != 0) {
+        return *(u16 *)((u8 *)bitmap + 8);
     }
+
     return 8;
 }
 /* fzgx:end fn_1_48690 */
 
-/* fzgx:begin fn_1_486C4 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/bitmap.h"
+/* fzgx:begin fn_1_486C4 */
+// Return the current bitmap height, or the default height when no bitmap is active.
+u16 fn_1_486C4(u32 value) {
+    void *bitmap = (void *)fn_1_48730(value);
 
-extern void *fn_1_48730(void);
-
-u16 fn_1_486C4(void) {
-    void *value = fn_1_48730();
-    if (value != 0) {
-        return *(u16 *)((u8 *)value + 0xA);
+    if (bitmap != 0) {
+        return *(u16 *)((u8 *)bitmap + 0xA);
     }
     return 8;
 }
 /* fzgx:end fn_1_486C4 */
 
-/* fzgx:begin fn_1_486F8 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/bitmap.h"
+/* fzgx:begin fn_1_486F8 */
+extern void *fn_1_48730(u32 value);
 
-extern void *fn_1_48730(void);
-
-// Return the bitmap entry flags for the current bitmap slot.
-u32 fn_1_486F8(void) {
-    void *bitmap = fn_1_48730();
+// Return the bitmap entry flags for the slot identified by value.
+u32 fn_1_486F8(u32 value) {
+    void *bitmap = fn_1_48730(value);
 
     if (bitmap != 0) {
         return *(u32 *)bitmap & 0x1F;

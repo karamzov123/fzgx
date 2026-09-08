@@ -6,7 +6,7 @@
 
 extern void fn_1_DAAFC(Obj_1_data_2A7E0_At3C *obj);
 
-// Pass the active background object to the next processing stage.
+// Sends the active background object's state to the next processing stage.
 void fn_1_DA7B8(void) {
     fn_1_DAAFC(lbl_1_data_2A7E0.unk_3C);
 }
@@ -297,7 +297,7 @@ void fn_1_5948(s32);
 void fn_1_DC648(Obj_1_data_2A7E0_At3C *);
 void fn_1_627C(s32);
 
-// Initializes scene data, then refreshes every active scene entry.
+// Initializes scene data and updates each active scene entry.
 void fn_1_DC268(void) {
     Obj_1_data_2A7E0_At3C *scene_data;
     s32 entry_index;
@@ -308,6 +308,7 @@ void fn_1_DC268(void) {
     entry_count = fn_1_9D260();
     fn_1_DCB10();
     fn_1_DC454(scene_data, entry_count);
+
     entry_count = fn_1_58C4();
     for (entry_index = 0; entry_index < entry_count; entry_index++) {
         fn_1_5948(entry_index);
@@ -344,6 +345,7 @@ extern void fn_1_DC6FC(Obj_1_data_2A7E0_At3C *);
 extern void fn_1_DC5E8(Obj_1_data_2A7E0_At3C *, s32);
 extern void fn_1_9AD88(void);
 
+// Updates the current background scene and finalizes its generated data.
 void fn_1_DC33C(void) {
     Obj_1_data_2A7E0_At3C *obj;
     s32 result;

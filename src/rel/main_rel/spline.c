@@ -300,17 +300,13 @@ s32 fn_1_F7954(void) {
 }
 /* fzgx:end fn_1_F7954 */
 
-/* fzgx:begin fn_1_F79C8 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/spline.h"
-
-extern void fn_1_F8918(u8 *, Obj_1_bss_7F0C0 *);
+/* fzgx:begin fn_1_F79C8 */
+extern void fn_1_F8918(u8 *, u8 *);
 extern u16 lbl_1_data_414[36];
 
 // Initialize spline data and publish the active spline region.
 void fn_1_F79C8(void) {
-    fn_1_F8918(&lbl_1_bss_718E0.pad_1A2[0x1e], &lbl_1_bss_7F0C0);
+    fn_1_F8918(&lbl_1_bss_718E0.pad_1A2[0x1e], (u8 *)&lbl_1_bss_7F0C0);
     lbl_1_bss_84420 = (u32)((u8 *)&lbl_1_bss_7F0C0 + 0x4b5c);
     lbl_1_data_414[0] = 0xffff;
 }
@@ -793,8 +789,8 @@ extern s32 fn_1_FA69C(s16 value);
 
 // Return whether the signed result from the spline lookup is nonzero.
 u32 fn_1_FA1A8(s32 value) {
-    u32 result = (u32)fn_1_FA69C((s16)value);
-    return ((u32)(-result | result)) >> 31;
+    s32 lookup = fn_1_FA69C((s16)value);
+    return (u32)(lookup != 0);
 }
 /* fzgx:end fn_1_FA1A8 */
 

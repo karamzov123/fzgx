@@ -15,13 +15,10 @@ extern void fn_80074660(u32);
 extern void fn_80073898(u32);
 extern void fn_80074788(u32);
 
-/* fzgx:begin fn_1_56858 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
-extern char lbl_1_data_1C660[12];
+/* fzgx:begin fn_1_56858 */
+extern unsigned char lbl_1_data_1C660[12];
 extern void *lbl_801A6410;
-extern void fn_1_46B4(void *, void *, char *, int);
+extern void fn_1_46B4(void *, void *, unsigned char *, int);
 
 typedef struct ShadowMapEntry {
     char pad_00[0x3c];
@@ -32,13 +29,14 @@ typedef struct ShadowMapEntry {
 
 // Register each entry's resources, then clear it for reuse.
 void fn_1_56858(ShadowMapEntry *entries, u32 count) {
-    u32 i;
-    ShadowMapEntry *entry;
+    u32 index;
+    ShadowMapEntry *current_entry;
 
-    for (i = 0, entry = entries; i < count; i++, entry++) {
-        fn_1_46B4(lbl_801A6410, entry->unk_3c, lbl_1_data_1C660, 0x87);
-        fn_1_46B4(lbl_801A6410, entry->unk_40, lbl_1_data_1C660, 0x88);
-        memset(entry, 0, 0x4c);
+    for (index = 0, current_entry = entries; index < count;
+         index++, current_entry++) {
+        fn_1_46B4(lbl_801A6410, current_entry->unk_3c, lbl_1_data_1C660, 0x87);
+        fn_1_46B4(lbl_801A6410, current_entry->unk_40, lbl_1_data_1C660, 0x88);
+        memset(current_entry, 0, 0x4c);
     }
 }
 /* fzgx:end fn_1_56858 */

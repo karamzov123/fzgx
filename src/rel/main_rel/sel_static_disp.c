@@ -280,13 +280,16 @@ void fn_1_13E054(void* arg0, void* arg1, void* arg2, int arg3) {
 /* fzgx:begin fn_1_13F81C */
 extern u32 lbl_1_bss_8E3E4[8];
 
-// Clear all static display slots before they are populated.
+// Reset the static display slots before they are populated.
 void fn_1_13F81C(void) {
-    int i;
-
-    for (i = 0; i < 8; i++) {
-        lbl_1_bss_8E3E4[i] = 0;
-    }
+    lbl_1_bss_8E3E4[0] = 0;
+    lbl_1_bss_8E3E4[1] = 0;
+    lbl_1_bss_8E3E4[2] = 0;
+    lbl_1_bss_8E3E4[3] = 0;
+    lbl_1_bss_8E3E4[4] = 0;
+    lbl_1_bss_8E3E4[5] = 0;
+    lbl_1_bss_8E3E4[6] = 0;
+    lbl_1_bss_8E3E4[7] = 0;
 }
 /* fzgx:end fn_1_13F81C */
 
@@ -354,7 +357,7 @@ u32 fn_1_13F974(u32 arg0) {
 /* fzgx:begin fn_1_13F9DC */
 extern u32 lbl_1_bss_8E404[8];
 
-// Returns the object stored in the selected static-display slot.
+// Uses the low byte of the selector to fetch its static-display object.
 u32 fn_1_13F9DC(u32 slot) {
     return lbl_1_bss_8E404[slot & 0xFF];
 }
@@ -435,7 +438,7 @@ extern u32 fn_1_A5D88(void);
 extern void fn_80074188(u32 arg0, u32 arg1, u32 arg2, u32 arg3);
 extern void fn_1_149C2C(void* arg0, void* arg1);
 
-// Update static-display state and refresh the current display values.
+// Refresh static-display state and notify the renderer of the current values.
 void fn_1_149B64(void* arg0, void* arg1) {
     u32 value0;
     u32 value1;
@@ -845,24 +848,24 @@ void fn_1_14CA48(void) {
 /* fzgx:begin fn_1_14CA4C */
 #include "rel/main_rel/sel_static_disp.h"
 
-// Initializes the display state once and requests an update when its threshold is exceeded.
+// Enables the display update once and refreshes it when the current value exceeds its limit.
 void fn_1_14CA4C(void) {
-    u8 *state = (u8 *)&lbl_1_bss_8E518;
-    u8 threshold;
+    u8 *display_state = (u8 *)&lbl_1_bss_8E518;
+    u8 update_limit;
 
     if (lbl_1_bss_8E518.unk_4 != 0) {
         return;
     }
 
     lbl_1_bss_8E518.unk_4 = 1;
-    if (state[5] == 4) {
-        threshold = lbl_1_bss_3C30.unk_8;
+    if (display_state[5] == 4) {
+        update_limit = lbl_1_bss_3C30.unk_8;
     } else {
-        threshold = lbl_1_bss_3C30.unk_9;
+        update_limit = lbl_1_bss_3C30.unk_9;
     }
 
-    if (threshold > state[0x30]) {
-        fn_1_A2D84(0xA9010400, state);
+    if (update_limit > display_state[0x30]) {
+        fn_1_A2D84(0xA9010400, display_state);
     }
 }
 /* fzgx:end fn_1_14CA4C */
@@ -873,21 +876,21 @@ extern s16 fn_1_14F01C(void *arg0);
 extern s16 fn_1_14F090(void *arg0, s16 arg1);
 extern u32 fn_1_14D6D8(s16 index);
 
-// Selects a random index whose table flags satisfy both masks.
+// Keep sampling until the candidate satisfies the required and forbidden flags.
 s16 fn_1_14D5CC(void *arg0, u32 required_mask, u32 forbidden_mask) {
-    s16 selected_index;
-    s32 random_value;
+    s16 candidate_index;
+    s32 random_sample;
 
     do {
         lbl_801A63C0 = lbl_801A63C0 * 0x676a4b6b + 0x33cb;
-        random_value = (lbl_801A63C0 >> 16) & 0x7fff;
-        selected_index =
-            fn_1_14F090(arg0, (s16)(random_value % fn_1_14F01C(arg0)));
-        random_value = fn_1_14D6D8(selected_index);
-    } while ((required_mask & random_value) == 0 ||
-             (forbidden_mask & fn_1_14D6D8(selected_index)) != 0);
+        random_sample = (lbl_801A63C0 >> 16) & 0x7fff;
+        candidate_index =
+            fn_1_14F090(arg0, (s16)(random_sample % fn_1_14F01C(arg0)));
+        random_sample = fn_1_14D6D8(candidate_index);
+    } while ((required_mask & random_sample) == 0 ||
+             (forbidden_mask & fn_1_14D6D8(candidate_index)) != 0);
 
-    return selected_index;
+    return candidate_index;
 }
 /* fzgx:end fn_1_14D5CC */
 
@@ -1180,16 +1183,14 @@ s16 fn_1_14F090(s16 value, s16 occurrence) {
 extern s16 fn_1_14F090(void *table, s16 index);
 extern s16 fn_1_14F01C(void *table);
 
-// Finds the first static-table entry whose value matches the requested value.
+// Returns the index of the first table entry whose value matches the requested value.
 s16 fn_1_14F118(s16 value, void *table) {
     s16 index;
 
-    index = 0;
-    while (index < fn_1_14F01C(table)) {
+    for (index = 0; index < fn_1_14F01C(table); index++) {
         if (fn_1_14F090(table, index) == value) {
             return index;
         }
-        index++;
     }
     return -1;
 }
@@ -1204,26 +1205,26 @@ typedef struct {
     u32 values[75];
 } FlagTable;
 
-// Returns the index among enabled entries whose value matches wanted.
+// Returns the ordinal of the matching enabled entry, or -1 when none is enabled.
 s16 fn_1_14F19C(s16 wanted, void *arg, u32 mask) {
     FlagTable table;
-    s16 index;
-    s16 count;
+    s16 table_index;
+    s16 enabled_index;
 
-    index = 0;
-    count = 0;
-    while (index < fn_1_14F01C(arg)) {
+    table_index = 0;
+    enabled_index = 0;
+    while (table_index < fn_1_14F01C(arg)) {
         s16 value;
 
-        value = fn_1_14F090(arg, index);
+        value = fn_1_14F090(arg, table_index);
         table = *(FlagTable *)lbl_1_rodata_99D8;
         if (mask & table.values[value]) {
             if (value == wanted) {
-                return count;
+                return enabled_index;
             }
-            count++;
+            enabled_index++;
         }
-        index++;
+        table_index++;
     }
     return -1;
 }

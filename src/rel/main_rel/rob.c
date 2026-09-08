@@ -135,18 +135,15 @@ void fn_1_9724C(void) {
 }
 /* fzgx:end fn_1_9724C */
 
-/* fzgx:begin fn_1_97F1C noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
+/* fzgx:begin fn_1_97F1C */
 typedef struct {
     u8 unk_000[0x4A4];
-    s32 value_4A4;
+    s32 unk_4A4;
 } Fn197F1CObject;
 
 extern const char *lbl_1_data_20D1C[];
-extern char lbl_1_data_27D90[80];
-extern void fn_8008069C(char *buffer, const char *format, ...);
+extern u8 lbl_1_data_27D90[80];
+extern void fn_8008069C(char *buffer, u8 *format, ...);
 extern s32 fn_1_12A32C(char *buffer);
 
 /* Formats the indexed message and stores its parsed value in the object. */
@@ -154,8 +151,8 @@ s16 fn_1_97F1C(Fn197F1CObject *object, s16 index) {
     char buffer[0x80];
 
     fn_8008069C(buffer, lbl_1_data_27D90, lbl_1_data_20D1C[index]);
-    object->value_4A4 = fn_1_12A32C(buffer);
-    return (s16)object->value_4A4;
+    object->unk_4A4 = fn_1_12A32C(buffer);
+    return (s16)object->unk_4A4;
 }
 /* fzgx:end fn_1_97F1C */
 

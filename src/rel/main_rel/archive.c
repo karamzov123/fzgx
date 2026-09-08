@@ -74,19 +74,16 @@ void fn_1_12AAC8(void *arg0) {
 }
 /* fzgx:end fn_1_12AAC8 */
 
-/* fzgx:begin fn_1_12ABB4 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
+/* fzgx:begin fn_1_12ABB4 */
 extern s32 lbl_1_bss_897A4;
 extern void *lbl_801A6410;
-extern char lbl_1_data_40608[10];
-extern void fn_1_46B4(void *arg0, void *arg1, char *arg2, s32 arg3);
+extern unsigned char lbl_1_data_40608[10];
+extern void fn_1_46B4(void *arg0, void *arg1, unsigned char *arg2, s32 arg3);
 
-// Initializes the archive table once.
-void fn_1_12ABB4(void *arg0) {
+// Register the archive table only on its first use.
+void fn_1_12ABB4(void *archive) {
     if (lbl_1_bss_897A4 == 0) {
-        fn_1_46B4(lbl_801A6410, arg0, lbl_1_data_40608, 0x1e0);
+        fn_1_46B4(lbl_801A6410, archive, lbl_1_data_40608, 0x1e0);
     }
 }
 /* fzgx:end fn_1_12ABB4 */
@@ -244,31 +241,27 @@ void fn_1_12C6BC(void *arg) {
 }
 /* fzgx:end fn_1_12C6BC */
 
-/* fzgx:begin fn_1_12D354 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/archive.h"
-
-extern void fn_8000C49C(char *format, ...);
+/* fzgx:begin fn_1_12D354 */
+extern void fn_8000C49C(u8 *arg0, s32 arg1, u8 *arg2, ...);
 
 // Registers an object in the first available archive slot and reports overflow.
 void fn_1_12D354(void *arg0, void *arg1, void *arg2) {
-    char *base = (char *)lbl_1_data_40798;
-    u32 i;
+    u8 *archive_data = lbl_1_data_40798;
+    u32 slot;
 
     if (arg2 == 0) {
-        fn_8000C49C(base + 0x358, 0x388, base + 0x368);
+        fn_8000C49C(archive_data + 0x358, 0x388, archive_data + 0x368);
     }
 
-    for (i = 0; i < 12; i++) {
-        if ((&lbl_1_bss_8B56C.unk_0)[i * 2] == 0) {
-            (&lbl_1_bss_8B56C.unk_0)[i * 2] = (u32)arg2;
-            (&lbl_1_bss_8B56C.unk_0)[i * 2 + 1] = 0;
+    for (slot = 0; slot < 12; slot++) {
+        if ((&lbl_1_bss_8B56C.unk_0)[slot * 2] == 0) {
+            (&lbl_1_bss_8B56C.unk_0)[slot * 2] = (u32)arg2;
+            (&lbl_1_bss_8B56C.unk_0)[slot * 2 + 1] = 0;
             return;
         }
     }
 
-    fn_8000C49C(base + 0x358, 0x394, base + 0x390);
+    fn_8000C49C(archive_data + 0x358, 0x394, archive_data + 0x390);
 }
 /* fzgx:end fn_1_12D354 */
 

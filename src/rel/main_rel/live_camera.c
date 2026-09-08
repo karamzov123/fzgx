@@ -18,23 +18,21 @@ void fn_1_DA34(void) {
 }
 /* fzgx:end fn_1_DA34 */
 
-/* fzgx:begin fn_1_EE04 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
+/* fzgx:begin fn_1_EE04 */
 typedef struct {
     u8 pad[2];
     s16 state;
 } Fn1EE04Context;
 
-typedef void (*Fn1EE04Handler)(Fn1EE04Context *);
+typedef void (*Fn1EE04Handler)(Fn1EE04Context *, void *);
 
-extern Fn1EE04Handler lbl_1_data_4440[17];
+extern u8 lbl_1_data_4440[68];
 extern void fn_1_6DD0(void *);
 
-// Dispatch the live-camera state handler before advancing camera processing.
+// Dispatch the active live-camera handler, then advance camera processing.
 void fn_1_EE04(Fn1EE04Context *context) {
-    lbl_1_data_4440[context->state](context);
+    ((Fn1EE04Handler *)lbl_1_data_4440)[context->state](
+        context, lbl_1_data_4440);
     fn_1_6DD0(0);
 }
 /* fzgx:end fn_1_EE04 */
@@ -69,19 +67,18 @@ u8 fn_1_12850(void) {
 }
 /* fzgx:end fn_1_12850 */
 
-/* fzgx:begin fn_1_12860 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
-extern u32 lbl_1_bss_1800[4];
+/* fzgx:begin fn_1_12860 */
+extern u8 lbl_1_bss_1800[16];
 extern u32 *fn_1_1289C(u32 *);
 
 // Initializes the live-camera state before returning the active camera result.
 u32 fn_1_12860(u32 arg0, u32 arg1) {
-    lbl_1_bss_1800[0] = arg0;
-    lbl_1_bss_1800[1] = arg1;
-    lbl_1_bss_1800[2] = 0;
-    return fn_1_1289C(lbl_1_bss_1800)[0];
+    u32 *state = (u32 *)lbl_1_bss_1800;
+
+    state[0] = arg0;
+    state[1] = arg1;
+    state[2] = 0;
+    return fn_1_1289C(state)[0];
 }
 /* fzgx:end fn_1_12860 */
 

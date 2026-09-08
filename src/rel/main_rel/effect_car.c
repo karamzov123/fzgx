@@ -6,22 +6,19 @@ extern void fn_1_6F90C(void *arg0, void *arg1);
 extern s16 fn_1_72318(void);
 extern void fn_1_71D0C(void *arg0, void *arg1);
 
-/* fzgx:begin fn_1_68248 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
-extern char lbl_1_data_1D8A8[13];
+/* fzgx:begin fn_1_68248 */
 extern void *lbl_801A6410;
-extern void fn_1_46B4(void *, void *, char *, int);
+extern u8 lbl_1_data_1D8A8[13];
+extern void fn_1_46B4(u32 value, void *field, u8 *data, s32 code);
 
 typedef struct Fn1_68248Arg {
-    char unk_00[0x34];
+    u8 pad0[0x34];
     void *unk_34;
 } Fn1_68248Arg;
 
 // Register the effect resource with the shared effect manager.
 void fn_1_68248(Fn1_68248Arg *arg) {
-    fn_1_46B4(lbl_801A6410, arg->unk_34, lbl_1_data_1D8A8, 0xe2);
+    fn_1_46B4((u32)lbl_801A6410, arg->unk_34, lbl_1_data_1D8A8, 0xe2);
 }
 /* fzgx:end fn_1_68248 */
 

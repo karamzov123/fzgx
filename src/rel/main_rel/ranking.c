@@ -32,26 +32,23 @@ extern void fn_1_9AD54(void);
 
 extern void fn_1_1568C4(void *entry);
 
-/* fzgx:begin fn_1_1554D0 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/ranking.h"
-
-extern u32 lbl_801A6410;
+/* fzgx:begin fn_1_1554D0 */
+extern u32 lbl_801A6410[];
 extern void fn_1_46B4(u32, Obj_1_bss_8EF20_At0 *, u8 *, u32);
 extern Obj_1_bss_8EF20_At0 *fn_1_4630(u32, u32, u8 *, u32);
 
 // Rebuild the ranking object when the previous one has been consumed.
 void fn_1_1554D0(void) {
-    if (lbl_1_bss_8EF20.unk_0 != 0) {
-        fn_1_46B4(lbl_801A6410, lbl_1_bss_8EF20.unk_0,
-                  lbl_1_data_49B08, 0xd50);
+    Obj_1_bss_8EF20_At0 *obj = lbl_1_bss_8EF20.unk_0;
+
+    if (obj != 0) {
+        fn_1_46B4(lbl_801A6410[0], obj, lbl_1_data_49B08, 0xD50);
         lbl_1_bss_8EF20.unk_0 = 0;
     }
 
     if (lbl_1_bss_8EF20.unk_0 == 0) {
         lbl_1_bss_8EF20.unk_0 =
-            fn_1_4630(lbl_801A6410, 0x230, lbl_1_data_49B08, 0xd55);
+            fn_1_4630(lbl_801A6410[0], 0x230, lbl_1_data_49B08, 0xD55);
     }
 }
 /* fzgx:end fn_1_1554D0 */
@@ -241,24 +238,13 @@ void fn_1_1566F8(s32 index, void *arg) {
 }
 /* fzgx:end fn_1_1566F8 */
 
-/* fzgx:begin fn_1_156730 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
-extern u8 lbl_1_bss_8F428[];
-
-typedef struct Entry {
-    s32 unk_00;
-    s32 unk_04;
-    u8 pad_08[0x48];
-} Entry;
-
-// Reset the ranking entry's status and score markers.
+/* fzgx:begin fn_1_156730 */
+// Clears the indexed ranking entry's status and score markers.
 void fn_1_156730(s32 index) {
-    Entry *entry = (Entry *)lbl_1_bss_8F428 + index;
+    u32 *entry = &lbl_1_bss_8F428.unk_0 + index * 0x14;
 
-    entry->unk_00 = 0;
-    entry->unk_04 = -1;
+    entry[0] = 0;
+    entry[1] = -1;
 }
 /* fzgx:end fn_1_156730 */
 
@@ -398,38 +384,6 @@ void fn_1_156B18(State *state) {
     state->flags &= ~0x10;
 }
 /* fzgx:end fn_1_156B18 */
-
-/* fzgx:begin fn_1_1578C4 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/ranking.h"
-
-extern void fn_1_157950(void);
-extern void fn_1_157FC8(void);
-extern s32 fn_1_157920(void);
-extern void fn_1_4060(void);
-
-// Run the ranking state handler, then perform the common post-update step.
-void fn_1_1578C4(void) {
-    s8 state;
-
-    state = (s8)lbl_1_bss_8F568.unk_0;
-    switch (state) {
-    case 0:
-        fn_1_157950();
-        break;
-    case 1:
-        fn_1_157FC8();
-        break;
-    default:
-        break;
-    }
-
-    if (fn_1_157920() == 0) {
-        fn_1_4060();
-    }
-}
-/* fzgx:end fn_1_1578C4 */
 
 /* fzgx:begin fn_1_157920 */
 // Return the current ranking value.

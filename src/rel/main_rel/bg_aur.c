@@ -153,21 +153,17 @@ void fn_1_153988(void) {
 }
 /* fzgx:end fn_1_153988 */
 
-/* fzgx:begin fn_1_15398C noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/bg_aur.h"
-
-extern void fn_1_153AF8(Obj_1_data_2A7E0_At3C *);
-extern void fn_1_153D48(Obj_1_data_2A7E0_At3C *);
+/* fzgx:begin fn_1_15398C */
+extern void fn_1_153AF8(u32 *entries);
+extern void fn_1_153D48(void *background);
 extern void fn_1_9A508(void);
 
 // Prepares the shared background object and advances the background system.
 void fn_1_15398C(void) {
-    Obj_1_data_2A7E0_At3C *obj = lbl_1_data_2A7E0.unk_3C;
+    Obj_1_data_2A7E0_At3C *background = lbl_1_data_2A7E0.unk_3C;
 
-    fn_1_153AF8(obj);
-    fn_1_153D48(obj);
+    fn_1_153AF8(&background->unk_0);
+    fn_1_153D48(background);
     fn_1_9A508();
 }
 /* fzgx:end fn_1_15398C */

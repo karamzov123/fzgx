@@ -527,10 +527,7 @@ void camera_update_transition(Camera *camera) {
 }
 /* fzgx:end camera_update_transition */
 
-/* fzgx:begin camera_get_target_orientation noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
+/* fzgx:begin camera_get_target_orientation */
 typedef struct Transform {
     u8 pad_08[0x8];
     f32 unk_08;
@@ -543,12 +540,12 @@ typedef struct Transform {
     u32 unk_7C;
 } Transform;
 
-typedef struct CameraState {
+typedef struct CameraStateLocal {
     u8 pad_d4[0xd4];
     f32 unk_D4;
     f32 unk_D8;
     f32 unk_DC;
-} CameraState;
+} CameraStateLocal;
 
 typedef struct CameraObject {
     u8 pad_49c[0x49c];
@@ -557,7 +554,7 @@ typedef struct CameraObject {
 
 extern f32 lbl_1_rodata_2E0[32];
 extern Transform *lbl_801A6D00;
-extern CameraState *lbl_801A66CC;
+extern CameraStateLocal *lbl_801A66CC;
 extern f32 lbl_8006D6FC(f32 *value, void *target);
 
 // Updates the camera orientation from the active target transform.

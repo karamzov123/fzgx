@@ -247,7 +247,7 @@ s32 fn_1_128B00(s16 value) {
 
 extern u8 lbl_1_data_405C0[8];
 
-// Return the matching accessory index, or the number of entries when absent.
+// Find the accessory index for a value, returning the entry count when absent.
 u8 fn_1_128DD8(u8 value) {
     u8 index;
 
@@ -256,6 +256,7 @@ u8 fn_1_128DD8(u8 value) {
             return index;
         }
     }
+
     return index;
 }
 /* fzgx:end fn_1_128DD8 */

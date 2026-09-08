@@ -120,13 +120,8 @@ void fn_1_A04AC(void) {
 }
 /* fzgx:end fn_1_A04AC */
 
-/* fzgx:begin fn_1_A0C68 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/sound.h"
-
+/* fzgx:begin fn_1_A0C68 */
 extern void fn_1_A2DF4(s32, void *, s32);
-extern void fn_1_A2E24(s32, void *, s32);
 extern void fn_80008BEC(void *, s32, s32);
 
 enum {
@@ -156,10 +151,10 @@ void fn_1_A0C68(void) {
         fn_1_A2DF4(0x10, (void *)ADDR_A5100000, 0);
 
         for (i = 1; i < 4; i++) {
-            fn_1_A2E24(i, (void *)ADDR_A0000300, 0);
+            fn_1_A2E24(i, ADDR_A0000300, 0);
         }
 
-        fn_1_A2E24(0x10, (void *)ADDR_A0000400, 0);
+        fn_1_A2E24(0x10, ADDR_A0000400, 0);
         fn_80008BEC(&state->unk_74c, 0, 0x50);
         state->unk_7ac = 0;
     }
@@ -365,34 +360,28 @@ void fn_1_A5330(u8 value, s16 index) {
 }
 /* fzgx:end fn_1_A5330 */
 
-/* fzgx:begin fn_1_A5470 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/sound.h"
-
-extern void fn_1_A5470(s32 value);
-
+/* fzgx:begin fn_1_A5470 */
 extern s32 fn_1_86690(s32 value);
-extern void fn_80067344(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
-extern void fn_80067898(void *value);
+extern void fn_80067344(s32 arg0, s32 arg1, u32 arg2, s32 arg3);
+extern void fn_80067898(u32 value);
 extern void *lbl_1_rodata_4820[41];
 
-// Starts a sound resource when playback is enabled and the sound limit allows it.
+// Starts the requested sound and suppresses playback when the channel limit is reached.
 void fn_1_A5470(s32 value) {
     s32 sound_id;
-    void *sound_resource;
+    u32 sound_resource;
 
     if (value == -1) {
         return;
     }
 
     sound_id = (s8)value;
-    sound_id = (s8)fn_1_86690(sound_id);
-    sound_resource = lbl_1_rodata_4820[sound_id];
+    sound_id = fn_1_86690(sound_id);
+    sound_resource = (u32)lbl_1_rodata_4820[(s8)sound_id];
 
-    fn_80067344(1, 0x10, (s32)0xb0270000, 0x7f);
+    fn_80067344(1, 0x10, 0xB0270000, 0x7F);
     if (sound_resource != 0 && lbl_1_bss_6F1D8 == 0 &&
-        lbl_1_bss_6F1DC <= 0x2d) {
+        lbl_1_bss_6F1DC <= 0x2D) {
         fn_80067898(sound_resource);
     }
 }
@@ -448,33 +437,23 @@ void fn_1_A5864(void) {
 }
 /* fzgx:end fn_1_A5864 */
 
-/* fzgx:begin fn_1_A59AC noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/sound.h"
-
-extern s32 fn_1_3FC38(void);
-extern s32 fn_8004C658(void *);
-extern s32 fn_8004BBCC(void *);
-extern void fn_8004BC0C(void *, s32);
-extern void fn_800674FC(s32, u32, s32);
-
+/* fzgx:begin fn_1_A59AC */
 // Updates active sound handles and emits the sound-system notification when enabled.
 void fn_1_A59AC(void) {
     u8 *sound = (u8 *)&lbl_1_bss_6EA98;
 
-    if (*(void **)(sound + 0x38) != 0) {
-        if (*(void **)(*(void **)(sound + 0x38)) != 0 &&
-            fn_8004C658(*(void **)(*(void **)(sound + 0x38))) == 3 &&
-            fn_8004BBCC(*(void **)(*(void **)(sound + 0x38))) != 0) {
-            fn_8004BC0C(*(void **)(*(void **)(sound + 0x38)), 0);
+    if (*(u32 *)(sound + 0x38) != 0) {
+        if (*(u32 *)(*(u32 *)(sound + 0x38)) != 0 &&
+            fn_8004C658(*(u32 *)(*(u32 *)(sound + 0x38))) == 3 &&
+            fn_8004BBCC(*(u32 *)(*(u32 *)(sound + 0x38))) != 0) {
+            fn_8004BC0C(*(u32 *)(*(u32 *)(sound + 0x38)), 0);
         }
 
         if (fn_1_3FC38() == 0 || *(u8 *)(sound + 0x749) == 0) {
-            if (*(void **)((u8 *)*(void **)(sound + 0x38) + 4) != 0 &&
-                fn_8004C658(*(void **)((u8 *)*(void **)(sound + 0x38) + 4)) == 3 &&
-                fn_8004BBCC(*(void **)((u8 *)*(void **)(sound + 0x38) + 4)) != 0) {
-                fn_8004BC0C(*(void **)((u8 *)*(void **)(sound + 0x38) + 4), 0);
+            if (*(u32 *)(*(u32 *)(sound + 0x38) + 4) != 0 &&
+                fn_8004C658(*(u32 *)(*(u32 *)(sound + 0x38) + 4)) == 3 &&
+                fn_8004BBCC(*(u32 *)(*(u32 *)(sound + 0x38) + 4)) != 0) {
+                fn_8004BC0C(*(u32 *)(*(u32 *)(sound + 0x38) + 4), 0);
             }
         }
 

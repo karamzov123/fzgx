@@ -474,13 +474,10 @@ s32 fn_1_F21B8(s32 arg) {
 }
 /* fzgx:end fn_1_F21B8 */
 
-/* fzgx:begin fn_1_F220C noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
+/* fzgx:begin fn_1_F220C */
 extern void OSReport(const char *, ...);
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
-extern char lbl_1_data_3E8A0[];
+extern u8 lbl_1_data_3E8A0[33];
 
 // Logs the resolved course coordinates and marks the corresponding course as visited.
 void fn_1_F220C(s32 arg) {
@@ -490,7 +487,7 @@ void fn_1_F220C(s32 arg) {
 
     fn_1_12EF80((s16)arg, &a, &b);
     index = (a - 1) * 6 + b;
-    OSReport(lbl_1_data_3E8A0, a, b, index);
+    OSReport((const char *)lbl_1_data_3E8A0, a, b, index);
     ((u8 *)&lbl_1_bss_7F0C0)[0x4938 + index] |= 8;
 }
 /* fzgx:end fn_1_F220C */

@@ -12,12 +12,7 @@ extern void fn_80008BEC(void *, s32, s32);
 extern void fn_1_80F80(void *, u8, void *);
 extern void fn_1_1502BC(void *, void *, void *);
 
-/* fzgx:begin fn_1_7D694 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
-extern u32 lbl_1_bss_6D7E8[2];
-
+/* fzgx:begin fn_1_7D694 */
 typedef struct {
     u8 _pad4[4];
     s16 value;
@@ -36,7 +31,7 @@ typedef struct {
 // Compares the object's entry selector with the active global selector.
 void fn_1_7D694(Object *obj) {
     Entry *entry = obj->entry;
-    GlobalEntry *active = (GlobalEntry *)lbl_1_bss_6D7E8[0];
+    GlobalEntry *active = *(GlobalEntry **)&lbl_1_bss_6D7E8;
 
     if (entry->value == active->value) {
         return;
@@ -111,21 +106,18 @@ void *fn_1_7F254(void *arg0, void *arg1) {
 }
 /* fzgx:end fn_1_7F254 */
 
-/* fzgx:begin fn_1_7F518 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
-extern u32 lbl_1_data_1F4FC[41];
+/* fzgx:begin fn_1_7F518 */
+extern u8 lbl_1_data_1F4FC[164];
 extern void fn_80083DB0(void* arg0, u32 arg1);
 extern void fn_1_801F8(s16 arg0, void* arg1);
 
 // Initializes the car test entry and optionally performs its follow-up setup.
-void* fn_1_7F518(s16 arg0, void* arg1, s32 arg2) {
-    fn_80083DB0(arg1, lbl_1_data_1F4FC[arg0]);
-    if (arg2 == 1) {
-        fn_1_801F8(arg0, arg1);
+void* fn_1_7F518(s16 car_type, void* car, s32 initialize) {
+    fn_80083DB0(car, ((u32 *)lbl_1_data_1F4FC)[car_type]);
+    if (initialize == 1) {
+        fn_1_801F8(car_type, car);
     }
-    return arg1;
+    return car;
 }
 /* fzgx:end fn_1_7F518 */
 

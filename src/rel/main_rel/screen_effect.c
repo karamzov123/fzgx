@@ -87,17 +87,18 @@ void fn_1_7269C(u32 arg0, u32 arg1, void *arg2) {
 }
 /* fzgx:end fn_1_7269C */
 
-/* fzgx:begin fn_1_72714 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/screen_effect.h"
-
-extern void fn_1_727BC(void);
+/* fzgx:begin fn_1_72714 */
+extern void fn_1_727BC();
 
 // Initialize the effect system and return the requested slot subregion.
 void *fn_1_72714(u8 slot, u32 subregion) {
+    Obj_1_bss_6C8EC *entry;
+    u32 offset;
+
     fn_1_727BC();
-    return (u8 *)&lbl_1_bss_6C8EC + slot * 0x10c + (subregion & 0xff) * 0x20;
+    entry = (Obj_1_bss_6C8EC *)((u8 *)&lbl_1_bss_6C8EC + slot * 0x10c);
+    offset = (subregion & 0xff) * 0x20;
+    return (u8 *)entry + offset;
 }
 /* fzgx:end fn_1_72714 */
 
@@ -583,14 +584,10 @@ void fn_1_7B184(void *arg) {
 }
 /* fzgx:end fn_1_7B184 */
 
-/* fzgx:begin fn_1_7B4C0 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/screen_effect.h"
-
+/* fzgx:begin fn_1_7B4C0 */
 extern void fn_8006FDEC(void);
-extern void fn_80071718(u32);
-extern void fn_800711A8(u32);
+extern void fn_80071718(void *);
+extern void fn_800711A8(void *);
 
 // Releases active screen effects and resets the effect state.
 void fn_1_7B4C0(void) {
@@ -599,12 +596,12 @@ void fn_1_7B4C0(void) {
     }
 
     if (lbl_1_bss_6D770 != 0) {
-        fn_80071718(lbl_1_bss_6D770);
+        fn_80071718((void *)lbl_1_bss_6D770);
         lbl_1_bss_6D770 = 0;
     }
 
     if (lbl_1_bss_6D774 != 0) {
-        fn_800711A8(lbl_1_bss_6D774);
+        fn_800711A8((void *)lbl_1_bss_6D774);
         lbl_1_bss_6D774 = 0;
     }
 
