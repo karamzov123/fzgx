@@ -1,5 +1,54 @@
 #include "types.h"
 
+/* fzgx:begin fn_3_11974 */
+extern u16 lbl_3_bss_7EDD8[52];
+
+void fn_3_11974(void) {
+    u32 *fields = (u32 *)&lbl_3_bss_7EDD8;
+    fields[11] = 0;
+    fields[12] = 0;
+    fields[13] = 0;
+    fields[14] = 0;
+}
+/* fzgx:end fn_3_11974 */
+
+/* fzgx:begin fn_3_11F60 */
+struct Fn3State {
+    u32 value0;
+    u32 value1;
+};
+
+extern struct Fn3State lbl_3_bss_7EDD8;
+extern u8 lbl_3_bss_8F200[];
+extern void fn_1_FC414(void *, int);
+
+void fn_3_11F60(u32 value0, u32 value1) {
+    lbl_3_bss_7EDD8.value1 = value1;
+    lbl_3_bss_7EDD8.value0 = value0;
+    fn_1_FC414(lbl_3_bss_8F200, 1);
+}
+/* fzgx:end fn_3_11F60 */
+
+/* fzgx:begin fn_3_11FA0 */
+extern u32 lbl_3_bss_7EDD8[26];
+
+void fn_3_11FA0(void) {
+    lbl_3_bss_7EDD8[0] = 0;
+    lbl_3_bss_7EDD8[1] = 0;
+}
+/* fzgx:end fn_3_11FA0 */
+
+/* fzgx:begin fn_3_11FB4 */
+extern u8 lbl_3_bss_7EDD8[0x68];
+extern u32 lbl_3_bss_7EDC0[3];
+
+void fn_3_11FB4(u8 value_47, u8 value_46, u32 value_7EDC0) {
+    lbl_3_bss_7EDD8[0x47] = value_47;
+    lbl_3_bss_7EDC0[0] = value_7EDC0;
+    lbl_3_bss_7EDD8[0x46] = value_46;
+}
+/* fzgx:end fn_3_11FB4 */
+
 /* fzgx:begin fn_3_1304C */
 // fn_3_1304C: empty in retail (single blr).
 void fn_3_1304C(void) {
@@ -71,3 +120,52 @@ void fn_3_13074(void) {
 void fn_3_13078(void) {
 }
 /* fzgx:end fn_3_13078 */
+
+/* fzgx:begin fn_3_1307C */
+extern u8 lbl_3_bss_A1778[12];
+
+u8 fn_3_1307C(void) {
+    return lbl_3_bss_A1778[0];
+}
+/* fzgx:end fn_3_1307C */
+
+/* fzgx:begin fn_3_1308C */
+typedef struct {
+    u8 pad0[4];
+    u32 unk4;
+    u8 pad8[0xc];
+    u32 unk14;
+    u32 unk18;
+    u32 unk1c;
+} Fn3BssA1768;
+
+extern Fn3BssA1768 lbl_3_bss_A1768;
+
+void fn_3_1308C(u32 arg0, u32 arg1, u32 arg2) {
+    lbl_3_bss_A1768.unk14 = arg1;
+    lbl_3_bss_A1768.unk18 = arg2;
+    lbl_3_bss_A1768.unk4 = arg0;
+    lbl_3_bss_A1768.unk1c = arg0;
+}
+/* fzgx:end fn_3_1308C */
+
+/* fzgx:begin fn_3_130A8 */
+typedef struct {
+    u32 value0;
+    u8 pad[0x10];
+    u32 value14;
+    u32 value18;
+    u32 value1c;
+} CustomizeState;
+
+extern u32 lbl_3_bss_A1768;
+
+void fn_3_130A8(void) {
+    CustomizeState *state = (CustomizeState *)&lbl_3_bss_A1768;
+
+    state->value14 = 0;
+    state->value18 = 0;
+    state->value0 = 0;
+    state->value1c = 0;
+}
+/* fzgx:end fn_3_130A8 */

@@ -1,6 +1,589 @@
 [
   {
     "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_14C4.c",
+    "symbols": [
+      "fn_3_14C4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_33A0.c",
+    "symbols": [
+      "fn_3_33A0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_4218.c",
+    "symbols": [
+      "fn_3_4218"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_4A84.c",
+    "symbols": [
+      "fn_3_4A84"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_5C4C.c",
+    "symbols": [
+      "fn_3_5C4C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_5C8C.c",
+    "symbols": [
+      "fn_3_5C8C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_5CBC.c",
+    "symbols": [
+      "fn_3_5CBC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_6540.c",
+    "symbols": [
+      "fn_3_6540"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_7688.c",
+    "symbols": [
+      "fn_3_7688"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_7870.c",
+    "symbols": [
+      "fn_3_7870"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_78C8.c",
+    "symbols": [
+      "fn_3_78C8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_7A08.c",
+    "symbols": [
+      "fn_3_7A08"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_7A30.c",
+    "symbols": [
+      "fn_3_7A30"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_7B94.c",
+    "symbols": [
+      "fn_3_7B94"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_844.c",
+    "symbols": [
+      "fn_3_844"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_8F8.c",
+    "symbols": [
+      "fn_3_8F8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_AF8.c",
+    "symbols": [
+      "fn_3_AF8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_B30.c",
+    "symbols": [
+      "fn_3_B30"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_B68.c",
+    "symbols": [
+      "fn_3_B68"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/_prolog/fn_3_BFC.c",
+    "symbols": [
+      "fn_3_BFC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/customize/fn_3_B5FC.c",
+    "symbols": [
+      "fn_3_B5FC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/customize.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/customize/fn_3_B984.c",
+    "symbols": [
+      "fn_3_B984"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/customize.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/customize/fn_3_BC60.c",
+    "symbols": [
+      "fn_3_BC60"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/customize.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/customize/fn_3_BD98.c",
+    "symbols": [
+      "fn_3_BD98"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/customize.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/customize/fn_3_BEF0.c",
+    "symbols": [
+      "fn_3_BEF0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/customize.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/customize/fn_3_C188.c",
+    "symbols": [
+      "fn_3_C188"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/customize.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/customize/fn_3_C234.c",
+    "symbols": [
+      "fn_3_C234"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/customize.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/customize/fn_3_C3B4.c",
+    "symbols": [
+      "fn_3_C3B4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/customize.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/editor/fn_3_1552C.c",
+    "symbols": [
+      "fn_3_1552C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/editor.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/editor/fn_3_1560C.c",
+    "symbols": [
+      "fn_3_1560C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/editor.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/editor/fn_3_15620.c",
+    "symbols": [
+      "fn_3_15620"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/editor.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/editor/fn_3_1563C.c",
+    "symbols": [
+      "fn_3_1563C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/editor.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/editor/fn_3_156A8.c",
+    "symbols": [
+      "fn_3_156A8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/editor.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/editor/fn_3_170E0.c",
+    "symbols": [
+      "fn_3_170E0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/editor.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/editor/fn_3_17820.c",
+    "symbols": [
+      "fn_3_17820"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/editor.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/editor/fn_3_17830.c",
+    "symbols": [
+      "fn_3_17830"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/editor.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/emb_memcard/fn_3_11FD0.c",
+    "symbols": [
+      "fn_3_11FD0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emb_memcard.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/emb_memcard/fn_3_C328.c",
+    "symbols": [
+      "fn_3_C328"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emb_memcard.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/emb_paste_editor/fn_3_11974.c",
+    "symbols": [
+      "fn_3_11974"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emb_paste_editor.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/emb_paste_editor/fn_3_11F60.c",
+    "symbols": [
+      "fn_3_11F60"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emb_paste_editor.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/emb_paste_editor/fn_3_11FA0.c",
+    "symbols": [
+      "fn_3_11FA0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emb_paste_editor.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/emb_paste_editor/fn_3_11FB4.c",
+    "symbols": [
+      "fn_3_11FB4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emb_paste_editor.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/emb_paste_editor/fn_3_1307C.c",
+    "symbols": [
+      "fn_3_1307C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emb_paste_editor.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/emb_paste_editor/fn_3_1308C.c",
+    "symbols": [
+      "fn_3_1308C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emb_paste_editor.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/emb_paste_editor/fn_3_130A8.c",
+    "symbols": [
+      "fn_3_130A8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emb_paste_editor.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/emblem/fn_3_14008.c",
+    "symbols": [
+      "fn_3_14008"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emblem.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/emblem/fn_3_1401C.c",
+    "symbols": [
+      "fn_3_1401C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emblem.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/emblem/fn_3_1402C.c",
+    "symbols": [
+      "fn_3_1402C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emblem.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/emblem/fn_3_14064.c",
+    "symbols": [
+      "fn_3_14064"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emblem.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/emblem/fn_3_14074.c",
+    "symbols": [
+      "fn_3_14074"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emblem.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/emblem/fn_3_142C4.c",
+    "symbols": [
+      "fn_3_142C4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emblem.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/emblem/fn_3_1441C.c",
+    "symbols": [
+      "fn_3_1441C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emblem.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/emblem/fn_3_1443C.c",
+    "symbols": [
+      "fn_3_1443C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emblem.c"
+  },
+  {
+    "module": "customize",
     "source": "rel/customize/fn_3_1304C.c",
     "symbols": [
       "fn_3_1304C"
@@ -185,6 +768,259 @@
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/customize/_prolog.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_19C50.c",
+    "symbols": [
+      "fn_3_19C50"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_19C94.c",
+    "symbols": [
+      "fn_3_19C94"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_19CA4.c",
+    "symbols": [
+      "fn_3_19CA4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_19CB8.c",
+    "symbols": [
+      "fn_3_19CB8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_19CCC.c",
+    "symbols": [
+      "fn_3_19CCC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_19D14.c",
+    "symbols": [
+      "fn_3_19D14"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_19D50.c",
+    "symbols": [
+      "fn_3_19D50"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_19D88.c",
+    "symbols": [
+      "fn_3_19D88"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_19EB8.c",
+    "symbols": [
+      "fn_3_19EB8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_19EFC.c",
+    "symbols": [
+      "fn_3_19EFC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_19F40.c",
+    "symbols": [
+      "fn_3_19F40"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_19F7C.c",
+    "symbols": [
+      "fn_3_19F7C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_19F9C.c",
+    "symbols": [
+      "fn_3_19F9C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_19FE0.c",
+    "symbols": [
+      "fn_3_19FE0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_1A024.c",
+    "symbols": [
+      "fn_3_1A024"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_1A068.c",
+    "symbols": [
+      "fn_3_1A068"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_1A1B8.c",
+    "symbols": [
+      "fn_3_1A1B8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_1ABD8.c",
+    "symbols": [
+      "fn_3_1ABD8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_1ACE4.c",
+    "symbols": [
+      "fn_3_1ACE4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_2406C.c",
+    "symbols": [
+      "fn_3_2406C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_240A4.c",
+    "symbols": [
+      "fn_3_240A4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_240DC.c",
+    "symbols": [
+      "fn_3_240DC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_2B750.c",
+    "symbols": [
+      "fn_3_2B750"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
   },
   {
     "module": "interview",
