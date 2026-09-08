@@ -386,6 +386,31 @@ def cmd_regalloc(a, p):
     return 0 if r.get("matched") else 1
 
 
+def cmd_spell(a, p):
+    from . import spell
+    if a.symbol:
+        body = Path(a.body).read_text() if a.body else None
+        if body is None:
+            from .project import STATE_DIR
+            import sqlite3
+            db = sqlite3.connect(str(STATE_DIR / "ledger.db"))
+            row = db.execute("select best_body_path from attempts where symbol=? and best_body_path is not null order by best_in_attempt desc limit 1",
+                             (a.symbol.split(":")[-1],)).fetchone()
+            body = Path(row[0]).read_text() if row and Path(row[0]).exists() else None
+        if body is None:
+            print("no body: pass --body or have a saved attempt"); return 2
+        r = spell.search(p, a.symbol, body, budget_s=a.budget)
+        print(json.dumps({k: v for k, v in r.items() if k != "body"}, indent=1))
+        if r.get("body") and a.out:
+            Path(a.out).write_text(r["body"]); print(f"wrote {a.out}")
+        return 0 if r.get("matched") else 1
+    out = spell.run_drafts(p, a.min_percent, a.max_percent, a.limit, a.workers, a.budget, submit=not a.no_submit)
+    print(f"{out['drafts']} drafts, {len(out['matched'])} matched, {out['improved']} improved, {out['candidates']} candidates, {out['secs']} s; families: {out['families']}")
+    for s_, pct, path in out["matched"]:
+        print(f"  {s_:20s} {pct:5.1f} {' + '.join(path)[:100]}")
+    return 0
+
+
 def cmd_exemplars(a, p):
     from . import exemplars
     ex = exemplars.mine(p)
@@ -428,6 +453,10 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("regalloc", help="register-allocation search on a near-match body (declaration order, scope, initializer splits); --corpus runs every 90%+ attempt and submits matches"); s.set_defaults(fn=cmd_regalloc)
     s.add_argument("symbol", nargs="?"); s.add_argument("--body"); s.add_argument("--out"); s.add_argument("--budget", type=float, default=8.0)
     s.add_argument("--corpus", type=float, help="minimum best percent of the attempts to search"); s.add_argument("--limit", type=int, default=2000); s.add_argument("--no-submit", action="store_true")
+    s = sub.add_parser("spell", help="spelling search (beam over every rewrite family, masked-word fitness): one body, or every lifter draft in a score band"); s.set_defaults(fn=cmd_spell)
+    s.add_argument("symbol", nargs="?"); s.add_argument("--body"); s.add_argument("--out"); s.add_argument("--budget", type=float, default=10.0)
+    s.add_argument("--min-percent", type=float, default=0.0); s.add_argument("--max-percent", type=float, default=100.0)
+    s.add_argument("--limit", type=int, default=5000); s.add_argument("--workers", type=int, default=3); s.add_argument("--no-submit", action="store_true")
     s = sub.add_parser("exemplars", help="mine (plateau -> match) edit pairs from the check history"); s.set_defaults(fn=cmd_exemplars)
     s = sub.add_parser("check", help="compile + objdiff one function"); s.set_defaults(fn=cmd_check)
     s.add_argument("symbol"); s.add_argument("--max-diff-lines", type=int, default=80)
