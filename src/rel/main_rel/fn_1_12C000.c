@@ -1,4 +1,16 @@
 #include "types.h"
 
-// fn_1_12C000: main_rel .text:0x0012C000 size 0x60
-// Carved by fzgx. Replace this file's body with the matching C.
+extern void fn_1_8D168(void *arg);
+
+void fn_1_12C000(void *arg, s16 count) {
+    u8 *p;
+    s16 i;
+
+    p = (u8 *)arg;
+    i = 0;
+    while (i < count) {
+        fn_1_8D168(p);
+        p += 100;
+        i++;
+    }
+}
