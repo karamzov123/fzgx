@@ -18,6 +18,7 @@ import argparse
 import json
 import os
 import re
+import signal
 import subprocess
 import sys
 import time
@@ -178,12 +179,22 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
         raise SystemExit("--revise is implemented for the codex harness only")
     cmd = claude_cmd(symbol, agent_id, model) if harness == "claude" else codex_cmd(symbol, agent_id, model, fast, revise, EFFORT.get("level"))
     t0 = time.time()
+    # own process group: on timeout the agent AND its MCP server die (they leaked before)
+    proc = subprocess.Popen(cmd, cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                            stdin=subprocess.DEVNULL, start_new_session=True,
+                            env={**os.environ, "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1"})
     try:
-        cp = subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, timeout=timeout,
-                            stdin=subprocess.DEVNULL, env={**os.environ, "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1"})
-        out, rc = cp.stdout + "\n" + cp.stderr, cp.returncode
-    except subprocess.TimeoutExpired as e:
-        out, rc = (e.stdout or "") + "\n" + (e.stderr or ""), -9
+        so, se = proc.communicate(timeout=timeout)
+        out, rc = (so or "") + "\n" + (se or ""), proc.returncode
+    except subprocess.TimeoutExpired:
+        try:
+            os.killpg(proc.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+        so, se = proc.communicate()
+        def _s(x):
+            return x.decode(errors="replace") if isinstance(x, bytes) else (x or "")
+        out, rc = _s(so) + "\n" + _s(se), -9
     info = parse_claude(out) if harness == "claude" else parse_codex(out, fast)
     m = RESULT_RE.search(info["text"] or "") or RESULT_RE.search(out)
     outcome = m.group(1) if m else ("timeout" if rc == -9 else "crash")
