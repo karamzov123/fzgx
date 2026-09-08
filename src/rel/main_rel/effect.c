@@ -1,0 +1,633 @@
+#include "types.h"
+
+/* fzgx:begin fn_1_5942C */
+extern void fn_1_680F8(void);
+
+// fn_1_5942C: wrapper that calls fn_1_680F8
+void fn_1_5942C(void) {
+    fn_1_680F8();
+}
+/* fzgx:end fn_1_5942C */
+
+/* fzgx:begin fn_1_594EC */
+// fn_1_594EC: empty in retail (single blr).
+void fn_1_594EC(void) {
+}
+/* fzgx:end fn_1_594EC */
+
+/* fzgx:begin fn_1_594F0 */
+// fn_1_594F0: empty in retail (single blr).
+void fn_1_594F0(void) {
+}
+/* fzgx:end fn_1_594F0 */
+
+/* fzgx:begin fn_1_594F4 */
+// fn_1_594F4: empty in retail (single blr).
+void fn_1_594F4(void) {
+}
+/* fzgx:end fn_1_594F4 */
+
+/* fzgx:begin fn_1_594F8 */
+// fn_1_594F8: empty in retail (single blr).
+void fn_1_594F8(void) {
+}
+/* fzgx:end fn_1_594F8 */
+
+/* fzgx:begin fn_1_594FC */
+// fn_1_594FC: empty in retail (single blr).
+void fn_1_594FC(void) {
+}
+/* fzgx:end fn_1_594FC */
+
+/* fzgx:begin fn_1_59500 */
+// fn_1_59500: empty in retail (single blr).
+void fn_1_59500(void) {
+}
+/* fzgx:end fn_1_59500 */
+
+/* fzgx:begin fn_1_59504 */
+// fn_1_59504: empty in retail (single blr).
+void fn_1_59504(void) {
+}
+/* fzgx:end fn_1_59504 */
+
+/* fzgx:begin fn_1_59508 */
+// fn_1_59508: empty in retail (single blr).
+void fn_1_59508(void) {
+}
+/* fzgx:end fn_1_59508 */
+
+/* fzgx:begin fn_1_5950C */
+// fn_1_5950C: empty in retail (single blr).
+void fn_1_5950C(void) {
+}
+/* fzgx:end fn_1_5950C */
+
+/* fzgx:begin fn_1_59510 */
+// fn_1_59510: empty in retail (single blr).
+void fn_1_59510(void) {
+}
+/* fzgx:end fn_1_59510 */
+
+/* fzgx:begin fn_1_59A70 */
+// fn_1_59A70: empty in retail (single blr).
+void fn_1_59A70(void) {
+}
+/* fzgx:end fn_1_59A70 */
+
+/* fzgx:begin fn_1_59CC4 */
+// fn_1_59CC4: empty in retail (single blr).
+void fn_1_59CC4(void) {
+}
+/* fzgx:end fn_1_59CC4 */
+
+/* fzgx:begin fn_1_5A8CC */
+// fn_1_5A8CC: empty in retail (single blr).
+void fn_1_5A8CC(void) {
+}
+/* fzgx:end fn_1_5A8CC */
+
+/* fzgx:begin fn_1_5A8D0 */
+typedef struct {
+    u8 pad[0x10];
+    s32 field_10;
+} Fn1_5A8D0Data;
+
+void fn_1_5A8D0(Fn1_5A8D0Data *data) {
+    data->field_10 = 2;
+}
+/* fzgx:end fn_1_5A8D0 */
+
+/* fzgx:begin fn_1_5ABC4 */
+// fn_1_5ABC4: empty in retail (single blr).
+void fn_1_5ABC4(void) {
+}
+/* fzgx:end fn_1_5ABC4 */
+
+/* fzgx:begin fn_1_5ABC8 */
+// fn_1_5ABC8: empty in retail (single blr).
+void fn_1_5ABC8(void) {
+}
+/* fzgx:end fn_1_5ABC8 */
+
+/* fzgx:begin fn_1_5B074 */
+// fn_1_5B074: empty in retail (single blr).
+void fn_1_5B074(void) {
+}
+/* fzgx:end fn_1_5B074 */
+
+/* fzgx:begin fn_1_5B3CC */
+// fn_1_5B3CC: empty in retail (single blr).
+void fn_1_5B3CC(void) {
+}
+/* fzgx:end fn_1_5B3CC */
+
+/* fzgx:begin fn_1_5B6F0 */
+// fn_1_5B6F0: empty in retail (single blr).
+void fn_1_5B6F0(void) {
+}
+/* fzgx:end fn_1_5B6F0 */
+
+/* fzgx:begin fn_1_5BF6C */
+// fn_1_5BF6C: empty in retail (single blr).
+void fn_1_5BF6C(void) {
+}
+/* fzgx:end fn_1_5BF6C */
+
+/* fzgx:begin fn_1_5C780 */
+// fn_1_5C780: empty in retail (single blr).
+void fn_1_5C780(void) {
+}
+/* fzgx:end fn_1_5C780 */
+
+/* fzgx:begin fn_1_5D010 */
+// fn_1_5D010: empty in retail (single blr).
+void fn_1_5D010(void) {
+}
+/* fzgx:end fn_1_5D010 */
+
+/* fzgx:begin fn_1_5D014 */
+typedef struct Fn1_5D014Object {
+    u8 pad[0xae];
+    s16 field_ae;
+} Fn1_5D014Object;
+
+void fn_1_5D014(Fn1_5D014Object *obj) {
+    obj->field_ae = 0;
+}
+/* fzgx:end fn_1_5D014 */
+
+/* fzgx:begin fn_1_5D374 */
+// fn_1_5D374: empty in retail (single blr).
+void fn_1_5D374(void) {
+}
+/* fzgx:end fn_1_5D374 */
+
+/* fzgx:begin fn_1_5D4FC */
+// fn_1_5D4FC: empty in retail (single blr).
+void fn_1_5D4FC(void) {
+}
+/* fzgx:end fn_1_5D4FC */
+
+/* fzgx:begin fn_1_5D88C */
+extern f32 lbl_1_rodata_29AC[5];
+extern u32 lbl_1_data_1D628;
+extern f32 lbl_1_rodata_2978[4];
+
+struct Fn15D88C {
+    u8 _pad08[0x08];
+    u32 flags;
+    u8 _pad0c[0x1c];
+    f32 value28;
+    u8 _pad2c[0x08];
+    u32 enabled;
+    u8 _pad38[0x1c];
+    u16 value54;
+    u16 value56;
+    u16 value58;
+    u8 _pad5a[0x5a];
+    f32 value_b4;
+};
+
+void fn_1_5D88C(struct Fn15D88C *self) {
+    self->value_b4 = lbl_1_rodata_29AC[0];
+    if (self->enabled != 0) {
+        f32 value28;
+        lbl_1_data_1D628 = lbl_1_data_1D628 * 1103515245 + 12345;
+        value28 = lbl_1_rodata_2978[0];
+        self->value54 = (u16)((lbl_1_data_1D628 >> 16) & 0x7fff);
+        lbl_1_data_1D628 = lbl_1_data_1D628 * 1103515245 + 12345;
+        self->value56 = (u16)((lbl_1_data_1D628 >> 16) & 0x7fff);
+        lbl_1_data_1D628 = lbl_1_data_1D628 * 1103515245 + 12345;
+        self->value58 = (u16)((lbl_1_data_1D628 >> 16) & 0x7fff);
+        self->value28 = value28;
+    }
+    self->flags |= 0x40000000;
+}
+/* fzgx:end fn_1_5D88C */
+
+/* fzgx:begin fn_1_5D918 */
+// fn_1_5D918: empty in retail (single blr).
+void fn_1_5D918(void) {
+}
+/* fzgx:end fn_1_5D918 */
+
+/* fzgx:begin fn_1_5EB08 */
+typedef struct FnObj {
+    u8 pad18[0x18];
+    s16 value;
+    u8 pad3c[0x22];
+    f32 field3c;
+} FnObj;
+
+typedef struct FnLocal {
+    u8 data[0x10];
+} FnLocal;
+
+typedef struct FnNode {
+    u8 pad4[4];
+    void (*callback)(void);
+    FnObj *object;
+} FnNode;
+
+extern s32 fn_1_862D4(s16 value, FnLocal *local);
+extern void lbl_8006DCA4(void);
+extern f32 lbl_1_rodata_2AF4[14];
+extern s32 fn_1_54E34(void *field, f32 value);
+extern FnNode *fn_1_5448C(FnLocal *local);
+extern FnNode *fn_1_548AC(s32 size);
+extern void fn_1_5EB98(void);
+extern void fn_1_5489C(FnNode *node, FnNode *other);
+
+void fn_1_5EB08(FnObj *object) {
+    FnLocal local;
+    FnNode *node;
+    FnNode *allocated;
+
+    fn_1_862D4(object->value, &local);
+    lbl_8006DCA4();
+    if (fn_1_54E34(&object->field3c, lbl_1_rodata_2AF4[0])) {
+        node = fn_1_5448C(&local);
+        allocated = fn_1_548AC(0xc);
+        if (allocated != 0) {
+            allocated->callback = fn_1_5EB98;
+            allocated->object = object;
+            fn_1_5489C(node, allocated);
+        }
+    }
+}
+/* fzgx:end fn_1_5EB08 */
+
+/* fzgx:begin fn_1_5F5C4 */
+// fn_1_5F5C4: empty in retail (single blr).
+void fn_1_5F5C4(void) {
+}
+/* fzgx:end fn_1_5F5C4 */
+
+/* fzgx:begin fn_1_5FE24 */
+// fn_1_5FE24: empty in retail (single blr).
+void fn_1_5FE24(void) {
+}
+/* fzgx:end fn_1_5FE24 */
+
+/* fzgx:begin fn_1_5FE28 */
+// fn_1_5FE28: empty in retail (single blr).
+void fn_1_5FE28(void) {
+}
+/* fzgx:end fn_1_5FE28 */
+
+/* fzgx:begin fn_1_5FE2C */
+// fn_1_5FE2C: empty in retail (single blr).
+void fn_1_5FE2C(void) {
+}
+/* fzgx:end fn_1_5FE2C */
+
+/* fzgx:begin fn_1_5FE30 */
+typedef struct {
+    u8 unk[0x18];
+    s16 value;
+    u8 unk1A[0x0E];
+    f32 rate;
+    u8 unk2C[0x10];
+    u8 field3C[1];
+} FZeroObject;
+
+typedef struct {
+    u8 unk0[4];
+    void (*callback)(void);
+    FZeroObject *owner;
+} FZeroEvent;
+
+extern void fn_1_862D4(s16 value, void *result);
+extern void lbl_8006DCA4(void);
+extern int fn_1_54E34(void *field, f32 rate);
+extern void *fn_1_5448C(void *result);
+extern void *fn_1_548AC(u32 size);
+extern void fn_1_5FEBC(void);
+extern void fn_1_5489C(void *callback, FZeroEvent *event);
+
+void fn_1_5FE30(FZeroObject *object) {
+    u8 result[8];
+    void *callback;
+    FZeroEvent *event;
+
+    fn_1_862D4(object->value, result);
+    lbl_8006DCA4();
+    if (fn_1_54E34(object->field3C, object->rate) != 0) {
+        callback = fn_1_5448C(result);
+        event = (FZeroEvent *)fn_1_548AC(12);
+        if (event != 0) {
+            event->callback = fn_1_5FEBC;
+            event->owner = object;
+            fn_1_5489C(callback, event);
+        }
+    }
+}
+/* fzgx:end fn_1_5FE30 */
+
+/* fzgx:begin fn_1_5FFAC */
+// fn_1_5FFAC: empty in retail (single blr).
+void fn_1_5FFAC(void) {
+}
+/* fzgx:end fn_1_5FFAC */
+
+/* fzgx:begin fn_1_60170 */
+typedef struct {
+    u8 unk[0x38];
+    void *field38;
+} FZeroObject;
+
+extern u8 lbl_1_data_1D62C[148];
+extern u32 lbl_801A6410;
+extern void fn_1_46B4(u32 value, void *field, u8 *data, s32 code);
+
+void fn_1_60170(FZeroObject *object) {
+    void *field;
+
+    field = object->field38;
+    if (field != 0) {
+        fn_1_46B4(lbl_801A6410, field, lbl_1_data_1D62C, 0x1261);
+    }
+}
+/* fzgx:end fn_1_60170 */
+
+/* fzgx:begin fn_1_60C70 */
+// fn_1_60C70: empty in retail (single blr).
+void fn_1_60C70(void) {
+}
+/* fzgx:end fn_1_60C70 */
+
+/* fzgx:begin fn_1_60C84 */
+// fn_1_60C84: empty in retail (single blr).
+void fn_1_60C84(void) {
+}
+/* fzgx:end fn_1_60C84 */
+
+/* fzgx:begin fn_1_60F7C */
+// fn_1_60F7C: empty in retail (single blr).
+void fn_1_60F7C(void) {
+}
+/* fzgx:end fn_1_60F7C */
+
+/* fzgx:begin fn_1_60F80 */
+// fn_1_60F80: empty in retail (single blr).
+void fn_1_60F80(void) {
+}
+/* fzgx:end fn_1_60F80 */
+
+/* fzgx:begin fn_1_61760 */
+extern u8 lbl_1_data_1D62C[148];
+extern void *lbl_801A6410;
+extern void fn_1_46B4(void *, void *, u8 *, s32);
+
+struct Fn1_61760Object {
+    u8 _pad38[0x38];
+    void *field_38;
+};
+
+void fn_1_61760(struct Fn1_61760Object *object) {
+    if (object->field_38 != 0) {
+        fn_1_46B4(lbl_801A6410, object->field_38, lbl_1_data_1D62C, 0x16c1);
+    }
+}
+/* fzgx:end fn_1_61760 */
+
+/* fzgx:begin fn_1_61C84 */
+// fn_1_61C84: empty in retail (single blr).
+void fn_1_61C84(void) {
+}
+/* fzgx:end fn_1_61C84 */
+
+/* fzgx:begin fn_1_61C88 */
+extern void fn_1_61D08(void);
+
+void fn_1_61C88(void) {
+    fn_1_61D08();
+}
+/* fzgx:end fn_1_61C88 */
+
+/* fzgx:begin fn_1_61E60 */
+typedef struct {
+    u8 pad20[0x20];
+    void *field20;
+} Fn1_61E60Node;
+
+typedef struct {
+    u8 pad38[0x38];
+    Fn1_61E60Node *field38;
+} Fn1_61E60Object;
+
+extern void *lbl_801A6410;
+extern u8 lbl_1_data_1D62C[148];
+
+extern void fn_1_4730(void *arg0, void *arg1, int arg2, u8 *arg3, int arg4);
+extern void fn_1_46B4(void *arg0, void *arg1, u8 *arg2, int arg3);
+
+int fn_1_61E60(Fn1_61E60Object *object) {
+    Fn1_61E60Node *node = object->field38;
+
+    if (node != 0) {
+        fn_1_4730(lbl_801A6410, node->field20, 1, lbl_1_data_1D62C, 0x17D5);
+        node->field20 = 0;
+        fn_1_46B4(lbl_801A6410, object->field38, lbl_1_data_1D62C, 0x17D8);
+        object->field38 = 0;
+    }
+
+    return 1;
+}
+/* fzgx:end fn_1_61E60 */
+
+/* fzgx:begin fn_1_620C4 */
+// fn_1_620C4: empty in retail (single blr).
+void fn_1_620C4(void) {
+}
+/* fzgx:end fn_1_620C4 */
+
+/* fzgx:begin fn_1_6312C */
+// fn_1_6312C: empty in retail (single blr).
+void fn_1_6312C(void) {
+}
+/* fzgx:end fn_1_6312C */
+
+/* fzgx:begin fn_1_63130 */
+struct fn_1_63130_obj {
+    u8 unk_00[0xAE];
+    s16 unk_AE;
+};
+
+void fn_1_63130(struct fn_1_63130_obj *obj) {
+    obj->unk_AE = 0;
+}
+/* fzgx:end fn_1_63130 */
+
+/* fzgx:begin fn_1_633BC */
+// fn_1_633BC: empty in retail (single blr).
+void fn_1_633BC(void) {
+}
+/* fzgx:end fn_1_633BC */
+
+/* fzgx:begin fn_1_63514 */
+// fn_1_63514: empty in retail (single blr).
+void fn_1_63514(void) {
+}
+/* fzgx:end fn_1_63514 */
+
+/* fzgx:begin fn_1_63858 */
+extern void fn_1_862D4(s16, void *);
+extern void lbl_8006DCA4(void);
+extern f32 lbl_1_rodata_2B2C[145];
+extern int fn_1_54E34(void *, f32);
+extern void *fn_1_5448C(void *);
+extern void *fn_1_548AC(int);
+extern void fn_1_638E8(void);
+extern void fn_1_5489C(void *, void *);
+
+struct LocalData {
+    u8 data[0x10];
+};
+
+struct Event {
+    u8 data[4];
+    void (*callback)(void);
+    void *owner;
+};
+
+struct Object {
+    u8 data[0x18];
+    s16 value;
+};
+
+void fn_1_63858(struct Object *object) {
+    struct LocalData local;
+    struct Event *event;
+    void *target;
+
+    fn_1_862D4(object->value, &local);
+    lbl_8006DCA4();
+    if (fn_1_54E34(&local, lbl_1_rodata_2B2C[0]) != 0) {
+        target = fn_1_5448C(&local);
+        event = (struct Event *)fn_1_548AC(0xc);
+        if (event != 0) {
+            event->callback = fn_1_638E8;
+            event->owner = object;
+            fn_1_5489C(target, event);
+        }
+    }
+}
+/* fzgx:end fn_1_63858 */
+
+/* fzgx:begin fn_1_645C8 */
+// fn_1_645C8: empty in retail (single blr).
+void fn_1_645C8(void) {
+}
+/* fzgx:end fn_1_645C8 */
+
+/* fzgx:begin fn_1_645CC */
+// fn_1_645CC: empty in retail (single blr).
+void fn_1_645CC(void) {
+}
+/* fzgx:end fn_1_645CC */
+
+/* fzgx:begin fn_1_645D0 */
+// fn_1_645D0: empty in retail (single blr).
+void fn_1_645D0(void) {
+}
+/* fzgx:end fn_1_645D0 */
+
+/* fzgx:begin fn_1_648D4 */
+// fn_1_648D4: empty in retail (single blr).
+void fn_1_648D4(void) {
+}
+/* fzgx:end fn_1_648D4 */
+
+/* fzgx:begin fn_1_648D8 */
+// fn_1_648D8: empty in retail (single blr).
+void fn_1_648D8(void) {
+}
+/* fzgx:end fn_1_648D8 */
+
+/* fzgx:begin fn_1_65420 */
+// fn_1_65420: empty in retail (single blr).
+void fn_1_65420(void) {
+}
+/* fzgx:end fn_1_65420 */
+
+/* fzgx:begin fn_1_656C8 */
+extern void lbl_8006DCA4(void *object);
+extern s32 fn_1_54E34(void *object, f32 value);
+extern void *fn_1_5448C(void *object);
+extern void *fn_1_548AC(s32 size);
+extern void fn_1_5489C(void *object, void *event);
+extern void fn_1_65748(void);
+
+typedef struct {
+    u32 pad_00;
+    void (*vtable)(void);
+    void *owner;
+} Event;
+
+typedef struct {
+    u8 pad_00[0x28];
+    f32 value;
+    u8 pad_2c[0x10];
+    u8 embedded[1];
+} Object;
+
+void fn_1_656C8(Object *object) {
+    void *result;
+    Event *event;
+
+    lbl_8006DCA4(object);
+    if (fn_1_54E34(&object->embedded[0], object->value) != 0) {
+        result = fn_1_5448C(&object->embedded[0]);
+        event = (Event *)fn_1_548AC(0xc);
+        if (event != 0) {
+            event->vtable = fn_1_65748;
+            event->owner = object;
+            fn_1_5489C(result, event);
+        }
+    }
+}
+/* fzgx:end fn_1_656C8 */
+
+/* fzgx:begin fn_1_65AAC */
+// fn_1_65AAC: empty in retail (single blr).
+void fn_1_65AAC(void) {
+}
+/* fzgx:end fn_1_65AAC */
+
+/* fzgx:begin fn_1_65B58 */
+// fn_1_65B58: empty in retail (single blr).
+void fn_1_65B58(void) {
+}
+/* fzgx:end fn_1_65B58 */
+
+/* fzgx:begin fn_1_65E88 */
+// fn_1_65E88: empty in retail (single blr).
+void fn_1_65E88(void) {
+}
+/* fzgx:end fn_1_65E88 */
+
+/* fzgx:begin fn_1_662D4 */
+// fn_1_662D4: empty in retail (single blr).
+void fn_1_662D4(void) {
+}
+/* fzgx:end fn_1_662D4 */
+
+/* fzgx:begin fn_1_6742C */
+// fn_1_6742C: empty in retail (single blr).
+void fn_1_6742C(void) {
+}
+/* fzgx:end fn_1_6742C */
+
+/* fzgx:begin fn_1_6767C */
+// fn_1_6767C: empty in retail (single blr).
+void fn_1_6767C(void) {
+}
+/* fzgx:end fn_1_6767C */
+
+/* fzgx:begin fn_1_680F4 */
+// fn_1_680F4: empty in retail (single blr).
+void fn_1_680F4(void) {
+}
+/* fzgx:end fn_1_680F4 */
