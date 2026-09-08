@@ -18444,58 +18444,18 @@
   },
   {
     "module": "main_rel",
-    "source": "rel/main_rel/objput/fn_1_56664.c",
+    "source": "rel/main_rel/objput.c",
     "symbols": [
-      "fn_1_56664"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": [],
-    "tu": "rel/main_rel/objput.c"
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/objput/fn_1_566A0.c",
-    "symbols": [
-      "fn_1_566A0"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": [],
-    "tu": "rel/main_rel/objput.c"
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/objput/fn_1_566DC.c",
-    "symbols": [
-      "fn_1_566DC"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": [],
-    "tu": "rel/main_rel/objput.c"
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/objput/fn_1_566EC.c",
-    "symbols": [
-      "fn_1_566EC"
-    ],
-    "status": "matching",
-    "mw_version": null,
-    "extra_cflags": [],
-    "tu": "rel/main_rel/objput.c"
-  },
-  {
-    "module": "main_rel",
-    "source": "rel/main_rel/objput/fn_1_56724.c",
-    "symbols": [
+      "fn_1_56664",
+      "fn_1_566A0",
+      "fn_1_566DC",
+      "fn_1_566EC",
       "fn_1_56724"
     ],
     "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
-    "tu": "rel/main_rel/objput.c"
+    "collapsed": true
   },
   {
     "module": "main_rel",
