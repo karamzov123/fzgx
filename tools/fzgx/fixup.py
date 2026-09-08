@@ -229,6 +229,40 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
                 newp = pads if cur in ("", "void") else cur + ", " + pads
                 candidates.append((f"+{extra} unused parameter(s)", body[:m.start(1)] + newp + body[m.end(1):]))
     fam_marks.append((len(candidates), "struct"))
+    # target-driven immediates: a row where only an immediate differs names ours and retail's
+    # value; the C literal that produced ours (as decimal, hex, or a struct stride) is replaced
+    imm_pairs = []
+    for t, o in diffs:
+        if not t or not o or t.split()[0] != o.split()[0]:
+            continue
+        ti = re.findall(r"(?<![\w(])(-?0x[0-9a-f]+|-?\d+)(?![\w(])", t); oi = re.findall(r"(?<![\w(])(-?0x[0-9a-f]+|-?\d+)(?![\w(])", o)
+        if len(ti) == len(oi) and re.sub(r"\b[rf]\d+\b", "R", re.sub(r"(-?0x[0-9a-f]+|-?\d+)", "#", t)) == re.sub(r"\b[rf]\d+\b", "R", re.sub(r"(-?0x[0-9a-f]+|-?\d+)", "#", o)):
+            for a, b in zip(ti, oi):
+                if a != b:
+                    imm_pairs.append((int(b, 0), int(a, 0), t.split()[0]))
+    seen_imm = set()
+    for ours_v, retail_v, mn in imm_pairs:
+        if (ours_v, retail_v) in seen_imm:
+            continue
+        seen_imm.add((ours_v, retail_v))
+        forms = {str(ours_v), f"0x{ours_v:X}", f"0x{ours_v:x}"}
+        if ours_v < 0:
+            forms |= {str(ours_v & 0xFFFF), f"0x{ours_v & 0xFFFF:X}"}
+        for form in forms:
+            for m in list(re.finditer(rf"(?<![\w.]){re.escape(form)}(?![\w.])", body))[:6]:
+                rep = f"0x{retail_v:X}" if form.startswith("0x") else str(retail_v)
+                candidates.append((f"imm {form} -> {rep} ({mn})", body[:m.start()] + rep + body[m.end():]))
+        if mn == "mulli" and retail_v > ours_v:
+            # a stride: the struct the loop indexes is smaller than retail's; pad its tail
+            for sm in re.finditer(r"((?:typedef\s+)?struct\s+\w*\s*\{)([^}]*)(\})", body):
+                candidates.append((f"struct tail padding +{retail_v - ours_v} (stride {ours_v}->{retail_v})",
+                                   body[:sm.start(2)] + sm.group(2).rstrip() + f"\n    u8 pad_tail[{retail_v - ours_v}];\n" + body[sm.end(2):]))
+    # a compare of the wrong signedness where the operand is a header field: cast at the compare
+    if any(t and o and (t.split()[0], o.split()[0]) in (("cmpwi", "cmplwi"), ("cmplwi", "cmpwi"), ("cmpw", "cmplw"), ("cmplw", "cmpw")) for t, o in diffs):
+        want_signed = any(t and t.split()[0] in ("cmpwi", "cmpw") for t, o in diffs)
+        cast = "(s32)" if want_signed else "(u32)"
+        for m in list(re.finditer(r"\bif \(([A-Za-z_][\w>.\-\[\]]*) (==|!=|<|>|<=|>=) ", body))[:12]:
+            candidates.append((f"cast {cast} at compare of {m.group(1)}", body[:m.start(1)] + cast + m.group(1) + body[m.end(1):]))
     # struct layout: every field offset off by the same delta means padding is missing or extra
     # at the front of the block-private struct; two deltas mean two fields are in the wrong order
     deltas = set()
@@ -261,6 +295,16 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
                 if len(candidates) > max_candidates:
                     break
     fam_marks.append((len(candidates), "branch"))
+    # two adjacent independent statements in the other order (the lab closed a function this way)
+    if span:
+        stmts_ = [(m.start(), m.end(), m.group(0)) for m in re.finditer(r"^[ \t]*[^\n{}]+;\n", body[span[0]:span[1]], re.M)]
+        for (s1, e1, t1), (s2, e2, t2) in list(zip(stmts_, stmts_[1:]))[:40]:
+            if e1 != s2:
+                continue
+            ids1 = set(re.findall(r"[A-Za-z_]\w*", t1)); ids2 = set(re.findall(r"[A-Za-z_]\w*", t2))
+            if ids1 & ids2 or ("(" in t1 and "(" in t2):
+                continue
+            candidates.append((f"swap `{t1.strip()[:24]}` / `{t2.strip()[:24]}`", body[:span[0] + s1] + t2 + t1 + body[span[0] + e2:]))
     # inverted branch: negate one `if` condition and swap its then/else blocks
     if any(t and o and (t.split()[0], o.split()[0]) in BRANCH_INV for t, o in diffs):
         for m in list(re.finditer(r"\bif\s*\(", body))[:16]:
