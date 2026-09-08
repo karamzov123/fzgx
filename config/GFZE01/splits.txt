@@ -1735,3 +1735,18 @@ dol/__DVDStoreErrorCode.c:
 
 dol/fn_80020ABC.c:
 	.text       start:0x80020ABC end:0x80020B3C align:4
+
+dol/fn_80043FA4.c:
+	.text       start:0x80043FA4 end:0x80043FE8 align:4
+
+dol/fn_8004251C.c:
+	.text       start:0x8004251C end:0x80042568 align:4
+
+dol/fn_80070068.c:
+	.text       start:0x80070068 end:0x800700B4 align:4
+
+dol/fn_8007A23C.c:
+	.text       start:0x8007A23C end:0x8007A294 align:4
+
+dol/fn_80044E7C.c:
+	.text       start:0x80044E7C end:0x80044EF8 align:4
