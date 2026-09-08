@@ -77,7 +77,7 @@ def codex_cmd(symbol: str, agent_id: str, model: str, fast: bool = False) -> Lis
             "-c", "skills.include_instructions=false",                 # no <skills_instructions> block
             "-c", "project_doc_max_bytes=0",                            # no AGENTS.md concatenation (global + repo)
             "-c", 'mcp_servers.fzgx.enabled_tools=["claim","write_unit","check","submit","release"]',
-            "-c", "tools.update_plan=false", "-c", "tools.web_search=false",
+            "-c", "tools.web_search=false",
             "--disable", "shell_tool", "--disable", "unified_exec", "--disable", "view_image"]
     return cmd + [
             "-c", 'mcp_servers.fzgx.command="uv"',
