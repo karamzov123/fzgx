@@ -73,10 +73,16 @@ Rules that hold for everyone:
 - Batches: `uv run tools/orchestrate.py --harness codex|claude ...` (headless, one report
   per batch, `fzgx verify` relinks once at the end). Never use in-process subagents.
 - The orchestrator does three things: pick a pool, run the batch, run the TU-finish round
-  (`--finish`, or `--finish-only --module M`: include/tidy/hoist/reflag every TU, revise
-  agents on the queue, collapse complete TUs). It reads reports. It does not edit blocks,
+  (`--finish`, or `--finish-only --module M`). It reads reports. It does not edit blocks,
   headers or splits by hand, and does not experiment on the live tree (use `--shadow`).
-  A TU that the round cannot converge is blocked like a function at the attempt cap.
+- Agents only where the answer is not computable. The TU-finish pass (`fzgx tu-finish`,
+  `tools/fzgx/reconcile.py`) is deterministic: it isolates colliding private typedefs by
+  function prefix, tries each candidate declaration of every symbol (definition first, then
+  the blocks' variants) and keeps the first under which every block naming the symbol still
+  matches, marks the rest contested, and collapses complete TUs. Verdicts are memoised by
+  generated-unit hash (`.fzgx/verify_cache.json`), so a pass over main.rel is ~30 s. The only
+  agent task it emits is the fixed list of blocks that cannot compile under their prologue
+  (one revise batch; a block that fails twice is blocked, never re-queued).
 - While a batch runs, never call `configure.py`, `ninja` or `dtk` by hand: go through
   `fzgx verify` or `oracle.build_lock()`. Two concurrent splits kill each other (exit 137)
   and a broken baseline makes a bisect blame every pending unit (verify now checks the
