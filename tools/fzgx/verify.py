@@ -65,6 +65,14 @@ def verify(p: Project, message: Optional[str] = None) -> Dict[str, object]:
     units = _units_for(p, keys)
     t0 = time.time()
     with oracle.build_lock():
+        # baseline first: if the tree does not link with every pending unit held back, the
+        # fault is elsewhere (a header, a tool change) and bisecting would blame them all
+        _set_status(p, list(units.values()), "nonmatching")
+        if not _relink(p):
+            _set_status(p, list(units.values()), "nonmatching")
+            return {"ok": False, "error": "baseline relink failed with all pending units held back; "
+                    "the tree is broken independently of them (byte-diff the REL); nothing changed",
+                    "verified": [], "rejected": []}
         good, bad = _bisect(p, list(units.keys()), units)
         # final state: good units Matching, bad units back to stubs/nonmatching; relink once more if we bisected
         if bad:

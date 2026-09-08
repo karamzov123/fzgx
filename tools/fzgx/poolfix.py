@@ -119,7 +119,11 @@ class Elf:
                   if s["shndx"] == ro["index"] and (s["info"] & 0xF) == STT_OBJECT and s["name"] not in private_names]
         if others:
             return False
+        # an empty but allocatable section still makes the linker align before placing it;
+        # strip ALLOC so it is not placed at all
         ro["size"] = 0
+        ro["addralign"] = 1
+        ro["flags"] = 0
         self._write_shdr(ro)
         return True
 
