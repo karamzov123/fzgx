@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_1_7B054: main_rel .text:0x0007B054 size 0x10
-// Carved by fzgx. Replace this file's body with the matching C.
+extern s16 lbl_1_data_1DFA4[6];
+
+s16 fn_1_7B054(void) {
+    return lbl_1_data_1DFA4[4];
+}
