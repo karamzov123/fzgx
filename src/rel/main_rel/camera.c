@@ -37,6 +37,7 @@ extern void OSReport(const unsigned char *, ...);
 
 extern f32 lbl_1_rodata_2E0[32];
 extern f32 lbl_8006D6FC(f32 *value, void *target);
+u32 fn_1_6514(u32);
 
 /* fzgx:begin camera_get_state */
 // Return the camera state byte, or -1 when no camera state is active.
@@ -52,8 +53,6 @@ s32 camera_get_state(void) {
 /* fzgx:end camera_get_state */
 
 /* fzgx:begin camera_get_status */
-u32 fn_1_6514(u32);
-
 // Return the camera status when a camera exists and is not marked inactive.
 u32 camera_get_status(void) {
     Obj_1_bss_F68_Target *camera = lbl_1_bss_F68;

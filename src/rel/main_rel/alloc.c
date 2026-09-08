@@ -24,6 +24,8 @@ extern void fn_1_DA6C(LiveCamera *);
 extern void fn_1_DE14(LiveCamera *);
 extern void fn_1_E174(void);
 extern void fn_1_F3D0(LiveCamera *);
+s32 fn_1_3FC28(void);
+void fn_1_3EF14(u32 *);
 
 /* fzgx:begin fn_1_4928 */
 typedef struct {
@@ -142,9 +144,6 @@ void fn_1_4FEC(void) {
 /* fzgx:end fn_1_4FEC */
 
 /* fzgx:begin fn_1_4FFC */
-s32 fn_1_3FC28(void);
-void fn_1_3EF14(u32 *);
-
 void fn_1_4FFC(void) {
     u8 value[0x14ac];
     u32 result;
