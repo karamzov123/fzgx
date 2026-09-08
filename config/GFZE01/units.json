@@ -65,7 +65,7 @@
     "symbols": [
       "fn_1_149BF4"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
