@@ -141,8 +141,11 @@ def analyze(p: Project, module: str, symbol: str) -> Dict[str, object]:
                          for poff, fl in pointees.items() if sum(x["loads"] + x["stores"] for x in fl.values()) >= 3}}
 
 
-def typedef(info: Dict[str, object], name: Optional[str] = None, fields: Optional[Dict[int, Dict]] = None) -> str:
+def typedef(info: Dict[str, object], name: Optional[str] = None, fields: Optional[Dict[int, Dict]] = None,
+            ptr_types: Optional[Dict[int, str]] = None) -> str:
+    """C typedef skeleton. ptr_types maps a field offset to the typedef name its pointer targets."""
     fields = fields if fields is not None else info["fields"]
+    ptr_types = ptr_types or {}
     name = name or f"{info['symbol'].replace('lbl_', 'Struct_')}"
     lines = [f"typedef struct {{"]
     cur = 0
@@ -154,7 +157,9 @@ def typedef(info: Dict[str, object], name: Optional[str] = None, fields: Optiona
             lines.append(f"    /* overlap at 0x{off:X} */")
         w = f["width"] or 4
         ctype = {1: "u8", 2: "u16", 4: "f32" if f["float"] else "u32", 8: "f64"}[w]
-        lines.append(f"    {ctype} unk_{off:X};  // {f['loads']} loads, {f['stores']} stores")
+        if off in ptr_types and w == 4:
+            ctype = f"{ptr_types[off]} *"
+        lines.append(f"    {ctype}{'' if ctype.endswith('*') else ' '}unk_{off:X};  // {f['loads']} loads, {f['stores']} stores")
         cur = off + w
     if len(lines) == 1:
         lines.append("    u8 unk_0;  // no field accesses recovered")
@@ -197,13 +202,80 @@ def header(p: Project, module: str, min_refs: int = 20, sections=(".data", ".bss
             else:
                 out.append(f"extern {ctype} {name};")
         else:
-            out.append(typedef(info, tname))
-            out.append(f"extern {tname} {name};")
+            ptr_types = {}
             for poff, fl in sorted(info.get("pointees", {}).items()):
-                if poff in nfields:
+                if poff in nfields and fl:
                     pt = f"{tname}_At{poff:X}"
-                    out.append(f"// pointee of {name}.unk_{poff:X} (declare the field as {pt} * once named)")
+                    out.append(f"// object reached through {name}.unk_{poff:X}")
                     out.append(typedef(info, pt, fl))
+                    ptr_types[poff] = pt
+            out.append(typedef(info, tname, None, ptr_types))
+            out.append(f"extern {tname} {name};")
         out.append("")
     out.append(f"#endif  // {guard}")
     return "\n".join(out) + "\n"
+
+
+def oversize(p: Project, module: str, min_refs: int = 5) -> List[Dict[str, object]]:
+    """Globals whose code accesses reach past the symbol's size: dtk under-sized the object.
+
+    Each row lists the symbol, its size, the furthest access, and the symbols that follow within
+    that reach, so the librarian can merge them in symbols.txt (a size correction, no code change).
+    """
+    from collections import Counter
+    syms = p.symbols(module)
+    ordered = sorted((s for s in syms.values() if s.kind == "object"), key=lambda s: (s.section, s.addr))
+    cnt = Counter()
+    for fn in p.function_asm(module).values():
+        for r in fn.refs:
+            if r in syms and syms[r].kind == "object":
+                cnt[r] += 1
+    rows = []
+    for name, n in cnt.most_common():
+        if n < min_refs:
+            break
+        sd = syms[name]
+        info = analyze(p, module, name)
+        # unclamped: re-derive the furthest object-shape offset
+        far = 0
+        for fn in p.function_asm(module).values():
+            if name not in fn.refs:
+                continue
+        # cheap proxy: analyze() clamps, so recompute from raw fields via a second pass
+        raw = _raw_object_offsets(p, module, name)
+        if not raw:
+            continue
+        far = max(raw)
+        if far + 4 > sd.size:
+            following = [s for s in ordered if s.section == sd.section and sd.addr < s.addr < sd.addr + far + 4]
+            rows.append({"symbol": name, "section": sd.section, "size": sd.size, "furthest_access": far,
+                         "refs": n, "swallows": [f.name for f in following][:12], "n_swallowed": len(following)})
+    return rows
+
+
+def _raw_object_offsets(p: Project, module: str, symbol: str) -> List[int]:
+    """Object-shape access offsets without size clamping (helper for oversize())."""
+    offs = []
+    for fn in p.function_asm(module).values():
+        if symbol not in fn.refs:
+            continue
+        base = {}
+        pending = set()
+        for line in fn.asm:
+            ins = _insn(line)
+            m = re.match(rf"^lis r(\d+), {re.escape(symbol)}@ha", ins)
+            if m:
+                pending.add(f"r{m.group(1)}"); continue
+            m = re.match(rf"^addi r(\d+), r(\d+), {re.escape(symbol)}@l", ins)
+            if m and f"r{m.group(2)}" in pending:
+                base[f"r{m.group(1)}"] = 0; continue
+            m = re.match(r"^(addi|subi) r(\d+), r(\d+), (-?0x[0-9a-fA-F]+|-?\d+)$", ins)
+            if m and f"r{m.group(3)}" in base:
+                base[f"r{m.group(2)}"] = base[f"r{m.group(3)}"] + int(m.group(4), 0) * (-1 if m.group(1) == "subi" else 1); continue
+            m = ACCESS_RE.match(ins)
+            if m and m.group(7) in base:
+                offs.append(int(m.group(6), 0) + base[m.group(7)])
+            d = DEF_RE.match(ins)
+            if d and d.group(1) not in NO_DEF:
+                base.pop(f"r{d.group(2)}", None); pending.discard(f"r{d.group(2)}")
+    return offs

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import List, Optional
 
@@ -42,6 +43,20 @@ def _decl_for(sym: Symbol) -> str:
     return f"extern {ctype} {sym.name}{arr};  // {sym.section}:0x{sym.addr:08X} size 0x{sym.size:X} scope {sym.scope}"
 
 
+def _header_decl(hdr: str, name: str) -> str:
+    """The typedef (if any) and extern line for `name` from a generated globals header."""
+    m = re.search(rf"^extern (\w+) \*?{re.escape(name)};", hdr, re.M)
+    if not m:
+        return ""
+    tname = m.group(1)
+    td = re.search(rf"^typedef struct \{{\n(?:.*\n)*?\}} {re.escape(tname)};", hdr, re.M)
+    body = td.group(0) if td else ""
+    if body.count("\n") > 40:  # keep bundles small: show the first fields and a count
+        lines = body.splitlines()
+        body = "\n".join(lines[:30]) + f"\n    /* ... {len(lines) - 31} more fields ... */\n" + lines[-1]
+    return (body + "\n" if body else "") + m.group(0)
+
+
 def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
                   budget_tokens: int = 6000) -> str:
     sym0 = project.resolve(symbol)
@@ -76,12 +91,27 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
     parts.append("```")
 
     if fn.refs:
+        header = ROOT / "include" / "rel" / module / "globals.h"
+        hdr_text = header.read_text() if header.exists() else ""
+        shown_from_header = []
         parts.append("\n## Referenced symbols (declare what you use; names are provisional)\n```c")
         for name in fn.refs:
             s = project.find_symbol(name, module) or project.find_symbol(name)
-            if s:
-                parts.append(_decl_for(s))
+            if not s:
+                continue
+            if hdr_text and re.search(rf"^extern .*\b{re.escape(name)};", hdr_text, re.M):
+                shown_from_header.append(name)
+                continue
+            parts.append(_decl_for(s))
         parts.append("```")
+        if shown_from_header:
+            parts.append(f"\nThese are declared in `include/rel/{module}/globals.h` with recovered struct layouts; "
+                         f"`#include \"rel/{module}/globals.h\"` and use the typed fields (`unk_XX` names are offsets) "
+                         f"instead of casts or your own extern:")
+            parts.append("```c")
+            for name in shown_from_header:
+                parts.append(_header_decl(hdr_text, name))
+            parts.append("```")
 
     callers = project.callers(symbol)
     if callers:

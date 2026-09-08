@@ -179,6 +179,17 @@ def cmd_structs(a, p):
     return 0
 
 
+def cmd_oversize(a, p):
+    rows = structs.oversize(p, a.module, a.min_refs)
+    if a.json:
+        _print(rows, True)
+    else:
+        for r in rows:
+            print(f"{r['symbol']:22s} {r['section']:8s} size 0x{r['size']:<6X} furthest 0x{r['furthest_access']:<6X} refs={r['refs']:3d} swallows {r['n_swallowed']}: {', '.join(r['swallows'][:6])}")
+        print(f"({len(rows)} under-sized globals)")
+    return 0
+
+
 def cmd_headers(a, p):
     text = structs.header(p, a.module, a.min_refs)
     if a.write:
@@ -258,6 +269,8 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--file", required=True); s.add_argument("--by", default="librarian")
     s = sub.add_parser("structs", help="recover a global's struct layout from all accesses in the module"); s.set_defaults(fn=cmd_structs)
     s.add_argument("symbol"); s.add_argument("--module", default="main_rel")
+    s = sub.add_parser("oversize", help="globals whose accesses exceed the symbol size (symbols.txt size corrections)"); s.set_defaults(fn=cmd_oversize)
+    s.add_argument("--module", default="main_rel"); s.add_argument("--min-refs", type=int, default=5)
     s = sub.add_parser("headers", help="generate include/rel/<module>/globals.h for the most-referenced globals"); s.set_defaults(fn=cmd_headers)
     s.add_argument("--module", default="main_rel"); s.add_argument("--min-refs", type=int, default=20); s.add_argument("--write", action="store_true")
     s = sub.add_parser("verify", help="relink once for all accepted units, verify hashes, commit; bisect on failure"); s.set_defaults(fn=cmd_verify)
