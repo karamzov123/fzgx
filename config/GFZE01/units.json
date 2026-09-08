@@ -5415,7 +5415,7 @@
     "symbols": [
       "fn_1_D7724"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
