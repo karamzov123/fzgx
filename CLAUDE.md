@@ -66,8 +66,10 @@ Rules that hold for everyone:
   a few seconds) on an agent's best body and submits a match in the agent's name. A unit may carry
   its own `mw_version`/`extra_cflags` (an `-O` override replaces the module's); `check`/`submit`
   honour them before the carve. The permuter is offline only (150 s, one hit in three).
-- `fzgx trivial` matches single-`blr` and `li r3,N; blr` functions mechanically
-  (419 landed on 2026-09-08); run it before spending agents on tiny functions.
+- `fzgx trivial` matches single-`blr` and `li r3,N; blr` functions mechanically (419 landed on
+  2026-09-08) and then lifts straight-line functions from the disassembly (`tools/fzgx/lift.py`:
+  getters, setters, one-call wrappers, short call-free bodies; 102 landed the same day). Run it
+  before spending agents on small functions.
 - Readability tooling: `fzgx tu-organize` (TU directories from `tus.json`),
   `fzgx structs`/`headers` (layouts from disassembly → `include/rel/<module>/globals.h`,
   offset self-checked under MWCC), `fzgx rename`, `fzgx naming-bundle`/`naming-apply`,

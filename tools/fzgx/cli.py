@@ -131,7 +131,11 @@ def cmd_lint(a, p):
 
 
 def cmd_trivial(a, p):
-    _print(trivial.apply(p, a.module.split(",") if a.module else None, a.limit, a.dry_run), a.json); return 0
+    r = trivial.apply(p, a.module.split(",") if a.module else None, a.limit, a.dry_run)
+    if not a.dry_run and not a.no_lift:
+        from . import lift
+        r["lift"] = lift.apply(p, a.module.split(",") if a.module else None, a.max_size, a.limit)
+    _print(r, a.json); return 0
 
 
 def cmd_compare(a, p):
@@ -450,7 +454,7 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("compare", help="A/B table for two agent-id prefixes (e.g. b3c-claude vs shadow-b3c-codex)"); s.set_defaults(fn=cmd_compare)
     s.add_argument("--a", required=True); s.add_argument("--b", required=True)
     s = sub.add_parser("trivial", help="mechanically match single-blr and `li r3,N; blr` functions"); s.set_defaults(fn=cmd_trivial)
-    s.add_argument("--module", help="comma list; default all"); s.add_argument("--limit", type=int); s.add_argument("--dry-run", action="store_true")
+    s.add_argument("--module", help="comma list; default all"); s.add_argument("--limit", type=int); s.add_argument("--dry-run", action="store_true"); s.add_argument("--no-lift", action="store_true"); s.add_argument("--max-size", type=int, default=160)
     return ap
 
 

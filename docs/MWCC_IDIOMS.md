@@ -35,3 +35,12 @@ file from what actually unblocked functions; keep each item one or two lines.
   kept unreferenced functions; with stripping on, a carved function nobody
   references vanishes from the link and every REL importing later symbols
   fails its hash.
+- A value used both before and after a call is loaded once into a local (a
+  non-volatile register, `r31` down); reloading it after the call gives a
+  second `lwz` retail does not have. The reverse too: two loads in retail mean
+  two expressions in the source, not one local.
+- Argument materialisation follows source order: `f(1, 15, g)` loads `g`
+  after `li r4, 15`; if retail loads `g` first, `g` came from a local set
+  earlier in the function.
+- Same asm modulo two swapped `li`/`lwz` rows is never a compiler quirk: it is
+  statement order or an intermediate local.

@@ -66,6 +66,36 @@ def _header_decl(hdr: str, name: str) -> str:
     return "\n".join(x for x in pointees + [body] if x) + ("\n" if body else "") + m.group(0)
 
 
+# failure mode (from stuck.classify_rows / _pure) -> what changed in bodies that then matched
+MODE_TIPS = {
+    "schedule": "same instructions, different order: MWCC emits argument materialisation and loads in source order; "
+                "reorder the statements or the argument expressions, or load a value into a local once and reuse it "
+                "(a value used across a call lives in a non-volatile register: `x = g->f; call(); use(x)`).",
+    "regalloc": "register numbers only: allocation follows declaration order of locals and the order values are first "
+                "used; reorder local declarations, merge two temporaries into one, or split one variable into two.",
+    "frame": "stack frame or local offsets differ: a local array/struct is missing or sized differently, or a scalar is "
+             "spilled because it lives across a call; compare `stwu` sizes and add/remove/resize locals.",
+    "ext": "missing or extra extsh/extsb/clrlwi: a parameter, local or field has the wrong width or signedness "
+           "(s16 vs u16 vs s32); the extension appears where a narrow value is used as an int.",
+    "signedness": "cmpw vs cmplw / cmpwi vs cmplwi: the compared operand's type (signed vs unsigned) decides it; "
+                  "check the variable, the field and the literal (`0x80` vs `0x80u`).",
+    "imm": "an immediate differs: a struct field offset (fix the struct layout), a stride (array element size), a "
+           "mask (`& 0xFF` vs `& 0x7F`), or a constant folded from an expression.",
+    "reloc": "a relocation names another symbol: the wrong global or callee, or a private literal where retail "
+             "pools a shared constant (declare the pooled `lbl_*_rodata_*` symbol and use it).",
+    "ins:float": "float rows differ: f32 vs f64 arithmetic; a double literal (`1.0`) promotes the expression, `1.0f` "
+                 "does not; `frsp` means a double was narrowed.",
+    "ins:branch": "branch rows differ: the condition sense or block order; `if (a) X else Y` vs `if (!a) Y else X`, "
+                  "`==` vs `!=`, early `return` vs `else`, `&&` chains vs nested ifs.",
+    "op:li/addi": "li vs addi: a constant written directly vs derived from another value (`x = 0` vs `x = y - y`, "
+                  "or `n = 5` vs `n = m + 1`); also a zero-init reused from another variable.",
+    "op:addi/mr": "addi vs mr: the compiler copied a register instead of adding 0; an expression like `p + 0` or a "
+                  "different pointer base (`&s->f` vs `s`).",
+    "mixed": "several kinds at once: fix the structural ones first (frame, ext, imm, reloc), then scheduling and "
+             "registers usually follow.",
+}
+
+
 def _pooled_constant(project: Project, s: Symbol) -> Optional[str]:
     """A float/double literal in .rodata/.sdata2 with its retail value, as a declaration."""
     if s.kind != "object" or s.section not in (".rodata", ".sdata2") or s.size not in (4, 8):
@@ -225,6 +255,9 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
                     lines = [f"{i:4d}  {t:38s} | {o}" for i, t, o in diffs[:24]]
                     parts.append(f"\n### Why it plateaued: {mode} ({kinds}); {len(diffs)} rows differ (target | prior attempt)\n```\n"
                                  + "\n".join(lines) + ("\n..." if len(diffs) > 24 else "") + "\n```")
+                    tips = [t for k, t in MODE_TIPS.items() if k in mode or k in counts or any(k in x for x in counts)]
+                    if tips:
+                        parts.append("What usually causes this kind of row, from functions that went on to match:\n- " + "\n- ".join(dict.fromkeys(tips)))
             except Exception:
                 pass
 

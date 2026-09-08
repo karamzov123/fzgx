@@ -22,6 +22,8 @@ from typing import Dict, List, Optional, Tuple
 from . import oracle, stuck
 from .project import STATE_DIR, Project
 
+FLOAT_PAIRS = {"fsubs", "fsub", "fadds", "fadd", "fmuls", "fmul", "fdivs", "fdiv", "fmadds", "fmadd", "fmsubs", "fmsub", "frsp"}
+
 INT_TYPES = ["s8", "u8", "s16", "u16", "s32", "u32", "int", "unsigned int", "unsigned", "char", "unsigned char",
              "short", "unsigned short", "long", "unsigned long", "signed char"]
 FLIP = {"s8": "u8", "u8": "s8", "s16": "u16", "u16": "s16", "s32": "u32", "u32": "s32",
