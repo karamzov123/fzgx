@@ -23,6 +23,12 @@ extern void *fn_1_54448(s32 value);
 extern void *fn_1_548AC(s32 value);
 extern void fn_1_D8878(void);
 extern void fn_1_5489C(void *obj, void *arg);
+extern void fn_1_D83E4(Obj_1_data_2A7E0_At3C *obj, s32 index);
+extern void fn_1_D7A10(Obj_1_data_2A7E0_At3C *obj);
+extern void fn_1_D8D58(Obj_1_data_2A7E0_At3C *obj, Obj_1_data_2A7E0_At3C *arg);
+extern void fn_1_D9D8C(Obj_1_bss_7AD78 *obj, u32 arg, s32 index);
+extern void fn_1_DA3A0(Obj_1_bss_7AD78 *obj);
+extern void fn_1_E87FC(void);
 
 /* fzgx:begin fn_1_D6680 */
 // fn_1_D6680: returns a constant.
@@ -159,13 +165,6 @@ void fn_1_D744C(void) {
 /* fzgx:end fn_1_D744C */
 
 /* fzgx:begin fn_1_D74C4 */
-extern void fn_1_D83E4(Obj_1_data_2A7E0_At3C *obj, s32 index);
-extern void fn_1_D7A10(Obj_1_data_2A7E0_At3C *obj);
-extern void fn_1_D8D58(Obj_1_data_2A7E0_At3C *obj, Obj_1_data_2A7E0_At3C *arg);
-extern void fn_1_D9D8C(Obj_1_bss_7AD78 *obj, u32 arg, s32 index);
-extern void fn_1_DA3A0(Obj_1_bss_7AD78 *obj);
-extern void fn_1_E87FC(void);
-
 // Initializes background-light data and installs the completion callback.
 void fn_1_D74C4(void) {
     Obj_1_bss_7AD78 *tmp;

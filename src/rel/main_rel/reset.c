@@ -31,24 +31,6 @@ extern void fn_1_D3B6C(void);
 extern void fn_80071100(void);
 
 /* fzgx:begin fn_1_D3214 */
-extern s32 fn_1_B7E48(void);
-extern void fn_8001AF64(void);
-extern void VISetBlack(int arg0);
-extern void fn_8006B224(void);
-extern void fn_8006FFCC(int arg0);
-extern void fn_8006FDEC(void);
-extern void fn_8006FEFC(void);
-extern void fn_8000EE50(void *arg0, void *arg1);
-extern void fn_1_C37A0(void);
-extern void fn_1_F7578(void);
-extern void fn_1_A0AA4(void);
-extern void fn_1_A02F0(void);
-extern void OSResetSystem(int reset, u32 reset_code, int force);
-extern int OSPanic(void *arg0, int arg1, ...);
-extern void *memset(void *dest, int value, unsigned long size);
-extern void *memcpy(void *dest, const void *src, unsigned long size);
-extern u8 lbl_801A66B0[4];
-
 #define RESET_AREA ((u8 *)((u32)0x8070 << 16))
 
 // Completes an accepted reset request and transfers control to the reset system.

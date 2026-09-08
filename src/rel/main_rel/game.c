@@ -147,9 +147,6 @@ void fn_1_35178(u32* arg0) {
 /* fzgx:end fn_1_35178 */
 
 /* fzgx:begin fn_1_36A94 */
-extern u8 lbl_1_bss_5480[132864];
-extern void fn_80008BA8(void *arg1, void *arg2, u32 size);
-
 // Clears one indexed 0x81c0-byte entry in the shared buffer.
 void fn_1_36A94(u32 arg0, u32 arg1) {
     u8 *entry = lbl_1_bss_5480;
