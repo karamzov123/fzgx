@@ -303,6 +303,85 @@ void fn_1_13C16C(void) {
 }
 /* fzgx:end fn_1_13C16C */
 
+/* fzgx:begin fn_1_13DA0C noprologue */
+#include "types.h"
+
+struct Struct_26F8 {
+    u32 unk00;
+    f32 unk04;
+    f32 unk08;
+    f32 unk0C;
+    u8 pad10[0x1C];
+    f32 unk2C;
+    u32 unk30;
+    u8 pad34[4];
+    u32 unk38;
+    u8 pad3C[0x1C];
+};
+
+extern const struct Struct_26F8 lbl_1_rodata_26F8;
+extern const f32 lbl_1_rodata_8658;
+extern const f32 lbl_1_rodata_8DCC;
+extern const f32 lbl_1_rodata_8840;
+extern const f32 lbl_1_rodata_87B4;
+extern const u32 lbl_1_rodata_8DC0;
+extern void fn_1_4F734(struct Struct_26F8 *);
+extern const f32 lbl_1_rodata_8818;
+extern const f32 lbl_1_rodata_86F8;
+extern const u32 lbl_1_rodata_8DC4;
+extern const f32 lbl_1_rodata_8DD0;
+extern const u32 lbl_1_rodata_8DC8;
+
+void fn_1_13DA0C(void) {
+    struct Struct_26F8 sp08;
+
+    sp08 = lbl_1_rodata_26F8;
+    sp08.unk00 = 0x9E1C;
+    sp08.unk04 = lbl_1_rodata_8658;
+    sp08.unk08 = lbl_1_rodata_8DCC;
+    sp08.unk0C = lbl_1_rodata_8840;
+    sp08.unk2C = lbl_1_rodata_87B4;
+    sp08.unk38 = lbl_1_rodata_8DC0;
+    sp08.unk30 = 0xF;
+    fn_1_4F734(&sp08);
+
+    sp08.unk30 = 0x8000D;
+    fn_1_4F734(&sp08);
+
+    sp08.unk30 = 0x100007;
+    fn_1_4F734(&sp08);
+
+    sp08.unk30 = 0x180005;
+    fn_1_4F734(&sp08);
+
+    sp08 = lbl_1_rodata_26F8;
+    sp08.unk00 = 0x9E1D;
+    sp08.unk04 = lbl_1_rodata_8818;
+    sp08.unk08 = lbl_1_rodata_8DCC;
+    sp08.unk0C = lbl_1_rodata_86F8;
+    sp08.unk38 = lbl_1_rodata_8DC4;
+    sp08.unk2C = lbl_1_rodata_87B4;
+    sp08.unk30 = 0xD;
+    fn_1_4F734(&sp08);
+
+    sp08.unk30 = 0x100005;
+    fn_1_4F734(&sp08);
+
+    sp08 = lbl_1_rodata_26F8;
+    sp08.unk00 = 0x9E1E;
+    sp08.unk04 = lbl_1_rodata_8DD0;
+    sp08.unk08 = lbl_1_rodata_8DCC;
+    sp08.unk0C = lbl_1_rodata_86F8;
+    sp08.unk38 = lbl_1_rodata_8DC8;
+    sp08.unk2C = lbl_1_rodata_87B4;
+    sp08.unk30 = 0xF;
+    fn_1_4F734(&sp08);
+
+    sp08.unk30 = 0x100007;
+    fn_1_4F734(&sp08);
+}
+/* fzgx:end fn_1_13DA0C */
+
 /* fzgx:begin fn_1_13E054 */
 void fn_1_13E054(void* arg0, void* arg1, void* arg2, int arg3) {
     u8* fixed = (u8*)0;

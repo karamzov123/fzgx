@@ -5,3 +5,9 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+rel/car_colchg/_prolog/fn_9_298.c:
+	.text       start:0x00000298 end:0x000002E0
+
+rel/car_colchg/_prolog/fn_9_2E0.c:
+	.text       start:0x000002E0 end:0x00000328

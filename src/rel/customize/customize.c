@@ -190,6 +190,40 @@ void fn_3_C234(void) {
 }
 /* fzgx:end fn_3_C234 */
 
+/* fzgx:begin fn_3_C28C noprologue */
+#include "types.h"
+
+extern u32 lbl_3_bss_7EDA0[8];
+extern u32 lbl_3_data_1958[6];
+extern u32 lbl_3_bss_7ED58[18];
+extern u32 lbl_801A6410[1];
+
+extern void fn_80008BA8(u32, u32, u32);
+extern void fn_1_46B4(u32, u32, void *, u32);
+
+typedef struct CustomizeData {
+    u8 pad0[0xb8];
+    u32 index;
+    u8 padbc[4];
+    u32 state;
+    u8 padc4[0x14];
+    u8 tail[0xd8 - 0xd8];
+} CustomizeData;
+
+void fn_3_C28C(void) {
+    CustomizeData *data = (CustomizeData *)lbl_3_data_1958;
+    u32 *table = (u32 *)lbl_3_bss_7EDA0[0];
+    u32 *work = lbl_3_bss_7ED58;
+    fn_80008BA8(table[data->index], work[2], work[3]);
+    if (work[2] != 0) {
+        fn_1_46B4(lbl_801A6410[0], work[2], &data->tail[0], 0x13c);
+        work[2] = 0;
+        work[3] = 0;
+    }
+    data->state = 5;
+}
+/* fzgx:end fn_3_C28C */
+
 /* fzgx:begin fn_3_C3B4 */
 extern u32 lbl_3_bss_7ED58[18];
 extern u32 lbl_3_bss_A179C;

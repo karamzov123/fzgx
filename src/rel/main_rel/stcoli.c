@@ -74,6 +74,115 @@ void fn_1_18FFC(int a, int b, int c, int d, int e, int f, int g) {
 }
 /* fzgx:end fn_1_18FFC */
 
+/* fzgx:begin fn_1_1902C noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/stcoli.h"
+
+typedef struct StcoliNode StcoliNode;
+typedef struct StcoliVec {
+    u32 x;
+    u32 y;
+    u32 z;
+} StcoliVec;
+
+struct StcoliNode {
+    u32 flags;
+    u8 pad[8];
+    s32 count;
+    StcoliNode *items;
+    u8 rest[0x3c];
+};
+
+extern void fn_1_18784(u32, StcoliNode *, StcoliVec *, s32, f32);
+extern void fn_1_18F28(StcoliNode *, StcoliVec *, void *, f32);
+extern void lbl_8006DAEC(void);
+extern void lbl_8006DB30(void);
+extern void lbl_8006DBE4(void);
+
+void fn_1_1902C(StcoliNode *root, StcoliVec *vec, void *arg3, f32 value) {
+    StcoliNode *level1;
+    s32 i1;
+
+    fn_1_18784(0x800000, root, vec, 0, value);
+    if (root->count > 0) {
+        lbl_8006DAEC();
+        level1 = root->items;
+        i1 = 0;
+        while (i1 < root->count) {
+            if ((level1->flags & 0x001e0002) == 0) {
+                StcoliVec saved1 = *vec;
+                StcoliNode *level2;
+                s32 i2;
+
+                lbl_8006DBE4();
+                fn_1_18784(0x800000, level1, vec, 0, value);
+                if (level1->count > 0) {
+                    lbl_8006DAEC();
+                    level2 = level1->items;
+                    i2 = 0;
+                    while (i2 < level1->count) {
+                        if ((level2->flags & 0x001e0002) == 0) {
+                            StcoliVec saved2 = *vec;
+                            StcoliNode *level3;
+                            s32 i3;
+
+                            lbl_8006DBE4();
+                            fn_1_18784(0x800000, level2, vec, 0, value);
+                            if (level2->count > 0) {
+                                lbl_8006DAEC();
+                                level3 = level2->items;
+                                i3 = 0;
+                                while (i3 < level2->count) {
+                                    if ((level3->flags & 0x001e0002) == 0) {
+                                        StcoliVec saved3 = *vec;
+                                        StcoliNode *level4;
+                                        s32 i4;
+
+                                        lbl_8006DBE4();
+                                        fn_1_18784(0x800000, level3, vec, 0, value);
+                                        if (level3->count > 0) {
+                                            lbl_8006DAEC();
+                                            level4 = level3->items;
+                                            i4 = 0;
+                                            while (i4 < level3->count) {
+                                                if ((level4->flags & 0x001e0002) == 0) {
+                                                    StcoliVec saved4 = *vec;
+
+                                                    lbl_8006DBE4();
+                                                    fn_1_18784(0x800000, level4, vec, 0, value);
+                                                    fn_1_18F28(level4, vec, arg3, value);
+                                                    *vec = saved4;
+                                                }
+                                                i4 += 1;
+                                                level4 += 1;
+                                            }
+                                            lbl_8006DB30();
+                                        }
+                                        *vec = saved3;
+                                    }
+                                    i3 += 1;
+                                    level3 += 1;
+                                }
+                                lbl_8006DB30();
+                            }
+                            *vec = saved2;
+                        }
+                        i2 += 1;
+                        level2 += 1;
+                    }
+                    lbl_8006DB30();
+                }
+                *vec = saved1;
+            }
+            i1 += 1;
+            level1 += 1;
+        }
+        lbl_8006DB30();
+    }
+}
+/* fzgx:end fn_1_1902C */
+
 /* fzgx:begin fn_1_216C0 */
 void fn_1_216C0(void *arg0, void *arg1, void *arg2) {
     int local;

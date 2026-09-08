@@ -167,6 +167,24 @@ void fn_3_33A0(void) {
 }
 /* fzgx:end fn_3_33A0 */
 
+/* fzgx:begin fn_3_41B0 */
+extern s32 lbl_3_data_B8;
+extern s32 lbl_3_bss_20850;
+extern void fn_1_435C(s32);
+extern void fn_1_426C(s32);
+extern void fn_1_48140(int);
+
+void fn_3_41B0(void) {
+    if (lbl_3_data_B8 != -1) {
+        fn_1_435C(lbl_3_bss_20850);
+        fn_1_426C(lbl_3_data_B8);
+        lbl_3_data_B8 = -1;
+    }
+    fn_1_48140(0x85);
+    fn_1_48140(0xa1);
+}
+/* fzgx:end fn_3_41B0 */
+
 /* fzgx:begin fn_3_4218 */
 extern void fn_3_5F28(void);
 extern void fn_1_47F74(int);

@@ -429,6 +429,9 @@ rel/main_rel/stcoli/fn_1_18F28.c:
 rel/main_rel/stcoli/fn_1_18FFC.c:
 	.text       start:0x00018FFC end:0x0001902C
 
+rel/main_rel/stcoli/fn_1_1902C.c:
+	.text       start:0x0001902C end:0x000192E8
+
 rel/main_rel/stcoli/fn_1_1FB80.c:
 	.text       start:0x0001FB80 end:0x0001FC98
 
@@ -4067,6 +4070,9 @@ rel/main_rel/memcard/fn_1_C34F0.c:
 rel/main_rel/memcard/fn_1_C36EC.c:
 	.text       start:0x000C36EC end:0x000C37A0
 
+rel/main_rel/memcard/fn_1_C37A0.c:
+	.text       start:0x000C37A0 end:0x000C39FC
+
 rel/main_rel/memcard/fn_1_C39FC.c:
 	.text       start:0x000C39FC end:0x000C3A0C
 
@@ -4099,6 +4105,9 @@ rel/main_rel/enemy_ctrl/fn_1_CA218.c:
 
 rel/main_rel/enemy_ctrl/fn_1_CA2A4.c:
 	.text       start:0x000CA2A4 end:0x000CA440
+
+rel/main_rel/enemy_ctrl/fn_1_CA690.c:
+	.text       start:0x000CA690 end:0x000CA8FC
 
 rel/main_rel/enemy_ctrl/fn_1_CADC4.c:
 	.text       start:0x000CADC4 end:0x000CAEBC
@@ -5245,6 +5254,9 @@ rel/main_rel/spline/fn_1_F8DC4.c:
 rel/main_rel/burner/fn_1_F8E30.c:
 	.text       start:0x000F8E30 end:0x000F9028
 
+rel/main_rel/spline/fn_1_F9028.c:
+	.text       start:0x000F9028 end:0x000F9244
+
 rel/main_rel/spline/fn_1_F946C.c:
 	.text       start:0x000F946C end:0x000F965C
 
@@ -6045,6 +6057,9 @@ rel/main_rel/sel_static_disp/fn_1_13C134.c:
 
 rel/main_rel/sel_static_disp/fn_1_13C16C.c:
 	.text       start:0x0013C16C end:0x0013C1A0
+
+rel/main_rel/sel_static_disp/fn_1_13DA0C.c:
+	.text       start:0x0013DA0C end:0x0013DC54
 
 rel/main_rel/sel_static_disp/fn_1_13DC54.c:
 	.text       start:0x0013DC54 end:0x0013DDB8

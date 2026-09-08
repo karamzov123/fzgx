@@ -181,6 +181,63 @@ void fn_1_CA2A4(void *self) {
 }
 /* fzgx:end fn_1_CA2A4 */
 
+/* fzgx:begin fn_1_CA690 */
+extern u32 fn_1_5910(void *);
+extern u8 fn_1_86810(void *);
+extern u32 fn_1_3F7E0(void);
+extern void fn_1_49410(void);
+extern void fn_1_494DC(u32);
+extern void fn_1_496FC(f32, f32);
+extern const f32 lbl_1_rodata_5D88;
+extern const f32 lbl_1_rodata_5D8C;
+extern void fn_1_4955C(f32, f32);
+extern const f32 lbl_1_rodata_5CD4;
+extern const f32 lbl_1_rodata_5D90;
+extern void fn_1_4966C(f32, f32);
+extern void fn_1_49728(u32);
+extern void fn_1_4AE0C(void *, ...);
+extern f32 lbl_1_rodata_26F8[22];
+extern void fn_1_51E60(void *);
+
+typedef struct {
+    u32 x[22];
+} LocalData;
+
+void fn_1_CA690(void *self, s32 arg1, s32 arg2) {
+    LocalData local;
+    s32 count;
+    s32 max;
+
+    if (((((u32 *)&lbl_1_data_3D544)[fn_1_5910(self)] >> 29) & 1) == 0) {
+        return;
+    }
+    count = (u8)fn_1_86810(self) + 1;
+    fn_1_49410();
+    fn_1_494DC(0xc);
+    fn_1_496FC(arg1, arg2);
+    fn_1_4955C(lbl_1_rodata_5D88, lbl_1_rodata_5D8C);
+    fn_1_4966C(lbl_1_rodata_5CD4, lbl_1_rodata_5D90);
+    fn_1_49728(1);
+    fn_1_4AE0C(&lbl_1_data_3D574, count);
+    max = fn_1_3F7E0();
+    fn_1_49410();
+    fn_1_494DC(0xd);
+    fn_1_496FC(arg1 + 0x5c, arg2 + 0x1a);
+    fn_1_49728(1);
+    fn_1_4AE0C(&lbl_1_data_3D574, max);
+    local = *(LocalData *)lbl_1_rodata_26F8;
+    local.x[0] = 0x9429;
+    ((f32 *)local.x)[1] = arg1 + 0x4e;
+    ((f32 *)local.x)[2] = arg2 + 0x1a;
+    fn_1_51E60(&local.x[0]);
+    local = *(LocalData *)lbl_1_rodata_26F8;
+    local.x[0] = 0x9405;
+    ((f32 *)local.x)[1] = arg1 + 0x4e;
+    ((f32 *)local.x)[2] = arg2 + 0xd;
+    fn_1_51E60(&local.x[0]);
+}
+/* fzgx:end fn_1_CA690 */
+
 /* fzgx:begin fn_1_CB404 */
 // Set the state flag for the selected enemy-control entry.
 void fn_1_CB404(u8 value) {

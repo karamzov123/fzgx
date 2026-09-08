@@ -93,6 +93,51 @@ void fn_3_19D88(Fn319D88Object *object) {
 }
 /* fzgx:end fn_3_19D88 */
 
+/* fzgx:begin fn_3_19DC8 */
+extern u32 fn_3_17820(void *);
+extern void fn_3_1ADA4(void *, int, int, int, int);
+extern void fn_3_1AE40(void *, int, int, int, int);
+
+typedef struct Fn319DC8Object {
+    u8 pad_00[0x04];
+    u32 flags_04;
+    u32 value_08;
+    u8 pad_0c[0x14];
+    void *value_20;
+} Fn319DC8Object;
+
+void fn_3_19DC8(Fn319DC8Object *object) {
+    object->value_08 = fn_3_17820(object);
+    if (object->flags_04 & 0xc0000000u) {
+        fn_3_1ADA4(object->value_20, 0, 0, 64, 64);
+    } else if (object->flags_04 & 0x30000000u) {
+        fn_3_1AE40(object->value_20, 0, 0, 64, 64);
+    }
+}
+/* fzgx:end fn_3_19DC8 */
+
+/* fzgx:begin fn_3_19E40 */
+typedef struct CustomizeData {
+    u32 unk_00[2];
+    u32 unk_08;
+    u8 pad_0c[0x14];
+    void *unk_20;
+} CustomizeData;
+
+extern u32 fn_3_17820(CustomizeData *);
+extern void fn_3_1AEE4(void *, u32, u32, u32, u32);
+extern void fn_3_1B008(void *, u32, u32, u32, u32);
+
+void fn_3_19E40(CustomizeData *self) {
+    self->unk_08 = fn_3_17820(self);
+    if (self->unk_00[1] & 0x20000000) {
+        fn_3_1AEE4(self->unk_20, 0, 0, 0x40, 0x40);
+    } else if (self->unk_00[1] & 0x10000000) {
+        fn_3_1B008(self->unk_20, 0, 0, 0x40, 0x40);
+    }
+}
+/* fzgx:end fn_3_19E40 */
+
 /* fzgx:begin fn_3_19EB8 */
 typedef struct fn_3_19EB8_CustomizeData {
     u32 unk_00[2];

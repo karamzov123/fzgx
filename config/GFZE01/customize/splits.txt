@@ -30,6 +30,9 @@ rel/customize/_prolog/fn_3_14C4.c:
 rel/customize/_prolog/fn_3_33A0.c:
 	.text       start:0x000033A0 end:0x00003438
 
+rel/customize/_prolog/fn_3_41B0.c:
+	.text       start:0x000041B0 end:0x00004218
+
 rel/customize/_prolog/fn_3_4218.c:
 	.text       start:0x00004218 end:0x00004380
 
@@ -95,6 +98,9 @@ rel/customize/customize/fn_3_C188.c:
 
 rel/customize/customize/fn_3_C234.c:
 	.text       start:0x0000C234 end:0x0000C28C
+
+rel/customize/customize/fn_3_C28C.c:
+	.text       start:0x0000C28C end:0x0000C328
 
 rel/customize/emb_memcard/fn_3_C328.c:
 	.text       start:0x0000C328 end:0x0000C3B4
@@ -236,6 +242,12 @@ rel/customize/toolkit/fn_3_19D50.c:
 
 rel/customize/toolkit/fn_3_19D88.c:
 	.text       start:0x00019D88 end:0x00019DC8
+
+rel/customize/toolkit/fn_3_19DC8.c:
+	.text       start:0x00019DC8 end:0x00019E40
+
+rel/customize/toolkit/fn_3_19E40.c:
+	.text       start:0x00019E40 end:0x00019EB8
 
 rel/customize/toolkit/fn_3_19EB8.c:
 	.text       start:0x00019EB8 end:0x00019EFC
