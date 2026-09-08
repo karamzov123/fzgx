@@ -303,6 +303,10 @@ config.libs = [
             Object(NonMatching, "Runtime.PPCEABI.H/__init_cpp_exceptions.cpp"),
         ],
     },
+    # fze.sample.rel: the line__.bin loader stub.
+    Rel("sample", [
+        Object(Matching, "rel/sample/keygen.c"),
+    ]),
 ]
 
 

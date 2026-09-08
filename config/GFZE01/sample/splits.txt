@@ -3,3 +3,6 @@ Sections:
 	.ctors      type:rodata align:4
 	.dtors      type:rodata align:4
 	.rodata     type:rodata align:8
+
+rel/sample/keygen.c:
+	.text       start:0x000003FC end:0x0000040C
