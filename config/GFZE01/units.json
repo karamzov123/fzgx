@@ -2625,7 +2625,7 @@
     "symbols": [
       "fn_1_47A60"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
