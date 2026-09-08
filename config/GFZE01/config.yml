@@ -21,565 +21,65 @@ skip_cfa_ranges:
 # Every REL shipped on the disc plus main.rel, which prepare_orig.py derives
 # from files/enemy_line/line__.bin (decrypt + LZ-decompress). Module ids are
 # globally unique (1..18), so every module links against every other.
-force_active:
-- Hu_IsStub
-- AMC_IsStub
-- fn_8008F458
-- fn_8008F454
-- fn_8008F450
-- fn_8008F44C
-- fn_8008E76C
-- gdev_cc_shutdown
-- gdev_cc_close
-- ddh_cc_shutdown
-- ddh_cc_close
-- udp_cc_initialize
-- udp_cc_shutdown
-- udp_cc_open
-- udp_cc_close
-- udp_cc_read
-- udp_cc_write
-- udp_cc_peek
-- udp_cc_pre_continue
-- udp_cc_post_stop
-- TRKUARTInterruptHandler
-- fn_8008AF50
-- fn_8008AF48
-- fn_8008AF40
-- fn_8008A5B4
-- fn_8008A5AC
-- TRKInitializeDispatcher
-- usr_put_initialize
-- fn_80089380
-- fn_8008580C
-- __kill_critical_regions
-- __begin_critical_region
-- __end_critical_region
-- fn_800724C8
-- fn_80071D2C
-- fn_8005A680
-- fn_8005A678
-- fn_800555C0
-- fn_80053A30
-- fn_80050F6C
-- fn_80050F64
-- fn_8004ED80
-- fn_8004BBC8
-- fn_8004BBC4
-- fn_8004B79C
-- fn_8004216C
-- fn_80038878
-- fn_8002EDA0
-- fn_80029824
-- fn_80025EE0
-- fn_800230A0
-- fn_8002244C
-- fn_80021910
-- fn_80020460
-- fn_80017768
-- fn_800133DC
-- fn_80010140
-- fn_8000DD64
-- fn_8000DD60
-- fn_80008E30
 modules:
 - object: files/enemy_line/main.rel
   hash: df989873851d161218ae283f71ed89ce0a979955
   name: main_rel
-  force_active:
-  - fn_1_A0D20
-  - fn_1_101348
-  - fn_1_4AF10
-  - fn_1_C2454
-  - fn_1_4E0A4
-  - fn_1_103F10
-  - fn_1_AC704
-  - fn_1_E34
-  - fn_1_9AD88
-  - fn_1_6394
-  - fn_1_F7870
-  - fn_1_12B3BC
-  - fn_1_8F45C
-  - fn_1_14C968
-  - fn_1_956B8
-  - fn_1_13C16C
-  - fn_1_402A4
-  - fn_1_EFA1C
-  - fn_1_3F864
-  - fn_1_9CC40
-  - fn_1_F8BD4
-  - fn_1_128C
-  - fn_1_F9DE8
-  - fn_1_51564
-  - fn_1_14DEA4
-  - fn_1_42458
-  - fn_1_875EC
-  - fn_1_F89E4
-  - fn_1_D3884
-  - fn_1_61CC8
-  - fn_1_156510
-  - fn_1_F1D70
-  - fn_1_154FA8
-  - fn_1_8C90C
-  - fn_1_B85C
-  - fn_1_13F8B0
-  - fn_1_49514
-  - fn_1_12850
-  - fn_1_8C994
-  - fn_1_4B8BC
-  - fn_1_15B418
-  - fn_1_15656C
-  - fn_1_8AF0
-  - fn_1_69BBC
-  - fn_1_12A2C4
-  - fn_1_C6F80
-  - fn_1_E5768
-  - fn_1_E5724
-  - fn_1_15B540
-  - fn_1_15B51C
-  - fn_1_15B4F8
-  - fn_1_15B428
-  - fn_1_159064
-  - fn_1_159060
-  - fn_1_15903C
-  - fn_1_158980
-  - fn_1_151764
-  - fn_1_14F014
-  - fn_1_10144C
-  - fn_1_FE7D4
-  - fn_1_FE640
-  - fn_1_FC410
-  - fn_1_FC40C
-  - fn_1_FA898
-  - fn_1_FA82C
-  - fn_1_F70C8
-  - fn_1_F70C0
-  - fn_1_F5B84
-  - fn_1_F5B38
-  - fn_1_F5AEC
-  - fn_1_F5AAC
-  - fn_1_F0164
-  - fn_1_EFA88
-  - fn_1_EFA4C
-  - fn_1_EFA18
-  - fn_1_EF978
-  - fn_1_EF920
-  - fn_1_EF85C
-  - fn_1_EF764
-  - fn_1_EF5DC
-  - fn_1_EF4F4
-  - fn_1_EF484
-  - fn_1_EF0A4
-  - fn_1_EF0A0
-  - fn_1_ECE00
-  - fn_1_ECDFC
-  - fn_1_DC3A0
-  - fn_1_DC264
-  - fn_1_DC204
-  - fn_1_DC1B8
-  - fn_1_DAF90
-  - fn_1_DAEF8
-  - fn_1_DAD68
-  - fn_1_DAAF8
-  - fn_1_D76EC
-  - fn_1_D6740
-  - fn_1_D66F4
-  - fn_1_D66B8
-  - fn_1_D66B0
-  - fn_1_D66A8
-  - fn_1_D66A0
-  - fn_1_D6698
-  - fn_1_D6690
-  - fn_1_D6688
-  - fn_1_D6680
-  - fn_1_D5C68
-  - fn_1_D3E8C
-  - fn_1_D3C00
-  - fn_1_CC27C
-  - fn_1_C17CC
-  - fn_1_AD164
-  - fn_1_AD09C
-  - fn_1_AD098
-  - fn_1_ACF2C
-  - fn_1_ACE7C
-  - fn_1_ACD00
-  - fn_1_AC928
-  - fn_1_AC904
-  - fn_1_AC700
-  - fn_1_AC6DC
-  - fn_1_AC6C8
-  - fn_1_AC6A4
-  - fn_1_AB458
-  - fn_1_AB434
-  - fn_1_AAF18
-  - fn_1_A728C
-  - fn_1_A5590
-  - fn_1_A1360
-  - fn_1_9FF54
-  - fn_1_9FF50
-  - fn_1_9A0A4
-  - fn_1_988D8
-  - fn_1_8623C
-  - fn_1_76DBC
-  - fn_1_680F4
-  - fn_1_6767C
-  - fn_1_6742C
-  - fn_1_662D4
-  - fn_1_65E88
-  - fn_1_65B58
-  - fn_1_65AAC
-  - fn_1_65420
-  - fn_1_648D8
-  - fn_1_648D4
-  - fn_1_645D0
-  - fn_1_645CC
-  - fn_1_645C8
-  - fn_1_63514
-  - fn_1_633BC
-  - fn_1_6312C
-  - fn_1_620C4
-  - fn_1_61C84
-  - fn_1_60F80
-  - fn_1_60F7C
-  - fn_1_60C84
-  - fn_1_60C70
-  - fn_1_5FFAC
-  - fn_1_5FE2C
-  - fn_1_5FE28
-  - fn_1_5FE24
-  - fn_1_5F5C4
-  - fn_1_5D918
-  - fn_1_5D4FC
-  - fn_1_5D374
-  - fn_1_5D010
-  - fn_1_5C780
-  - fn_1_5BF6C
-  - fn_1_5B6F0
-  - fn_1_5B3CC
-  - fn_1_5B074
-  - fn_1_5ABC8
-  - fn_1_5ABC4
-  - fn_1_5A8CC
-  - fn_1_59CC4
-  - fn_1_59A70
-  - fn_1_59510
-  - fn_1_5950C
-  - fn_1_59508
-  - fn_1_59504
-  - fn_1_59500
-  - fn_1_594FC
-  - fn_1_594F8
-  - fn_1_594F4
-  - fn_1_594F0
-  - fn_1_594EC
-  - fn_1_56724
-  - fn_1_565F4
-  - fn_1_4BD48
-  - fn_1_4877C
-  - fn_1_3E66C
-  - fn_1_3E628
-  - fn_1_35174
-  - fn_1_4370
-  - fn_1_958
-  - fn_1_954
-  - fn_1_950
-  - fn_1_1586A8
-  - fn_1_156598
-  - fn_1_156594
-  - fn_1_156590
-  - fn_1_15658C
-  - fn_1_156588
-  - fn_1_156584
-  - fn_1_156580
-  - fn_1_15657C
-  - fn_1_156568
-  - fn_1_156564
-  - fn_1_156560
-  - fn_1_15655C
-  - fn_1_156558
-  - fn_1_156554
-  - fn_1_156530
-  - fn_1_153AF4
-  - fn_1_153AAC
-  - fn_1_153988
-  - fn_1_150650
-  - fn_1_150570
-  - fn_1_14CA48
-  - fn_1_14CA44
-  - fn_1_14CA40
-  - fn_1_14CA3C
-  - fn_1_14C964
-  - fn_1_14C7F4
-  - fn_1_14BC3C
-  - fn_1_14B8F8
-  - fn_1_14B4FC
-  - fn_1_14B1B8
-  - fn_1_14A9CC
-  - fn_1_14A280
-  - fn_1_14A27C
-  - fn_1_14A278
-  - fn_1_14A008
-  - fn_1_14A004
-  - fn_1_14A000
-  - fn_1_131000
-  - fn_1_1300
-  - fn_1_12FC
-  - fn_1_12F308
-  - fn_1_105768
-  - fn_1_103054
-  - fn_1_10302C
-  - fn_1_101424
-  - fn_1_101400
-  - fn_1_1013C0
-  - fn_1_FE780
-  - fn_1_FE5E0
-  - fn_1_D960
-  - fn_1_D3F88
-  - fn_1_D35B0
-  - fn_1_B2770
-  - fn_1_AB5CC
-  - fn_1_A96EC
-  - fn_1_9818C
-  - fn_1_8CA20
-  - fn_1_86194
-  - fn_1_7899C
-  - fn_1_68B68
-  - fn_1_46EA8
-  - fn_1_411A4
-  - fn_1_3EF8C
-  - fn_1_150574
-  - fn_1_149BF4
-  - fn_1_137548
-  - fn_1_1310FC
-  - fn_1_12F128
-  - fn_1_105744
-  - fn_1_1024C4
-  - fn_1_101448
   symbols: config/GFZE01/main_rel/symbols.txt
   splits: config/GFZE01/main_rel/splits.txt
 - object: files/fze.sample.rel
   hash: 7679d58798cbd0e47563a6a307410623979efc97
   name: sample
-  force_active:
-  - fn_18_3FC
-  - fn_18_40C
   symbols: config/GFZE01/sample/symbols.txt
   splits: config/GFZE01/sample/splits.txt
 - object: files/fze.movie_module.rel
   hash: a53cb77efd099d4ef69298fcc26803276761eb15
   name: movie_module
-  force_active:
-  - fn_12_3DCEC
-  - fn_12_3DBDC
-  - fn_12_3D73C
-  - fn_12_3D738
-  - fn_12_3D734
-  - fn_12_3D730
-  - fn_12_35DB4
-  - fn_12_35014
-  - fn_12_35010
-  - fn_12_3500C
-  - fn_12_35004
-  - fn_12_34FFC
-  - fn_12_341C0
-  - fn_12_341BC
-  - fn_12_2FD94
-  - fn_12_2FD8C
-  - fn_12_2FC90
-  - fn_12_2FC88
-  - fn_12_2FC80
-  - fn_12_2FC78
-  - fn_12_2FC70
-  - fn_12_2FC68
-  - fn_12_2FB54
-  - fn_12_2FA88
-  - fn_12_2FA80
-  - fn_12_2F968
-  - fn_12_2F960
-  - fn_12_2F958
-  - fn_12_2F950
-  - fn_12_2F948
-  - fn_12_2F8A0
-  - fn_12_2F19C
-  - fn_12_26C24
-  - fn_12_26C1C
-  - fn_12_26C04
-  - fn_12_25740
-  - fn_12_25074
-  - fn_12_2506C
-  - fn_12_25064
-  - fn_12_2505C
-  - fn_12_24E8C
-  - fn_12_24E84
-  - fn_12_24E50
-  - fn_12_24E48
-  - fn_12_24E40
-  - fn_12_24E38
-  - fn_12_24E30
-  - fn_12_24E28
-  - fn_12_24D78
-  - fn_12_22FB8
-  - fn_12_22FB4
-  - fn_12_219E0
-  - fn_12_219D8
-  - fn_12_218D0
-  - fn_12_2166C
-  - fn_12_204D4
-  - fn_12_20188
-  - fn_12_20184
-  - fn_12_2017C
-  - fn_12_20178
-  - fn_12_20170
-  - fn_12_20168
-  - fn_12_1258C
-  - fn_12_CBC4
-  - fn_12_A9C0
-  - fn_12_6A8C
-  - fn_12_6A88
-  - fn_12_6708
-  - fn_12_6704
-  - fn_12_4934
-  - fn_12_35EC
-  - fn_12_3074
-  - _epilog
   symbols: config/GFZE01/movie_module/symbols.txt
   splits: config/GFZE01/movie_module/splits.txt
 - object: files/fze.customize.rel
   hash: 9b2fc71d705edeaf8b286be6f8464549feaa7d3f
   name: customize
-  force_active:
-  - fn_3_2B774
-  - fn_3_146BC
-  - fn_3_13078
-  - fn_3_13074
-  - fn_3_13070
-  - fn_3_1306C
-  - fn_3_13068
-  - fn_3_13064
-  - fn_3_13060
-  - fn_3_1305C
-  - fn_3_13058
-  - fn_3_13054
-  - fn_3_13050
-  - fn_3_1304C
-  - fn_3_786C
-  - fn_3_7868
-  - fn_3_7864
   symbols: config/GFZE01/customize/symbols.txt
   splits: config/GFZE01/customize/splits.txt
 - object: files/fze.sel.rel
   hash: d84a92c050ba24d53bcd734de026f8c91ba403bf
   name: sel
-  force_active:
-  - fn_10_1B660
-  - fn_10_1B65C
-  - fn_10_1B658
-  - fn_10_CA90
-  - fn_10_C9F4
-  - fn_10_C954
-  - fn_10_BEF4
-  - fn_10_BEF0
   symbols: config/GFZE01/sel/symbols.txt
   splits: config/GFZE01/sel/splits.txt
 - object: files/fze.title.rel
   hash: 9274da1ae0da40824980d09a04bb11c40d1fc8e9
   name: title
-  force_active:
-  - fn_8_D020
-  - fn_8_CF68
-  - fn_8_CF60
-  - fn_8_CF58
-  - fn_8_9B40
-  - fn_8_8C44
-  - fn_8_6568
-  - fn_8_6560
-  - fn_8_6558
-  - fn_8_5C50
-  - fn_8_5C4C
-  - fn_8_5214
-  - fn_8_5210
-  - fn_8_520C
-  - fn_8_4E8C
-  - fn_8_2120
-  - fn_8_1C14
-  - fn_8_1C10
-  - fn_8_1C0C
-  - fn_8_1C08
-  - fn_8_BE0
-  - fn_8_BDC
-  - fn_8_BD8
-  - fn_8_6FC
   symbols: config/GFZE01/title/symbols.txt
   splits: config/GFZE01/title/splits.txt
 - object: files/fze.pilotpoint.rel
   hash: b40fd82167a132e4039b7a468a710ee01ed503a3
   name: pilotpoint
-  force_active:
-  - fn_14_DC28
-  - fn_14_C698
-  - fn_14_C4F4
-  - fn_14_B480
-  - fn_14_258C
-  - fn_14_900
   symbols: config/GFZE01/pilotpoint/symbols.txt
   splits: config/GFZE01/pilotpoint/splits.txt
 - object: files/fze.option.rel
   hash: 1860a90cf7a4019a0ac698363357d20b5c41f71f
   name: option
-  force_active:
-  - fn_4_ADF0
-  - fn_4_ADAC
   symbols: config/GFZE01/option/symbols.txt
   splits: config/GFZE01/option/splits.txt
 - object: files/fze.interview.rel
   hash: 8d2e8374d08bfe66bc47d7535037465619abe236
   name: interview
-  force_active:
-  - fn_17_72BC
-  - fn_17_4E50
-  - fn_17_49B8
-  - fn_17_1794
   symbols: config/GFZE01/interview/symbols.txt
   splits: config/GFZE01/interview/splits.txt
 - object: files/fze.profile.rel
   hash: 3477c1c3a491545aaeb38647746c6eef9bac3f1e
   name: profile
-  force_active:
-  - fn_16_A34
   symbols: config/GFZE01/profile/symbols.txt
   splits: config/GFZE01/profile/splits.txt
 - object: files/fze.story.rel
   hash: 104f6716b5cd553000700413cff00cc3fa591baa
   name: story
-  force_active:
-  - fn_7_2324
-  - fn_7_2110
-  - fn_7_20FC
-  - fn_7_20F8
-  - fn_7_20F4
-  - fn_7_20E0
-  - fn_7_20DC
-  - fn_7_1DB8
-  - fn_7_1DB4
-  - fn_7_170C
-  - fn_7_15B8
-  - fn_7_1540
-  - fn_7_153C
-  - fn_7_1538
-  - fn_7_13FC
-  - fn_7_FB0
-  - fn_7_51C
   symbols: config/GFZE01/story/symbols.txt
   splits: config/GFZE01/story/splits.txt
 - object: files/fze.winning.rel
   hash: 4a6a459cdf9352cad49848fef51e07af99721eaf
   name: winning
-  force_active:
-  - fn_15_545C
-  - fn_15_405C
-  - fn_15_3AFC
-  - fn_15_2CEC
-  - fn_15_B8C
   symbols: config/GFZE01/winning/symbols.txt
   splits: config/GFZE01/winning/splits.txt
 - object: files/fze.movie.rel
@@ -595,12 +95,5 @@ modules:
 - object: files/fze.replay.rel
   hash: bb27fa5ce6eec4982fdb83f95e8bd3f493b1a46d
   name: replay
-  force_active:
-  - fn_13_FA8
-  - fn_13_B78
-  - _epilog
-  - fn_13_B00
-  - fn_13_AFC
-  - fn_13_A40
   symbols: config/GFZE01/replay/symbols.txt
   splits: config/GFZE01/replay/splits.txt

@@ -255,6 +255,11 @@ cflags_rel = [
 config.linker_version = "GC/1.3.2"
 # Object name used to link RELs that have no configured units yet.
 config.rel_empty_file = "rel/empty.c"
+# Retail RELs keep unreferenced functions (e.g. main.rel fn_1_8CA20 has no
+# callers yet is present), so the original link did not dead-strip. Linking
+# without -strip_partial mirrors that and means carved units never need a
+# FORCEACTIVE entry.
+config.rel_strip_partial = False
 
 
 # Helper function for Dolphin libraries
