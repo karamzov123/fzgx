@@ -1,5 +1,5 @@
 {
- "generated": 1788845393,
+ "generated": 1788845706,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -49081,7 +49081,7 @@
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
-   "matched_commit": "0545950",
+   "matched_commit": "c263bf6",
    "blocked_issue": null,
    "blocked_reason": null,
    "prev_status": null,
@@ -92614,7 +92614,7 @@
   {
    "symbol": "fn_1_103AA8",
    "module": "main_rel",
-   "unit": "rel/main_rel/cloth/fn_1_103AA8.c",
+   "unit": "rel/main_rel/bg_common/fn_1_103AA8.c",
    "addr": 1063592,
    "size": 44,
    "status": "matched",
@@ -92686,7 +92686,7 @@
   {
    "symbol": "fn_1_103F10",
    "module": "main_rel",
-   "unit": "rel/main_rel/cloth/fn_1_103F10.c",
+   "unit": "rel/main_rel/bg_common/fn_1_103F10.c",
    "addr": 1064720,
    "size": 72,
    "status": "unmatched",
@@ -92740,7 +92740,7 @@
   {
    "symbol": "fn_1_104710",
    "module": "main_rel",
-   "unit": "rel/main_rel/cloth/fn_1_104710.c",
+   "unit": "rel/main_rel/bg_common/fn_1_104710.c",
    "addr": 1066768,
    "size": 32,
    "status": "matched",
@@ -92812,7 +92812,7 @@
   {
    "symbol": "fn_1_105724",
    "module": "main_rel",
-   "unit": "rel/main_rel/cloth/fn_1_105724.c",
+   "unit": "rel/main_rel/bg_common/fn_1_105724.c",
    "addr": 1070884,
    "size": 32,
    "status": "matched",
@@ -92830,7 +92830,7 @@
   {
    "symbol": "fn_1_105744",
    "module": "main_rel",
-   "unit": "rel/main_rel/cloth/fn_1_105744.c",
+   "unit": "rel/main_rel/bg_common/fn_1_105744.c",
    "addr": 1070916,
    "size": 36,
    "status": "matched",
@@ -92848,7 +92848,7 @@
   {
    "symbol": "fn_1_105768",
    "module": "main_rel",
-   "unit": "rel/main_rel/cloth/fn_1_105768.c",
+   "unit": "rel/main_rel/bg_common/fn_1_105768.c",
    "addr": 1070952,
    "size": 4,
    "status": "matched",
@@ -92956,7 +92956,7 @@
   {
    "symbol": "fn_1_1067A8",
    "module": "main_rel",
-   "unit": "rel/main_rel/cloth/fn_1_1067A8.c",
+   "unit": "rel/main_rel/bg_common/fn_1_1067A8.c",
    "addr": 1075112,
    "size": 228,
    "status": "matched",
@@ -93028,7 +93028,7 @@
   {
    "symbol": "fn_1_106D30",
    "module": "main_rel",
-   "unit": "rel/main_rel/cloth/fn_1_106D30.c",
+   "unit": "rel/main_rel/bg_common/fn_1_106D30.c",
    "addr": 1076528,
    "size": 132,
    "status": "unmatched",
@@ -93064,7 +93064,7 @@
   {
    "symbol": "fn_1_106EA4",
    "module": "main_rel",
-   "unit": "rel/main_rel/cloth/fn_1_106EA4.c",
+   "unit": "rel/main_rel/bg_common/fn_1_106EA4.c",
    "addr": 1076900,
    "size": 12,
    "status": "unmatched",
@@ -93100,7 +93100,7 @@
   {
    "symbol": "fn_1_1071C0",
    "module": "main_rel",
-   "unit": "rel/main_rel/cloth/fn_1_1071C0.c",
+   "unit": "rel/main_rel/bg_common/fn_1_1071C0.c",
    "addr": 1077696,
    "size": 40,
    "status": "matched",
@@ -93226,7 +93226,7 @@
   {
    "symbol": "fn_1_107E90",
    "module": "main_rel",
-   "unit": "rel/main_rel/cloth/fn_1_107E90.c",
+   "unit": "rel/main_rel/bg_common/fn_1_107E90.c",
    "addr": 1080976,
    "size": 156,
    "status": "matched",
@@ -93244,7 +93244,7 @@
   {
    "symbol": "fn_1_107F2C",
    "module": "main_rel",
-   "unit": "rel/main_rel/cloth/fn_1_107F2C.c",
+   "unit": "rel/main_rel/bg_common/fn_1_107F2C.c",
    "addr": 1081132,
    "size": 36,
    "status": "unmatched",
@@ -93262,7 +93262,7 @@
   {
    "symbol": "fn_1_107F50",
    "module": "main_rel",
-   "unit": "rel/main_rel/cloth/fn_1_107F50.c",
+   "unit": "rel/main_rel/bg_common/fn_1_107F50.c",
    "addr": 1081168,
    "size": 36,
    "status": "unmatched",
@@ -154191,6 +154191,25 @@
    "cost_usd": 0.003525,
    "outcome": "shadow-matched",
    "notes": "revised: Rewrote the function with descriptive formatting and a concise behavior comment; verified a 100% match.",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 100.0
+  },
+  {
+   "id": 1193,
+   "symbol": "fn_1_725C",
+   "agent": "revise-camera-r2b-codex-1",
+   "harness": "codex",
+   "model": "gpt-5.6-luna",
+   "started": 1788845675,
+   "ended": 1788845685,
+   "checks": 1,
+   "final_percent": 100.0,
+   "tokens_in": 61695,
+   "tokens_out": 483,
+   "cost_usd": 0.003564,
+   "outcome": "shadow-matched",
+   "notes": "revised: Replaced the private camera-entry struct with the shared typed camera layout and retained the exact matching codegen.",
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 100.0
