@@ -52,6 +52,17 @@ extern char lbl_9_data_1A4[18];
 extern u32 lbl_9_bss_4;
 void fn_1_80058(s8, struct CarColchgEntry *);
 void fn_1_80C18(u32, struct CarColchgEntry *, s32);
+void fn_1_426C(s16);
+s32 fn_1_4C10(void);
+void fn_1_A8EB0(s32, s32);
+s32 fn_1_7F49C(s16, s32, void *);
+void fn_1_A8DD4(const char *, ...);
+void fn_1_80058(s8, struct CarColchgEntry *);
+void fn_1_80C18(u32, struct CarColchgEntry *, s32);
+extern struct CarColchgEntry lbl_9_data_1B8[];
+extern s16 lbl_1_bss_962;
+extern u32 lbl_1_bss_71688;
+extern u32 lbl_1_bss_7168C;
 
 extern u32 lbl_9_bss_10;
 extern char lbl_9_data_2C[17];
@@ -63,7 +74,7 @@ u16 fn_1_3F8C(char *, void (*)(void), s32, s32);
 void fn_1_4A00(s32, s32, u32);
 
 void fn_9_3F0(void) {
-    // Register the collision-color callback and finish initializing the module.
+    // Register the callback, then apply the initial collision-color state.
     fn_1_435C(lbl_9_bss_10);
     lbl_9_bss_DC = fn_1_3F8C(lbl_9_data_2C, fn_9_1160, 0, 8);
     fn_1_4A00(1, 15, lbl_9_bss_10);
@@ -71,6 +82,19 @@ void fn_9_3F0(void) {
 /* fzgx:end fn_9_3F0 */
 
 /* fzgx:begin fn_9_534 */
+extern u32 lbl_9_bss_10;
+extern s16 lbl_9_bss_DC;
+void fn_1_435C(u32);
+void fn_1_426C(s16);
+
+// Initialize the car color-change state and apply the current selection.
+void fn_9_534(void) {
+    fn_1_435C(lbl_9_bss_10);
+    fn_1_426C(lbl_9_bss_DC);
+}
+/* fzgx:end fn_9_534 */
+
+/* fzgx:begin fn_9_6F0 */
 extern char lbl_9_data_2C[17];
 extern void fn_9_1160(void);
 void fn_1_426C(s16);
@@ -91,20 +115,18 @@ extern char lbl_9_data_1A4[18];
 extern u32 lbl_9_bss_4;
 void fn_1_80058(s8, struct CarColchgEntry *);
 void fn_1_80C18(u32, struct CarColchgEntry *, s32);
+void fn_1_426C(s16);
+s32 fn_1_4C10(void);
+void fn_1_A8EB0(s32, s32);
+s32 fn_1_7F49C(s16, s32, void *);
+void fn_1_A8DD4(const char *, ...);
+void fn_1_80058(s8, struct CarColchgEntry *);
+void fn_1_80C18(u32, struct CarColchgEntry *, s32);
+extern struct CarColchgEntry lbl_9_data_1B8[];
+extern s16 lbl_1_bss_962;
+extern u32 lbl_1_bss_71688;
+extern u32 lbl_1_bss_7168C;
 
-extern u32 lbl_9_bss_10;
-extern s16 lbl_9_bss_DC;
-
-void fn_1_435C(u32);
-
-void fn_9_534(void) {
-    // Initialize the car color-change state and apply the current selection.
-    fn_1_435C(lbl_9_bss_10);
-    fn_1_426C(lbl_9_bss_DC);
-}
-/* fzgx:end fn_9_534 */
-
-/* fzgx:begin fn_9_6F0 */
 extern char lbl_9_data_2C[17];
 extern void fn_9_1160(void);
 void fn_1_426C(s16);
@@ -140,27 +162,6 @@ void fn_9_6F0(void) {
 /* fzgx:end fn_9_6F0 */
 
 /* fzgx:begin fn_9_DC0 */
-extern char lbl_9_data_2C[17];
-extern void fn_9_1160(void);
-void fn_1_426C(s16);
-extern char lbl_9_data_9C[18];
-extern void fn_9_1A20(void);
-extern char lbl_9_data_B0[17];
-extern void fn_9_1A8C(void);
-extern u16 lbl_1_bss_968;
-extern struct Struct_lbl_1_bss_D58 lbl_1_bss_D58;
-s32 fn_1_4C10(void);
-extern u32 lbl_9_bss_8;
-extern char lbl_9_data_18C[16];
-void fn_1_A8EB0(s32, s32);
-s32 fn_1_7F49C(s16, s32, void *);
-void fn_1_A8DD4(const char *, ...);
-extern char lbl_9_data_19C[7];
-extern char lbl_9_data_1A4[18];
-extern u32 lbl_9_bss_4;
-void fn_1_80058(s8, struct CarColchgEntry *);
-void fn_1_80C18(u32, struct CarColchgEntry *, s32);
-
 extern u32 lbl_9_bss_10;
 extern s16 lbl_9_bss_DC;
 
@@ -195,35 +196,18 @@ extern char lbl_9_data_1A4[18];
 extern u32 lbl_9_bss_4;
 void fn_1_80058(s8, struct CarColchgEntry *);
 void fn_1_80C18(u32, struct CarColchgEntry *, s32);
-
-extern u32 lbl_9_bss_10;
-extern u16 lbl_9_bss_DC;
-
-void fn_1_435C(u32);
-u16 fn_1_3F8C(char *, void (*)(void), int, int);
-
-// Initialize the collision-color table and store the resulting handle.
-void fn_9_DFC(void) {
-    fn_1_435C(lbl_9_bss_10);
-    lbl_9_bss_DC = fn_1_3F8C(lbl_9_data_9C, fn_9_1A20, 0, 8);
-}
-/* fzgx:end fn_9_DFC */
-
-/* fzgx:begin fn_9_F38 */
-extern u32 lbl_9_bss_10;
-extern s16 lbl_9_bss_DC;
-
-void fn_1_435C(u32);
 void fn_1_426C(s16);
+s32 fn_1_4C10(void);
+void fn_1_A8EB0(s32, s32);
+s32 fn_1_7F49C(s16, s32, void *);
+void fn_1_A8DD4(const char *, ...);
+void fn_1_80058(s8, struct CarColchgEntry *);
+void fn_1_80C18(u32, struct CarColchgEntry *, s32);
+extern struct CarColchgEntry lbl_9_data_1B8[];
+extern s16 lbl_1_bss_962;
+extern u32 lbl_1_bss_71688;
+extern u32 lbl_1_bss_7168C;
 
-// Initializes the color-change subsystem state.
-void fn_9_F38(void) {
-    fn_1_435C(lbl_9_bss_10);
-    fn_1_426C(lbl_9_bss_DC);
-}
-/* fzgx:end fn_9_F38 */
-
-/* fzgx:begin fn_9_F74 */
 extern char lbl_9_data_2C[17];
 extern void fn_9_1160(void);
 void fn_1_426C(s16);
@@ -245,6 +229,37 @@ extern u32 lbl_9_bss_4;
 void fn_1_80058(s8, struct CarColchgEntry *);
 void fn_1_80C18(u32, struct CarColchgEntry *, s32);
 
+extern u32 lbl_9_bss_10;
+extern u16 lbl_9_bss_DC;
+
+void fn_1_435C(u32);
+u16 fn_1_3F8C(char *, void (*)(void), int, int);
+
+// Initialize the collision-color table and retain its generated handle.
+void fn_9_DFC(void) {
+    fn_1_435C(lbl_9_bss_10);
+    lbl_9_bss_DC = fn_1_3F8C(lbl_9_data_9C, fn_9_1A20, 0, 8);
+}
+/* fzgx:end fn_9_DFC */
+
+/* fzgx:begin fn_9_F38 */
+extern u32 lbl_9_bss_10;
+extern s16 lbl_9_bss_DC;
+
+void fn_1_435C(u32);
+void fn_1_426C(s16);
+
+// Initialize the color-change subsystem and apply its current configuration.
+void fn_9_F38(void) {
+    fn_1_435C(lbl_9_bss_10);
+    fn_1_426C(lbl_9_bss_DC);
+}
+/* fzgx:end fn_9_F38 */
+
+/* fzgx:begin fn_9_F74 */
+extern char lbl_9_data_B0[17];
+extern void fn_9_1A8C(void);
+extern u16 lbl_1_bss_968;
 extern u32 lbl_9_bss_10;
 extern u16 lbl_9_bss_DC;
 
@@ -275,31 +290,10 @@ void fn_9_FD0(void) {
 /* fzgx:end fn_9_FD0 */
 
 /* fzgx:begin fn_9_1018 */
-extern char lbl_9_data_2C[17];
-extern void fn_9_1160(void);
-void fn_1_426C(s16);
-extern char lbl_9_data_9C[18];
-extern void fn_9_1A20(void);
-extern char lbl_9_data_B0[17];
-extern void fn_9_1A8C(void);
-extern u16 lbl_1_bss_968;
-extern struct Struct_lbl_1_bss_D58 lbl_1_bss_D58;
-s32 fn_1_4C10(void);
-extern u32 lbl_9_bss_8;
-extern char lbl_9_data_18C[16];
-void fn_1_A8EB0(s32, s32);
-s32 fn_1_7F49C(s16, s32, void *);
-void fn_1_A8DD4(const char *, ...);
-extern char lbl_9_data_19C[7];
-extern char lbl_9_data_1A4[18];
-extern u32 lbl_9_bss_4;
-void fn_1_80058(s8, struct CarColchgEntry *);
-void fn_1_80C18(u32, struct CarColchgEntry *, s32);
-
 extern u32 lbl_9_bss_10;
 extern s16 lbl_9_bss_DC;
-
 void fn_1_435C(u32);
+void fn_1_426C(s16);
 
 // Initializes the color-change subsystem from its configured state.
 void fn_9_1018(void) {
@@ -331,6 +325,38 @@ void fn_9_1054(void) {
 /* fzgx:end fn_9_1054 */
 
 /* fzgx:begin fn_9_1124 */
+extern char lbl_9_data_2C[17];
+extern void fn_9_1160(void);
+void fn_1_426C(s16);
+extern char lbl_9_data_9C[18];
+extern void fn_9_1A20(void);
+extern char lbl_9_data_B0[17];
+extern void fn_9_1A8C(void);
+extern u16 lbl_1_bss_968;
+extern struct Struct_lbl_1_bss_D58 lbl_1_bss_D58;
+s32 fn_1_4C10(void);
+extern u32 lbl_9_bss_8;
+extern char lbl_9_data_18C[16];
+void fn_1_A8EB0(s32, s32);
+s32 fn_1_7F49C(s16, s32, void *);
+void fn_1_A8DD4(const char *, ...);
+extern char lbl_9_data_19C[7];
+extern char lbl_9_data_1A4[18];
+extern u32 lbl_9_bss_4;
+void fn_1_80058(s8, struct CarColchgEntry *);
+void fn_1_80C18(u32, struct CarColchgEntry *, s32);
+void fn_1_426C(s16);
+s32 fn_1_4C10(void);
+void fn_1_A8EB0(s32, s32);
+s32 fn_1_7F49C(s16, s32, void *);
+void fn_1_A8DD4(const char *, ...);
+void fn_1_80058(s8, struct CarColchgEntry *);
+void fn_1_80C18(u32, struct CarColchgEntry *, s32);
+extern struct CarColchgEntry lbl_9_data_1B8[];
+extern s16 lbl_1_bss_962;
+extern u32 lbl_1_bss_71688;
+extern u32 lbl_1_bss_7168C;
+
 extern char lbl_9_data_2C[17];
 extern void fn_9_1160(void);
 void fn_1_426C(s16);
