@@ -105,7 +105,7 @@
     "symbols": [
       "fn_1_46EA8"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },

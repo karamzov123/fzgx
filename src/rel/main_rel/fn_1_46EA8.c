@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_1_46EA8: main_rel .text:0x00046EA8 size 0xC
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u32 lbl_1_bss_3DD28[179];
+
+void fn_1_46EA8(u32 value) {
+    lbl_1_bss_3DD28[0] = value;
+}
