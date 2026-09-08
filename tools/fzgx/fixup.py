@@ -75,6 +75,27 @@ def _function_span(text: str, name: str) -> Optional[Tuple[int, int]]:
     return None
 
 
+def _tu_of(p: Project, sym) -> Optional[str]:
+    """The TU file that holds this function per tus.json, carved or not."""
+    try:
+        for t in p.tu_map(sym.module).values() if isinstance(p.tu_map(sym.module), dict) else []:
+            pass
+    except Exception:
+        pass
+    import json
+    path = p.module_config_dir(sym.module) / "tus.json"
+    if not path.exists():
+        return None
+    try:
+        d = json.loads(path.read_text())
+    except ValueError:
+        return None
+    for t in d.get("tus", []):
+        if sym.name in t.get("functions", []):
+            return f"{p.module_src_prefix(sym.module)}/{t['file']}"
+    return None
+
+
 def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_candidates: int = 60) -> Dict[str, object]:
     """Search the cheap repairs; returns {"matched": bool, "body": text or None, "tried": n, "best": %, "secs": s}."""
     t0 = time.time()
@@ -110,6 +131,47 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
                 alts += WIDEN.get(typ, [])
             for alt in alts:
                 candidates.append((f"{name}:{typ}->{alt}", body[:s] + alt + body[e:]))
+    # declaration variants: when a symbol this body declares is declared differently by another
+    # block of the same TU (a contested prototype or extern type), each sibling variant is a
+    # candidate: a matched neighbour usually already found the spelling the compiler wants
+    tu_src = None
+    try:
+        rec = p.unit_record(p.unit_of(sym)) if p.unit_of(sym) else None
+        tu_src = rec.get("tu") if rec else None
+        if tu_src is None:
+            tu_src = next((t for t in [_tu_of(p, sym)] if t), None)
+    except Exception:
+        tu_src = None
+    if tu_src:
+        from . import tufile, tutidy
+        try:
+            tf = tufile.load(p, tu_src)
+        except Exception:
+            tf = None
+        if tf is not None:
+            mine = {}
+            for ln in body.splitlines():
+                if tutidy.DECL_LINE_RE.match(ln):
+                    n = tutidy._decl_name(ln)
+                    if n:
+                        mine.setdefault(n, ln.strip())
+            variants: Dict[str, List[str]] = {}
+            for b in tf.blocks:
+                if b.name == sym.name:
+                    continue
+                for ln in b.body.splitlines():
+                    if tutidy.DECL_LINE_RE.match(ln):
+                        n = tutidy._decl_name(ln)
+                        if n in mine and ln.strip() != mine[n] and ln.strip() not in variants.setdefault(n, []):
+                            variants[n].append(ln.strip())
+            for ln in tf.prologue.splitlines():
+                if tutidy.DECL_LINE_RE.match(ln):
+                    n = tutidy._decl_name(ln)
+                    if n in mine and ln.strip() != mine[n] and ln.strip() not in variants.setdefault(n, []):
+                        variants[n].append(ln.strip())
+            for n, alts in variants.items():
+                for alt in alts[:4]:
+                    candidates.append((f"{n}: {mine[n]} -> {alt}", body.replace(mine[n], alt, 1)))
     for label, text in candidates[:max_candidates]:
         if time.time() - t0 > budget_s:
             out["timeout"] = True

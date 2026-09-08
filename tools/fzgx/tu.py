@@ -158,6 +158,16 @@ def rename(p: Project, old: str, new: str, verify: bool = True) -> Dict[str, obj
             if t2 != t:
                 tpath.write_text(t2)
         p._symbols.pop(module, None)  # invalidate cache
+        # saved attempt bodies name the symbol too: a rename must not strand them
+        pat = re.compile(rf"\b{re.escape(old)}\b")
+        for f in (STATE_DIR / "attempts").glob("*.c"):
+            try:
+                t = f.read_text()
+            except OSError:
+                continue
+            if pat.search(t):
+                f.write_text(pat.sub(new, t))
+                changed.append(str(f))
         ok = True
         if verify:
             ok = oracle.configure(p).returncode == 0 and oracle.relink(p).returncode == 0
