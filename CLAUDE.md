@@ -52,6 +52,11 @@ Rules that hold for everyone:
 - No hardcoded addresses (`fzgx lint`), no inline asm in `src/`.
 - Symbols are addressed by name; the REL entry points `_prolog`/`_epilog`
   exist in every module and must be written `module:name` (e.g. `title:_epilog`).
+- Nothing is carved before it matches. A function gets a split range and a unit (an object
+  in the link) at `submit`; until then `check` diffs the agent's work copy against the retail
+  auto object that contains the function (symbol-only, two-object objdiff). Reason: the
+  CodeWarrior linker is superlinear in object count, and the DOL link went from 4 s with 60
+  objects to 20 min with 960. Keep DOL units at matched count; watch link time as it grows.
 - `fzgx trivial` matches single-`blr` and `li r3,N; blr` functions mechanically
   (419 landed on 2026-09-08); run it before spending agents on tiny functions.
 - Readability tooling: `fzgx tu-organize` (TU directories from `tus.json`),

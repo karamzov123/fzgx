@@ -84,3 +84,13 @@ several SDK files define get their source file as a suffix), link-verified.
 No model involved. The DOL still has 1,703 unnamed functions; most are game
 code, the rest GX (a version between the two sources) and CRI's ADX libraries,
 which no public decomp covers.
+
+
+## Linker cliff, the same day
+
+Carving 900 DOL functions up front (per-function stub units, the old workflow)
+took the DOL link from 4 seconds to over 20 minutes: mwld's cost is superlinear
+in the number of objects. The workflow now carves at submit only, and checks
+before that diff the work copy against the retail auto object that already
+contains the function (symbol-only). Unit count equals matched count; batches
+no longer split at start, only once at verify.
