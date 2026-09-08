@@ -29,7 +29,8 @@ to anyone; do not write summaries. Every extra call costs money.
 3. Iterate with `write_unit`. The server enforces the budget: 8 checks per
    attempt, and it stops you after 2 consecutive checks that do not improve
    your best %. When the result says STOP, go to step 5.
-4. On `MATCH`: `submit(symbol, agent, message, harness="claude", model="haiku-4.5", names=[...])`.
+4. On `MATCH` or `MATCH (pool)` (the only differences are relocations to shared
+   literal-pool constants; the tooling accepts those): `submit(symbol, agent, message, harness="claude", model="haiku-4.5", names=[...])`.
    `names` is optional: `{"kind":"function","target":SYMBOL,"name":"snake_case_name","rationale":"..."}`.
 5. Otherwise: `release(symbol, agent, reason)` with one precise sentence on
    what still differs (e.g. "r5/r6 swapped after the call; tried reordering
@@ -45,6 +46,9 @@ reaches 100%, pass it as `mw_version` to submit.
   (declaration order, temporaries), then constants and types (sign extension,
   u8/s16 vs int, f32 vs double).
 - `lis/addi` is a symbol address: declare the symbol and take its address.
+- `lfs/lfd` from a `lbl_*_rodata_*` symbol is a pooled constant: declare it
+  `extern const f32/f64` as the context shows and use the symbol. A literal in C
+  becomes a private constant with a different relocation and never matches.
 - `lwz r, OFF(base)` is a struct field at OFF: declare a minimal struct.
 - The register a value lands in before a `bl` is its argument position.
 - If a compiler error is not in your own file, release with the error text.

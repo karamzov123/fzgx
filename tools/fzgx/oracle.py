@@ -12,6 +12,7 @@ import fcntl
 import json
 import os
 import shlex
+import struct
 import subprocess
 import sys
 from contextlib import contextmanager
@@ -37,6 +38,11 @@ class CheckResult:
     error: str = ""
     missing_in_base: List[str] = field(default_factory=list)
     extra_in_base: List[str] = field(default_factory=list)
+    # every remaining diff is a relocation to a literal-pool constant whose value we reproduce
+    # privately (an int->float conversion constant, or a literal shared with a neighbour):
+    # per-function linking cannot express that; the TU's whole-unit compile will
+    matched_pool: bool = False
+    pool: List[str] = field(default_factory=list)
 
     def to_json(self) -> dict:
         return self.__dict__
@@ -143,7 +149,50 @@ def check(project: Project, symbol: str, max_diff_lines: int = 80, source: Optio
             res.diff = [f"(symbol {symbol} not present in our object: define it, check the name)"]
         else:
             res.diff = _render_diff(lrows, rrows, max_diff_lines)
+            res.pool = _pool_only(project, sym.module, left, right, lrows, rrows)
+            res.matched_pool = bool(res.pool)
     return res
+
+
+def _pool_only(project: Project, module: str, left: dict, right: dict,
+               lrows: List[dict], rrows: List[dict]) -> List[str]:
+    """If every differing row is `same instruction, relocation to a pooled constant (retail)
+    vs. to our private literal with the same bytes`, describe those constants; else []."""
+    import base64
+    if len(lrows) != len(rrows):
+        return []
+    lsyms, rsyms = left.get("symbols", []), right.get("symbols", [])
+    syms = project.symbols(module)
+    out: List[str] = []
+    for l, r in zip(lrows, rrows):
+        if (l.get("diff_kind") or "DIFF_NONE") == "DIFF_NONE" and (r.get("diff_kind") or "DIFF_NONE") == "DIFF_NONE":
+            continue
+        li, ri = l.get("instruction", {}), r.get("instruction", {})
+        lrel, rrel = li.get("relocation"), ri.get("relocation")
+        if not lrel or not rrel or lrel.get("type") != rrel.get("type"):
+            return []
+        # identical apart from the relocation target
+        lp = [x for x in li.get("parts", []) if "reloc" not in json.dumps(x)]
+        rp = [x for x in ri.get("parts", []) if "reloc" not in json.dumps(x)]
+        if lp != rp:
+            return []
+        try:
+            lname = lsyms[lrel["target_symbol"]]["name"]
+            rsym = rsyms[rrel["target_symbol"]]
+        except (IndexError, KeyError, TypeError):
+            return []
+        s = syms.get(lname)
+        if not s or s.kind != "object" or s.section not in (".rodata", ".sdata2") or s.size not in (4, 8):
+            return []
+        retail = project.bytes_at(module, lname)
+        ours = b"".join(base64.b64decode(d.get("data", "")) for d in rsym.get("data_diff", []))
+        if not retail or ours != retail or not rsym.get("name", "").startswith("@"):
+            return []
+        v = struct.unpack(">d", retail)[0] if len(retail) == 8 else struct.unpack(">f", retail)[0]
+        desc = f"{lname}={v!r}"
+        if desc not in out:
+            out.append(desc)
+    return out
 
 
 def unit_source_path(project: Project, unit_src: str) -> Path:
@@ -232,14 +281,15 @@ def unit_fully_matches(res: CheckResult) -> Optional[str]:
     """Reason the unit may not be flipped to Matching, or None if it is safe."""
     if not res.ok:
         return res.error or "check failed"
-    bad = [f"{n}={p:.1f}%" for n, p in res.symbols.items() if p < 100.0]
+    bad = [f"{n}={p:.1f}%" for n, p in res.symbols.items() if p < 100.0 and not (res.matched_pool and n == res.symbol)]
     if bad:
         return "functions below 100%: " + ", ".join(bad)
     if res.missing_in_base:
         return "missing from our object: " + ", ".join(res.missing_in_base)
     if res.extra_in_base:
         return "extra functions in our object: " + ", ".join(res.extra_in_base)
-    bad_data = [f"{n}={p:.1f}%" for n, p in res.data_sections.items() if p < 100.0]
+    bad_data = [f"{n}={p:.1f}%" for n, p in res.data_sections.items()
+                if p < 100.0 and not (res.matched_pool and n in (".rodata", ".sdata2"))]
     if bad_data:
         return "data sections differ: " + ", ".join(bad_data)
     return None

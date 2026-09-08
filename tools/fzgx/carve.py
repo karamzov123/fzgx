@@ -13,7 +13,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-from . import tufile
+from . import oracle, tufile
 from .project import ROOT, Function, Project, Symbol
 from .tu import unit_dir_for
 
@@ -99,14 +99,15 @@ def carve(project: Project, symbol: str, dry_run: bool = False) -> CarveResult:
             f.write(f"\t{section:<11} start:0x{start:08X} end:0x{end:08X} align:{align}\n")
 
     tu_src = tufile.tu_source_for(project, sym)
-    units = project.load_units()
-    if not any(u["module"] == module and u["source"] == source for u in units):
-        rec = {"module": module, "source": source, "symbols": [sym.name],
-               "status": "nonmatching", "mw_version": None, "extra_cflags": []}
-        if tu_src:
-            rec["tu"] = tu_src  # block unit: the C lives in the TU file, the object is generated
-        units.append(rec)
-        project.save_units(units)
+    with oracle.build_lock("units.lock"):  # submits flip statuses concurrently
+        units = project.load_units()
+        if not any(u["module"] == module and u["source"] == source for u in units):
+            rec = {"module": module, "source": source, "symbols": [sym.name],
+                   "status": "nonmatching", "mw_version": None, "extra_cflags": []}
+            if tu_src:
+                rec["tu"] = tu_src  # block unit: the C lives in the TU file, the object is generated
+            units.append(rec)
+            project.save_units(units)
     if tu_src:
         # no file in the tree: a stub is generated until the function's block is spliced in
         tufile.write_gen(project, {"module": module, "source": source, "symbols": [sym.name], "tu": tu_src})

@@ -159,11 +159,34 @@ def _function_span(text: str, name: str) -> Optional[tuple[int, int]]:
     return None
 
 
+def relocation_only(diff: List[str]) -> bool:
+    """True when every differing row is a symbol/literal mismatch: retail references a pooled
+    constant or another symbol where ours emits a private literal (or vice versa). Permutation
+    cannot change that, and the permuter's objdump scoring does not even see it."""
+    rows = [r for r in diff if r[:1] in "?~<>!*"]
+    if not rows:
+        return False
+    return all(("@" in r and ("lbl_" in r or "@" in r.split("|")[1])) and "@ha" in r or "@l" in r for r in rows)
+
+
 def run(p: Project, symbol: str, threads: int = 8, seconds: int = 600, submit: bool = True) -> Dict[str, object]:
     prep = prepare(p, symbol)
     if not prep["ok"]:
         return prep
     d = ROOT / prep["dir"]
+    # objdiff first: a relocation-only diff is a hint for the model, not a permutation
+    key = prep["key"]
+    work = p.work_path(key)
+    had_work = work.exists()
+    if not had_work:
+        work.parent.mkdir(parents=True, exist_ok=True)
+        work.write_text((d / "attempt.c").read_text())
+    pre = oracle.check(p, symbol, 200, source=work)
+    if not had_work:
+        work.unlink(missing_ok=True)
+    if pre.ok and relocation_only(pre.diff):
+        return {"ok": True, "symbol": symbol, "secs": 0.0, "skipped": "relocation-only diff (constant pool or symbol reference); not permutable",
+                "percent": pre.percent, "diff": pre.diff[:6]}
     t0 = time.time()
     cmd = [sys.executable, str(PERMUTER), str(d), "-j", str(threads), "--stop-on-zero", "--best-only", "--quiet"]
     env = dict(os.environ, PATH=f"{OBJDUMP.parent}:{os.environ.get('PATH', '')}")  # powerpc-eabi-objdump

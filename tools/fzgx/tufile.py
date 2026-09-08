@@ -202,7 +202,7 @@ def _addr_of(p: Project, module: str, name: str) -> int:
     return s.addr if s else 1 << 40
 
 
-def splice(p: Project, unit: dict, text: str, noprologue: bool = False) -> Path:
+def splice(p: Project, unit: dict, text: str, noprologue: bool = False, extra_flags: Optional[List[str]] = None) -> Path:
     """Replace (or insert, in address order) the unit's block with `text` in its TU file.
 
     The prologue is frozen: a block never changes how its neighbours compile. Includes
@@ -217,7 +217,7 @@ def splice(p: Project, unit: dict, text: str, noprologue: bool = False) -> Path:
     try:
         tf = parse(path.read_text()) if path.exists() else TuFile("", [])
         inc, body = split_includes(text)
-        flags: List[str] = []
+        flags: List[str] = list(extra_flags or [])
         if not path.exists() or not tf.blocks and not tf.prologue.strip():
             tf.prologue = merge_prologue("", inc)  # first block of a new file sets the prologue
             inc = []

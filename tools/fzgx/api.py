@@ -270,7 +270,11 @@ def format_check(res: Dict[str, Any]) -> str:
         return "\n".join(f"{v:10s} {'n/a' if pct < 0 else f'{pct:.1f}%'}" for v, pct in res["versions"].items())
     if not res["ok"]:
         return f"CHECK FAILED: {res['error']}"
-    lines = [f"{res['symbol']}: {res['percent']:.1f}%  unit={res['unit']}  " + ("MATCH" if res["matched"] else "no match")]
+    verdict = "MATCH" if res["matched"] else ("MATCH (pool)" if res.get("matched_pool") else "no match")
+    lines = [f"{res['symbol']}: {res['percent']:.1f}%  unit={res['unit']}  {verdict}"]
+    if res.get("matched_pool"):
+        lines.append("pool: the only differences are relocations to shared literal-pool constants whose value "
+                     "you reproduce (" + ", ".join(res["pool"]) + "); this counts as a match: call submit.")
     others = {k: v for k, v in res["symbols"].items() if k != res["symbol"]}
     if others:
         lines.append("other functions in unit: " + ", ".join(f"{k}={v:.0f}%" for k, v in others.items()))
@@ -280,7 +284,7 @@ def format_check(res: Dict[str, Any]) -> str:
         lines.append("missing in our object: " + ", ".join(res["missing_in_base"]))
     if res["extra_in_base"]:
         lines.append("extra in our object: " + ", ".join(res["extra_in_base"]))
-    if res["diff"]:
+    if res["diff"] and not res.get("matched_pool"):
         lines.append("diff (target | ours):")
         lines.extend(res["diff"])
     b = res.get("budget")
@@ -291,17 +295,18 @@ def format_check(res: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def _install(p: Project, unit_src: str, text: str) -> None:
+def _install(p: Project, unit_src: str, text: str, pool: bool = False) -> None:
     """Make `text` the canonical source of the unit: a block of its TU file, or its own file.
 
     A block's generated unit must compile: if it does not under the TU prologue (a private
     declaration that disagrees with a header), the block keeps its own includes instead."""
     u = p.unit_record(unit_src)
     if u and u.get("tu"):
-        tufile.splice(p, u, text)
+        flags = ["pool"] if pool else None
+        tufile.splice(p, u, text, extra_flags=flags)
         unit = p.objdiff_unit_name(u["module"], unit_src)
         if oracle.compile_unit(p, unit, unit_src).returncode != 0:
-            tufile.splice(p, u, text, noprologue=True)
+            tufile.splice(p, u, text, noprologue=True, extra_flags=flags)
     else:
         path = ROOT / "src" / unit_src
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -345,12 +350,13 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
                      harness=harness, tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd, shadow=True)
             return {"ok": False, "error": reason, "percent": res.percent, "revise": True}
         if work.exists():
-            _install(p, unit_src, work.read_text())
+            _install(p, unit_src, work.read_text(), pool=res.matched_pool)
         _discard_work(p, key)
-        l.db.execute("UPDATE functions SET link_state='pending' WHERE symbol=?", (key,))
+        link = "pool" if res.matched_pool else "pending"
+        l.db.execute("UPDATE functions SET link_state=? WHERE symbol=?", (link, key))
         l.finish(key, "matched", "matched", notes=f"revised: {message}", model=model, harness=harness,
                  tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd, shadow=True)
-        return {"ok": True, "symbol": symbol, "unit": unit_src, "revise": True, "link": "pending"}
+        return {"ok": True, "symbol": symbol, "unit": unit_src, "revise": True, "link": link}
     if _is_shadow(agent):
         _discard_work(p, key)
         if reason:
@@ -366,25 +372,33 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
 
     # Accept on the per-object oracle; the batch relink (`fzgx verify`) checks every hash
     # once for all accepted units and bisects the rare object that matches but does not link.
+    # A pool match is accepted but keeps linking the retail object: its private literal can
+    # only become the TU's shared one when the whole TU is compiled as one unit.
     if work.exists():
-        _install(p, unit_src, work.read_text())
+        _install(p, unit_src, work.read_text(), pool=res.matched_pool)
     _discard_work(p, key)
     with oracle.build_lock("units.lock"):
         units = p.load_units()
         for u in units:
             if u["source"] == unit_src:
-                u["status"] = "matching"
+                if res.matched_pool:
+                    u["pool"] = True
+                else:
+                    u["status"] = "matching"
+                    u.pop("pool", None)
         p.save_units(units)
     commit = None
-    l.db.execute("UPDATE functions SET link_state='pending' WHERE symbol=?", (key,))
+    l.db.execute("UPDATE functions SET link_state=? WHERE symbol=?", ("pool" if res.matched_pool else "pending", key))
     if names:
         l.propose_names(key, agent, names)
     if row and row["status"] != "claimed":
         # submitted without a live claim (e.g. after a ledger reset): open an attempt so accounting is complete
         l.db.execute("INSERT INTO attempts(symbol, agent, started) VALUES(?,?,?)", (key, agent, int(time.time())))
-    l.finish(key, "matched", "matched", commit=commit, notes=message or "", model=model, harness=harness,
-             tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd)
-    return {"ok": True, "symbol": symbol, "commit": commit, "unit": unit_src, "link": "pending"}
+    l.finish(key, "matched-pool" if res.matched_pool else "matched", "matched", commit=commit,
+             notes=(message or "") + (f" [pool: {', '.join(res.pool)}]" if res.matched_pool else ""),
+             model=model, harness=harness, tokens_in=tokens_in, tokens_out=tokens_out, cost_usd=cost_usd)
+    return {"ok": True, "symbol": symbol, "commit": commit, "unit": unit_src,
+            "link": "pool" if res.matched_pool else "pending", "pool": res.pool}
 
 
 def verify_links(p: Project, message: Optional[str] = None) -> Dict[str, Any]:
@@ -468,7 +482,9 @@ def report(p: Project) -> Dict[str, Any]:
         objdiff = {k: m.get(k) for k in ("matched_code_percent", "matched_functions", "total_functions",
                                           "complete_units", "total_units")}
     pending = l.db.execute("SELECT COUNT(*) FROM functions WHERE link_state='pending'").fetchone()[0]
-    return {"ledger": l.summary(), "costs": dict(l.costs()), "objdiff": objdiff, "pending_link": pending}
+    pool = l.db.execute("SELECT COUNT(*) FROM functions WHERE link_state='pool'").fetchone()[0]
+    return {"ledger": l.summary(), "costs": dict(l.costs()), "objdiff": objdiff, "pending_link": pending,
+            "pool_matched": pool}
 
 
 def snapshot(p: Project) -> Dict[str, Any]:
@@ -486,3 +502,37 @@ def lint(p: Project, paths: Optional[List[str]] = None) -> List[Any]:
 
 def names(p: Project) -> List[Dict[str, Any]]:
     return [dict(r) for r in Ledger().pending_names()]
+
+
+def sweep_attempts(p: Project, module: Optional[str] = None, min_percent: float = 90.0,
+                   limit: int = 200) -> Dict[str, Any]:
+    """Re-check the best saved attempt of every plateaued function against today's oracle
+    and headers; submit the ones that now match (outright or as a pool match)."""
+    from .permute import _attempt_text  # scoped: permute imports api; avoid the cycle at import time
+    l = Ledger()
+    q = ("SELECT symbol FROM functions WHERE status='unmatched' AND best_percent>=? "
+         + ("AND module=? " if module else "") + "ORDER BY best_percent DESC LIMIT ?")
+    rows = l.db.execute(q, [min_percent] + ([module] if module else []) + [limit]).fetchall()
+    out = {"checked": 0, "submitted": [], "pool": [], "still": []}
+    for (key,) in rows:
+        sym = p.resolve(key)
+        if sym is None:
+            continue
+        text = _attempt_text(p, key)
+        if not text or sym.name not in text:
+            continue
+        if not p.unit_of(sym):
+            carve_many(p, [key])
+        work = p.work_path(key)
+        work.parent.mkdir(parents=True, exist_ok=True)
+        work.write_text(text)
+        out["checked"] += 1
+        res = oracle.check(p, key, 20, source=work)
+        if res.ok and oracle.unit_fully_matches(res) is None:
+            r = submit(p, key, agent="sweep", message="saved attempt re-checked")
+            if r.get("ok"):
+                (out["pool"] if r.get("pool") else out["submitted"]).append(key)
+                continue
+        work.unlink(missing_ok=True)
+        out["still"].append((key, round(res.percent, 1) if res.ok else res.error[:80]))
+    return out

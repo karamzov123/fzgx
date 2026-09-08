@@ -359,6 +359,19 @@ class Project:
             return None
         return chunk.decode("ascii", "replace")
 
+    def bytes_at(self, module: str, name: str) -> Optional[bytes]:
+        """Retail bytes of a data symbol (None for bss or unknown)."""
+        sym = self.symbols(module).get(name)
+        if not sym or sym.kind != "object" or sym.section in (".bss", ".sbss", ".sbss2"):
+            return None
+        raw = self._raw_section(module, sym.section)
+        if raw is None:
+            return None
+        start = sym.addr - self._section_base(module, sym.section)
+        if start < 0 or start + sym.size > len(raw):
+            return None
+        return raw[start:start + sym.size]
+
     def _rel_layout(self, module: str):
         if not hasattr(self, "_layouts"):
             self._layouts = {}

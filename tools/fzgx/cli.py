@@ -244,6 +244,11 @@ def cmd_permute(a, p):
     _print(r, a.json); return 0 if r.get("ok") else 1
 
 
+def cmd_sweep(a, p):
+    r = api.sweep_attempts(p, a.module, a.min_percent, a.limit)
+    _print(r, a.json); return 0
+
+
 def cmd_names(a, p):
     _print(api.names(p), a.json); return 0
 
@@ -329,6 +334,8 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--no-submit", action="store_true")
     s.add_argument("--plateau", type=float, help="batch: every unmatched function with best %% >= this")
     s.add_argument("--module"); s.add_argument("--max-size", type=int, default=1024); s.add_argument("--limit", type=int, default=20)
+    s = sub.add_parser("sweep", help="re-check saved attempts of plateaued functions; submit matches and pool matches"); s.set_defaults(fn=cmd_sweep)
+    s.add_argument("--module"); s.add_argument("--min-percent", type=float, default=90.0); s.add_argument("--limit", type=int, default=200)
     s = sub.add_parser("verify", help="relink once for all accepted units, verify hashes, commit; bisect on failure"); s.set_defaults(fn=cmd_verify)
     s.add_argument("--message")
     s = sub.add_parser("compare", help="A/B table for two agent-id prefixes (e.g. b3c-claude vs shadow-b3c-codex)"); s.set_defaults(fn=cmd_compare)

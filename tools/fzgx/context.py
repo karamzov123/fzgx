@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+import struct
 from pathlib import Path
 from typing import List, Optional
 
@@ -65,6 +66,20 @@ def _header_decl(hdr: str, name: str) -> str:
     return "\n".join(x for x in pointees + [body] if x) + ("\n" if body else "") + m.group(0)
 
 
+def _pooled_constant(project: Project, s: Symbol) -> Optional[str]:
+    """A float/double literal in .rodata/.sdata2 with its retail value, as a declaration."""
+    if s.kind != "object" or s.section not in (".rodata", ".sdata2") or s.size not in (4, 8):
+        return None
+    raw = project.bytes_at(s.module, s.name)
+    if raw is None:
+        return None
+    if s.size == 4:
+        v = struct.unpack(">f", raw)[0]
+        return f"extern const f32 {s.name};  // = {v!r}f (retail literal pool)"
+    v = struct.unpack(">d", raw)[0]
+    return f"extern const f64 {s.name};  // = {v!r} (retail literal pool)"
+
+
 def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
                   budget_tokens: int = 6000) -> str:
     sym0 = project.resolve(symbol)
@@ -116,15 +131,25 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
         hdr_text = hdr_text + "\n" + tu_hdr_text
         shown_from_header = []
         parts.append("\n## Referenced symbols (declare what you use; names are provisional)\n```c")
+        pooled = []
         for name in fn.refs:
             s = project.find_symbol(name, module) or project.find_symbol(name)
             if not s:
+                continue
+            const = _pooled_constant(project, s)
+            if const:  # a literal-pool constant beats whatever the header calls it
+                parts.append(const)
+                pooled.append(name)
                 continue
             if hdr_text and re.search(rf"^extern .*\b{re.escape(name)};", hdr_text, re.M):
                 shown_from_header.append(name)
                 continue
             parts.append(_decl_for(s))
         parts.append("```")
+        if pooled:
+            parts.append("Constant pool: the target loads these from the module's shared literal pool. "
+                         "Declare them `extern const` as shown and use the symbol; writing the literal "
+                         "in C emits a private constant with a different relocation and never matches.")
         if shown_from_header:
             inc = f"rel/{module}/{tu_stem}.h" if tu_hdr_text else f"rel/{module}/globals.h"
             parts.append(f"\nThese are declared in `include/{inc}` with recovered struct layouts; "
