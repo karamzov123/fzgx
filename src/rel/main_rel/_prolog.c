@@ -88,9 +88,6 @@ void fn_1_3CC4(void) {
 /* fzgx:end fn_1_3CC4 */
 
 /* fzgx:begin fn_1_3F8C */
-extern u32 lbl_1_bss_DAC;
-extern u32 lbl_1_bss_DB0[2];
-
 typedef struct Fn1_3F8C_Entry Fn1_3F8C_Entry;
 
 struct Fn1_3F8C_Entry {

@@ -777,10 +777,6 @@ void fn_1_54320(void) {
 /* fzgx:end fn_1_54320 */
 
 /* fzgx:begin fn_1_545B8 */
-extern void fn_1_9FA18(void);
-extern void fn_1_58248(void);
-extern u8 *lbl_801A66CC;
-
 typedef struct fn_1_545B8_manager {
     u8 unk_00[0x30];
     void *unk_30;
@@ -913,8 +909,6 @@ typedef union FontCounterStateView {
     u8 *raw;
     FontCounterState *typed;
 } FontCounterStateView;
-
-extern u8 *lbl_801A66CC;
 
 // Advances the font counter when enough capacity remains and returns its prior value.
 u32 fn_1_548AC(u32 amount) {

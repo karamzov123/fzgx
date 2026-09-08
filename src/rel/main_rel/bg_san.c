@@ -26,6 +26,10 @@ extern void fn_1_DC764(void);
 extern void fn_1_5489C(void *, void *);
 extern const f64 lbl_1_rodata_6748;
 extern void fn_1_D6C10(void *, f32);
+extern f32 lbl_1_rodata_6644[35];
+extern void lbl_8006DCA4(void *data);
+extern void fn_1_DB53C(void);
+extern void fn_1_103264(void *, void *);
 
 /* fzgx:begin fn_1_DA7B8 */
 #include "rel/main_rel/bg_san.h"
@@ -408,8 +412,6 @@ void fn_1_DC404(fn_1_DC404_Container *container) {
 /* fzgx:end fn_1_DC404 */
 
 /* fzgx:begin fn_1_DC5E8 */
-extern void fn_1_103264(void *, void *);
-
 typedef struct fn_1_DC5E8_Entry {
     u8 unk_00[0xac];
 } fn_1_DC5E8_Entry;

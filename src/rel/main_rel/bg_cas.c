@@ -33,6 +33,8 @@ extern void fn_800720B0(int);
 extern void fn_1_9A508(Obj_1_data_2A7E0 *arg0);
 extern void fn_1_9AD54(void);
 extern void fn_1_9AD88(void);
+extern void fn_1_10069C(Obj_1_data_2A7E0_At3C *);
+extern void fn_1_FF038(Obj_1_data_2A7E0_At3C *);
 
 /* fzgx:begin fn_1_FB870 */
 u8 *fn_1_FB870(void) {
@@ -229,9 +231,6 @@ void fn_1_FE780(void) {
 /* fzgx:end fn_1_FE780 */
 
 /* fzgx:begin fn_1_FE784 */
-extern void fn_1_10069C(Obj_1_data_2A7E0_At3C *);
-extern void fn_1_FF038(Obj_1_data_2A7E0_At3C *);
-
 // Update the background object and process it when its active state is set.
 void fn_1_FE784(void) {
     Obj_1_data_2A7E0_At3C *background_object = lbl_1_data_2A7E0.unk_3C;

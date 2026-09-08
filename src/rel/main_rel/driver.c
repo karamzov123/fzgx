@@ -152,15 +152,6 @@ void fn_1_A7A70(void) {
 /* fzgx:end fn_1_A7A70 */
 
 /* fzgx:begin fn_1_A8528 */
-extern void lbl_8006DAEC(void);
-extern void lbl_8006DBAC(void *arg0);
-extern void lbl_8006E0A4(void *arg0);
-extern void fn_8006F6A8(void *arg0);
-extern void lbl_8006DB30(void);
-extern void fn_1_A861C(void *arg0, void *arg1);
-extern void fn_1_A8834(void *arg0, void *arg1);
-extern void fn_1_A89B0(void *arg0, void *arg1, s32 arg2);
-
 typedef struct FnA8528Object {
     u8 pad_ea[0xea];
     s16 unk_ea;

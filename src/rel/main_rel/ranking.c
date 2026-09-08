@@ -291,9 +291,6 @@ void fn_1_1569A0(fn_1_1569A0_State *state) {
 /* fzgx:end fn_1_1569A0 */
 
 /* fzgx:begin fn_1_1569E8 */
-extern void fn_8006B7B4(void *);
-extern void fn_8006B870(void);
-
 typedef struct {
     u32 flags;
     u8 _pad04[8];
