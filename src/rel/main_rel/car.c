@@ -109,7 +109,7 @@ u32 fn_1_7F428(u32 arg0) {
 
 extern void fn_1_7F658(void);
 
-// Runs the car initialization routine.
+// Starts the car initialization sequence.
 void fn_1_7F934(void) {
     fn_1_7F658();
 }
@@ -122,7 +122,7 @@ void fn_1_7F934(void) {
 extern char lbl_1_data_2057C[22];
 extern void fn_1_465D0(char *arg0, s32 arg1);
 
-// Initializes the car data table with its default entry.
+// Registers the default car-data entry.
 void fn_1_7FFF0(void) {
     fn_1_465D0(lbl_1_data_2057C, 1);
 }
@@ -456,7 +456,7 @@ void fn_1_85F70(void) {
 extern f32 lbl_1_rodata_3518[6];
 extern void fn_1_85934(f32);
 
-// Passes the default car parameter to the car update routine.
+// Supplies the default car parameter to the car update routine.
 void fn_1_8616C(void) {
     fn_1_85934(lbl_1_rodata_3518[0]);
 }
@@ -2928,7 +2928,7 @@ void fn_1_8E188(void) {
 extern void fn_80071718(u32 value);
 extern void fn_800711A8(u32 value);
 
-// Releases the pending resource handles, if any.
+// Releases both pending resource handles when the secondary handle is active.
 void fn_1_8E1E8(void) {
     if (lbl_1_bss_6E958.unk_4 != 0) {
         fn_80071718(lbl_1_bss_6E958.unk_4);
@@ -3151,25 +3151,25 @@ void fn_1_96130(void *arg0) {
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/car.h"
 
-extern void fn_1_12AB38(void *arg0);
-extern int fn_1_12A8A4(void *arg0, void *arg1);
-extern void fn_1_41328(void *arg0);
-extern void fn_1_426E4(void *arg0, void *arg1);
+extern void fn_1_12AB38(void *resource);
+extern int fn_1_12A8A4(void *resource, void *destination);
+extern void fn_1_41328(void *resource);
+extern void fn_1_426E4(void *model, void *resource);
 
-typedef struct Fn19617CData Fn19617CData;
+typedef struct CarResourceState CarResourceState;
 
-struct Fn19617CData {
+struct CarResourceState {
     u8 unk_00[0x08];
     void *unk_08;
     void *unk_0C;
 };
 
-// Initializes the car resources and restores the shared resource state.
-void fn_1_9617C(Fn19617CData *arg0, void *arg1) {
+// Loads the car resource, updates its model data, and restores shared state.
+void fn_1_9617C(CarResourceState *car, void *resource) {
     fn_1_12AB38(lbl_1_data_27BA4);
-    if (fn_1_12A8A4(arg1, &arg0->unk_0C) != 0) {
-        fn_1_41328(arg0->unk_0C);
-        fn_1_426E4(arg0->unk_08, arg0->unk_0C);
+    if (fn_1_12A8A4(resource, &car->unk_0C) != 0) {
+        fn_1_41328(car->unk_0C);
+        fn_1_426E4(car->unk_08, car->unk_0C);
     }
     fn_1_12AB38(&lbl_1_data_278AC);
 }
@@ -3238,22 +3238,22 @@ typedef struct Fn196968Object Fn196968Object;
 
 struct Fn196968Object {
     u8 unk_00[0x28];
-    void *value_28;
+    void *unk_28;
     u8 unk_2C[0x144];
-    void *resource_170;
-    void *resource_174;
+    void *unk_170;
+    void *unk_174;
 };
 
 extern void *fn_1_41488(void *arg0, void *arg1);
 
-// Initialize the cached value and return the resource-derived sequence number.
+// Cache the resource key and return the requested resource sequence number.
 u16 fn_1_96968(Fn196968Object *object, void *arg1) {
-    if (object->resource_170 != 0 && object->resource_174 != 0) {
-        object->value_28 = fn_1_41488(object->resource_174, lbl_1_data_2785C);
-        return (u16)((u32)fn_1_41488(object->resource_174, arg1) + 1);
+    if (object->unk_170 != 0 && object->unk_174 != 0) {
+        object->unk_28 = fn_1_41488(object->unk_174, lbl_1_data_2785C);
+        return (u16)((u32)fn_1_41488(object->unk_174, arg1) + 1);
     }
 
-    object->value_28 = 0;
+    object->unk_28 = 0;
     return 0;
 }
 /* fzgx:end fn_1_96968 */

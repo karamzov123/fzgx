@@ -79,14 +79,14 @@ void fn_1_12AAC8(void *arg0) {
 #include "rel/main_rel/globals.h"
 
 extern s32 lbl_1_bss_897A4;
-extern u32 lbl_801A6410;
+extern void *lbl_801A6410;
 extern char lbl_1_data_40608[10];
 extern void fn_1_46B4(void *arg0, void *arg1, char *arg2, s32 arg3);
 
 // Initializes the archive table once.
 void fn_1_12ABB4(void *arg0) {
     if (lbl_1_bss_897A4 == 0) {
-        fn_1_46B4((void *)lbl_801A6410, arg0, lbl_1_data_40608, 0x1e0);
+        fn_1_46B4(lbl_801A6410, arg0, lbl_1_data_40608, 0x1e0);
     }
 }
 /* fzgx:end fn_1_12ABB4 */

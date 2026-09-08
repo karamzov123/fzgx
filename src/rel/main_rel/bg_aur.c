@@ -162,6 +162,7 @@ extern void fn_1_153AF8(Obj_1_data_2A7E0_At3C *);
 extern void fn_1_153D48(Obj_1_data_2A7E0_At3C *);
 extern void fn_1_9A508(void);
 
+// Prepares the shared background object and advances the background system.
 void fn_1_15398C(void) {
     Obj_1_data_2A7E0_At3C *obj = lbl_1_data_2A7E0.unk_3C;
 

@@ -35,42 +35,37 @@ void fn_1_1312F0(void) {
 /* fzgx:end fn_1_1312F0 */
 
 /* fzgx:begin fn_1_1314A4 */
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/custom_memcard.h"
 
 extern u8 lbl_1_data_40EA4[0x54];
-extern u32 lbl_1_bss_8CA40;
 extern u8 lbl_1_data_40EF8[0x11];
-
-typedef struct {
-    s32 unk_00;
-    u8 unk_04[4];
-    s32 unk_08;
-    u8 unk_0C[4];
-    void* unk_10;
-    u8 unk_14[4];
-    void* unk_18;
-} CustomMemcardState;
-
 extern u32 lbl_801A6410;
-extern void fn_80008BA8(void*, void*, s32);
-extern void OSReport(u8*, ...);
 
+extern u8 fn_1_B7C00(void);
+extern s32 fn_1_B7CD4(void);
+extern s32 fn_1_B7C5C(void);
+extern void OSReport(u8* format, ...);
+extern void fn_80008BA8(void*, void*, s32);
+extern void fn_1_46B4(void*, void*, u8*, s32);
+
+// Reset the card state and release the card after an unavailable-card report.
 void fn_1_1314A4(void) {
-    CustomMemcardState* state = (CustomMemcardState*)&lbl_1_bss_8CA40;
+    u8* state = (u8*)&lbl_1_bss_8CA40;
     void* card;
 
-    if ((u8)fn_1_B7C00() == 0) {
+    if (fn_1_B7C00() == 0) {
         if (fn_1_B7CD4() == 0) {
             OSReport(lbl_1_data_40EF8, fn_1_B7C5C());
         }
-        fn_80008BA8(state->unk_10, state->unk_18, 0x20700);
-        card = state->unk_18;
-        state->unk_00 = -1;
-        state->unk_08 = -1;
-        state->unk_10 = 0;
+        fn_80008BA8(*(void**)(state + 0x10), *(void**)(state + 0x18), 0x20700);
+        card = *(void**)(state + 0x18);
+        *(s32*)(state + 0x00) = -1;
+        *(s32*)(state + 0x08) = -1;
+        *(void**)(state + 0x10) = 0;
         if (card != 0) {
             fn_1_46B4((void*)lbl_801A6410, card, lbl_1_data_40EA4, 0x188);
-            state->unk_18 = 0;
+            *(void**)(state + 0x18) = 0;
         }
     }
 }

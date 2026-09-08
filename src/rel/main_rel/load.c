@@ -281,19 +281,18 @@ extern s16 *lbl_1_data_19FC4[188];
 extern void **lbl_1_data_19098[188];
 extern u8 lbl_1_bss_3E024[52];
 extern char lbl_1_data_1A3AC[5];
-
 extern void fn_80083DB0(void *arg0, void *arg1);
 
-// Finds the resource matching value and loads its associated data.
+// Find the resource matching value, load its data, and return the destination buffer.
 void *fn_1_485E8(s32 index, s32 value) {
-    s32 i = 0;
+    s32 entry = 0;
 
-    while (lbl_1_data_19FC4[index][i] != -1) {
-        if (lbl_1_data_19FC4[index][i] == value) {
-            fn_80083DB0(lbl_1_bss_3E024, lbl_1_data_19098[index][i]);
+    while (lbl_1_data_19FC4[index][entry] != -1) {
+        if (lbl_1_data_19FC4[index][entry] == value) {
+            fn_80083DB0(lbl_1_bss_3E024, lbl_1_data_19098[index][entry]);
             return lbl_1_bss_3E024;
         }
-        i++;
+        entry++;
     }
 
     fn_80083DB0(lbl_1_bss_3E024, lbl_1_data_1A3AC);

@@ -355,6 +355,7 @@ extern u32 lbl_1_rodata_4210;
 extern void fn_80007AB4(u32 *arg0);
 extern void fn_1_9CC6C(u32 arg0, u32 arg1);
 
+// Initialize the shared value, then pass the active burner fields to the follow-up routine.
 void fn_1_9AD88(void) {
     u32 value = lbl_1_rodata_4210;
 

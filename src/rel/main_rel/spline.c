@@ -791,6 +791,7 @@ u32 fn_1_FA088(void) {
 
 extern s32 fn_1_FA69C(s16 value);
 
+// Return whether the signed result from the spline lookup is nonzero.
 u32 fn_1_FA1A8(s32 value) {
     u32 result = (u32)fn_1_FA69C((s16)value);
     return ((u32)(-result | result)) >> 31;
@@ -876,19 +877,19 @@ extern void fn_1_FB180(Obj_1_bss_84428 *data);
 
 // Reset spline state while preserving the active spline entry.
 void fn_1_FA75C(void) {
-    s32 result;
+    s32 spline_index;
     Obj_1_data_2A7E0_At3C *obj;
     u8 *status;
-    u32 saved;
+    u32 saved_entry;
 
-    result = fn_1_58C4();
+    spline_index = fn_1_58C4();
     obj = lbl_1_data_2A7E0.unk_3C;
     status = (u8 *)&obj->unk_4;
-    saved = obj->unk_170;
+    saved_entry = obj->unk_170;
     fn_80008BEC(obj, 0, 0x174);
-    obj->unk_170 = saved;
+    obj->unk_170 = saved_entry;
 
-    if (obj->unk_170 != 0 && result <= 1) {
+    if (obj->unk_170 != 0 && spline_index <= 1) {
         fn_1_FA89C(obj);
     } else {
         fn_1_76BF8();

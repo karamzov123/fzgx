@@ -43,6 +43,7 @@ extern const f32 lbl_1_rodata_33A8;
 extern void fn_1_495D8(int, int, f32);
 extern void fn_1_495FC(void);
 
+/* Initialize the shared light state and its required resources. */
 void fn_1_7BF9C(void *arg, s8 flag) {
     u8 *base;
     void *resource_18;

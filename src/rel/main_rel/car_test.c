@@ -33,12 +33,12 @@ typedef struct {
     s8 value;
 } GlobalEntry;
 
-// Compares the object's entry value with the current global entry.
+// Compares the object's entry selector with the active global selector.
 void fn_1_7D694(Object *obj) {
     Entry *entry = obj->entry;
-    GlobalEntry *global = (GlobalEntry *)lbl_1_bss_6D7E8[0];
+    GlobalEntry *active = (GlobalEntry *)lbl_1_bss_6D7E8[0];
 
-    if (entry->value == global->value) {
+    if (entry->value == active->value) {
         return;
     }
 }

@@ -228,20 +228,16 @@ void fn_1_E57F4(void *base, f32 value) {
 }
 /* fzgx:end fn_1_E57F4 */
 
-/* fzgx:begin fn_1_E57FC noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/phys.h"
+/* fzgx:begin fn_1_E57FC */
+extern void fn_80008BEC(void *dst, void *value, u32 size);
+extern void fn_80008BA8(void *dst, void *value, u32 size);
 
-extern void fn_80008BEC(void *dst, int value, int size);
-extern void fn_80008BA8(void *dst, const void *src, int size);
-
-// Clears or copies the 12-byte value stored in the object.
-void fn_1_E57FC(void *base, const void *value) {
-    if (value == 0) {
-        fn_80008BEC((char *)base + 0x44, 0, 0xc);
+// Initializes the object's 12-byte value, clearing it or copying from the source.
+void fn_1_E57FC(void *object, void *source) {
+    if (source == 0) {
+        fn_80008BEC((u8 *)object + 0x44, 0, 0xc);
     } else {
-        fn_80008BA8((char *)base + 0x44, value, 0xc);
+        fn_80008BA8((u8 *)object + 0x44, source, 0xc);
     }
 }
 /* fzgx:end fn_1_E57FC */
@@ -251,8 +247,8 @@ void fn_1_E57FC(void *base, const void *value) {
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/phys.h"
 
-extern void fn_80008BEC(void *dst, int value, u32 size);
-extern void fn_80008BA8(void *dst, const void *src, u32 size);
+extern void fn_80008BEC(void *dst, int value, int size);
+extern void fn_80008BA8(void *dst, const void *src, int size);
 
 // Copies a 12-byte value into the object's field, clearing it when no value is supplied.
 void fn_1_E5840(void *base, const void *value) {
@@ -269,17 +265,17 @@ void fn_1_E5840(void *base, const void *value) {
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/phys.h"
 
-extern f32 lbl_1_rodata_67A8;
+extern f32 lbl_1_rodata_67A8[3];
 extern void fn_80008BA8(void *dst, const void *src, u32 size);
 
 // Resets the three-component value or copies a replacement into it.
 void fn_1_E5884(void *base, const void *value) {
     if (value == 0) {
-        f32 zero = lbl_1_rodata_67A8;
+        f32 reset_value = lbl_1_rodata_67A8[0];
 
-        *(f32 *)((char *)base + 0xfc) = zero;
-        *(f32 *)((char *)base + 0xf8) = zero;
-        *(f32 *)((char *)base + 0xf4) = zero;
+        *(f32 *)((char *)base + 0xfc) = reset_value;
+        *(f32 *)((char *)base + 0xf8) = reset_value;
+        *(f32 *)((char *)base + 0xf4) = reset_value;
     } else {
         fn_80008BA8((char *)base + 0xf4, value, 0xc);
     }
@@ -294,15 +290,15 @@ void fn_1_E5884(void *base, const void *value) {
 extern u32 lbl_1_rodata_6A8C[3];
 extern void fn_80008BA8(void *dst, const void *src, u32 size);
 
-// Copies either the supplied 12-byte value or the default value into the object.
+// Copies the caller's value into the object, falling back to the shared default when absent.
 void fn_1_E58CC(void *base, const void *value) {
     if (value == 0) {
-        u32 temp[3];
+        u32 default_value[3];
 
-        temp[0] = lbl_1_rodata_6A8C[0];
-        temp[1] = lbl_1_rodata_6A8C[1];
-        temp[2] = lbl_1_rodata_6A8C[2];
-        fn_80008BA8((char *)base + 0x128, temp, 0xc);
+        default_value[0] = lbl_1_rodata_6A8C[0];
+        default_value[1] = lbl_1_rodata_6A8C[1];
+        default_value[2] = lbl_1_rodata_6A8C[2];
+        fn_80008BA8((char *)base + 0x128, default_value, 0xc);
     } else {
         fn_80008BA8((char *)base + 0x128, value, 0xc);
     }
@@ -564,26 +560,20 @@ void fn_1_EB074(u32 value) {
 }
 /* fzgx:end fn_1_EB074 */
 
-/* fzgx:begin fn_1_EB080 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
+/* fzgx:begin fn_1_EB080 */
+// Preserve the previous mode when switching to mode 11, then update the active mode.
+void fn_1_EB080(int mode) {
+    u32* state = (u32*)lbl_1_data_3E358;
 
-extern u32 lbl_1_bss_7B188[2];
-extern u32 lbl_1_data_3E358[3];
-
-// Update the current state, retaining the prior value when entering mode 11.
-void fn_1_EB080(int param) {
-    u32* state = lbl_1_data_3E358;
-
-    if ((int)lbl_1_bss_7B188[0] == 0) {
+    if ((int)lbl_1_bss_7B188 == 0) {
         return;
     }
 
-    if (param == 11) {
+    if (mode == 11) {
         state[0x1e0 / 4] = state[0x1d4 / 4];
     }
 
-    state[0x1d8 / 4] = param;
+    state[0x1d8 / 4] = mode;
 }
 /* fzgx:end fn_1_EB080 */
 
@@ -647,9 +637,10 @@ void fn_1_EFA1C(void) {
 #include "types.h"
 #include "rel/main_rel/globals.h"
 
+extern void fn_1_12EF80(s16 arg, s16 *out_group, s16 *out_entry);
 extern s32 lbl_1_data_3E53C[];
 
-// Converts the current course selection into its associated data value.
+ // Maps a course selection to its associated data value.
 s16 fn_1_F22E4(s32 arg) {
     s16 group;
     s16 entry;

@@ -94,15 +94,10 @@ void fn_1_7269C(u32 arg0, u32 arg1, void *arg2) {
 
 extern void fn_1_727BC(void);
 
-// Initialize the effect slot and return its requested subregion.
-void *fn_1_72714(u8 arg0, u8 arg1) {
-    u32 offset;
-    u8 *result;
-
+// Initialize the effect system and return the requested slot subregion.
+void *fn_1_72714(u8 slot, u32 subregion) {
     fn_1_727BC();
-    offset = arg0 * 0x10c;
-    result = (u8 *)&lbl_1_bss_6C8EC + offset;
-    return result + (arg1 << 5);
+    return (u8 *)&lbl_1_bss_6C8EC + slot * 0x10c + (subregion & 0xff) * 0x20;
 }
 /* fzgx:end fn_1_72714 */
 
@@ -113,7 +108,7 @@ void *fn_1_72714(u8 arg0, u8 arg1) {
 
 extern void fn_1_727BC(u8 arg0, u32 arg1);
 
-// Initialize the selected screen-effect entry and store its value.
+// Select the requested screen-effect entry and store its value.
 void fn_1_72768(u8 arg0, u32 arg1) {
     Obj_1_bss_6C8EC *entry;
     u32 index;
@@ -597,6 +592,7 @@ extern void fn_8006FDEC(void);
 extern void fn_80071718(u32);
 extern void fn_800711A8(u32);
 
+// Releases active screen effects and resets the effect state.
 void fn_1_7B4C0(void) {
     if (lbl_1_bss_6D770 != 0 || lbl_1_bss_6D774 != 0) {
         fn_8006FDEC();

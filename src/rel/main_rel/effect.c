@@ -517,6 +517,7 @@ typedef struct {
 extern u32 lbl_801A6410;
 extern void fn_1_46B4(u32 value, void *field, u8 *data, s32 code);
 
+// Submit the effect data when this object has an associated field.
 void fn_1_60170(FZeroObject *object) {
     void *field;
 
@@ -622,12 +623,12 @@ void fn_1_61CE8(void) {
 
 typedef struct {
     u8 pad20[0x20];
-    void *field20;
+    void *unk_20;
 } Fn1_61E60Node;
 
 typedef struct {
     u8 pad38[0x38];
-    Fn1_61E60Node *field38;
+    Fn1_61E60Node *unk_38;
 } Fn1_61E60Object;
 
 extern void *lbl_801A6410;
@@ -636,13 +637,13 @@ extern void fn_1_46B4(void *arg0, void *arg1, u8 *arg2, int arg3);
 
 // Releases the effect resources and clears the active effect references.
 int fn_1_61E60(Fn1_61E60Object *object) {
-    Fn1_61E60Node *node = object->field38;
+    Fn1_61E60Node *node = object->unk_38;
 
     if (node != 0) {
-        fn_1_4730(lbl_801A6410, node->field20, 1, lbl_1_data_1D62C, 0x17D5);
-        node->field20 = 0;
-        fn_1_46B4(lbl_801A6410, object->field38, lbl_1_data_1D62C, 0x17D8);
-        object->field38 = 0;
+        fn_1_4730(lbl_801A6410, node->unk_20, 1, lbl_1_data_1D62C, 0x17D5);
+        node->unk_20 = 0;
+        fn_1_46B4(lbl_801A6410, object->unk_38, lbl_1_data_1D62C, 0x17D8);
+        object->unk_38 = 0;
     }
 
     return 1;
@@ -883,8 +884,8 @@ void fn_1_656C8(EffectObject *object) {
     EffectEvent *event;
 
     lbl_8006DCA4(object);
-    if (fn_1_54E34(&object->unk_3c[0], object->unk_28) != 0) {
-        result = fn_1_5448C(&object->unk_3c[0]);
+    if (fn_1_54E34(&object->unk_3c, object->unk_28) != 0) {
+        result = fn_1_5448C(&object->unk_3c);
         event = (EffectEvent *)fn_1_548AC(0xc);
         if (event != 0) {
             event->unk_04 = fn_1_65748;
@@ -983,23 +984,28 @@ typedef struct EffectEntry {
     EffectObject *owner;
 } EffectEntry;
 
-// Updates an effect and queues its completion callback when the effect is active.
-void fn_1_68054(EffectObject *object) {
-    f32 value;
-    void *result;
-    EffectEntry *entry;
+// Advances the effect and queues its completion callback when it finishes.
+void fn_1_68054(EffectObject *effect) {
+    f32 progress;
+    void *source;
+    EffectEntry *completion;
 
-    value = object->value / lbl_1_rodata_2A70[0];
-    lbl_8006DCA4(object);
-    if (fn_1_54E34(&object->subobject, value) != 0) {
-        result = fn_1_5448C(&object->subobject);
-        entry = (EffectEntry *)fn_1_548AC(0xc);
-        if (entry != 0) {
-            entry->callback = fn_1_64388;
-            entry->owner = object;
-            fn_1_5489C(result, entry);
-        }
+    progress = effect->value / lbl_1_rodata_2A70[0];
+    lbl_8006DCA4(effect);
+
+    if (fn_1_54E34(&effect->subobject, progress) == 0) {
+        return;
     }
+
+    source = fn_1_5448C(&effect->subobject);
+    completion = (EffectEntry *)fn_1_548AC(0xc);
+    if (completion == 0) {
+        return;
+    }
+
+    completion->callback = fn_1_64388;
+    completion->owner = effect;
+    fn_1_5489C(source, completion);
 }
 /* fzgx:end fn_1_68054 */
 

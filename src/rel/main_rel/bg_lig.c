@@ -124,6 +124,7 @@ extern void fn_1_5948(s32 index);
 extern void fn_1_D8388(Obj_1_data_2A7E0_At3C *obj, s32 index);
 extern void fn_1_627C(s32 index);
 
+// Initializes each available background-light entry.
 void fn_1_D744C(void) {
     Obj_1_data_2A7E0_At3C *obj;
     s32 count;
@@ -171,20 +172,18 @@ void fn_1_D76F0(const f32 *src, s16 index) {
 }
 /* fzgx:end fn_1_D76F0 */
 
-/* fzgx:begin fn_1_D7724 noprologue */
-#include "types.h"
-
+/* fzgx:begin fn_1_D7724 */
 typedef struct {
     u32 x;
     u32 y;
     u32 z;
 } Vec3Bits;
 
-extern u32 lbl_1_data_2A7E0[62];
-
+// Copies the indexed three-word light entry to the caller-provided buffer.
 void fn_1_D7724(Vec3Bits *dst, s16 index) {
-    u32 *base = (u32 *)lbl_1_data_2A7E0[15];
+    u32 *base = (u32 *)lbl_1_data_2A7E0.unk_3C;
     Vec3Bits *src = (Vec3Bits *)(base + index * 3);
+
     *dst = *src;
 }
 /* fzgx:end fn_1_D7724 */

@@ -32,7 +32,7 @@ typedef void (*Fn1EE04Handler)(Fn1EE04Context *);
 extern Fn1EE04Handler lbl_1_data_4440[17];
 extern void fn_1_6DD0(void *);
 
- // Dispatch the live-camera state handler before advancing camera processing.
+// Dispatch the live-camera state handler before advancing camera processing.
 void fn_1_EE04(Fn1EE04Context *context) {
     lbl_1_data_4440[context->state](context);
     fn_1_6DD0(0);
@@ -76,7 +76,7 @@ u8 fn_1_12850(void) {
 extern u32 lbl_1_bss_1800[4];
 extern u32 *fn_1_1289C(u32 *);
 
-// Initializes the live-camera state and returns the active camera result.
+// Initializes the live-camera state before returning the active camera result.
 u32 fn_1_12860(u32 arg0, u32 arg1) {
     lbl_1_bss_1800[0] = arg0;
     lbl_1_bss_1800[1] = arg1;

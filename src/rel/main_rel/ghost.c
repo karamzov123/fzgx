@@ -404,23 +404,20 @@ void fn_1_F2008(s32 arg) {
 }
 /* fzgx:end fn_1_F2008 */
 
-/* fzgx:begin ghost_test_record_flag0 noprologue */
-#include "types.h"
-
+/* fzgx:begin ghost_test_record_flag0 */
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
-
-extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
-extern u8 lbl_1_bss_7F0C0[];
 
 // Tests the record flag selected by the supplied ghost identifier.
 u32 ghost_test_record_flag0(s32 arg) {
     s16 a;
     s16 b;
     s32 index;
+    u8 *record_flags;
 
     fn_1_12EF80((s16)arg, &a, &b);
     index = (a - 1) * 6 + b;
-    return lbl_1_bss_7F0C0[0x4938 + index] & 1;
+    record_flags = (u8 *)&lbl_1_bss_7F0C0;
+    return record_flags[0x4938 + index] & 1;
 }
 /* fzgx:end ghost_test_record_flag0 */
 
@@ -443,11 +440,9 @@ void ghost_set_record_flag1(s32 arg) {
 #include "types.h"
 
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
-
-extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 extern u8 lbl_1_bss_7F0C0[];
 
-// Sets the second record flag for the record selected by the argument.
+// Set the second flag on the record selected by the argument.
 void ghost_set_record_flag2(s32 arg) {
     s16 record_group;
     s16 record_index;
@@ -485,10 +480,7 @@ s32 fn_1_F21B8(s32 arg) {
 
 extern void OSReport(const char *, ...);
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
-
-extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 extern char lbl_1_data_3E8A0[];
-extern void OSReport(const char *format, ...);
 
 // Logs the resolved course coordinates and marks the corresponding course as visited.
 void fn_1_F220C(s32 arg) {

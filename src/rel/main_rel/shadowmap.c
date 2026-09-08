@@ -30,11 +30,11 @@ typedef struct ShadowMapEntry {
     char pad_44[0x08];
 } ShadowMapEntry;
 
+// Register each entry's resources, then clear it for reuse.
 void fn_1_56858(ShadowMapEntry *entries, u32 count) {
     u32 i;
     ShadowMapEntry *entry;
 
-    // Register each entry's resources, then clear it for reuse.
     for (i = 0, entry = entries; i < count; i++, entry++) {
         fn_1_46B4(lbl_801A6410, entry->unk_3c, lbl_1_data_1C660, 0x87);
         fn_1_46B4(lbl_801A6410, entry->unk_40, lbl_1_data_1C660, 0x88);

@@ -181,14 +181,10 @@ void fn_1_CA2A4(void *self) {
 }
 /* fzgx:end fn_1_CA2A4 */
 
-/* fzgx:begin fn_1_CB404 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
-extern u8 lbl_1_bss_7ACA0[];
-
+/* fzgx:begin fn_1_CB404 */
+// Set the state flag for the selected enemy-control entry.
 void fn_1_CB404(u8 value) {
-    lbl_1_bss_7ACA0[value * 0xc + 8] = 0xF;
+    (&lbl_1_bss_7ACA0.unk_8)[value * 0xc] = 0xf;
 }
 /* fzgx:end fn_1_CB404 */
 
@@ -331,7 +327,7 @@ u8* fn_1_D0E64(void) {
 
 extern u32 fn_80008E84(u32);
 
-// Stores the initialized enemy-control value.
+// Initializes the shared enemy-control state from its configured source.
 void fn_1_D2F50(void) {
     lbl_1_data_3D928.unk_0 = fn_80008E84(lbl_1_data_3D924);
 }

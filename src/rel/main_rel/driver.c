@@ -238,17 +238,14 @@ void fn_1_A8EB0(int arg0, int arg1) {
 }
 /* fzgx:end fn_1_A8EB0 */
 
-/* fzgx:begin fn_1_A8EF8 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/driver.h"
-
+/* fzgx:begin fn_1_A8EF8 */
 extern void (*lbl_1_bss_7167C)(void);
 
-extern void fn_1_A9420(int);
-extern void fn_1_A9464(int, int);
+extern void fn_1_A9420(u8 value);
+extern void fn_1_A9464(u16 arg0, u16 arg1);
 
-void fn_1_A8EF8(int arg0, int arg1) {
+// Reset the current selection before applying the two provided values.
+void fn_1_A8EF8(u16 arg0, u16 arg1) {
     fn_1_A9420(0);
     fn_1_A9464(arg0, arg1);
 }
@@ -264,6 +261,7 @@ extern void (*lbl_1_bss_7167C)(void);
 extern void fn_1_A9420(int);
 extern void fn_1_A942C(int);
 
+// Reset the driver state, then apply the supplied driver mode.
 void fn_1_A8F40(int arg) {
     fn_1_A9420(0);
     fn_1_A942C(arg);
@@ -317,28 +315,19 @@ void fn_1_A96EC(void) {
 }
 /* fzgx:end fn_1_A96EC */
 
-/* fzgx:begin fn_1_A96FC noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
-extern void (*lbl_1_bss_7167C)(void);
-
+/* fzgx:begin fn_1_A96FC */
 extern u32 fn_1_451C(void);
 extern void fn_8008069C(void *buffer, char *format, ...);
 extern void fn_1_A5AA0(void *buffer, void *destination);
-
 extern u32 lbl_1_bss_71670;
-extern u8 lbl_1_bss_71674[8];
-extern u32 lbl_1_data_35A70[18];
-extern char lbl_1_data_35AB8[11];
 
 // Initialize the driver state and format its startup data.
 void fn_1_A96FC(void) {
     u8 buffer[0x48];
 
     lbl_1_bss_71670 = fn_1_451C();
-    fn_8008069C(buffer, lbl_1_data_35AB8,
-                lbl_1_data_35A70[*((s16 *)&lbl_1_bss_960)]);
+    fn_8008069C(buffer, (char *)lbl_1_data_35AB8,
+                ((u32 *)lbl_1_data_35A70)[*(s16 *)&lbl_1_bss_960]);
     fn_1_A5AA0(buffer, &lbl_1_bss_71674);
 }
 /* fzgx:end fn_1_A96FC */

@@ -214,18 +214,19 @@ void fn_1_FE780(void) {
 /* fzgx:end fn_1_FE780 */
 
 /* fzgx:begin fn_1_FE784 */
+#include "rel/main_rel/bg_cas.h"
 #include "rel/main_rel/globals.h"
 
-// Initialize the current background object and process it when active.
+// Initialize the background object, update it when active, and finalize processing.
 void fn_1_FE784(void) {
-    Obj_1_data_2A7E0_At3C *object;
+    Obj_1_data_2A7E0_At3C *background;
 
-    object = lbl_1_data_2A7E0.unk_3C;
+    background = lbl_1_data_2A7E0.unk_3C;
     fn_1_9AD88(&lbl_1_data_2A7E0);
-    if ((s32)object->unk_10 != 0) {
-        fn_1_10069C(object);
+    if ((s32)background->unk_10 != 0) {
+        fn_1_10069C(background);
     }
-    fn_1_FF038(object);
+    fn_1_FF038(background);
 }
 /* fzgx:end fn_1_FE784 */
 

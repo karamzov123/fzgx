@@ -247,16 +247,16 @@ s32 fn_1_128B00(s16 value) {
 
 extern u8 lbl_1_data_405C0[8];
 
-// Return the index of value in the accessory lookup table, or its length.
+// Return the matching accessory index, or the number of entries when absent.
 u8 fn_1_128DD8(u8 value) {
-    u8 i;
+    u8 index;
 
-    for (i = 0; i < 6; i++) {
-        if (lbl_1_data_405C0[i] == value) {
-            return i;
+    for (index = 0; index < 6; index++) {
+        if (lbl_1_data_405C0[index] == value) {
+            return index;
         }
     }
-    return i;
+    return index;
 }
 /* fzgx:end fn_1_128DD8 */
 

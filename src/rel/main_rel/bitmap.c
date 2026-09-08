@@ -19,16 +19,18 @@ void fn_1_48140(void *arg) {
 /* fzgx:begin fn_1_48164 */
 #include "rel/main_rel/bitmap.h"
 
-// Enables every bitmap entry assigned to the requested value.
+extern void fn_1_48214(int index, int enabled);
+
+// Enables matching bitmap entries in the shared bitmap table.
 void fn_1_48164(int value) {
-    s16 i;
+    s16 index;
     Obj_1_data_FCD4 *entry;
 
-    i = 1;
+    index = 1;
     entry = (Obj_1_data_FCD4 *)((u8 *)&lbl_1_data_FCD4 + 0x28);
-    for (; i < 0xbc; i++, entry = (Obj_1_data_FCD4 *)((u8 *)entry + 0x28)) {
+    for (; index < 0xbc; index++, entry = (Obj_1_data_FCD4 *)((u8 *)entry + 0x28)) {
         if ((s32)entry->unk_0 != 0 && entry->unk_24 == value) {
-            fn_1_48214(i, 1);
+            fn_1_48214(index, 1);
         }
     }
 }
@@ -99,30 +101,30 @@ extern void fn_1_46B4(u32 arg0, u32 arg1, char *arg2, s32 arg3);
 
 // Releases a bitmap and invalidates dependent texture records.
 void fn_1_484CC(s32 index) {
-    u8 *record;
-    s16 record_index;
-    u32 *bitmap;
+    u8 *texture_record;
+    s16 texture_index;
+    u32 *bitmap_entry;
 
-    bitmap = (u32 *)((u8 *)&lbl_1_data_6CA0 + index * 12);
-    if (*(s32 *)bitmap == -1) {
+    bitmap_entry = (u32 *)((u8 *)&lbl_1_data_6CA0 + index * 12);
+    if (*(s32 *)bitmap_entry == -1) {
         return;
     }
 
     fn_8006FDEC();
-    record_index = 1;
-    record = (u8 *)&lbl_1_data_FCD4 + 0x28;
-    while (record_index < 188) {
-        if (*(s32 *)record != 0 && record[0x24] == index) {
-            fn_1_48214(record_index, 1);
+    texture_index = 1;
+    texture_record = (u8 *)&lbl_1_data_FCD4 + 0x28;
+    while (texture_index < 188) {
+        if (*(s32 *)texture_record != 0 && texture_record[0x24] == index) {
+            fn_1_48214(texture_index, 1);
         }
-        record_index++;
-        record += 0x28;
+        texture_index++;
+        texture_record += 0x28;
     }
 
-    fn_80009064(bitmap[0]);
-    fn_1_46B4(lbl_801A6410, bitmap[1],
+    fn_80009064(bitmap_entry[0]);
+    fn_1_46B4(lbl_801A6410, bitmap_entry[1],
               (char *)lbl_1_data_1A368, 0x265);
-    bitmap[0] = (u32)-1;
+    bitmap_entry[0] = (u32)-1;
 }
 /* fzgx:end fn_1_484CC */
 
@@ -135,8 +137,11 @@ u32 fn_1_485A8(s32 index) {
 /* fzgx:end fn_1_485A8 */
 
 /* fzgx:begin fn_1_48690 */
+#include "rel/main_rel/globals.h"
+
 extern void *fn_1_48730(void);
 
+// Return the current bitmap width, or the default width when no bitmap is active.
 u16 fn_1_48690(void) {
     void *value = fn_1_48730();
     if (value != 0) {
@@ -147,6 +152,8 @@ u16 fn_1_48690(void) {
 /* fzgx:end fn_1_48690 */
 
 /* fzgx:begin fn_1_486C4 */
+#include "rel/main_rel/globals.h"
+
 extern void *fn_1_48730(void);
 
 u16 fn_1_486C4(void) {
@@ -159,12 +166,16 @@ u16 fn_1_486C4(void) {
 /* fzgx:end fn_1_486C4 */
 
 /* fzgx:begin fn_1_486F8 */
+#include "rel/main_rel/globals.h"
+
 extern void *fn_1_48730(void);
 
+// Return the bitmap entry flags for the current bitmap slot.
 u32 fn_1_486F8(void) {
-    void *value = fn_1_48730();
-    if (value != 0) {
-        return *(u32 *)value & 0x1F;
+    void *bitmap = fn_1_48730();
+
+    if (bitmap != 0) {
+        return *(u32 *)bitmap & 0x1F;
     }
     return 0;
 }

@@ -666,7 +666,7 @@ typedef struct CameraGlobals {
 
 extern CameraGlobals lbl_1_bss_1010;
 
-// Copies the current camera state into the snapshot and clears its transient flag.
+// Copies the live camera state into its snapshot and resets the snapshot flag.
 void camera_snapshot(void) {
     lbl_1_bss_1010.unk_08 = lbl_1_bss_1010.unk_C8;
     lbl_1_bss_1010.unk_0C = lbl_1_bss_1010.unk_CC;

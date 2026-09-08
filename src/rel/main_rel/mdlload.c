@@ -52,7 +52,7 @@ typedef struct {
     u32 flags;
 } Fn80071100Result;
 
-// Loads, prepares, and submits a model payload for the requested owner.
+// Loads, prepares, and submits the owner's model payload.
 int fn_1_D3768(void *owner, void *user) {
     u8 buffer[0x58];
     u32 data_size;
@@ -120,6 +120,7 @@ typedef struct {
     FnD3B6CEntry *entries;
 } FnD3B6CObject;
 
+// Release each model entry when the object lies above the arena high-water mark.
 void *fn_1_D3B6C(FnD3B6CObject *object) {
     s32 i;
 
@@ -176,19 +177,23 @@ extern s32 fn_1_D3E90(void);
 extern void fn_1_1067A8(void *obj, f32 value, f32 limit);
 extern void fn_1_D4174(Obj_1_data_2A7E0_At3C *obj, u32 value);
 
+// Refreshes the model state and applies the indexed limit when loading is inactive.
 void fn_1_D3E08(void) {
-    u32 index;
-    Obj_1_data_2A7E0_At3C *obj;
-    u32 value;
+    u32 model_index;
+    Obj_1_data_2A7E0_At3C *model;
+    u32 update_value;
 
-    index = fn_1_5910();
-    obj = lbl_1_data_2A7E0.unk_3C;
+    model_index = fn_1_5910();
+    model = lbl_1_data_2A7E0.unk_3C;
     fn_1_9AD88(&lbl_1_data_2A7E0);
-    value = fn_1_9D260();
+    update_value = fn_1_9D260();
+
     if (fn_1_D3E90() == 0) {
-        fn_1_1067A8((u8 *)obj + 0x20, ((f32 *)obj)[index], lbl_1_rodata_6168[0]);
+        fn_1_1067A8(&model->unk_20, ((f32 *)model)[model_index],
+                    lbl_1_rodata_6168[0]);
     }
-    fn_1_D4174(obj, value);
+
+    fn_1_D4174(model, update_value);
 }
 /* fzgx:end fn_1_D3E08 */
 

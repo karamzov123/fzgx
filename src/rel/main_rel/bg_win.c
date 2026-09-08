@@ -66,30 +66,16 @@ void fn_1_15E260(s32 index) {
 }
 /* fzgx:end fn_1_15E260 */
 
-/* fzgx:begin fn_1_15E3E0 noprologue */
-#include "types.h"
-
-typedef struct {
-    u8 pad[0x13f4];
-    u8 unk_13F4;
-} Obj_1_bss_3C30_local;
-
-typedef struct {
-    u8 pad[0xc];
-    u32 unk_C;
-    u8 tail[0x24];
-} Obj_1_bss_8FDA8_local;
-
-extern Obj_1_bss_3C30_local lbl_1_bss_3C30;
-extern Obj_1_bss_8FDA8_local lbl_1_bss_8FDA8[1];
+/* fzgx:begin fn_1_15E3E0 */
 extern u32 lbl_1_bss_8FE80[8];
 
+// Records the selected window index and updates its value when the index is valid.
 void fn_1_15E3E0(s32 index, u32 value) {
     s32 slot = (lbl_1_bss_3C30.unk_13F4 - 1) % 4;
 
     lbl_1_bss_8FE80[slot] = index;
     if (index != -1) {
-        lbl_1_bss_8FDA8[index].unk_C = value;
+        (&lbl_1_bss_8FDA8.unk_C)[index * 13] = value;
     }
 }
 /* fzgx:end fn_1_15E3E0 */

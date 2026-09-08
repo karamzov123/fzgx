@@ -610,28 +610,30 @@ void fn_1_ABDA8(ArgStruct *arg) {
 extern s32 fn_8002FE54(u8 byte_val, void *arg1, void *arg2);
 
 typedef struct {
-    u8 pad[0x2];
-    u16 field_0x2;
-    s32 field_0x4;
+    u8 pad_0x0[0x2];
+    u16 unk_0x2;
+    s32 unk_0x4;
+    u8 pad_0x8[0x18];
+    u8 data_0x20[1];
 } ResultStruct;
 
 typedef struct {
-    u8 byte_0;
+    u8 byte_0x0;
     u8 pad_0x1[0x13];
     void *ptr_0x14;
     u8 pad_0x18[0xc];
     ResultStruct *ptr_0x24;
 } ArgStruct;
 
-// Stores the loaded result and resets its metadata after a successful load.
+// Loads the result data and clears its metadata when the load succeeds.
 void fn_1_ABDB8(ArgStruct *arg) {
     s32 result;
 
-    result = fn_8002FE54(arg->byte_0, arg->ptr_0x14,
-                         (u8 *)arg->ptr_0x24 + 0x20);
-    arg->ptr_0x24->field_0x4 = result;
-    if (arg->ptr_0x24->field_0x4 != -1) {
-        arg->ptr_0x24->field_0x2 = 0;
+    result = fn_8002FE54(arg->byte_0x0, arg->ptr_0x14,
+                         arg->ptr_0x24->data_0x20);
+    arg->ptr_0x24->unk_0x4 = result;
+    if (arg->ptr_0x24->unk_0x4 != -1) {
+        arg->ptr_0x24->unk_0x2 = 0;
     }
 }
 /* fzgx:end fn_1_ABDB8 */
@@ -1176,8 +1178,7 @@ void fn_1_ACD04(Fn1Acd04Obj *obj) {
             value = fn_8002E0C4(obj->unk_0);
         } while (value == -1);
 
-        fn_1_46B4(lbl_801A6410, obj->unk_c,
-                  (void *)&lbl_1_data_3C7B8, 0x3c8);
+        fn_1_46B4(lbl_801A6410, obj->unk_c, &lbl_1_data_3C7B8, 0x3c8);
         obj->unk_7 = 0;
         obj->unk_c = 0;
         {
@@ -1194,7 +1195,7 @@ void fn_1_ACD04(Fn1Acd04Obj *obj) {
 
     if ((obj->unk_24->unk_8 & 0x20) == 0) {
         fn_1_46B4(lbl_801A6410, obj->unk_24->unk_94,
-                  (void *)&lbl_1_data_3C7B8, 0x3d4);
+                  &lbl_1_data_3C7B8, 0x3d4);
     }
 
     if (obj->unk_2 == 4) {
@@ -1211,7 +1212,7 @@ void fn_1_ACD04(Fn1Acd04Obj *obj) {
 
         if (obj->unk_24->unk_dc != 0) {
             fn_1_46B4(lbl_801A6410, obj->unk_24->unk_dc,
-                      (void *)&lbl_1_data_3C7B8, 0x3de);
+                      &lbl_1_data_3C7B8, 0x3de);
             obj->unk_24->unk_dc = 0;
         }
     }
@@ -1287,7 +1288,10 @@ void fn_1_ACF2C(void) {
 /* fzgx:end fn_1_ACF2C */
 
 /* fzgx:begin fn_1_ACF30 */
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/memcard.h"
+
+typedef struct MemcardState MemcardState;
 
 typedef struct {
     u8 id;
@@ -1297,9 +1301,9 @@ typedef struct {
     u8 ready;
     u16 field_8;
     u16 field_A;
-    u32 card;
+    void* card;
     u8 pad_10[0x14];
-    void* sub;
+    MemcardState* sub;
     u8 pad_28[0x2];
     u8 flags_2A;
     u8 pad_2B[0x11];
@@ -1307,7 +1311,7 @@ typedef struct {
     s32 value_40;
 } MemcardObject;
 
-typedef struct {
+struct MemcardState {
     u8 pad_0[0x8];
     u32 flags_8;
     u8 pad_C[0x4];
@@ -1319,11 +1323,9 @@ typedef struct {
     void* value_94;
     u8 pad_98[0x44];
     void* value_DC;
-} MemcardState;
+};
 
 extern void* lbl_801A6410;
-extern u8 lbl_1_bss_716C0;
-extern Obj_1_data_3C7B8 lbl_1_data_3C7B8;
 extern s32 fn_8002E0C4(u8 value);
 extern void fn_1_46B4(void* manager, void* value, Obj_1_data_3C7B8* data, s32 offset);
 
@@ -1332,11 +1334,11 @@ void fn_1_ACF30(MemcardObject* obj) {
     if (obj->card != 0) {
         do {
             if (fn_8002E0C4(obj->id) != -1) {
-                fn_1_46B4(lbl_801A6410, (void*)obj->card, &lbl_1_data_3C7B8, 0x3C8);
+                fn_1_46B4(lbl_801A6410, obj->card, &lbl_1_data_3C7B8, 0x3C8);
                 obj->ready = 0;
                 obj->card = 0;
                 {
-                    MemcardState* state = (MemcardState*)obj->sub;
+                    MemcardState* state = obj->sub;
                     state->field_1C = 0;
                     state->field_18 = 0;
                 }
@@ -1345,26 +1347,26 @@ void fn_1_ACF30(MemcardObject* obj) {
         } while (1);
     }
 
-    if ((((MemcardState*)obj->sub)->flags_8 & 0x80) != 0) {
-        obj->value_3C = ((MemcardState*)obj->sub)->value_10 / 0x2000;
-        obj->value_40 = ((MemcardState*)obj->sub)->value_14;
+    if ((obj->sub->flags_8 & 0x80) != 0) {
+        obj->value_3C = obj->sub->value_10 / 0x2000;
+        obj->value_40 = obj->sub->value_14;
     }
-    if ((((MemcardState*)obj->sub)->flags_8 & 0x20) == 0) {
-        fn_1_46B4(lbl_801A6410, ((MemcardState*)obj->sub)->value_94, &lbl_1_data_3C7B8, 0x3D4);
+    if ((obj->sub->flags_8 & 0x20) == 0) {
+        fn_1_46B4(lbl_801A6410, obj->sub->value_94, &lbl_1_data_3C7B8, 0x3D4);
     }
     if (obj->type == 4) {
         if (lbl_1_bss_716C0 != 0) {
             void* temp;
             MemcardState* state;
-            state = (MemcardState*)obj->sub;
+            state = obj->sub;
             temp = state->value_94;
             state->value_94 = state->value_DC;
             state->value_DC = temp;
             lbl_1_bss_716C0 = 0;
         }
-        if (((MemcardState*)obj->sub)->value_DC != 0) {
-            fn_1_46B4(lbl_801A6410, ((MemcardState*)obj->sub)->value_DC, &lbl_1_data_3C7B8, 0x3DE);
-            ((MemcardState*)obj->sub)->value_DC = 0;
+        if (obj->sub->value_DC != 0) {
+            fn_1_46B4(lbl_801A6410, obj->sub->value_DC, &lbl_1_data_3C7B8, 0x3DE);
+            obj->sub->value_DC = 0;
         }
     }
     obj->field_8 = 0x41;
@@ -1386,8 +1388,11 @@ void fn_1_AD09C(void) {
 /* fzgx:end fn_1_AD09C */
 
 /* fzgx:begin fn_1_AD140 */
+#include "rel/main_rel/globals.h"
+
 extern int fn_1_B7FDC(u8 value);
 
+// Passes the stored memory-card value to the common handler.
 int fn_1_AD140(const u8 *value) {
     return fn_1_B7FDC(value[0]);
 }
@@ -1621,12 +1626,13 @@ u8 fn_1_B7CD4(void) {
 
 /* fzgx:begin fn_1_B7E14 */
 #include "rel/main_rel/memcard.h"
+#include "rel/main_rel/globals.h"
 
-// Copies the 0x20-byte memory-card state into the global work area.
+// Copy the caller's memory-card state into the global work area.
 void fn_80083D6C(void *dst, const void *src, int size);
 
-void fn_1_B7E14(void *arg) {
-    fn_80083D6C(lbl_1_bss_716C8.pad_54, arg, 0x20);
+void fn_1_B7E14(void *state) {
+    fn_80083D6C(lbl_1_bss_716C8.pad_54, state, 0x20);
 }
 /* fzgx:end fn_1_B7E14 */
 
@@ -1653,19 +1659,12 @@ int fn_1_B7E48(void) {
 /* fzgx:end fn_1_B7E48 */
 
 /* fzgx:begin fn_1_B7E98 */
+#include "rel/main_rel/memcard.h"
 #include "rel/main_rel/globals.h"
-
-typedef struct {
-    u8 unk_0;
-    s8 unk_1;
-    u8 pad_2[0x9e];
-} MemcardEntry;
-
-extern MemcardEntry lbl_1_bss_716C8[];
 
 // Return whether the indexed memory-card entry is not in the unavailable state.
 int fn_1_B7E98(int index) {
-    return lbl_1_bss_716C8[index].unk_1 != -3;
+    return (s8)lbl_1_bss_716C8.pad_A0[index * 0xa0 - 0x9f] != -3;
 }
 /* fzgx:end fn_1_B7E98 */
 
@@ -1736,6 +1735,7 @@ void fn_1_B7FDC(void) {
 /* fzgx:end fn_1_B7FDC */
 
 /* fzgx:begin fn_1_B800C */
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/memcard.h"
 
 extern void *lbl_801A6410;
@@ -1750,7 +1750,7 @@ int fn_1_B800C(int index) {
     Obj_1_bss_716C8 *slot;
 
     slot = (Obj_1_bss_716C8 *)((u8 *)&lbl_1_bss_716C8 + index * 0xa0);
-    slot->unk_C = fn_1_45D0(*(void **)&lbl_801A6410, 0xA000, &lbl_1_data_3C7B8, 0x256D);
+    slot->unk_C = fn_1_45D0(lbl_801A6410, 0xA000, &lbl_1_data_3C7B8, 0x256D);
     for (;;) {
         result = fn_8002DFE0(index, slot->unk_C, 0);
         if (result == -1) {
@@ -1758,7 +1758,7 @@ int fn_1_B800C(int index) {
         }
         if (result != 0 && result != -6) {
             if (slot->unk_C != 0) {
-                fn_1_46B4(*(void **)&lbl_801A6410, slot->unk_C, &lbl_1_data_3C7B8, 0x2573);
+                fn_1_46B4(lbl_801A6410, slot->unk_C, &lbl_1_data_3C7B8, 0x2573);
                 slot->unk_C = 0;
             }
             return result;
@@ -1775,7 +1775,7 @@ int fn_1_B800C(int index) {
 #include "rel/main_rel/memcard.h"
 
 extern int fn_8002E0C4(int);
-extern void fn_1_46B4(void *arg0, u32 arg1, void *arg2, u32 arg3);
+extern void fn_1_46B4(void *arg0, u32 arg1, Obj_1_data_3C7B8 *arg2, u32 arg3);
 extern void *lbl_801A6410;
 
 // Wait for the card operation, then release its temporary result.
@@ -1783,7 +1783,10 @@ void fn_1_B80F0(int index) {
     Obj_1_bss_716C8 *entry =
         (Obj_1_bss_716C8 *)((u8 *)&lbl_1_bss_716C8 + index * 0xa0);
 
-    while (fn_8002E0C4(index) == -1) {
+    for (;;) {
+        if (fn_8002E0C4(index) != -1) {
+            break;
+        }
     }
 
     if (entry->unk_C != 0) {
@@ -1818,32 +1821,24 @@ void fn_1_B9C0C(void) {
 extern u32 lbl_801A6410;
 extern void fn_1_46B4(u32, u32, Obj_1_data_3C7B8 *, u32);
 
-typedef struct {
-    u8 pad_0[1];
-    u8 unk_1;
-    u8 unk_2;
-    u8 pad_3[0x21];
-    u32 unk_24;
-    u32 unk_28;
-    u32 unk_2C;
-} Fn1B9C38Entry;
-
-// Clears the selected memory-card entry table, saving each populated entry first.
+// Saves populated entries, then clears their status and payload fields.
 void fn_1_B9C38(s32 index) {
-    Fn1B9C38Entry *entry;
+    Obj_1_bss_77380 *entry;
+    u8 *entry_bytes;
     s32 i;
 
-    entry = (Fn1B9C38Entry *)((u8 *)&lbl_1_bss_77380 + index * 0x1800);
+    entry = (Obj_1_bss_77380 *)((u8 *)&lbl_1_bss_77380 + index * 0x1800);
     for (i = 0; i < 0x7f; i++) {
+        entry_bytes = (u8 *)entry;
         if (entry->unk_2C != 0) {
             fn_1_46B4(lbl_801A6410, entry->unk_2C, &lbl_1_data_3C7B8, 0x2776);
         }
-        entry->unk_1 = 0;
-        entry->unk_2 = 0;
+        entry_bytes[1] = 0;
+        entry_bytes[2] = 0;
         entry->unk_24 = 0;
         entry->unk_28 = 0;
         entry->unk_2C = 0;
-        entry = (Fn1B9C38Entry *)((u8 *)entry + 0x30);
+        entry = (Obj_1_bss_77380 *)(entry_bytes + 0x30);
     }
 }
 /* fzgx:end fn_1_B9C38 */
@@ -1913,8 +1908,8 @@ extern u8 lbl_1_data_3D124[19];
 
 // Initializes the memory-card state and restores the persistent card data.
 void fn_1_C34F0(void) {
-    Obj_1_bss_718C0_At0 *base;
-    u8 *ptr;
+    Obj_1_bss_718C0_At0 *card_buffer;
+    u8 *serialized_data;
 
     fn_1_F755C(lbl_1_bss_718E0.unk_2);
     fn_80008BA8(lbl_1_data_2AC0, (u8 *)&lbl_1_bss_718E0 + 0x8, 0x40);
@@ -1926,13 +1921,13 @@ void fn_1_C34F0(void) {
 
     fn_1_A6840(lbl_1_bss_718E0.unk_3 <= 1 ? lbl_1_bss_718E0.unk_3 : 1);
 
-    base = lbl_1_bss_718C0.unk_0;
-    ptr = (u8 *)base + 0x4;
-    fn_80008BA8(&lbl_1_bss_8B3A0.unk_9F, ptr, 0x4);
-    fn_80008BA8(&lbl_1_bss_8B3A0.unk_8C, ptr + 0x4, 0x6);
-    fn_80008BA8((u8 *)&lbl_1_bss_8B3A0 + 0xC, ptr + 0xA, 0x80);
+    card_buffer = lbl_1_bss_718C0.unk_0;
+    serialized_data = (u8 *)card_buffer + 0x4;
+    fn_80008BA8(&lbl_1_bss_8B3A0.unk_9F, serialized_data, 0x4);
+    fn_80008BA8(&lbl_1_bss_8B3A0.unk_8C, serialized_data + 0x4, 0x6);
+    fn_80008BA8((u8 *)&lbl_1_bss_8B3A0 + 0xC, serialized_data + 0xA, 0x80);
 
-    if ((u32)(ptr + 0x8A - ((u8 *)lbl_1_bss_718C0.unk_0 + 0x4)) != 0x8A) {
+    if ((u32)(serialized_data + 0x8A - ((u8 *)lbl_1_bss_718C0.unk_0 + 0x4)) != 0x8A) {
         fn_8000C49C(&lbl_1_data_3C7B8, 0x3532, (const char *)lbl_1_data_3D124);
     }
     fn_1_F79C8();
@@ -1940,6 +1935,7 @@ void fn_1_C34F0(void) {
 /* fzgx:end fn_1_C34F0 */
 
 /* fzgx:begin fn_1_C36EC */
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/memcard.h"
 
 extern void fn_80008BA8(void *dst, const void *src, u32 size);

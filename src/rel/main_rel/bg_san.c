@@ -16,14 +16,14 @@ void fn_1_DA7B8(void) {
 #include "rel/main_rel/bg_san.h"
 
 extern u32 fn_1_58C4(void);
-extern void fn_1_DAB1C(Obj_1_data_2A7E0_At3C *obj);
+extern void fn_1_DAB1C(Obj_1_data_2A7E0_At3C *state);
 
 // Advances the background state when the scene transition is ready.
 void fn_1_DA9F0(void) {
-    Obj_1_data_2A7E0_At3C *obj = lbl_1_data_2A7E0.unk_3C;
+    Obj_1_data_2A7E0_At3C *state = lbl_1_data_2A7E0.unk_3C;
 
     if (fn_1_58C4() == 1) {
-        fn_1_DAB1C(obj);
+        fn_1_DAB1C(state);
     }
 }
 /* fzgx:end fn_1_DA9F0 */
@@ -134,12 +134,12 @@ void fn_1_DAEF8(void) {
 
 /* fzgx:begin fn_1_DAEFC */
 extern s32 fn_1_5910(void);
-extern void *fn_1_9D260(void);
+extern void *fn_1_9D260(Obj_1_data_2A7E0 *arg0);
 extern void fn_1_DB198(void *arg0, void *arg1);
 extern s16 fn_1_9AD88(void);
 extern s16 fn_1_7B054(void);
 extern s16 fn_1_3F0C8(void);
-extern f32 lbl_1_rodata_663C;
+extern const f32 lbl_1_rodata_663C;
 extern void fn_1_1067A8(void *arg0, f32 arg1, f32 arg2);
 
 // Initializes the current background object and updates it for the active state.
@@ -149,7 +149,7 @@ void fn_1_DAEFC(void) {
 
     slot = fn_1_5910();
     background = lbl_1_data_2A7E0.unk_3C;
-    fn_1_DB198(background, fn_1_9D260());
+    fn_1_DB198(background, fn_1_9D260(&lbl_1_data_2A7E0));
     fn_1_9AD88();
     if (fn_1_7B054() == 42) {
         if (fn_1_3F0C8() != 39) {
@@ -297,22 +297,22 @@ void fn_1_5948(s32);
 void fn_1_DC648(Obj_1_data_2A7E0_At3C *);
 void fn_1_627C(s32);
 
-// Initializes the scene data and updates each active scene entry.
+// Initializes scene data, then refreshes every active scene entry.
 void fn_1_DC268(void) {
-    Obj_1_data_2A7E0_At3C *obj;
-    s32 i;
-    s32 count;
+    Obj_1_data_2A7E0_At3C *scene_data;
+    s32 entry_index;
+    s32 entry_count;
 
-    obj = lbl_1_data_2A7E0.unk_3C;
+    scene_data = lbl_1_data_2A7E0.unk_3C;
     fn_1_9AD54();
-    count = fn_1_9D260();
+    entry_count = fn_1_9D260();
     fn_1_DCB10();
-    fn_1_DC454(obj, count);
-    count = fn_1_58C4();
-    for (i = 0; i < count; i++) {
-        fn_1_5948(i);
-        fn_1_DC648(obj);
-        fn_1_627C(i);
+    fn_1_DC454(scene_data, entry_count);
+    entry_count = fn_1_58C4();
+    for (entry_index = 0; entry_index < entry_count; entry_index++) {
+        fn_1_5948(entry_index);
+        fn_1_DC648(scene_data);
+        fn_1_627C(entry_index);
     }
 }
 /* fzgx:end fn_1_DC268 */

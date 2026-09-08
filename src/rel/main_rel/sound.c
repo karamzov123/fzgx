@@ -47,18 +47,18 @@ extern int fn_1_3FC38(void);
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/sound.h"
 
-extern void *lbl_801A6410;
+extern u32 lbl_801A6410;
 extern u32 fn_1_44A4(void);
-extern void *fn_80008E84(void *arg);
-extern u32 fn_1_45D0(void *arg0, void *arg1, u32 *arg2, int arg3);
+extern u32 fn_80008E84(u32 arg);
+extern u32 fn_1_45D0(u32 sound_system, void *resource, u32 *resource_data, int size);
 
 // Initialize the sound resource and register it with the sound system.
 u32 fn_1_9FE74(void *arg) {
     u32 result;
 
-    lbl_1_bss_6EA9C = (u32)fn_80008E84((void *)fn_1_44A4());
+    lbl_1_bss_6EA9C = fn_80008E84(fn_1_44A4());
     result = fn_1_45D0(lbl_801A6410, arg, &lbl_1_data_33F1C, 0x94);
-    fn_80008E84((void *)lbl_1_bss_6EA9C);
+    fn_80008E84(lbl_1_bss_6EA9C);
     return result;
 }
 /* fzgx:end fn_1_9FE74 */
@@ -68,16 +68,17 @@ u32 fn_1_9FE74(void *arg) {
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/sound.h"
 
-extern u32 lbl_801A6410;
-extern u32 fn_80008E84();
+extern void *lbl_801A6410;
+extern void *fn_80008E84();
 extern void fn_1_44A4(void);
-extern void fn_1_46B4(u32, void *, void *, u32);
+extern void fn_1_46B4(void *, void *, void *, u32);
 
+// Initialize the sound resource and register it with the sound manager.
 void fn_1_9FEE8(void *arg) {
     fn_1_44A4();
-    lbl_1_bss_6EA9C = fn_80008E84();
+    lbl_1_bss_6EA9C = (u32)fn_80008E84();
     fn_1_46B4(lbl_801A6410, arg, &lbl_1_data_33F1C, 0x9c);
-    fn_80008E84(lbl_1_bss_6EA9C);
+    fn_80008E84((void *)lbl_1_bss_6EA9C);
 }
 /* fzgx:end fn_1_9FEE8 */
 
@@ -144,6 +145,7 @@ typedef struct SoundState {
     u8 unk_7ac;
 } SoundState;
 
+// Initialize the sound resources once the sound system is enabled.
 void fn_1_A0C68(void) {
     SoundState *state;
     s32 i;

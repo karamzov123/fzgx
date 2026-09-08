@@ -103,17 +103,18 @@ void fn_1_35174(void) {
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/game.h"
 
-extern int fn_1_3EFA8(void* arg0);
+extern int fn_1_3EFA8(u32* arg0);
 extern u16 lbl_1_bss_26B7A[3];
 extern u16 lbl_1_bss_26300;
 
-void fn_1_35178(void* arg0) {
+// Decrement the counter when the associated state is active.
+void fn_1_35178(u32* arg0) {
     if (fn_1_3EFA8(arg0) == 0) {
         switch (lbl_1_bss_3C2A) {
         case 0x29:
             if ((lbl_1_bss_3C30.unk_0 & 0x00000800) == 0) {
                 if (lbl_1_bss_3C30.unk_5 == 2) {
-                    u32 value = 0 - *(u32*)arg0;
+                    u32 value = -(*arg0);
 
                     if (lbl_1_bss_3C30.unk_14A8 != value) {
                         lbl_1_bss_3C30.unk_14A8 = value;
@@ -123,7 +124,7 @@ void fn_1_35178(void* arg0) {
                         lbl_1_bss_3C30.unk_5 = 6;
                     }
                 }
-                *(u32*)arg0 = *(u32*)arg0 - 1;
+                *arg0 -= 1;
             }
             break;
         default:
@@ -193,7 +194,7 @@ extern void fn_1_4310(s32 value);
 extern void fn_1_4811C(s32 value);
 extern void fn_1_A8F78(void);
 
-// Resets the active state, clears its companion state, and starts the next phase.
+// Initializes both state objects before starting the next phase.
 void fn_1_3E5D0(void) {
     fn_1_435C(lbl_1_bss_25B88.unk_0);
     fn_1_4310(0);
@@ -821,8 +822,6 @@ void fn_1_40F54(void *arg0) {
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/game.h"
 
-// Initializes the shared resource handles when the subsystem is enabled.
-
 extern u32 lbl_801A6CE0;
 extern u32 lbl_1_bss_38454;
 extern u32 fn_80070DE0(void (*)(void));
@@ -830,20 +829,22 @@ extern void fn_1_40F54(void);
 extern u32 fn_1_D3884(u8 *);
 extern u32 fn_1_D358C(u8 *, u32);
 
+// Initializes the shared resource handles when the subsystem is enabled.
 void fn_1_40F78(void) {
-    u32 resource;
-    u32 data;
+    u32 resource_handle;
+    u32 decoded_data;
 
     if ((lbl_801A6CE0 & 1) == 0) {
         lbl_1_bss_38450 = 0;
         lbl_1_bss_38454 = 0;
-    } else {
-        resource = fn_80070DE0(fn_1_40F54);
-        data = fn_1_D3884(lbl_1_data_66C0);
-        lbl_1_bss_38450 = data;
-        lbl_1_bss_38454 = fn_1_D358C(lbl_1_data_66D0, data);
-        fn_80070DE0((void (*)(void))resource);
+        return;
     }
+
+    resource_handle = fn_80070DE0(fn_1_40F54);
+    decoded_data = fn_1_D3884(lbl_1_data_66C0);
+    lbl_1_bss_38450 = decoded_data;
+    lbl_1_bss_38454 = fn_1_D358C(lbl_1_data_66D0, decoded_data);
+    fn_80070DE0((void (*)(void))resource_handle);
 }
 /* fzgx:end fn_1_40F78 */
 
@@ -854,7 +855,7 @@ void fn_1_40F78(void) {
 
 extern void fn_1_465D0(u8 *arg0, u32 arg1);
 
-// Initialize both shared data blocks.
+// Initialize the two shared data blocks with their default state.
 void fn_1_4100C(void) {
     fn_1_465D0(lbl_1_data_66E0, 1);
     fn_1_465D0(lbl_1_data_66F0, 1);
@@ -916,10 +917,10 @@ void fn_1_41134(void *unused, char *value) {
 #include "types.h"
 #include "rel/main_rel/globals.h"
 
-extern u32 lbl_1_data_66A0[8];
-extern void fn_1_411D4(u32 index, u32 value);
+extern char *lbl_1_data_66A0[8];
+extern void fn_1_411D4(u32 index, char *message);
 
-// Look up the indexed entry and pass it to the follow-up handler.
+// Passes the selected message entry to the follow-up handler.
 void fn_1_411A4(u32 index) {
     fn_1_411D4(index, lbl_1_data_66A0[index]);
 }

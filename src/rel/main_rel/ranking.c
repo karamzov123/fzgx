@@ -260,25 +260,15 @@ void fn_1_156730(s32 index) {
 }
 /* fzgx:end fn_1_156730 */
 
-/* fzgx:begin fn_1_156754 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
-typedef struct {
-    u8 pad_0[0x4];
-    u32 unk_4;
-    u8 pad_8[0x48];
-} RankingEntry;
-
-extern RankingEntry lbl_1_bss_8F428;
+/* fzgx:begin fn_1_156754 */
 extern void fn_1_1569E8(void *entry);
 extern void fn_1_1568C4(void *entry);
 
-// Updates the ranking entry when it is not marked as unused.
+// Processes the indexed ranking entry unless its status marks it as unused.
 void fn_1_156754(s32 index) {
-    RankingEntry *entry = &lbl_1_bss_8F428 + index;
+    u32 *entry = &lbl_1_bss_8F428.unk_0 + index * 0x14;
 
-    if (entry->unk_4 + 0x10000 != 0xffff) {
+    if (entry[1] + 0x10000 != 0xffff) {
         fn_1_1569E8(entry);
         fn_1_1568C4(entry);
     }
@@ -418,6 +408,7 @@ extern void fn_1_157FC8(void);
 extern s32 fn_1_157920(void);
 extern void fn_1_4060(void);
 
+// Run the ranking state handler, then perform the common post-update step.
 void fn_1_1578C4(void) {
     s8 state;
 

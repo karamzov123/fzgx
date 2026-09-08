@@ -116,7 +116,6 @@ void fn_1_4954C(f32 value) {
 #include "rel/main_rel/globals.h"
 
 extern void fn_1_4955C(f32 value1, f32 value2);
-
 extern f32 lbl_1_data_1AEA8[616];
 
 void fn_1_4955C(f32 value1, f32 value2) {
@@ -554,14 +553,14 @@ void fn_1_50164(f32 a, f32 b, f32 c, f32 d) {
 
 extern u16 lbl_1_bss_4C678[0xC034];
 
-// Store the six font-related halfwords in the global font state.
-void fn_1_51564(u16 a, u16 b, u16 c, u16 d, u16 e, u16 f) {
-    lbl_1_bss_4C678[0xC02e] = a;
-    lbl_1_bss_4C678[0xC02f] = b;
-    lbl_1_bss_4C678[0xC030] = c;
-    lbl_1_bss_4C678[0xC031] = d;
-    lbl_1_bss_4C678[0xC032] = e;
-    lbl_1_bss_4C678[0xC033] = f;
+// Update the six halfwords that define the active font state.
+void fn_1_51564(u16 first, u16 second, u16 third, u16 fourth, u16 fifth, u16 sixth) {
+    lbl_1_bss_4C678[0xC02e] = first;
+    lbl_1_bss_4C678[0xC02f] = second;
+    lbl_1_bss_4C678[0xC030] = third;
+    lbl_1_bss_4C678[0xC031] = fourth;
+    lbl_1_bss_4C678[0xC032] = fifth;
+    lbl_1_bss_4C678[0xC033] = sixth;
 }
 /* fzgx:end fn_1_51564 */
 
@@ -651,44 +650,43 @@ void fn_1_5417C(void *arg) {
 #include "types.h"
 #include "rel/main_rel/globals.h"
 
-extern void *fn_1_541A8(void *arg, s32 value);
-
-extern u8 lbl_1_data_1C5DC[4];
+extern u32 lbl_1_data_1C5DC;
 extern u32 lbl_1_data_1C5EC[25];
+extern void *fn_1_541A8(u32 number, s32 column);
 
-// Select the localized form for a value and column, including the special 10–20 range.
-void *fn_1_541A8(void *arg, s32 value) {
-    s32 special;
+// Select the localized form for a number and column, including the special 10–20 range.
+void *fn_1_541A8(u32 number, s32 column) {
+    s32 is_special;
     u32 remainder;
-    s32 index;
+    s32 row_index;
     u32 *row;
 
-    if (arg == 0) {
-        return lbl_1_data_1C5DC;
+    if (number == 0) {
+        return &lbl_1_data_1C5DC;
     }
 
-    remainder = (u32)arg - ((u32)arg / 100) * 100;
-    special = 0;
+    remainder = number - (number / 100) * 100;
+    is_special = 0;
     if (remainder >= 10 && remainder <= 20) {
-        special = 1;
+        is_special = 1;
     }
 
-    if (special != 0) {
-        index = 3;
+    if (is_special != 0) {
+        row_index = 3;
     } else {
-        arg = (void *)(remainder - (remainder / 10) * 10);
-        special = 0;
-        if ((u32)arg >= 4 || arg == 0) {
-            special = 1;
+        number = remainder - (remainder / 10) * 10;
+        is_special = 0;
+        if (number >= 4 || number == 0) {
+            is_special = 1;
         }
-        index = 3;
-        if (special == 0) {
-            index = (u32)arg - 1;
+        row_index = 3;
+        if (is_special == 0) {
+            row_index = number - 1;
         }
     }
 
-    row = &lbl_1_data_1C5EC[index * 6];
-    return (void *)row[value < 0 ? 0 : (value > 5 ? 5 : value)];
+    row = &lbl_1_data_1C5EC[row_index * 6];
+    return (void *)row[column < 0 ? 0 : (column > 5 ? 5 : column)];
 }
 /* fzgx:end fn_1_541A8 */
 
@@ -1179,9 +1177,11 @@ extern void fn_1_45730(void);
 extern void fn_1_45B2C(void);
 extern void fn_1_458A0(void);
 extern void fn_1_45850(void);
+extern void fn_1_45850(void);
 extern void fn_1_565F4(void);
 extern void fn_80070D60(void *);
 
+ // Registers the font initialization callbacks with the shared dispatcher.
 void fn_1_565F8(void) {
     void (*functions[6])(void);
 
