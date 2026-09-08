@@ -1,4 +1,9 @@
 #include "types.h"
 
-// fn_1_566A0: main_rel .text:0x000566A0 size 0x3C
-// Carved by fzgx. Replace this file's body with the matching C.
+extern void *lbl_801A6410;
+extern char lbl_1_data_1C650[9];
+extern void fn_1_46B4(void *, void *, char *, int);
+
+void fn_1_566A0(void *arg) {
+    fn_1_46B4(lbl_801A6410, arg, lbl_1_data_1C650, 0x501);
+}
