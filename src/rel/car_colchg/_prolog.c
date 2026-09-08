@@ -1,4 +1,6 @@
 #include "types.h"
+#include "rel/car_colchg/globals.h"
+
 extern struct Struct_lbl_1_bss_D58 lbl_1_bss_D58;
 extern u16 lbl_1_bss_96A;
 s32 fn_1_4C10(void);
