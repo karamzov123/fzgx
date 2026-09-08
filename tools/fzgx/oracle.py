@@ -326,3 +326,52 @@ def unit_fully_matches(res: CheckResult) -> Optional[str]:
     if bad_data:
         return "data sections differ: " + ", ".join(bad_data)
     return None
+
+
+def byte_diff(project: Project, module: str) -> Dict[str, object]:
+    """Compare the linked module against retail: differing bytes by function, plus section
+    size differences. Cheap, and it names the culprit when a hash check fails."""
+    import struct as _struct
+    from collections import Counter
+    cfg = (project.config_dir / "config.yml").read_text().splitlines()
+    obj = None
+    for i, line in enumerate(cfg):
+        if line.strip() == f"name: {module}":
+            obj = next(l.split(":", 1)[1].strip() for l in reversed(cfg[:i]) if l.startswith("- object:"))
+            break
+    if obj is None:
+        return {"error": f"{module} not in config.yml"}
+    retail = (ROOT / "orig" / project.version / obj).read_bytes()
+    ours_path = project.module_build_dir(module) / f"{module}.rel" if module != "main" else project.build_dir / "main.dol"
+    if not ours_path.exists():
+        return {"error": f"{ours_path} missing"}
+    ours = ours_path.read_bytes()
+    out: Dict[str, object] = {"size_retail": len(retail), "size_ours": len(ours)}
+    if module == "main":
+        return out
+    def secs(d):
+        n, off = _struct.unpack(">II", d[12:20])
+        return [(i,) + _struct.unpack(">II", d[off + 8 * i:off + 8 * i + 8]) for i in range(n)]
+    sa, sb = secs(retail), secs(ours)
+    out["sections"] = [(i, hex(oa & ~3), sza, szb) for (i, oa, sza), (_, ob, szb) in zip(sa, sb) if sza != szb or (oa & ~3) != (ob & ~3)]
+    to, ts = sa[1][1] & ~3, sa[1][2]
+    funcs = project.functions(module)
+    def fn_at(off):
+        lo, hi = 0, len(funcs) - 1
+        while lo <= hi:
+            m = (lo + hi) // 2
+            f = funcs[m]
+            if f.addr <= off < f.end:
+                return f.name
+            if off < f.addr:
+                hi = m - 1
+            else:
+                lo = m + 1
+        return None
+    c = Counter()
+    for i in range(to, min(to + ts, len(retail), len(ours))):
+        if retail[i] != ours[i]:
+            c[fn_at(i - to)] += 1
+    out["text_diffs"] = c.most_common(12)
+    out["other_diffs"] = sum(1 for i in range(min(len(retail), len(ours))) if retail[i] != ours[i]) - sum(c.values())
+    return out

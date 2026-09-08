@@ -79,18 +79,35 @@ def finish(p: Project, module: str) -> Dict[str, object]:
     tus = _tus(p, module)
     results = [finish_tu(p, tu) for tu in tus]
     queue = [s for r in results for s in r["queue"]]
+    diag: Dict[str, object] = {}
+    restored: List[str] = []
     with oracle.build_lock():
         cp = oracle.configure(p)
         linked = cp.returncode == 0 and oracle.relink(p).returncode == 0
         if not linked:
-            # nothing in this pass may leave the tree red: back to the committed TU files
-            for tu in tus:
+            # name the culprits, restore only their TU files, keep the rest of the pass
+            diag = oracle.byte_diff(p, module)
+            tmap = p.tu_map(module)
+            bad_tus = sorted({f"{p.module_src_prefix(module)}/{tmap[f]}.c" for f, _ in diag.get("text_diffs", []) if f in tmap})
+            if not bad_tus or diag.get("sections"):
+                bad_tus = list(tus)  # a layout shift: no single function to blame
+            for tu in bad_tus:
                 cp = subprocess.run(["git", "show", f"HEAD:src/{tu}"], cwd=ROOT, text=True, capture_output=True)
                 if cp.returncode == 0:
                     (ROOT / "src" / tu).write_text(cp.stdout)
+                    restored.append(tu)
             tufile.regenerate(p)
             oracle.configure(p)
-            oracle.relink(p)
+            linked = oracle.relink(p).returncode == 0
+            if not linked:  # still red: everything back
+                for tu in tus:
+                    cp = subprocess.run(["git", "show", f"HEAD:src/{tu}"], cwd=ROOT, text=True, capture_output=True)
+                    if cp.returncode == 0:
+                        (ROOT / "src" / tu).write_text(cp.stdout)
+                restored = list(tus)
+                tufile.regenerate(p)
+                oracle.configure(p)
+                linked = oracle.relink(p).returncode == 0
     collapsed = [r["tu"] for r in results if r.get("collapsed")]
     if linked:
         files = [str(ROOT / "src" / tu) for tu in tus] + [str(p.units_path), str(p.module_config_dir(module) / "splits.txt")]
@@ -99,6 +116,9 @@ def finish(p: Project, module: str) -> Dict[str, object]:
               f"{len(queue)} queued for revise" + (f", collapsed {', '.join(Path(t).stem for t in collapsed)}" if collapsed else "")
         subprocess.run(["git", "commit", "-q", "-m", msg], cwd=ROOT, capture_output=True)
     return {"ok": linked, "module": module, "tus": len(tus), "queue": queue, "collapsed": collapsed,
+            "restored": restored, "diag": diag,
+            "trials": {r["tu"]: r.get("trial") for r in results if r.get("trial")},
+            "collapse_errors": {r["tu"]: r["collapse_error"] for r in results if r.get("collapse_error")},
             "tidied": sum(r["tidied"] for r in results), "hoisted": sum(r["hoisted"] for r in results),
             "flagged": sum(r["flagged"] for r in results), "unflagged": sum(r["unflagged"] for r in results),
             "results": results}
