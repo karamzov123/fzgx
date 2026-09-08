@@ -252,7 +252,7 @@ def check(p: Project, symbol: str, max_diff_lines: int = 80, versions: Optional[
     res = oracle.check(p, symbol, max_diff_lines, source=src)
     out = res.to_json()
     if res.ok and src is not None:
-        stats = Ledger().bump_checks(key, res.percent)
+        stats = Ledger().bump_checks(key, res.percent_adjusted if res.pool_rows else res.percent)
         out["budget"] = stats
         if stats.get("improved"):
             best = STATE_DIR / "attempts" / f"{key}.best.c"
@@ -274,6 +274,10 @@ def format_check(res: Dict[str, Any]) -> str:
     lines = [f"{res['symbol']}: {res['percent']:.1f}%  unit={res['unit']}  {verdict}"]
     if res["matched"] and res.get("pool_map"):
         lines.append("literal pool: private constants retargeted to the shared retail symbols (" + ", ".join(res["pool"]) + ")")
+    if not res["matched"] and res.get("pool_rows"):
+        lines.append(f"{res['pool_rows']} row(s) marked `p` are literal-pool relocations ({', '.join(res['pool'])}); the tooling "
+                     f"retargets them at submit, so they already count as matching: {res['percent_adjusted']:.1f}% "
+                     "is your real score. Fix only the other marked rows.")
     if res.get("matched_pool"):
         lines.append("pool: the only differences are relocations to shared literal-pool constants whose value "
                      "you reproduce (" + ", ".join(res["pool"]) + "); this counts as a match: call submit.")

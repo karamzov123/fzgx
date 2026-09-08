@@ -48,6 +48,8 @@ class CheckResult:
     # private literal -> retail pooled symbol, applied to the object after compiling (poolfix);
     # with this the function matches outright and links from C
     pool_map: Dict[str, str] = field(default_factory=dict)
+    pool_rows: int = 0               # differing rows that are only pool relocations
+    percent_adjusted: float = 0.0    # match % with the pool rows counted as matching
 
     def to_json(self) -> dict:
         return {k: v for k, v in self.__dict__.items() if not k.startswith("_")}
@@ -91,8 +93,10 @@ def _base_object(project: Project, unit: str) -> Path:
     return project.build_dir / "src" / f"{rest}.o"
 
 
-def _render_diff(left_rows: List[dict], right_rows: List[dict], max_lines: int) -> List[str]:
-    """Side-by-side rendering: `target | ours`, with a marker on differing rows."""
+def _render_diff(left_rows: List[dict], right_rows: List[dict], max_lines: int,
+                 pool_rows: Optional[set] = None) -> List[str]:
+    """Side-by-side rendering: `target | ours`, with a marker on differing rows
+    (`p` = literal-pool relocation the tooling retargets; not yours to fix)."""
     out: List[str] = []
     n = max(len(left_rows), len(right_rows))
     for i in range(n):
@@ -103,6 +107,8 @@ def _render_diff(left_rows: List[dict], right_rows: List[dict], max_lines: int) 
         rf = r.get("instruction", {}).get("formatted", "")
         mark = " " if kind == "DIFF_NONE" else {"DIFF_REPLACE": "~", "DIFF_DELETE": "<", "DIFF_INSERT": ">",
                                                 "DIFF_OP_MISMATCH": "!", "DIFF_ARG_MISMATCH": "?"}.get(kind, "*")
+        if pool_rows and i in pool_rows:
+            mark = "p"
         if kind != "DIFF_NONE" or len(out) < 4:
             out.append(f"{mark} {i * 4:04X}  {lf:<34} | {rf}")
     if len(out) > max_lines:
@@ -162,6 +168,7 @@ def _diff(project: Project, module: str, symbol: str, unit: str, max_diff_lines:
         if sec.get("kind") in ("SECTION_DATA", "SECTION_BSS") and "match_percent" in sec:
             res.data_sections[sec["name"]] = float(sec["match_percent"])
     res.percent = res.symbols.get(symbol, 0.0)
+    res.percent_adjusted = res.percent
     res.matched = res.percent >= 100.0
     if not res.matched:
         lrows = left_syms.get(symbol, {}).get("instructions", [])
@@ -169,51 +176,56 @@ def _diff(project: Project, module: str, symbol: str, unit: str, max_diff_lines:
         if symbol not in right_syms:
             res.diff = [f"(symbol {symbol} not present in our object: define it, check the name)"]
         else:
-            res.diff = _render_diff(lrows, rrows, max_diff_lines)
-            res._pool_pairs = _pool_only(project, module, left, right, lrows, rrows)
+            pool_rows, res._pool_pairs = _pool_rows(project, module, left, right, lrows, rrows)
             res.pool = [d for _, _, d in res._pool_pairs]
-            res.matched_pool = bool(res.pool)
+            res.diff = _render_diff(lrows, rrows, max_diff_lines, pool_rows)
+            # what is left once the pool rows are taken out: what the agent can still act on
+            real = sum(1 for i, (l, r) in enumerate(zip(lrows, rrows))
+                       if (l.get("diff_kind") or "DIFF_NONE") != "DIFF_NONE" and i not in pool_rows)
+            n = max(len(lrows), len(rrows), 1)
+            res.pool_rows = len(pool_rows)
+            res.percent_adjusted = round(100.0 * (n - real - abs(len(lrows) - len(rrows))) / n, 2) if pool_rows else res.percent
+            res.matched_pool = bool(pool_rows) and real == 0 and len(lrows) == len(rrows)
     return res
 
 
-def _pool_only(project: Project, module: str, left: dict, right: dict,
-               lrows: List[dict], rrows: List[dict]) -> List[tuple]:
-    """If every differing row is `same instruction, relocation to a pooled constant (retail)
-    vs. to our private literal with the same bytes`, list (private, pooled, description); else []."""
-    if len(lrows) != len(rrows):
-        return []
+def _pool_rows(project: Project, module: str, left: dict, right: dict,
+               lrows: List[dict], rrows: List[dict]):
+    """Rows that differ only by `relocation to a pooled constant (retail)` vs `relocation to
+    our private literal with the same bytes`. Returns (row indices, [(private, pooled, desc)])."""
     lsyms, rsyms = left.get("symbols", []), right.get("symbols", [])
     syms = project.symbols(module)
-    out: List[tuple] = []
-    for l, r in zip(lrows, rrows):
+    rows: set = set()
+    pairs: List[tuple] = []
+    for i, (l, r) in enumerate(zip(lrows, rrows)):
         if (l.get("diff_kind") or "DIFF_NONE") == "DIFF_NONE" and (r.get("diff_kind") or "DIFF_NONE") == "DIFF_NONE":
             continue
         li, ri = l.get("instruction", {}), r.get("instruction", {})
         lrel, rrel = li.get("relocation"), ri.get("relocation")
         if not lrel or not rrel or lrel.get("type") != rrel.get("type"):
-            return []
-        # identical apart from the relocation target
+            continue
         lp = [x for x in li.get("parts", []) if "reloc" not in json.dumps(x)]
         rp = [x for x in ri.get("parts", []) if "reloc" not in json.dumps(x)]
         if lp != rp:
-            return []
+            continue
         try:
             lname = lsyms[lrel["target_symbol"]]["name"]
             rsym = rsyms[rrel["target_symbol"]]
         except (IndexError, KeyError, TypeError):
-            return []
+            continue
         s = syms.get(lname)
         if not s or s.kind != "object" or s.section not in (".rodata", ".sdata2") or s.size not in (4, 8):
-            return []
+            continue
         retail = project.bytes_at(module, lname)
         ours = b"".join(base64.b64decode(d.get("data", "")) for d in rsym.get("data_diff", []))
         if not retail or ours != retail or not rsym.get("name", "").startswith("@"):
-            return []
+            continue
         v = struct.unpack(">d", retail)[0] if len(retail) == 8 else struct.unpack(">f", retail)[0]
+        rows.add(i)
         pair = (rsym["name"], lname, f"{lname}={v!r}")
-        if pair not in out:
-            out.append(pair)
-    return out
+        if pair not in pairs:
+            pairs.append(pair)
+    return rows, pairs
 
 
 def unit_source_path(project: Project, unit_src: str) -> Path:
