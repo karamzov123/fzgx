@@ -851,17 +851,11 @@ void fn_1_410A0(void) {
 }
 /* fzgx:end fn_1_410A0 */
 
-/* fzgx:begin fn_1_41104 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/game.h"
-
-extern void fn_1_41134(u32 index, char *value);
-
+/* fzgx:begin fn_1_41104 */
 // Forwards the selected message entry to the formatter.
 void fn_1_41104(u32 message_index) {
     char *message = *(char **)(lbl_1_data_66A0 + message_index * sizeof(char *));
-    fn_1_41134(message_index, message);
+    fn_1_41134((void *)message_index, message);
 }
 /* fzgx:end fn_1_41104 */
 

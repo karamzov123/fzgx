@@ -119,16 +119,11 @@ void fn_1_4954C(f32 value) {
 }
 /* fzgx:end fn_1_4954C */
 
-/* fzgx:begin fn_1_4955C noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
-extern void fn_1_4955C(f32 value1, f32 value2);
-extern f32 lbl_1_data_1AEA8[616];
-
+/* fzgx:begin fn_1_4955C */
 void fn_1_4955C(f32 value1, f32 value2) {
-    s16 index = *(s16 *)&lbl_1_bss_4B9CC.unk_C;
-    f32 scale = ((f32 *)lbl_1_data_1AEA8)[index * 14 + 13];
+    s16 index = lbl_1_bss_4B9CC.unk_C;
+    Obj_1_data_1AEA8 *font = (Obj_1_data_1AEA8 *)((u8 *)&lbl_1_data_1AEA8 + index * 0x38);
+    f32 scale = font->unk_34;
 
     // Scale both font dimensions using the active font's metrics.
     lbl_1_bss_4B9CC.unk_1C = value1 * scale;

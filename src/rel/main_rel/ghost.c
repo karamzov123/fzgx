@@ -457,23 +457,20 @@ void ghost_set_record_flag2(s32 arg) {
 }
 /* fzgx:end ghost_set_record_flag2 */
 
-/* fzgx:begin fn_1_F21B8 noprologue */
-#include "types.h"
-
+/* fzgx:begin fn_1_F21B8 */
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 
-extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
-extern u8 lbl_1_bss_7F0C0[];
-
-// Return the record's flag bit after decoding its table position.
+// Return the selected record's second flag bit after decoding its table position.
 s32 fn_1_F21B8(s32 arg) {
     s16 a;
     s16 b;
     s32 index;
+    u8 *flags;
 
     fn_1_12EF80((s16)arg, &a, &b);
     index = (a - 1) * 6 + b;
-    return lbl_1_bss_7F0C0[0x4938 + index] & 4;
+    flags = (u8 *)&lbl_1_bss_7F0C0;
+    return flags[0x4938 + index] & 4;
 }
 /* fzgx:end fn_1_F21B8 */
 
@@ -491,23 +488,20 @@ void fn_1_F220C(s32 arg) {
 }
 /* fzgx:end fn_1_F220C */
 
-/* fzgx:begin fn_1_F2280 noprologue */
-#include "types.h"
-
+/* fzgx:begin fn_1_F2280 */
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
-
-extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
-extern u8 lbl_1_bss_7F0C0[];
 
 // Returns the flag for the state selected by the converted coordinates.
 s32 fn_1_F2280(s32 arg) {
-    s16 a;
-    s16 b;
+    s16 group;
+    s16 entry;
     s32 index;
+    u8 *state_flags;
 
-    fn_1_12EF80((s16)arg, &a, &b);
-    index = (a - 1) * 6 + b;
-    return lbl_1_bss_7F0C0[0x4938 + index] & 8;
+    fn_1_12EF80((s16)arg, &group, &entry);
+    index = (group - 1) * 6 + entry;
+    state_flags = (u8 *)&lbl_1_bss_7F0C0;
+    return state_flags[0x4938 + index] & 8;
 }
 /* fzgx:end fn_1_F2280 */
 

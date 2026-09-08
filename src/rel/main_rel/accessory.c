@@ -77,9 +77,9 @@ void fn_1_109114(AccessoryObject *self) {
 #include "rel/main_rel/globals.h"
 
 // Initializes the accessory object when a caller supplies one.
-void fn_1_10B7D8(void *arg0) {
-    if (arg0 != 0) {
-        fn_1_10846C(arg0);
+void fn_1_10B7D8(void *accessory) {
+    if (accessory != 0) {
+        fn_1_10846C(accessory);
     }
 }
 /* fzgx:end fn_1_10B7D8 */
@@ -247,7 +247,7 @@ s32 fn_1_128B00(s16 value) {
 
 extern u8 lbl_1_data_405C0[8];
 
-// Find the accessory index for a value, returning the entry count when absent.
+// Return the table index for a matching accessory value, or the first unused index.
 u8 fn_1_128DD8(u8 value) {
     u8 index;
 

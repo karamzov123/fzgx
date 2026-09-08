@@ -105,20 +105,14 @@ void *fn_1_72714(u8 slot, u32 subregion) {
 }
 /* fzgx:end fn_1_72714 */
 
-/* fzgx:begin fn_1_72768 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/screen_effect.h"
-
-extern void fn_1_727BC(u8 arg0, u32 arg1);
-
-// Select the requested screen-effect entry and store its value.
-void fn_1_72768(u8 arg0, u32 arg1) {
+/* fzgx:begin fn_1_72768 */
+// Initialize the selected screen-effect slot with its requested value.
+void fn_1_72768(u32 arg0, u32 arg1) {
     Obj_1_bss_6C8EC *entry;
     u32 index;
 
     fn_1_727BC(arg0, 0);
-    index = arg0;
+    index = (u8)arg0;
     entry = (Obj_1_bss_6C8EC *)((u8 *)&lbl_1_bss_6C8EC + index * 0x10c);
     entry->unk_104 = arg1;
 }

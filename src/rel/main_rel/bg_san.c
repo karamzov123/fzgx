@@ -6,7 +6,7 @@
 
 extern void fn_1_DAAFC(Obj_1_data_2A7E0_At3C *obj);
 
-// Sends the active background object's state to the next processing stage.
+// Passes the active background state to the next processing stage.
 void fn_1_DA7B8(void) {
     fn_1_DAAFC(lbl_1_data_2A7E0.unk_3C);
 }
@@ -18,12 +18,12 @@ void fn_1_DA7B8(void) {
 extern u32 fn_1_58C4(void);
 extern void fn_1_DAB1C(Obj_1_data_2A7E0_At3C *state);
 
-// Advances the background state when the scene transition is ready.
+// Runs the transition handler once the scene is ready.
 void fn_1_DA9F0(void) {
-    Obj_1_data_2A7E0_At3C *state = lbl_1_data_2A7E0.unk_3C;
+    Obj_1_data_2A7E0_At3C *background_state = lbl_1_data_2A7E0.unk_3C;
 
     if (fn_1_58C4() == 1) {
-        fn_1_DAB1C(state);
+        fn_1_DAB1C(background_state);
     }
 }
 /* fzgx:end fn_1_DA9F0 */
@@ -45,7 +45,7 @@ extern void fn_1_FB9C0(u32 value);
 extern void fn_1_103F10(void *state);
 extern void fn_1_DAB3C(Obj_1_data_2A7E0_At3C *state);
 
-// Initializes the background state and advances its active substate.
+// Loads the background resources when needed, then advances the active state.
 void fn_1_DAA58(void) {
     Obj_1_data_2A7E0_At3C *state = lbl_1_data_2A7E0.unk_3C;
 
@@ -55,6 +55,7 @@ void fn_1_DAA58(void) {
         fn_1_FB9C0(2);
         fn_1_FB9C0(4);
     }
+
     fn_1_103F10(&state->unk_BD8);
     fn_1_DAB3C(state);
 }
@@ -345,7 +346,7 @@ extern void fn_1_DC6FC(Obj_1_data_2A7E0_At3C *);
 extern void fn_1_DC5E8(Obj_1_data_2A7E0_At3C *, s32);
 extern void fn_1_9AD88(void);
 
-// Updates the current background scene and finalizes its generated data.
+// Refreshes the active background object and commits the generated scene data.
 void fn_1_DC33C(void) {
     Obj_1_data_2A7E0_At3C *obj;
     s32 result;

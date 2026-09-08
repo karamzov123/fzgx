@@ -70,21 +70,18 @@ u32 fn_1_9FE74(void *arg) {
 }
 /* fzgx:end fn_1_9FE74 */
 
-/* fzgx:begin fn_1_9FEE8 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/sound.h"
-
+/* fzgx:begin fn_1_9FEE8 */
 extern void *lbl_801A6410;
 extern void *fn_80008E84();
 extern void fn_1_44A4(void);
-extern void fn_1_46B4(void *, void *, void *, u32);
+extern u32 lbl_1_bss_6EA9C;
+extern u32 lbl_1_data_33F1C;
 
 // Initialize the sound resource and register it with the sound manager.
 void fn_1_9FEE8(void *arg) {
     fn_1_44A4();
     lbl_1_bss_6EA9C = (u32)fn_80008E84();
-    fn_1_46B4(lbl_801A6410, arg, &lbl_1_data_33F1C, 0x9c);
+    fn_1_46B4((u32)lbl_801A6410, arg, &lbl_1_data_33F1C, 0x9c);
     fn_80008E84((void *)lbl_1_bss_6EA9C);
 }
 /* fzgx:end fn_1_9FEE8 */

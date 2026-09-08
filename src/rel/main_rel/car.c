@@ -2859,28 +2859,40 @@ u32 fn_1_8D690(s16 arg0) {
 /* fzgx:end fn_1_8D690 */
 
 /* fzgx:begin fn_1_8D894 */
-void fn_1_8D894(void *arg0) {
+extern u32 lbl_801A6410;
+extern u8 lbl_1_data_1FFF0[12];
+extern void *fn_1_45D0(u32 arg0, s32 arg1, void *arg2, s32 arg3);
+extern void fn_1_C487C(Obj_1_bss_6D838_Target *arg0);
+extern void fn_1_43E8(s32 arg0);
+extern u32 fn_1_3F8C(void *arg0, void *arg1, Obj_1_bss_6D838_Target *arg2, s32 arg3);
+extern void fn_1_43F4(void);
+extern void fn_1_C4ABC(void);
+extern u32 lbl_1_bss_6D86C[34];
+extern u8 lbl_1_bss_6D868;
+
+void fn_1_8D894(Obj_1_bss_6D838_Target *car) {
     u32 value;
     u32 obj;
 
-    value = *(u32 *)arg0;
-    *(u32 *)arg0 = value | 0x04000000;
-    obj = fn_1_45D0(lbl_801A6410, 0x88, lbl_1_data_1FFF0, 0x1CB0);
-    *(u32 *)((u8 *)arg0 + 0x484) = obj;
-    obj = *(u32 *)((u8 *)arg0 + 0x484);
+    // Initialize the car resource and register it when allocation succeeds.
+    value = car->unk_0;
+    car->unk_0 = value | 0x04000000;
+    obj = (u32)fn_1_45D0(lbl_801A6410, 0x88, lbl_1_data_1FFF0, 0x1CB0);
+    car->unk_484 = obj;
+    obj = car->unk_484;
     if (obj == 0) {
-        value = *(u32 *)arg0;
-        *(u32 *)arg0 = value & 0xFBFFFFFF;
+        value = car->unk_0;
+        car->unk_0 = value & 0xFBFFFFFF;
     } else {
         *(u32 *)((u8 *)obj + 0x40) = lbl_801A6410;
-        *((u8 *)arg0 + 0x50E) = 1;
-        fn_1_C487C(arg0);
+        *((u8 *)car + 0x50E) = 1;
+        fn_1_C487C(car);
         fn_1_43E8(1);
-        obj = fn_1_3F8C(lbl_1_data_20700, fn_1_C4ABC, arg0, 3);
-        lbl_1_bss_6D86C[(s8)*((u8 *)arg0 + 0x474)] = obj;
+        obj = fn_1_3F8C(lbl_1_data_20700, fn_1_C4ABC, car, 3);
+        lbl_1_bss_6D86C[(s8)car->unk_474] = obj;
         fn_1_43F4();
-        ((u8 *)&lbl_1_bss_6D868)[(s8)*((u8 *)arg0 + 0x474)] = *(s16 *)((u8 *)arg0 + 4);
-        *((s8 *)arg0 + 0x474) = -1;
+        ((u8 *)&lbl_1_bss_6D868)[(s8)car->unk_474] = car->unk_4;
+        *((s8 *)car + 0x474) = -1;
     }
 }
 /* fzgx:end fn_1_8D894 */

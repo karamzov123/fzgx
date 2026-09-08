@@ -294,27 +294,15 @@ void fn_1_9A0A4(void) {
 }
 /* fzgx:end fn_1_9A0A4 */
 
-/* fzgx:begin fn_1_9A578 noprologue */
-#include "types.h"
-
-// Runs the active burner callback after advancing the burner state.
-extern s16 lbl_1_data_2A7E0;
-extern void fn_1_10302C(void);
-
-typedef void (*fn_1_9A578_callback)(void);
-
-struct fn_1_9A578_entry {
-    u8 pad[8];
-    fn_1_9A578_callback callback;
-    u8 rest[0x18];
-};
-
-extern struct fn_1_9A578_entry lbl_1_data_2ABAC[];
-
+/* fzgx:begin fn_1_9A578 */
+// Advances the burner state and invokes the callback for the active entry.
 void fn_1_9A578(void) {
-    if (lbl_1_data_2A7E0 > 0) {
+    void (**callback)(void);
+
+    if (lbl_1_data_2A7E0.unk_0 > 0) {
         fn_1_10302C();
-        lbl_1_data_2ABAC[lbl_1_data_2A7E0].callback();
+        callback = (void (**)(void))&lbl_1_data_2ABAC;
+        callback[lbl_1_data_2A7E0.unk_0 * 9 + 2]();
     }
 }
 /* fzgx:end fn_1_9A578 */
