@@ -1,5 +1,5 @@
 {
- "generated": 1788897232,
+ "generated": 1788897360,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -8,11 +8,11 @@
    "addr": 0,
    "size": 664,
    "status": "unmatched",
-   "attempts": 0,
+   "attempts": 1,
    "best_percent": 83.16265,
    "claimed_by": null,
    "claimed_at": null,
-   "claim_ttl": 1800,
+   "claim_ttl": null,
    "matched_commit": null,
    "blocked_issue": null,
    "blocked_reason": null,
@@ -241119,6 +241119,25 @@
    "best_body_path": "/Users/rayan/fzgx/.fzgx/attempts/colchg_selcar_init.shadow.1788897228.c",
    "stale_checks": 2,
    "best_in_attempt": 92.30769
+  },
+  {
+   "id": 5768,
+   "symbol": "car_colchg:_prolog",
+   "agent": "car_colchg-pro3-codex-1",
+   "harness": "codex",
+   "model": "gpt-5.6-luna",
+   "started": 1788897238,
+   "ended": 1788897358,
+   "checks": 2,
+   "final_percent": 72.789154,
+   "tokens_in": 137378,
+   "tokens_out": 6451,
+   "cost_usd": 0.017845,
+   "outcome": "released",
+   "notes": "The remaining mismatch is concentrated in compiler-generated loop addressing/register allocation and the lbl_801A6410 argument materialisation; the best saved attempt remains 83.2%.",
+   "best_body_path": "/Users/rayan/fzgx/.fzgx/attempts/car_colchg:_prolog.1788897358.c",
+   "stale_checks": 1,
+   "best_in_attempt": 75.09036
   }
  ],
  "names": [
