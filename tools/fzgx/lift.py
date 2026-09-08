@@ -574,6 +574,15 @@ def apply(p: Project, modules: Optional[List[str]] = None, max_size: int = 160, 
                 r = oracle.check(p, s, 4, source=src)
                 ok_ = r.ok and (r.matched or r.matched_pool) and oracle.unit_fully_matches(r) is None
             results.append((s, size, t, ok_, pct))
+    # near misses get the deterministic fixup (type flips, symbol substitutions, layout edits)
+    from . import fixup
+    fixed = 0
+    for idx, (s, size, t, ok, pct) in enumerate(results):
+        if ok or pct < 90:
+            continue
+        fx = fixup.try_fix(p, s, t, budget_s=10.0)
+        if fx.get("matched") and fx.get("body"):
+            results[idx] = (s, size, fx["body"], True, 100.0); fixed += 1
     matched = [(s, size, t) for s, size, t, ok, _ in results if ok]
     submitted, failed = [], []
     if submit:
@@ -583,6 +592,6 @@ def apply(p: Project, modules: Optional[List[str]] = None, max_size: int = 160, 
             work.write_text(t)
             r = api.submit(p, s, agent="lift", message="lifted from the disassembly (fzgx trivial)", harness="fzgx", model="lift")
             (submitted if r.get("ok") else failed).append(s if r.get("ok") else (s, str(r.get("error"))[:80]))
-    return {"candidates": len(rows), "lifted": len(lifted), "matched": len(matched), "bytes": sum(x[1] for x in matched),
+    return {"candidates": len(rows), "lifted": len(lifted), "matched": len(matched), "fixed": fixed, "bytes": sum(x[1] for x in matched),
             "submitted": len(submitted), "failed": failed[:10],
             "near": sorted(((s, round(pc, 1)) for s, _, _, ok, pc in results if not ok and pc >= 80), key=lambda x: -x[1])[:10]}
