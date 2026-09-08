@@ -1765,3 +1765,36 @@ dol/fn_80023638.c:
 
 dol/fn_80033E20.c:
 	.text       start:0x80033E20 end:0x80033E7C align:4
+
+dol/fn_80008E34.c:
+	.text       start:0x80008E34 end:0x80008E5C align:4
+
+dol/fn_80008E5C.c:
+	.text       start:0x80008E5C end:0x80008E84 align:4
+
+dol/fn_80009CAC.c:
+	.text       start:0x80009CAC end:0x80009CD4 align:4
+
+dol/CARDCheckAsync.c:
+	.text       start:0x8002D634 end:0x8002D65C align:4
+
+dol/stateCoverClosed_CMD.c:
+	.text       start:0x80018620 end:0x80018650 align:4
+
+dol/fn_80006AFC.c:
+	.text       start:0x80006AFC end:0x80006B30 align:4
+
+dol/__CARDSyncCallback.c:
+	.text       start:0x80029828 end:0x8002985C align:4
+
+dol/stateCheckID2.c:
+	.text       start:0x800181E4 end:0x8001821C align:4
+
+dol/fn_800058D8.c:
+	.text       start:0x800058D8 end:0x8000591C align:4
+
+dol/fn_80057728.c:
+	.text       start:0x80057728 end:0x80057774 align:4
+
+dol/fn_800545B0.c:
+	.text       start:0x800545B0 end:0x80054608 align:4
