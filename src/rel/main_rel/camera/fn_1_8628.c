@@ -1,13 +1,7 @@
-#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/camera.h"
 
-typedef struct {
-    u8 pad[2];
-    s16 value;
-    u8 rest[0x1f8];
-} Entry;
-
-extern Entry *lbl_1_bss_F6C;
-
+// Returns the selected camera entry value for an 8-bit camera index.
 s16 fn_1_8628(u32 index) {
-    return lbl_1_bss_F6C[(u8)index].value;
+    return lbl_1_bss_F6C[(u8)index].unk_2;
 }

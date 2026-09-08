@@ -1,3 +1,4 @@
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/camera.h"
 
 extern void fn_8000C49C(u8 *arg0, ...);

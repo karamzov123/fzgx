@@ -1,8 +1,9 @@
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/camera.h"
 
 extern s16 fn_1_6B48(s16 value);
 
-// Returns the camera status after filtering inactive camera states.
+// Return the normalized camera status, treating inactive states as zero.
 s16 fn_1_6A80(void) {
     Obj_1_bss_F68_Target *state = lbl_1_bss_F68;
     s16 value;

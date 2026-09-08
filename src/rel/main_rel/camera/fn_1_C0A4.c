@@ -1,5 +1,6 @@
 #include "types.h"
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/camera.h"
 
 typedef struct {
     u32 unk_0;
@@ -11,14 +12,11 @@ typedef struct {
     u32 unk_18;
     u32 unk_1C;
     u32 unk_20;
-} CameraData;
-
-extern CameraData lbl_1_bss_1018;
-extern CameraData lbl_1_bss_10D8[];
+} CameraSlot;
 
 // Copies the current camera parameters into the selected camera slot.
 void fn_1_C0A4(u8 index) {
-    CameraData *dst = &lbl_1_bss_10D8[index];
+    CameraSlot *dst = (CameraSlot *)&lbl_1_bss_10D8 + index;
 
     dst->unk_0 = lbl_1_bss_1018.unk_0;
     dst->unk_4 = lbl_1_bss_1018.unk_4;
@@ -28,5 +26,5 @@ void fn_1_C0A4(u8 index) {
     dst->unk_14 = lbl_1_bss_1018.unk_14;
     dst->unk_18 = lbl_1_bss_1018.unk_18;
     dst->unk_1C = lbl_1_bss_1018.unk_1C;
-    dst->unk_20 = lbl_1_bss_1018.unk_20;
+    dst->unk_20 = *(u32 *)&lbl_1_bss_1018.unk_20;
 }

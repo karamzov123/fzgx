@@ -5,10 +5,10 @@ typedef struct Camera {
     s16 unk_A4;
 } Camera;
 
-extern void fn_1_AEB8(Camera*);
+extern void fn_1_AEB8(Camera *);
 
-void fn_1_AE10(Camera* camera) {
-    // Reset the camera's transition state before updating it.
+// Resets the camera transition state before refreshing the camera.
+void fn_1_AE10(Camera *camera) {
     camera->unk_A4 = 0;
     fn_1_AEB8(camera);
 }

@@ -2,7 +2,7 @@
 
 extern u8 lbl_1_bss_108C[52];
 
-// Returns the camera state buffer address.
+// Returns the camera state storage used by the surrounding camera code.
 u8* fn_1_D9D8(void) {
     return lbl_1_bss_108C;
 }

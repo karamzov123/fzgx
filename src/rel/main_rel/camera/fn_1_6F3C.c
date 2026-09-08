@@ -1,6 +1,6 @@
 #include "rel/main_rel/globals.h"
 
-// Reports whether the camera state is available and not marked as disabled.
+// Return whether the camera state is active and has the expected mode.
 u32 fn_1_6F3C(void) {
     Obj_1_bss_F68_Target *state = lbl_1_bss_F68;
 

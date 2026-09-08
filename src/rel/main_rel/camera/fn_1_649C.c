@@ -1,4 +1,4 @@
-#include "rel/main_rel/camera.h"
+#include "rel/main_rel/globals.h"
 
 s32 fn_1_649C(void) {
     // Return the camera state byte, or -1 when no camera state is active.

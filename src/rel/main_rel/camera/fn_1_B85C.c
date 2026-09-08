@@ -3,8 +3,8 @@
 extern f32 lbl_1_bss_1040;
 extern f32 lbl_1_bss_1044;
 
-// Store the camera's current float parameters for later camera processing.
-void fn_1_B85C(f32 unk0, f32 unk1) {
-    lbl_1_bss_1040 = unk0;
-    lbl_1_bss_1044 = unk1;
+// Saves the two current camera parameters for later processing.
+void fn_1_B85C(f32 first_parameter, f32 second_parameter) {
+    lbl_1_bss_1040 = first_parameter;
+    lbl_1_bss_1044 = second_parameter;
 }
