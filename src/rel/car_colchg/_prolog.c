@@ -4,8 +4,6 @@
 extern struct Struct_lbl_1_bss_D58 lbl_1_bss_D58;
 extern u16 lbl_1_bss_96A;
 s32 fn_1_4C10(void);
-extern u32 lbl_9_bss_C;
-extern u32 lbl_9_bss_10;
 void fn_1_435C(u32);
 void fn_1_407C(void);
 void fn_1_3CC4(void);

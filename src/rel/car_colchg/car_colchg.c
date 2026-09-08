@@ -1,24 +1,16 @@
 #include "types.h"
 #include "rel/car_colchg/globals.h"
 
-extern char lbl_9_data_2C[17];
 extern void colchg_menu_disp(void);
 void fn_1_426C(s16);
-extern char lbl_9_data_9C[18];
 extern void colchg_ezsel_disp(void);
-extern char lbl_9_data_B0[17];
 extern void colchg_save_disp(void);
 extern u16 lbl_1_bss_968;
 extern struct Struct_lbl_1_bss_D58 lbl_1_bss_D58;
 s32 fn_1_4C10(void);
-extern u32 lbl_9_bss_8;
-extern char lbl_9_data_18C[16];
 void fn_1_A8EB0(s32, s32);
 s32 fn_1_7F49C(s16, s32, void *);
 void fn_1_A8DD4(const char *, ...);
-extern char lbl_9_data_19C[7];
-extern char lbl_9_data_1A4[18];
-extern u32 lbl_9_bss_4;
 void fn_1_80058(s8, struct CarColchgEntry *);
 void fn_1_80C18(u32, struct CarColchgEntry *, s32);
 void fn_1_426C(s16);
@@ -28,16 +20,27 @@ s32 fn_1_7F49C(s16, s32, void *);
 void fn_1_A8DD4(const char *, ...);
 void fn_1_80058(s8, struct CarColchgEntry *);
 void fn_1_80C18(u32, struct CarColchgEntry *, s32);
-extern struct CarColchgEntry lbl_9_data_1B8[];
 extern s16 lbl_1_bss_962;
 extern u32 lbl_1_bss_71688;
 extern u32 lbl_1_bss_7168C;
 extern struct Struct_lbl_1_bss_970 lbl_1_bss_970;
 extern u16 lbl_1_bss_96A;
-extern u32 lbl_9_bss_0;
 extern struct Entry *lbl_1_data_1FB6C[];
+extern u32 lbl_801A6410;
+void fn_1_7FA04(u32);
+void fn_1_8D168(u32);
+void fn_1_435C(u32);
+void fn_1_41A8(void);
+void fn_1_46B4(u32, u32, void *, s32);
+void fn_1_6400(void);
+u16 fn_1_3F8C(char *, void (*)(void), s32, s32);
+void fn_1_4A00(s32, s32, u32);
+extern void fn_9_1BCC(void);
+extern void fn_9_1AC4(void);
 
-/* fzgx:begin _epilog */
+/* fzgx:begin _epilog noprologue */
+#include "types.h"
+
 extern u32 lbl_9_bss_0;
 extern u8 lbl_9_data_4[40];
 extern u32 lbl_801A6410;
@@ -81,7 +84,9 @@ void _epilog(void) {
 }
 /* fzgx:end _epilog */
 
-/* fzgx:begin colchg_menu_init */
+/* fzgx:begin colchg_menu_init noprologue */
+#include "types.h"
+
 extern char lbl_9_data_2C[17];
 extern void colchg_menu_disp(void);
 extern char lbl_9_data_9C[18];
@@ -179,7 +184,6 @@ void fn_9_454(void)
 /* fzgx:begin fn_9_534 */
 extern u32 lbl_9_bss_10;
 extern s16 lbl_9_bss_DC;
-void fn_1_435C(u32);
 
 // Initialize the car color-change state and apply the current selection.
 void fn_9_534(void) {
@@ -188,7 +192,9 @@ void fn_9_534(void) {
 }
 /* fzgx:end fn_9_534 */
 
-/* fzgx:begin fn_9_6F0 */
+/* fzgx:begin fn_9_6F0 noprologue */
+#include "types.h"
+
 extern char lbl_9_data_2C[17];
 extern void colchg_menu_disp(void);
 extern char lbl_9_data_9C[18];
@@ -239,7 +245,6 @@ struct Entry {
     u32 unk4;
     u32 unk8;
 };
-void fn_1_435C(u32);
 
 struct CarColchgState {
     u8 pad0[8];
@@ -266,8 +271,6 @@ void fn_9_A18(void) {
 extern u32 lbl_9_bss_10;
 extern s16 lbl_9_bss_DC;
 
-void fn_1_435C(u32);
-
 // Refresh the collision-change state from the current global settings.
 void fn_9_DC0(void) {
     fn_1_435C(lbl_9_bss_10);
@@ -275,7 +278,9 @@ void fn_9_DC0(void) {
 }
 /* fzgx:end fn_9_DC0 */
 
-/* fzgx:begin colchg_ezsel_init */
+/* fzgx:begin colchg_ezsel_init noprologue */
+#include "types.h"
+
 extern char lbl_9_data_2C[17];
 extern void colchg_menu_disp(void);
 extern char lbl_9_data_9C[18];
@@ -325,8 +330,6 @@ void colchg_ezsel_init(void) {
 extern u32 lbl_9_bss_10;
 extern s16 lbl_9_bss_DC;
 
-void fn_1_435C(u32);
-
 // Initialize the color-change subsystem and apply its current configuration.
 void fn_9_F38(void) {
     fn_1_435C(lbl_9_bss_10);
@@ -334,7 +337,9 @@ void fn_9_F38(void) {
 }
 /* fzgx:end fn_9_F38 */
 
-/* fzgx:begin colchg_save_init */
+/* fzgx:begin colchg_save_init noprologue */
+#include "types.h"
+
 extern char lbl_9_data_B0[17];
 extern void colchg_save_disp(void);
 extern u16 lbl_1_bss_968;
@@ -370,7 +375,6 @@ void fn_9_FD0(void) {
 /* fzgx:begin fn_9_1018 */
 extern u32 lbl_9_bss_10;
 extern s16 lbl_9_bss_DC;
-void fn_1_435C(u32);
 
 // Initializes the color-change subsystem from its configured state.
 void fn_9_1018(void) {
@@ -379,7 +383,9 @@ void fn_9_1018(void) {
 }
 /* fzgx:end fn_9_1018 */
 
-/* fzgx:begin fn_9_1054 */
+/* fzgx:begin fn_9_1054 noprologue */
+#include "types.h"
+
 extern void fn_9_1BCC(void);
 extern u32 lbl_9_bss_10;
 extern u8 lbl_9_data_C4[140];
@@ -448,7 +454,9 @@ void fn_9_10BC(void)
 }
 /* fzgx:end fn_9_10BC */
 
-/* fzgx:begin fn_9_1124 */
+/* fzgx:begin fn_9_1124 noprologue */
+#include "types.h"
+
 extern char lbl_9_data_2C[17];
 extern void colchg_menu_disp(void);
 extern char lbl_9_data_9C[18];
@@ -539,7 +547,14 @@ void fn_9_1BCC(void) {
 }
 /* fzgx:end fn_9_1BCC */
 
-/* fzgx:begin fn_9_1C54 */
+/* fzgx:begin fn_9_1C54 noprologue */
+#include "types.h"
+
+extern struct CarColchgEntry lbl_9_data_1B8[];
+extern s16 lbl_1_bss_962;
+extern u32 lbl_1_bss_71688;
+extern u32 lbl_1_bss_7168C;
+
 struct CarColchgEntry {
     u8 pad[0x20];
     void (*func)(void);
