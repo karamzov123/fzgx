@@ -184,6 +184,11 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
     info = parse_claude(out) if harness == "claude" else parse_codex(out, fast)
     m = RESULT_RE.search(info["text"] or "") or RESULT_RE.search(out)
     outcome = m.group(1) if m else ("timeout" if rc == -9 else "crash")
+    if not m:  # no RESULT line: the agent never finished its loop; do not charge an attempt
+        try:
+            api.abort_attempt(p, symbol, f"{outcome}: agent exited without a result (rc={rc})")
+        except Exception:
+            pass
     if info["model"] and not info["model"].startswith(EXPECTED_MODEL[harness]):
         outcome = f"WRONG-MODEL({info['model']})"
     pct = float(m.group(3)) if m else None

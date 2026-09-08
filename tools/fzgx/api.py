@@ -496,6 +496,23 @@ def release(p: Project, symbol: str, reason: str, harness: Optional[str] = None,
     return out
 
 
+def abort_attempt(p: Project, symbol: str, reason: str) -> Dict[str, Any]:
+    """The agent died (rate limit, timeout) before doing anything: the claim is released and
+    the attempt is not counted, so the next batch picks the function up again."""
+    l = Ledger()
+    key = _key(p, symbol)
+    row = l.get(key)
+    if row is None or row["status"] != "claimed":
+        return {"ok": False, "error": "not claimed"}
+    _discard_work(p, key)
+    with l.db:
+        l.db.execute("UPDATE attempts SET ended=?, outcome='crash', notes=? WHERE symbol=? AND ended IS NULL",
+                     (int(time.time()), reason[:200], key))
+        l.db.execute("UPDATE functions SET status='unmatched', claimed_by=NULL, claimed_at=NULL, "
+                     "attempts=MAX(attempts-1, 0) WHERE symbol=?", (key,))
+    return {"ok": True, "symbol": symbol}
+
+
 # ---------------------------------------------------------------- bookkeeping
 def block(p: Project, symbol: str, reason: str, open_issue: bool = False) -> Dict[str, Any]:
     l = Ledger()

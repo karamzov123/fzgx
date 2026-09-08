@@ -54,9 +54,10 @@ Rules that hold for everyone:
   exist in every module and must be written `module:name` (e.g. `title:_epilog`).
 - Nothing is carved before it matches. A function gets a split range and a unit (an object
   in the link) at `submit`; until then `check` diffs the agent's work copy against the retail
-  auto object that contains the function (symbol-only, two-object objdiff). Reason: the
-  CodeWarrior linker is superlinear in object count, and the DOL link went from 4 s with 60
-  objects to 20 min with 960. Keep DOL units at matched count; watch link time as it grows.
+  auto object that contains the function (symbol-only, two-object objdiff). Reason: units
+  are objects in the link and split ranges in the config; 900 stub units of the DOL made a
+  link run for 20 min (139 real units link in seconds, so it was the stubs' mis-sectioned
+  `.init` range, not the count as such). Keep units at matched count regardless.
 - `fzgx trivial` matches single-`blr` and `li r3,N; blr` functions mechanically
   (419 landed on 2026-09-08); run it before spending agents on tiny functions.
 - Readability tooling: `fzgx tu-organize` (TU directories from `tus.json`),
