@@ -1861,3 +1861,6 @@ dol/fn_80051594.c:
 
 dol/fn_800775EC.c:
 	.text       start:0x800775EC end:0x80077654 align:4
+
+dol/DVDGetDriveStatus.c:
+	.text       start:0x800197F0 end:0x8001989C align:4
