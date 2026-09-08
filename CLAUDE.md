@@ -84,7 +84,8 @@ Rules that hold for everyone:
 - `tools/seeds/asserts.py` → `state/seeds/asserts_<module>.json` (file:line + message per
   assert call); `tools/seeds/debug_strings.py --write` refreshes `tus.json` from `__FILE__`
   anchors (then `fzgx tu-organize` and regenerate headers).
-- Batches: `uv run tools/orchestrate.py --harness codex|claude ...` (headless, one report
+- Batches: `uv run tools/orchestrate.py --harness codex ...` (codex only; tiers: gpt-5.6-luna, then gpt-5.6-terra;
+  Sonnet and Gemini Flash were tried and dropped) (headless, one report
   per batch, `fzgx verify` relinks once at the end). Never use in-process subagents.
 - The orchestrator does three things: pick a pool, run the batch, run the TU-finish round
   (`--finish`, or `--finish-only --module M`). It reads reports. It does not edit blocks,
