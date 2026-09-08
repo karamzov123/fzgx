@@ -789,7 +789,7 @@ typedef struct fn_1_545B8_manager {
 extern void fn_1_547F8(void *node);
 extern void fn_1_54668(void *arg0, u32 arg1, u32 arg2);
 
-// Reset_OSReset the font manager's node list and process any completed nodes.
+// Reset the font manager's node list and process any completed nodes.
 void fn_1_545B8(void) {
     if (((fn_1_545B8_manager *)lbl_801A66CC)->unk_48 >=
         ((fn_1_545B8_manager *)lbl_801A66CC)->unk_44) {

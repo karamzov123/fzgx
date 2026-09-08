@@ -1152,7 +1152,7 @@ typedef struct {
     s32 unk_40;
 } Fn1Acd04Obj;
 
-// Reset_OSReset completed card work and mark the operation ready for its next state.
+// Reset completed card work and mark the operation ready for its next state.
 void fn_1_ACD04(Fn1Acd04Obj *obj) {
     int result;
 
@@ -1701,7 +1701,7 @@ typedef struct {
 extern MemcardState lbl_1_bss_716C8;
 extern s8 lbl_1_bss_7730A;
 
-// Reset_OSReset the memcard state used by the next operation.
+// Reset the memcard state used by the next operation.
 void fn_1_B7F24(void) {
     lbl_1_bss_716C8.unk_50 = 0;
     lbl_1_bss_716C8.unk_F0 = 0;

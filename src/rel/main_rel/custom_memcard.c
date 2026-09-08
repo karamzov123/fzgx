@@ -6,7 +6,7 @@ extern u32 lbl_801A6410;
 extern u8 fn_1_B7C00(void);
 extern s32 fn_1_B7CD4(void);
 extern s32 fn_1_B7C5C(void);
-extern void OSReport_OSError(const char* format, ...);
+extern void OSReport(const char* format, ...);
 extern void fn_1_46B4(u32 arg0, void* arg1, u8* arg2, s32 arg3);
 extern void fn_80008BA8(void*, void*, s32);
 extern u32 lbl_1_bss_8CA6C[1605];
@@ -17,12 +17,12 @@ extern u32 lbl_801A6410;
 extern u8 fn_1_B7C00(void);
 extern s32 fn_1_B7CD4(void);
 extern s32 fn_1_B7C5C(void);
-extern void OSReport_OSError(const char* format, ...);
+extern void OSReport(const char* format, ...);
 extern void fn_80008BA8(void*, void*, s32);
 extern void fn_1_46B4(u32 arg0, void* arg1, u8* arg2, s32 arg3);
 
 /* fzgx:begin fn_1_1312F0 */
-// Reset_OSReset the memcard state after reporting an unavailable card.
+// Reset the memcard state after reporting an unavailable card.
 
 void fn_1_1312F0(void) {
     u8* state = (u8*)&lbl_1_bss_8CA40;
@@ -30,7 +30,7 @@ void fn_1_1312F0(void) {
 
     if (fn_1_B7C00() == 0) {
         if (fn_1_B7CD4() == 0) {
-            OSReport_OSError((const char*)lbl_1_data_40EF8, fn_1_B7C5C());
+            OSReport((const char*)lbl_1_data_40EF8, fn_1_B7C5C());
         }
 
         memcard = *(void**)(state + 0x18);
@@ -46,14 +46,14 @@ void fn_1_1312F0(void) {
 /* fzgx:end fn_1_1312F0 */
 
 /* fzgx:begin fn_1_1314A4 */
-// Reset_OSReset the card state and release the card after an unavailable-card report.
+// Reset the card state and release the card after an unavailable-card report.
 void fn_1_1314A4(void) {
     u8* state = (u8*)&lbl_1_bss_8CA40;
     void* card;
 
     if (fn_1_B7C00() == 0) {
         if (fn_1_B7CD4() == 0) {
-            OSReport_OSError((const char*)lbl_1_data_40EF8, fn_1_B7C5C());
+            OSReport((const char*)lbl_1_data_40EF8, fn_1_B7C5C());
         }
 
         fn_80008BA8(*(void**)(state + 0x10),
@@ -100,7 +100,7 @@ s32 fn_1_1318D4(void) {
 
     if (fn_1_B7CD4() == 0) {
         error = fn_1_B7C5C();
-        OSReport_OSError((const char*)lbl_1_data_40EF8, error);
+        OSReport((const char*)lbl_1_data_40EF8, error);
     }
 
     if (lbl_1_bss_8E384.unk_0 != 0) {

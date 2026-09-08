@@ -566,7 +566,7 @@ typedef struct {
 extern const f32 lbl_1_rodata_99A4;
 extern Obj_1_bss_8E518 lbl_1_bss_8E518;
 
-// Reset_OSReset the static display state to its initial values.
+// Reset the static display state to its initial values.
 void fn_1_14A17C(void) {
     lbl_1_bss_8E518.unk_20 = 0;
     lbl_1_bss_8E518.unk_18 = lbl_1_rodata_99A4;
@@ -1190,7 +1190,7 @@ void fn_1_150500(void) {
 extern void fn_1_150C8C(Obj_1_data_2A7E0_At3C *obj);
 extern void fn_1_150F30(Obj_1_data_2A7E0_At3C *obj);
 
-// Reset_OSReset the active object's counters and re-run its two setup passes.
+// Reset the active object's counters and re-run its two setup passes.
 void fn_1_150518(void) {
     Obj_1_data_2A7E0_At3C *obj = lbl_1_data_2A7E0.unk_3C;
 
@@ -1339,7 +1339,7 @@ typedef struct StaticDisp {
     s32 unk_272c;
 } StaticDisp;
 
-// Reset_OSReset the display state before rebuilding its static entries.
+// Reset the display state before rebuilding its static entries.
 void fn_1_150F30(StaticDisp *self) {
     self->unk_2728 = 0;
     self->unk_272c = -1;

@@ -252,7 +252,7 @@ void fn_1_A8EB0(int arg0, int arg1) {
 /* fzgx:end fn_1_A8EB0 */
 
 /* fzgx:begin fn_1_A8EF8 */
-// Reset_OSReset the current selection before applying the two provided values.
+// Reset the current selection before applying the two provided values.
 void fn_1_A8EF8(u16 arg0, u16 arg1) {
     fn_1_A9420(0);
     fn_1_A9464(arg0, arg1);

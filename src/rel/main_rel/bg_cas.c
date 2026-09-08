@@ -70,7 +70,7 @@ void fn_1_FB9C0(int index) {
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/bg_cas.h"
 
-// Reset_OSReset the per-slot flags and enable the flags associated with the selected slot.
+// Reset the per-slot flags and enable the flags associated with the selected slot.
 void fn_1_FB9DC(int index) {
     u32 slot = index & 0xff;
     Obj_1_bss_84454 *state =

@@ -100,7 +100,7 @@ void fn_1_105724(void) {
 /* fzgx:end fn_1_105724 */
 
 /* fzgx:begin fn_1_105744 */
-// Reset_OSReset the shared background state to its initial sentinel and zero values.
+// Reset the shared background state to its initial sentinel and zero values.
 void fn_1_105744(void) {
     lbl_1_bss_854B8.unk_C = -1;
     lbl_1_bss_854B8.unk_0 = 0;

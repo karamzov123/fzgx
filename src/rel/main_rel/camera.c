@@ -24,7 +24,7 @@ extern void fn_1_A6FE8(void);
 extern void fn_1_8D08(GameCameraEntry *value);
 extern f32 lbl_1_bss_1040;
 extern f32 lbl_1_bss_1044;
-extern void OSReport_OSError(const unsigned char *, ...);
+extern void OSReport(const unsigned char *, ...);
 extern u8 lbl_1_bss_103C[4];
 extern u8 lbl_1_bss_108C[52];
 extern u8 lbl_1_bss_1014;
@@ -33,7 +33,7 @@ extern s8 fn_1_86624(void);
 extern s8 fn_1_86634(s32 index);
 extern void OSPanic(u8 *file, int line, u8 *message, ...);
 extern void fn_1_8A0C(s16 index);
-extern void OSReport_OSError(const unsigned char *, ...);
+extern void OSReport(const unsigned char *, ...);
 
 extern f32 lbl_1_rodata_2E0[32];
 extern f32 lbl_8006D6FC(f32 *value, void *target);
@@ -615,7 +615,7 @@ void camera_save_slot(u8 index) {
 /* fzgx:begin camera_report_position */
 // Reports the camera's current position values for debugging.
 void camera_report_position(void) {
-    OSReport_OSError(lbl_1_data_4128, lbl_1_bss_10D8.unk_10,
+    OSReport(lbl_1_data_4128, lbl_1_bss_10D8.unk_10,
              lbl_1_bss_10D8.unk_14, lbl_1_bss_10D8.unk_18);
 }
 /* fzgx:end camera_report_position */
@@ -623,7 +623,7 @@ void camera_report_position(void) {
 /* fzgx:begin fn_1_C304 */
 // Reports the camera parameters and caller-supplied value for debugging.
 void fn_1_C304(s32 arg) {
-    OSReport_OSError(lbl_1_data_4198,
+    OSReport(lbl_1_data_4198,
              lbl_1_bss_10D8.unk_4, lbl_1_bss_10D8.unk_8,
              lbl_1_bss_10D8.unk_C, lbl_1_bss_10D8.unk_10,
              lbl_1_bss_10D8.unk_14, lbl_1_bss_10D8.unk_18,

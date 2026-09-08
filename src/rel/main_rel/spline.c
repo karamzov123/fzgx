@@ -853,7 +853,7 @@ extern void fn_1_9A508(Obj_1_data_2A7E0 *arg0);
 extern void fn_1_FB0B4(Obj_1_bss_84428 *data);
 extern void fn_1_FB180(int *value);
 
-// Reset_OSReset spline state while preserving the active spline entry.
+// Reset spline state while preserving the active spline entry.
 void fn_1_FA75C(void) {
     s32 spline_index;
     Obj_1_data_2A7E0_At3C *obj;

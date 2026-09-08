@@ -323,7 +323,7 @@ void fn_1_12F17C(void) {
 /* fzgx:end fn_1_12F17C */
 
 /* fzgx:begin fn_1_12F194 */
-// Reset_OSReset the archived state counters and values.
+// Reset the archived state counters and values.
 void fn_1_12F194(void) {
     lbl_1_bss_8B3A0.unk_120 = 0;
     lbl_1_bss_8B3A0.unk_F0 = 0;

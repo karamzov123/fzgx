@@ -14,7 +14,7 @@ extern u32 lbl_1_bss_7B19C[2];
 extern u32 lbl_801A6410[];
 extern void fn_1_46B4(u32, u32, void *, u32);
 extern void fn_1_C1394(void);
-extern void OSReport_OSError(const char *, ...);
+extern void OSReport(const char *, ...);
 extern void fn_1_49410(void);
 extern void fn_1_495FC(void);
 extern const f32 lbl_1_rodata_6D20;
@@ -34,7 +34,7 @@ extern void fn_1_F1950(void);
 extern u32 fn_8002071C(void *arg);
 extern void fn_800206FC(u32 arg);
 extern u32 ARGetDMAStatus(void);
-extern void DCFlushRange_OSCache(void *addr, u32 size);
+extern void DCFlushRange(void *addr, u32 size);
 extern u32 lbl_1_bss_7C848[2];
 extern u8 lbl_1_bss_7C8CD;
 extern u32 lbl_1_bss_7C948;
@@ -44,7 +44,7 @@ extern u32 lbl_1_bss_7ED58[158];
 
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 
-extern void OSReport_OSError(const char *, ...);
+extern void OSReport(const char *, ...);
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 
 extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
@@ -141,7 +141,7 @@ void fn_1_EF860(void) {
     if (!fn_1_B7C00()) {
         if (!fn_1_B7CD4()) {
             value = fn_1_B7C5C();
-            OSReport_OSError((const char *)(base + 0x3ac), value);
+            OSReport((const char *)(base + 0x3ac), value);
         }
         if (lbl_1_bss_7B19C[0] != 0) {
             fn_1_46B4(lbl_801A6410[0], lbl_1_bss_7B19C[0],
@@ -296,7 +296,7 @@ void fn_1_F1960(void *arg0, void *arg1, u32 arg2) {
     lbl_1_bss_7ECFC.unk_0 = 0;
     while (ARGetDMAStatus() != 0) {
     }
-    DCFlushRange_OSCache(arg1, arg2);
+    DCFlushRange(arg1, arg2);
     fn_800205A0(temp, 1, 0, 1, arg1, arg0, arg2, fn_1_F1950);
     flag = &lbl_1_bss_7ECFC.unk_0;
     while ((s32)*flag == 0) {
@@ -482,7 +482,7 @@ void fn_1_F220C(s32 arg) {
 
     fn_1_12EF80((s16)arg, &a, &b);
     index = (a - 1) * 6 + b;
-    OSReport_OSError((const char *)lbl_1_data_3E8A0, a, b, index);
+    OSReport((const char *)lbl_1_data_3E8A0, a, b, index);
     ((u8 *)&lbl_1_bss_7F0C0)[0x4938 + index] |= 8;
 }
 /* fzgx:end fn_1_F220C */
