@@ -380,6 +380,13 @@ def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
     res = oracle.check(p, symbol, max_diff_lines, source=src)
     reason = oracle.unit_fully_matches(res)
     if _is_revise(agent):
+        # a rewrite is only worth keeping if it also compiles under the file's prologue:
+        # that is what the revise pass exists to achieve
+        if not reason and src is not None:
+            conflict = _prologue_conflict(p, key, unit_src)
+            if conflict:
+                oracle.compile_unit(p, res.unit, unit_src, src)
+                reason = "PROLOGUE CONFLICT (fix the declaration, then submit again):\n" + conflict
         if reason:
             _discard_work(p, key)
             l.finish(key, "released", "unmatched", notes=f"revise rejected: {reason}", model=model,
