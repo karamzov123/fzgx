@@ -196,6 +196,39 @@ void fn_1_72980(Fn_1_72980_Obj *arg0) {
 }
 /* fzgx:end fn_1_72980 */
 
+/* fzgx:begin fn_1_76448 noprologue */
+#include "types.h"
+
+extern u32 fn_8003526C(u32, u32);
+extern u32 fn_80074300(u32, u32, u32, u32);
+extern u32 fn_80074438(u32, u32, u32, u32);
+extern u32 lbl_1_data_1D960;
+extern u32 lbl_1_data_1D9B8;
+
+struct fn_1_76448_Arg0 {
+    u8 pad_0[0xA0];
+    u32 unk_A0[1];
+    u8 pad_A4[0x38];
+    u32 unk_DC;
+    u8 pad_E0[0x18];
+    s16 unk_F8;
+};
+
+void fn_1_76448(struct fn_1_76448_Arg0 *arg0, u32 arg1) {
+    u32 v0;
+    s32 v1;
+    u8 v2;
+    u32 v3;
+    v0 = (arg1 & 0xFF);
+    v1 = (arg0->unk_DC * 6);
+    v2 = *(u8 *)((u8 *)((u8 *)&lbl_1_data_1D9B8 + v1) + v0);
+    v3 = (u32)((u8 *)&lbl_1_data_1D960 + (v2 << 3));
+    fn_80074300((arg0->unk_F8 & 0xFFFF), (*(s16 *)((u8 *)(u32)arg0 + 250) & 0xFFFF), (*(s16 *)((u8 *)(u32)arg0 + 252) & 0xFFFF), (*(s16 *)((u8 *)(u32)arg0 + 254) & 0xFFFF));
+    fn_80074438((*(s16 *)((u8 *)(u32)arg0 + 256) & 0xFFFF), (*(s16 *)((u8 *)(u32)arg0 + 258) & 0xFFFF), *(u32 *)((u8 *)v3 + 4), (*(u32 *)((u8 *)(u32)arg0 + 244) & 0xFF));
+    fn_8003526C(arg0->unk_A0[v0], 0);
+}
+/* fzgx:end fn_1_76448 */
+
 /* fzgx:begin fn_1_76650 */
 typedef struct fn_1_76650_ScreenEffect {
     u8 pad_00[0xa0];

@@ -1027,3 +1027,30 @@ dol/fn_8004B974.c:
 
 dol/fn_80019C48.c:
 	.text       start:0x80019C48 end:0x80019C50 align:4
+
+dol/fn_800288B4.c:
+	.text       start:0x800288B4 end:0x800288C4 align:4
+
+dol/fn_800454B4.c:
+	.text       start:0x800454B4 end:0x800454C4 align:4
+
+dol/fn_80006DE8.c:
+	.text       start:0x80006DE8 end:0x80006DFC align:4
+
+dol/fn_80071470.c:
+	.text       start:0x80071470 end:0x80071484 align:4
+
+dol/fn_8004AE78.c:
+	.text       start:0x8004AE78 end:0x8004AE94 align:4
+
+dol/fn_80050F74.c:
+	.text       start:0x80050F74 end:0x80050F90 align:4
+
+dol/fn_800209DC.c:
+	.text       start:0x800209DC end:0x800209FC align:4
+
+dol/fn_8004E204.c:
+	.text       start:0x8004E204 end:0x8004E238 align:4
+
+dol/fn_80022E68.c:
+	.text       start:0x80022E68 end:0x80022EA4 align:4

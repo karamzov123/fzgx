@@ -266,6 +266,31 @@ void fn_1_98640(Obj_1_data_27DE0 *obj) {
 }
 /* fzgx:end fn_1_98640 */
 
+/* fzgx:begin fn_1_98804 noprologue */
+#include "types.h"
+
+extern struct fn_1_98804_lbl_1_bss_6EA04 lbl_1_bss_6EA04;
+
+struct fn_1_98804_Arg0 {
+    u32 unk_0;
+    u32 unk_4;
+};
+struct fn_1_98804_lbl_1_bss_6EA04 {
+    u32 unk_0;
+};
+
+void fn_1_98804(struct fn_1_98804_Arg0 *arg0) {
+    u32 v0;
+    v0 = *(u32 *)((u8 *)lbl_1_bss_6EA04.unk_0 + 4);
+    arg0->unk_4 = v0;
+    arg0->unk_0 = lbl_1_bss_6EA04.unk_0;
+    if (v0 != 0) {
+    *(u32 *)((u8 *)v0 + 0) = (u32)arg0;
+    }
+    *(u32 *)((u8 *)lbl_1_bss_6EA04.unk_0 + 4) = (u32)arg0;
+}
+/* fzgx:end fn_1_98804 */
+
 /* fzgx:begin fn_1_98840 */
 typedef struct Node {
     struct Node *prev;

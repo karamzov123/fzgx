@@ -523,6 +523,31 @@ u32 fn_1_8627C(s32 index) {
 }
 /* fzgx:end fn_1_8627C */
 
+/* fzgx:begin fn_1_862A8 noprologue */
+#include "types.h"
+
+extern u32 lbl_1_bss_6D838;
+
+struct fn_1_862A8_Arg1 {
+    u32 unk_0;
+    u32 unk_4;
+    u32 unk_8;
+};
+
+u32 fn_1_862A8(u32 arg0, struct fn_1_862A8_Arg1 *arg1) {
+    u32 v0;
+    u32 v1;
+    u32 v2;
+    v0 = (lbl_1_bss_6D838 + (arg0 * 1568));
+    v1 = *(u32 *)((u8 *)v0 + 444);
+    v2 = *(u32 *)((u8 *)v0 + 448);
+    arg1->unk_0 = v1;
+    arg1->unk_4 = v2;
+    arg1->unk_8 = *(u32 *)((u8 *)v0 + 452);
+    return v1;
+}
+/* fzgx:end fn_1_862A8 */
+
 /* fzgx:begin fn_1_8636C */
 // Dispatches the argument based on the indexed car entry's state.
 void fn_1_8636C(int index, void *arg) {
@@ -607,6 +632,31 @@ s8 fn_1_86690(s8 index) {
     return lbl_1_bss_6D838[index].unk_6;
 }
 /* fzgx:end fn_1_86690 */
+
+/* fzgx:begin fn_1_867CC noprologue */
+#include "types.h"
+
+extern u32 lbl_1_bss_6D838;
+
+struct fn_1_867CC_Arg1 {
+    u32 unk_0;
+    u32 unk_4;
+    u32 unk_8;
+};
+
+u32 fn_1_867CC(u32 arg0, struct fn_1_867CC_Arg1 *arg1) {
+    u32 v0;
+    u32 v1;
+    u32 v2;
+    v0 = (lbl_1_bss_6D838 + (arg0 * 1568));
+    v1 = *(u32 *)((u8 *)v0 + 1184);
+    v2 = *(u32 *)((u8 *)v0 + 1188);
+    arg1->unk_0 = v1;
+    arg1->unk_4 = v2;
+    arg1->unk_8 = *(u32 *)((u8 *)v0 + 1192);
+    return v1;
+}
+/* fzgx:end fn_1_867CC */
 
 /* fzgx:begin fn_1_867F8 */
 // Return the indexed car's stored float value.

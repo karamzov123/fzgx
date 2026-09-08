@@ -4694,3 +4694,15 @@ rel/main_rel/_prolog/fn_1_4030.c:
 
 rel/main_rel/spline/fn_1_FA1A8.c:
 	.text       start:0x000FA1A8 end:0x000FA1D8 align:4
+
+rel/main_rel/car/fn_1_862A8.c:
+	.text       start:0x000862A8 end:0x000862D4 align:4
+
+rel/main_rel/car/fn_1_867CC.c:
+	.text       start:0x000867CC end:0x000867F8 align:4
+
+rel/main_rel/burner/fn_1_98804.c:
+	.text       start:0x00098804 end:0x00098840 align:4
+
+rel/main_rel/screen_effect/fn_1_76448.c:
+	.text       start:0x00076448 end:0x00076504 align:4
