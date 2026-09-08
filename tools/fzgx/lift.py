@@ -1061,6 +1061,8 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     frame = True; continue
                 regs[a[0]] = local_at(off_, WIDTH[mn], t); rtype[a[0]] = t; frame = True
                 continue
+            if mn == "stw" and a and a[0] == "r0" and a[1] == "0x4(r1)" and i > 0 and ins[i - 1][0] == "mflr":
+                frame = True; continue  # the 1.2.5n prologue saves LR before it moves the stack pointer
             if mn in STORE_T and a and a[1].endswith("(r1)"):
                 off_ = _imm(a[1][:-4]); t = STORE_T[mn]
                 if off_ in saved_slots or off_ >= frame_size or a[0] == "r0" and off_ > frame_size:
@@ -1072,8 +1074,6 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 continue  # callee-saved float registers
             if mn in ("stmw", "lmw"):
                 frame = True; continue  # the callee-saved block save/restore
-            if mn == "stw" and a and a[0] == "r0" and a[1] == "0x4(r1)" and i > 0 and ins[i - 1][0] == "mflr":
-                frame = True; continue  # the 1.2.5n prologue saves LR before it moves the stack pointer
             if mn in ("crclr", "crset") or mn == "nop":
                 if mn == "crclr":
                     variadic_next[0] = True  # `crclr cr1eq`: the callee is variadic (no float varargs)
