@@ -91,19 +91,18 @@ def prepare(p: Project, symbol: str) -> Dict[str, object]:
         return {"ok": False, "error": "unknown symbol"}
     key = p.key(sym)
     unit_src = p.unit_of(sym)
-    if not unit_src:
-        r = api.carve_many(p, [symbol])
-        unit_src = p.unit_of(sym)
-        if not unit_src:
-            return {"ok": False, "error": f"carve failed: {r}"}
     text = _attempt_text(p, key)
     if not text or sym.name not in text:
         return {"ok": False, "error": "no saved attempt that defines the function"}
-    flags, mw = _flags(p, sym.module, unit_src)
-    unit = p.objdiff_unit_name(sym.module, unit_src)
-    target = ROOT / p.objdiff_units().get(unit, {}).get("target_path", "")
+    if unit_src:
+        flags, mw = _flags(p, sym.module, unit_src)
+        unit = p.objdiff_unit_name(sym.module, unit_src)
+        target = ROOT / p.objdiff_units().get(unit, {}).get("target_path", "")
+    else:  # nothing is carved before a match: the retail auto object holds the function
+        flags, mw = oracle.module_flags(p, sym.module)
+        target = p.target_object_for(sym) or Path("/nonexistent")
     if not target.exists():
-        return {"ok": False, "error": f"no retail object for {unit} (run ninja)"}
+        return {"ok": False, "error": f"no retail object for {sym.name} (run ninja)"}
     d = STATE_DIR / "permute" / key.replace(":", "__")
     if d.exists():
         shutil.rmtree(d)
@@ -119,7 +118,7 @@ def prepare(p: Project, symbol: str) -> Dict[str, object]:
     cp = subprocess.run(["sh", str(d / "compile.sh"), str(d / "base.c"), "", str(d / "base.o")],
                         cwd=ROOT, text=True, capture_output=True, timeout=120)
     if cp.returncode != 0:
-        raw.write_text(_assemble(p, unit_src, text))
+        raw.write_text(_assemble(p, unit_src, text) if unit_src else text)
         try:
             _preprocess(p, mw, flags, raw, d / "base.c")
         except RuntimeError as e:
