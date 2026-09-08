@@ -11212,6 +11212,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/effect/fn_1_59078.c",
+    "symbols": [
+      "fn_1_59078"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/effect.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/effect/fn_1_59290.c",
     "symbols": [
       "fn_1_59290"
@@ -13072,6 +13083,34 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/font/fn_1_4CDE4.c",
+    "symbols": [
+      "fn_1_4CDE4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/font.c",
+    "pool": {
+      "@6": "lbl_1_rodata_10E0"
+    }
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/font/fn_1_4CE48.c",
+    "symbols": [
+      "fn_1_4CE48"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/font.c",
+    "pool": {
+      "@11": "lbl_1_rodata_10F8"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/font/fn_1_4D0D4.c",
     "symbols": [
       "fn_1_4D0D4"
@@ -13281,6 +13320,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/font/fn_1_4E0A4.c",
+    "symbols": [
+      "fn_1_4E0A4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/font.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/font/fn_1_4E0F4.c",
     "symbols": [
       "fn_1_4E0F4"
@@ -13452,6 +13502,31 @@
     "pool": {
       "@10": "lbl_1_rodata_2778"
     }
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/font/fn_1_521B8.c",
+    "symbols": [
+      "fn_1_521B8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/font.c",
+    "pool": {
+      "@9": "lbl_1_rodata_2778"
+    }
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/font/fn_1_52250.c",
+    "symbols": [
+      "fn_1_52250"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/font.c"
   },
   {
     "module": "main_rel",
@@ -13634,6 +13709,17 @@
     "source": "rel/main_rel/font/fn_1_547F8.c",
     "symbols": [
       "fn_1_547F8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/font.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/font/fn_1_54848.c",
+    "symbols": [
+      "fn_1_54848"
     ],
     "status": "matching",
     "mw_version": null,
@@ -13854,6 +13940,17 @@
     "source": "rel/main_rel/font/fn_1_56298.c",
     "symbols": [
       "fn_1_56298"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/font.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/font/fn_1_5631C.c",
+    "symbols": [
+      "fn_1_5631C"
     ],
     "status": "matching",
     "mw_version": null,

@@ -114,6 +114,50 @@ void fn_1_58D38(void) {
 }
 /* fzgx:end fn_1_58D38 */
 
+/* fzgx:begin fn_1_59078 */
+extern int fn_1_3FC8C(void);
+extern int fn_1_3FC58(void);
+extern void *memcpy(void *, const void *, u32);
+
+s16 fn_1_59078(Obj_1_bss_6C84C_Target *arg0) {
+    Obj_1_bss_6C84C_Target *obj;
+    s32 i;
+
+    if (fn_1_3FC8C() != 0) {
+        return -1;
+    }
+    if (fn_1_3FC58() != 0) {
+        return -1;
+    }
+
+    obj = lbl_1_bss_6C84C;
+    for (i = 0; i < 0xbe; i++, obj++) {
+        if ((s8)obj->unk_0 == 0) {
+            obj->unk_0 = 1;
+            // Skip the exhaustion path when a free slot is found.
+            goto slot_found;
+        }
+    }
+    i = -1;
+slot_found:
+    if (i < 0) {
+        return -1;
+    }
+
+    obj = lbl_1_bss_6C84C + i;
+    memcpy(obj, arg0, 0xe8);
+    obj->unk_0 = 1;
+    obj->unk_2 = i;
+    ((void (**)(Obj_1_bss_6C84C_Target *))lbl_1_data_1D1D8)[obj->unk_C](obj);
+    obj->unk_4 = lbl_1_bss_6C850.unk_0;
+    lbl_1_bss_6C850.unk_0++;
+    if (lbl_1_bss_6C850.unk_0 < 0) {
+        lbl_1_bss_6C850.unk_0 = 0;
+    }
+    return obj->unk_4;
+}
+/* fzgx:end fn_1_59078 */
+
 /* fzgx:begin fn_1_59290 */
 void fn_1_59290(void) {
     u8 buffer1[0xe8];

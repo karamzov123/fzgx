@@ -362,6 +362,60 @@ void fn_1_4BD48(void) {
 }
 /* fzgx:end fn_1_4BD48 */
 
+/* fzgx:begin fn_1_4CDE4 noprologue */
+#include "types.h"
+
+extern u32 lbl_1_bss_4B9CC[23];
+extern u32 lbl_1_data_1AEA8[616];
+extern f64 lbl_1_rodata_10E0[3];
+
+typedef struct {
+    u8 pad_0[4];
+    u8 value1;
+    u8 value2;
+    u8 pad_6[0x2e];
+} FontEntry;
+
+void fn_1_4CDE4(f32 *x, f32 *y) {
+    FontEntry *entry;
+    s16 index;
+
+    index = *(s16 *)((u8 *)lbl_1_bss_4B9CC + 0xc);
+    entry = (FontEntry *)((u8 *)lbl_1_data_1AEA8 + index * 0x38);
+    *x = (f32)(u32)entry->value1;
+    *y = (f32)(u32)entry->value2;
+}
+/* fzgx:end fn_1_4CDE4 */
+
+/* fzgx:begin fn_1_4CE48 noprologue */
+#include "types.h"
+#include "rel/main_rel/font.h"
+
+extern f32 fn_1_4B1D4(s32, Obj_1_bss_4B9CC *);
+extern f64 lbl_1_rodata_10F8[688];
+extern void fn_1_4A0D8(Obj_1_bss_4B9CC *);
+
+void fn_1_4CE48(Obj_1_bss_4B9CC *obj, f32 limit) {
+    f32 saved;
+    f32 first;
+    f32 adjusted;
+    s32 count;
+
+    saved = lbl_1_bss_4B9CC.unk_1C;
+    first = fn_1_4B1D4(1, obj);
+    count = (s32)fn_1_4B1D4(3, obj);
+    count = count - 1;
+    adjusted = lbl_1_bss_4B9CC.unk_3C * (f32)count;
+    adjusted = first + adjusted;
+    if (adjusted > limit) {
+        lbl_1_bss_4B9CC.unk_1C =
+            lbl_1_bss_4B9CC.unk_1C * (limit / adjusted);
+    }
+    fn_1_4A0D8(obj);
+    lbl_1_bss_4B9CC.unk_1C = saved;
+}
+/* fzgx:end fn_1_4CE48 */
+
 /* fzgx:begin fn_1_4D0D4 */
 void fn_1_4D0D4(u32 *object, f32 value) {
     u32 data = *object;
@@ -494,6 +548,35 @@ void fn_1_4DE44(void) {
     }
 }
 /* fzgx:end fn_1_4DE44 */
+
+/* fzgx:begin fn_1_4E0A4 */
+typedef struct FontMetric {
+    f32 value;
+    u8 pad[0x54];
+} FontMetric;
+
+int fn_1_4E0A4(u16 *left, u16 *right) {
+    u16 left_index;
+    FontMetric *metrics;
+    u16 right_index;
+    f32 left_value;
+    f32 right_value;
+
+    left_index = *left;
+    metrics = (FontMetric *)(*(u32 *)&lbl_1_data_1C504 + 0xc);
+    right_index = *right;
+
+    left_value = metrics[left_index].value;
+    right_value = metrics[right_index].value;
+    if (left_value > right_value) {
+        return -1;
+    }
+    if (left_value == right_value) {
+        return 0;
+    }
+    return 1;
+}
+/* fzgx:end fn_1_4E0A4 */
 
 /* fzgx:begin fn_1_4E0F4 */
 void fn_1_4E0F4(void) {
@@ -785,6 +868,48 @@ f32 fn_1_520F8(s32 value) {
 }
 /* fzgx:end fn_1_520F8 */
 
+/* fzgx:begin fn_1_521B8 noprologue */
+#include "types.h"
+
+extern s8 fn_1_A5DC4(s32 value);
+extern s32 lbl_1_bss_4E6A8;
+extern f64 lbl_1_rodata_2778[2];
+extern f32 lbl_1_rodata_2788[6];
+
+f32 fn_1_521B8(s32 value) {
+    if (fn_1_A5DC4(value) && lbl_1_bss_4E6A8 != 0) {
+        return lbl_1_rodata_2788[0] * (f32)value;
+    }
+    return (f32)value;
+}
+/* fzgx:end fn_1_521B8 */
+
+/* fzgx:begin fn_1_52250 */
+struct fn_1_52250_Arg0 {
+    u8 pad_0[0x54];
+    f32 unk_54;
+};
+
+struct fn_1_52250_Arg1 {
+    f32 unk_0;
+    u8 pad_4[0x8];
+    f32 unk_C;
+};
+
+void fn_1_52250(struct fn_1_52250_Arg0 *arg0, struct fn_1_52250_Arg1 *arg1) {
+    f32 addend;
+    f32 current;
+
+    current = arg1->unk_0;
+    addend = arg0->unk_54;
+    current = current + addend;
+    arg1->unk_0 = current;
+    current = arg1->unk_C;
+    current = current + addend;
+    arg1->unk_C = current;
+}
+/* fzgx:end fn_1_52250 */
+
 /* fzgx:begin fn_1_52B68 */
 void fn_1_52B68(void *arg0, void *arg1) {
     fn_1_52BF8(arg0, arg1, 0);
@@ -1038,6 +1163,28 @@ void fn_1_547F8(fn_1_547F8_node *node) {
     }
 }
 /* fzgx:end fn_1_547F8 */
+
+/* fzgx:begin fn_1_54848 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/font.h"
+
+typedef struct fn_1_54848_FontState {
+    u8 pad_1a0[0x1a0];
+    u32 unk_1a0;
+    u32 unk_1a4;
+    u32 unk_1a8;
+    u32 unk_1ac;
+} fn_1_54848_FontState;
+
+// Volatile preserves the retail's repeated global-pointer loads.
+extern volatile fn_1_54848_FontState *lbl_801A66CC;
+
+void fn_1_54848(void) {
+    lbl_801A66CC->unk_1a0 = lbl_801A66CC->unk_1a4;
+    lbl_801A66CC->unk_1ac = lbl_801A66CC->unk_1a8;
+}
+/* fzgx:end fn_1_54848 */
 
 /* fzgx:begin fn_1_54868 noprologue */
 #include "types.h"
@@ -1294,6 +1441,19 @@ void fn_1_56298(f32 value0, f32 value1, f32 value2, f32 value3) {
     fn_80074C74(&lbl_1_bss_6C7A4.unk_4);
 }
 /* fzgx:end fn_1_56298 */
+
+/* fzgx:begin fn_1_5631C noprologue */
+#include "types.h"
+#include "rel/main_rel/font.h"
+
+extern void fn_80074C74(const u32 *value);
+
+void fn_1_5631C(const u32 *value) {
+    u32 *dst = (u32 *)((u8 *)&lbl_1_bss_6C7A4 + 4);
+    *(volatile u32 *)dst = *value; // Volatile preserves the retail store's address-before-load order.
+    fn_80074C74(value);
+}
+/* fzgx:end fn_1_5631C */
 
 /* fzgx:begin fn_1_5634C */
 void fn_1_5634C(u8 value) {

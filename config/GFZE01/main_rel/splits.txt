@@ -4649,3 +4649,27 @@ rel/main_rel/camera/fn_1_C038.c:
 
 rel/main_rel/_prolog/fn_1_4730.c:
 	.text       start:0x00004730 end:0x000048B0 align:4
+
+rel/main_rel/effect/fn_1_59078.c:
+	.text       start:0x00059078 end:0x000591A0 align:4
+
+rel/main_rel/font/fn_1_4CE48.c:
+	.text       start:0x0004CE48 end:0x0004CF3C align:4
+
+rel/main_rel/font/fn_1_4CDE4.c:
+	.text       start:0x0004CDE4 end:0x0004CE48 align:4
+
+rel/main_rel/font/fn_1_4E0A4.c:
+	.text       start:0x0004E0A4 end:0x0004E0F4 align:4
+
+rel/main_rel/font/fn_1_521B8.c:
+	.text       start:0x000521B8 end:0x00052250 align:4
+
+rel/main_rel/font/fn_1_52250.c:
+	.text       start:0x00052250 end:0x00052270 align:4
+
+rel/main_rel/font/fn_1_54848.c:
+	.text       start:0x00054848 end:0x00054868 align:4
+
+rel/main_rel/font/fn_1_5631C.c:
+	.text       start:0x0005631C end:0x0005634C align:4
