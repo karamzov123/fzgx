@@ -221,6 +221,12 @@ def cmd_tu_hoist(a, p):
     _print(r, a.json); return 0 if r.get("ok") else 1
 
 
+def cmd_tu_trial(a, p):
+    from . import tutrial  # scoped: trial compile only when asked
+    r = tutrial.trial(p, a.tu)
+    _print(r, a.json); return 0 if r.get("ok") else 1
+
+
 def cmd_gen(a, p):
     from . import tufile  # scoped: same
     print(f"{tufile.regenerate(p)} generated units")
@@ -328,6 +334,8 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("tu", help="e.g. rel/main_rel/camera.c"); s.add_argument("-v", "--verbose", action="store_true")
     s = sub.add_parser("tu-hoist", help="move block-private includes into the TU prologue if every block still compiles"); s.set_defaults(fn=cmd_tu_hoist)
     s.add_argument("tu", help="e.g. rel/main_rel/camera.c")
+    s = sub.add_parser("tu-trial", help="compile a TU file as one unit and score every function against retail"); s.set_defaults(fn=cmd_tu_trial)
+    s.add_argument("tu", help="e.g. rel/main_rel/alloc.c")
     s = sub.add_parser("gen", help="regenerate every per-function unit from the TU files"); s.set_defaults(fn=cmd_gen)
     s = sub.add_parser("permute", help="decomp-permuter on a plateaued attempt; submits on a byte-identical result"); s.set_defaults(fn=cmd_permute)
     s.add_argument("symbol", nargs="?"); s.add_argument("--threads", type=int, default=8); s.add_argument("--seconds", type=int, default=600)
