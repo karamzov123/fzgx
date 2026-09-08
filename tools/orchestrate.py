@@ -34,7 +34,13 @@ RESULT_RE = re.compile(r"RESULT:\s*(matched|released)\s+(\S+)\s+([\d.]+)%(?:\s+c
 MATCHER_TOOLS = ["Read", "mcp__fzgx__claim", "mcp__fzgx__write_unit", "mcp__fzgx__check",
                  "mcp__fzgx__submit", "mcp__fzgx__release"]
 # The user's defaults are Fable 5.1 (claude) and GPT-6 Astra (codex); matchers must never run on those.
-EXPECTED_MODEL = {"claude": "claude-haiku-4-5", "codex": "gpt-5.6-luna"}
+EXPECTED_MODEL = {"claude": "claude-haiku-4-5", "codex": "gpt-5.6-luna", "agy": "agy"}
+# agy agents run from an empty directory: no project instructions to ingest, and a stray
+# run_command (agy has no flag that disables it) lands outside the tree.
+AGY_CWD = ROOT / ".fzgx" / "agy-cwd"
+# USD per 1M tokens: (fresh input, cached input, output incl. thinking). Gemini 3.8 Flash
+# introductory rate (ai.google.dev pricing, valid through 2026-12-31; 1.50/0.15/7.50 after).
+GEMINI_PRICE = {"gemini-3.8-flash": (0.75, 0.075, 3.75)}
 # $/M tokens from platform.openai.com/docs/pricing (2026-09-08): input, cached input, cache write, output.
 # Codex reports usage but no cost; Claude Code reports total_cost_usd itself.
 CODEX_PRICES = {"gpt-5.6-luna": (0.20, 0.02, 0.25, 1.20), "gpt-5.6-terra": (2.00, 0.20, 2.50, 12.00),
@@ -171,16 +177,53 @@ def parse_codex(out: str, fast: bool = False) -> Dict:
             "tokens_out": tout, "model": model}
 
 
-def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout: int, batch: str,
-            shadow: bool = False, fast: bool = False, revise: bool = False) -> Dict:
-    prefix = "revise-" if revise else ("shadow-" if shadow else "")
-    agent_id = f"{prefix}{batch}-{harness}-{idx}"
-    if harness == "claude" and revise:
-        raise SystemExit("--revise is implemented for the codex harness only")
-    cmd = claude_cmd(symbol, agent_id, model) if harness == "claude" else codex_cmd(symbol, agent_id, model, fast, revise, EFFORT.get("level"))
-    t0 = time.time()
-    # own process group: on timeout the agent AND its MCP server die (they leaked before)
-    proc = subprocess.Popen(cmd, cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+def agy_cmd(symbol: str, agent_id: str, model: str, revise: bool = False, effort: Optional[str] = None) -> List[str]:
+    """Antigravity CLI (Gemini) in print mode. Instructions travel in the prompt; the fzgx MCP
+    server is registered at project scope (`agy mcp add`); plan mode keeps built-in tools
+    read-only, the MCP tools are the only way to act."""
+    instructions = (CODEX_REVISE_INSTRUCTIONS if revise else CODEX_INSTRUCTIONS).read_text()
+    task = (f"SYMBOL={symbol}  AGENT_ID={agent_id}. Rewrite this matched function for readability following your loop."
+            if revise else f"SYMBOL={symbol}  AGENT_ID={agent_id}. Match this function following your loop.")
+    tools = ("The fzgx tools are MCP tools of the server named `fzgx`: reach them through call_mcp_tool "
+             "(server fzgx, tool name, arguments as an object). Never use run_command, write_to_file, "
+             "replace_file_content, view_file, find_by_name, grep_search or list_dir: you have no shell and "
+             "no files; everything you need is in the claim result.")
+    cmd = ["agy", "--print", instructions.replace("gpt-5.6-luna", model).replace('harness="codex"', 'harness="agy"')
+           + "\n" + tools + "\n\n" + task,
+           "--model", model, "--mode", "plan", "--output-format", "json", "--dangerously-skip-permissions",
+           "--disable-slash-commands", "--print-timeout", "20m"]
+    if effort:
+        cmd += ["--effort", effort]
+    return cmd
+
+
+def parse_agy(out: str) -> Dict:
+    """agy --output-format json: one JSON object with response, usage, duration."""
+    info = {"text": "", "cost": 0.0, "turns": None, "tokens_in": 0, "tokens_out": 0, "model": None, "checks": None}
+    i = out.find("{\"conversation_id\"")
+    if i < 0:
+        i = out.find("{")
+    try:
+        d = json.loads(out[i:out.rindex("}") + 1])
+    except (ValueError, IndexError):
+        info["text"] = out
+        return info
+    info["text"] = d.get("response") or ""
+    u = d.get("usage") or {}
+    fresh, cached = int(u.get("input_tokens", 0)), int(u.get("cache_read_tokens", 0))
+    out_tok = int(u.get("output_tokens", 0)) + int(u.get("thinking_tokens", 0))  # thinking is billed as output
+    info["tokens_in"] = fresh + cached
+    info["tokens_out"] = out_tok
+    price = GEMINI_PRICE.get(next((k for k in GEMINI_PRICE if k in (d.get("model") or "gemini-3.8-flash")), "gemini-3.8-flash"))
+    info["cost"] = (fresh * price[0] + cached * price[1] + out_tok * price[2]) / 1e6
+    info["turns"] = d.get("num_turns")
+    info["model"] = "agy"
+    return info
+
+
+def _launch(cmd: List[str], harness: str, fast: bool, timeout: int):
+    """One agent process in its own process group: on timeout the agent AND its MCP server die."""
+    proc = subprocess.Popen(cmd, cwd=(AGY_CWD if harness == "agy" else ROOT), text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                             stdin=subprocess.DEVNULL, start_new_session=True,
                             env={**os.environ, "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1"})
     try:
@@ -195,7 +238,38 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
         def _s(x):
             return x.decode(errors="replace") if isinstance(x, bytes) else (x or "")
         out, rc = _s(so) + "\n" + _s(se), -9
-    info = parse_claude(out) if harness == "claude" else parse_codex(out, fast)
+    info = parse_claude(out) if harness == "claude" else (parse_agy(out) if harness == "agy" else parse_codex(out, fast))
+    return out, rc, info
+
+
+def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout: int, batch: str,
+            shadow: bool = False, fast: bool = False, revise: bool = False) -> Dict:
+    prefix = "revise-" if revise else ("shadow-" if shadow else "")
+    agent_id = f"{prefix}{batch}-{harness}-{idx}"
+    if harness == "claude" and revise:
+        raise SystemExit("--revise is implemented for the codex harness only")
+    if harness == "agy":
+        cmd = agy_cmd(symbol, agent_id, model, revise, EFFORT.get("level"))
+    else:
+        cmd = claude_cmd(symbol, agent_id, model) if harness == "claude" else codex_cmd(symbol, agent_id, model, fast, revise, EFFORT.get("level"))
+    t0 = time.time()
+    if harness == "agy":
+        AGY_CWD.mkdir(parents=True, exist_ok=True)
+    spent_before = 0.0
+    for launch in range(1, 6):
+        out, rc, info = _launch(cmd, harness, fast, timeout)
+        # Antigravity caps in-flight requests per account (16 measured); a capped agent dies with
+        # status ERROR at any point of its loop, so it is rerun from scratch after a pause.
+        if harness == "agy" and "exhausted your capacity" in out and launch < 5:
+            spent_before += info["cost"]
+            try:
+                api.abort_attempt(p, symbol, f"agy capacity error on launch {launch}")  # free the claim first
+            except Exception:
+                pass
+            time.sleep(20 * launch)
+            continue
+        break
+    info["cost"] += spent_before
     m = RESULT_RE.search(info["text"] or "") or RESULT_RE.search(out)
     outcome = m.group(1) if m else ("timeout" if rc == -9 else "crash")
     if not m:  # no RESULT line: the agent never finished its loop; do not charge an attempt
@@ -284,7 +358,7 @@ def finish_round(p: Project, a, model: str, module: str) -> Dict:
 
 def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--harness", choices=["claude", "codex"], default="claude")
+    ap.add_argument("--harness", choices=["claude", "codex", "agy"], default="claude")
     ap.add_argument("--model", help="claude: haiku|sonnet|opus (default haiku); codex: model name (default gpt-5.6-luna)")
     ap.add_argument("--parallel", type=int, default=16)
     ap.add_argument("--timeout", type=int, default=900, help="seconds per agent")
@@ -307,7 +381,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--revise", action="store_true",
                     help="rewrite already-matched functions for readability; kept only if still 100%%")
     a = ap.parse_args(argv)
-    model = a.model or ("haiku" if a.harness == "claude" else "gpt-5.6-luna")
+    model = a.model or {"claude": "haiku", "codex": "gpt-5.6-luna", "agy": "gemini-3.8-flash-medium"}[a.harness]
     EFFORT["level"] = a.effort
     p = Project()
 
