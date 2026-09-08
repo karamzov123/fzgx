@@ -209,6 +209,19 @@ def try_fix(p: Project, symbol: str, body: str, budget_s: float = 30.0, max_cand
         litf = list(re.finditer(r"(?<![\w.])(\d+\.\d*(?:[eE][-+]?\d+)?)f\b", body))
         if litf:
             candidates.append(("float literals lose f", re.sub(r"(?<![\w.])(\d+\.\d*(?:[eE][-+]?\d+)?)f\b", r"\1", body)))
+    # unused leading parameters: retail keeps r3..r5 alive (they were parameters) and uses r6 for a
+    # temporary where we used r3; adding parameters the body ignores reproduces that
+    if span:
+        regs_t = set(re.findall(r"\br(\d+)\b", " ".join(t for t, o in diffs))); regs_o = set(re.findall(r"\br(\d+)\b", " ".join(o for t, o in diffs)))
+        hi_t = [int(x) for x in regs_t if 3 <= int(x) <= 10]; lo_o = [int(x) for x in regs_o if 3 <= int(x) <= 10]
+        m = re.search(rf"\b{re.escape(sym.name)}\s*\(([^)]*)\)\s*\{{", body)
+        if m and hi_t and lo_o and max(hi_t) > max(lo_o):
+            cur = m.group(1).strip()
+            n_cur = 0 if cur in ("", "void") else cur.count(",") + 1
+            for extra in range(1, 4):
+                pads = ", ".join(f"u32 unused{n_cur + i}" for i in range(extra))
+                newp = pads if cur in ("", "void") else cur + ", " + pads
+                candidates.append((f"+{extra} unused parameter(s)", body[:m.start(1)] + newp + body[m.end(1):]))
     # struct layout: every field offset off by the same delta means padding is missing or extra
     # at the front of the block-private struct; two deltas mean two fields are in the wrong order
     deltas = set()

@@ -169,10 +169,42 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
 
     hi: Dict[str, str] = {}  # register holding sym@ha
     labels = LABELS[0]
+    temps: List[str] = []
+
+    def reads(idx: int, r: str) -> bool:
+        """Is register r read at instruction idx (before being written there)?"""
+        mn_, a_ = ins[idx]
+        if not a_:
+            return False
+        srcs = a_[1:] if mn_ not in STORE_T and not mn_.startswith(("st", "cmp")) else a_
+        return any(re.search(rf"\b{r}\b", x) for x in srcs)
+
+    def reused_after_store(idx: int, r: str, mem: str) -> bool:
+        """After instruction idx, is there a store to `mem` followed by a read of r, with no
+        write of r in between? Then the source kept the loaded value in a local."""
+        stored = False
+        for j in range(idx + 1, len(ins)):
+            mn_, a_ = ins[j]
+            if mn_ in STORE_T and len(a_) > 1 and a_[1] == mem:
+                stored = True
+                continue
+            if stored and reads(j, r):
+                return True
+            if mn_ == "bl":
+                if stored and re.fullmatch(r"r([3-9]|10)", r):
+                    return True  # an argument register at a call is read by the callee
+                if re.fullmatch(r"r([0-9]|1[0-2])", r):
+                    return False
+            if a_ and a_[0] == r and mn_ not in STORE_T and not mn_.startswith(("st", "cmp")):
+                return False  # r written again
+        return False
     cond: Optional[Tuple[str, str, bool]] = None  # (lhs, rhs, unsigned) of the last compare
     open_ifs: List[Tuple[int, str]] = []          # (instruction index where the if ends, condition)
     i = -1
+    temps_written: List[Tuple[str, int]] = []
     for i, (mn, a) in enumerate(ins):
+        if a and mn not in STORE_T and not mn.startswith(("st", "cmp", "b")) and mn not in ("mtlr", "mtspr"):
+            temps_written.append((a[0], i))
         while open_ifs and open_ifs[-1][0] == i:
             open_ifs.pop(); stmts.append("}")
         if mn == "blr":
@@ -284,6 +316,9 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
                 rtype[a[0]] = t
             if mn.endswith("u"):  # update form: the base register advances
                 regs[base] = f"((u8 *){use(base)} + {_imm(off) if not off.endswith(('@l', '@sda21')) else 0})"
+            if reused_after_store(i, a[0], a[1]):
+                tn = f"v{len(temps)}"; temps.append(f"{rtype.get(a[0], 'u32')} {tn};")
+                stmts.append(f"{tn} = {regs[a[0]]};"); regs[a[0]] = tn
             continue
         if mn in STORE_T:
             m = MEM_RE.match(a[1])
@@ -413,6 +448,13 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
             # register never written is a parameter of ours passed straight through
             set_regs = [k for k in range(3, 11) if f"r{k}" in regs]
             top = max(set_regs) if set_regs else 2
+            # registers below the lowest temporary this function used are parameters passed
+            # straight through to the callee: a temporary in r6 with r3..r5 untouched means
+            # the source wrote callee(a, b, c)
+            written = [int(x[1:]) for x, _ in temps_written if re.fullmatch(r"r([3-9]|10)", x)]
+            temp_low = min((w for w in written if f"r{w}" not in params), default=None)
+            if temp_low is not None and temp_low - 1 > top:
+                top = temp_low - 1
             args = [use(f"r{k}") for k in range(3, top + 1)]
             calls.append(callee)
             externs.setdefault(callee, f"extern u32 {callee}({', '.join(['u32'] * len(args)) or 'void'});")
@@ -453,6 +495,8 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
     if decls:
         names = [re.match(r"u32 (t\d+)", b).group(1) for b in decls]
         body = [f"u32 {', '.join(names)};"] + [re.sub(r"^u32 (t\d+) = ", r"\1 = ", b) for b in body]
+    if temps:
+        body = temps + body
     if locals_:
         body = [f"struct {name}_{g} *{ln};" for ln, g in locals_.items()] + body
     # an address stored or passed is a pointer: cast, so u32 fields and parameters accept it
@@ -463,6 +507,15 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
         body = [re.sub(rf"(= |\(|, ){re.escape(f)}(?=[,;)])", rf"\1(u32){f}", b) for b in body]
     if ret is not None:
         body.append(f"return {ret};")
+    def peephole(b: str) -> str:
+        m = re.fullmatch(r"(\S.*?) = \((\S.*?) ([+-]) (\d+)\);", b)
+        if m and m.group(1) == m.group(2):
+            k = int(m.group(4))
+            if k == 1:
+                return f"{m.group(1)}{'++' if m.group(3) == '+' else '--'};"
+            return f"{m.group(1)} {m.group(3)}= {k};"
+        return b
+    body = [peephole(b) for b in body]
     rtype_c = "void"
     if any(b.startswith("return ") for b in body):
         rtype_c = rtype.get("r3", "u32")
