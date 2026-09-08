@@ -31,3 +31,8 @@ file from what actually unblocked functions; keep each item one or two lines.
   a signature question, never a compiler quirk.
 - The same in reverse: if you need a parameter in `r4`, add the preceding
   parameter to the signature even when the function body ignores it.
+- (tooling, not codegen) REL partial links use `-strip_partial`; a function
+  nobody references is dropped unless it is in the module's `force_active`
+  list. `fzgx carve` adds every carved symbol there. Symptom when missing: the
+  module's `.text` shrinks by the function size and every REL importing later
+  symbols fails its hash.

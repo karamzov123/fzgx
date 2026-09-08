@@ -25,11 +25,39 @@ modules:
 - object: files/enemy_line/main.rel
   hash: df989873851d161218ae283f71ed89ce0a979955
   name: main_rel
+  force_active:
+  - fn_1_FE780
+  - fn_1_FE5E0
+  - fn_1_D960
+  - fn_1_D3F88
+  - fn_1_D35B0
+  - fn_1_B2770
+  - fn_1_AB5CC
+  - fn_1_A96EC
+  - fn_1_9818C
+  - fn_1_8CA20
+  - fn_1_86194
+  - fn_1_7899C
+  - fn_1_68B68
+  - fn_1_46EA8
+  - fn_1_411A4
+  - fn_1_3EF8C
+  - fn_1_150574
+  - fn_1_149BF4
+  - fn_1_137548
+  - fn_1_1310FC
+  - fn_1_12F128
+  - fn_1_105744
+  - fn_1_1024C4
+  - fn_1_101448
   symbols: config/GFZE01/main_rel/symbols.txt
   splits: config/GFZE01/main_rel/splits.txt
 - object: files/fze.sample.rel
   hash: 7679d58798cbd0e47563a6a307410623979efc97
   name: sample
+  force_active:
+  - fn_18_3FC
+  - fn_18_40C
   symbols: config/GFZE01/sample/symbols.txt
   splits: config/GFZE01/sample/splits.txt
 - object: files/fze.movie_module.rel

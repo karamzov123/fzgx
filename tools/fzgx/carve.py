@@ -59,6 +59,38 @@ def exclusive_data(project: Project, fn: Function) -> Dict[str, List[Symbol]]:
     return out
 
 
+def add_force_active(project: Project, module: str, symbol: str) -> bool:
+    """Add SYMBOL to the module's `force_active` list in config.yml (text edit, comments kept).
+
+    REL partial links run with -strip_partial; a carved function nobody
+    references would be dropped from our link (retail never stripped it).
+    dtk turns force_active into the ldscript's FORCEACTIVE block.
+    """
+    path = project.config_dir / "config.yml"
+    lines = path.read_text().splitlines()
+    if module == "main":
+        start, end = 0, next((i for i, l in enumerate(lines) if l.startswith("modules:")), len(lines))
+        indent = ""
+    else:
+        start = next(i for i, l in enumerate(lines) if l.strip() == f"name: {module}")
+        end = next((i for i in range(start + 1, len(lines)) if lines[i].startswith("- object:")), len(lines))
+        indent = "  "
+    block = lines[start:end]
+    for i, l in enumerate(block):
+        if l.strip() == "force_active:":
+            items = [x.strip()[2:] for x in block[i + 1:] if x.strip().startswith("- ")]
+            if symbol in items:
+                return False
+            lines.insert(start + i + 1, f"{indent}- {symbol}")
+            path.write_text("\n".join(lines) + "\n")
+            return True
+    # no list yet: insert right after the name line (module) or before modules: (DOL)
+    at = start + 1 if module != "main" else end
+    lines[at:at] = [f"{indent}force_active:", f"{indent}- {symbol}"]
+    path.write_text("\n".join(lines) + "\n")
+    return True
+
+
 def carve(project: Project, symbol: str, dry_run: bool = False) -> CarveResult:
     sym = project.find_symbol(symbol)
     if sym is None or sym.kind != "function":
@@ -91,6 +123,7 @@ def carve(project: Project, symbol: str, dry_run: bool = False) -> CarveResult:
     if dry_run:
         return res
 
+    add_force_active(project, module, sym.name)
     splits_path = project.module_config_dir(module) / "splits.txt"
     with splits_path.open("a") as f:
         f.write(f"\n{source}:\n")
