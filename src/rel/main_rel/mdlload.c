@@ -68,6 +68,8 @@ extern void fn_1_D6748(void *obj, u32 *arg1, s16 arg2);
 extern u32 lbl_801A63C0;
 extern void fn_1_D550C(void *);
 
+extern void fn_1_D3BE8(void);
+
 /* fzgx:begin fn_1_D3768 */
 extern int fn_1_D3B6C(void);
 
