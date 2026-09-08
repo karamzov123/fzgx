@@ -126,6 +126,23 @@ void fn_1_958(void) {
 }
 /* fzgx:end fn_1_958 */
 
+/* fzgx:begin fn_1_E34 */
+extern u32 fn_1_156754(u32);
+extern u32 fn_1_A5864(void);
+extern u32 fn_1_F7578(void);
+
+void fn_1_E34(void) {
+    s32 v0;
+    fn_1_A5864();
+    fn_1_F7578();
+    v0 = 0;
+    do {
+    fn_1_156754(v0);
+    v0++;
+    } while ((s32)v0 < 4);
+}
+/* fzgx:end fn_1_E34 */
+
 /* fzgx:begin fn_1_E78 */
 extern u32 fn_1_3BC0(u32);
 extern u32 fn_1_A59AC(void);
@@ -695,3 +712,23 @@ void fn_1_4730(u32 value, u32 count, u32 size, const char *file, int line) {
     entry->unk_08 = count;
 }
 /* fzgx:end fn_1_4730 */
+
+/* fzgx:begin fn_1_48B0 */
+extern struct fn_1_48B0_lbl_801A6CF8 lbl_801A6CF8;
+extern u32 lbl_801A6CFC;
+
+struct fn_1_48B0_lbl_801A6CF8 {
+    u32 unk_0;
+};
+
+s32 fn_1_48B0(u32 arg0, u32 arg1) {
+    s32 v0;
+    v0 = (arg1 * ((u32)(lbl_801A6CF8.unk_0 - arg0) / (u32)arg1));
+    if ((u32)(arg1 * ((u32)(lbl_801A6CF8.unk_0 - arg0) / (u32)arg1)) < lbl_801A6CFC) {
+    v0 = 0;
+    return v0;
+    }
+    lbl_801A6CF8.unk_0 = v0;
+    return v0;
+}
+/* fzgx:end fn_1_48B0 */

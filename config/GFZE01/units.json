@@ -1629,6 +1629,16 @@
   },
   {
     "module": "main",
+    "source": "dol/AIGetDSPSampleRate.c",
+    "symbols": [
+      "AIGetDSPSampleRate"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/AIGetStreamPlayState.c",
     "symbols": [
       "AIGetStreamPlayState"
@@ -1782,6 +1792,16 @@
     "source": "dol/GXInitTexCacheRegion.c",
     "symbols": [
       "GXInitTexCacheRegion"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/GXInitTlutRegion.c",
+    "symbols": [
+      "GXInitTlutRegion"
     ],
     "status": "matching",
     "mw_version": null,
@@ -7101,6 +7121,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/_prolog/fn_1_48B0.c",
+    "symbols": [
+      "fn_1_48B0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/_prolog.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/_prolog/fn_1_634.c",
     "symbols": [
       "fn_1_634"
@@ -7192,6 +7223,17 @@
     "source": "rel/main_rel/_prolog/fn_1_958.c",
     "symbols": [
       "fn_1_958"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/_prolog.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/_prolog/fn_1_E34.c",
+    "symbols": [
+      "fn_1_E34"
     ],
     "status": "matching",
     "mw_version": null,
@@ -16600,6 +16642,17 @@
     "source": "rel/main_rel/game/fn_1_3FC9C.c",
     "symbols": [
       "fn_1_3FC9C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/game.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/game/fn_1_3FCF8.c",
+    "symbols": [
+      "fn_1_3FCF8"
     ],
     "status": "matching",
     "mw_version": null,
