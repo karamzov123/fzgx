@@ -3415,7 +3415,7 @@
     "symbols": [
       "fn_1_715C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
@@ -3435,7 +3435,7 @@
     "symbols": [
       "fn_1_8298"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
@@ -3665,7 +3665,7 @@
     "symbols": [
       "fn_1_C304"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
