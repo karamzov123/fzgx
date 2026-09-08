@@ -127,6 +127,7 @@ def claim(p: Project, symbol: str, agent: str, ttl: int = DEFAULT_TTL,
     elif not no_carve:
         try:
             res = carve(p, symbol)
+            l.db.execute("UPDATE functions SET unit=? WHERE symbol=?", (res.source, key))
             if res.created:
                 _reconfigure_and_split(p)
         except Exception as e:  # release the claim so nobody is stuck
@@ -146,10 +147,13 @@ def claim(p: Project, symbol: str, agent: str, ttl: int = DEFAULT_TTL,
 
 def carve_many(p: Project, symbols: List[str], dry_run: bool = False) -> List[Dict[str, Any]]:
     results, created = [], False
+    l = Ledger()
     for s in symbols:
         try:
             r = carve(p, s, dry_run=dry_run)
             created |= r.created
+            if not dry_run:
+                l.db.execute("UPDATE functions SET unit=? WHERE symbol=?", (r.source, _key(p, s)))
             results.append(r.__dict__)
         except LookupError as e:
             results.append({"symbol": s, "error": str(e)})
