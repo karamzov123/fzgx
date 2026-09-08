@@ -350,6 +350,77 @@ load_generated_units()
 config.reconfig_deps = [Path("config") / config.version / "units.json"]
 
 
+_DOL_NAMED: List[Any] = []
+
+
+def dol_library_at(addr: int) -> str:
+    """Library group for a DOL address from dtk's signature-named functions in symbols.txt."""
+    import re
+
+    if not _DOL_NAMED:
+        sym_re = re.compile(r"^(?P<name>\S+) = \.(?:text|init):0x(?P<addr>[0-9A-Fa-f]+); // type:function")
+        for line in (Path("config") / config.version / "symbols.txt").read_text().splitlines():
+            m = sym_re.match(line)
+            if m and not m.group("name").startswith(("fn_", "lbl_")):
+                _DOL_NAMED.append((int(m.group("addr"), 16), m.group("name")))
+        _DOL_NAMED.sort()
+    name = "runtime"
+    for a, n in _DOL_NAMED:
+        if a > addr:
+            break
+        name = n
+    m = re.match(r"^_{0,2}([A-Z][A-Za-z]*?)(?=[A-Z][a-z]|_|$)", name)
+    lib = (m.group(1) if m else name.split("_")[0]).lower() or "runtime"
+    return lib if lib not in ("fn", "lbl") else "runtime"
+
+
+def name_auto_units_by_tu() -> None:
+    """Rename decomp-toolkit's auto-generated objdiff units into their translation units.
+
+    Unmatched code lives in objects dtk names `auto_00_000D3FDC_text`; objdiff (and the
+    decomp.dev treemap, which nests units by path) would show those names. The TU map
+    recovered from __FILE__ strings (config/<VERSION>/<module>/tus.json) tells which file
+    each address belongs to, so the unit becomes `<module>/rel/<module>/<tu>/_unmatched_<addr>`
+    and sits next to that file's matched functions. Only objdiff.json changes; the build does not.
+    """
+    import json
+    import re
+
+    objdiff_path = Path("objdiff.json")
+    if not objdiff_path.exists():
+        return
+    data = json.loads(objdiff_path.read_text())
+    tu_maps: Dict[str, List[Dict[str, Any]]] = {}
+    for tus_file in (Path("config") / config.version).glob("*/tus.json"):
+        d = json.loads(tus_file.read_text())
+        tu_maps[d["module"]] = d["tus"]
+    pat = re.compile(r"^(?P<module>[^/]+)/auto_\d+_(?P<addr>[0-9A-F]+)_(?P<section>text|init)$")
+    renamed = 0
+    for unit in data["units"]:
+        m = pat.match(unit["name"])
+        if not m or not unit.get("metadata", {}).get("auto_generated"):
+            continue
+        module, addr = m.group("module"), int(m.group("addr"), 16)
+        if module == "main":
+            # DOL: no __FILE__ strings; group by the SDK library of the nearest preceding
+            # signature-named function (OSInit -> os, GXBegin -> gx, __DVDFSInit -> dvd, ...)
+            unit["name"] = f"main/dol/{dol_library_at(addr)}/_unmatched_{addr:X}"
+            renamed += 1
+            continue
+        tus = tu_maps.get(module)
+        if not tus:  # no __FILE__ anchors in this REL: at least group by module
+            unit["name"] = f"{module}/rel/{module}/_unmatched_{addr:X}"
+            renamed += 1
+            continue
+        tu = next((t for t in tus if t["text"][0] <= addr < t["text"][1]), None)
+        stem = tu["file"].rsplit(".", 1)[0] if tu else "_prolog"
+        unit["name"] = f"{module}/rel/{module}/{stem}/_unmatched_{addr:X}"
+        renamed += 1
+    objdiff_path.write_text(json.dumps(data, indent=2) + "\n")
+    if renamed:
+        print(f"objdiff.json: {renamed} auto-generated code units named by translation unit")
+
+
 # Optional callback to adjust link order. This can be used to add, remove, or reorder objects.
 # This is called once per module, with the module ID and the current link order.
 #
@@ -385,6 +456,7 @@ config.progress_report_args = [
 if args.mode == "configure":
     # Write build.ninja and objdiff.json
     generate_build(config)
+    name_auto_units_by_tu()
 elif args.mode == "progress":
     # Print progress information
     calculate_progress(config)

@@ -65,8 +65,14 @@ def main(argv=None) -> int:
     ap.add_argument("--write", action="store_true")
     a = ap.parse_args(argv)
     p = Project(a.version)
-    cfg = (p.config_dir / "config.yml").read_text()
-    obj = re.search(rf"- object: (\S+)\n(?:.*\n)*?\s+name: {a.module}\n", cfg).group(1)
+    cfg = (p.config_dir / "config.yml").read_text().splitlines()
+    obj = None
+    for i, line in enumerate(cfg):
+        if line.strip() == f"name: {a.module}":
+            obj = next(l.split(":", 1)[1].strip() for l in reversed(cfg[:i]) if l.startswith("- object:"))
+            break
+    if obj is None:
+        raise SystemExit(f"module {a.module} not in config.yml")
     data = (Path("orig") / a.version / obj).read_bytes()
     secs, impoff, impsize = rel_sections(data)
     self_id = struct.unpack(">I", data[:4])[0]
@@ -163,6 +169,9 @@ def main(argv=None) -> int:
     for tu in tus:
         c = tu["confidence"]
         print(f"{tu['file']:20s} {tu['text'][0]:06X}-{tu['text'][1]:06X} {len(tu['functions']):4d} {c['text+data']:4d} {c['text-range']:4d} {c['data-vote']:4d}")
+    if a.write and not tus:
+        print("no anchored TUs; nothing written")
+        return 0
     if a.write:
         out = p.module_config_dir(a.module) / "tus.json"
         out.write_text(json.dumps({"module": a.module, "unassigned_prefix": before_first, "tus": tus}, indent=1) + "\n")

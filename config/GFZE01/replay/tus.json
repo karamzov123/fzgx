@@ -1,0 +1,49 @@
+{
+ "module": "replay",
+ "unassigned_prefix": [
+  "fn_13_0",
+  "fn_13_3FC",
+  "fn_13_A40",
+  "fn_13_A48",
+  "fn_13_A6C",
+  "_prolog",
+  "fn_13_AFC",
+  "fn_13_B00",
+  "_epilog",
+  "fn_13_B08",
+  "fn_13_B64",
+  "fn_13_B78",
+  "fn_13_B7C"
+ ],
+ "tus": [
+  {
+   "file": "replay_mode.c",
+   "text": [
+    3020,
+    4012
+   ],
+   "data_sec": 5,
+   "data": [
+    72,
+    176
+   ],
+   "anchor_refs": [
+    3020,
+    3840
+   ],
+   "functions": [
+    "fn_13_BCC",
+    "fn_13_CDC",
+    "fn_13_E8C",
+    "fn_13_EF0",
+    "fn_13_F00",
+    "fn_13_FA8"
+   ],
+   "confidence": {
+    "text+data": 3,
+    "text-range": 3,
+    "data-vote": 0
+   }
+  }
+ ]
+}

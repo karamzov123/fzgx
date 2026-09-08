@@ -1,0 +1,66 @@
+{
+ "module": "car_colchg",
+ "unassigned_prefix": [
+  "_prolog",
+  "fn_9_298",
+  "fn_9_2E0"
+ ],
+ "tus": [
+  {
+   "file": "car_colchg.c",
+   "text": [
+    808,
+    7344
+   ],
+   "data_sec": 5,
+   "data": [
+    4,
+    836
+   ],
+   "anchor_refs": [
+    808
+   ],
+   "functions": [
+    "_epilog",
+    "fn_9_3F0",
+    "fn_9_454",
+    "fn_9_534",
+    "fn_9_570",
+    "fn_9_5D8",
+    "fn_9_6F0",
+    "fn_9_72C",
+    "fn_9_7DC",
+    "fn_9_A18",
+    "fn_9_A8C",
+    "fn_9_AF0",
+    "fn_9_DC0",
+    "fn_9_DFC",
+    "fn_9_E4C",
+    "fn_9_F38",
+    "fn_9_F74",
+    "fn_9_FD0",
+    "fn_9_1018",
+    "fn_9_1054",
+    "fn_9_10BC",
+    "fn_9_1124",
+    "fn_9_1160",
+    "fn_9_120C",
+    "fn_9_1310",
+    "fn_9_1410",
+    "fn_9_16B8",
+    "fn_9_1890",
+    "fn_9_1A20",
+    "fn_9_1A8C",
+    "fn_9_1AC4",
+    "fn_9_1AFC",
+    "fn_9_1BCC",
+    "fn_9_1C54"
+   ],
+   "confidence": {
+    "text+data": 14,
+    "text-range": 20,
+    "data-vote": 0
+   }
+  }
+ ]
+}
