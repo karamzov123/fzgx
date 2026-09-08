@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 from typing import List, Optional
 
-from . import api, trivial
+from . import api, trivial, tu
 from .project import Project
 
 
@@ -147,6 +147,18 @@ def cmd_verify(a, p):
     _print(r, a.json); return 0 if r.get("ok") else 1
 
 
+def cmd_tu_organize(a, p):
+    _print(tu.organize(p, a.module), a.json); return 0
+
+
+def cmd_rename(a, p):
+    if a.map:
+        r = tu.rename_many(p, json.loads(Path(a.map).read_text()))
+    else:
+        r = tu.rename(p, a.old, a.new)
+    _print(r, a.json); return 0 if r.get("ok") else 1
+
+
 def cmd_names(a, p):
     _print(api.names(p), a.json); return 0
 
@@ -205,6 +217,10 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("restore", help="load state/ledger.json into the local ledger"); s.set_defaults(fn=cmd_restore)
     s = sub.add_parser("lint", help="shiftability/style lint"); s.set_defaults(fn=cmd_lint); s.add_argument("paths", nargs="*")
     s = sub.add_parser("names", help="pending name proposals for the librarian"); s.set_defaults(fn=cmd_names)
+    s = sub.add_parser("tu-organize", help="move carved units into TU directories from tus.json; relink-verify"); s.set_defaults(fn=cmd_tu_organize)
+    s.add_argument("--module", default="main_rel")
+    s = sub.add_parser("rename", help="rename a symbol everywhere (symbols.txt, src, units.json, ledger, file); relink-verify"); s.set_defaults(fn=cmd_rename)
+    s.add_argument("old", nargs="?"); s.add_argument("new", nargs="?"); s.add_argument("--map", help="JSON {old: new} applied with one relink")
     s = sub.add_parser("verify", help="relink once for all accepted units, verify hashes, commit; bisect on failure"); s.set_defaults(fn=cmd_verify)
     s.add_argument("--message")
     s = sub.add_parser("compare", help="A/B table for two agent-id prefixes (e.g. b3c-claude vs shadow-b3c-codex)"); s.set_defaults(fn=cmd_compare)

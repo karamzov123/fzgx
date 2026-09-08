@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 from .project import ROOT, Function, Project, Symbol
+from .tu import unit_dir_for
 
 DATA_SECTIONS = {".rodata", ".data", ".sdata", ".sdata2", ".bss", ".sbss", ".sbss2"}
 
@@ -65,8 +66,7 @@ def carve(project: Project, symbol: str, dry_run: bool = False) -> CarveResult:
         raise LookupError(f"{symbol}: not a known (or unambiguous) function symbol; use module:name for _prolog/_epilog")
     module = sym.module
     existing = project.unit_of(sym)
-    prefix = project.module_src_prefix(module)
-    source = f"{prefix}/{sym.name}.c"
+    source = f"{unit_dir_for(project, sym)}/{sym.name}.c"
     if existing:
         return CarveResult(sym.name, module, existing if existing.endswith(".c") else existing,
                            created=False, notes=[f"already in unit {existing}"])
