@@ -102,15 +102,19 @@ def reconcile_tu(p: Project, tu_source: str, v) -> Dict[str, object]:
     out: Dict[str, object] = {"tu": tu_source, "renamed": 0, "hoisted": [], "contested": {}, "unresolved": [],
                               "included": []}
 
-    def verify(names: List[str]) -> bool:
+    def verdicts(names: List[str]) -> Dict[str, bool]:
+        """Per-block verdicts under the current prologue, one batched compile for all of them."""
         present = [n for n in names if n in units]
         for n in present:
             tufile.write_gen(p, units[n], tf)
         if not present:
-            return True
-        if hasattr(v, "matches_many"):
-            return v.matches_many(p, present, module)
-        return all(v.matches(p, n, module) for n in present)
+            return {}
+        if hasattr(v, "verdicts"):
+            return v.verdicts(p, present, module)
+        return {n: v.matches(p, n, module) for n in present}
+
+    def verify(names: List[str]) -> bool:
+        return all(verdicts(names).values())
 
     def restore_gens(names: List[str]) -> None:
         for n in names:
@@ -201,7 +205,8 @@ def reconcile_tu(p: Project, tu_source: str, v) -> Dict[str, object]:
         lines = list(dict.fromkeys(c for n, c in chosen.items() if c is not None and c.strip() not in have))
         return base_prologue.rstrip("\n") + ("\n" + "\n".join(lines) + "\n" if lines else "\n")
     tf.prologue = render_prologue()
-    failing = [b.name for b in tf.blocks if not verify([b.name])]
+    first = verdicts([b.name for b in tf.blocks])
+    failing = [b.name for b in tf.blocks if b.name in units and not first.get(b.name)]
     # phase B: for a failing block, try the other candidates of the symbols it uses, one symbol at a time
     for bname in failing:
         b = tf.get(bname)
@@ -236,13 +241,13 @@ def reconcile_tu(p: Project, tu_source: str, v) -> Dict[str, object]:
             tf.prologue = render_prologue()
     out["hoisted"] = [n for n, c in chosen.items() if n not in out["contested"]]
     # every block is re-checked once more under the final prologue in step 4
-    # 4. what still cannot live under the prologue
+    # 4. what still cannot live under the prologue (one batched verdict for every block)
+    final = verdicts([b.name for b in tf.blocks])
     for b in tf.blocks:
         u = units.get(b.name)
         if u is None:
             continue
-        tufile.write_gen(p, u, tf)
-        if not v.matches(p, b.name, module):
+        if not final.get(b.name):
             b.flags.append("noprologue")
             # from the block's own text as the agent wrote it: its private declarations (stripped
             # in phase A when a header covered them) are what decide which headers it can include
