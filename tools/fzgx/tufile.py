@@ -478,6 +478,7 @@ def materialize_old_decls(p: Project, includes: List[str], body: str, prologue_t
         for k, v in _header_items(prologue_text).items():
             items.setdefault(k, v)
     own = set(_header_items(body))
+    own.update(m.group(1) for m in re.finditer(r"^[A-Za-z_][\w\s\*]*?\b([A-Za-z_]\w*)\s*\([^;{}()]*\)\s*\{", body, re.M))
     used = set(re.findall(r"[A-Za-z_]\w*", body))
     need = [k for k in items if k in used and k not in own]
     # typedefs referenced by the chosen declarations, transitively

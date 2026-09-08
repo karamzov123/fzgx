@@ -173,6 +173,19 @@ def hoist_decls(p: Project, tu_source: str, check_fn=None) -> Dict[str, object]:
                 variants.setdefault(n, Counter())[ln.strip()] += 1
                 if n not in order:
                     order.append(n)
+    # a function defined in this TU: its prototype comes from the definition, not from what
+    # callers guessed (a wrong guess in the prologue would collide with the definition)
+    for b in tf.blocks:
+        for m in re.finditer(r"^((?:[A-Za-z_][\w\s\*]*?)\b([A-Za-z_]\w*)\s*\([^;{}()]*\))\s*\{", b.body, re.M):
+            name = m.group(2)
+            if name in variants or name in unhoistable:
+                if set(re.findall(r"[A-Za-z_]\w*", m.group(1))) & private:
+                    unhoistable.add(name)
+                    continue
+                unhoistable.discard(name)
+                variants[name] = Counter({"extern " + m.group(1).strip() + ";": 10 ** 6})
+                if name not in order:
+                    order.append(name)
     for n in unhoistable:
         variants.pop(n, None)
     order = [n for n in order if n in variants]
