@@ -110,6 +110,8 @@ def codex_cmd(symbol: str, agent_id: str, model: str, fast: bool = False, revise
             "-c", 'mcp_servers.fzgx.command="uv"',
             "-c", 'mcp_servers.fzgx.args=["run","tools/fzgx_mcp.py"]',
             "-c", f'mcp_servers.fzgx.cwd="{ROOT}"',
+            # the server inherits nothing from us: the attempt cap of this round travels explicitly
+            "-c", 'mcp_servers.fzgx.env={FZGX_MAX_ATTEMPTS="%s"}' % os.environ.get("FZGX_MAX_ATTEMPTS", "3"),
             # codex exec runs with approval_policy=never; without this every mutating MCP call is refused
             "-c", 'mcp_servers.fzgx.default_tools_approval_mode="approve"',
             prompt]
