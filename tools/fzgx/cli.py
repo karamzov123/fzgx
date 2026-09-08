@@ -227,6 +227,23 @@ def cmd_gen(a, p):
     return 0
 
 
+def cmd_permute(a, p):
+    from . import permute  # scoped: pulls the permuter glue only when asked
+    if a.plateau is not None:
+        rows = permute.plateau(p, a.module, a.plateau, a.max_size, a.limit)
+        out = []
+        for r in rows:
+            res = permute.run(p, r["symbol"], a.threads, a.seconds, submit=not a.no_submit)
+            print(f"{r['symbol']:24s} base={res.get('base_score')} best={res.get('best_score')} "
+                  f"check={res.get('check')} {'SUBMITTED' if res.get('submit', {}).get('ok') else ''} {res.get('secs')}s", flush=True)
+            out.append(res)
+        n = sum(1 for r in out if r.get("submit", {}).get("ok"))
+        print(f"{n}/{len(out)} matched by permutation")
+        return 0
+    r = permute.run(p, a.symbol, a.threads, a.seconds, submit=not a.no_submit)
+    _print(r, a.json); return 0 if r.get("ok") else 1
+
+
 def cmd_names(a, p):
     _print(api.names(p), a.json); return 0
 
@@ -307,6 +324,11 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("tu-hoist", help="move block-private includes into the TU prologue if every block still compiles"); s.set_defaults(fn=cmd_tu_hoist)
     s.add_argument("tu", help="e.g. rel/main_rel/camera.c")
     s = sub.add_parser("gen", help="regenerate every per-function unit from the TU files"); s.set_defaults(fn=cmd_gen)
+    s = sub.add_parser("permute", help="decomp-permuter on a plateaued attempt; submits on a byte-identical result"); s.set_defaults(fn=cmd_permute)
+    s.add_argument("symbol", nargs="?"); s.add_argument("--threads", type=int, default=8); s.add_argument("--seconds", type=int, default=600)
+    s.add_argument("--no-submit", action="store_true")
+    s.add_argument("--plateau", type=float, help="batch: every unmatched function with best %% >= this")
+    s.add_argument("--module"); s.add_argument("--max-size", type=int, default=1024); s.add_argument("--limit", type=int, default=20)
     s = sub.add_parser("verify", help="relink once for all accepted units, verify hashes, commit; bisect on failure"); s.set_defaults(fn=cmd_verify)
     s.add_argument("--message")
     s = sub.add_parser("compare", help="A/B table for two agent-id prefixes (e.g. b3c-claude vs shadow-b3c-codex)"); s.set_defaults(fn=cmd_compare)

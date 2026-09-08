@@ -83,19 +83,12 @@ def _canonical_text(p: Project, unit_src: str) -> str:
 
 
 def _work_source(p: Project, key: str, unit_src: str) -> Optional[Path]:
-    """The file to compile for a check: the work copy assembled with its TU prologue, if any."""
+    """The file to compile for a check: the agent's work copy, exactly as written.
+
+    The unit an agent writes is complete on its own. Whether it also compiles under
+    the TU prologue is decided at splice time (`_install`), never during a check."""
     work = p.work_path(key)
-    if not work.exists():
-        return None
-    u = p.unit_record(unit_src)
-    if u and u.get("tu"):
-        tf = tufile.load(p, u["tu"])
-        inc, body = tufile.split_includes(work.read_text())
-        pro = tufile.merge_prologue(tf.prologue, inc)
-        gen = work.with_suffix(".gen.c")
-        gen.write_text(pro + "\n" + body)
-        return gen
-    return work
+    return work if work.exists() else None
 
 
 # ------------------------------------------------------------------ inventory
@@ -299,10 +292,16 @@ def format_check(res: Dict[str, Any]) -> str:
 
 
 def _install(p: Project, unit_src: str, text: str) -> None:
-    """Make `text` the canonical source of the unit: a block of its TU file, or its own file."""
+    """Make `text` the canonical source of the unit: a block of its TU file, or its own file.
+
+    A block's generated unit must compile: if it does not under the TU prologue (a private
+    declaration that disagrees with a header), the block keeps its own includes instead."""
     u = p.unit_record(unit_src)
     if u and u.get("tu"):
         tufile.splice(p, u, text)
+        unit = p.objdiff_unit_name(u["module"], unit_src)
+        if oracle.compile_unit(p, unit, unit_src).returncode != 0:
+            tufile.splice(p, u, text, noprologue=True)
     else:
         path = ROOT / "src" / unit_src
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -310,8 +309,7 @@ def _install(p: Project, unit_src: str, text: str) -> None:
 
 
 def _discard_work(p: Project, key: str) -> None:
-    for path in (p.work_path(key), p.work_path(key).with_suffix(".gen.c")):
-        path.unlink(missing_ok=True)
+    p.work_path(key).unlink(missing_ok=True)
 
 
 def submit(p: Project, symbol: str, agent: str = "unknown", message: str = "",
