@@ -75,14 +75,16 @@ def configure(project: Project) -> subprocess.CompletedProcess:
     return run([sys.executable, "configure.py", "--version", project.version])
 
 
-def relink(project: Project) -> subprocess.CompletedProcess:
+def relink(project: Project, keep_going: bool = False) -> subprocess.CompletedProcess:
     """Relink every target and verify build.sha1.
 
     Targets `build/<VERSION>/ok` (the dtk shasum check) rather than the default
     target, so only Matching units are compiled: another agent's broken
-    in-progress unit cannot fail this step.
+    in-progress unit cannot fail this step. keep_going reports every failing
+    unit instead of stopping at the first.
     """
-    return run(["ninja", project.rel(project.build_dir / "ok")], timeout=1800)
+    cmd = ["ninja"] + (["-k", "0"] if keep_going else []) + [project.rel(project.build_dir / "ok")]
+    return run(cmd, timeout=1800)
 
 
 def _base_object(project: Project, unit: str) -> Path:

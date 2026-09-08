@@ -454,9 +454,9 @@ def _header_items(text: str) -> Dict[str, str]:
 def materialize_old_decls(p: Project, includes: List[str], body: str, prologue_text: str = "") -> str:
     """Declarations the block uses, copied from the TU prologue and from the last committed
     versions of its headers (types.h excluded), with the typedefs those declarations need."""
+    # header declarations first (prologue declarations may name header types/symbols, never
+    # the reverse), and nothing the block declares itself
     items: Dict[str, str] = {}
-    if prologue_text:
-        items.update(_header_items(prologue_text))
     seen: set = set()
 
     def walk(rel: str) -> None:  # headers include headers (every TU header pulls globals.h)
@@ -474,8 +474,12 @@ def materialize_old_decls(p: Project, includes: List[str], body: str, prologue_t
         m = re.match(r'#\s*include\s+"([^"]+)"', inc)
         if m:
             walk(m.group(1))
+    if prologue_text:
+        for k, v in _header_items(prologue_text).items():
+            items.setdefault(k, v)
+    own = set(_header_items(body))
     used = set(re.findall(r"[A-Za-z_]\w*", body))
-    need = [k for k in items if k in used]
+    need = [k for k in items if k in used and k not in own]
     # typedefs referenced by the chosen declarations, transitively
     changed = True
     while changed:

@@ -158,16 +158,24 @@ def hoist_decls(p: Project, tu_source: str, check_fn=None) -> Dict[str, object]:
     private.update(m.group(1) for m in re.finditer(r"^\}\s*([A-Za-z_]\w*)\s*;", tf.prologue, re.M))
     variants: Dict[str, Counter] = {}
     order: List[str] = []
+    unhoistable: set = set()  # declared somewhere with a block-private type: stays in the blocks
     for b in tf.blocks:
         if "noprologue" in b.flags:
             continue
         for ln in b.body.splitlines():
             if DECL_LINE_RE.match(ln):
                 n = _decl_name(ln)
-                if n and not (set(re.findall(r"[A-Za-z_]\w*", ln)) & private):
-                    variants.setdefault(n, Counter())[ln.strip()] += 1
-                    if n not in order:
-                        order.append(n)
+                if not n:
+                    continue
+                if set(re.findall(r"[A-Za-z_]\w*", ln)) & private:
+                    unhoistable.add(n)
+                    continue
+                variants.setdefault(n, Counter())[ln.strip()] += 1
+                if n not in order:
+                    order.append(n)
+    for n in unhoistable:
+        variants.pop(n, None)
+    order = [n for n in order if n in variants]
     if not variants:
         return {"hoisted": [], "flagged": [], "conflicts": {}}
     canon = {n: max(c.items(), key=lambda kv: (kv[1], len(kv[0])))[0] for n, c in variants.items()}

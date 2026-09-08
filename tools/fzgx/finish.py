@@ -157,7 +157,7 @@ def finish(p: Project, module: str, workers: int = 12) -> Dict[str, object]:
     restored: List[str] = []
     with oracle.build_lock():
         cp = oracle.configure(p)
-        cp2 = oracle.relink(p) if cp.returncode == 0 else cp
+        cp2 = oracle.relink(p, keep_going=True) if cp.returncode == 0 else cp
         linked = cp.returncode == 0 and cp2.returncode == 0
         if not linked:
             # name the culprits, restore only their TU files, keep the rest of the pass
