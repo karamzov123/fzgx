@@ -132,17 +132,56 @@ rel/main_rel/alloc/fn_1_6394.c:
 rel/main_rel/alloc/fn_1_63D4.c:
 	.text       start:0x000063D4 end:0x00006400
 
+rel/main_rel/camera/fn_1_6400.c:
+	.text       start:0x00006400 end:0x0000649C
+
 rel/main_rel/camera/fn_1_649C.c:
 	.text       start:0x0000649C end:0x000064C0
+
+rel/main_rel/camera/fn_1_64C0.c:
+	.text       start:0x000064C0 end:0x00006514
+
+rel/main_rel/camera/fn_1_6514.c:
+	.text       start:0x00006514 end:0x0000660C
+
+rel/main_rel/camera/fn_1_660C.c:
+	.text       start:0x0000660C end:0x00006634
+
+rel/main_rel/camera/fn_1_6634.c:
+	.text       start:0x00006634 end:0x0000666C
 
 rel/main_rel/camera/fn_1_666C.c:
 	.text       start:0x0000666C end:0x000066B8
 
+rel/main_rel/camera/fn_1_66B8.c:
+	.text       start:0x000066B8 end:0x0000681C
+
+rel/main_rel/camera/fn_1_681C.c:
+	.text       start:0x0000681C end:0x00006898
+
+rel/main_rel/camera/fn_1_6898.c:
+	.text       start:0x00006898 end:0x00006914
+
 rel/main_rel/camera/fn_1_6914.c:
 	.text       start:0x00006914 end:0x00006990
 
+rel/main_rel/camera/fn_1_6990.c:
+	.text       start:0x00006990 end:0x00006A0C
+
+rel/main_rel/camera/fn_1_6A0C.c:
+	.text       start:0x00006A0C end:0x00006A80
+
+rel/main_rel/camera/fn_1_6A80.c:
+	.text       start:0x00006A80 end:0x00006AE4
+
 rel/main_rel/camera/fn_1_6AE4.c:
 	.text       start:0x00006AE4 end:0x00006B48
+
+rel/main_rel/camera/fn_1_6B48.c:
+	.text       start:0x00006B48 end:0x00006BC0
+
+rel/main_rel/camera/fn_1_6BC0.c:
+	.text       start:0x00006BC0 end:0x00006CB4
 
 rel/main_rel/camera/fn_1_6CB4.c:
 	.text       start:0x00006CB4 end:0x00006CD8
@@ -150,8 +189,29 @@ rel/main_rel/camera/fn_1_6CB4.c:
 rel/main_rel/camera/fn_1_6CD8.c:
 	.text       start:0x00006CD8 end:0x00006D2C
 
+rel/main_rel/camera/fn_1_6D2C.c:
+	.text       start:0x00006D2C end:0x00006DD0
+
+rel/main_rel/camera/fn_1_6DD0.c:
+	.text       start:0x00006DD0 end:0x00006EC0
+
+rel/main_rel/camera/fn_1_6EC0.c:
+	.text       start:0x00006EC0 end:0x00006F3C
+
+rel/main_rel/camera/fn_1_6F3C.c:
+	.text       start:0x00006F3C end:0x00006F84
+
 rel/main_rel/camera/fn_1_6F84.c:
 	.text       start:0x00006F84 end:0x00007000
+
+rel/main_rel/camera/fn_1_7000.c:
+	.text       start:0x00007000 end:0x0000707C
+
+rel/main_rel/camera/fn_1_707C.c:
+	.text       start:0x0000707C end:0x0000713C
+
+rel/main_rel/camera/fn_1_713C.c:
+	.text       start:0x0000713C end:0x0000715C
 
 rel/main_rel/camera/fn_1_715C.c:
 	.text       start:0x0000715C end:0x0000723C
@@ -162,14 +222,50 @@ rel/main_rel/camera/fn_1_723C.c:
 rel/main_rel/camera/fn_1_725C.c:
 	.text       start:0x0000725C end:0x0000727C
 
+rel/main_rel/camera/fn_1_727C.c:
+	.text       start:0x0000727C end:0x0000739C
+
+rel/main_rel/camera/fn_1_8250.c:
+	.text       start:0x00008250 end:0x00008298
+
+rel/main_rel/camera/fn_1_8298.c:
+	.text       start:0x00008298 end:0x0000847C
+
+rel/main_rel/camera/fn_1_847C.c:
+	.text       start:0x0000847C end:0x0000857C
+
+rel/main_rel/camera/fn_1_857C.c:
+	.text       start:0x0000857C end:0x00008628
+
 rel/main_rel/camera/fn_1_8628.c:
 	.text       start:0x00008628 end:0x00008648
+
+rel/main_rel/camera/fn_1_8648.c:
+	.text       start:0x00008648 end:0x00008654
+
+rel/main_rel/camera/fn_1_8654.c:
+	.text       start:0x00008654 end:0x00008660
 
 rel/main_rel/camera/fn_1_8660.c:
 	.text       start:0x00008660 end:0x00008708
 
+rel/main_rel/camera/fn_1_8708.c:
+	.text       start:0x00008708 end:0x00008770
+
+rel/main_rel/camera/fn_1_8770.c:
+	.text       start:0x00008770 end:0x00008840
+
 rel/main_rel/camera/fn_1_8840.c:
 	.text       start:0x00008840 end:0x000088D8
+
+rel/main_rel/camera/fn_1_88D8.c:
+	.text       start:0x000088D8 end:0x00008A0C
+
+rel/main_rel/camera/fn_1_8A0C.c:
+	.text       start:0x00008A0C end:0x00008AC0
+
+rel/main_rel/camera/fn_1_8AC0.c:
+	.text       start:0x00008AC0 end:0x00008AF0
 
 rel/main_rel/camera/fn_1_8AF0.c:
 	.text       start:0x00008AF0 end:0x00008B00
@@ -177,14 +273,68 @@ rel/main_rel/camera/fn_1_8AF0.c:
 rel/main_rel/camera/fn_1_8B00.c:
 	.text       start:0x00008B00 end:0x00008B10
 
+rel/main_rel/camera/fn_1_8B10.c:
+	.text       start:0x00008B10 end:0x00008D08
+
+rel/main_rel/camera/fn_1_A888.c:
+	.text       start:0x0000A888 end:0x0000AA54
+
+rel/main_rel/camera/fn_1_AA54.c:
+	.text       start:0x0000AA54 end:0x0000ABAC
+
+rel/main_rel/camera/fn_1_ABAC.c:
+	.text       start:0x0000ABAC end:0x0000AD94
+
+rel/main_rel/camera/fn_1_AD94.c:
+	.text       start:0x0000AD94 end:0x0000AE10
+
+rel/main_rel/camera/fn_1_AE10.c:
+	.text       start:0x0000AE10 end:0x0000AE38
+
+rel/main_rel/camera/fn_1_AE38.c:
+	.text       start:0x0000AE38 end:0x0000AEB8
+
+rel/main_rel/camera/fn_1_AEB8.c:
+	.text       start:0x0000AEB8 end:0x0000AFC8
+
+rel/main_rel/camera/fn_1_B42C.c:
+	.text       start:0x0000B42C end:0x0000B4D4
+
+rel/main_rel/camera/fn_1_B724.c:
+	.text       start:0x0000B724 end:0x0000B81C
+
 rel/main_rel/camera/fn_1_B81C.c:
 	.text       start:0x0000B81C end:0x0000B85C
 
 rel/main_rel/camera/fn_1_B85C.c:
 	.text       start:0x0000B85C end:0x0000B870
 
+rel/main_rel/camera/fn_1_BFA0.c:
+	.text       start:0x0000BFA0 end:0x0000C038
+
+rel/main_rel/camera/fn_1_C038.c:
+	.text       start:0x0000C038 end:0x0000C0A4
+
+rel/main_rel/camera/fn_1_C0A4.c:
+	.text       start:0x0000C0A4 end:0x0000C10C
+
+rel/main_rel/camera/fn_1_C10C.c:
+	.text       start:0x0000C10C end:0x0000C178
+
 rel/main_rel/camera/fn_1_C178.c:
 	.text       start:0x0000C178 end:0x0000C228
+
+rel/main_rel/camera/fn_1_C228.c:
+	.text       start:0x0000C228 end:0x0000C268
+
+rel/main_rel/camera/fn_1_C268.c:
+	.text       start:0x0000C268 end:0x0000C304
+
+rel/main_rel/camera/fn_1_C304.c:
+	.text       start:0x0000C304 end:0x0000C35C
+
+rel/main_rel/camera/fn_1_C35C.c:
+	.text       start:0x0000C35C end:0x0000C3B8
 
 rel/main_rel/camera/fn_1_D960.c:
 	.text       start:0x0000D960 end:0x0000D96C
@@ -194,6 +344,15 @@ rel/main_rel/camera/fn_1_D96C.c:
 
 rel/main_rel/camera/fn_1_D97C.c:
 	.text       start:0x0000D97C end:0x0000D98C
+
+rel/main_rel/camera/fn_1_D98C.c:
+	.text       start:0x0000D98C end:0x0000D99C
+
+rel/main_rel/camera/fn_1_D99C.c:
+	.text       start:0x0000D99C end:0x0000D9AC
+
+rel/main_rel/camera/fn_1_D9AC.c:
+	.text       start:0x0000D9AC end:0x0000D9BC
 
 rel/main_rel/camera/fn_1_D9BC.c:
 	.text       start:0x0000D9BC end:0x0000D9CC
@@ -206,6 +365,12 @@ rel/main_rel/camera/fn_1_D9D8.c:
 
 rel/main_rel/camera/fn_1_D9E4.c:
 	.text       start:0x0000D9E4 end:0x0000D9F4
+
+rel/main_rel/camera/fn_1_D9F4.c:
+	.text       start:0x0000D9F4 end:0x0000DA0C
+
+rel/main_rel/camera/fn_1_DA0C.c:
+	.text       start:0x0000DA0C end:0x0000DA24
 
 rel/main_rel/camera/fn_1_DA24.c:
 	.text       start:0x0000DA24 end:0x0000DA34
