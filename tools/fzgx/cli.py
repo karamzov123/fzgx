@@ -270,6 +270,17 @@ def cmd_tu_finish(a, p):
     _print(r, a.json); return 0 if r.get("ok") else 1
 
 
+def cmd_sdkmatch(a, p):
+    from . import sdkmatch  # scoped: compiles a whole SDK tree; only when asked
+    if a.apply:
+        r = sdkmatch.apply_names(p)
+        print(json.dumps(r, indent=1)); return 0 if r.get("ok") else 1
+    r = sdkmatch.run(p, a.sdk, a.mw, a.min_size)
+    print(json.dumps({k: r[k] for k in ("compiled", "sdk_functions", "dol_functions", "summary")}, indent=1))
+    print(f"failed to compile: {len(r['failed'])}", r["failed"][:8])
+    return 0
+
+
 def cmd_gen(a, p):
     from . import tufile  # scoped: same
     print(f"{tufile.regenerate(p)} generated units")
@@ -391,6 +402,9 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("tu", nargs="?")
     s = sub.add_parser("tu-finish", help="one pass over every TU of a module: include, tidy, hoist, reflag, collapse complete TUs; prints the revise queue"); s.set_defaults(fn=cmd_tu_finish)
     s.add_argument("--module", default="main_rel"); s.add_argument("-v", "--verbose", action="store_true")
+    s = sub.add_parser("sdkmatch", help="identify SDK/runtime functions in the DOL by masked-byte signatures of a compiled public SDK decomp"); s.set_defaults(fn=cmd_sdkmatch)
+    s.add_argument("--sdk", default="build/tools/mkdd"); s.add_argument("--mw", default="GC/1.2.5n"); s.add_argument("--min-size", type=int, default=16)
+    s.add_argument("--apply", action="store_true", help="name the identified unnamed DOL functions from the saved runs (link-verified)")
     s = sub.add_parser("gen", help="regenerate every per-function unit from the TU files"); s.set_defaults(fn=cmd_gen)
     s = sub.add_parser("permute", help="decomp-permuter on a plateaued attempt; submits on a byte-identical result"); s.set_defaults(fn=cmd_permute)
     s.add_argument("symbol", nargs="?"); s.add_argument("--threads", type=int, default=8); s.add_argument("--seconds", type=int, default=600)
