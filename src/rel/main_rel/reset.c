@@ -1,5 +1,56 @@
 #include "types.h"
 
+/* fzgx:begin fn_1_D3214 */
+#include "rel/main_rel/reset.h"
+
+extern s32 fn_1_B7E48(void);
+extern void fn_8001AF64(void);
+extern void fn_8001BDF0(s32);
+extern void fn_8006B224(void);
+extern void fn_8006FFCC(s32);
+extern void fn_8006FDEC(void);
+extern void fn_8006FEFC(void);
+extern void fn_8000EE50(u32, u32);
+extern void fn_1_C37A0(void);
+extern void fn_1_F7578(void);
+extern void fn_1_A0AA4(void);
+extern void fn_1_A02F0(void);
+extern void OSResetSystem(s32, u32, u32);
+extern void fn_8000C49C(const char *, ...);
+extern void *memset(u32, s32, u32);
+extern void *memcpy(u32, u32, u32);
+extern u8 lbl_801A66B0[4];
+
+void fn_1_D3214(void) {
+    Obj_1_bss_7AD48 *state = &lbl_1_bss_7AD48;
+
+    if (state->unk_0 != 0 || state->unk_1 != 0) {
+        if (fn_1_B7E48() == 0 && state->unk_2 == 0) {
+            state->unk_2 = 1;
+            fn_8001AF64();
+            fn_8001BDF0(1);
+            if (state->unk_4 == 0 || ((s32 (*)(void))state->unk_4)() != 0) {
+                fn_1_C37A0();
+                fn_1_F7578();
+                fn_8006B224();
+                fn_1_A0AA4();
+                fn_1_A02F0();
+                fn_8006FFCC(0);
+                fn_8006FDEC();
+                fn_8006FEFC();
+                fn_8000EE50(0x80700000, 0x80700020); // fzgx-allow: A1 fixed MEM1 scratch address
+                memset(0x80700000, 0, 0x20); // fzgx-allow: A1 fixed MEM1 scratch address
+                memcpy(0x80700000, (u32)lbl_801A66B0, 4); // fzgx-allow: A1 fixed MEM1 scratch address
+                state->unk_0 = 0;
+                OSResetSystem(0, state->unk_8, 0);
+                fn_8000C49C((const char *)&lbl_1_data_3DBC0, 0x76,
+                            (const char *)lbl_1_data_3DBC8);
+            }
+        }
+    }
+}
+/* fzgx:end fn_1_D3214 */
+
 /* fzgx:begin fn_1_D332C */
 #include "rel/main_rel/reset.h"
 
