@@ -42,6 +42,8 @@ extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
 extern u32 lbl_1_bss_7B190[2];
 extern u32 lbl_1_bss_7ED58[158];
 
+extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
+
 /* fzgx:begin fn_1_EC900 */
 // Return the current ghost state value.
 u32 fn_1_EC900(void) {
@@ -405,8 +407,6 @@ void fn_1_F2008(s32 arg) {
 /* fzgx:end fn_1_F2008 */
 
 /* fzgx:begin ghost_test_record_flag0 */
-extern void fn_1_12EF80(s16 arg, s16 *out_a, s16 *out_b);
-
 // Tests the record flag selected by the supplied ghost identifier.
 u32 ghost_test_record_flag0(s32 arg) {
     s16 a;

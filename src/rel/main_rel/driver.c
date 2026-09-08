@@ -32,6 +32,14 @@ extern u8 lbl_1_bss_716C8[320];
 
 extern void (*lbl_1_bss_71680)(void);
 
+extern void (*lbl_1_bss_7167C)(void);
+extern void fn_1_A9420(u8 value);
+extern void fn_1_A9464(u16 arg0, u16 arg1);
+extern u32 fn_1_451C(void);
+extern void fn_8008069C(void *buffer, char *format, ...);
+extern void fn_1_A5AA0(void *buffer, void *destination);
+extern u32 lbl_1_bss_71670;
+
 /* fzgx:begin fn_1_A7728 */
 typedef struct FnA7728Resource {
     u8 pad_104[0x104];
@@ -239,11 +247,6 @@ void fn_1_A8EB0(int arg0, int arg1) {
 /* fzgx:end fn_1_A8EB0 */
 
 /* fzgx:begin fn_1_A8EF8 */
-extern void (*lbl_1_bss_7167C)(void);
-
-extern void fn_1_A9420(u8 value);
-extern void fn_1_A9464(u16 arg0, u16 arg1);
-
 // Reset the current selection before applying the two provided values.
 void fn_1_A8EF8(u16 arg0, u16 arg1) {
     fn_1_A9420(0);
@@ -316,11 +319,6 @@ void fn_1_A96EC(void) {
 /* fzgx:end fn_1_A96EC */
 
 /* fzgx:begin fn_1_A96FC */
-extern u32 fn_1_451C(void);
-extern void fn_8008069C(void *buffer, char *format, ...);
-extern void fn_1_A5AA0(void *buffer, void *destination);
-extern u32 lbl_1_bss_71670;
-
 // Initialize the driver state and format its startup data.
 void fn_1_A96FC(void) {
     u8 buffer[0x48];

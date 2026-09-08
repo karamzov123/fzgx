@@ -1,17 +1,20 @@
 #include "types.h"
-
-/* fzgx:begin fn_1_1312F0 */
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/custom_memcard.h"
 
 extern u32 lbl_801A6410;
-
-// Reset the memcard state after reporting an unavailable card.
 extern u8 fn_1_B7C00(void);
 extern s32 fn_1_B7CD4(void);
 extern s32 fn_1_B7C5C(void);
 extern void OSReport(const char* format, ...);
 extern void fn_1_46B4(u32 arg0, void* arg1, u8* arg2, s32 arg3);
+extern void fn_80008BA8(void*, void*, s32);
+extern u32 lbl_1_bss_8CA6C[1605];
+extern void fn_1_1324C4(void *arg0);
+extern void fn_1_132774(void *arg0);
+
+/* fzgx:begin fn_1_1312F0 */
+// Reset the memcard state after reporting an unavailable card.
 
 void fn_1_1312F0(void) {
     u8* state = (u8*)&lbl_1_bss_8CA40;
@@ -34,12 +37,11 @@ void fn_1_1312F0(void) {
 }
 /* fzgx:end fn_1_1312F0 */
 
-/* fzgx:begin fn_1_1314A4 */
+/* fzgx:begin fn_1_1314A4 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/custom_memcard.h"
 
-extern u8 lbl_1_data_40EA4[0x54];
-extern u8 lbl_1_data_40EF8[0x11];
 extern u32 lbl_801A6410;
 
 extern u8 fn_1_B7C00(void);
@@ -72,22 +74,19 @@ void fn_1_1314A4(void) {
 /* fzgx:end fn_1_1314A4 */
 
 /* fzgx:begin fn_1_1317B4 */
-extern u32 lbl_1_bss_8CA6C[1605];
-
 u32 fn_1_1317B4(void) {
     return lbl_1_bss_8CA6C[0];
 }
 /* fzgx:end fn_1_1317B4 */
 
 /* fzgx:begin fn_1_1318B8 */
-extern u8 lbl_1_bss_8E380;
-
 u8 fn_1_1318B8(void) {
     return lbl_1_bss_8E380 != 0;
 }
 /* fzgx:end fn_1_1318B8 */
 
-/* fzgx:begin fn_1_1318D4 */
+/* fzgx:begin fn_1_1318D4 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/custom_memcard.h"
 
@@ -126,11 +125,6 @@ s32 fn_1_1318D4(void) {
 /* fzgx:end fn_1_1318D4 */
 
 /* fzgx:begin fn_1_132488 */
-#include "rel/main_rel/custom_memcard.h"
-
-extern void fn_1_1324C4(void *arg0);
-extern void fn_1_132774(void *arg0);
-
 void fn_1_132488(void *arg0) {
     if ((lbl_1_bss_8B3A0.unk_94 & 0x40000000) != 0) {
         fn_1_1324C4(arg0);
@@ -141,9 +135,6 @@ void fn_1_132488(void *arg0) {
 /* fzgx:end fn_1_132488 */
 
 /* fzgx:begin fn_1_137364 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/custom_memcard.h"
-
 // Writes the indexed three-byte value, or the fallback value when the index is out of range.
 void fn_1_137364(s16 arg0, u8* arg1, u8* arg2, u8* arg3) {
     if (arg0 < 0x29) {
@@ -161,8 +152,6 @@ void fn_1_137364(s16 arg0, u8* arg1, u8* arg2, u8* arg3) {
 /* fzgx:end fn_1_137364 */
 
 /* fzgx:begin fn_1_13F7F8 */
-#include "rel/main_rel/custom_memcard.h"
-
 u32 fn_1_13F7F8(s16 arg0, s16 arg1) {
     return ((u32 (*)[6])&lbl_1_data_414D8)[arg0][arg1];
 }

@@ -1,6 +1,27 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/bitmap.h"
 
-/* fzgx:begin fn_1_4811C */
+extern void fn_1_48214(int index, int enabled);
+extern void fn_1_4DDC0(void);
+extern void fn_1_4F724(void);
+extern s32 lbl_801A6410;
+extern void fn_8000C49C(const unsigned char *, ...);
+extern int fn_1_45D0(int, int, const unsigned char *, int);
+extern int fn_80008F88(int, int);
+extern void fn_8006FDEC(void);
+extern void fn_80009064(u32 value);
+extern void fn_1_46B4(u32 arg0, u32 arg1, char *arg2, s32 arg3);
+extern void *fn_1_48730(u32 value);
+extern void fn_1_47AD4(Obj_1_data_FCD4 *obj, u8 value, int arg2, int arg3);
+extern f32 lbl_1_rodata_10C0[5];
+extern f32 lbl_1_bss_3E05C;
+
+/* fzgx:begin fn_1_4811C noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/bitmap.h"
+
 extern void fn_1_48214(void *arg, int value);
 
 void fn_1_4811C(void *arg) {
@@ -8,7 +29,11 @@ void fn_1_4811C(void *arg) {
 }
 /* fzgx:end fn_1_4811C */
 
-/* fzgx:begin fn_1_48140 */
+/* fzgx:begin fn_1_48140 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/bitmap.h"
+
 extern void fn_1_48214(void *, int);
 
 void fn_1_48140(void *arg) {
@@ -17,10 +42,6 @@ void fn_1_48140(void *arg) {
 /* fzgx:end fn_1_48140 */
 
 /* fzgx:begin fn_1_48164 */
-#include "rel/main_rel/bitmap.h"
-
-extern void fn_1_48214(int index, int enabled);
-
 // Enables matching bitmap entries in the shared bitmap table.
 void fn_1_48164(int value) {
     s16 index;
@@ -36,7 +57,11 @@ void fn_1_48164(int value) {
 }
 /* fzgx:end fn_1_48164 */
 
-/* fzgx:begin fn_1_481E8 */
+/* fzgx:begin fn_1_481E8 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/bitmap.h"
+
 extern void fn_1_48214(void *arg0, int arg1);
 extern void fn_1_4DDC0(void);
 extern void fn_1_4F724(void);
@@ -48,29 +73,12 @@ void fn_1_481E8(void *arg0) {
 }
 /* fzgx:end fn_1_481E8 */
 
-/* fzgx:begin fn_1_48418 noprologue */
-#include "types.h"
-
-extern u8 lbl_1_data_1A368[0x9];
-typedef struct {
-    u32 unk_0;  // 3 loads, 2 stores
-    u32 unk_4;  // 2 loads, 1 stores
-    u32 unk_8;  // 2 loads, 0 stores
-    u8 pad_C[0x18];
-} Obj_1_data_6CA0;
-extern Obj_1_data_6CA0 lbl_1_data_6CA0;
-extern u8 lbl_1_data_1A390[0x1A];
-
+/* fzgx:begin fn_1_48418 */
 typedef struct {
     s32 unk_0;
     s32 unk_4;
     s32 unk_8;
 } BitmapSlot;
-
-extern s32 lbl_801A6410;
-extern void fn_8000C49C(const unsigned char *, ...);
-extern int fn_1_45D0(int, int, const unsigned char *, int);
-extern int fn_80008F88(int, int);
 
 void fn_1_48418(int index) {
     BitmapSlot *obj = (BitmapSlot *)&lbl_1_data_6CA0 + index;
@@ -91,14 +99,6 @@ void fn_1_48418(int index) {
 /* fzgx:end fn_1_48418 */
 
 /* fzgx:begin fn_1_484CC */
-#include "rel/main_rel/bitmap.h"
-
-extern u32 lbl_801A6410;
-extern void fn_8006FDEC(void);
-extern void fn_80009064(u32 value);
-extern void fn_1_48214(s32 index, s32 value);
-extern void fn_1_46B4(u32 arg0, u32 arg1, char *arg2, s32 arg3);
-
 // Releases a bitmap and invalidates dependent texture records.
 void fn_1_484CC(s32 index) {
     u8 *texture_record;
@@ -129,15 +129,15 @@ void fn_1_484CC(s32 index) {
 /* fzgx:end fn_1_484CC */
 
 /* fzgx:begin fn_1_485A8 */
-#include "rel/main_rel/bitmap.h"
-
 u32 fn_1_485A8(s32 index) {
     return ((Obj_1_data_FCD4 *)((u8 *)&lbl_1_data_FCD4 + index * 0x28))->unk_0 != 0;
 }
 /* fzgx:end fn_1_485A8 */
 
-/* fzgx:begin fn_1_48690 */
+/* fzgx:begin fn_1_48690 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/bitmap.h"
 
 extern void *fn_1_48730(void);
 
@@ -151,8 +151,10 @@ u16 fn_1_48690(void) {
 }
 /* fzgx:end fn_1_48690 */
 
-/* fzgx:begin fn_1_486C4 */
+/* fzgx:begin fn_1_486C4 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/bitmap.h"
 
 extern void *fn_1_48730(void);
 
@@ -165,8 +167,10 @@ u16 fn_1_486C4(void) {
 }
 /* fzgx:end fn_1_486C4 */
 
-/* fzgx:begin fn_1_486F8 */
+/* fzgx:begin fn_1_486F8 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/bitmap.h"
 
 extern void *fn_1_48730(void);
 
@@ -182,9 +186,6 @@ u32 fn_1_486F8(void) {
 /* fzgx:end fn_1_486F8 */
 
 /* fzgx:begin fn_1_48730 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/bitmap.h"
-
 // Look up the bitmap data for the table and slot encoded in value.
 void *fn_1_48730(u32 value) {
     u32 table_index = (value >> 8) & 0xffff;
@@ -206,10 +207,6 @@ void fn_1_4877C(void) {
 /* fzgx:end fn_1_4877C */
 
 /* fzgx:begin fn_1_48780 */
-#include "rel/main_rel/bitmap.h"
-
-extern void fn_1_47AD4(Obj_1_data_FCD4 *obj, u8 value, int arg2, int arg3);
-
 void fn_1_48780(void) {
     Obj_1_data_FCD4 *obj;
     int i;
@@ -225,11 +222,6 @@ void fn_1_48780(void) {
 /* fzgx:end fn_1_48780 */
 
 /* fzgx:begin fn_1_4AEE8 */
-#include "rel/main_rel/bitmap.h"
-
-extern f32 lbl_1_rodata_10C0[5];
-extern f32 lbl_1_bss_3E05C;
-
 u32 fn_1_4AEE8(u32 value) {
     u32 previous = lbl_1_data_1BCC4;
 

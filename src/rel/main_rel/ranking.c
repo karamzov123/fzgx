@@ -30,6 +30,8 @@ extern void OSReport(const char *format, ...);
 extern void fn_1_465D0(void *object, int value);
 extern void fn_1_9AD54(void);
 
+extern void fn_1_1568C4(void *entry);
+
 /* fzgx:begin fn_1_1554D0 noprologue */
 #include "types.h"
 #include "rel/main_rel/globals.h"
@@ -262,7 +264,6 @@ void fn_1_156730(s32 index) {
 
 /* fzgx:begin fn_1_156754 */
 extern void fn_1_1569E8(void *entry);
-extern void fn_1_1568C4(void *entry);
 
 // Processes the indexed ranking entry unless its status marks it as unused.
 void fn_1_156754(s32 index) {

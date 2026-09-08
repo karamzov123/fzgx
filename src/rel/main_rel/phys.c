@@ -35,6 +35,9 @@ extern void fn_1_B9C0C(void);
 extern void fn_1_1596DC(s32);
 extern void fn_1_484CC(s32);
 
+extern void fn_80008BEC(void *dst, void *value, u32 size);
+extern void fn_80008BA8(void *dst, void *value, u32 size);
+
 /* fzgx:begin fn_1_E50F0 */
 void fn_1_E50F0(void *base, void *arg) {
     struct {
@@ -229,9 +232,6 @@ void fn_1_E57F4(void *base, f32 value) {
 /* fzgx:end fn_1_E57F4 */
 
 /* fzgx:begin fn_1_E57FC */
-extern void fn_80008BEC(void *dst, void *value, u32 size);
-extern void fn_80008BA8(void *dst, void *value, u32 size);
-
 // Initializes the object's 12-byte value, clearing it or copying from the source.
 void fn_1_E57FC(void *object, void *source) {
     if (source == 0) {

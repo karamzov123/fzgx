@@ -6,6 +6,8 @@ extern u32 lbl_1_bss_8FD60[2];
 extern int fn_1_15BCDC(void *);
 extern void fn_1_4060(void);
 
+extern u32 lbl_1_bss_8FE80[8];
+
 /* fzgx:begin fn_1_15BE38 */
 typedef struct {
     u32 count;
@@ -67,8 +69,6 @@ void fn_1_15E260(s32 index) {
 /* fzgx:end fn_1_15E260 */
 
 /* fzgx:begin fn_1_15E3E0 */
-extern u32 lbl_1_bss_8FE80[8];
-
 // Records the selected window index and updates its value when the index is valid.
 void fn_1_15E3E0(s32 index, u32 value) {
     s32 slot = (lbl_1_bss_3C30.unk_13F4 - 1) % 4;
