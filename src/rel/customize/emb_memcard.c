@@ -25,6 +25,29 @@ void fn_3_C328(void) {
 }
 /* fzgx:end fn_3_C328 */
 
+/* fzgx:begin fn_3_F948 */
+typedef struct MemCardSlot {
+    u32 unk0;
+    u32 flags;
+    u8 pad[0x2058];
+} MemCardSlot;
+
+s16 fn_3_F948(MemCardSlot *slot) {
+    s16 i;
+    s16 count = 0;
+    i = 0;
+
+    while (i < 4) {
+        if (slot->flags & (1u << 31)) {
+            count++;
+        }
+        slot++;
+        i++;
+    }
+    return count;
+}
+/* fzgx:end fn_3_F948 */
+
 /* fzgx:begin fn_3_11FD0 */
 u32 fn_3_11FD0(u32 index, u32 value) {
     return ((u32 *)(lbl_3_data_2F78 + (__cntlzw(value) * 24)))[index];

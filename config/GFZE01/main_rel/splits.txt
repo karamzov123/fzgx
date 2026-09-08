@@ -4673,3 +4673,15 @@ rel/main_rel/ranking/fn_1_15659C.c:
 
 rel/main_rel/effect/fn_1_58F50.c:
 	.text       start:0x00058F50 end:0x00059078 align:4
+
+rel/main_rel/font/fn_1_520F8.c:
+	.text       start:0x000520F8 end:0x000521B8 align:4
+
+rel/main_rel/effect/fn_1_5FEBC.c:
+	.text       start:0x0005FEBC end:0x0005FFAC align:4
+
+rel/main_rel/bg_san/fn_1_DAE24.c:
+	.text       start:0x000DAE24 end:0x000DAEF8 align:4
+
+rel/main_rel/cloth/fn_1_1024C4.c:
+	.text       start:0x001024C4 end:0x001024F8 align:4

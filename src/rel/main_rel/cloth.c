@@ -30,6 +30,23 @@ void fn_1_10240C(u32 arg0, u32 arg1, s32 arg2) {
 }
 /* fzgx:end fn_1_10240C */
 
+/* fzgx:begin fn_1_1024C4 */
+typedef struct Point1024C4 {
+    u8 pad[0x10];
+    f32 v[3];
+} Point1024C4;
+
+f32 fn_1_1024C4(const Point1024C4 *a, const Point1024C4 *b) {
+    f32 dz = a->v[2] - b->v[2];
+    f32 dy = a->v[1] - b->v[1];
+    f32 dx = a->v[0] - b->v[0];
+    f32 result = dx * dx;
+    result += dy * dy;
+    result += dz * dz;
+    return result;
+}
+/* fzgx:end fn_1_1024C4 */
+
 /* fzgx:begin fn_1_102FD0 */
 // Initialize the cloth subsystem and reset its shared state.
 void fn_1_102FD0(void) {

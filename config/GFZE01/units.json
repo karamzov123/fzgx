@@ -749,6 +749,17 @@
   },
   {
     "module": "customize",
+    "source": "rel/customize/emb_memcard/fn_3_F948.c",
+    "symbols": [
+      "fn_3_F948"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emb_memcard.c"
+  },
+  {
+    "module": "customize",
     "source": "rel/customize/emb_paste_editor/fn_3_11974.c",
     "symbols": [
       "fn_3_11974"
@@ -7392,6 +7403,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/bg_san/fn_1_DAE24.c",
+    "symbols": [
+      "fn_1_DAE24"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/bg_san.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/bg_san/fn_1_DAEF8.c",
     "symbols": [
       "fn_1_DAEF8"
@@ -10684,6 +10706,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/cloth/fn_1_1024C4.c",
+    "symbols": [
+      "fn_1_1024C4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/cloth.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/cloth/fn_1_102FD0.c",
     "symbols": [
       "fn_1_102FD0"
@@ -11694,6 +11727,17 @@
     "source": "rel/main_rel/effect/fn_1_5FE30.c",
     "symbols": [
       "fn_1_5FE30"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/effect.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/effect/fn_1_5FEBC.c",
+    "symbols": [
+      "fn_1_5FEBC"
     ],
     "status": "matching",
     "mw_version": null,
@@ -13499,6 +13543,20 @@
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/font.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/font/fn_1_520F8.c",
+    "symbols": [
+      "fn_1_520F8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/font.c",
+    "pool": {
+      "@10": "lbl_1_rodata_2778"
+    }
   },
   {
     "module": "main_rel",
@@ -22728,6 +22786,16 @@
     "source": "rel/movie_module/fn_12_23078.c",
     "symbols": [
       "fn_12_23078"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
+    "source": "rel/movie_module/fn_12_23120.c",
+    "symbols": [
+      "fn_12_23120"
     ],
     "status": "matching",
     "mw_version": null,

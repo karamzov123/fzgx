@@ -142,6 +142,45 @@ void fn_1_DAD6C(void) {
 }
 /* fzgx:end fn_1_DAD6C */
 
+/* fzgx:begin fn_1_DAE24 noprologue */
+#include "types.h"
+
+extern u32 lbl_1_data_2A7E0[62];
+extern void fn_1_9AD54(void);
+extern s32 fn_1_58C4(void);
+extern s16 fn_1_5948(s32 index);
+extern s16 fn_1_7B054(s16 value);
+extern s16 fn_1_3F0C8(void);
+extern f32 lbl_1_rodata_6638;
+extern f32 lbl_1_rodata_663C;
+extern void fn_1_106084(void *target, s32 index, f32 x, f32 y, f32 z);
+extern void fn_1_627C(s32 index);
+extern void fn_1_DB138(void *object);
+
+void fn_1_DAE24(void) {
+    s32 count;
+    f32 *value;
+    s32 index;
+    u32 object;
+
+    object = lbl_1_data_2A7E0[15];
+    fn_1_9AD54();
+    count = fn_1_58C4();
+    value = (f32 *)object;
+    for (index = 0; index < count; index++) {
+        if (fn_1_7B054(fn_1_5948(index)) == 42) {
+            if (fn_1_3F0C8() != 39) {
+                fn_1_106084((void *)(object + 0x142a0), index,
+                    lbl_1_rodata_6638, *value, lbl_1_rodata_663C);
+            }
+        }
+        fn_1_627C(index);
+        value++;
+    }
+    fn_1_DB138((void *)object);
+}
+/* fzgx:end fn_1_DAE24 */
+
 /* fzgx:begin fn_1_DAEF8 */
 // fn_1_DAEF8: empty in retail (single blr).
 void fn_1_DAEF8(void) {

@@ -796,6 +796,28 @@ void fn_1_520CC(void) {
 }
 /* fzgx:end fn_1_520CC */
 
+/* fzgx:begin fn_1_520F8 noprologue */
+#include "types.h"
+
+extern s8 fn_1_A5DC4(s32 value);
+extern s32 lbl_1_bss_4E6A8;
+extern s32 lbl_1_bss_4E6AC;
+extern f64 lbl_1_rodata_2778[2];
+extern f32 lbl_1_rodata_2788[6];
+
+f32 fn_1_520F8(s32 value) {
+    s32 base;
+    f32 scaled;
+
+    if (fn_1_A5DC4(value) && lbl_1_bss_4E6A8 != 0) {
+        base = lbl_1_bss_4E6AC;
+        scaled = (f32)(value - base) * lbl_1_rodata_2788[0];
+        return (f32)base + scaled;
+    }
+    return (f32)value;
+}
+/* fzgx:end fn_1_520F8 */
+
 /* fzgx:begin fn_1_521B8 */
 // Convert a font value to its scaled coordinate when the font system is active.
 f32 fn_1_521B8(s32 value) {

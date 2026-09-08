@@ -657,6 +657,70 @@ void fn_1_5FE30(fn_1_5FE30_FZeroObject *object) {
 }
 /* fzgx:end fn_1_5FE30 */
 
+/* fzgx:begin fn_1_5FEBC noprologue */
+#include "types.h"
+
+typedef struct {
+    u8 unk00[0x18];
+    s16 value18;
+    u8 unk1A[2];
+    f32 value1C;
+    f32 value20;
+    f32 value24;
+    f32 value28;
+    u8 unk2C[8];
+    void *field34;
+    u8 unk38[0x1c];
+    s16 value54;
+    s16 value56;
+} EffectData;
+
+typedef struct {
+    u8 unk00[8];
+    EffectData *data;
+} EffectObject;
+
+extern void fn_1_867CC(s16 value, void *result);
+extern void lbl_8006D9D8(void *result);
+extern void lbl_8006D7B0(void);
+extern void mathutil_mtxA_rotate_y(s16 value);
+extern void mathutil_mtxA_rotate_x(s16 value);
+extern void lbl_8006DB74(void *result);
+extern void fn_1_9F914(void *data, void *owner);
+extern const f32 lbl_1_rodata_2AA0[21];
+extern const f32 lbl_1_rodata_29AC[5];
+extern void *memset(void *ptr, int value, u32 size);
+
+void fn_1_5FEBC(EffectObject *object) {
+    u8 result[12];
+    u8 data[64];
+    EffectData *effect;
+    void *owner;
+    f32 color_scale;
+    f32 size;
+
+    effect = object->data;
+    fn_1_867CC(effect->value18, result);
+    owner = effect->field34;
+    lbl_8006D9D8(result);
+    lbl_8006D7B0();
+    mathutil_mtxA_rotate_y(effect->value56);
+    mathutil_mtxA_rotate_x(effect->value54);
+    memset(data, 0, 64);
+    lbl_8006DB74(data + 8);
+    size = lbl_1_rodata_2AA0[0];
+    size = size * effect->value28;
+    *(f32 *)(data + 0) = size;
+    color_scale = lbl_1_rodata_29AC[0];
+    data[60] = (u8)(s32)(color_scale * effect->value1C);
+    data[61] = (u8)(s32)(color_scale * effect->value20);
+    data[62] = (u8)(s32)(color_scale * effect->value24);
+    data[63] = 0xff;
+    *(f32 *)(data + 4) = size;
+    fn_1_9F914(data, owner);
+}
+/* fzgx:end fn_1_5FEBC */
+
 /* fzgx:begin fn_1_5FFAC */
 // fn_1_5FFAC: empty in retail (single blr).
 void fn_1_5FFAC(void) {
