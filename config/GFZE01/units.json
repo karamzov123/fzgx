@@ -125,7 +125,7 @@
     "symbols": [
       "fn_1_7899C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": []
   },
