@@ -44,3 +44,12 @@ rel/option/_prolog/fn_4_8DC0.c:
 
 rel/option/_prolog/fn_4_869C.c:
 	.text       start:0x0000869C end:0x00008720 align:4
+
+rel/option/_prolog/fn_4_9AD0.c:
+	.text       start:0x00009AD0 end:0x00009B20 align:4
+
+rel/option/_prolog/fn_4_4B10.c:
+	.text       start:0x00004B10 end:0x00004B74 align:4
+
+rel/option/_prolog/fn_4_4784.c:
+	.text       start:0x00004784 end:0x00004834 align:4

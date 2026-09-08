@@ -67,3 +67,24 @@ void fn_13_B64(void) {
 void fn_13_B78(void) {
 }
 /* fzgx:end fn_13_B78 */
+
+/* fzgx:begin fn_13_B7C */
+extern struct fn_13_B7C_lbl_13_bss_3C lbl_13_bss_3C;
+extern u16 lbl_1_bss_96A;
+extern u32 fn_1_3F038(void);
+extern u32 lbl_13_bss_40;
+
+struct fn_13_B7C_lbl_13_bss_3C {
+    u8 unk_0;
+};
+
+void fn_13_B7C(void) {
+    u32 t0;
+    t0 = fn_1_3F038();
+    if ((s32)t0 != 0) {
+    lbl_13_bss_3C.unk_0 = 1;
+    lbl_1_bss_96A = 169;
+    lbl_13_bss_40 = 167;
+    }
+}
+/* fzgx:end fn_13_B7C */

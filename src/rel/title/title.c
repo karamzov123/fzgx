@@ -121,6 +121,30 @@ void fn_8_5214(void) {
 }
 /* fzgx:end fn_8_5214 */
 
+/* fzgx:begin fn_8_55CC */
+extern u32 fn_8_D024(void);
+extern u8 lbl_8_bss_23D;
+extern u8 lbl_8_bss_242;
+
+void fn_8_55CC(void) {
+    if (lbl_8_bss_23D == 0) {
+    lbl_8_bss_242 = 0;
+    fn_8_D024();
+    }
+}
+/* fzgx:end fn_8_55CC */
+
+/* fzgx:begin fn_8_5810 */
+extern u32 fn_8_D5F4(void);
+extern u8 lbl_8_bss_23D;
+
+void fn_8_5810(void) {
+    if (lbl_8_bss_23D == 0) {
+    fn_8_D5F4();
+    }
+}
+/* fzgx:end fn_8_5810 */
+
 /* fzgx:begin fn_8_5C4C */
 // fn_8_5C4C: empty in retail (single blr).
 void fn_8_5C4C(void) {

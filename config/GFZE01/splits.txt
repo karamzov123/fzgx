@@ -910,3 +910,33 @@ dol/fn_80018108.c:
 
 dol/fn_8001813C.c:
 	.text       start:0x8001813C end:0x80018170 align:4
+
+dol/fn_8005A668.c:
+	.text       start:0x8005A668 end:0x8005A678 align:4
+
+dol/fn_8005A688.c:
+	.text       start:0x8005A688 end:0x8005A698 align:4
+
+dol/fn_80006340.c:
+	.text       start:0x80006340 end:0x80006354 align:4
+
+dol/fn_80021914.c:
+	.text       start:0x80021914 end:0x80021928 align:4
+
+dol/fn_8005BE98.c:
+	.text       start:0x8005BE98 end:0x8005BEAC align:4
+
+dol/fn_8004538C.c:
+	.text       start:0x8004538C end:0x800453A4 align:4
+
+dol/fn_8004E198.c:
+	.text       start:0x8004E198 end:0x8004E1B0 align:4
+
+dol/fn_8007075C.c:
+	.text       start:0x8007075C end:0x80070774 align:4
+
+dol/__OSReschedule.c:
+	.text       start:0x800107F8 end:0x80010828 align:4
+
+dol/fn_80020530.c:
+	.text       start:0x80020530 end:0x800205A0 align:4

@@ -29,3 +29,20 @@ void fn_5_220(void) {
     fn_1_407C(t7);
 }
 /* fzgx:end fn_5_220 */
+
+/* fzgx:begin fn_5_13B0 */
+extern u32 fn_1_412A0(u32);
+extern u32 fn_1_48140(u32);
+extern u32 fn_5_3C44(void);
+extern u8 lbl_5_bss_40;
+
+void fn_5_13B0(void) {
+    if ((s8)lbl_5_bss_40 != -2) {
+    fn_5_3C44();
+    }
+    fn_1_48140(154);
+    fn_1_48140(155);
+    fn_1_48140(147);
+    fn_1_412A0(1);
+}
+/* fzgx:end fn_5_13B0 */

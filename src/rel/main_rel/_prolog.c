@@ -184,6 +184,16 @@ void fn_1_3BDC(u32 arg0) {
 }
 /* fzgx:end fn_1_3BDC */
 
+/* fzgx:begin fn_1_3C78 */
+extern u8 lbl_1_bss_D78;
+extern u8 lbl_1_bss_DA4;
+
+void fn_1_3C78(void) {
+    if (lbl_1_bss_D78 == 0) { return; }
+    lbl_1_bss_DA4 = 0;
+}
+/* fzgx:end fn_1_3C78 */
+
 /* fzgx:begin fn_1_3CC4 */
 void fn_1_3CC4(void) {
     if (lbl_1_bss_D78 == 0) {

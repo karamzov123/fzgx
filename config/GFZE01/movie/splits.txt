@@ -11,3 +11,6 @@ rel/movie/movie/fn_5_3E54.c:
 
 rel/movie/_prolog/fn_5_220.c:
 	.text       start:0x00000220 end:0x00000280 align:4
+
+rel/movie/_prolog/fn_5_13B0.c:
+	.text       start:0x000013B0 end:0x00001404 align:4

@@ -83,3 +83,6 @@ rel/story/story_mode/fn_7_E50.c:
 
 rel/story/story_mode/fn_7_1398.c:
 	.text       start:0x00001398 end:0x000013CC align:4
+
+rel/story/story_mode/fn_7_2384.c:
+	.text       start:0x00002384 end:0x000023A8 align:4

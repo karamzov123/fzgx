@@ -4556,3 +4556,6 @@ rel/main_rel/sel_static_disp/fn_1_149C64.c:
 
 rel/main_rel/ranking/fn_1_1577D0.c:
 	.text       start:0x001577D0 end:0x00157820 align:4
+
+rel/main_rel/_prolog/fn_1_3C78.c:
+	.text       start:0x00003C78 end:0x00003C98 align:4

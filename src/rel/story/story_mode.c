@@ -189,6 +189,21 @@ int fn_7_2324(void) {
 }
 /* fzgx:end fn_7_2324 */
 
+/* fzgx:begin fn_7_2384 */
+extern u32 lbl_7_bss_29C;
+
+struct fn_7_2384_Arg0 {
+    u32 unk_0;
+};
+
+s32 fn_7_2384(struct fn_7_2384_Arg0 *arg0) {
+    if ((s32)lbl_7_bss_29C == 0) {
+    arg0->unk_0 = (arg0->unk_0 | 0x80000);
+    }
+    return 0;
+}
+/* fzgx:end fn_7_2384 */
+
 /* fzgx:begin fn_7_2514 */
 extern u32 fn_7_3FCC(void);
 

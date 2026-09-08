@@ -116,3 +116,9 @@ rel/title/title/fn_8_AA8.c:
 
 rel/title/title/fn_8_67B0.c:
 	.text       start:0x000067B0 end:0x000067F8 align:4
+
+rel/title/title/fn_8_5810.c:
+	.text       start:0x00005810 end:0x00005840 align:4
+
+rel/title/title/fn_8_55CC.c:
+	.text       start:0x000055CC end:0x00005608 align:4
