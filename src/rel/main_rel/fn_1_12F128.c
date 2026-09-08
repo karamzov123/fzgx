@@ -1,3 +1,8 @@
 #include "types.h"
 
-// fn_1_12F128: carved by fzgx; best attempt saved to fn_1_12F128.1788836134.c
+extern u32 lbl_801A66A0;
+extern u32 lbl_1_bss_8B3A0[83];
+
+void fn_1_12F128(s16 index) {
+    lbl_1_bss_8B3A0[index + 56] = lbl_801A66A0;
+}
