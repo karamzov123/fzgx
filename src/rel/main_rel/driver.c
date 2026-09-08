@@ -1,12 +1,36 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/driver.h"
 
-/* fzgx:begin fn_1_A7728 */
-extern u8 lbl_1_data_34354[72];
 extern void *lbl_801A6410;
 extern void fn_80071718(void *value);
 extern void fn_800711A8(void *value);
 extern void fn_1_46B4(void *arg0, void *arg1, void *arg2, s32 arg3);
+extern void fn_1_A7E60(s32 arg0, s8 arg1, s32 arg2, s32 arg3, s32 arg4);
+extern void lbl_8006DAEC(void);
+extern void lbl_8006DBAC(void *arg0);
+extern void lbl_8006E0A4(void *arg0);
+extern void fn_8006F6A8(void *arg0);
+extern void lbl_8006DB30(void);
+extern void fn_1_A861C(void *arg0, void *arg1);
+extern void fn_1_A8834(void *arg0, void *arg1);
+extern void fn_1_A89B0(void *arg0, void *arg1, s32 arg2);
+extern void fn_1_3920(void);
+extern void fn_1_A8D4C(void);
+extern void fn_1_A8D64(void);
+extern void fn_8001A78C(void (*func)(void));
+extern void fn_8001A7D0(void (*func)(void));
+extern void fn_1_A9420(u8 value);
+extern void fn_1_A948C(int);
+extern void fn_1_A943C(int, int);
+extern void fn_1_A9464(u16 arg0, u16 arg1);
+extern void fn_1_A942C(u8 value);
+extern void fn_1_A96BC(void);
+extern void (*lbl_1_bss_7167C)(void);
+extern void fn_1_A5C98(void *);
+extern u8 lbl_1_bss_716C8[320];
 
+/* fzgx:begin fn_1_A7728 */
 typedef struct FnA7728Resource {
     u8 pad_104[0x104];
     void *field_104;
@@ -73,10 +97,6 @@ void fn_1_A77DC(FnA77DCObject *object) {
 /* fzgx:end fn_1_A77DC */
 
 /* fzgx:begin fn_1_A7968 */
-#include "rel/main_rel/driver.h"
-
-extern void fn_1_A7E60(s32 arg0, s8 arg1, s32 arg2, s32 arg3, s32 arg4);
-
 void fn_1_A7968(void) {
     s32 **table;
     s32 offset;
@@ -94,15 +114,6 @@ void fn_1_A7968(void) {
 /* fzgx:end fn_1_A7968 */
 
 /* fzgx:begin fn_1_A7A70 */
-#include "rel/main_rel/driver.h"
-
-extern u32 lbl_1_bss_6F638;
-extern u8 lbl_1_data_34354[0x48];
-
-extern u8 lbl_1_data_34354[72];
-extern void *lbl_801A6410;
-extern void fn_1_46B4(void *arg0, void *arg1, void *arg2, s32 arg3);
-
 void fn_1_A7A70(void) {
     s32 index;
     u32 *entries;
@@ -126,8 +137,6 @@ void fn_1_A7A70(void) {
 /* fzgx:end fn_1_A7A70 */
 
 /* fzgx:begin fn_1_A8528 */
-#include "rel/main_rel/globals.h"
-
 typedef struct FnA8528Object {
     u8 pad_ea[0xea];
     s16 unk_ea;
@@ -151,14 +160,6 @@ typedef struct FnA8528Config {
 } FnA8528Config;
 
 extern FnA8528Config *lbl_801A6D00;
-extern void lbl_8006DAEC(void);
-extern void lbl_8006DBAC(void *arg0);
-extern void lbl_8006E0A4(void *arg0);
-extern void fn_8006F6A8(void *arg0);
-extern void lbl_8006DB30(void);
-extern void fn_1_A861C(void *arg0, void *arg1);
-extern void fn_1_A8834(void *arg0, void *arg1);
-extern void fn_1_A89B0(void *arg0, void *arg1, s32 arg2);
 
 // Initializes the driver's state from the active configuration and shared systems.
 void fn_1_A8528(FnA8528Object *arg0, void *arg1) {
@@ -193,29 +194,18 @@ void fn_1_A8528(FnA8528Object *arg0, void *arg1) {
 /* fzgx:end fn_1_A8528 */
 
 /* fzgx:begin fn_1_A8D4C */
-extern u32 lbl_1_bss_6F640;
-
 void fn_1_A8D4C(void) {
     lbl_1_bss_6F640 += 1;
 }
 /* fzgx:end fn_1_A8D4C */
 
 /* fzgx:begin fn_1_A8D64 */
-extern void fn_1_3920(void);
-
 void fn_1_A8D64(void) {
     fn_1_3920();
 }
 /* fzgx:end fn_1_A8D64 */
 
 /* fzgx:begin fn_1_A8D84 */
-#include "rel/main_rel/driver.h"
-
-extern void fn_1_A8D4C(void);
-extern void fn_1_A8D64(void);
-extern void fn_8001A78C(void (*func)(void));
-extern void fn_8001A7D0(void (*func)(void));
-
 void fn_1_A8D84(void) {
     lbl_1_bss_6F640 = 0;
     fn_8001A78C(fn_1_A8D4C);
@@ -224,9 +214,6 @@ void fn_1_A8D84(void) {
 /* fzgx:end fn_1_A8D84 */
 
 /* fzgx:begin fn_1_A8DC4 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/driver.h"
-
 // Returns the current driver state handle.
 u32 fn_1_A8DC4(void) {
     return lbl_1_bss_6F640;
@@ -234,9 +221,6 @@ u32 fn_1_A8DC4(void) {
 /* fzgx:end fn_1_A8DC4 */
 
 /* fzgx:begin fn_1_A8E78 */
-extern void fn_1_A9420(int);
-extern void fn_1_A948C(int);
-
 // fn_1_A8E78: Take an argument, call fn_1_A9420(0), then fn_1_A948C with original arg.
 
 void fn_1_A8E78(int arg) {
@@ -246,16 +230,19 @@ void fn_1_A8E78(int arg) {
 /* fzgx:end fn_1_A8E78 */
 
 /* fzgx:begin fn_1_A8EB0 */
-extern void fn_1_A9420(int);
-extern void fn_1_A943C(int, int);
-
 void fn_1_A8EB0(int arg0, int arg1) {
     fn_1_A9420(0);
     fn_1_A943C(arg0, arg1);
 }
 /* fzgx:end fn_1_A8EB0 */
 
-/* fzgx:begin fn_1_A8EF8 */
+/* fzgx:begin fn_1_A8EF8 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/driver.h"
+
+extern void (*lbl_1_bss_7167C)(void);
+
 extern void fn_1_A9420(int);
 extern void fn_1_A9464(int, int);
 
@@ -265,7 +252,13 @@ void fn_1_A8EF8(int arg0, int arg1) {
 }
 /* fzgx:end fn_1_A8EF8 */
 
-/* fzgx:begin fn_1_A8F40 */
+/* fzgx:begin fn_1_A8F40 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/driver.h"
+
+extern void (*lbl_1_bss_7167C)(void);
+
 extern void fn_1_A9420(int);
 extern void fn_1_A942C(int);
 
@@ -276,9 +269,6 @@ void fn_1_A8F40(int arg) {
 /* fzgx:end fn_1_A8F40 */
 
 /* fzgx:begin fn_1_A8F78 */
-extern void fn_1_A9420(int);
-extern void fn_1_A96BC(void);
-
 void fn_1_A8F78(void) {
     fn_1_A9420(0);
     fn_1_A96BC();
@@ -286,8 +276,6 @@ void fn_1_A8F78(void) {
 /* fzgx:end fn_1_A8F78 */
 
 /* fzgx:begin fn_1_A9420 */
-#include "rel/main_rel/driver.h"
-
 // Stores the current value in the driver's status byte.
 void fn_1_A9420(u8 value) {
     lbl_1_bss_6F648.unk_0 = value;
@@ -295,9 +283,6 @@ void fn_1_A9420(u8 value) {
 /* fzgx:end fn_1_A9420 */
 
 /* fzgx:begin fn_1_A942C */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/driver.h"
-
 // Stores the value in the driver's secondary byte-sized state field.
 void fn_1_A942C(u8 value) {
     lbl_1_bss_6F648.unk_1 = value;
@@ -305,9 +290,6 @@ void fn_1_A942C(u8 value) {
 /* fzgx:end fn_1_A942C */
 
 /* fzgx:begin fn_1_A9464 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/driver.h"
-
 // Set the two values and mark the shared state as ready.
 void fn_1_A9464(u16 arg0, u16 arg1) {
     u8 flags;
@@ -321,24 +303,23 @@ void fn_1_A9464(u16 arg0, u16 arg1) {
 /* fzgx:end fn_1_A9464 */
 
 /* fzgx:begin fn_1_A96DC */
-#include "rel/main_rel/driver.h"
-
 void fn_1_A96DC(void) {
     lbl_1_data_3599C.unk_0 = 1;
 }
 /* fzgx:end fn_1_A96DC */
 
 /* fzgx:begin fn_1_A96EC */
-#include "rel/main_rel/driver.h"
-
 // Clear the driver's first state field.
 void fn_1_A96EC(void) {
     lbl_1_data_3599C.unk_0 = 0;
 }
 /* fzgx:end fn_1_A96EC */
 
-/* fzgx:begin fn_1_A96FC */
+/* fzgx:begin fn_1_A96FC noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
+
+extern void (*lbl_1_bss_7167C)(void);
 
 extern u32 fn_1_451C(void);
 extern void fn_8008069C(void *buffer, char *format, ...);
@@ -361,8 +342,6 @@ void fn_1_A96FC(void) {
 /* fzgx:end fn_1_A96FC */
 
 /* fzgx:begin fn_1_A9764 */
-extern void (*lbl_1_bss_7167C)(void);
-
 void fn_1_A9764(void) {
     lbl_1_bss_7167C();
 }
@@ -377,10 +356,6 @@ void fn_1_A9790(void) {
 /* fzgx:end fn_1_A9790 */
 
 /* fzgx:begin fn_1_A97BC */
-#include "rel/main_rel/driver.h"
-
-extern void fn_1_A5C98(void *);
-
 void fn_1_A97BC(void) {
     fn_1_A5C98(&lbl_1_bss_71674);
 }
@@ -445,8 +420,6 @@ void fn_1_AB458(void) {
 /* fzgx:end fn_1_AB458 */
 
 /* fzgx:begin fn_1_AB45C */
-extern u8 lbl_1_bss_716C8[320];
-
 void fn_1_AB45C(int index) {
     lbl_1_bss_716C8[index * 0xa0 + 7] = 1;
 }

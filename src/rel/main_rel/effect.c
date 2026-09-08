@@ -1,4 +1,38 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/effect.h"
+
+extern void fn_1_3BDC(s32 arg0);
+extern u32 fn_1_3C18(s32 arg0);
+extern void fn_80008BEC(void *, int, int);
+extern void fn_80008BA8(void *, void *, int);
+extern void fn_1_680F8(void);
+extern void fn_1_68284(void);
+extern void fn_1_68B68(void);
+extern void fn_1_68248(void);
+extern void fn_1_69BBC(void);
+extern void fn_1_69BCC(void);
+extern f32 lbl_1_rodata_29AC[5];
+extern f32 lbl_1_rodata_2978[4];
+extern void lbl_8006DCA4(void);
+extern f32 lbl_1_rodata_2AF4[14];
+extern s32 fn_1_54E34(void *object, f32 value);
+extern void fn_1_5EB98(void);
+extern void fn_1_5FEBC(void);
+extern void *lbl_801A6410;
+extern void fn_1_46B4(u32 value, void *field, u8 *data, s32 code);
+extern f32 lbl_1_rodata_2A5C[5];
+extern void fn_1_61D08(void);
+extern void fn_1_61EF4(void);
+extern void fn_1_620C4(void);
+extern void fn_1_4730(void *arg0, void *arg1, int arg2, u8 *arg3, int arg4);
+extern f32 lbl_1_rodata_2B2C[145];
+extern void fn_1_638E8(void);
+extern const f32 lbl_1_rodata_2A70[12];
+extern void fn_1_64388(void);
+extern void fn_1_652F4(void);
+extern void fn_1_65748(void);
+extern void fn_1_8636C(s16, void *);
 
 /* fzgx:begin fn_1_58D38 */
 typedef struct EffectEntry {
@@ -18,11 +52,7 @@ typedef struct EffectState {
     u32 unk_10;
 } EffectState;
 
-extern u8 lbl_1_bss_6C848;
-
-extern void fn_1_3BDC(s32 arg0);
 extern void fn_1_62360(EffectEntry *arg0);
-extern u32 fn_1_3C18(s32 arg0);
 
 void fn_1_58D38(void) {
     EffectState *state;
@@ -71,11 +101,6 @@ void fn_1_58D38(void) {
 /* fzgx:end fn_1_58D38 */
 
 /* fzgx:begin fn_1_59290 */
-#include "rel/main_rel/effect.h"
-
-extern void fn_80008BEC(void *, int, int);
-extern void fn_80008BA8(void *, void *, int);
-
 void fn_1_59290(void) {
     u8 buffer1[0xe8];
     u8 buffer2[0xe8];
@@ -132,8 +157,6 @@ void fn_1_59290(void) {
 /* fzgx:end fn_1_59290 */
 
 /* fzgx:begin fn_1_5942C */
-extern void fn_1_680F8(void);
-
 // fn_1_5942C: wrapper that calls fn_1_680F8
 void fn_1_5942C(void) {
     fn_1_680F8();
@@ -141,40 +164,30 @@ void fn_1_5942C(void) {
 /* fzgx:end fn_1_5942C */
 
 /* fzgx:begin fn_1_5944C */
-extern void fn_1_68284(void);
-
 void fn_1_5944C(void) {
     fn_1_68284();
 }
 /* fzgx:end fn_1_5944C */
 
 /* fzgx:begin fn_1_5946C */
-extern void fn_1_68B68(void);
-
 void fn_1_5946C(void) {
     fn_1_68B68();
 }
 /* fzgx:end fn_1_5946C */
 
 /* fzgx:begin fn_1_5948C */
-extern void fn_1_68248(void);
-
 void fn_1_5948C(void) {
     fn_1_68248();
 }
 /* fzgx:end fn_1_5948C */
 
 /* fzgx:begin fn_1_594AC */
-extern void fn_1_69BBC(void);
-
 void fn_1_594AC(void) {
     fn_1_69BBC();
 }
 /* fzgx:end fn_1_594AC */
 
 /* fzgx:begin fn_1_594CC */
-extern void fn_1_69BCC(void);
-
 void fn_1_594CC(void) {
     fn_1_69BCC();
 }
@@ -341,10 +354,6 @@ void fn_1_5D4FC(void) {
 /* fzgx:end fn_1_5D4FC */
 
 /* fzgx:begin fn_1_5D88C */
-extern f32 lbl_1_rodata_29AC[5];
-extern u32 lbl_1_data_1D628;
-extern f32 lbl_1_rodata_2978[4];
-
 struct Fn15D88C {
     u8 _pad08[0x08];
     u32 flags;
@@ -402,12 +411,8 @@ typedef struct FnNode {
 } FnNode;
 
 extern s32 fn_1_862D4(s16 value, FnLocal *local);
-extern void lbl_8006DCA4(void);
-extern f32 lbl_1_rodata_2AF4[14];
-extern s32 fn_1_54E34(void *field, f32 value);
 extern FnNode *fn_1_5448C(FnLocal *local);
 extern FnNode *fn_1_548AC(s32 size);
-extern void fn_1_5EB98(void);
 extern void fn_1_5489C(FnNode *node, FnNode *other);
 
 void fn_1_5EB08(FnObj *object) {
@@ -470,11 +475,8 @@ typedef struct {
 } FZeroEvent;
 
 extern void fn_1_862D4(s16 value, void *result);
-extern void lbl_8006DCA4(void);
-extern int fn_1_54E34(void *field, f32 rate);
 extern void *fn_1_5448C(void *result);
 extern void *fn_1_548AC(u32 size);
-extern void fn_1_5FEBC(void);
 extern void fn_1_5489C(void *callback, FZeroEvent *event);
 
 void fn_1_5FE30(FZeroObject *object) {
@@ -502,13 +504,16 @@ void fn_1_5FFAC(void) {
 }
 /* fzgx:end fn_1_5FFAC */
 
-/* fzgx:begin fn_1_60170 */
+/* fzgx:begin fn_1_60170 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/effect.h"
+
 typedef struct {
     u8 unk[0x38];
     void *field38;
 } FZeroObject;
 
-extern u8 lbl_1_data_1D62C[148];
 extern u32 lbl_801A6410;
 extern void fn_1_46B4(u32 value, void *field, u8 *data, s32 code);
 
@@ -529,8 +534,6 @@ void fn_1_60C70(void) {
 /* fzgx:end fn_1_60C70 */
 
 /* fzgx:begin fn_1_60C74 */
-extern f32 lbl_1_rodata_2A5C[5];
-
 struct Effect {
     u8 _pad[0x28];
     f32 field_28;
@@ -559,10 +562,11 @@ void fn_1_60F80(void) {
 }
 /* fzgx:end fn_1_60F80 */
 
-/* fzgx:begin fn_1_61760 */
+/* fzgx:begin fn_1_61760 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/effect.h"
 
-extern u8 lbl_1_data_1D62C[148];
 extern void *lbl_801A6410;
 extern void fn_1_46B4(void *, void *, u8 *, s32);
 
@@ -586,24 +590,18 @@ void fn_1_61C84(void) {
 /* fzgx:end fn_1_61C84 */
 
 /* fzgx:begin fn_1_61C88 */
-extern void fn_1_61D08(void);
-
 void fn_1_61C88(void) {
     fn_1_61D08();
 }
 /* fzgx:end fn_1_61C88 */
 
 /* fzgx:begin fn_1_61CA8 */
-extern void fn_1_61EF4(void);
-
 void fn_1_61CA8(void) {
     fn_1_61EF4();
 }
 /* fzgx:end fn_1_61CA8 */
 
 /* fzgx:begin fn_1_61CC8 */
-extern void fn_1_620C4(void);
-
 void fn_1_61CC8(void) {
     fn_1_620C4();
 }
@@ -617,8 +615,10 @@ void fn_1_61CE8(void) {
 }
 /* fzgx:end fn_1_61CE8 */
 
-/* fzgx:begin fn_1_61E60 */
+/* fzgx:begin fn_1_61E60 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/effect.h"
 
 typedef struct {
     u8 pad20[0x20];
@@ -631,7 +631,6 @@ typedef struct {
 } Fn1_61E60Object;
 
 extern void *lbl_801A6410;
-extern u8 lbl_1_data_1D62C[148];
 extern void fn_1_4730(void *arg0, void *arg1, int arg2, u8 *arg3, int arg4);
 extern void fn_1_46B4(void *arg0, void *arg1, u8 *arg2, int arg3);
 
@@ -687,12 +686,8 @@ void fn_1_63514(void) {
 
 /* fzgx:begin fn_1_63858 */
 extern void fn_1_862D4(s16, void *);
-extern void lbl_8006DCA4(void);
-extern f32 lbl_1_rodata_2B2C[145];
-extern int fn_1_54E34(void *, f32);
 extern void *fn_1_5448C(void *);
 extern void *fn_1_548AC(int);
-extern void fn_1_638E8(void);
 extern void fn_1_5489C(void *, void *);
 
 struct LocalData {
@@ -741,12 +736,8 @@ void fn_1_64098(Fn164098Object *object) {
 /* fzgx:end fn_1_64098 */
 
 /* fzgx:begin fn_1_642E8 */
-extern f32 lbl_1_rodata_2A70[12];
-extern void lbl_8006DCA4(void);
-extern s32 fn_1_54E34(void *, f32);
 extern void *fn_1_5448C(void *);
 extern void *fn_1_548AC(s32);
-extern void fn_1_64388(void);
 extern void fn_1_5489C(void *, void *);
 
 typedef struct EffectState {
@@ -817,11 +808,8 @@ void fn_1_648D8(void) {
 
 /* fzgx:begin fn_1_65268 */
 extern void fn_1_862D4(s16 value, void *result);
-extern void lbl_8006DCA4(void);
-extern s32 fn_1_54E34(void *object, f32 value);
 extern void *fn_1_5448C(void *object);
 extern void *fn_1_548AC(s32 size);
-extern void fn_1_652F4(void);
 extern void fn_1_5489C(void *object, void *event);
 
 typedef struct {
@@ -864,8 +852,10 @@ void fn_1_65420(void) {
 }
 /* fzgx:end fn_1_65420 */
 
-/* fzgx:begin fn_1_656C8 */
+/* fzgx:begin fn_1_656C8 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/effect.h"
 
 extern void lbl_8006DCA4(void *object);
 extern s32 fn_1_54E34(void *object, f32 value);
@@ -918,8 +908,6 @@ void fn_1_65B58(void) {
 /* fzgx:end fn_1_65B58 */
 
 /* fzgx:begin fn_1_65E58 */
-extern void fn_1_8636C(s16, void *);
-
 typedef struct Effect {
     u8 _pad_00[0x10];
     int field_10;
@@ -953,8 +941,6 @@ void fn_1_6742C(void) {
 /* fzgx:end fn_1_6742C */
 
 /* fzgx:begin fn_1_6766C */
-extern f32 lbl_1_rodata_2978[4];
-
 typedef struct {
     u8 padding[0xb4];
     f32 value;
@@ -971,8 +957,10 @@ void fn_1_6767C(void) {
 }
 /* fzgx:end fn_1_6767C */
 
-/* fzgx:begin fn_1_68054 */
+/* fzgx:begin fn_1_68054 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/effect.h"
 
 extern const f32 lbl_1_rodata_2A70[12];
 extern void lbl_8006DCA4(void *object);

@@ -1,6 +1,49 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/sound.h"
 
-/* fzgx:begin fn_1_9FE74 */
+extern void *lbl_801A6410;
+extern void fn_1_44A4(void);
+extern void *fn_80008E84(void *arg);
+extern u32 fn_1_45D0(void *arg0, void *arg1, u32 *arg2, int arg3);
+extern void fn_1_46B4(u32, void *, void *, u32);
+extern s8 lbl_1_bss_6EAA6;
+extern u8 lbl_1_bss_6EAA4;
+extern void fn_80067974(void);
+extern void fn_800280F0(void);
+extern void fn_80026FE0(void);
+extern u8 lbl_1_bss_6EAA8[8];
+extern u8 lbl_1_bss_6EAB0;
+extern void fn_8001EA30(u8 *arg0, int arg1);
+extern void fn_80020530(void);
+extern u8 lbl_1_bss_6F1E1;
+extern void fn_1_A2DF4(s32, void *, s32);
+extern void fn_1_A2E24(u32 arg0, u32 arg1, s32 arg2);
+extern void fn_80008BEC(void *, s32, s32);
+extern void fn_1_A0680(void);
+extern void fn_80067898(u32);
+extern void fn_800674FC(u16 arg0, u32 arg1, s16 arg2);
+extern s32 camera_get_mode(void);
+extern u8 lbl_1_bss_6F2D8[62];
+extern void fn_80067344(s32, s32, u32, s32);
+extern void fn_1_A5470(s32 value);
+extern u32 fn_1_3F13C(void);
+extern u32 fn_1_EB0B0(void);
+extern s32 fn_1_F1B94(void);
+extern u32 lbl_1_rodata_45D0[];
+extern u32 lbl_1_rodata_4718[];
+extern u32 lbl_1_rodata_4730[];
+extern u32 lbl_1_rodata_47A8[];
+extern u8 lbl_1_bss_6F41C[260];
+extern s32 fn_1_86690(s32 value);
+extern void *lbl_1_rodata_4820[41];
+extern int fn_8004C658(u32 obj);
+extern int fn_8004BBCC(u32 obj);
+extern void fn_8004BC0C(u32 obj, int arg);
+extern int fn_1_3FC38(void);
+
+/* fzgx:begin fn_1_9FE74 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/sound.h"
 
@@ -20,9 +63,11 @@ u32 fn_1_9FE74(void *arg) {
 }
 /* fzgx:end fn_1_9FE74 */
 
-/* fzgx:begin fn_1_9FEE8 */
-extern u32 lbl_1_bss_6EA9C;
-extern u32 lbl_1_data_33F1C;
+/* fzgx:begin fn_1_9FEE8 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/sound.h"
+
 extern u32 lbl_801A6410;
 extern u32 fn_80008E84();
 extern void fn_1_44A4(void);
@@ -49,13 +94,6 @@ void fn_1_9FF54(void) {
 /* fzgx:end fn_1_9FF54 */
 
 /* fzgx:begin fn_1_9FF58 */
-extern s8 lbl_1_bss_6EAA6;
-extern u8 lbl_1_bss_6EAA4;
-
-extern void fn_80067974(void);
-extern void fn_800280F0(void);
-extern void fn_80026FE0(void);
-
 void fn_1_9FF58(void) {
     if (lbl_1_bss_6EAA6) {
         fn_80067974();
@@ -67,12 +105,6 @@ void fn_1_9FF58(void) {
 /* fzgx:end fn_1_9FF58 */
 
 /* fzgx:begin fn_1_9FF9C */
-extern u8 lbl_1_bss_6EAA8[8];
-extern u8 lbl_1_bss_6EAB0;
-
-extern void fn_8001EA30(u8 *arg0, int arg1);
-extern void fn_80020530(void);
-
 void fn_1_9FF9C(void) {
     fn_8001EA30(lbl_1_bss_6EAA8, 2);
     fn_80020530();
@@ -81,16 +113,15 @@ void fn_1_9FF9C(void) {
 /* fzgx:end fn_1_9FF9C */
 
 /* fzgx:begin fn_1_A04AC */
-extern u8 lbl_1_bss_6F1E0;
-extern u8 lbl_1_bss_6F1E1;
-
 void fn_1_A04AC(void) {
     lbl_1_bss_6F1E0 = 1;
     lbl_1_bss_6F1E1 = 1;
 }
 /* fzgx:end fn_1_A04AC */
 
-/* fzgx:begin fn_1_A0C68 */
+/* fzgx:begin fn_1_A0C68 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/sound.h"
 
 extern void fn_1_A2DF4(s32, void *, s32);
@@ -134,8 +165,6 @@ void fn_1_A0C68(void) {
 /* fzgx:end fn_1_A0C68 */
 
 /* fzgx:begin fn_1_A1340 */
-extern void fn_1_A0680(void);
-
 void fn_1_A1340(void) {
     fn_1_A0680();
 }
@@ -148,10 +177,6 @@ void fn_1_A1360(void) {
 /* fzgx:end fn_1_A1360 */
 
 /* fzgx:begin fn_1_A2D84 */
-extern u8 lbl_1_bss_6F1D8;
-extern u32 lbl_1_bss_6F1DC;
-extern void fn_80067898(u32 arg0);
-
 void fn_1_A2D84(u32 arg0) {
     if (lbl_1_bss_6F1D8 == 0 && lbl_1_bss_6F1DC <= 0x2D) {
         fn_80067898(arg0);
@@ -160,9 +185,6 @@ void fn_1_A2D84(u32 arg0) {
 /* fzgx:end fn_1_A2D84 */
 
 /* fzgx:begin fn_1_A2DC4 */
-extern u32 lbl_1_bss_6F1DC;
-extern void fn_80067898(u32 arg0);
-
 void fn_1_A2DC4(u32 arg0) {
     if (lbl_1_bss_6F1DC <= 0x2D) {
         fn_80067898(arg0);
@@ -171,10 +193,6 @@ void fn_1_A2DC4(u32 arg0) {
 /* fzgx:end fn_1_A2DC4 */
 
 /* fzgx:begin fn_1_A2E24 */
-#include "rel/main_rel/sound.h"
-
-extern void fn_800674FC(u16 arg0, u32 arg1, s16 arg2);
-
 // Notifies the sound system when sound processing is enabled.
 void fn_1_A2E24(u32 arg0, u32 arg1, s32 arg2) {
     if (lbl_1_bss_6EAC6.unk_0 != 0) {
@@ -184,17 +202,6 @@ void fn_1_A2E24(u32 arg0, u32 arg1, s32 arg2) {
 /* fzgx:end fn_1_A2E24 */
 
 /* fzgx:begin fn_1_A4C9C */
-extern s32 camera_get_mode(void);
-extern u8 lbl_1_bss_6F2D8[62];
-extern u32 lbl_1_bss_6F1DC;
-
-extern void fn_80067344(s32, s32, u32, s32);
-extern void fn_80067898(u32);
-extern void fn_1_A5470(s16 mode);
-extern u32 fn_1_3F13C(void);
-extern u32 fn_1_EB0B0(void);
-extern s32 fn_1_F1B94(void);
-
 void fn_1_A4C9C(s32 index, u8 value) {
     s16 mode;
 
@@ -238,11 +245,6 @@ void fn_1_A4C9C(s32 index, u8 value) {
 /* fzgx:end fn_1_A4C9C */
 
 /* fzgx:begin fn_1_A4F18 */
-extern u32 lbl_1_bss_6EA98;
-
-extern void fn_80067344(s32, s32, u32, s32);
-extern void fn_80067898(u32);
-
 void fn_1_A4F18(s32 value) {
     u8 *state = (u8 *)&lbl_1_bss_6EA98;
 
@@ -290,13 +292,6 @@ void fn_1_A4F18(s32 value) {
 /* fzgx:end fn_1_A4F18 */
 
 /* fzgx:begin fn_1_A50C8 */
-extern u32 lbl_1_rodata_45D0[];
-extern u8 lbl_1_bss_6F1D8;
-extern u32 lbl_1_bss_6F1DC;
-
-extern void fn_80067344(s32, s32, u32, s32);
-extern void fn_80067898(u32);
-
 void fn_1_A50C8(s32 index) {
     u32 value;
 
@@ -315,13 +310,6 @@ void fn_1_A50C8(s32 index) {
 /* fzgx:end fn_1_A50C8 */
 
 /* fzgx:begin fn_1_A51C8 */
-#include "rel/main_rel/sound.h"
-
-extern u32 lbl_1_rodata_4718[];
-
-extern void fn_80067344(s32, s32, u32, s32);
-extern void fn_80067898(u32);
-
 void fn_1_A51C8(s16 index) {
     u32 value;
 
@@ -337,12 +325,6 @@ void fn_1_A51C8(s16 index) {
 /* fzgx:end fn_1_A51C8 */
 
 /* fzgx:begin fn_1_A5244 */
-extern u32 lbl_1_rodata_4730[];
-extern u32 lbl_1_bss_6F1DC;
-
-extern void fn_80067344(s32, s32, u32, s32);
-extern void fn_80067898(u32);
-
 void fn_1_A5244(u8 index) {
     u32 value;
 
@@ -358,13 +340,6 @@ void fn_1_A5244(u8 index) {
 /* fzgx:end fn_1_A5244 */
 
 /* fzgx:begin fn_1_A52B0 */
-extern u32 lbl_1_rodata_47A8[];
-extern u8 lbl_1_bss_6F1D8;
-extern u32 lbl_1_bss_6F1DC;
-
-extern void fn_80067344(s32, s32, u32, s32);
-extern void fn_80067898(u32);
-
 void fn_1_A52B0(s32 index) {
     u32 value;
 
@@ -383,15 +358,17 @@ void fn_1_A52B0(s32 index) {
 /* fzgx:end fn_1_A52B0 */
 
 /* fzgx:begin fn_1_A5330 */
-extern u8 lbl_1_bss_6F41C[260];
-
 void fn_1_A5330(u8 value, s16 index) {
     lbl_1_bss_6F41C[index] = value;
 }
 /* fzgx:end fn_1_A5330 */
 
-/* fzgx:begin fn_1_A5470 */
+/* fzgx:begin fn_1_A5470 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/sound.h"
+
+extern void fn_1_A5470(s32 value);
 
 extern s32 fn_1_86690(s32 value);
 extern void fn_80067344(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
@@ -426,30 +403,18 @@ void fn_1_A5590(void) {
 /* fzgx:end fn_1_A5590 */
 
 /* fzgx:begin fn_1_A5848 */
-extern u8 lbl_1_bss_6F1E0;
-
 u8 fn_1_A5848(void) {
     return lbl_1_bss_6F1E0;
 }
 /* fzgx:end fn_1_A5848 */
 
 /* fzgx:begin fn_1_A5858 */
-extern u8 lbl_1_bss_6F1E0;
-
 void fn_1_A5858(u8 value) {
     lbl_1_bss_6F1E0 = value;
 }
 /* fzgx:end fn_1_A5858 */
 
 /* fzgx:begin fn_1_A5864 */
-#include "rel/main_rel/sound.h"
-
-extern int fn_8004C658(u32 obj);
-extern int fn_8004BBCC(u32 obj);
-extern void fn_8004BC0C(u32 obj, int arg);
-extern void fn_800674FC(u32 arg0, u32 arg1, u32 arg2);
-extern int fn_1_3FC38(void);
-
 void fn_1_A5864(void) {
     if (lbl_1_bss_6EAD0.unk_0 != 0) {
         if (lbl_1_bss_6EAD0.unk_0->unk_0 != 0 &&
@@ -481,7 +446,9 @@ void fn_1_A5864(void) {
 }
 /* fzgx:end fn_1_A5864 */
 
-/* fzgx:begin fn_1_A59AC */
+/* fzgx:begin fn_1_A59AC noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/sound.h"
 
 extern s32 fn_1_3FC38(void);

@@ -1,7 +1,38 @@
 #include "types.h"
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/ranking.h"
 
-/* fzgx:begin fn_1_1554D0 */
+extern u32 lbl_801A6410[];
+extern void fn_1_46B4(u32, Obj_1_bss_8EF20_At0 *, u8 *, u32);
+extern Obj_1_bss_8EF20_At0 *fn_1_4630(u32, u32, u8 *, u32);
+extern void fn_1_451C(void);
+extern void fn_1_A1340(void);
+extern s16 lbl_1_bss_962;
+extern s16 lbl_1_bss_96A;
+extern void fn_1_A1360(void);
+extern void fn_1_A1364(void);
+extern u8 lbl_1_bss_8F420[8];
+extern f32 lbl_1_rodata_D8C8[18];
+extern void fn_80008BEC(void *dst, int value, int size);
+extern void fn_1_1568C4(void *);
+extern void fn_80008BA8(void *, void *, int);
+extern void fn_1_1574E0(Obj_1_bss_8F428 *entry, u32 value);
+extern void fn_8006B7B4(void *);
+extern void fn_8006B870(void);
+extern void fn_1_157950(void);
+extern void fn_1_157FC8(void);
+extern u32 fn_1_157920(void);
+extern void fn_1_4060(void);
+extern u32 lbl_1_bss_8F57C[3];
+extern void fn_1_9AD88(void);
+extern void fn_1_1594AC(int index, int flag);
+extern void OSReport(const char *format, ...);
+extern void fn_1_465D0(void *object, int value);
+extern void fn_1_9AD54(void);
+
+/* fzgx:begin fn_1_1554D0 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/ranking.h"
 
 extern u32 lbl_801A6410;
@@ -23,51 +54,7 @@ void fn_1_1554D0(void) {
 }
 /* fzgx:end fn_1_1554D0 */
 
-/* fzgx:begin fn_1_15555C noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
-typedef struct {
-    f32 unk_0;  // 12 loads, 6 stores
-    u32 unk_4;  // 2 loads, 0 stores
-    f64 unk_8;  // 8 loads, 6 stores
-    f64 unk_10;  // 8 loads, 6 stores
-    u16 unk_18;  // 10 loads, 6 stores
-    u8 unk_1A;  // 2 loads, 0 stores
-    u8 pad_1B[0x5];
-    f64 unk_20;  // 8 loads, 6 stores
-    f64 unk_28;  // 8 loads, 6 stores
-    f64 unk_30;  // 9 loads, 10 stores
-    u32 unk_38;  // 2 loads, 0 stores
-    u8 pad_3C[0x16];
-    u8 unk_52;  // 2 loads, 0 stores
-    u8 pad_53[0x15];
-    u8 unk_68;  // 0 loads, 4 stores
-    u8 pad_69[0x7];
-    u32 unk_70;  // 1 loads, 0 stores
-    u8 pad_74[0x2C];
-    u8 unk_A0;  // 0 loads, 2 stores
-    u8 pad_A1[0x7];
-    u32 unk_A8;  // 1 loads, 0 stores
-    u8 pad_AC[0x2C];
-    u8 unk_D8;  // 0 loads, 2 stores
-    u8 pad_D9[0x7];
-    u32 unk_E0;  // 1 loads, 0 stores
-    u8 pad_E4[0x2C];
-    u8 unk_110;  // 0 loads, 2 stores
-} Obj_1_bss_8EF20_At0;
-typedef struct {
-    Obj_1_bss_8EF20_At0 *unk_0;  // 17 loads, 3 stores
-    u8 pad_4[0x3C];
-    u32 unk_40;  // 1 loads, 2 stores
-    u8 pad_44[0x4];
-} Obj_1_bss_8EF20;
-extern Obj_1_bss_8EF20 lbl_1_bss_8EF20;
-extern u8 lbl_1_data_49B08[0xA];
-
-extern u32 lbl_801A6410[];
-extern void fn_1_46B4(u32, Obj_1_bss_8EF20_At0 *, u8 *, int);
-
+/* fzgx:begin fn_1_15555C */
 void fn_1_15555C(void) {
     Obj_1_bss_8EF20_At0 *obj = lbl_1_bss_8EF20.unk_0;
     if (obj != 0) {
@@ -78,43 +65,30 @@ void fn_1_15555C(void) {
 /* fzgx:end fn_1_15555C */
 
 /* fzgx:begin fn_1_155F7C */
-extern u32 lbl_1_bss_8F3E0;
-
 u32 fn_1_155F7C(void) {
     return lbl_1_bss_8F3E0;
 }
 /* fzgx:end fn_1_155F7C */
 
 /* fzgx:begin fn_1_155F8C */
-#include "rel/main_rel/ranking.h"
-
 u32 fn_1_155F8C(void) {
     return lbl_1_bss_8F3E4.unk_0;
 }
 /* fzgx:end fn_1_155F8C */
 
 /* fzgx:begin fn_1_155F9C */
-extern u32 lbl_1_bss_8F3E0;
-
 void fn_1_155F9C(u32 value) {
     lbl_1_bss_8F3E0 = value;
 }
 /* fzgx:end fn_1_155F9C */
 
 /* fzgx:begin fn_1_155FA8 */
-#include "rel/main_rel/ranking.h"
-
 void fn_1_155FA8(u32 value) {
     lbl_1_bss_8F3E4.unk_0 = value;
 }
 /* fzgx:end fn_1_155FA8 */
 
 /* fzgx:begin fn_1_1564D0 */
-extern void fn_1_451C(void);
-extern void fn_1_A1340(void);
-extern s16 lbl_1_bss_962;
-extern s16 lbl_1_bss_96A;
-
 void fn_1_1564D0(void) {
     fn_1_451C();
     fn_1_A1340();
@@ -125,8 +99,6 @@ void fn_1_1564D0(void) {
 /* fzgx:end fn_1_1564D0 */
 
 /* fzgx:begin fn_1_156510 */
-extern void fn_1_A1360(void);
-
 void fn_1_156510(void) {
     fn_1_A1360();
 }
@@ -139,8 +111,6 @@ void fn_1_156530(void) {
 /* fzgx:end fn_1_156530 */
 
 /* fzgx:begin fn_1_156534 */
-extern void fn_1_A1364(void);
-
 void fn_1_156534(void) {
     fn_1_A1364();
 }
@@ -183,8 +153,6 @@ void fn_1_156568(void) {
 /* fzgx:end fn_1_156568 */
 
 /* fzgx:begin fn_1_15656C */
-extern u8 lbl_1_bss_8F420[8];
-
 void fn_1_15656C(void) {
     lbl_1_bss_8F420[0] = 0;
 }
@@ -239,12 +207,6 @@ void fn_1_156598(void) {
 /* fzgx:end fn_1_156598 */
 
 /* fzgx:begin fn_1_15665C */
-#include "rel/main_rel/ranking.h"
-
-extern f32 lbl_1_rodata_D8C8[18];
-extern void fn_80008BEC(void *, int, u32);
-extern void fn_1_1568C4(void *);
-
 typedef Obj_1_bss_8F428 RankingEntry;
 
 // Initializes one ranking entry and registers it with the ranking system.
@@ -271,17 +233,16 @@ void fn_1_15665C(void *owner, s32 index) {
 /* fzgx:end fn_1_15665C */
 
 /* fzgx:begin fn_1_1566F8 */
-#include "rel/main_rel/ranking.h"
-
-extern void fn_80008BA8(void *, void *, int);
-
 // Updates the indexed ranking entry's value through the shared ranking helper.
 void fn_1_1566F8(s32 index, void *arg) {
     fn_80008BA8(&lbl_1_bss_8F428.unk_34 + index * 0x14, arg, 0x1c);
 }
 /* fzgx:end fn_1_1566F8 */
 
-/* fzgx:begin fn_1_156730 */
+/* fzgx:begin fn_1_156730 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
 extern u8 lbl_1_bss_8F428[];
 
 typedef struct Entry {
@@ -299,7 +260,10 @@ void fn_1_156730(s32 index) {
 }
 /* fzgx:end fn_1_156730 */
 
-/* fzgx:begin fn_1_156754 */
+/* fzgx:begin fn_1_156754 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
 typedef struct {
     u8 pad_0[0x4];
     u32 unk_4;
@@ -322,10 +286,6 @@ void fn_1_156754(s32 index) {
 /* fzgx:end fn_1_156754 */
 
 /* fzgx:begin fn_1_156884 */
-#include "rel/main_rel/ranking.h"
-
-extern void fn_1_1574E0(Obj_1_bss_8F428 *entry, u32 value);
-
 // Refreshes an entry when its ranking value is not the invalid sentinel.
 void fn_1_156884(s32 index) {
     Obj_1_bss_8F428 *entry;
@@ -340,8 +300,6 @@ void fn_1_156884(s32 index) {
 /* fzgx:end fn_1_156884 */
 
 /* fzgx:begin fn_1_1569A0 */
-extern void fn_8006B7B4(void *);
-
 typedef struct {
     u32 flags;
     u8 _pad04[4];
@@ -357,9 +315,6 @@ void fn_1_1569A0(State *state) {
 /* fzgx:end fn_1_1569A0 */
 
 /* fzgx:begin fn_1_1569E8 */
-extern void fn_8006B7B4(void *);
-extern void fn_8006B870(void);
-
 typedef struct {
     u32 unk_00;
     u8 _pad04[8];
@@ -413,9 +368,6 @@ void fn_1_1569E8(State *state) {
 /* fzgx:end fn_1_1569E8 */
 
 /* fzgx:begin fn_1_156B18 */
-extern void fn_8006B7B4(void *);
-extern void fn_8006B870(void);
-
 typedef struct {
     u32 flags;
     u8 _pad04[8];
@@ -456,7 +408,9 @@ void fn_1_156B18(State *state) {
 }
 /* fzgx:end fn_1_156B18 */
 
-/* fzgx:begin fn_1_1578C4 */
+/* fzgx:begin fn_1_1578C4 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/ranking.h"
 
 extern void fn_1_157950(void);
@@ -486,8 +440,6 @@ void fn_1_1578C4(void) {
 /* fzgx:end fn_1_1578C4 */
 
 /* fzgx:begin fn_1_157920 */
-extern u32 lbl_1_bss_8F578;
-
 // Return the current ranking value.
 u32 fn_1_157920(void) {
     return lbl_1_bss_8F578;
@@ -495,16 +447,12 @@ u32 fn_1_157920(void) {
 /* fzgx:end fn_1_157920 */
 
 /* fzgx:begin fn_1_157930 */
-extern u32 lbl_1_bss_8F57C[3];
-
 u32 fn_1_157930(void) {
     return lbl_1_bss_8F57C[0];
 }
 /* fzgx:end fn_1_157930 */
 
 /* fzgx:begin fn_1_157940 */
-extern u32 lbl_1_bss_8F578;
-
 void fn_1_157940(void) {
     lbl_1_bss_8F578 = 0;
 }
@@ -529,8 +477,6 @@ void fn_1_15903C(void) {
 /* fzgx:end fn_1_15903C */
 
 /* fzgx:begin fn_1_159040 */
-extern void fn_1_9AD88(void);
-
 void fn_1_159040(void) {
     fn_1_9AD88();
 }
@@ -550,16 +496,12 @@ int fn_1_159064(void) {
 /* fzgx:end fn_1_159064 */
 
 /* fzgx:begin fn_1_159440 */
-#include "rel/main_rel/ranking.h"
-
 typedef struct {
     u8 pad_0[0x30];
     u32 unk_30;
     u32 unk_34;
     u8 pad_38[0x4];
 } RankingEntry;
-
-extern void fn_1_1594AC(int index, int flag);
 
 // Preserve the current ranking entry before refreshing its state.
 void fn_1_159440(int index, int flag) {
@@ -572,10 +514,6 @@ void fn_1_159440(int index, int flag) {
 /* fzgx:end fn_1_159440 */
 
 /* fzgx:begin fn_1_159478 */
-#include "rel/main_rel/ranking.h"
-
-extern void fn_1_1594AC(int index, int flag);
-
 typedef struct {
     u8 pad[0x34];
     u32 unk_34;
@@ -589,12 +527,6 @@ void fn_1_159478(int index, int unused, int value) {
 /* fzgx:end fn_1_159478 */
 
 /* fzgx:begin fn_1_1594AC */
-#include "rel/main_rel/ranking.h"
-
-extern void OSReport(const char *format, ...);
-extern void fn_1_465D0(void *object, int value);
-extern void fn_80008BEC(void *dst, int value, int size);
-
 void fn_1_1594AC(int index, int flag) {
     Obj_1_data_4C810 *entry;
     s16 value;
@@ -630,8 +562,6 @@ void fn_1_1594AC(int index, int flag) {
 /* fzgx:end fn_1_1594AC */
 
 /* fzgx:begin fn_1_15AC00 */
-#include "rel/main_rel/ranking.h"
-
 // Return the address of the ranking state byte at offset 0x3f.
 u8 *fn_1_15AC00(void) {
     return &lbl_1_bss_8F878.unk_3F;
@@ -639,8 +569,6 @@ u8 *fn_1_15AC00(void) {
 /* fzgx:end fn_1_15AC00 */
 
 /* fzgx:begin fn_1_15B3E8 */
-#include "rel/main_rel/ranking.h"
-
 // Return the current ranking state byte.
 u8 fn_1_15B3E8(void) {
     return lbl_1_bss_8F878.unk_3A;
@@ -648,8 +576,6 @@ u8 fn_1_15B3E8(void) {
 /* fzgx:end fn_1_15B3E8 */
 
 /* fzgx:begin fn_1_15B3F8 */
-#include "rel/main_rel/ranking.h"
-
 // Return the ranking state byte at offset 0x3b.
 u8 fn_1_15B3F8(void) {
     return lbl_1_bss_8F878.unk_3B;
@@ -657,8 +583,6 @@ u8 fn_1_15B3F8(void) {
 /* fzgx:end fn_1_15B3F8 */
 
 /* fzgx:begin fn_1_15B408 */
-#include "rel/main_rel/ranking.h"
-
 // Returns the current ranking state.
 u8 fn_1_15B408(void) {
     return lbl_1_bss_8F878.unk_3C;
@@ -666,8 +590,6 @@ u8 fn_1_15B408(void) {
 /* fzgx:end fn_1_15B408 */
 
 /* fzgx:begin fn_1_15B418 */
-#include "rel/main_rel/ranking.h"
-
 u8 *fn_1_15B418(void) {
     return &lbl_1_bss_8F878.unk_18;
 }
@@ -686,8 +608,6 @@ void fn_1_15B4F8(void) {
 /* fzgx:end fn_1_15B4F8 */
 
 /* fzgx:begin fn_1_15B4FC */
-extern void fn_1_9AD54(void);
-
 void fn_1_15B4FC(void) {
     fn_1_9AD54();
 }
@@ -700,8 +620,6 @@ void fn_1_15B51C(void) {
 /* fzgx:end fn_1_15B51C */
 
 /* fzgx:begin fn_1_15B520 */
-extern void fn_1_9AD88(void);
-
 void fn_1_15B520(void) {
     fn_1_9AD88();
 }
@@ -793,8 +711,6 @@ void fn_1_15B610(void) {
 /* fzgx:end fn_1_15B610 */
 
 /* fzgx:begin fn_1_15B654 */
-#include "rel/main_rel/ranking.h"
-
 void fn_1_15B654(void) {
     u8 *entry;
     s16 i;
@@ -814,8 +730,6 @@ void fn_1_15B654(void) {
 /* fzgx:end fn_1_15B654 */
 
 /* fzgx:begin fn_1_15B698 */
-#include "rel/main_rel/ranking.h"
-
 u32 fn_1_15B698(s32 kind, u32 *value) {
     Obj_1_data_2A7E0_At3C *obj;
 

@@ -1,6 +1,38 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/mdlload.h"
 
-/* fzgx:begin fn_1_D3768 */
+extern void fn_80071484(void);
+extern void fn_80071678(void);
+extern void *OSGetArenaHi(void);
+extern void fn_1_D3BE8(void);
+extern u8 lbl_1_bss_7AD58[8];
+extern void fn_1_9A508(void);
+extern void fn_1_D3F24(void *base);
+extern void fn_1_D3F88(void *base);
+extern f32 lbl_1_rodata_6168[112];
+extern u32 fn_1_5910(void);
+extern void fn_1_9AD88(Obj_1_data_2A7E0 *obj);
+extern u32 fn_1_9D260(void);
+extern s32 fn_1_D3E90(void);
+extern void fn_1_1067A8(void *obj, f32 value, f32 limit);
+extern void fn_1_D4174(void *base, void *arg);
+extern s16 camera_get_mode(void);
+extern s32 fn_1_6EC0(u8 value);
+extern u32 fn_1_864E8(s32 value);
+extern s32 fn_1_7000(void);
+extern void fn_1_681C(u8 value, void *out);
+extern s32 fn_1_1FB80(void *value, s32 mode);
+extern void fn_1_103090(void *ptr);
+extern void fn_1_1030A4(void *ptr);
+extern void fn_1_103264(void *item, void *arg);
+extern s16 fn_1_3F0C8(void);
+extern void fn_1_D6748(void *obj, u32 *arg1, s16 arg2);
+extern u32 lbl_801A63C0;
+extern void fn_1_D550C(void *);
+
+/* fzgx:begin fn_1_D3768 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 
 extern int fn_1_45730(void *owner, void *buffer);
@@ -58,22 +90,22 @@ int fn_1_D3768(void *owner, void *user) {
 /* fzgx:end fn_1_D3768 */
 
 /* fzgx:begin fn_1_D3884 */
-extern void fn_80071484(void);
-
 void fn_1_D3884(void) {
     fn_80071484();
 }
 /* fzgx:end fn_1_D3884 */
 
 /* fzgx:begin fn_1_D38A4 */
-extern void fn_80071678(void);
-
 void fn_1_D38A4(void) {
     fn_80071678();
 }
 /* fzgx:end fn_1_D38A4 */
 
-/* fzgx:begin fn_1_D3B6C */
+/* fzgx:begin fn_1_D3B6C noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/mdlload.h"
+
 extern void *OSGetArenaHi(void);
 extern void fn_1_D3BE8(void *);
 
@@ -102,10 +134,6 @@ void *fn_1_D3B6C(FnD3B6CObject *object) {
 /* fzgx:end fn_1_D3B6C */
 
 /* fzgx:begin fn_1_D3BE8 */
-#include "rel/main_rel/globals.h"
-
-extern u8 lbl_1_bss_7AD58[8];
-
 // Increment the model-loader byte counter.
 void fn_1_D3BE8(void) {
     lbl_1_bss_7AD58[0]++;
@@ -119,11 +147,6 @@ void fn_1_D3C00(void) {
 /* fzgx:end fn_1_D3C00 */
 
 /* fzgx:begin fn_1_D3C04 */
-#include "rel/main_rel/mdlload.h"
-
-extern void fn_1_9A508(void);
-extern void fn_1_D3F24(void *arg);
-
 void fn_1_D3C04(void) {
     void *state = lbl_1_data_2A7E0.unk_3C;
 
@@ -135,16 +158,14 @@ void fn_1_D3C04(void) {
 /* fzgx:end fn_1_D3C04 */
 
 /* fzgx:begin fn_1_D3DDC */
-#include "rel/main_rel/mdlload.h"
-
-extern void fn_1_D3F88(void *value);
-
 void fn_1_D3DDC(void) {
     fn_1_D3F88(lbl_1_data_2A7E0.unk_3C);
 }
 /* fzgx:end fn_1_D3DDC */
 
-/* fzgx:begin fn_1_D3E08 */
+/* fzgx:begin fn_1_D3E08 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/mdlload.h"
 
 extern f32 lbl_1_rodata_6168[112];
@@ -178,14 +199,6 @@ void fn_1_D3E8C(void) {
 /* fzgx:end fn_1_D3E8C */
 
 /* fzgx:begin fn_1_D3E90 */
-extern s16 camera_get_mode(void);
-extern u32 fn_1_5910(void);
-extern s32 fn_1_6EC0(u8 value);
-extern u32 fn_1_864E8(s32 value);
-extern s32 fn_1_7000(void);
-extern void fn_1_681C(u8 value, void *out);
-extern s32 fn_1_1FB80(void *value, s32 mode);
-
 s32 fn_1_D3E90(void) {
     s16 value;
     u8 data[8];
@@ -206,8 +219,6 @@ s32 fn_1_D3E90(void) {
 /* fzgx:end fn_1_D3E90 */
 
 /* fzgx:begin fn_1_D3F24 */
-extern void fn_1_103090(void *ptr);
-
 void fn_1_D3F24(void *base) {
     s32 value;
     s32 count;
@@ -228,8 +239,6 @@ void fn_1_D3F24(void *base) {
 /* fzgx:end fn_1_D3F24 */
 
 /* fzgx:begin fn_1_D3F88 */
-extern void fn_1_1030A4(void *ptr);
-
 // Iterate through items in a structure, calling fn_1_1030A4 on each.
 void fn_1_D3F88(void *base) {
     s32 count;
@@ -248,10 +257,6 @@ void fn_1_D3F88(void *base) {
 /* fzgx:end fn_1_D3F88 */
 
 /* fzgx:begin fn_1_D4174 */
-#include "rel/main_rel/globals.h"
-
-extern void fn_1_103264(void *item, void *arg);
-
 // Process each model-load entry in the caller-provided table.
 void fn_1_D4174(void *base, void *arg) {
     s32 remaining;
@@ -270,12 +275,6 @@ void fn_1_D4174(void *base, void *arg) {
 /* fzgx:end fn_1_D4174 */
 
 /* fzgx:begin fn_1_D41D8 */
-#include "rel/main_rel/mdlload.h"
-
-extern s16 fn_1_3F0C8(void);
-extern void fn_1_D6748(void *obj, u32 *arg1, s16 arg2);
-extern u32 lbl_801A63C0;
-
 typedef struct {
     u8 pad_0[0xC];
     s16 unk_C;
@@ -341,8 +340,6 @@ void fn_1_D47D8(struct Base *base, s32 index) {
 /* fzgx:end fn_1_D47D8 */
 
 /* fzgx:begin fn_1_D5958 */
-extern void fn_1_D550C(void *);
-
 // fn_1_D5958: iterate through 4 structures, calling fn_1_D550C on each.
 void fn_1_D5958(void *arg) {
     void *ptr = arg;

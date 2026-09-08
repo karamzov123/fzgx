@@ -1,12 +1,32 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/bg_aur.h"
 
-/* fzgx:begin fn_1_151AF0 */
 extern int fn_8003BE1C(void *arg0, void *arg1);
 extern int fn_8003C1A4(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4);
 extern void fn_8003CE74(void *arg0, void *arg1, int arg2);
 extern void fn_8003CBB0(void *arg0, void *arg1, void *arg2, void *arg3);
 extern void fn_8003C6D0(void *arg0, void *arg1, void *arg2, void *arg3);
+extern u16 lbl_1_bss_8ED8C;
+extern u16 lbl_1_bss_8ED8E;
+extern void fn_1_151C9C(void);
+extern void fn_80074A7C(void (*callback)(void));
+extern void fn_1_153AF8(u32 *entries);
+extern void fn_1_153D48(void *background);
+extern void fn_1_9A508(void);
+extern int fn_1_58C4(void);
+extern void fn_1_5948(int);
+extern void fn_1_627C(int);
+extern void fn_1_9D260(void);
+extern void fn_1_9AD54(void);
+extern void fn_1_153D74(void *);
+extern void fn_1_153B24(void *);
+extern void fn_1_153C60(Obj_1_data_2A7E0_At3C *value);
+extern void fn_1_1540B0(Obj_1_data_2A7E0_At3C *value);
+extern void fn_1_9AD88(void);
+extern void fn_80008BEC(void *arg0, u32 arg1, u32 arg2);
 
+/* fzgx:begin fn_1_151AF0 */
 int fn_1_151AF0(void *arg0, int mode, void *arg2, void *arg3, void *arg4, void *arg5) {
     u8 local_8[4];
     u8 local_c[8];
@@ -34,19 +54,12 @@ int fn_1_151AF0(void *arg0, int mode, void *arg2, void *arg3, void *arg4, void *
 /* fzgx:end fn_1_151AF0 */
 
 /* fzgx:begin fn_1_151BDC */
-extern u32 lbl_1_bss_8ED88;
-
 void fn_1_151BDC(u32 value) {
     lbl_1_bss_8ED88 = value;
 }
 /* fzgx:end fn_1_151BDC */
 
 /* fzgx:begin fn_1_151C3C */
-extern u16 lbl_1_bss_8ED8C;
-extern u16 lbl_1_bss_8ED8E;
-extern void fn_1_151C9C(void);
-extern void fn_80074A7C(void (*callback)(void));
-
 void fn_1_151C3C(u16 value1, u16 value2) {
     lbl_1_bss_8ED8C = value1;
     lbl_1_bss_8ED8E = value2;
@@ -55,8 +68,6 @@ void fn_1_151C3C(u16 value1, u16 value2) {
 /* fzgx:end fn_1_151C3C */
 
 /* fzgx:begin fn_1_151C78 */
-extern void fn_80074A7C(int value);
-
 void fn_1_151C78(void) {
     fn_80074A7C(0);
 }
@@ -142,7 +153,9 @@ void fn_1_153988(void) {
 }
 /* fzgx:end fn_1_153988 */
 
-/* fzgx:begin fn_1_15398C */
+/* fzgx:begin fn_1_15398C noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/bg_aur.h"
 
 extern void fn_1_153AF8(Obj_1_data_2A7E0_At3C *);
@@ -159,10 +172,6 @@ void fn_1_15398C(void) {
 /* fzgx:end fn_1_15398C */
 
 /* fzgx:begin fn_1_1539D0 */
-extern int fn_1_58C4(void);
-extern void fn_1_5948(int);
-extern void fn_1_627C(int);
-
 // Calls initialization, then loops calling two functions for each item
 void fn_1_1539D0(void) {
     int count = fn_1_58C4();
@@ -175,16 +184,6 @@ void fn_1_1539D0(void) {
 /* fzgx:end fn_1_1539D0 */
 
 /* fzgx:begin fn_1_153A28 */
-#include "rel/main_rel/bg_aur.h"
-
-extern void fn_1_9D260(void);
-extern void fn_1_9AD54(void);
-extern int fn_1_58C4(void);
-extern void fn_1_5948(int);
-extern void fn_1_153D74(void *);
-extern void fn_1_627C(int);
-extern void fn_1_153B24(void *);
-
 void fn_1_153A28(void) {
     Obj_1_data_2A7E0_At3C *obj;
     int count;
@@ -210,12 +209,6 @@ void fn_1_153AAC(void) {
 /* fzgx:end fn_1_153AAC */
 
 /* fzgx:begin fn_1_153AB0 */
-#include "rel/main_rel/globals.h"
-
-extern void fn_1_153C60(Obj_1_data_2A7E0_At3C *value);
-extern void fn_1_1540B0(Obj_1_data_2A7E0_At3C *value);
-extern void fn_1_9AD88(void);
-
 // Initializes the background Aurora object.
 void fn_1_153AB0(void) {
     Obj_1_data_2A7E0_At3C *object = lbl_1_data_2A7E0.unk_3C;
@@ -233,8 +226,6 @@ void fn_1_153AF4(void) {
 /* fzgx:end fn_1_153AF4 */
 
 /* fzgx:begin fn_1_153AF8 */
-#include "rel/main_rel/globals.h"
-
 // Clears the first entry and any following entries selected by its count.
 void fn_1_153AF8(u32 *entries) {
     u32 *current = entries;
@@ -249,10 +240,6 @@ void fn_1_153AF8(u32 *entries) {
 /* fzgx:end fn_1_153AF8 */
 
 /* fzgx:begin fn_1_153D48 */
-#include "rel/main_rel/globals.h"
-
-extern void fn_80008BEC(void *arg0, u32 arg1, u32 arg2);
-
 // Clears the Aurora background data region.
 void fn_1_153D48(void *background) {
     fn_80008BEC((u8 *)background + 0x1108, 0, 0x5fc);
@@ -260,8 +247,6 @@ void fn_1_153D48(void *background) {
 /* fzgx:end fn_1_153D48 */
 
 /* fzgx:begin fn_1_1543E8 */
-#include "rel/main_rel/bg_aur.h"
-
 u32 fn_1_1543E8(s32 value, u32 *source) {
     Obj_1_data_2A7E0_At3C *obj = lbl_1_data_2A7E0.unk_3C;
 

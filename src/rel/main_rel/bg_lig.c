@@ -1,4 +1,28 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/bg_lig.h"
+
+extern void fn_80008BA8(void *arg0, void *arg1, int arg2);
+extern u32 lbl_1_rodata_6490[4];
+extern u32 lbl_801A63D0;
+extern u32 fn_1_76504(s32, void *, s32);
+extern void fn_1_7269C(u32, s32, u32);
+extern void fn_1_5948(s32 index);
+extern void fn_1_D8388(void *obj);
+extern void fn_1_627C(s32 index);
+extern void *fn_1_9D260(Obj_1_data_2A7E0 *data);
+extern void fn_1_D7B7C(Obj_1_data_2A7E0_At3C *obj);
+extern void fn_1_9AD88(void);
+extern void *memset(void *dst, int value, u32 size);
+extern void fn_1_D7EF4(void *, u32);
+extern f32 lbl_1_rodata_6594[];
+extern f32 lbl_1_rodata_6524[];
+extern void lbl_8006DCA4(void);
+extern s32 fn_1_54E34(void *obj, f32 value);
+extern void *fn_1_54448(s32 value);
+extern void *fn_1_548AC(s32 value);
+extern void fn_1_D8878(void);
+extern void fn_1_5489C(void *obj, void *arg);
 
 /* fzgx:begin fn_1_D6680 */
 // fn_1_D6680: returns a constant.
@@ -56,9 +80,6 @@ void fn_1_D66B8(void) {
 /* fzgx:end fn_1_D66B8 */
 
 /* fzgx:begin fn_1_D66BC */
-extern u8 lbl_1_data_3DC38[24];
-extern void fn_80008BA8(void *arg0, void *arg1, int arg2);
-
 int fn_1_D66BC(void *unused, void *arg)
 {
     fn_80008BA8(arg, lbl_1_data_3DC38, 0x10);
@@ -80,11 +101,6 @@ int fn_1_D6740(void) {
 /* fzgx:end fn_1_D6740 */
 
 /* fzgx:begin fn_1_D720C */
-extern u32 lbl_1_rodata_6490[4];
-extern u32 lbl_801A63D0;
-extern u32 fn_1_76504(s32, void *, s32);
-extern void fn_1_7269C(u32, s32, u32);
-
 void fn_1_D720C(void) {
     u32 local[4];
     u32 result;
@@ -98,7 +114,9 @@ void fn_1_D720C(void) {
 }
 /* fzgx:end fn_1_D720C */
 
-/* fzgx:begin fn_1_D744C */
+/* fzgx:begin fn_1_D744C noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/bg_lig.h"
 
 extern s32 fn_1_58C4(void);
@@ -122,13 +140,8 @@ void fn_1_D744C(void) {
 /* fzgx:end fn_1_D744C */
 
 /* fzgx:begin fn_1_D7688 */
-#include "rel/main_rel/bg_lig.h"
-
-extern void *fn_1_9D260(Obj_1_data_2A7E0 *data);
 extern void fn_1_D8784(Obj_1_data_2A7E0_At3C *obj);
-extern void fn_1_D7B7C(Obj_1_data_2A7E0_At3C *obj);
 extern void fn_1_D8EEC(Obj_1_data_2A7E0_At3C *obj, void *value);
-extern void fn_1_9AD88(void);
 
 void fn_1_D7688(void) {
     Obj_1_data_2A7E0_At3C *obj = lbl_1_data_2A7E0.unk_3C;
@@ -147,8 +160,6 @@ void fn_1_D76EC(void) {
 /* fzgx:end fn_1_D76EC */
 
 /* fzgx:begin fn_1_D76F0 */
-#include "rel/main_rel/globals.h"
-
 // Copies a three-component float vector into the indexed light buffer entry.
 void fn_1_D76F0(const f32 *src, s16 index) {
     f32 *dst = (f32 *)lbl_1_data_2A7E0.unk_3C;
@@ -160,7 +171,9 @@ void fn_1_D76F0(const f32 *src, s16 index) {
 }
 /* fzgx:end fn_1_D76F0 */
 
-/* fzgx:begin fn_1_D7724 */
+/* fzgx:begin fn_1_D7724 noprologue */
+#include "types.h"
+
 typedef struct {
     u32 x;
     u32 y;
@@ -177,18 +190,13 @@ void fn_1_D7724(Vec3Bits *dst, s16 index) {
 /* fzgx:end fn_1_D7724 */
 
 /* fzgx:begin fn_1_D79E4 */
-extern void *memset(void *dst, int value, u32 size);
-
 void fn_1_D79E4(void *obj) {
     memset((u8 *)obj + 0x30, 0, 0x3c0);
 }
 /* fzgx:end fn_1_D79E4 */
 
 /* fzgx:begin fn_1_D8388 */
-#include "rel/main_rel/globals.h"
-
 extern u32 fn_1_58C4(void);
-extern void fn_1_D7EF4(void *, u32);
 
 // Initializes each lighting entry while the lighting system is available.
 void fn_1_D8388(void *obj) {
@@ -207,8 +215,6 @@ void fn_1_D8388(void *obj) {
 /* fzgx:end fn_1_D8388 */
 
 /* fzgx:begin fn_1_D8784 */
-#include "rel/main_rel/globals.h"
-
 typedef void (*LigCallback)(void);
 
 typedef struct {
@@ -229,14 +235,6 @@ typedef struct {
 } LigObject;
 
 extern u32 fn_1_58C4(LigObject *obj);
-extern f32 lbl_1_rodata_6594[];
-extern f32 lbl_1_rodata_6524[];
-extern void lbl_8006DCA4(void);
-extern s32 fn_1_54E34(void *obj, f32 value);
-extern void *fn_1_54448(s32 value);
-extern void *fn_1_548AC(s32 value);
-extern void fn_1_D8878(void);
-extern void fn_1_5489C(void *obj, void *arg);
 
 // Queues callbacks for eligible lig entries.
 void fn_1_D8784(LigObject *obj) {
@@ -328,8 +326,6 @@ void fn_1_D8D08(LigContainer *container) {
 /* fzgx:end fn_1_D8D08 */
 
 /* fzgx:begin fn_1_D8EEC */
-#include "rel/main_rel/globals.h"
-
 typedef struct {
     u8 unk_0[0xac];
 } LigEntry;
@@ -356,8 +352,6 @@ void fn_1_D8EEC(LigObject *obj, void *arg) {
 /* fzgx:end fn_1_D8EEC */
 
 /* fzgx:begin fn_1_D8F4C */
-#include "rel/main_rel/bg_lig.h"
-
 typedef struct {
     u8 pad_0[0x24];
     u32 unk_24;

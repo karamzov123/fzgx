@@ -1,12 +1,65 @@
 #include "types.h"
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/spline.h"
+
+extern void fn_8006E540(f32 *, f32 *, f32 *);
+extern void fn_1_F56F8(f32 *out, f32 *in);
+extern const f32 lbl_1_rodata_6D78;
+extern void fn_1_F57A8(f32 *out, f32 *in);
+extern const f32 lbl_1_rodata_6D70;
+extern f64 fn_80088538(f32);
+extern f64 fn_800883E8(f32);
+extern f32 lbl_8006D0B4(f32);
+extern f64 fn_80087E80(f32);
+extern void fn_8006E8DC(void *);
+extern void fn_1_9A508(Obj_1_data_2A7E0 *arg0);
+extern void fn_1_F5B88(Obj_1_data_2A7E0_At3C *arg0);
+extern void fn_1_9AD88(void);
+extern void fn_1_F65A0(Obj_1_data_2A7E0_At3C *);
+extern void fn_1_F7578(void);
+extern void fn_8001D32C(u32 *);
+extern void fn_80008BEC(void *dst, s32 value, u32 size);
+extern void fn_1_F75D8(void *, int, int, int);
+extern void fn_1_F8918(u8 *, u8 *);
+extern s32 fn_8008023C(u8 *, Obj_1_bss_7F0C0 *, u32);
+extern void fn_1_F85A0(Obj_1_bss_7F0C0 *, u8 *);
+extern u16 lbl_1_data_414[36];
+extern int fn_1_8D5F0(s16 value);
+extern void fn_1_F7CAC(s16);
+extern s32 fn_1_F7BE4(s16);
+extern void fn_1_F7F48(s16 value);
+extern int fn_1_14D6D8(s16 value);
+extern void fn_1_F83F0(s16 value);
+extern void fn_1_F8214(s16 value);
+extern void fn_1_F8A04(void);
+extern void fn_1_F8A90(void);
+extern void fn_1_F8A7C(void);
+extern void fn_1_F8AFC(u32 value);
+extern void fn_1_F8B64(void);
+extern void fn_1_F8BA8(void);
+extern void fn_1_F8B7C(void);
+extern void fn_1_F8BD4(void);
+extern void fn_1_F8C28(s32 value);
+extern void fn_1_F8CCC(s32 value);
+extern void fn_1_F8CA0(s32 value);
+extern struct Table lbl_1_rodata_6FF0;
+extern void fn_80083DB0(void *arg0, u32 arg1);
+extern void fn_1_F9D04(u8 index);
+extern void fn_1_F9D90(void);
+extern void fn_1_F9E38(void);
+extern void fn_1_F9EE4(s32 value);
+extern u8 fn_1_FA69C(s32 index);
+extern void fn_1_3EF14(void *);
+extern s32 fn_1_58C4(void);
+extern void fn_1_FA89C(Obj_1_data_2A7E0_At3C *obj);
+extern void fn_1_76BF8(void);
+extern void fn_1_72648(void);
+extern void fn_1_FB0B4(Obj_1_bss_84428 *data);
+extern void fn_1_FB180(int *value);
+extern void fn_1_9AD54(void);
+extern void fn_1_FB18C(void);
 
 /* fzgx:begin fn_1_F55C4 */
-extern void fn_8006E540(f32 *, f32 *, f32 *);
-extern void fn_1_F56F8(f32 *, f32 *);
-extern const f32 lbl_1_rodata_6D78;
-extern void fn_1_F57A8(f32 *, f32 *);
-
 void fn_1_F55C4(f32 *out, f32 *arg1, f32 *in, f32 *arg3) {
     f32 temp[4];
 
@@ -32,10 +85,6 @@ void fn_1_F55C4(f32 *out, f32 *arg1, f32 *in, f32 *arg3) {
 /* fzgx:end fn_1_F55C4 */
 
 /* fzgx:begin fn_1_F56F8 */
-extern f32 lbl_1_rodata_6D70;
-extern f64 fn_80088538(f32);
-extern f64 fn_800883E8(f32);
-
 void fn_1_F56F8(f32 *out, f32 *in) {
     f32 value;
     f32 scale;
@@ -58,11 +107,6 @@ void fn_1_F56F8(f32 *out, f32 *in) {
 /* fzgx:end fn_1_F56F8 */
 
 /* fzgx:begin fn_1_F57A8 */
-extern const f32 lbl_1_rodata_6D70;
-extern f32 lbl_8006D0B4(f32);
-extern f64 fn_800883E8(f32);
-extern f64 fn_80087E80(f32);
-
 void fn_1_F57A8(f32 *out, f32 *in) {
     f32 length;
     f32 scale;
@@ -91,8 +135,6 @@ typedef struct Vec4 {
     f32 z;
     f32 w;
 } Vec4;
-
-extern void fn_8006E8DC(void *);
 
 void fn_1_F5A2C(Vec4 *dst, const Vec4 *a, const Vec4 *b, f32 t) {
     f32 delta;
@@ -126,11 +168,6 @@ void fn_1_F5AAC(void) {
 /* fzgx:end fn_1_F5AAC */
 
 /* fzgx:begin fn_1_F5AB0 */
-#include "rel/main_rel/spline.h"
-
-extern void fn_1_9A508(Obj_1_data_2A7E0 *arg0);
-extern void fn_1_F5B88(Obj_1_data_2A7E0_At3C *arg0);
-
 void fn_1_F5AB0(void) {
     Obj_1_data_2A7E0_At3C *arg0 = lbl_1_data_2A7E0.unk_3C;
     fn_1_9A508(&lbl_1_data_2A7E0);
@@ -151,11 +188,6 @@ void fn_1_F5B38(void) {
 /* fzgx:end fn_1_F5B38 */
 
 /* fzgx:begin fn_1_F5B3C */
-#include "rel/main_rel/spline.h"
-
-extern void fn_1_9AD88(void);
-extern void fn_1_F65A0(Obj_1_data_2A7E0_At3C *);
-
 void fn_1_F5B3C(void) {
     Obj_1_data_2A7E0_At3C *obj = lbl_1_data_2A7E0.unk_3C;
 
@@ -187,9 +219,6 @@ int fn_1_F70C8(void) {
 /* fzgx:end fn_1_F70C8 */
 
 /* fzgx:begin fn_1_F7308 */
-extern void fn_1_F7578(void);
-extern u8 lbl_1_bss_7F028;
-
 void fn_1_F7308(void) {
     fn_1_F7578();
     lbl_1_bss_7F028 &= 0xFE;
@@ -197,27 +226,19 @@ void fn_1_F7308(void) {
 /* fzgx:end fn_1_F7308 */
 
 /* fzgx:begin fn_1_F755C */
-extern u8 lbl_1_data_3E8F0;
-
 void fn_1_F755C(u8 value) {
     lbl_1_data_3E8F0 = value;
 }
 /* fzgx:end fn_1_F755C */
 
 /* fzgx:begin fn_1_F7568 */
-extern u8 lbl_1_data_3E8F0;
-
 u8 fn_1_F7568(void) {
     return lbl_1_data_3E8F0;
 }
 /* fzgx:end fn_1_F7568 */
 
 /* fzgx:begin fn_1_F7578 */
-#include "rel/main_rel/spline.h"
-
 // Initialize the spline work buffers to their default values.
-extern void fn_8001D32C(u32 *);
-extern void fn_80008BEC(void *, int, u32);
 
 void fn_1_F7578(void) {
     u32 values[4];
@@ -233,8 +254,6 @@ void fn_1_F7578(void) {
 /* fzgx:end fn_1_F7578 */
 
 /* fzgx:begin fn_1_F7870 */
-extern void fn_1_F75D8(u32 *, int, int, int);
-
 void fn_1_F7870(u32 value) {
     u32 values[2];
 
@@ -245,27 +264,18 @@ void fn_1_F7870(u32 value) {
 /* fzgx:end fn_1_F7870 */
 
 /* fzgx:begin fn_1_F78AC */
-extern void fn_1_F75D8(void *, int, int, int);
-
 void fn_1_F78AC(void *arg0) {
     fn_1_F75D8(arg0, 1, 0, 0);
 }
 /* fzgx:end fn_1_F78AC */
 
 /* fzgx:begin fn_1_F78D8 */
-extern void fn_1_F75D8(void *, int, int, int);
-
 void fn_1_F78D8(void *arg0) {
     fn_1_F75D8(arg0, 1, 0, 1);
 }
 /* fzgx:end fn_1_F78D8 */
 
 /* fzgx:begin fn_1_F7904 */
-#include "rel/main_rel/spline.h"
-
-extern void fn_1_F8918(u8 *, u8 *);
-extern s32 fn_8008023C(u8 *, Obj_1_bss_7F0C0 *, u32);
-
 // Builds the spline workspace and reports whether its serialized data is valid.
 s32 fn_1_F7904(void) {
     u8 buffer[0x5360];
@@ -276,12 +286,6 @@ s32 fn_1_F7904(void) {
 /* fzgx:end fn_1_F7904 */
 
 /* fzgx:begin fn_1_F7954 */
-#include "rel/main_rel/spline.h"
-
-extern void fn_1_F8918(u8 *, u8 *);
-extern s32 fn_8008023C(u8 *, Obj_1_bss_7F0C0 *, u32);
-extern void fn_1_F85A0(Obj_1_bss_7F0C0 *, u8 *);
-
 s32 fn_1_F7954(void) {
     u8 buffer[0x5360];
     u8 *workspace;
@@ -296,7 +300,9 @@ s32 fn_1_F7954(void) {
 }
 /* fzgx:end fn_1_F7954 */
 
-/* fzgx:begin fn_1_F79C8 */
+/* fzgx:begin fn_1_F79C8 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/spline.h"
 
 extern void fn_1_F8918(u8 *, Obj_1_bss_7F0C0 *);
@@ -311,9 +317,6 @@ void fn_1_F79C8(void) {
 /* fzgx:end fn_1_F79C8 */
 
 /* fzgx:begin fn_1_F7B2C */
-extern u32 fn_1_8D5F0(s16);
-extern void fn_1_F7CAC(s16);
-
 void fn_1_F7B2C(void) {
     s16 i;
 
@@ -326,8 +329,6 @@ void fn_1_F7B2C(void) {
 /* fzgx:end fn_1_F7B2C */
 
 /* fzgx:begin fn_1_F7B80 */
-extern s32 fn_1_F7BE4(s16);
-
 s16 fn_1_F7B80(void) {
     s16 i;
     s16 count;
@@ -343,9 +344,6 @@ s16 fn_1_F7B80(void) {
 /* fzgx:end fn_1_F7B80 */
 
 /* fzgx:begin fn_1_F7D18 */
-extern int fn_1_8D5F0(s16 value);
-extern void fn_1_F7F48(s16 value);
-
 void fn_1_F7D18(void) {
     s16 i;
 
@@ -358,9 +356,6 @@ void fn_1_F7D18(void) {
 /* fzgx:end fn_1_F7D18 */
 
 /* fzgx:begin fn_1_F7D6C */
-extern int fn_1_8D5F0(s16 value);
-extern void fn_1_F7F48(s16 value);
-
 void fn_1_F7D6C(void) {
     s16 i;
 
@@ -373,9 +368,6 @@ void fn_1_F7D6C(void) {
 /* fzgx:end fn_1_F7D6C */
 
 /* fzgx:begin fn_1_F7DC0 */
-extern int fn_1_14D6D8(s16 value);
-extern void fn_1_F83F0(s16 value);
-
 enum {
     SIGN_BIT = (u32)1 << 31
 };
@@ -393,9 +385,6 @@ void fn_1_F7DC0(void) {
 /* fzgx:end fn_1_F7DC0 */
 
 /* fzgx:begin fn_1_F7E24 */
-extern int fn_1_14D6D8(s16 value);
-extern void fn_1_F83F0(s16 value);
-
 void fn_1_F7E24(void) {
     s16 i;
 
@@ -410,9 +399,6 @@ void fn_1_F7E24(void) {
 /* fzgx:end fn_1_F7E24 */
 
 /* fzgx:begin fn_1_F7E88 */
-extern int fn_1_8D5F0(s16 value);
-extern void fn_1_F7F48(s16 value);
-
 void fn_1_F7E88(void) {
     s16 i;
 
@@ -433,9 +419,6 @@ void fn_1_F8030(void) {
 /* fzgx:end fn_1_F8030 */
 
 /* fzgx:begin fn_1_F8048 */
-extern int fn_1_14D6D8(s16 value);
-extern void fn_1_F8214(s16 value);
-
 void fn_1_F8048(void) {
     s16 i;
 
@@ -448,9 +431,6 @@ void fn_1_F8048(void) {
 /* fzgx:end fn_1_F8048 */
 
 /* fzgx:begin fn_1_F82E0 */
-extern int fn_1_14D6D8(s16 value);
-extern void fn_1_F83F0(s16 value);
-
 void fn_1_F82E0(void) {
     s16 i;
 
@@ -463,8 +443,6 @@ void fn_1_F82E0(void) {
 /* fzgx:end fn_1_F82E0 */
 
 /* fzgx:begin fn_1_F8580 */
-#include "rel/main_rel/spline.h"
-
 void fn_1_F8580(void) {
     lbl_1_bss_7F0C0.unk_5C = 0;
     lbl_1_bss_7F0C0.unk_58 = 0;
@@ -474,9 +452,6 @@ void fn_1_F8580(void) {
 /* fzgx:end fn_1_F8580 */
 
 /* fzgx:begin fn_1_F89C0 */
-extern void fn_1_F8A04(void);
-extern void fn_1_F8A90(void);
-
 void fn_1_F89C0(void) {
     fn_1_F8A04();
     fn_1_F8A90();
@@ -498,8 +473,6 @@ void fn_1_F8A04(void) {
 /* fzgx:end fn_1_F8A04 */
 
 /* fzgx:begin fn_1_F8A18 */
-extern void fn_1_F8A7C(void);
-
 void fn_1_F8A18(void) {
     fn_1_F8A7C();
 }
@@ -527,8 +500,6 @@ void fn_1_F8A7C(void) {
 /* fzgx:end fn_1_F8A7C */
 
 /* fzgx:begin fn_1_F8A90 */
-extern void fn_1_F8AFC(u32 value);
-
 void fn_1_F8A90(void) {
     u32 i;
 
@@ -548,11 +519,6 @@ void fn_1_F8AD4(u32 value) {
 /* fzgx:end fn_1_F8AD4 */
 
 /* fzgx:begin fn_1_F8B24 */
-extern void fn_1_F8B64(void);
-extern void fn_1_F8BA8(void);
-extern void fn_1_F8B7C(void);
-extern void fn_1_F8BD4(void);
-
 void fn_1_F8B24(void) {
     fn_1_F8B64();
     fn_1_F8BA8();
@@ -577,8 +543,6 @@ void fn_1_F8B64(void) {
 /* fzgx:end fn_1_F8B64 */
 
 /* fzgx:begin fn_1_F8B7C */
-extern void fn_1_F8C28(u32 value);
-
 void fn_1_F8B7C(void) {
     fn_1_F8C28(0x80000000u);
     fn_1_F8C28(0x40000000u);
@@ -586,8 +550,6 @@ void fn_1_F8B7C(void) {
 /* fzgx:end fn_1_F8B7C */
 
 /* fzgx:begin fn_1_F8BA8 */
-extern void fn_1_F8CCC(u32 value);
-
 void fn_1_F8BA8(void) {
     fn_1_F8CCC(0x80000000u);
     fn_1_F8CCC(0x40000000u);
@@ -595,8 +557,6 @@ void fn_1_F8BA8(void) {
 /* fzgx:end fn_1_F8BA8 */
 
 /* fzgx:begin fn_1_F8BD4 */
-extern void fn_1_F8CA0(u32 value);
-
 void fn_1_F8BD4(void) {
     fn_1_F8CA0(0);
     fn_1_F8CA0(1);
@@ -669,9 +629,6 @@ struct Table {
     u32 values[4][6];
 };
 
-extern struct Table lbl_1_rodata_6FF0;
-extern void fn_80083DB0(void *arg0, u32 arg1);
-
 void fn_1_F8DC4(s16 index0, s16 index1, void *arg0) {
     struct Table table;
 
@@ -681,8 +638,6 @@ void fn_1_F8DC4(s16 index0, s16 index1, void *arg0) {
 /* fzgx:end fn_1_F8DC4 */
 
 /* fzgx:begin fn_1_F9C6C */
-extern void fn_1_F9D04(s32 value);
-
 void fn_1_F9C6C(void) {
     fn_1_F9D04(0);
     fn_1_F9D04(1);
@@ -706,18 +661,12 @@ void fn_1_F9D04(u8 index) {
 /* fzgx:end fn_1_F9D04 */
 
 /* fzgx:begin fn_1_F9D24 */
-extern void fn_1_F9D90(void);
-
 void fn_1_F9D24(void) {
     fn_1_F9D90();
 }
 /* fzgx:end fn_1_F9D24 */
 
 /* fzgx:begin fn_1_F9D44 */
-#include "rel/main_rel/spline.h"
-
-extern Obj_1_bss_7F0C0 lbl_1_bss_7F0C0;
-
 // Tests the requested spline flag.
 u32 fn_1_F9D44(u32 arg) {
     return lbl_1_bss_7F0C0.unk_68 & (0x8000 >> (arg & 0xff));
@@ -725,18 +674,12 @@ u32 fn_1_F9D44(u32 arg) {
 /* fzgx:end fn_1_F9D44 */
 
 /* fzgx:begin fn_1_F9D68 */
-#include "rel/main_rel/spline.h"
-
-extern Obj_1_bss_7F0C0 lbl_1_bss_7F0C0;
-
 void fn_1_F9D68(u32 arg) {
     lbl_1_bss_7F0C0.unk_68 |= 0x8000 >> (arg & 0xff);
 }
 /* fzgx:end fn_1_F9D68 */
 
 /* fzgx:begin fn_1_F9D90 */
-#include "rel/main_rel/spline.h"
-
 // Clear the spline object's active flags.
 void fn_1_F9D90(void) {
     lbl_1_bss_7F0C0.unk_68 = 0;
@@ -744,16 +687,12 @@ void fn_1_F9D90(void) {
 /* fzgx:end fn_1_F9D90 */
 
 /* fzgx:begin fn_1_F9DA4 */
-extern void fn_1_F9E38(void);
-
 void fn_1_F9DA4(void) {
     fn_1_F9E38();
 }
 /* fzgx:end fn_1_F9DA4 */
 
 /* fzgx:begin fn_1_F9DC4 */
-#include "rel/main_rel/spline.h"
-
 // Return the bit selected by the low byte of the requested flag index.
 u32 fn_1_F9DC4(u32 arg) {
     return lbl_1_bss_7F0C0.unk_6A & (0x8000 >> (arg & 0xff));
@@ -761,16 +700,12 @@ u32 fn_1_F9DC4(u32 arg) {
 /* fzgx:end fn_1_F9DC4 */
 
 /* fzgx:begin fn_1_F9DE8 */
-#include "rel/main_rel/spline.h"
-
 void fn_1_F9DE8(u32 param) {
     lbl_1_bss_7F0C0.unk_6A |= 0x8000 >> (param & 0xFF);
 }
 /* fzgx:end fn_1_F9DE8 */
 
 /* fzgx:begin fn_1_F9E10 */
-#include "rel/main_rel/spline.h"
-
 // Clear the bit selected by the low byte of the shift amount.
 void fn_1_F9E10(u32 param) {
     lbl_1_bss_7F0C0.unk_6A &= ~(0x8000 >> (param & 0xFF));
@@ -785,8 +720,6 @@ void fn_1_F9E38(void) {
 /* fzgx:end fn_1_F9E38 */
 
 /* fzgx:begin fn_1_F9E4C */
-extern void fn_1_F9EE4(s32 value);
-
 void fn_1_F9E4C(void) {
     fn_1_F9EE4(0);
     fn_1_F9EE4(1);
@@ -851,7 +784,11 @@ u32 fn_1_FA088(void) {
 }
 /* fzgx:end fn_1_FA088 */
 
-/* fzgx:begin fn_1_FA1A8 */
+/* fzgx:begin fn_1_FA1A8 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/spline.h"
+
 extern s32 fn_1_FA69C(s16 value);
 
 u32 fn_1_FA1A8(s32 value) {
@@ -861,8 +798,6 @@ u32 fn_1_FA1A8(s32 value) {
 /* fzgx:end fn_1_FA1A8 */
 
 /* fzgx:begin fn_1_FA450 */
-extern void fn_1_3EF14(void *);
-
 // Store the value when initialization permits the update.
 void fn_1_FA450(u8 value) {
     u8 local[0x14c0];
@@ -925,7 +860,9 @@ u8 fn_1_FA69C(s32 index) {
 }
 /* fzgx:end fn_1_FA69C */
 
-/* fzgx:begin fn_1_FA75C */
+/* fzgx:begin fn_1_FA75C noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/spline.h"
 
 extern s32 fn_1_58C4(void);
@@ -979,9 +916,6 @@ void fn_1_FA82C(void) {
 /* fzgx:end fn_1_FA82C */
 
 /* fzgx:begin fn_1_FA830 */
-extern void fn_1_9AD54(void);
-extern void fn_1_FB18C(void);
-
 void fn_1_FA830(void) {
     fn_1_9AD54();
     fn_1_FB18C();
@@ -989,9 +923,6 @@ void fn_1_FA830(void) {
 /* fzgx:end fn_1_FA830 */
 
 /* fzgx:begin fn_1_FA854 */
-extern void fn_1_76BF8(void);
-extern void fn_1_72648(void);
-
 void fn_1_FA854(void) {
     fn_1_76BF8();
     fn_1_72648();
@@ -999,8 +930,6 @@ void fn_1_FA854(void) {
 /* fzgx:end fn_1_FA854 */
 
 /* fzgx:begin fn_1_FA878 */
-extern void fn_1_9AD88(void);
-
 void fn_1_FA878(void) {
     fn_1_9AD88();
 }
@@ -1013,8 +942,6 @@ void fn_1_FA898(void) {
 /* fzgx:end fn_1_FA898 */
 
 /* fzgx:begin fn_1_FB0A8 */
-#include "rel/main_rel/spline.h"
-
 Obj_1_bss_84428 *fn_1_FB0A8(void) {
     return &lbl_1_bss_84428;
 }

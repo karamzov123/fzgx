@@ -1,5 +1,78 @@
 #include "types.h"
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/font.h"
+
+extern const f32 lbl_1_rodata_10D4;
+extern void fn_1_4955C(f32 value1, f32 value2);
+extern f32 lbl_1_rodata_10C0[5];
+extern f32 fn_1_4B1D4(s32 mode, s32 value);
+extern u32 strlen(const char *str);
+extern void fn_8008069C(void *arg0, void *arg1, u32 arg2, ...);
+extern f32 lbl_1_rodata_26B8[16];
+extern void fn_1_4D10C(void *data, f32 scale, f32 value);
+extern void fn_1_4D2AC(void *data, f32 scale, f32 value);
+extern int fn_1_3F164(void);
+extern void fn_800724C8(void);
+extern void fn_8007245C(int);
+extern void fn_80074788(int);
+extern void fn_80074660(int);
+extern void fn_80073678(int);
+extern void fn_80073898(int);
+extern void fn_80073C6C(int);
+extern void fn_800745A4(int, int, int, int, int, int);
+extern void fn_800734A8(int, int, int, int);
+extern void fn_80072AB0(int, int, int);
+extern void fn_80072C24(int, int, int, int, int);
+extern void fn_80072D64(int, int, int, int, int, int);
+extern void fn_80072CC4(int, int, int, int, int);
+extern void fn_80072E20(int, int, int, int, int, int);
+extern void fn_80074918(s32, s32, s32);
+extern void fn_800728A8(int, int, int, int);
+extern void fn_800720B0(int);
+extern void fn_80072864(int);
+extern void fn_1_A71CC(void);
+extern void lbl_8006D758(void);
+extern void fn_80072558(void);
+extern f32 lbl_1_rodata_26F8[22];
+extern f32 fn_1_A6FE8(void);
+extern void *lbl_801A6D00;
+extern void fn_80015E18(void *, f32, f32, f32, f32);
+extern void fn_80015EE8(void *, f32, f32, f32, f32, f32, f32);
+extern void fn_800737E4(void *, s32);
+extern void fn_1_A722C(void);
+extern void fn_1_50190(f32 a, f32 b, f32 c, f32 d, f32 e, f32 f);
+extern void fn_1_52BF8(void *arg0, void *arg1, s32 arg2);
+extern void *fn_1_541A8(void *arg, s32 value);
+extern u32 lbl_801A66B4;
+extern void fn_1_54320(void);
+extern void fn_1_9FA18(void);
+extern void fn_1_58248(void);
+extern void fn_1_54848(void);
+extern void fn_800794F0(u8 *data, void *value, s32 size);
+extern s32 fn_1_54F5C(u8 *data, f32 value, f32 scale);
+extern void fn_1_55210(void *value);
+extern void fn_1_56530(void);
+extern const f32 lbl_1_rodata_28A8;
+extern void fn_1_557C4(void *value);
+extern void fn_1_556B8(void *value);
+extern void fn_1_563E4(void *data);
+extern void fn_80077E7C(void *value);
+extern void fn_80077F8C(void *value);
+extern void fn_80074CF4(void);
+extern void lbl_8006DD14(void *arg0, void *arg1);
+extern void fn_800749B0(s32 arg0, void *arg1);
+extern const f32 lbl_1_rodata_28AC;
+extern void fn_80074C74(u8 *value);
+extern void fn_80074A7C(void);
+extern void fn_80077BAC(void);
+extern u8 lbl_1_bss_6C7DC[100];
+extern u8 *fn_1_565E8(void);
+extern void fn_1_45730(void);
+extern void fn_1_45B2C(void);
+extern void fn_1_458A0(void);
+extern void fn_1_45850(void);
+extern void fn_1_565F4(void);
+extern void fn_80070D60(void *);
 
 /* fzgx:begin fn_1_494CC */
 void fn_1_494CC(u8 value) {
@@ -8,11 +81,6 @@ void fn_1_494CC(u8 value) {
 /* fzgx:end fn_1_494CC */
 
 /* fzgx:begin fn_1_494DC */
-#include "rel/main_rel/font.h"
-
-extern const f32 lbl_1_rodata_10D4;
-extern void fn_1_4955C(f32 value1, f32 value2);
-
 void fn_1_494DC(s16 index) {
     lbl_1_bss_4B9CC.unk_C = index;
     fn_1_4955C(lbl_1_rodata_10D4, lbl_1_rodata_10D4);
@@ -26,16 +94,12 @@ void fn_1_49514(u32 *value) {
 /* fzgx:end fn_1_49514 */
 
 /* fzgx:begin fn_1_49528 */
-#include "rel/main_rel/font.h"
-
 void fn_1_49528(u32 *value) {
     lbl_1_bss_4B9CC.unk_14 = *value;
 }
 /* fzgx:end fn_1_49528 */
 
 /* fzgx:begin fn_1_4953C */
-#include "rel/main_rel/font.h"
-
 void fn_1_4953C(s16 value) {
     lbl_1_bss_4B9CC.unk_E = value;
 }
@@ -47,7 +111,12 @@ void fn_1_4954C(f32 value) {
 }
 /* fzgx:end fn_1_4954C */
 
-/* fzgx:begin fn_1_4955C */
+/* fzgx:begin fn_1_4955C noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
+extern void fn_1_4955C(f32 value1, f32 value2);
+
 extern f32 lbl_1_data_1AEA8[616];
 
 void fn_1_4955C(f32 value1, f32 value2) {
@@ -190,18 +259,12 @@ void fn_1_49778(s16 value1, s16 value2, s16 value3, s16 value4) {
 /* fzgx:end fn_1_49778 */
 
 /* fzgx:begin fn_1_4AEB4 */
-extern f32 lbl_1_bss_3E05C;
-
 void fn_1_4AEB4(f32 value) {
     lbl_1_bss_3E05C = value;
 }
 /* fzgx:end fn_1_4AEB4 */
 
 /* fzgx:begin fn_1_4AEC0 */
-#include "rel/main_rel/font.h"
-
-extern f32 lbl_1_rodata_10C0[5];
-
 u32 fn_1_4AEC0(u32 value) {
     u32 previous = lbl_1_bss_3E058;
 
@@ -213,42 +276,30 @@ u32 fn_1_4AEC0(u32 value) {
 /* fzgx:end fn_1_4AEC0 */
 
 /* fzgx:begin fn_1_4B040 */
-extern f32 fn_1_4B1D4(s32 mode, s32 value);
-
 void fn_1_4B040(s32 value) {
     fn_1_4B1D4(0, value);
 }
 /* fzgx:end fn_1_4B040 */
 
 /* fzgx:begin fn_1_4B068 */
-extern void fn_1_4B1D4(s32 mode, s32 value);
-
 void fn_1_4B068(s32 value) {
     fn_1_4B1D4(1, value);
 }
 /* fzgx:end fn_1_4B068 */
 
 /* fzgx:begin fn_1_4B16C */
-extern f32 fn_1_4B1D4(s32 mode, s32 value);
-
 s32 fn_1_4B16C(s32 value) {
     return (s32)fn_1_4B1D4(2, value);
 }
 /* fzgx:end fn_1_4B16C */
 
 /* fzgx:begin fn_1_4B1A0 */
-extern f32 fn_1_4B1D4(s32 mode, s32 value);
-
 s32 fn_1_4B1A0(s32 value) {
     return (s32)fn_1_4B1D4(3, value);
 }
 /* fzgx:end fn_1_4B1A0 */
 
 /* fzgx:begin fn_1_4B83C */
-extern u32 strlen(const char *str);
-extern f32 fn_1_4B1D4(u32 arg0, u32 arg1);
-extern void fn_8008069C(void *arg0, void *arg1, u32 arg2, ...);
-
 void fn_1_4B83C(void *arg0, void *arg1, u32 arg2, const char *arg3) {
     u32 length;
     s32 converted;
@@ -260,16 +311,12 @@ void fn_1_4B83C(void *arg0, void *arg1, u32 arg2, const char *arg3) {
 /* fzgx:end fn_1_4B83C */
 
 /* fzgx:begin fn_1_4B8BC */
-extern u32 lbl_1_bss_4BA58;
-
 void fn_1_4B8BC(void) {
     lbl_1_bss_4BA58 = 0;
 }
 /* fzgx:end fn_1_4B8BC */
 
 /* fzgx:begin fn_1_4B8CC */
-extern u32 lbl_1_bss_4BA5C;
-
 void fn_1_4B8CC(void) {
     lbl_1_bss_4BA5C = 0;
 }
@@ -282,9 +329,6 @@ void fn_1_4BD48(void) {
 /* fzgx:end fn_1_4BD48 */
 
 /* fzgx:begin fn_1_4D0D4 */
-extern f32 lbl_1_rodata_26B8[16];
-extern void fn_1_4D10C(void *data, f32 scale, f32 value);
-
 void fn_1_4D0D4(u32 *object, f32 value) {
     u32 data = *object;
     fn_1_4D10C(&data, lbl_1_rodata_26B8[0], value);
@@ -292,9 +336,6 @@ void fn_1_4D0D4(u32 *object, f32 value) {
 /* fzgx:end fn_1_4D0D4 */
 
 /* fzgx:begin fn_1_4D274 */
-extern f32 lbl_1_rodata_26B8[16];
-extern void fn_1_4D2AC(void *data, f32 scale, f32 value);
-
 void fn_1_4D274(u32 *object, f32 value) {
     u32 data = *object;
     fn_1_4D2AC(&data, lbl_1_rodata_26B8[0], value);
@@ -336,8 +377,6 @@ u8 *fn_1_4DD00(void) {
 /* fzgx:end fn_1_4DD00 */
 
 /* fzgx:begin fn_1_4DD10 */
-#include "rel/main_rel/font.h"
-
 u8 *fn_1_4DD10(void) {
     return &lbl_1_bss_4C688.pad_10[0xc];
 }
@@ -406,8 +445,6 @@ u8 *fn_1_4DDB0(void) {
 /* fzgx:end fn_1_4DDB0 */
 
 /* fzgx:begin fn_1_4DE44 */
-extern int fn_1_3F164(void);
-
 // Dispatch callbacks for each active font entry.
 void fn_1_4DE44(void) {
     int i;
@@ -425,25 +462,6 @@ void fn_1_4DE44(void) {
 /* fzgx:end fn_1_4DE44 */
 
 /* fzgx:begin fn_1_4E0F4 */
-extern void fn_800724C8(void);
-extern void fn_8007245C(int);
-extern void fn_80074788(int);
-extern void fn_80074660(int);
-extern void fn_80073678(int);
-extern void fn_80073898(int);
-extern void fn_80073C6C(int);
-extern void fn_800745A4(int, int, int, int, int, int);
-extern void fn_800734A8(int, int, int, int);
-extern void fn_80072AB0(int, int, int);
-extern void fn_80072C24(int, int, int, int, int);
-extern void fn_80072D64(int, int, int, int, int, int);
-extern void fn_80072CC4(int, int, int, int, int);
-extern void fn_80072E20(int, int, int, int, int, int);
-extern void fn_80074918(int, int, int);
-extern void fn_800728A8(int, int, int, int);
-extern void fn_800720B0(int);
-extern void fn_80072864(int);
-
 void fn_1_4E0F4(void) {
     fn_800724C8();
     fn_8007245C(0x2200);
@@ -467,28 +485,6 @@ void fn_1_4E0F4(void) {
 /* fzgx:end fn_1_4E0F4 */
 
 /* fzgx:begin fn_1_4E500 */
-extern void fn_1_A71CC(void);
-extern void fn_800724C8(void);
-extern void fn_8007245C(s32);
-extern void fn_80074788(s32);
-extern void fn_80074660(s32);
-extern void fn_80073678(s32);
-extern void fn_80073898(s32);
-extern void fn_80073C6C(s32);
-extern void fn_800745A4(s32, s32, s32, s32, s32, s32);
-extern void fn_800734A8(s32, s32, s32, s32);
-extern void fn_80072AB0(s32, s32, s32);
-extern void fn_80072C24(s32, s32, s32, s32, s32);
-extern void fn_80072D64(s32, s32, s32, s32, s32, s32);
-extern void fn_80072CC4(s32, s32, s32, s32, s32);
-extern void fn_80072E20(s32, s32, s32, s32, s32, s32);
-extern void fn_80074918(s32, s32, s32);
-extern void fn_800728A8(s32, s32, s32, s32);
-extern void fn_800720B0(s32);
-extern void fn_80072864(s32);
-extern void lbl_8006D758(void);
-extern void fn_80072558(void);
-
 void fn_1_4E500(void) {
     fn_1_A71CC();
     fn_800724C8();
@@ -515,13 +511,6 @@ void fn_1_4E500(void) {
 /* fzgx:end fn_1_4E500 */
 
 /* fzgx:begin fn_1_4E638 */
-extern f32 lbl_1_rodata_26F8[22];
-extern f32 fn_1_A6FE8(void);
-extern void *lbl_801A6D00;
-extern void fn_80015E18(void *, f32, f32, f32, f32);
-extern void fn_80015EE8(void *, f32, f32, f32, f32, f32, f32);
-extern void fn_800737E4(void *, s32);
-
 void fn_1_4E638(s32 arg) {
     f32 *values;
 
@@ -540,9 +529,6 @@ void fn_1_4E638(s32 arg) {
 /* fzgx:end fn_1_4E638 */
 
 /* fzgx:begin fn_1_4E6F4 */
-extern void fn_1_A722C(void);
-extern void fn_80074918(s32, s32, s32);
-
 void fn_1_4E6F4(void) {
     fn_1_A722C();
     fn_80074918(1, 3, 1);
@@ -550,8 +536,6 @@ void fn_1_4E6F4(void) {
 /* fzgx:end fn_1_4E6F4 */
 
 /* fzgx:begin fn_1_4F724 */
-#include "rel/main_rel/font.h"
-
 // Clear the font state value before the next initialization.
 void fn_1_4F724(void) {
     lbl_1_bss_646D2.unk_0 = 0;
@@ -559,14 +543,15 @@ void fn_1_4F724(void) {
 /* fzgx:end fn_1_4F724 */
 
 /* fzgx:begin fn_1_50164 */
-extern void fn_1_50190(f32 a, f32 b, f32 c, f32 d, f32 e, f32 f);
-
 void fn_1_50164(f32 a, f32 b, f32 c, f32 d) {
     fn_1_50190(a, b, c, c, d, d);
 }
 /* fzgx:end fn_1_50164 */
 
-/* fzgx:begin fn_1_51564 */
+/* fzgx:begin fn_1_51564 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
 extern u16 lbl_1_bss_4C678[0xC034];
 
 // Store the six font-related halfwords in the global font state.
@@ -581,8 +566,6 @@ void fn_1_51564(u16 a, u16 b, u16 c, u16 d, u16 e, u16 f) {
 /* fzgx:end fn_1_51564 */
 
 /* fzgx:begin fn_1_51990 */
-extern u32 lbl_1_bss_4C678;
-
 // Copy the font state value and enable the corresponding object flag.
 void fn_1_51990(void *obj) {
     *(u32 *)((u8 *)obj + 0x4c) = lbl_1_bss_4C678;
@@ -591,9 +574,6 @@ void fn_1_51990(void *obj) {
 /* fzgx:end fn_1_51990 */
 
 /* fzgx:begin fn_1_52070 */
-extern u32 lbl_1_bss_4E6AC;
-extern u32 lbl_1_bss_4E6A8;
-
 void fn_1_52070(u32 value) {
     lbl_1_bss_4E6A8 = 1;
     lbl_1_bss_4E6AC = value;
@@ -601,9 +581,6 @@ void fn_1_52070(u32 value) {
 /* fzgx:end fn_1_52070 */
 
 /* fzgx:begin fn_1_52088 */
-extern u32 lbl_1_bss_4E6A8;
-extern u32 lbl_1_bss_4E6AC;
-
 void fn_1_52088(void) {
     lbl_1_bss_4E6A8 = 0;
     lbl_1_bss_4E6AC = 0;
@@ -611,11 +588,6 @@ void fn_1_52088(void) {
 /* fzgx:end fn_1_52088 */
 
 /* fzgx:begin fn_1_520A0 */
-extern u32 lbl_1_bss_4E6A8;
-extern u32 lbl_1_bss_4E6AC;
-extern u32 lbl_1_bss_646E0;
-extern u32 lbl_1_bss_646E4;
-
 void fn_1_520A0(void) {
     u32 value_a;
     u32 value_b;
@@ -628,11 +600,6 @@ void fn_1_520A0(void) {
 /* fzgx:end fn_1_520A0 */
 
 /* fzgx:begin fn_1_520CC */
-extern u32 lbl_1_bss_646E0;
-extern u32 lbl_1_bss_646E4;
-extern u32 lbl_1_bss_4E6A8;
-extern u32 lbl_1_bss_4E6AC;
-
 void fn_1_520CC(void) {
     u32 value_a;
     u32 value_b;
@@ -645,55 +612,47 @@ void fn_1_520CC(void) {
 /* fzgx:end fn_1_520CC */
 
 /* fzgx:begin fn_1_52B68 */
-extern void fn_1_52BF8(void *arg0, void *arg1, s32 arg2);
-
 void fn_1_52B68(void *arg0, void *arg1) {
     fn_1_52BF8(arg0, arg1, 0);
 }
 /* fzgx:end fn_1_52B68 */
 
 /* fzgx:begin fn_1_52B8C */
-extern void fn_1_52BF8(void *arg0, void *arg1, s32 arg2);
-
 void fn_1_52B8C(void *arg0, void *arg1) {
     fn_1_52BF8(arg0, arg1, 0x1000);
 }
 /* fzgx:end fn_1_52B8C */
 
 /* fzgx:begin fn_1_52BB0 */
-extern void fn_1_52BF8(void *arg0, void *arg1, s32 arg2);
-
 void fn_1_52BB0(void *arg0, void *arg1) {
     fn_1_52BF8(arg0, arg1, 0x2000);
 }
 /* fzgx:end fn_1_52BB0 */
 
 /* fzgx:begin fn_1_52BD4 */
-extern void fn_1_52BF8(void *arg0, void *arg1, s32 arg2);
-
 void fn_1_52BD4(void *arg0, void *arg1) {
     fn_1_52BF8(arg0, arg1, 0x3000);
 }
 /* fzgx:end fn_1_52BD4 */
 
 /* fzgx:begin fn_1_5415C */
-extern void fn_1_541A8(void *arg, s32 value);
-
 void fn_1_5415C(void *arg, s32 value) {
     fn_1_541A8(arg, value);
 }
 /* fzgx:end fn_1_5415C */
 
 /* fzgx:begin fn_1_5417C */
-extern u32 lbl_801A66B4;
-extern void fn_1_541A8(void *arg, u32 value);
-
 void fn_1_5417C(void *arg) {
     fn_1_541A8(arg, lbl_801A66B4);
 }
 /* fzgx:end fn_1_5417C */
 
-/* fzgx:begin fn_1_541A8 */
+/* fzgx:begin fn_1_541A8 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
+extern void *fn_1_541A8(void *arg, s32 value);
+
 extern u8 lbl_1_data_1C5DC[4];
 extern u32 lbl_1_data_1C5EC[25];
 
@@ -734,9 +693,6 @@ void *fn_1_541A8(void *arg, s32 value) {
 /* fzgx:end fn_1_541A8 */
 
 /* fzgx:begin fn_1_54278 */
-extern u32 lbl_1_bss_4C680;
-extern u32 lbl_1_bss_4C684;
-
 void fn_1_54278(u32 arg0, u32 arg1) {
     lbl_1_bss_4C680 = arg0;
     lbl_1_bss_4C684 = arg1;
@@ -744,32 +700,24 @@ void fn_1_54278(u32 arg0, u32 arg1) {
 /* fzgx:end fn_1_54278 */
 
 /* fzgx:begin fn_1_5428C */
-#include "rel/main_rel/font.h"
-
 void fn_1_5428C(f32 value) {
     lbl_1_data_1C508.unk_0 = value;
 }
 /* fzgx:end fn_1_5428C */
 
 /* fzgx:begin fn_1_54298 */
-extern u32 lbl_1_bss_4C680;
-
 u32 fn_1_54298(void) {
     return lbl_1_bss_4C680;
 }
 /* fzgx:end fn_1_54298 */
 
 /* fzgx:begin fn_1_542A8 */
-extern u32 lbl_1_bss_4C684;
-
 u32 fn_1_542A8(void) {
     return lbl_1_bss_4C684;
 }
 /* fzgx:end fn_1_542A8 */
 
 /* fzgx:begin fn_1_542B8 */
-#include "rel/main_rel/font.h"
-
 f32 fn_1_542B8(void) {
     return lbl_1_data_1C508.unk_0;
 }
@@ -789,7 +737,6 @@ typedef struct FontState {
 
 // Volatile preserves the repeated loads of the shared font state.
 extern volatile FontState *lbl_801A66CC;
-extern void fn_1_54320(void);
 
 // Store the current font parameters and notify the font system.
 void fn_1_542C4(void *arg0, void *arg1, f32 arg2, f32 arg3, f32 arg4) {
@@ -841,8 +788,6 @@ typedef struct fn_1_545B8_manager {
 extern fn_1_545B8_manager *lbl_801A66CC;
 extern void fn_1_547F8(void *node);
 extern void fn_1_54668(void *arg0, u32 arg1, u32 arg2);
-extern void fn_1_9FA18(void);
-extern void fn_1_58248(void);
 
 // Reset the font manager's node list and process any completed nodes.
 void fn_1_545B8(void) {
@@ -867,8 +812,6 @@ typedef struct fn_1_54668_node {
     struct fn_1_54668_node *next;
     void *data;
 } fn_1_54668_node;
-
-extern void fn_1_54848(void);
 
 // Initialize a forward- or reverse-linked list and notify the allocator.
 void fn_1_54668(fn_1_54668_node *node, s32 count, u32 reverse) {
@@ -973,7 +916,6 @@ u32 fn_1_548AC(u32 amount) {
 
 /* fzgx:begin fn_1_54DCC */
 extern void *lbl_801A66CC;
-extern void fn_800794F0(u8 *data, void *value, s32 size);
 
 void fn_1_54DCC(u8 *data) {
     fn_800794F0(data, (u8 *)lbl_801A66CC + 0x50, 0x84);
@@ -982,7 +924,6 @@ void fn_1_54DCC(u8 *data) {
 
 /* fzgx:begin fn_1_54E00 */
 extern void *lbl_801A66CC;
-extern void fn_800794F0(void *data, void *value, s32 size);
 
 void fn_1_54E00(void *value) {
     fn_800794F0((u8 *)lbl_801A66CC + 0x50, value, 0x84);
@@ -990,9 +931,7 @@ void fn_1_54E00(void *value) {
 /* fzgx:end fn_1_54E00 */
 
 /* fzgx:begin fn_1_550A8 */
-extern u8 lbl_1_bss_6C710[136];
 extern void *lbl_801A66CC;
-extern void fn_800794F0(u8 *data, void *value, s32 size);
 
 void fn_1_550A8(void) {
     fn_800794F0(lbl_1_bss_6C710, (u8 *)lbl_801A66CC + 0x50, 0x84);
@@ -1000,9 +939,7 @@ void fn_1_550A8(void) {
 /* fzgx:end fn_1_550A8 */
 
 /* fzgx:begin fn_1_550E0 */
-extern u8 lbl_1_bss_6C710[136];
 extern void *lbl_801A66CC;
-extern void fn_800794F0(u8 *data, void *value, s32 size);
 
 void fn_1_550E0(void) {
     fn_800794F0((u8 *)lbl_801A66CC + 0x50, lbl_1_bss_6C710, 0x84);
@@ -1010,13 +947,6 @@ void fn_1_550E0(void) {
 /* fzgx:end fn_1_550E0 */
 
 /* fzgx:begin fn_1_5557C */
-#include "rel/main_rel/font.h"
-
-extern f32 lbl_1_bss_6C7A0;
-extern s32 fn_1_54F5C(u8 *data, f32 value, f32 scale);
-extern void fn_1_55210(void *value);
-extern void fn_1_56530(void);
-
 typedef struct {
     u8 unk_00[8];
     u32 unk_08;
@@ -1036,14 +966,6 @@ void fn_1_5557C(Fn1_5557CObject *value) {
 /* fzgx:end fn_1_5557C */
 
 /* fzgx:begin fn_1_555D0 */
-#include "rel/main_rel/font.h"
-
-extern f32 lbl_1_bss_6C7A0;
-extern s32 fn_1_54F5C(u8 *data, f32 value, f32 scale);
-extern void fn_80072558(void);
-extern void fn_1_55210(void *value);
-extern void fn_1_56530(void);
-
 typedef struct {
     u8 unk_00[8];
     u32 unk_08;
@@ -1064,12 +986,6 @@ void fn_1_555D0(Fn1_555D0Object *value) {
 /* fzgx:end fn_1_555D0 */
 
 /* fzgx:begin fn_1_55628 */
-#include "rel/main_rel/font.h"
-
-extern const f32 lbl_1_rodata_28A8;
-extern void fn_1_557C4(void *value);
-extern void fn_1_556B8(void *value);
-
 typedef struct {
     u8 pad_00[0x1C];
     u16 unk_1C;
@@ -1085,12 +1001,6 @@ void fn_1_55628(Fn1_55628Object *value) {
 /* fzgx:end fn_1_55628 */
 
 /* fzgx:begin fn_1_55678 */
-#include "rel/main_rel/font.h"
-
-extern void fn_1_563E4(void *data);
-extern void fn_80077E7C(void *value);
-extern void fn_1_56530(void);
-
 void fn_1_55678(void *value) {
     fn_1_563E4(&lbl_1_bss_6C7A4);
     fn_80077E7C(value);
@@ -1099,12 +1009,6 @@ void fn_1_55678(void *value) {
 /* fzgx:end fn_1_55678 */
 
 /* fzgx:begin fn_1_556B8 */
-#include "rel/main_rel/font.h"
-
-extern void fn_1_563E4(void *data);
-extern void fn_80077F8C(void *value);
-extern void fn_1_56530(void);
-
 /* Completes the font operation for the supplied value. */
 void fn_1_556B8(void *value) {
     fn_1_563E4(&lbl_1_bss_6C7A4);
@@ -1114,12 +1018,6 @@ void fn_1_556B8(void *value) {
 /* fzgx:end fn_1_556B8 */
 
 /* fzgx:begin fn_1_556F8 */
-extern f32 lbl_1_bss_6C7A0;
-extern s32 fn_1_54F5C(u8 *data, f32 value, f32 scale);
-extern void fn_1_563E4(void *data);
-extern void fn_80077F8C(void *value);
-extern void fn_1_56530(void);
-
 typedef struct {
     u8 unk_00[8];
     u32 unk_08;
@@ -1142,13 +1040,6 @@ void fn_1_556F8(Fn1_556F8Object *value) {
 /* fzgx:end fn_1_556F8 */
 
 /* fzgx:begin fn_1_5575C */
-extern f32 lbl_1_bss_6C7A0;
-extern s32 fn_1_54F5C(u8 *data, f32 value, f32 scale);
-extern void fn_80072558(void);
-extern void fn_1_563E4(void *data);
-extern void fn_80077F8C(void *value);
-extern void fn_1_56530(void);
-
 typedef struct {
     u8 unk_00[8];
     u32 unk_08;
@@ -1171,32 +1062,24 @@ void fn_1_5575C(Fn1_5575CObject *value) {
 /* fzgx:end fn_1_5575C */
 
 /* fzgx:begin fn_1_55FC4 */
-extern f32 lbl_1_bss_6C7A0;
-
 void fn_1_55FC4(f32 value) {
     lbl_1_bss_6C7A0 = value;
 }
 /* fzgx:end fn_1_55FC4 */
 
 /* fzgx:begin fn_1_55FD0 */
-extern void fn_80074CF4(void);
-
 void fn_1_55FD0(void) {
     fn_80074CF4();
 }
 /* fzgx:end fn_1_55FD0 */
 
 /* fzgx:begin fn_1_55FF0 */
-#include "rel/main_rel/font.h"
-
 void fn_1_55FF0(f32 value) {
     lbl_1_bss_6C7A4.unk_8 = value;
 }
 /* fzgx:end fn_1_55FF0 */
 
 /* fzgx:begin fn_1_56000 */
-#include "rel/main_rel/font.h"
-
 void fn_1_56000(u8 value0, u8 value1, u8 value2) {
     lbl_1_bss_6C7A4.unk_C = value0;
     lbl_1_bss_6C7A4.unk_D = value1;
@@ -1205,11 +1088,7 @@ void fn_1_56000(u8 value0, u8 value1, u8 value2) {
 /* fzgx:end fn_1_56000 */
 
 /* fzgx:begin fn_1_560F0 */
-#include "rel/main_rel/font.h"
-
 extern u8 *lbl_801A66CC;
-extern void lbl_8006DD14(void *arg0, void *arg1);
-extern void fn_800749B0(s32 arg0, void *arg1);
 
 // Marks the selected font resource as active before handing it to the loader.
 void fn_1_560F0(s32 index, void *arg) {
@@ -1222,11 +1101,6 @@ void fn_1_560F0(s32 index, void *arg) {
 /* fzgx:end fn_1_560F0 */
 
 /* fzgx:begin fn_1_56298 */
-#include "rel/main_rel/font.h"
-
-extern const f32 lbl_1_rodata_28AC;
-extern void fn_80074C74(u8 *value);
-
 void fn_1_56298(f32 value0, f32 value1, f32 value2, f32 value3) {
     f32 scale = lbl_1_rodata_28AC;
 
@@ -1239,16 +1113,12 @@ void fn_1_56298(f32 value0, f32 value1, f32 value2, f32 value3) {
 /* fzgx:end fn_1_56298 */
 
 /* fzgx:begin fn_1_5634C */
-#include "rel/main_rel/font.h"
-
 void fn_1_5634C(u8 value) {
     lbl_1_bss_6C7A4.unk_12 = value;
 }
 /* fzgx:end fn_1_5634C */
 
 /* fzgx:begin fn_1_5635C */
-#include "rel/main_rel/font.h"
-
 void fn_1_5635C(u8 value, f32 value2, f32 value3) {
     lbl_1_bss_6C7A4.unk_13 = value;
     *(f32 *)&lbl_1_bss_6C7A4.unk_18 = value2;
@@ -1257,8 +1127,6 @@ void fn_1_5635C(u8 value, f32 value2, f32 value3) {
 /* fzgx:end fn_1_5635C */
 
 /* fzgx:begin fn_1_56374 */
-#include "rel/main_rel/font.h"
-
 void fn_1_56374(u8 value1, u8 value2, u8 value3) {
     lbl_1_bss_6C7A4.unk_14 = value1;
     lbl_1_bss_6C7A4.unk_15 = value2;
@@ -1267,8 +1135,6 @@ void fn_1_56374(u8 value1, u8 value2, u8 value3) {
 /* fzgx:end fn_1_56374 */
 
 /* fzgx:begin fn_1_5638C */
-extern void fn_80074A7C(void);
-
 // Stores the current value for the font subsystem and refreshes its state.
 void fn_1_5638C(u32 value) {
     lbl_1_bss_6C7A4.unk_20 = value;
@@ -1277,8 +1143,6 @@ void fn_1_5638C(u32 value) {
 /* fzgx:end fn_1_5638C */
 
 /* fzgx:begin fn_1_563B8 */
-extern void fn_80077BAC(void);
-
 void fn_1_563B8(u32 value) {
     lbl_1_bss_6C7A4.unk_24 = value;
     fn_80077BAC();
@@ -1286,10 +1150,6 @@ void fn_1_563B8(u32 value) {
 /* fzgx:end fn_1_563B8 */
 
 /* fzgx:begin fn_1_56530 */
-#include "rel/main_rel/font.h"
-
-extern const f32 lbl_1_rodata_28A8;
-
 void fn_1_56530(void) {
     lbl_1_bss_6C7A0 = lbl_1_rodata_28A8;
     lbl_1_bss_6C7A4.unk_8 = lbl_1_rodata_28A8;
@@ -1297,8 +1157,6 @@ void fn_1_56530(void) {
 /* fzgx:end fn_1_56530 */
 
 /* fzgx:begin fn_1_565E8 */
-extern u8 lbl_1_bss_6C7DC[100];
-
 // Return the font data buffer used by the font subsystem.
 u8 *fn_1_565E8(void) {
     return lbl_1_bss_6C7DC;
@@ -1311,7 +1169,11 @@ void fn_1_565F4(void) {
 }
 /* fzgx:end fn_1_565F4 */
 
-/* fzgx:begin fn_1_565F8 */
+/* fzgx:begin fn_1_565F8 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/font.h"
+
 extern void fn_1_565E8(void);
 extern void fn_1_45730(void);
 extern void fn_1_45B2C(void);

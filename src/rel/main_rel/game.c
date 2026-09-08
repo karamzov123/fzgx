@@ -1,9 +1,82 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/game.h"
 
-/* fzgx:begin fn_1_35124 */
 extern u32 OSGetTick(void);
 extern void fn_1_A0978(void);
+extern void fn_1_35174(void);
+extern s32 fn_1_3EFA8(void);
+extern u16 lbl_1_bss_26B7A[3];
+extern u16 lbl_1_bss_26300;
+extern void fn_80008BEC(void *arg1, void *arg2, u32 size);
+extern void fn_1_4A00(u32 arg0, u32 arg1, u32 arg2);
+extern void fn_1_5370(u32 arg0, u32 arg1);
+extern void fn_1_15E27C(void);
+extern void fn_1_D0790(void);
+extern void fn_1_4811C(s32 value);
+extern void fn_1_48004(u32 arg0, u32 arg1);
+extern void *fn_1_435C(void *value);
+extern void fn_1_4310(s32 value);
+extern void fn_1_A1588(u32 arg0, u32 arg1);
+extern void fn_1_A8F78(void);
+extern u8 lbl_1_bss_262F4;
+extern void fn_80008BA8(void *arg1, void *arg2, u32 size);
+extern u32 lbl_1_bss_25E74[7];
+extern u8 lbl_1_bss_3C10;
+extern void fn_1_36330(void);
+extern void fn_1_36B10(void);
+extern void fn_1_3C98(void);
+extern void fn_1_37AA8(void);
+extern void fn_1_37E98(void);
+extern f32 lbl_1_bss_26304[4];
+extern u8 lbl_1_bss_26B04[20];
+extern u8 lbl_1_bss_26314[2032];
+extern u32 fn_1_12EF24(u8 arg0, u8 arg1);
+extern u8 lbl_1_bss_523C[32];
+extern void fn_8000C49C(const void *, u32, const char *, ...);
+extern void fn_1_451E4(void);
+extern void fn_1_D3214(void);
+extern void fn_8001AF64(void);
+extern s32 fn_1_467F4(void);
+extern s32 fn_1_13018(void);
+extern u32 fn_1_46C60(void);
+extern u32 lbl_1_bss_26C2C[2];
+extern u32 lbl_1_bss_262F8[2];
+extern u16 lbl_1_bss_26C68[35526];
+extern s32 ghost_test_record_flag0(u8 value);
+extern s32 fn_1_F9D44(u32 value);
+extern u8 fn_1_F8C50(u8 value);
+extern void fn_1_2DB50(void);
+extern void fn_1_3F8C(void *arg0, void (*arg1)(void), Obj_1_bss_5138 *arg2, u32 arg3);
+extern void fn_1_2D888(void);
+extern void fn_1_2D524(void);
+extern int fn_1_F9FEC(void);
+extern int fn_1_FA180(int, int);
+extern u8 lbl_1_bss_26B54[8];
+extern u32 fn_1_40EE4(void);
+extern u32 lbl_801A63D0;
+extern u32 lbl_1_bss_26C34[9];
+extern u8 lbl_1_bss_38218[568];
+extern void fn_1_4060(void);
+extern u32 lbl_801A63C0;
+extern void fn_1_40BE4(void);
+extern u32 lbl_1_bss_26B4C;
+extern u8 lbl_1_bss_25E90[8];
+extern void fn_1_48B0(void *arg0, int arg1);
+extern u32 lbl_801A6CE0;
+extern u32 lbl_1_bss_38454;
+extern u32 fn_80070DE0(void (*)(void));
+extern void fn_1_40F54(void *arg0);
+extern void *fn_1_D3884(u8 *arg0);
+extern void *fn_1_D358C(u8 *arg0, void *arg1);
+extern void fn_1_465D0(char *value, u32 flag);
+extern void fn_800711A8(Obj_1_bss_38458_Target *target);
+extern void fn_80071718(u32 value);
+extern void fn_8008069C(char *buffer, u32 *format, ...);
+extern u32 strlen(const char *str);
+extern int fn_80083BCC(const char *left, const char *right);
 
+/* fzgx:begin fn_1_35124 */
 void fn_1_35124(void) {
     OSGetTick();
     fn_1_A0978();
@@ -12,8 +85,6 @@ void fn_1_35124(void) {
 /* fzgx:end fn_1_35124 */
 
 /* fzgx:begin fn_1_3514C */
-extern void fn_1_35174(void);
-
 void fn_1_3514C(void* arg0, int arg1) {
     if (arg1 == 1) {
         fn_1_35174();
@@ -27,7 +98,9 @@ void fn_1_35174(void) {
 }
 /* fzgx:end fn_1_35174 */
 
-/* fzgx:begin fn_1_35178 */
+/* fzgx:begin fn_1_35178 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/game.h"
 
 extern int fn_1_3EFA8(void* arg0);
@@ -61,23 +134,20 @@ void fn_1_35178(void* arg0) {
 /* fzgx:end fn_1_35178 */
 
 /* fzgx:begin fn_1_36AD0 */
-extern u8 lbl_1_bss_5480[132864];
-
 u8* fn_1_36AD0(void) {
     return lbl_1_bss_5480;
 }
 /* fzgx:end fn_1_36AD0 */
 
 /* fzgx:begin fn_1_36ADC */
-extern u8 lbl_1_bss_5480[132864];
-extern void fn_80008BEC(void* arg0, int arg1, int arg2);
-
 void fn_1_36ADC(void) {
     fn_80008BEC(lbl_1_bss_5480, 0, 0x20700);
 }
 /* fzgx:end fn_1_36ADC */
 
-/* fzgx:begin fn_1_3DDAC */
+/* fzgx:begin fn_1_3DDAC noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/game.h"
 
 extern void fn_1_4A00(u32 arg0, u32 arg1, u32 arg2);
@@ -113,7 +183,8 @@ void fn_1_3DDAC(void) {
 }
 /* fzgx:end fn_1_3DDAC */
 
-/* fzgx:begin fn_1_3E5D0 */
+/* fzgx:begin fn_1_3E5D0 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 #include "rel/main_rel/game.h"
 
@@ -146,11 +217,6 @@ void fn_1_3E66C(void) {
 /* fzgx:end fn_1_3E66C */
 
 /* fzgx:begin fn_1_3E670 */
-#include "rel/main_rel/game.h"
-
-extern void fn_1_4A00(u32 arg0, u32 arg1, u32 arg2);
-extern void fn_1_D0790(void);
-
 void fn_1_3E670(void) {
     fn_1_4A00(1, 0x1e, lbl_1_bss_5100);
     lbl_1_bss_26C28 = 0;
@@ -161,28 +227,18 @@ void fn_1_3E670(void) {
 /* fzgx:end fn_1_3E670 */
 
 /* fzgx:begin fn_1_3EA70 */
-extern void fn_1_A8F78(void);
-
 void fn_1_3EA70(void) {
     fn_1_A8F78();
 }
 /* fzgx:end fn_1_3EA70 */
 
 /* fzgx:begin fn_1_3EF08 */
-extern u8 lbl_1_bss_262F4;
-
 void fn_1_3EF08(u8 value) {
     lbl_1_bss_262F4 = value;
 }
 /* fzgx:end fn_1_3EF08 */
 
 /* fzgx:begin fn_1_3EF14 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/game.h"
-
-extern void fn_80008BA8(void *arg1, void *arg2, u32 size);
-extern void fn_80008BEC(void *arg1, void *arg2, u32 size);
-
 static inline s16 current_mode(void) {
     return *(s16 *)&lbl_1_bss_960;
 }
@@ -201,9 +257,6 @@ void fn_1_3EF14(void *arg1) {
 /* fzgx:end fn_1_3EF14 */
 
 /* fzgx:begin fn_1_3EF8C */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/game.h"
-
 // Stores the value unless initialization has already occurred.
 void fn_1_3EF8C(u8 value) {
     if (lbl_1_bss_3C12.unk_0 == 0) {
@@ -213,9 +266,6 @@ void fn_1_3EF8C(u8 value) {
 /* fzgx:end fn_1_3EF8C */
 
 /* fzgx:begin fn_1_3EFA8 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/game.h"
-
 typedef struct MainRelState {
     u8 pad_0000[0x12];
     u8 unk_12;
@@ -242,12 +292,6 @@ s32 fn_1_3EFA8(void) {
 /* fzgx:end fn_1_3EFA8 */
 
 /* fzgx:begin fn_1_3EFF0 */
-extern u32 lbl_1_bss_25E74[7];
-extern u8 lbl_1_bss_3C10;
-extern u8 lbl_1_bss_3C11;
-extern u8 lbl_1_bss_26C58;
-extern u32 lbl_1_bss_26C64;
-
 void fn_1_3EFF0(u32 arg1, u8 arg2) {
     lbl_1_bss_25E74[0] = arg1;
     lbl_1_bss_3C10 = arg2;
@@ -258,23 +302,12 @@ void fn_1_3EFF0(u32 arg1, u8 arg2) {
 /* fzgx:end fn_1_3EFF0 */
 
 /* fzgx:begin fn_1_3F02C */
-extern u32 lbl_1_bss_26C64;
-
 void fn_1_3F02C(u32 arg1) {
     lbl_1_bss_26C64 = arg1;
 }
 /* fzgx:end fn_1_3F02C */
 
 /* fzgx:begin fn_1_3F038 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/game.h"
-
-extern void fn_1_36330(void);
-extern void fn_1_36B10(void);
-extern void fn_1_3C98(void);
-extern void fn_1_37AA8(void);
-extern void fn_1_37E98(void);
-
 // Initializes the game state and reports whether startup has completed.
 int fn_1_3F038(void) {
     if (lbl_1_bss_26C58 != 0) {
@@ -301,18 +334,12 @@ int fn_1_3F038(void) {
 /* fzgx:end fn_1_3F038 */
 
 /* fzgx:begin fn_1_3F0C8 */
-#include "rel/main_rel/game.h"
-
 s16 fn_1_3F0C8(void) {
     return lbl_1_bss_3C2A;
 }
 /* fzgx:end fn_1_3F0C8 */
 
 /* fzgx:begin fn_1_3F0D8 */
-extern f32 lbl_1_bss_26304[4];
-extern u8 lbl_1_bss_26B04[20];
-extern u8 lbl_1_bss_26314[2032];
-
 u8 *fn_1_3F0D8(u32 index, f32 *value, u8 *flag) {
     u8 idx = (u8)index;
     *value = lbl_1_bss_26304[idx];
@@ -322,9 +349,6 @@ u8 *fn_1_3F0D8(u32 index, f32 *value, u8 *flag) {
 /* fzgx:end fn_1_3F0D8 */
 
 /* fzgx:begin fn_1_3F114 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/game.h"
-
 // Returns the current global status byte when the subsystem is enabled.
 u8 fn_1_3F114(void) {
     if (lbl_1_bss_3C12.unk_0 != 0) {
@@ -335,8 +359,6 @@ u8 fn_1_3F114(void) {
 /* fzgx:end fn_1_3F114 */
 
 /* fzgx:begin fn_1_3F13C */
-#include "rel/main_rel/game.h"
-
 u8 fn_1_3F13C(void) {
     if (lbl_1_bss_3C12.unk_0 != 0) {
         return lbl_1_bss_3C30.unk_5;
@@ -345,7 +367,9 @@ u8 fn_1_3F13C(void) {
 }
 /* fzgx:end fn_1_3F13C */
 
-/* fzgx:begin fn_1_3F164 */
+/* fzgx:begin fn_1_3F164 noprologue */
+#include "types.h"
+
 typedef struct {
     u8 unk_00[0x12];
     u8 unk_12;
@@ -375,8 +399,6 @@ s32 fn_1_3F164(void) {
 /* fzgx:end fn_1_3F164 */
 
 /* fzgx:begin fn_1_3F1D4 */
-#include "rel/main_rel/globals.h"
-
 // Return the stored status byte when the game state is initialized.
 s32 fn_1_3F1D4(void) {
     if (lbl_1_bss_3C30.unk_5 == 1) {
@@ -387,10 +409,6 @@ s32 fn_1_3F1D4(void) {
 /* fzgx:end fn_1_3F1D4 */
 
 /* fzgx:begin fn_1_3F1F8 */
-#include "rel/main_rel/game.h"
-
-extern u32 fn_1_12EF24(u8 arg0, u8 arg1);
-
 u8 fn_1_3F1F8(void) {
     if (lbl_1_bss_3C30.unk_A6 != 0xff) {
         return fn_1_12EF24(lbl_1_bss_3C30.unk_A6, lbl_1_bss_3C30.unk_A7);
@@ -400,8 +418,6 @@ u8 fn_1_3F1F8(void) {
 /* fzgx:end fn_1_3F1F8 */
 
 /* fzgx:begin fn_1_3F23C */
-#include "rel/main_rel/game.h"
-
 // Reads the byte selected by the low eight bits of the index.
 u8 fn_1_3F23C(u32 index) {
     u8 *table = &lbl_1_bss_2625C.unk_0;
@@ -411,14 +427,13 @@ u8 fn_1_3F23C(u32 index) {
 /* fzgx:end fn_1_3F23C */
 
 /* fzgx:begin fn_1_3F250 */
-extern u8 lbl_1_bss_523C[32];
-
 u8 fn_1_3F250(u32 index) {
     return lbl_1_bss_523C[index & 0xff];
 }
 /* fzgx:end fn_1_3F250 */
 
-/* fzgx:begin fn_1_3F264 */
+/* fzgx:begin fn_1_3F264 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 
 typedef struct {
@@ -443,11 +458,6 @@ u8 fn_1_3F264(u32 index) {
 /* fzgx:end fn_1_3F264 */
 
 /* fzgx:begin fn_1_3F440 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/game.h"
-
-extern void fn_8000C49C(const void *, u32, const char *, ...);
-
 // Reports an out-of-range index and returns the corresponding limit when valid.
 s32 fn_1_3F440(u8 index) {
     u8 *limits;
@@ -466,12 +476,6 @@ s32 fn_1_3F440(u8 index) {
 /* fzgx:end fn_1_3F440 */
 
 /* fzgx:begin fn_1_3F75C */
-extern void fn_1_451E4(void);
-extern void fn_1_D3214(void);
-extern void fn_8001AF64(void);
-extern s32 fn_1_467F4(void);
-extern s32 fn_1_13018(void);
-
 void fn_1_3F75C(void) {
     while (fn_1_467F4() || fn_1_13018()) {
         fn_1_451E4();
@@ -482,24 +486,18 @@ void fn_1_3F75C(void) {
 /* fzgx:end fn_1_3F75C */
 
 /* fzgx:begin fn_1_3F7A0 */
-extern u32 fn_1_46C60(void);
-
 void fn_1_3F7A0(u32* self) {
     self[0] = fn_1_46C60();
 }
 /* fzgx:end fn_1_3F7A0 */
 
 /* fzgx:begin fn_1_3F7D0 */
-extern u32 lbl_1_bss_26C28;
-
 u32 fn_1_3F7D0(void) {
     return lbl_1_bss_26C28;
 }
 /* fzgx:end fn_1_3F7D0 */
 
 /* fzgx:begin fn_1_3F7E0 */
-#include "rel/main_rel/globals.h"
-
 // Selects the mode-specific byte from the shared game state.
 u8 fn_1_3F7E0(void) {
     if (lbl_1_bss_3C30.unk_0 & 0x00008000) {
@@ -510,8 +508,6 @@ u8 fn_1_3F7E0(void) {
 /* fzgx:end fn_1_3F7E0 */
 
 /* fzgx:begin fn_1_3F800 */
-#include "rel/main_rel/game.h"
-
 // Stores the value in the shared game state.
 void fn_1_3F800(u32 value) {
     lbl_1_bss_3C30.unk_1464 = value;
@@ -519,8 +515,6 @@ void fn_1_3F800(u32 value) {
 /* fzgx:end fn_1_3F800 */
 
 /* fzgx:begin fn_1_3F810 */
-#include "rel/main_rel/globals.h"
-
 // Stores a value and its scaled companion in the shared game state.
 void fn_1_3F810(u8 value, u32 input) {
     lbl_1_bss_3C30.unk_146C = value;
@@ -529,8 +523,6 @@ void fn_1_3F810(u8 value, u32 input) {
 /* fzgx:end fn_1_3F810 */
 
 /* fzgx:begin fn_1_3F834 */
-#include "rel/main_rel/globals.h"
-
 // Stores the byte value in the shared game state.
 void fn_1_3F834(u8 value) {
     lbl_1_bss_3C30.unk_1470 = value;
@@ -538,8 +530,6 @@ void fn_1_3F834(u8 value) {
 /* fzgx:end fn_1_3F834 */
 
 /* fzgx:begin fn_1_3F844 */
-#include "rel/main_rel/globals.h"
-
 // Store the current 16-bit value in the shared game state.
 void fn_1_3F844(u16 value) {
     lbl_1_bss_3C30.unk_146E = value;
@@ -547,8 +537,6 @@ void fn_1_3F844(u16 value) {
 /* fzgx:end fn_1_3F844 */
 
 /* fzgx:begin fn_1_3F854 */
-#include "rel/main_rel/globals.h"
-
 // Return the current game-state byte.
 u8 fn_1_3F854(void) {
     return lbl_1_bss_3C30.unk_8;
@@ -556,8 +544,6 @@ u8 fn_1_3F854(void) {
 /* fzgx:end fn_1_3F854 */
 
 /* fzgx:begin fn_1_3F864 */
-#include "rel/main_rel/globals.h"
-
 // Reports whether the game is in the guarded state or mode 0x000c.
 u8 fn_1_3F864(void) {
     if ((lbl_1_bss_3C30.unk_0 & 0x00100000) != 0 ||
@@ -569,10 +555,6 @@ u8 fn_1_3F864(void) {
 /* fzgx:end fn_1_3F864 */
 
 /* fzgx:begin fn_1_3F894 */
-#include "rel/main_rel/game.h"
-
-extern u32 lbl_1_bss_26C2C[2];
-
 // Enables the associated game state and records the current mode.
 void fn_1_3F894(void) {
     lbl_1_bss_53F4 = lbl_1_bss_3C30.unk_7;
@@ -582,16 +564,12 @@ void fn_1_3F894(void) {
 /* fzgx:end fn_1_3F894 */
 
 /* fzgx:begin fn_1_3F8C0 */
-extern u32 lbl_1_bss_262F8[2];
-
 u32 fn_1_3F8C0(void) {
     return lbl_1_bss_262F8[0];
 }
 /* fzgx:end fn_1_3F8C0 */
 
 /* fzgx:begin fn_1_3F8D0 */
-#include "rel/main_rel/game.h"
-
 void fn_1_3F8D0(void) {
     u16 *values = (u16 *)&lbl_1_bss_38204;
 
@@ -603,48 +581,36 @@ void fn_1_3F8D0(void) {
 /* fzgx:end fn_1_3F8D0 */
 
 /* fzgx:begin fn_1_3FC18 */
-extern u16 lbl_1_bss_26C68[35526];
-
 u16 fn_1_3FC18(void) {
     return lbl_1_bss_26C68[0];
 }
 /* fzgx:end fn_1_3FC18 */
 
 /* fzgx:begin fn_1_3FC28 */
-#include "rel/main_rel/game.h"
-
 u32 fn_1_3FC28(void) {
     return lbl_1_bss_3C30.unk_0 & 0x00800000;
 }
 /* fzgx:end fn_1_3FC28 */
 
 /* fzgx:begin fn_1_3FC38 */
-#include "rel/main_rel/game.h"
-
 u8 fn_1_3FC38(void) {
     return lbl_1_bss_3C12.unk_0;
 }
 /* fzgx:end fn_1_3FC38 */
 
 /* fzgx:begin fn_1_3FC48 */
-#include "rel/main_rel/game.h"
-
 u32 fn_1_3FC48(void) {
     return lbl_1_bss_3C30.unk_0 & 0x100;
 }
 /* fzgx:end fn_1_3FC48 */
 
 /* fzgx:begin fn_1_3FC58 */
-#include "rel/main_rel/game.h"
-
 u32 fn_1_3FC58(void) {
     return lbl_1_bss_3C30.unk_0 & 0x01000000;
 }
 /* fzgx:end fn_1_3FC58 */
 
 /* fzgx:begin fn_1_3FC68 */
-#include "rel/main_rel/game.h"
-
 // Toggles the 0x02000000 status flag according to the requested state.
 void fn_1_3FC68(s32 enabled) {
     lbl_1_bss_3C30.unk_0 = enabled != 0
@@ -654,8 +620,6 @@ void fn_1_3FC68(s32 enabled) {
 /* fzgx:end fn_1_3FC68 */
 
 /* fzgx:begin fn_1_3FC8C */
-#include "rel/main_rel/globals.h"
-
 // Return the global state flag stored in bit 6 of the control word.
 u32 fn_1_3FC8C(void) {
     return lbl_1_bss_3C30.unk_0 & 0x02000000;
@@ -663,8 +627,6 @@ u32 fn_1_3FC8C(void) {
 /* fzgx:end fn_1_3FC8C */
 
 /* fzgx:begin fn_1_3FC9C */
-#include "rel/main_rel/globals.h"
-
  // Return the low byte of the signed global status field.
 u32 fn_1_3FC9C(void) {
     return (u32)lbl_1_bss_8B3A0.unk_8 & 0xff;
@@ -672,17 +634,6 @@ u32 fn_1_3FC9C(void) {
 /* fzgx:end fn_1_3FC9C */
 
 /* fzgx:begin fn_1_3FDA8 */
-#include "rel/main_rel/game.h"
-
-extern s32 ghost_test_record_flag0(u8 value);
-extern s32 fn_1_F9D44(u32 value);
-extern u8 fn_1_F8C50(u8 value);
-extern void *fn_1_435C(void *value);
-extern void fn_1_2DB50(void);
-extern void fn_1_3F8C(void *arg0, void (*arg1)(void), Obj_1_bss_5138 *arg2, u32 arg3);
-extern void fn_1_2D888(void);
-extern void fn_1_2D524(void);
-
 void fn_1_3FDA8(void *arg0, void *arg1) {
     s32 condition;
     void *value;
@@ -743,9 +694,6 @@ done:
 /* fzgx:end fn_1_3FDA8 */
 
 /* fzgx:begin fn_1_40224 */
-extern int fn_1_F9FEC(void);
-extern int fn_1_FA180(int, int);
-
 int fn_1_40224(void) {
     int result;
 
@@ -764,39 +712,26 @@ int fn_1_40224(void) {
 /* fzgx:end fn_1_40224 */
 
 /* fzgx:begin fn_1_40B14 */
-extern u8 lbl_1_bss_26B54[8];
-
 u8 *fn_1_40B14(void) {
     return lbl_1_bss_26B54;
 }
 /* fzgx:end fn_1_40B14 */
 
 /* fzgx:begin fn_1_40BB4 */
-#include "rel/main_rel/game.h"
-
 u8 fn_1_40BB4(void) {
     return (s8)lbl_1_bss_5104.unk_0 != -1;
 }
 /* fzgx:end fn_1_40BB4 */
 
 /* fzgx:begin fn_1_40BD4 */
-extern u8 lbl_1_bss_3820C;
-
 void fn_1_40BD4(void) {
     lbl_1_bss_3820C = 0;
 }
 /* fzgx:end fn_1_40BD4 */
 
 /* fzgx:begin fn_1_40D44 */
-#include "rel/main_rel/game.h"
-
-extern u32 fn_1_40EE4(void);
-extern u32 lbl_801A63D0;
-extern u32 lbl_1_bss_26C34[9];
-extern u8 lbl_1_bss_38218[568];
 extern void fn_800205A0(u8 *arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4,
                         u32 arg5, u32 arg6, u32 arg7);
-extern void fn_1_4060(void);
 
 void fn_1_40D44(void) {
     u32 result;
@@ -825,14 +760,6 @@ void fn_1_40D44(void) {
 /* fzgx:end fn_1_40D44 */
 
 /* fzgx:begin fn_1_40E08 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/game.h"
-
-extern u8 lbl_1_data_662C[13];
-extern u32 lbl_801A63C0;
-extern void fn_1_40BE4(void);
-extern void fn_1_3F8C(u8 *, void (*)(void), s32, s32);
-
 // Initializes the random-selection bounds and schedules the next callback.
 void fn_1_40E08(u32 arg0) {
     u32 value;
@@ -865,46 +792,36 @@ void fn_1_40E08(u32 arg0) {
 /* fzgx:end fn_1_40E08 */
 
 /* fzgx:begin fn_1_40ED4 */
-extern u8 lbl_1_bss_3820C;
-
 u8 fn_1_40ED4(void) {
     return lbl_1_bss_3820C;
 }
 /* fzgx:end fn_1_40ED4 */
 
 /* fzgx:begin fn_1_40F34 */
-extern u32 lbl_1_bss_26B4C;
-
 u32 fn_1_40F34(void) {
     return lbl_1_bss_26B4C;
 }
 /* fzgx:end fn_1_40F34 */
 
 /* fzgx:begin fn_1_40F44 */
-extern u8 lbl_1_bss_25E90[8];
-
 u8 fn_1_40F44(void) {
     return lbl_1_bss_25E90[0];
 }
 /* fzgx:end fn_1_40F44 */
 
 /* fzgx:begin fn_1_40F54 */
-#include "rel/main_rel/globals.h"
-
-extern void fn_1_48B0(void *arg0, int arg1);
-
 // Initializes the related game state with the standard allocation size.
 void fn_1_40F54(void *arg0) {
     fn_1_48B0(arg0, 0x20);
 }
 /* fzgx:end fn_1_40F54 */
 
-/* fzgx:begin fn_1_40F78 */
+/* fzgx:begin fn_1_40F78 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
 #include "rel/main_rel/game.h"
 
 // Initializes the shared resource handles when the subsystem is enabled.
-extern u8 lbl_1_data_66C0[0x10];
-extern u8 lbl_1_data_66D0[0x10];
 
 extern u32 lbl_801A6CE0;
 extern u32 lbl_1_bss_38454;
@@ -930,11 +847,11 @@ void fn_1_40F78(void) {
 }
 /* fzgx:end fn_1_40F78 */
 
-/* fzgx:begin fn_1_4100C */
+/* fzgx:begin fn_1_4100C noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
+#include "rel/main_rel/game.h"
 
-extern u8 lbl_1_data_66E0[0x10];
-extern u8 lbl_1_data_66F0[0x10];
 extern void fn_1_465D0(u8 *arg0, u32 arg1);
 
 // Initialize both shared data blocks.
@@ -944,25 +861,7 @@ void fn_1_4100C(void) {
 }
 /* fzgx:end fn_1_4100C */
 
-/* fzgx:begin fn_1_41048 noprologue */
-#include "types.h"
-
-typedef struct {
-    u8 pad_0[0x8];
-    u32 unk_8;  // 58 loads, 0 stores
-} Obj_1_bss_38458_Target;
-extern u32 lbl_1_bss_3845C;
-extern u8 lbl_1_data_66E0[0x10];
-extern u8 lbl_1_data_66F0[0x10];
-extern Obj_1_bss_38458_Target *lbl_1_bss_38458;
-
-extern u32 lbl_1_bss_3845C;
-extern u8 lbl_1_data_66E0[0x10];
-extern u8 lbl_1_data_66F0[0x10];
-
-extern void *fn_1_D3884(u8 *arg0);
-extern void *fn_1_D358C(u8 *arg0, void *arg1);
-
+/* fzgx:begin fn_1_41048 */
 void fn_1_41048(void) {
     void *value;
 
@@ -975,11 +874,6 @@ void fn_1_41048(void) {
 /* fzgx:end fn_1_41048 */
 
 /* fzgx:begin fn_1_410A0 */
-#include "rel/main_rel/game.h"
-
-extern void fn_800711A8(Obj_1_bss_38458_Target *target);
-extern void fn_80071718(u32 value);
-
 void fn_1_410A0(void) {
     if (lbl_1_bss_38458 != 0) {
         fn_800711A8(lbl_1_bss_38458);
@@ -993,7 +887,8 @@ void fn_1_410A0(void) {
 }
 /* fzgx:end fn_1_410A0 */
 
-/* fzgx:begin fn_1_41104 */
+/* fzgx:begin fn_1_41104 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 
 extern char *lbl_1_data_66A0[8];
@@ -1006,12 +901,6 @@ void fn_1_41104(u32 index) {
 /* fzgx:end fn_1_41104 */
 
 /* fzgx:begin fn_1_41134 */
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/game.h"
-
-extern void fn_8008069C(char *buffer, u32 *format, ...);
-extern void fn_1_465D0(char *value, u32 flag);
-
 // Format the value with each registered template and publish both results.
 void fn_1_41134(void *unused, char *value) {
     char buffer[128];
@@ -1023,7 +912,8 @@ void fn_1_41134(void *unused, char *value) {
 }
 /* fzgx:end fn_1_41134 */
 
-/* fzgx:begin fn_1_411A4 */
+/* fzgx:begin fn_1_411A4 noprologue */
+#include "types.h"
 #include "rel/main_rel/globals.h"
 
 extern u32 lbl_1_data_66A0[8];
@@ -1064,8 +954,6 @@ typedef struct Fn41418Data {
     char *strings;
 } Fn41418Data;
 
-extern u32 strlen(const char *str);
-
 static inline u32 add_lengths(u32 length, u32 address) {
     return length + address;
 }
@@ -1093,9 +981,6 @@ typedef struct Fn41488Data {
     u32 count;
     char *strings;
 } Fn41488Data;
-
-extern u32 strlen(const char *str);
-extern int fn_80083BCC(const char *left, const char *right);
 
 static inline u32 add_lengths(u32 length, u32 address) {
     return length + address;
