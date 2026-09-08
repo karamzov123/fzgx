@@ -969,8 +969,8 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 continue  # MWCC rematerialises addresses: no local
             tn = f"v{len(temps)}"
             init = regs.get(rw)
-            if init is None and re.fullmatch(r"r([3-9]|10)|f[1-8]", rw) and rw in params:
-                init = use(rw)
+            if init is None and re.fullmatch(r"r([3-9]|10)|f[1-8]", rw) and rw not in params:
+                init = use(rw)  # a parameter not seen before: its value is the argument
             temps.append(f"{rtype.get(rw, 'u32')} {tn};")
             if init is not None:
                 stmts.append(f"{tn} = {init};")
