@@ -1,4 +1,10 @@
 #include "types.h"
 
-// fn_1_12A24C: main_rel .text:0x0012A24C size 0x44
-// Carved by fzgx. Replace this file's body with the matching C.
+extern s32 fn_1_86678(s32 arg);
+
+s8 fn_1_12A24C(s8 arg) {
+    if ((s8)fn_1_86678((s32)arg) == -1) {
+        return -1;
+    }
+    return arg;
+}
