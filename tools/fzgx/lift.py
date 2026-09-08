@@ -570,7 +570,19 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             if mn == "b":
                 raise Give()  # an unconditional jump that no if/else or loop explained
             if mn == "blr":
-                break
+                if i == len(ins) - 1 or not any(True for _ in ins[i + 1:]):
+                    break
+                # an early return: the value r3 holds here, then the lift goes on at the label
+                # that follows (the fallthrough code the branch skipped over)
+                if "r3" in regs and any(a_ and a_[0] == "r3" for mn_, a_ in ins[:i] if mn_ not in ("stw", "sth", "stb", "stfs", "stfd", "cmpwi", "cmpw", "cmplwi", "cmplw")):
+                    stmts.append(f"return {regs['r3']};")
+                    regs.pop("r3", None)
+                elif "f1" in regs and any(a_ and a_[0] == "f1" for mn_, a_ in ins[:i]):
+                    stmts.append(f"return {regs['f1']};")
+                    regs.pop("f1", None)
+                else:
+                    stmts.append("return __RET__;")
+                continue
             if mn in ("cmpwi", "cmpw", "cmplwi", "cmplw"):
                 lhs = use(a[0]); rhs = str(_imm(a[1])) if mn.endswith("i") else use(a[1])
                 uns = mn.startswith("cmpl")
@@ -1147,7 +1159,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         ret = regs["r3"]  # a call's result falls through in r3 either way: `void f(void) { g(); }`
     # a call whose result is returned becomes `return f(...)`; one whose result feeds later code
     # becomes a temporary; the rest are statements
-    used_ret = {i for i in range(len(calls)) if any(f"__CALLRET__{i}" in st for st in stmts if not st.startswith(f"__CALL__{i}(")) or ret == f"__CALLRET__{i}"}
+    used_ret = {i for i in range(len(calls)) if any(f"__CALLRET__{i}" in st for st in stmts if not st.startswith(f"__CALL__{i}(")) or (ret is not None and f"__CALLRET__{i}" in ret)}
     structs: List[str] = []
     body = []
     for st in stmts:

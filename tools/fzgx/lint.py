@@ -45,6 +45,8 @@ def lint_file(path: Path) -> List[Tuple[str, int, str]]:
         justified = "//" in line or "//" in prev or "/*" in line or "/*" in prev
         for m in HEX_RE.finditer(code):
             v = int(m.group(1), 16)
+            if v == 0x80000000:
+                continue  # the sign-bit mask, not an address (nothing is addressed at the RAM base itself)
             if any(lo <= v <= hi for lo, hi in RANGES) and allow != "A1":
                 findings.append(("A1", i, f"hardcoded address 0x{v:08X}; use a symbol"))
         if PTR_CAST_RE.search(code) and allow != "A2":
