@@ -369,11 +369,12 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     hi: Dict[str, str] = {}  # register holding sym@ha
     labels = LABELS[0]
     frame_size = 0
-    for mn_, a_ in ins:
+    stwu_index = -1
+    for j_, (mn_, a_) in enumerate(ins):
         if mn_ == "stwu" and a_ and a_[0] == "r1":
             m_ = re.match(r"^(-?0x[0-9a-f]+|-?\d+)\(r1\)$", a_[1])
             if m_:
-                frame_size = -int(m_.group(1), 0)
+                frame_size = -int(m_.group(1), 0); stwu_index = j_
             break
     saved_slots: set = set()
     seen_written: set = set()
@@ -647,7 +648,8 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         if t_ is None or t_ > k_ or k_ in loop_end_by_index:
             continue
         ts = k_
-        while ts - 1 > t_ and ins[ts - 1][0] in ("cmpwi", "cmpw", "cmplwi", "cmplw", "extsb", "extsh"):
+        while ts - 1 > t_ and ins[ts - 1][0] in ("cmpwi", "cmpw", "cmplwi", "cmplw", "extsb", "extsh", "andi.", "subi", "addi", "srwi", "srawi", "clrlwi") \
+                and not (ins[ts - 1][0] in ("subi", "addi", "srwi", "srawi", "clrlwi") and ts - 2 > t_ and ins[ts - 2][0] not in ("cmpwi", "cmpw", "cmplwi", "cmplw", "andi.", "subi", "addi", "srwi", "srawi", "clrlwi", "extsb", "extsh")):
             ts -= 1
         if ts == k_:
             continue  # no compare feeds the branch: a record-form test, not lifted here
@@ -655,6 +657,47 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         dowhile_test[ts] = (t_, ts, k_)
     ctr_expr: List[Optional[str]] = [None]
     fn_typedefs: List[str] = []
+
+    def test_step(mn_x: str, a_x: List[str], cur_cond):
+        """One instruction of a loop test: compares set the condition, the rest update regs.
+        Returns the condition (lhs, rhs) or the previous one; None when the shape is unknown."""
+        if mn_x in ("cmpwi", "cmpw", "cmplwi", "cmplw"):
+            lhs = use(a_x[0]); rhs = str(_imm(a_x[1])) if mn_x.endswith("i") else use(a_x[1])
+            uns = mn_x.startswith("cmpl")
+            tt = rtype.get(a_x[0], "u32")
+            if uns and tt not in ("u32", "u16", "u8"):
+                lhs = f"(u32){lhs}"
+            elif not uns and tt not in ("s32", "s16", "s8"):
+                lhs = f"(s32){lhs}"
+            if not mn_x.endswith("i"):
+                tr = rtype.get(a_x[1], "u32")
+                if uns and tr not in ("u32", "u16", "u8"):
+                    rhs = f"(u32){rhs}"
+                elif not uns and tr not in ("s32", "s16", "s8"):
+                    rhs = f"(s32){rhs}"
+            return (lhs, rhs)
+        if mn_x == "extsb":
+            regs[a_x[0]] = f"(s8){use(a_x[1])}"; rtype[a_x[0]] = "s8"; return cur_cond
+        if mn_x == "extsh":
+            regs[a_x[0]] = f"(s16){use(a_x[1])}"; rtype[a_x[0]] = "s16"; return cur_cond
+        if mn_x == "andi.":
+            regs[a_x[0]] = f"({use(a_x[1])} & {_imm(a_x[2])})"; rtype[a_x[0]] = "u32"; return (regs[a_x[0]], "0")
+        if mn_x in ("subi", "addi"):
+            regs[a_x[0]] = f"({use(a_x[1])} {'-' if mn_x == 'subi' else '+'} {_imm(a_x[2])})"; rtype[a_x[0]] = rtype.get(a_x[1], "u32"); return cur_cond
+        if mn_x == "mr":
+            regs[a_x[0]] = use(a_x[1]); rtype[a_x[0]] = rtype.get(a_x[1], "u32"); return cur_cond
+        if mn_x == "srwi":
+            regs[a_x[0]] = f"((u32){use(a_x[1])} >> {_imm(a_x[2])})"; rtype[a_x[0]] = "u32"; return cur_cond
+        if mn_x == "srawi":
+            regs[a_x[0]] = f"((s32){use(a_x[1])} >> {_imm(a_x[2])})"; rtype[a_x[0]] = "s32"; return cur_cond
+        if mn_x == "clrlwi":
+            n_ = 32 - _imm(a_x[2]); regs[a_x[0]] = f"({use(a_x[1])} & 0x{(1 << n_) - 1:X})"; rtype[a_x[0]] = "u32"; return cur_cond
+        if mn_x in LOAD_T and a_x and not a_x[1].endswith("(r1)") and not mn_x.endswith("u"):
+            e_ = load_expr(mn_x, a_x)
+            if e_ is None:
+                return None
+            regs[a_x[0]] = e_; rtype[a_x[0]] = LOAD_T[mn_x]; return cur_cond
+        return None
 
     def load_expr(mn_x: str, a_x: List[str]) -> Optional[str]:
         """The value of a plain load as an expression (fields registered), for loop tests."""
@@ -848,19 +891,11 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 cond_expr = None
                 for x in range(t_, k_):
                     mn_x, a_x = ins[x]
-                    if mn_x in ("cmpwi", "cmpw", "cmplwi", "cmplw"):
-                        lhs = use(a_x[0]); rhs = str(_imm(a_x[1])) if mn_x.endswith("i") else use(a_x[1])
-                        uns = mn_x.startswith("cmpl")
-                        tt = rtype.get(a_x[0], "u32")
-                        if uns and tt not in ("u32", "u16", "u8"):
-                            lhs = f"(u32){lhs}"
-                        elif not uns and tt not in ("s32", "s16", "s8"):
-                            lhs = f"(s32){lhs}"
-                        cond_expr = (lhs, rhs)
-                    elif mn_x == "extsb":
-                        regs[a_x[0]] = f"(s8){use(a_x[1])}"; rtype[a_x[0]] = "s8"
-                    elif mn_x == "extsh":
-                        regs[a_x[0]] = f"(s16){use(a_x[1])}"; rtype[a_x[0]] = "s16"
+                    cond_expr = test_step(mn_x, a_x, cond_expr)
+                    if cond_expr is None and mn_x in ("cmpwi", "cmpw", "cmplwi", "cmplw"):
+                        raise Give("do-while test")
+                    if cond_expr is None:
+                        raise Give("do-while test shape")
                 if cond_expr is None:
                     raise Give("do-while test")
                 op = COND[re.fullmatch(r"b(\w+)", ins[k_][0]).group(1)]
@@ -905,29 +940,10 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 cond_expr = None
                 for x in range(t_, k_):
                     mn_x, a_x = ins[x]
-                    if mn_x in ("cmpwi", "cmpw", "cmplwi", "cmplw"):
-                        lhs = use(a_x[0]); rhs = str(_imm(a_x[1])) if mn_x.endswith("i") else use(a_x[1])
-                        uns = mn_x.startswith("cmpl")
-                        def typed2(e: str, reg: str) -> str:
-                            tt = rtype.get(reg, "u32")
-                            if uns:
-                                return e if tt in ("u32", "u16", "u8") else f"(u32){e}"
-                            return e if tt in ("s32", "s16", "s8") else f"(s32){e}"
-                        lhs = typed2(lhs, a_x[0])
-                        if not mn_x.endswith("i"):
-                            rhs = typed2(rhs, a_x[1])
-                        cond_expr = (lhs, rhs)
-                    elif mn_x == "extsb":
-                        regs[a_x[0]] = f"(s8){use(a_x[1])}"; rtype[a_x[0]] = "s8"
-                    elif mn_x == "extsh":
-                        regs[a_x[0]] = f"(s16){use(a_x[1])}"; rtype[a_x[0]] = "s16"
-                    elif mn_x in LOAD_T and a_x and not a_x[1].endswith("(r1)") and not mn_x.endswith("u"):
-                        e_ = load_expr(mn_x, a_x)
-                        if e_ is None:
-                            raise Give("load in loop test")
-                        regs[a_x[0]] = e_; rtype[a_x[0]] = LOAD_T[mn_x]
-                    else:
+                    nxt_ = test_step(mn_x, a_x, cond_expr)
+                    if nxt_ is None:
                         raise Give("loop test shape")
+                    cond_expr = nxt_
                 if cond_expr is None:
                     raise Give()
                 m_ = re.fullmatch(r"b(\w+)", ins[k_][0])
@@ -942,6 +958,16 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 in_loop.append((b_, t_, k_))
                 continue
             if mn == "b":
+                tgt_ = labels.get(a[-1]) if a and a[-1].startswith(".L_") else None
+                if tgt_ is not None and tgt_ > i and all(ins[x][0] in ("lwz", "lmw", "mtlr", "addi", "blr", "lfd", "psq_l") or (ins[x][0] == "bl" and re.fullmatch(r"_rest(gpr|fpr)_\d+", ins[x][1][0])) for x in range(tgt_, len(ins))):
+                    # the epilogue: an early return with what r3 (or f1) holds
+                    if "r3" in regs and any(a_ and a_[0] == "r3" for mn_, a_ in ins[:i] if mn_ not in ("stw", "sth", "stb", "stfs", "stfd", "cmpwi", "cmpw", "cmplwi", "cmplw")):
+                        stmts.append(f"return {regs['r3']};"); regs.pop("r3", None)
+                    elif "f1" in regs and any(a_ and a_[0] == "f1" for mn_, a_ in ins[:i]):
+                        stmts.append(f"return {regs['f1']};"); regs.pop("f1", None)
+                    else:
+                        stmts.append("return __RET__;")
+                    continue
                 raise Give("unexplained b")  # an unconditional jump that no if/else or loop explained
             if mn == "blr":
                 if i == len(ins) - 1 or not any(True for _ in ins[i + 1:]):
@@ -1015,7 +1041,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                             continue  # MWCC rematerialises addresses: no local
                         tn = f"v{len(temps)}"
                         init = regs.get(rw)
-                        if init is None and re.fullmatch(r"r([3-9]|10)|f[1-8]", rw):
+                        if init is None and re.fullmatch(r"r([3-9]|10)|f[1-8]", rw) and rw in params:
                             init = use(rw)
                         temps.append(f"{rtype.get(rw, 'u32')} {tn};")
                         if init is not None:
@@ -1072,7 +1098,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     frame = True; continue
                 regs[a[0]] = local_at(off_, WIDTH[mn], t); rtype[a[0]] = t; frame = True
                 continue
-            if mn == "stw" and a and a[0] == "r0" and a[1] == "0x4(r1)" and i > 0 and ins[i - 1][0] == "mflr":
+            if mn == "stw" and a and a[0] == "r0" and a[1] == "0x4(r1)" and i < stwu_index and any(ins[x][0] == "mflr" for x in range(0, i)):
                 frame = True; continue  # the 1.2.5n prologue saves LR before it moves the stack pointer
             if mn in STORE_T and a and a[1].endswith("(r1)"):
                 off_ = _imm(a[1][:-4]); t = STORE_T[mn]
@@ -1114,6 +1140,9 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 else:
                     regs[a[0]] = f"&{s}"
                 rtype[a[0]] = "void *"; continue
+            if mn == "li" and a[1].endswith("@sda21") and sym_of(a[1]):
+                s_ = sym_of(a[1]); so = sym_off(a[1]); declare(s_, "u32")
+                regs[a[0]] = f"((u8 *)&{s_} + {so})" if so else f"&{s_}"; rtype[a[0]] = "void *"; continue
             if mn in ("li",):
                 regs[a[0]] = str(_imm(a[1])); rtype[a[0]] = "s32"; continue
             if mn == "mr":
@@ -1350,6 +1379,9 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 if m_ and i > 0 and ins[i - 1][0] == "srawi" and ins[i - 1][1][0] == a[1]:
                     regs[a[0]] = f"((s32){m_.group(1)} / {1 << int(m_.group(2))})"; rtype[a[0]] = "s32"; continue
                 raise Give("addze")
+            if mn == "rotlwi":
+                n_ = _imm(a[2]); x_ = use(a[1])
+                regs[a[0]] = f"(({x_} << {n_}) | ((u32){x_} >> {32 - n_}))"; rtype[a[0]] = "u32"; continue
             if mn == "xori":
                 regs[a[0]] = f"({use(a[1])} ^ {_imm(a[2])})"; rtype[a[0]] = "u32"; continue
             if mn == "subis" and not sym_of(a[2]):
@@ -1615,7 +1647,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             if not partial or (not isinstance(e, Give) and i < 0):
                 raise
             gave_at = i
-            gave_why = f"{type(e).__name__}: {str(e)[:60]}" if str(e) else type(e).__name__
+            gave_why = (str(e)[:60] if isinstance(e, Give) else f"{type(e).__name__}: {str(e)[:60]}") if str(e) else ("" if isinstance(e, Give) else type(e).__name__)
             break
     if partial and gave_at is not None:
         left = len(ins) - gave_at
@@ -1623,7 +1655,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         # what the registers held at that point, for the reader: not code, the values are partial
         held = [f"/* {r_} = {e_} */" for r_, e_ in sorted(regs.items()) if e_ and not re.fullmatch(r"(arg\d+|v\d+|t\d+|\d+|0x[0-9A-Fa-f]+)", e_)]
         stmts.extend(held[:12])
-        stmts.append(f"/* NOT LIFTED from here: {left} instructions, starting `{nxt}`" + (f" ({gave_why})" if gave_why and not gave_why.startswith("Give") else "") + " */")
+        stmts.append(f"/* NOT LIFTED from here: {left} instructions, starting `{nxt}`" + (f" ({gave_why})" if gave_why else "") + " */")
         regs.clear()
     for ln_, asg in pending_ptr.items():
         if any(re.search(rf"\b{re.escape(ln_)}\b", e) for e in regs.values()):
