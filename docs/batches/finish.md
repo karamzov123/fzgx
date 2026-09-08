@@ -70,3 +70,17 @@ once, and why contested symbols are reported rather than resolved.
   was computable once "still matches" became a memoised compile.
 - The orchestrator picks a pool, runs a batch, runs the pass, reads the report.
 - Never hand-edit blocks, headers or splits; never experiment on the live tree.
+
+
+## SDK identification, the same day
+
+`fzgx sdkmatch` compiles a public decompilation of the same-era Dolphin SDK
+(mkdd, tww; both CC0) with our 1.2.5n compiler, hashes every function with
+relocation fields masked, hashes every function of dtk's split DOL objects
+the same way, and joins. Union of both sources: 284 DOL functions identified
+byte-for-byte, 55 KB, 205 of them unnamed until then, zero disagreements with
+the 94 names dtk had already assigned. `--apply` names them (statics that
+several SDK files define get their source file as a suffix), link-verified.
+No model involved. The DOL still has 1,703 unnamed functions; most are game
+code, the rest GX (a version between the two sources) and CRI's ADX libraries,
+which no public decomp covers.
