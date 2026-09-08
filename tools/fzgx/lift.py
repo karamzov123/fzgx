@@ -74,11 +74,17 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
         if r in regs:
             return regs[r]
         if re.fullmatch(r"r([3-9]|10)", r) or re.fullmatch(r"f[1-8]", r):
-            if r not in params:
-                params.append(r)
-                ptypes[r] = "f32" if r.startswith("f") else "u32"
-            regs[r] = f"arg{params.index(r)}"
-            rtype[r] = ptypes[r]
+            # parameters are contiguous from r3 (or f1): reading r5 implies r3 and r4 exist
+            n = int(r[1:])
+            base = 3 if r.startswith("r") else 1
+            for k in range(base, n + 1):
+                rk = f"{r[0]}{k}"
+                if rk not in params:
+                    params.append(rk)
+                    ptypes[rk] = "f32" if rk.startswith("f") else "u32"
+                    if rk not in regs:
+                        regs[rk] = f"arg{params.index(rk)}"
+                        rtype[rk] = ptypes[rk]
             return regs[r]
         if r == "r0":
             raise Give()
@@ -88,7 +94,10 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
         m = re.match(r"^([\w.]+)@(ha|h|l|sda21)$", a)
         return m.group(1) if m else None
 
-    def declare(s: str, t: str) -> None:
+    far: set = set()  # data symbols retail addresses with lis/addi: declared with unknown size so
+                      # MWCC's -sdata threshold (DOL) cannot move them into small data
+
+    def declare(s: str, t: str, far_ref: bool = False) -> None:
         sd = syms.get(s)
         if sd is None:
             # dtk exports a TU-local symbol under its address-suffixed name; that is the name
@@ -99,8 +108,14 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
             raise Give()
         if sd.kind == "function":
             externs.setdefault(s, f"extern void {s}(void);")
+        elif far_ref and module == "main":
+            far.add(s)
+            externs[s] = f"extern {t} {s}[];"
         else:
             externs.setdefault(s, f"extern {t} {s};")
+
+    def ref(s: str) -> str:
+        return f"{s}[0]" if s in far else s
 
     hi: Dict[str, str] = {}  # register holding sym@ha
     for i, (mn, a) in enumerate(ins):
@@ -126,7 +141,7 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
             off, base = m.group(1), m.group(2)
             t = LOAD_T[mn]
             if off.endswith("@l") and base in hi:
-                s = hi[base]; declare(s, t); regs[a[0]] = s; rtype[a[0]] = t
+                s = hi[base]; declare(s, t, far_ref=True); regs[a[0]] = ref(s); rtype[a[0]] = t
             elif off.endswith("@sda21"):
                 s = off[:-6]; declare(s, t); regs[a[0]] = s; rtype[a[0]] = t
             else:
@@ -147,7 +162,7 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
             t = STORE_T[mn]
             val = use(a[0])
             if off.endswith("@l") and base in hi:
-                s = hi[base]; declare(s, t); stmts.append(f"{s} = {val};")
+                s = hi[base]; declare(s, t, far_ref=True); stmts.append(f"{ref(s)} = {val};")
             elif off.endswith("@sda21"):
                 s = off[:-6]; declare(s, t); stmts.append(f"{s} = {val};")
             else:
@@ -207,13 +222,11 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
             callee = a[0]
             if callee not in syms:
                 raise Give()
-            # arguments: r3..r10 currently holding expressions defined in this function
-            args = []
-            for r in ("r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10"):
-                if r in regs:
-                    args.append(regs[r])
-                else:
-                    break
+            # arguments: r3..rN where N is the highest argument register set here; a lower
+            # register never written is a parameter of ours passed straight through
+            set_regs = [k for k in range(3, 11) if f"r{k}" in regs]
+            top = max(set_regs) if set_regs else 2
+            args = [use(f"r{k}") for k in range(3, top + 1)]
             calls.append(callee)
             externs.setdefault(callee, f"extern u32 {callee}({', '.join(['u32'] * len(args)) or 'void'});")
             stmts.append(f"__CALL__{len(calls) - 1}({', '.join(args)});")
@@ -226,23 +239,39 @@ def _lift(p: Project, module: str, name: str, ins) -> Optional[str]:
     # return value: whatever r3 holds at blr, when this function wrote r3 (an untouched first
     # parameter is not a return value; a parameter copied back after a call is)
     wrote_r3 = any(a and a[0] == "r3" and mn not in ("stw", "sth", "stb", "stfs", "stfd", "cmpwi", "cmpw", "cmplwi", "cmplw") for mn, a in ins)
-    if "r3" in regs and (wrote_r3 or regs["r3"].startswith("__CALLRET__")):
-        ret = regs["r3"]
-    # a call whose result is returned becomes `return f(...)`; otherwise a statement
+    if "r3" in regs and wrote_r3:
+        ret = regs["r3"]  # a call's result falls through in r3 either way: `void f(void) { g(); }`
+    # a call whose result is returned becomes `return f(...)`; one whose result feeds later code
+    # becomes a temporary; the rest are statements
+    used_ret = {i for i in range(len(calls)) if any(f"__CALLRET__{i}" in st for st in stmts if not st.startswith(f"__CALL__{i}(")) or ret == f"__CALLRET__{i}"}
     body = []
     for st in stmts:
         m = re.match(r"__CALL__(\d+)\((.*)\);", st)
         if m:
             i = int(m.group(1)); call = f"{calls[i]}({m.group(2)})"
-            if ret == f"__CALLRET__{i}":
+            if ret == f"__CALLRET__{i}" and not any(f"__CALLRET__{i}" in x for x in stmts if x != st):
                 body.append(f"return {call};"); ret = None
+            elif i in used_ret:
+                body.append(f"u32 t{i} = {call};")
             else:
                 body.append(f"{call};")
         else:
             body.append(st)
+    body = [re.sub(r"__CALLRET__(\d+)", r"t\1", b) for b in body]
     if ret is not None:
-        if ret.startswith("__CALLRET__"):
-            raise Give()
+        ret = re.sub(r"__CALLRET__(\d+)", r"t\1", ret)
+    # temporaries must be declared before any statement: hoist them
+    decls = [b for b in body if b.startswith("u32 t")]
+    if decls:
+        names = [re.match(r"u32 (t\d+)", b).group(1) for b in decls]
+        body = [f"u32 {', '.join(names)};"] + [re.sub(r"^u32 (t\d+) = ", r"\1 = ", b) for b in body]
+    # an address stored or passed is a pointer: cast, so u32 fields and parameters accept it
+    body = [re.sub(r"= (&[A-Za-z_]\w*(?:\[0\])?);", r"= (u32)\1;", b) for b in body]
+    body = [re.sub(r"(\(|, )(&[A-Za-z_]\w*(?:\[0\])?)(?=[,)])", r"\1(u32)\2", b) for b in body]
+    fnames = {s for s, e in externs.items() if e.startswith("extern void ") and e.endswith("(void);")}
+    for f in fnames:
+        body = [re.sub(rf"(= |\(|, ){re.escape(f)}(?=[,;)])", rf"\1(u32){f}", b) for b in body]
+    if ret is not None:
         body.append(f"return {ret};")
     rtype_c = "void"
     if any(b.startswith("return ") for b in body):
