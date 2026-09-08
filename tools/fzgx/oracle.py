@@ -283,6 +283,53 @@ def module_flags(project: Project, module: str) -> Tuple[str, str]:
     return flags, ("GC/1.2.5n" if module == "main" else "GC/1.3.2")
 
 
+def compile_many(project: Project, module: str, sources: List[Path], out_dir: Path,
+                 mw_version: Optional[str] = None, extra_cflags: Optional[str] = None) -> Dict[Path, Path]:
+    """One mwcc invocation over many standalone sources: the process start dominates a single
+    compile (63 ms for one file, 80 ms for ten), so candidate bodies are compiled together.
+    Returns {source: object} for the objects that exist afterwards; a source that fails to
+    compile is simply absent (mwcc goes on with the next file)."""
+    flags, mw = module_flags(project, module)
+    mw = mw_version or mw
+    if extra_cflags:
+        extra = shlex.split(extra_cflags)
+        olevel = [f for f in extra if f.startswith("-O")]
+        if olevel:
+            flags = " ".join(shlex.quote(olevel[-1] if f.startswith("-O") else f) for f in shlex.split(flags))
+        flags = " ".join([flags] + [shlex.quote(f) for f in extra if not f.startswith("-O")])
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out: Dict[Path, Path] = {}
+    # mwcc names each object after its source in the -o directory; sources must have distinct stems
+    cmd = [str(ROOT / "build" / "tools" / "wibo"), str(ROOT / "build" / "compilers" / mw / "mwcceppc.exe")]
+    cmd += shlex.split(flags) + ["-c", "-o", str(out_dir)] + [str(s) for s in sources]
+    for o in (out_dir / (s.stem + ".o") for s in sources):
+        o.unlink(missing_ok=True)
+    subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, timeout=600)
+    for s_ in sources:
+        o = out_dir / (s_.stem + ".o")
+        if o.exists():
+            out[s_] = o
+    return out
+
+
+def function_score(project: Project, symbol_name: str, target: Path, obj: Path) -> Tuple[bool, float]:
+    """(matched, positional score) from one objdiff run without the rendered diff: the cheap
+    verdict for candidate loops (a pool match is not detected here; the full check is run on
+    the winner)."""
+    cp = run([str(OBJDIFF), "diff", "-1", str(target), "-2", str(obj), "-o", "-", "--format", "json", symbol_name])
+    if cp.returncode != 0:
+        return False, -1.0
+    try:
+        data = json.loads(cp.stdout)
+    except ValueError:
+        return False, -1.0
+    for s_ in data.get("left", {}).get("symbols", []):
+        if s_.get("name") == symbol_name and "match_percent" in s_:
+            pct = float(s_["match_percent"])
+            return pct >= 100.0, pct
+    return False, 0.0
+
+
 def compile_source(project: Project, module: str, source: Path, obj: Path,
                    mw_version: Optional[str] = None, extra_cflags: Optional[str] = None) -> subprocess.CompletedProcess:
     """Compile a standalone source with the module's flags into `obj` (no unit involved);
