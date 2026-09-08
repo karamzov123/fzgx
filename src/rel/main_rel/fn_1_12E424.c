@@ -1,3 +1,11 @@
 #include "types.h"
 
-// fn_1_12E424: carved by fzgx; best attempt saved to fn_1_12E424.1788837459.c
+extern u32 lbl_1_bss_8B3A0[83];
+extern u32 fn_1_95120(void *arg);
+
+u8 fn_1_12E424(void *arg0, u8 *arg1) {
+    if (lbl_1_bss_8B3A0[37] & (1u << 31)) {
+        return 1;
+    }
+    return (u8)fn_1_95120(arg1 + 0x148);
+}
