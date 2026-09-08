@@ -233,6 +233,13 @@ def cmd_tu_tidy(a, p):
     _print(r, a.json); return 0
 
 
+def cmd_tu_include(a, p):
+    from . import oracle, tufile  # scoped: keeps the CLI import graph light
+    ok_fn = lambda u: oracle.compile_unit(p, p.objdiff_unit_name(u["module"], u["source"]), u["source"]).returncode == 0
+    r = tufile.add_include(p, a.tu, a.include, ok_fn)
+    _print(r, a.json); return 0
+
+
 def cmd_gen(a, p):
     from . import tufile  # scoped: same
     print(f"{tufile.regenerate(p)} generated units")
@@ -344,6 +351,8 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("tu", help="e.g. rel/main_rel/alloc.c")
     s = sub.add_parser("tu-tidy", help="drop block-private declarations the headers cover (kept only if the block still matches)"); s.set_defaults(fn=cmd_tu_tidy)
     s.add_argument("tu"); s.add_argument("--dry-run", action="store_true")
+    s = sub.add_parser("tu-include", help="add a header to a TU prologue; blocks that stop compiling are flagged noprologue"); s.set_defaults(fn=cmd_tu_include)
+    s.add_argument("tu"); s.add_argument("include", help='e.g. rel/main_rel/alloc.h')
     s = sub.add_parser("gen", help="regenerate every per-function unit from the TU files"); s.set_defaults(fn=cmd_gen)
     s = sub.add_parser("permute", help="decomp-permuter on a plateaued attempt; submits on a byte-identical result"); s.set_defaults(fn=cmd_permute)
     s.add_argument("symbol", nargs="?"); s.add_argument("--threads", type=int, default=8); s.add_argument("--seconds", type=int, default=600)

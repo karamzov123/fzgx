@@ -310,3 +310,39 @@ def tu_check(p: Project, tu_source: str) -> Tuple[bool, str]:
     cp = subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, timeout=300)
     text = "\n".join(l for l in (cp.stdout + cp.stderr).splitlines() if "Usage Warning" not in l)
     return cp.returncode == 0, text.strip()[-4000:]
+
+
+def add_include(p: Project, tu_source: str, include: str, compile_fn) -> Dict[str, object]:
+    """Add `#include "<include>"` to the TU prologue. Blocks whose generated unit stops
+    compiling under the wider prologue are flagged `noprologue` (they keep their own
+    includes) so the tree stays green; they are the revise pass's queue."""
+    path = tu_path(p, tu_source)
+    units = {u["symbols"][0]: u for u in p.load_units() if u.get("tu") == tu_source}
+    line = f'#include "{include}"'
+    lock = _lock(path)
+    try:
+        tf = parse(path.read_text())
+        if line in {ln.strip() for ln in tf.prologue.splitlines()}:
+            return {"added": False, "flagged": []}
+        old_incs = [ln.strip() for ln in tf.prologue.splitlines() if INCLUDE_RE.match(ln)]
+        tf.prologue = merge_prologue(tf.prologue, [line])
+        flagged: List[str] = []
+        for b in tf.blocks:
+            if "noprologue" in b.flags:
+                continue
+            u = units.get(b.name)
+            if u is None:
+                continue
+            write_gen(p, u, tf)
+            if not compile_fn(u):
+                # keep it building exactly as before: its own copy of the old includes
+                b.flags.append("noprologue")
+                inc, body = split_includes(b.body)
+                keep = list(dict.fromkeys(old_incs + [ln.strip() for ln in inc]))
+                b.body = "\n".join(keep) + "\n\n" + body
+                write_gen(p, u, tf)
+                flagged.append(b.name)
+        _write_atomic(path, tf.render())
+    finally:
+        lock.close()
+    return {"added": True, "flagged": flagged}

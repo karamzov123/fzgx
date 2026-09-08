@@ -1,4 +1,6 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/alloc.h"
 
 /* fzgx:begin fn_1_4928 */
 #include "rel/main_rel/alloc.h"
@@ -44,8 +46,6 @@ void fn_1_4928(void) {
 /* fzgx:end fn_1_4928 */
 
 /* fzgx:begin fn_1_49F0 */
-extern u32 lbl_1_data_2CD8;
-
 void fn_1_49F0(u32 *value) {
     lbl_1_data_2CD8 = *value;
 }
@@ -82,6 +82,14 @@ u32 fn_1_4CAC(void) {
     return (lbl_1_data_2CDC.unk_3 >> 1) & 1;
 }
 /* fzgx:end fn_1_4CAC */
+
+/* fzgx:begin fn_1_4CC0 */
+#include "rel/main_rel/alloc.h"
+
+void fn_1_4CC0(void) {
+    lbl_1_data_2CDC.unk_3 &= 0xfe;
+}
+/* fzgx:end fn_1_4CC0 */
 
 /* fzgx:begin fn_1_4D14 pool */
 extern f32 lbl_1_rodata_160;
@@ -124,14 +132,15 @@ f32 fn_1_4D14(Fn14D14Data *data) {
 /* fzgx:end fn_1_4D14 */
 
 /* fzgx:begin fn_1_4FEC */
-extern u32 lbl_1_bss_F58;
-
 void fn_1_4FEC(void) {
     lbl_1_bss_F58 = 0;
 }
 /* fzgx:end fn_1_4FEC */
 
-/* fzgx:begin fn_1_509C */
+/* fzgx:begin fn_1_509C noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
 extern u32 lbl_1_bss_F58;
 extern u32 lbl_1_bss_7AC40[2];
 extern u32 lbl_1_bss_7AC20[8];
@@ -215,7 +224,9 @@ void fn_1_5124(u32 arg0, u32 arg1) {
 }
 /* fzgx:end fn_1_5124 */
 
-/* fzgx:begin fn_1_52E0 */
+/* fzgx:begin fn_1_52E0 noprologue */
+#include "types.h"
+
 typedef struct {
     u8 _pad[0x4b];
     u8 field_4b;
@@ -232,7 +243,9 @@ void fn_1_52E0(u8 value) {
 }
 /* fzgx:end fn_1_52E0 */
 
-/* fzgx:begin fn_1_5300 */
+/* fzgx:begin fn_1_5300 noprologue */
+#include "types.h"
+
 typedef struct {
     u8 _pad[0x4b];
     u8 field_4b;
@@ -252,7 +265,9 @@ u8 fn_1_5300(void) {
 }
 /* fzgx:end fn_1_5300 */
 
-/* fzgx:begin fn_1_5328 */
+/* fzgx:begin fn_1_5328 noprologue */
+#include "types.h"
+
 typedef struct {
     u8 _pad[0x4c];
     u8 field_4c;
@@ -269,7 +284,9 @@ void fn_1_5328(u8 value) {
 }
 /* fzgx:end fn_1_5328 */
 
-/* fzgx:begin fn_1_5348 */
+/* fzgx:begin fn_1_5348 noprologue */
+#include "types.h"
+
 typedef struct {
     u8 _pad[0x4c];
     u8 field_4c;
@@ -339,7 +356,10 @@ void fn_1_6394(void) {
 }
 /* fzgx:end fn_1_6394 */
 
-/* fzgx:begin fn_1_63D4 */
+/* fzgx:begin fn_1_63D4 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
 extern u32 live_camera;
 void fn_1_F3D0(u32);
 
