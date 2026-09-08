@@ -1,4 +1,7 @@
 #include "types.h"
 
-// fn_1_137548: main_rel .text:0x00137548 size 0x3C
-// Carved by fzgx. Replace this file's body with the matching C.
+extern void fn_1_1375C0(int arg0, void* arg1, void* arg2, void* arg3, void* arg4);
+
+void fn_1_137548(void* arg0, void* arg1, void* arg2, void* arg3) {
+    fn_1_1375C0(1, arg0, arg1, arg2, arg3);
+}
