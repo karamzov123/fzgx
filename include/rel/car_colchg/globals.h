@@ -7,4 +7,140 @@
 // module's disassembly (matched or not). Field names are offsets until the librarian names them;
 // offsets and widths are facts, names are not. Regenerate rather than hand-edit padding.
 
+// lbl_9_bss_10: .bss size 0x4, referenced by 11 functions, shape {'object': 13}
+extern u32 lbl_9_bss_10;
+
+// lbl_9_bss_DC: .bss size 0x2, referenced by 10 functions, shape {'object': 10}
+extern u16 lbl_9_bss_DC;
+
+// lbl_9_bss_8: .bss size 0x4, referenced by 10 functions, shape {'object': 26, 'pointer': 13}
+typedef struct {
+    s16 unk_0;  // 14 loads, 2 stores
+    s16 unk_2;  // 1 loads, 0 stores
+    s16 unk_4;  // 9 loads, 2 stores
+    s16 unk_6;  // 5 loads, 1 stores
+    u8 pad_8[0x4];
+    s16 unk_C;  // 2 loads, 0 stores
+} Obj_9_bss_8_Target;
+extern Obj_9_bss_8_Target *lbl_9_bss_8;
+
+// lbl_9_bss_0: .bss size 0x4, referenced by 6 functions, shape {'object': 44}
+extern u32 lbl_9_bss_0;
+
+// lbl_9_data_0: .data size 0x2, referenced by 4 functions, shape {'object': 1}
+extern u16 lbl_9_data_0;
+
+// lbl_9_bss_14: .bss size 0xC8, referenced by 3 functions, shape {}
+typedef struct {
+    u8 unk_0;  // no field accesses recovered
+    u8 pad_0[0xC8];
+} Obj_9_bss_14;
+extern Obj_9_bss_14 lbl_9_bss_14;
+
+// lbl_9_bss_C: .bss size 0x4, referenced by 1 functions, shape {'object': 1}
+extern u32 lbl_9_bss_C;
+
+// lbl_9_data_4: .data size 0x28, referenced by 1 functions, shape {}
+typedef struct {
+    u8 unk_0;  // no field accesses recovered
+    u8 pad_0[0x28];
+} Obj_9_data_4;
+extern Obj_9_data_4 lbl_9_data_4;
+
+// lbl_9_data_2C: .data size 0x11, referenced by 1 functions, shape {}
+typedef struct {
+    u8 unk_0;  // no field accesses recovered
+    u8 pad_0[0x11];
+} Obj_9_data_2C;
+extern Obj_9_data_2C lbl_9_data_2C;
+
+// lbl_9_data_40: .data size 0x13, referenced by 1 functions, shape {}
+typedef struct {
+    u8 unk_0;  // no field accesses recovered
+    u8 pad_0[0x13];
+} Obj_9_data_40;
+extern Obj_9_data_40 lbl_9_data_40;
+
+// lbl_9_data_54: .data size 0x14, referenced by 1 functions, shape {}
+typedef struct {
+    u8 unk_0;  // no field accesses recovered
+    u8 pad_0[0x14];
+} Obj_9_data_54;
+extern Obj_9_data_54 lbl_9_data_54;
+
+// lbl_9_bss_E0: .bss size 0x8, referenced by 1 functions, shape {'object': 2}
+extern u32 lbl_9_bss_E0;
+
+// lbl_9_data_68: .data size 0x13, referenced by 1 functions, shape {}
+typedef struct {
+    u8 unk_0;  // no field accesses recovered
+    u8 pad_0[0x13];
+} Obj_9_data_68;
+extern Obj_9_data_68 lbl_9_data_68;
+
+// lbl_9_data_9C: .data size 0x12, referenced by 1 functions, shape {}
+typedef struct {
+    u8 unk_0;  // no field accesses recovered
+    u8 pad_0[0x12];
+} Obj_9_data_9C;
+extern Obj_9_data_9C lbl_9_data_9C;
+
+// lbl_9_data_B0: .data size 0x11, referenced by 1 functions, shape {}
+typedef struct {
+    u8 unk_0;  // no field accesses recovered
+    u8 pad_0[0x11];
+} Obj_9_data_B0;
+extern Obj_9_data_B0 lbl_9_data_B0;
+
+// lbl_9_data_C4: .data size 0x8C, referenced by 1 functions, shape {}
+typedef struct {
+    u8 unk_0;  // no field accesses recovered
+    u8 pad_0[0x8C];
+} Obj_9_data_C4;
+extern Obj_9_data_C4 lbl_9_data_C4;
+
+// lbl_9_data_150: .data size 0x28, referenced by 1 functions, shape {}
+typedef struct {
+    u8 unk_0;  // no field accesses recovered
+    u8 pad_0[0x28];
+} Obj_9_data_150;
+extern Obj_9_data_150 lbl_9_data_150;
+
+// lbl_9_data_178: .data size 0x14, referenced by 1 functions, shape {}
+typedef struct {
+    u8 unk_0;  // no field accesses recovered
+    u8 pad_0[0x14];
+} Obj_9_data_178;
+extern Obj_9_data_178 lbl_9_data_178;
+
+// lbl_9_data_18C: .data size 0x10, referenced by 1 functions, shape {}
+typedef struct {
+    u8 unk_0;  // no field accesses recovered
+    u8 pad_0[0x10];
+} Obj_9_data_18C;
+extern Obj_9_data_18C lbl_9_data_18C;
+
+// lbl_9_data_19C: .data size 0x7, referenced by 1 functions, shape {}
+extern u32 lbl_9_data_19C;
+
+// lbl_9_data_1A4: .data size 0x12, referenced by 1 functions, shape {}
+typedef struct {
+    u8 unk_0;  // no field accesses recovered
+    u8 pad_0[0x12];
+} Obj_9_data_1A4;
+extern Obj_9_data_1A4 lbl_9_data_1A4;
+
+// lbl_9_bss_4: .bss size 0x4, referenced by 1 functions, shape {'object': 1}
+extern u32 lbl_9_bss_4;
+
+// lbl_9_data_1B8: .data size 0x18C, referenced by 1 functions, shape {'object': 3}
+typedef struct {
+    u8 pad_0[0x20];
+    u32 unk_20;  // 1 loads, 0 stores
+    u32 unk_24;  // 1 loads, 0 stores
+    u32 unk_28;  // 1 loads, 0 stores
+    u8 pad_2C[0x160];
+} Obj_9_data_1B8;
+extern Obj_9_data_1B8 lbl_9_data_1B8;
+
 #endif  // REL_CAR_COLCHG_GLOBALS_H
