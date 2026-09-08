@@ -1,13 +1,14 @@
-#include "types.h"
+#include "rel/main_rel/globals.h"
 
-extern void fn_1_AEB8(void);
-
-typedef struct {
-    u8 pad[0xa4];
-    u16 field_a4;
+typedef struct Camera {
+    u8 pad_00[0xA4];
+    s16 unk_A4;
 } Camera;
 
-void fn_1_AE10(Camera *camera) {
-    camera->field_a4 = 0;
-    fn_1_AEB8();
+extern void fn_1_AEB8(Camera*);
+
+void fn_1_AE10(Camera* camera) {
+    // Reset the camera's transition state before updating it.
+    camera->unk_A4 = 0;
+    fn_1_AEB8(camera);
 }

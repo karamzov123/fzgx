@@ -1,4 +1,5 @@
 #include "types.h"
+#include "rel/main_rel/globals.h"
 
 typedef struct {
     u32 unk_0;
@@ -15,6 +16,7 @@ typedef struct {
 extern CameraData lbl_1_bss_1018;
 extern CameraData lbl_1_bss_10D8[];
 
+// Copies the current camera parameters into the selected camera slot.
 void fn_1_C0A4(u8 index) {
     CameraData *dst = &lbl_1_bss_10D8[index];
 

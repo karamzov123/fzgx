@@ -27,6 +27,7 @@ typedef struct CameraGlobals {
 
 extern CameraGlobals lbl_1_bss_1010;
 
+// Snapshots the current camera values and resets the transient state.
 void fn_1_C35C(void) {
     lbl_1_bss_1010.unk_08 = lbl_1_bss_1010.src_C8;
     lbl_1_bss_1010.unk_0C = lbl_1_bss_1010.src_CC;

@@ -1,18 +1,10 @@
-#include "types.h"
-
-typedef struct {
-    u8 pad[0x48];
-    u8 value;
-} CameraState;
-
-extern CameraState *lbl_1_bss_F68;
+#include "rel/main_rel/camera.h"
 
 s32 fn_1_649C(void) {
-    CameraState *state = lbl_1_bss_F68;
-
-    if (state == 0) {
+    // Return the camera state byte, or -1 when no camera state is active.
+    if (lbl_1_bss_F68 == 0) {
         return -1;
     }
 
-    return state->value;
+    return lbl_1_bss_F68->unk_48;
 }

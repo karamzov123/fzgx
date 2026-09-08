@@ -1,4 +1,4 @@
-#include "types.h"
+#include "rel/main_rel/camera.h"
 
 typedef struct CameraData {
     u8 pad_00[2];
@@ -23,11 +23,7 @@ typedef struct Vec {
     f32 z;
 } Vec;
 
-extern u8 *lbl_1_bss_F6C;
-extern u8 lbl_1_data_3318[180];
-extern char lbl_1_data_3654[35];
-
-extern void fn_8000C49C(u8 *file, int line, char *message, ...);
+extern void fn_8000C49C(u8 *file, int line, u8 *message, ...);
 extern void fn_1_8A0C(s16 index);
 
 void fn_1_88D8(s16 index, s16 mode, s32 value, Vec *delta) {
@@ -37,11 +33,11 @@ void fn_1_88D8(s16 index, s16 mode, s32 value, Vec *delta) {
         return;
     }
 
-    if (lbl_1_bss_F6C + index * 0x1fc == (u8 *)0) {
+    if (((u8 *)lbl_1_bss_F6C + index * 0x1fc) == (u8 *)0) {
         fn_8000C49C(lbl_1_data_3318, 0x8d1, lbl_1_data_3654);
     }
 
-    camera = (CameraData *)(lbl_1_bss_F6C + index * 0x1fc);
+    camera = (CameraData *)((u8 *)lbl_1_bss_F6C + index * 0x1fc);
     if (mode != camera->field_02) {
         fn_1_8A0C(index);
         return;

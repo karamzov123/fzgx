@@ -1,15 +1,9 @@
-#include "types.h"
+#include "rel/main_rel/globals.h"
 
-typedef struct {
-    u32 unk_0;
-    u8 pad_4[0x46];
-    u8 unk_4A;
-} Obj_1_bss_F68_Target;
-
-extern Obj_1_bss_F68_Target *lbl_1_bss_F68;
 extern f32 lbl_1_rodata_188;
-extern s32 fn_1_8708(u8 arg0, f32 *arg1, f32 *arg2);
+extern s32 fn_1_8708(u8 mode, f32 *value0, f32 *value1);
 
+// Reads the camera values, falling back when the camera state cannot provide them.
 s32 fn_1_8660(f32 *value0, f32 *value1) {
     f32 result0;
     f32 result1;

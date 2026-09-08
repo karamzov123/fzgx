@@ -1,16 +1,10 @@
-#include "types.h"
+#include "rel/main_rel/globals.h"
 
-typedef struct {
-    u32 unk_0;
-    u8 pad_4[0x46];
-    u8 unk_4A;
-} CameraState;
-
-extern CameraState *lbl_1_bss_F68;
 extern s16 fn_1_6B48(s16 value);
 
+// Returns the camera status after filtering inactive camera states.
 s16 fn_1_6A80(void) {
-    CameraState *state = lbl_1_bss_F68;
+    Obj_1_bss_F68_Target *state = lbl_1_bss_F68;
     s16 value;
 
     if (state == 0) {

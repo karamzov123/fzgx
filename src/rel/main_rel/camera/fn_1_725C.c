@@ -1,3 +1,4 @@
+#include "rel/main_rel/globals.h"
 #include "types.h"
 
 typedef struct {
@@ -9,5 +10,6 @@ typedef struct {
 extern Entry *lbl_1_bss_F6C;
 
 s16 fn_1_725C(u32 index) {
+    // Return the selected camera entry's stored value.
     return lbl_1_bss_F6C[(u8)index].value;
 }

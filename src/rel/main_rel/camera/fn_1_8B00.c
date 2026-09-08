@@ -1,7 +1,6 @@
-#include "types.h"
+#include "rel/main_rel/camera.h"
 
-extern u32 lbl_1_bss_F6C;
-
-u32 fn_1_8B00(void) {
+ // Return the current camera target object.
+Obj_1_bss_F6C_Target *fn_1_8B00(void) {
     return lbl_1_bss_F6C;
 }

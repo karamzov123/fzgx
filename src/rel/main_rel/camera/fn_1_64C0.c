@@ -1,25 +1,18 @@
-#include "types.h"
+#include "rel/main_rel/globals.h"
 
-typedef struct {
-    u32 flags;
-    u8 pad[0x46];
-    u8 status;
-} State;
+u32 fn_1_6514(u32);
 
-extern State *lbl_1_bss_F68;
-extern u32 fn_1_6514(u32);
-
+// Return the camera status unless the camera is absent or marked inactive.
 u32 fn_1_64C0(void) {
-    State *state;
+    Obj_1_bss_F68_Target *state = lbl_1_bss_F68;
     u32 value;
 
-    state = lbl_1_bss_F68;
     if (state == 0) {
         value = 0;
-    } else if ((state->flags & ((u32)1 << 31)) != 0) {
+    } else if ((state->unk_0 & ((u32)1 << 31)) != 0) {
         value = 0;
     } else {
-        value = state->status;
+        value = state->unk_4A;
     }
 
     return fn_1_6514(value);

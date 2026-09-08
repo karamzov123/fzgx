@@ -1,4 +1,5 @@
-#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/camera.h"
 
 typedef struct Camera {
     u8 pad_00[0x78];
@@ -7,20 +8,22 @@ typedef struct Camera {
     s16 unk_A4;
 } Camera;
 
-extern void fn_1_AEB8(Camera*);
-extern void fn_1_AFC8(Camera*);
-extern s16 lbl_1_bss_1008;
+extern void fn_1_AEB8(Camera *);
+extern void fn_1_AFC8(Camera *);
 
-void fn_1_AE38(Camera* self) {
-    if (self->unk_78 == 0) {
-        self->unk_A4++;
-        if (self->unk_A4 >= lbl_1_bss_1008) {
-            self->unk_A4 = 0;
+// Advances the camera's transition state and updates its active view.
+void fn_1_AE38(Camera *camera) {
+    if (camera->unk_78 == 0) {
+        camera->unk_A4++;
+        if (camera->unk_A4 >= lbl_1_bss_1008) {
+            camera->unk_A4 = 0;
         }
-        fn_1_AEB8(self);
+        fn_1_AEB8(camera);
     }
-    fn_1_AFC8(self);
-    if (self->unk_78 != 0) {
-        self->unk_78--;
+
+    fn_1_AFC8(camera);
+
+    if (camera->unk_78 != 0) {
+        camera->unk_78--;
     }
 }
