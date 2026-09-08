@@ -1,4 +1,24 @@
 #include "types.h"
+extern char lbl_9_data_2C[17];
+extern void fn_9_1160(void);
+void fn_1_426C(s16);
+extern char lbl_9_data_9C[18];
+extern void fn_9_1A20(void);
+extern char lbl_9_data_B0[17];
+extern void fn_9_1A8C(void);
+extern u16 lbl_1_bss_968;
+extern struct Struct_lbl_1_bss_D58 lbl_1_bss_D58;
+s32 fn_1_4C10(void);
+extern u32 lbl_9_bss_8;
+extern char lbl_9_data_18C[16];
+void fn_1_A8EB0(s32, s32);
+s32 fn_1_7F49C(s16, s32, void *);
+void fn_1_A8DD4(const char *, ...);
+extern char lbl_9_data_19C[7];
+extern char lbl_9_data_1A4[18];
+extern u32 lbl_9_bss_4;
+void fn_1_80058(s8, struct CarColchgEntry *);
+void fn_1_80C18(u32, struct CarColchgEntry *, s32);
 
 /* fzgx:begin fn_9_3F0 */
 extern u32 lbl_9_bss_10;
@@ -107,11 +127,6 @@ struct Struct_lbl_1_bss_D58 {
     u16 unk8;
 };
 
-extern struct Struct_lbl_1_bss_D58 lbl_1_bss_D58;
-extern u16 lbl_1_bss_968;
-
-s32 fn_1_4C10(void);
-
 void fn_9_FD0(void) {
     if (fn_1_4C10() == 0) {
         if ((lbl_1_bss_D58.unk8 >> 9) & 1) {
@@ -170,13 +185,6 @@ void fn_9_1124(void) {
 /* fzgx:end fn_9_1124 */
 
 /* fzgx:begin fn_9_1A20 */
-extern u32 lbl_9_bss_8;
-extern char lbl_9_data_18C[16];
-
-void fn_1_A8EB0(s32, s32);
-s32 fn_1_7F49C(s16, s32, void *);
-void fn_1_A8DD4(char *, s16, s32, ...);
-
 void fn_9_1A20(void) {
     u8 buffer[0x20];
     s32 value;
@@ -188,11 +196,6 @@ void fn_9_1A20(void) {
 /* fzgx:end fn_9_1A20 */
 
 /* fzgx:begin fn_9_1A8C */
-extern char lbl_9_data_19C[7];
-
-void fn_1_A8EB0(s32, s32);
-void fn_1_A8DD4(const char *, ...);
-
 void fn_9_1A8C(void) {
     fn_1_A8EB0(0x14, 0x14);
     fn_1_A8DD4(lbl_9_data_19C);
@@ -200,11 +203,6 @@ void fn_9_1A8C(void) {
 /* fzgx:end fn_9_1A8C */
 
 /* fzgx:begin fn_9_1AC4 */
-extern char lbl_9_data_1A4[18];
-
-void fn_1_A8EB0(s32, s32);
-void fn_1_A8DD4(const char *, ...);
-
 void fn_9_1AC4(void) {
     fn_1_A8EB0(0x14, 0xa);
     fn_1_A8DD4(lbl_9_data_1A4);
@@ -218,11 +216,6 @@ struct CarColchgEntry {
     u32 unk4;
     u8 pad8[24];
 };
-
-extern u32 lbl_9_bss_4;
-
-void fn_1_80058(s8, struct CarColchgEntry *);
-void fn_1_80C18(u32, struct CarColchgEntry *, s32);
 
 void fn_9_1BCC(void) {
     struct CarColchgEntry entries[0x29];
