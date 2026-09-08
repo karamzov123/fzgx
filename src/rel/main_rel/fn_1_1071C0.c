@@ -1,4 +1,11 @@
 #include "types.h"
 
-// fn_1_1071C0: main_rel .text:0x001071C0 size 0x28
-// Carved by fzgx. Replace this file's body with the matching C.
+extern u8 lbl_1_bss_86EC4;
+extern u32 lbl_1_bss_86EC0;
+
+void fn_1_1071C0(void) {
+    if (lbl_1_bss_86EC4 != 0) {
+        lbl_1_bss_86EC4 = 0;
+        lbl_1_bss_86EC0 = 0;
+    }
+}
