@@ -65,6 +65,17 @@ void fn_1_958(void) {
 }
 /* fzgx:end fn_1_958 */
 
+/* fzgx:begin fn_1_E78 */
+extern u32 fn_1_3BC0(u32);
+extern u32 fn_1_A59AC(void);
+
+void fn_1_E78(void) {
+    u32 t0;
+    t0 = fn_1_A59AC();
+    fn_1_3BC0(t0);
+}
+/* fzgx:end fn_1_E78 */
+
 /* fzgx:begin fn_1_1280 */
 extern u32 lbl_1_bss_96C;
 
@@ -72,6 +83,17 @@ void fn_1_1280(u32 arg0) {
     lbl_1_bss_96C = arg0;
 }
 /* fzgx:end fn_1_1280 */
+
+/* fzgx:begin fn_1_128C */
+extern u32 camera_set_state_flag(u32);
+extern u32 fn_1_D31E0(u32);
+
+u32 fn_1_128C(void) {
+    u32 t0;
+    t0 = camera_set_state_flag(0);
+    return fn_1_D31E0(t0);
+}
+/* fzgx:end fn_1_128C */
 
 /* fzgx:begin fn_1_12FC */
 // fn_1_12FC: empty in retail (single blr).

@@ -7,6 +7,25 @@ int fn_13_A40(void) {
 }
 /* fzgx:end fn_13_A40 */
 
+/* fzgx:begin fn_13_A6C */
+extern u32 lbl_13_bss_38;
+extern void fn_13_A40(void);
+extern void fn_13_A48(void);
+
+struct fn_13_A6C_Arg0 {
+    u8 pad_0[0xAC];
+    u32 unk_AC;
+    u8 pad_B0[0x1C];
+    u32 unk_CC;
+};
+
+void fn_13_A6C(struct fn_13_A6C_Arg0 *arg0) {
+    arg0->unk_CC = (u32)fn_13_A40;
+    arg0->unk_AC = (u32)fn_13_A48;
+    lbl_13_bss_38 = 0;
+}
+/* fzgx:end fn_13_A6C */
+
 /* fzgx:begin fn_13_AFC */
 // fn_13_AFC: empty in retail (single blr).
 void fn_13_AFC(void) {

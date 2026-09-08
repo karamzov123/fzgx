@@ -129,6 +129,9 @@ rel/movie_module/fn_12_4A18.c:
 rel/movie_module/fn_12_4CEC.c:
 	.text       start:0x00004CEC end:0x00004D14
 
+rel/movie_module/fn_12_4E14.c:
+	.text       start:0x00004E14 end:0x00004E28
+
 rel/movie_module/fn_12_4F18.c:
 	.text       start:0x00004F18 end:0x00004F3C
 
@@ -977,6 +980,9 @@ rel/movie_module/fn_12_35DBC.c:
 
 rel/movie_module/fn_12_35DDC.c:
 	.text       start:0x00035DDC end:0x00035E04
+
+rel/movie_module/fn_12_35E04.c:
+	.text       start:0x00035E04 end:0x00035E34
 
 rel/movie_module/fn_12_35E34.c:
 	.text       start:0x00035E34 end:0x00035E84

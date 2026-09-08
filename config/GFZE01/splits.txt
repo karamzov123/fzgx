@@ -38,6 +38,9 @@ dol/fn_80006DFC.c:
 dol/fn_80008E30.c:
 	.text       start:0x80008E30 end:0x80008E34
 
+dol/PPCDisableSpeculation.c:
+	.text       start:0x8000A0CC end:0x8000A0F4
+
 dol/OSCreateAlarm.c:
 	.text       start:0x8000AC34 end:0x8000AC44
 
@@ -53,11 +56,17 @@ dol/OSSetArenaHi.c:
 dol/OSSetArenaLo.c:
 	.text       start:0x8000B32C end:0x8000B334
 
+dol/LCEnable.c:
+	.text       start:0x8000B804 end:0x8000B83C
+
 dol/fn_8000DD60.c:
 	.text       start:0x8000DD60 end:0x8000DD64
 
 dol/fn_8000DD64.c:
 	.text       start:0x8000DD64 end:0x8000DD68
+
+dol/OSLink.c:
+	.text       start:0x8000E310 end:0x8000E334
 
 dol/fn_8000EB04.c:
 	.text       start:0x8000EB04 end:0x8000EB10
@@ -70,6 +79,12 @@ dol/fn_8000EE5C.c:
 
 dol/fn_8000F5F0.c:
 	.text       start:0x8000F5F0 end:0x8000F610
+
+dol/__OSUnlockSram.c:
+	.text       start:0x8000FC7C end:0x8000FCA0
+
+dol/__OSUnlockSramEx.c:
+	.text       start:0x8000FCA0 end:0x8000FCC4
 
 dol/__OSReadROM.c:
 	.text       start:0x8000FCD4 end:0x8000FDF8
@@ -92,6 +107,9 @@ dol/__init_user.c:
 dol/_ExitProcess.c:
 	.text       start:0x800118FC end:0x8001191C
 
+dol/SIProbe.c:
+	.text       start:0x80013158 end:0x8001317C
+
 dol/fn_800133B8.c:
 	.text       start:0x800133B8 end:0x800133DC
 
@@ -101,8 +119,14 @@ dol/fn_800133DC.c:
 dol/fn_800157AC.c:
 	.text       start:0x800157AC end:0x8001581C
 
+dol/__DVDInitWA.c:
+	.text       start:0x80015F80 end:0x80015FC0
+
 dol/fn_80016D50.c:
 	.text       start:0x80016D50 end:0x80016D64
+
+dol/__DVDLowSetWAType.c:
+	.text       start:0x80016D7C end:0x80016DC0
 
 dol/DVDClose.c:
 	.text       start:0x80017228 end:0x8001724C
@@ -116,11 +140,17 @@ dol/fn_80017768.c:
 dol/stateTimeout.c:
 	.text       start:0x80017A04 end:0x80017A38
 
+dol/_epilog_rel_sample.c:
+	.text       start:0x80017A38 end:0x80017A60
+
 dol/fn_80017A60.c:
 	.text       start:0x80017A60 end:0x80017B14
 
 dol/fn_80017DA8.c:
 	.text       start:0x80017DA8 end:0x80017E10
+
+dol/fn_80017EA8.c:
+	.text       start:0x80017EA8 end:0x80017ED0
 
 dol/DVDReadDiskID.c:
 	.text       start:0x80019500 end:0x800195D4
@@ -148,6 +178,9 @@ dol/fn_8002071C.c:
 
 dol/fn_80020724.c:
 	.text       start:0x80020724 end:0x80020778
+
+dol/fn_80020778.c:
+	.text       start:0x80020778 end:0x800207B4
 
 dol/fn_800207B4.c:
 	.text       start:0x800207B4 end:0x800207E8
@@ -293,11 +326,20 @@ dol/fn_8002C0B8.c:
 dol/fn_8002C4BC.c:
 	.text       start:0x8002C4BC end:0x8002C4C4
 
+dol/CARDFormatAsync.c:
+	.text       start:0x8002E90C end:0x8002E954
+
 dol/fn_8002EDA0.c:
 	.text       start:0x8002EDA0 end:0x8002EDA8
 
+dol/fn_80031D60.c:
+	.text       start:0x80031D60 end:0x80031D6C
+
 dol/fn_80031FF4.c:
 	.text       start:0x80031FF4 end:0x80032014
+
+dol/__GXFifoInit.c:
+	.text       start:0x8003221C end:0x80032268
 
 dol/fn_8003228C.c:
 	.text       start:0x8003228C end:0x800322AC
@@ -326,6 +368,9 @@ dol/fn_80034488.c:
 dol/fn_80035680.c:
 	.text       start:0x80035680 end:0x80035690
 
+dol/fn_800356AC.c:
+	.text       start:0x800356AC end:0x800356B8
+
 dol/fn_8003591C.c:
 	.text       start:0x8003591C end:0x80035960
 
@@ -352,6 +397,21 @@ dol/fn_80038F10.c:
 
 dol/fn_80041458.c:
 	.text       start:0x80041458 end:0x80041460
+
+dol/fn_800416CC.c:
+	.text       start:0x800416CC end:0x800416D4
+
+dol/fn_800416D4.c:
+	.text       start:0x800416D4 end:0x800416DC
+
+dol/fn_800416DC.c:
+	.text       start:0x800416DC end:0x800416E4
+
+dol/fn_800416E4.c:
+	.text       start:0x800416E4 end:0x800416F0
+
+dol/fn_800416F0.c:
+	.text       start:0x800416F0 end:0x800416F8
 
 dol/fn_800416F8.c:
 	.text       start:0x800416F8 end:0x80041700
@@ -407,11 +467,23 @@ dol/fn_8004559C.c:
 dol/fn_800455A4.c:
 	.text       start:0x800455A4 end:0x800455AC
 
+dol/fn_800455AC.c:
+	.text       start:0x800455AC end:0x800455B8
+
+dol/fn_80045F58.c:
+	.text       start:0x80045F58 end:0x80045F74
+
 dol/fn_80045F74.c:
 	.text       start:0x80045F74 end:0x80045FA4
 
+dol/fn_80046508.c:
+	.text       start:0x80046508 end:0x80046510
+
 dol/fn_80046510.c:
 	.text       start:0x80046510 end:0x8004651C
+
+dol/fn_80046758.c:
+	.text       start:0x80046758 end:0x80046768
 
 dol/fn_80046F7C.c:
 	.text       start:0x80046F7C end:0x80046F88
@@ -419,11 +491,17 @@ dol/fn_80046F7C.c:
 dol/fn_80047834.c:
 	.text       start:0x80047834 end:0x8004784C
 
+dol/fn_80047ADC.c:
+	.text       start:0x80047ADC end:0x80047AF8
+
 dol/fn_80047AF8.c:
 	.text       start:0x80047AF8 end:0x80047B04
 
 dol/fn_8004A550.c:
 	.text       start:0x8004A550 end:0x8004A560
+
+dol/fn_8004AC4C.c:
+	.text       start:0x8004AC4C end:0x8004AC58
 
 dol/fn_8004AEE4.c:
 	.text       start:0x8004AEE4 end:0x8004AEF0
@@ -434,11 +512,17 @@ dol/fn_8004B0EC.c:
 dol/fn_8004B79C.c:
 	.text       start:0x8004B79C end:0x8004B7A0
 
+dol/fn_8004BA38.c:
+	.text       start:0x8004BA38 end:0x8004BA40
+
 dol/fn_8004BBC4.c:
 	.text       start:0x8004BBC4 end:0x8004BBC8
 
 dol/fn_8004BBC8.c:
 	.text       start:0x8004BBC8 end:0x8004BBCC
+
+dol/fn_8004BE90.c:
+	.text       start:0x8004BE90 end:0x8004BE98
 
 dol/fn_8004E190.c:
 	.text       start:0x8004E190 end:0x8004E198
@@ -451,6 +535,9 @@ dol/fn_8004E270.c:
 
 dol/fn_8004E2B0.c:
 	.text       start:0x8004E2B0 end:0x8004E2CC
+
+dol/fn_8004E2CC.c:
+	.text       start:0x8004E2CC end:0x8004E2DC
 
 dol/fn_8004E300.c:
 	.text       start:0x8004E300 end:0x8004E324
@@ -479,6 +566,9 @@ dol/fn_80053EA0.c:
 dol/fn_80053EA8.c:
 	.text       start:0x80053EA8 end:0x80053EB0
 
+dol/fn_800542B4.c:
+	.text       start:0x800542B4 end:0x800542BC
+
 dol/fn_800542BC.c:
 	.text       start:0x800542BC end:0x800542C8
 
@@ -491,6 +581,9 @@ dol/fn_8005710C.c:
 dol/fn_80057B34.c:
 	.text       start:0x80057B34 end:0x80057B48
 
+dol/fn_80057B48.c:
+	.text       start:0x80057B48 end:0x80057B54
+
 dol/fn_80057B54.c:
 	.text       start:0x80057B54 end:0x80057B5C
 
@@ -502,6 +595,9 @@ dol/fn_80057DA8.c:
 
 dol/fn_80057DB0.c:
 	.text       start:0x80057DB0 end:0x80057DB8
+
+dol/fn_80058434.c:
+	.text       start:0x80058434 end:0x80058440
 
 dol/fn_80058440.c:
 	.text       start:0x80058440 end:0x80058448
@@ -551,6 +647,9 @@ dol/fn_800700F4.c:
 dol/fn_80070D60.c:
 	.text       start:0x80070D60 end:0x80070D94
 
+dol/fn_80070E00.c:
+	.text       start:0x80070E00 end:0x80070E1C
+
 dol/fn_80071CE0.c:
 	.text       start:0x80071CE0 end:0x80071CE8
 
@@ -596,6 +695,9 @@ dol/__kill_critical_regions.c:
 dol/fn_8007ED90.c:
 	.text       start:0x8007ED90 end:0x8007EDB4
 
+dol/__stdio_atexit.c:
+	.text       start:0x8008067C end:0x8008068C
+
 dol/fn_8008068C.c:
 	.text       start:0x8008068C end:0x8008069C
 
@@ -610,6 +712,9 @@ dol/strlen.c:
 
 dol/fn_8008580C.c:
 	.text       start:0x8008580C end:0x80085814
+
+dol/fn_80088764.c:
+	.text       start:0x80088764 end:0x8008877C
 
 dol/fn_80089380.c:
 	.text       start:0x80089380 end:0x80089388
@@ -626,6 +731,9 @@ dol/fn_8008A5AC.c:
 dol/fn_8008A5B4.c:
 	.text       start:0x8008A5B4 end:0x8008A5BC
 
+dol/fn_8008A748.c:
+	.text       start:0x8008A748 end:0x8008A754
+
 dol/fn_8008AF40.c:
 	.text       start:0x8008AF40 end:0x8008AF48
 
@@ -640,6 +748,9 @@ dol/TRKTargetSetInputPendingPtr.c:
 
 dol/TRKUARTInterruptHandler.c:
 	.text       start:0x8008D2AC end:0x8008D2B0
+
+dol/fn_8008D7C0.c:
+	.text       start:0x8008D7C0 end:0x8008D7CC
 
 dol/udp_cc_post_stop.c:
 	.text       start:0x8008DD88 end:0x8008DD90
@@ -686,6 +797,9 @@ dol/gdev_cc_shutdown.c:
 dol/fn_8008E76C.c:
 	.text       start:0x8008E76C end:0x8008E770
 
+dol/fn_8008ED30.c:
+	.text       start:0x8008ED30 end:0x8008ED70
+
 dol/fn_8008EEAC.c:
 	.text       start:0x8008EEAC end:0x8008EED8
 
@@ -700,6 +814,9 @@ dol/fn_8008F454.c:
 
 dol/fn_8008F458.c:
 	.text       start:0x8008F458 end:0x8008F45C
+
+dol/fn_8008F7E4.c:
+	.text       start:0x8008F7E4 end:0x8008F838
 
 dol/AMC_IsStub.c:
 	.text       start:0x8008FED4 end:0x8008FEDC

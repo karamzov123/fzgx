@@ -21,8 +21,14 @@ rel/main_rel/_prolog/fn_1_954.c:
 rel/main_rel/_prolog/fn_1_958.c:
 	.text       start:0x00000958 end:0x0000095C
 
+rel/main_rel/_prolog/fn_1_E78.c:
+	.text       start:0x00000E78 end:0x00000E9C
+
 rel/main_rel/_prolog/fn_1_1280.c:
 	.text       start:0x00001280 end:0x0000128C
+
+rel/main_rel/_prolog/fn_1_128C.c:
+	.text       start:0x0000128C end:0x000012B4
 
 rel/main_rel/_prolog/fn_1_12FC.c:
 	.text       start:0x000012FC end:0x00001300
