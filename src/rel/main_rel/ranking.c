@@ -290,62 +290,60 @@ void fn_1_1569A0(fn_1_1569A0_State *state) {
 }
 /* fzgx:end fn_1_1569A0 */
 
-/* fzgx:begin fn_1_1569E8 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/ranking.h"
-
+/* fzgx:begin fn_1_1569E8 */
 extern void fn_8006B7B4(void *);
 extern void fn_8006B870(void);
 
 typedef struct {
-    u32 unk_00;
+    u32 flags;
     u8 _pad04[8];
-    void *unk_0c;
-    void *unk_10;
-    void *unk_14;
-    s32 unk_18;
-    void *unk_1c;
-    void *unk_20;
+    void *data0;
+    void *data1;
+    void *data2;
+    s32 value;
+    void *data3;
+    void *data4;
     u8 _pad24[4];
-    void *unk_28;
-    void *unk_2c;
+    void *data5;
+    void *data6;
 } fn_1_1569E8_State;
 
 /* Releases pending ranking resources and resets their status flags. */
-void fn_1_1569E8(fn_1_1569E8_State *state) {
-    if (state->unk_00 & 4) {
-        fn_8006B7B4(state->unk_10);
-        state->unk_00 &= ~4;
+void fn_1_1569E8(void *entry) {
+    fn_1_1569E8_State *state = (fn_1_1569E8_State *)entry;
+
+    if (state->flags & 4) {
+        fn_8006B7B4(state->data1);
+        state->flags &= ~4;
     }
-    if (state->unk_00 & 2) {
-        fn_8006B7B4(state->unk_0c);
-        state->unk_00 &= ~2;
+    if (state->flags & 2) {
+        fn_8006B7B4(state->data0);
+        state->flags &= ~2;
     }
-    if (state->unk_00 & 8) {
-        fn_8006B7B4(state->unk_14);
-        state->unk_00 &= ~8;
+    if (state->flags & 8) {
+        fn_8006B7B4(state->data2);
+        state->flags &= ~8;
     }
-    if (state->unk_00 & 0x20) {
-        fn_8006B7B4(state->unk_1c);
-        state->unk_00 &= ~0x20;
+    if (state->flags & 0x20) {
+        fn_8006B7B4(state->data3);
+        state->flags &= ~0x20;
     }
-    if (state->unk_00 & 0x40) {
-        fn_8006B7B4(state->unk_20);
-        state->unk_00 &= ~0x40;
+    if (state->flags & 0x40) {
+        fn_8006B7B4(state->data4);
+        state->flags &= ~0x40;
     }
-    if ((u32)(state->unk_18 + 0x10000) != 0xffff) {
+    if ((u32)(state->value + 0x10000) != 0xffff) {
         fn_8006B870();
-        state->unk_18 = -1;
+        state->value = -1;
     }
-    state->unk_00 &= ~0x10;
-    if (state->unk_00 & 0x80) {
-        fn_8006B7B4(state->unk_28);
-        state->unk_00 &= ~0x80;
+    state->flags &= ~0x10;
+    if (state->flags & 0x80) {
+        fn_8006B7B4(state->data5);
+        state->flags &= ~0x80;
     }
-    if (state->unk_00 & 0x100) {
-        fn_8006B7B4(state->unk_2c);
-        state->unk_00 &= ~0x100;
+    if (state->flags & 0x100) {
+        fn_8006B7B4(state->data6);
+        state->flags &= ~0x100;
     }
 }
 /* fzgx:end fn_1_1569E8 */

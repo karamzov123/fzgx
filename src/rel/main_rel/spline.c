@@ -843,19 +843,15 @@ u8 fn_1_FA69C(s32 index) {
 }
 /* fzgx:end fn_1_FA69C */
 
-/* fzgx:begin fn_1_FA75C noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/spline.h"
-
+/* fzgx:begin fn_1_FA75C */
 extern s32 fn_1_58C4(void);
 extern void fn_80008BEC(void *dst, s32 value, u32 size);
 extern void fn_1_FA89C(Obj_1_data_2A7E0_At3C *obj);
 extern void fn_1_76BF8(void);
 extern void fn_1_72648(void);
-extern void fn_1_9A508(void);
+extern void fn_1_9A508(Obj_1_data_2A7E0 *arg0);
 extern void fn_1_FB0B4(Obj_1_bss_84428 *data);
-extern void fn_1_FB180(Obj_1_bss_84428 *data);
+extern void fn_1_FB180(int *value);
 
 // Reset spline state while preserving the active spline entry.
 void fn_1_FA75C(void) {
@@ -880,9 +876,12 @@ void fn_1_FA75C(void) {
     }
 
     obj->unk_0 = -1;
-    fn_1_9A508();
+    {
+        extern void fn_1_9A508(void);
+        fn_1_9A508();
+    }
     fn_1_FB0B4(&lbl_1_bss_84428);
-    fn_1_FB180(&lbl_1_bss_84428);
+    fn_1_FB180((int *)&lbl_1_bss_84428);
 
     if (*status == 0) {
         fn_1_76BF8();

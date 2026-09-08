@@ -674,7 +674,48 @@ void fn_1_ABF44(Fn1ABF44Object *arg) {
 /* fzgx:end fn_1_ABF44 */
 
 /* fzgx:begin fn_1_AC12C */
-#include "rel/main_rel/globals.h"
+extern void* lbl_801A6410;
+extern int fn_1_45D0(void *arg0, int arg1, Obj_1_data_3C7B8 *arg2, int arg3);
+extern void fn_1_AB45C(void);
+extern void fn_8002DE40(u8, u32, void (*)(void), s32);
+extern int fn_80030690(u8 value, void *data);
+extern void fn_8002D634(u8 byte_val, int value);
+extern void fn_8002E90C(u8 byte, int value);
+extern const f32 lbl_1_rodata_4CA8;
+extern const f64 lbl_1_rodata_4CB0;
+extern const f32 lbl_1_rodata_4CAC;
+extern void fn_80083DB0(void *dst, void *src);
+extern void fn_80083D40(void *dst, void *src);
+extern void fn_8002FB04(u8 byte, void *data, int arg);
+extern s32 fn_8002A988(u8 byte_val, void *arg1, void *arg2);
+extern s32 fn_8002EBD4(u8 byte_val, void *arg1, void *arg2);
+extern void fn_8002F9D8(u8 byte_val, void *arg, s32 zero);
+extern void fn_8002EED8(u8 byte_val, void *arg1, void *arg2, void *arg3, u32 arg4);
+extern void fn_8002FF80(u8 id, void *arg, void *data, int zero);
+extern void fn_8003013C(u8 id, void *data1, void *data2, int zero);
+extern void fn_8002F428(void *arg0, void *arg1, void *arg2, int arg3, int arg4);
+extern const f64 lbl_1_rodata_4CC8;
+extern void fn_80030754(u8 value, void *data, int size, int mode);
+extern u8 lbl_1_bss_71810[161];
+extern u8 lbl_1_bss_718B8;
+extern u8 lbl_1_bss_718B9[7];
+extern int fn_8002A744(void);
+extern void fn_8002A74C(u16 value);
+extern int fn_8002DFE0(int arg0, u32 arg1, int arg2);
+extern int fn_8002D65C(int arg0);
+extern void fn_1_B9C38(s32 index);
+extern void fn_1_1596DC(u32);
+extern void fn_1_484CC(u32);
+extern void fn_80008BEC(void *dst, s32 value, s32 size);
+extern void fn_1_AA6D8(s32 arg0, u32 arg1, void *arg2);
+extern void fn_1_F755C(u8 value);
+extern void fn_1_A6840(u8 value);
+extern void fn_8000C49C(void *arg0, u32 arg1, ...);
+extern void fn_1_F79C8(void);
+extern void *lbl_801A6410;
+extern void fn_80083D6C(void *arg0, void *arg1, int arg2);
+extern u32 lbl_1_bss_77310[28];
+extern u32 lbl_1_bss_7730C;
 
 typedef struct MemcardRequestState {
     u8 pad_00[0x2];
@@ -1357,7 +1398,48 @@ void fn_1_AD168(Fn1AD168Obj *obj) {
 /* fzgx:end fn_1_AD168 */
 
 /* fzgx:begin fn_1_AD1AC */
-#include "rel/main_rel/globals.h"
+extern void* lbl_801A6410;
+extern int fn_1_45D0(void *arg0, int arg1, Obj_1_data_3C7B8 *arg2, int arg3);
+extern void fn_1_AB45C(void);
+extern void fn_8002DE40(u8, u32, void (*)(void), s32);
+extern int fn_80030690(u8 value, void *data);
+extern void fn_8002D634(u8 byte_val, int value);
+extern void fn_8002E90C(u8 byte, int value);
+extern const f32 lbl_1_rodata_4CA8;
+extern const f64 lbl_1_rodata_4CB0;
+extern const f32 lbl_1_rodata_4CAC;
+extern void fn_80083DB0(void *dst, void *src);
+extern void fn_80083D40(void *dst, void *src);
+extern void fn_8002FB04(u8 byte, void *data, int arg);
+extern s32 fn_8002A988(u8 byte_val, void *arg1, void *arg2);
+extern s32 fn_8002EBD4(u8 byte_val, void *arg1, void *arg2);
+extern void fn_8002F9D8(u8 byte_val, void *arg, s32 zero);
+extern void fn_8002EED8(u8 byte_val, void *arg1, void *arg2, void *arg3, u32 arg4);
+extern void fn_8002FF80(u8 id, void *arg, void *data, int zero);
+extern void fn_8003013C(u8 id, void *data1, void *data2, int zero);
+extern void fn_8002F428(void *arg0, void *arg1, void *arg2, int arg3, int arg4);
+extern const f64 lbl_1_rodata_4CC8;
+extern void fn_80030754(u8 value, void *data, int size, int mode);
+extern u8 lbl_1_bss_71810[161];
+extern u8 lbl_1_bss_718B8;
+extern u8 lbl_1_bss_718B9[7];
+extern int fn_8002A744(void);
+extern void fn_8002A74C(u16 value);
+extern int fn_8002DFE0(int arg0, u32 arg1, int arg2);
+extern int fn_8002D65C(int arg0);
+extern void fn_1_B9C38(s32 index);
+extern void fn_1_1596DC(u32);
+extern void fn_1_484CC(u32);
+extern void fn_80008BEC(void *dst, s32 value, s32 size);
+extern void fn_1_AA6D8(s32 arg0, u32 arg1, void *arg2);
+extern void fn_1_F755C(u8 value);
+extern void fn_1_A6840(u8 value);
+extern void fn_8000C49C(void *arg0, u32 arg1, ...);
+extern void fn_1_F79C8(void);
+extern void *lbl_801A6410;
+extern void fn_80083D6C(void *arg0, void *arg1, int arg2);
+extern u32 lbl_1_bss_77310[28];
+extern u32 lbl_1_bss_7730C;
 
 typedef struct Fn1AD1ACOutput {
     u8 unk_00[4];

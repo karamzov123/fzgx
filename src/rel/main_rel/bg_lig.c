@@ -114,14 +114,10 @@ void fn_1_D720C(void) {
 }
 /* fzgx:end fn_1_D720C */
 
-/* fzgx:begin fn_1_D744C noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/bg_lig.h"
-
+/* fzgx:begin fn_1_D744C */
 extern s32 fn_1_58C4(void);
 extern void fn_1_5948(s32 index);
-extern void fn_1_D8388(Obj_1_data_2A7E0_At3C *obj, s32 index);
+extern void fn_1_D8388();
 extern void fn_1_627C(s32 index);
 
 // Initializes each available background-light entry.

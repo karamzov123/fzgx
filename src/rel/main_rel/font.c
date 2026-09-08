@@ -776,13 +776,10 @@ void fn_1_54320(void) {
 }
 /* fzgx:end fn_1_54320 */
 
-/* fzgx:begin fn_1_545B8 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/font.h"
-
+/* fzgx:begin fn_1_545B8 */
 extern void fn_1_9FA18(void);
 extern void fn_1_58248(void);
+extern u8 *lbl_801A66CC;
 
 typedef struct fn_1_545B8_manager {
     u8 unk_00[0x30];
@@ -793,23 +790,27 @@ typedef struct fn_1_545B8_manager {
     u32 *unk_48;
 } fn_1_545B8_manager;
 
-extern fn_1_545B8_manager *lbl_801A66CC;
 extern void fn_1_547F8(void *node);
 extern void fn_1_54668(void *arg0, u32 arg1, u32 arg2);
 
 // Reset the font manager's node list and process any completed nodes.
 void fn_1_545B8(void) {
-    if (lbl_801A66CC->unk_48 >= lbl_801A66CC->unk_44) {
-        if (lbl_801A66CC->unk_44 > (u32 *)lbl_801A66CC->unk_30) {
-            *(lbl_801A66CC->unk_44 - 2) = 0;
+    if (((fn_1_545B8_manager *)lbl_801A66CC)->unk_48 >=
+        ((fn_1_545B8_manager *)lbl_801A66CC)->unk_44) {
+        if (((fn_1_545B8_manager *)lbl_801A66CC)->unk_44 >
+            (u32 *)((fn_1_545B8_manager *)lbl_801A66CC)->unk_30) {
+            *(((fn_1_545B8_manager *)lbl_801A66CC)->unk_44 - 2) = 0;
         }
-        fn_1_547F8(lbl_801A66CC->unk_48);
+        fn_1_547F8(((fn_1_545B8_manager *)lbl_801A66CC)->unk_48);
     }
 
-    fn_1_54668(lbl_801A66CC->unk_30, lbl_801A66CC->unk_34, 1);
-    lbl_801A66CC->unk_44 =
-        (u32 *)((u8 *)lbl_801A66CC->unk_30 + (lbl_801A66CC->unk_34 - 1) * 8);
-    lbl_801A66CC->unk_48 = (u32 *)lbl_801A66CC->unk_30;
+    fn_1_54668(((fn_1_545B8_manager *)lbl_801A66CC)->unk_30,
+                ((fn_1_545B8_manager *)lbl_801A66CC)->unk_34, 1);
+    ((fn_1_545B8_manager *)lbl_801A66CC)->unk_44 =
+        (u32 *)((u8 *)((fn_1_545B8_manager *)lbl_801A66CC)->unk_30 +
+                (((fn_1_545B8_manager *)lbl_801A66CC)->unk_34 - 1) * 8);
+    ((fn_1_545B8_manager *)lbl_801A66CC)->unk_48 =
+        (u32 *)((fn_1_545B8_manager *)lbl_801A66CC)->unk_30;
     fn_1_9FA18();
     fn_1_58248();
 }
@@ -899,34 +900,40 @@ void fn_1_5489C(void **arg0, void **arg1) {
 }
 /* fzgx:end fn_1_5489C */
 
-/* fzgx:begin fn_1_548AC noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/font.h"
-
+/* fzgx:begin fn_1_548AC */
 typedef struct FontCounterState {
     u8 pad_1a0[0x1a0];
-    u32 field_1a0;
+    u32 unk_1a0;
     u8 pad_1a4[8];
-    u32 field_1ac;
+    u32 unk_1ac;
 } FontCounterState;
 
-extern FontCounterState *lbl_801A66CC;
+/* The shared declaration is opaque; this union gives it the recovered layout. */
+typedef union FontCounterStateView {
+    u8 *raw;
+    FontCounterState *typed;
+} FontCounterStateView;
 
+extern u8 *lbl_801A66CC;
+
+// Advances the font counter when enough capacity remains and returns its prior value.
 u32 fn_1_548AC(u32 amount) {
+    FontCounterStateView view;
     FontCounterState *state;
-    u32 old_value;
+    u32 previous;
 
-    state = lbl_801A66CC;
-    if (state->field_1ac < amount) {
+    view.raw = lbl_801A66CC;
+    state = view.typed;
+    if (state->unk_1ac < amount) {
         return 0;
     }
 
-    old_value = state->field_1a0;
-    state->field_1a0 = old_value + amount;
-    state = lbl_801A66CC;
-    state->field_1ac -= amount;
-    return old_value;
+    previous = state->unk_1a0;
+    state->unk_1a0 = previous + amount;
+    view.raw = lbl_801A66CC;
+    state = view.typed;
+    state->unk_1ac -= amount;
+    return previous;
 }
 /* fzgx:end fn_1_548AC */
 

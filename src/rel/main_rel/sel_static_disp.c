@@ -323,98 +323,84 @@ void fn_1_13F81C(void) {
 }
 /* fzgx:end fn_1_13F81C */
 
-/* fzgx:begin fn_1_13F848 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
+/* fzgx:begin fn_1_13F848 */
 extern u32 lbl_801A6410;
-extern char lbl_1_data_419E0[18];
-extern u32 lbl_1_bss_8E3E4[8];
+extern u8 lbl_1_data_419E0[18];
+extern u8 lbl_1_bss_8E3E4[32];
 extern u32 fn_1_45D0(u32 arg0, int arg1, void* arg2, int arg3);
 extern void fn_1_FC414(u32 arg0, int arg1);
 
-// Loads a display resource and activates the handle assigned to the selected slot.
+// Load the selected display resource, store its handle, and activate it.
 void fn_1_13F848(u32 arg0) {
-    u32 slot = arg0 & 0xFF;
+    u32 selected_slot = arg0 & 0xFF;
+    u32* handles = (u32*)lbl_1_bss_8E3E4;
 
-    lbl_1_bss_8E3E4[slot] =
+    handles[selected_slot] =
         fn_1_45D0(lbl_801A6410, 0x10440, lbl_1_data_419E0, 0x14F9);
-    fn_1_FC414(lbl_1_bss_8E3E4[slot], 1);
+    fn_1_FC414(handles[selected_slot], 1);
 }
 /* fzgx:end fn_1_13F848 */
 
-/* fzgx:begin fn_1_13F8B0 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
+/* fzgx:begin fn_1_13F8B0 */
+extern u8 lbl_1_bss_8E3E4[32];
 
-extern u32 lbl_1_bss_8E3E4[8];
-
-// Return the cached display handle for the key's low-byte slot.
+// Resolve a cached display handle from the key's low-byte slot.
 u32 fn_1_13F8B0(u32 key) {
-    return lbl_1_bss_8E3E4[key & 0xFF];
+    u32 slot = key & 0xFF;
+
+    return ((u32 *)lbl_1_bss_8E3E4)[slot];
 }
 /* fzgx:end fn_1_13F8B0 */
 
-/* fzgx:begin fn_1_13F948 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
+/* fzgx:begin fn_1_13F948 */
+extern u8 lbl_1_bss_8E404[32];
 
-extern u32 lbl_1_bss_8E404[8];
-
-// Reset all static-display resource handles before initialization.
+// Clear the cached static-display handles before rebuilding the resource set.
 void fn_1_13F948(void) {
-    lbl_1_bss_8E404[0] = 0;
-    lbl_1_bss_8E404[1] = 0;
-    lbl_1_bss_8E404[2] = 0;
-    lbl_1_bss_8E404[3] = 0;
-    lbl_1_bss_8E404[4] = 0;
-    lbl_1_bss_8E404[5] = 0;
-    lbl_1_bss_8E404[6] = 0;
-    lbl_1_bss_8E404[7] = 0;
+    ((u32 *)lbl_1_bss_8E404)[0] = 0;
+    ((u32 *)lbl_1_bss_8E404)[1] = 0;
+    ((u32 *)lbl_1_bss_8E404)[2] = 0;
+    ((u32 *)lbl_1_bss_8E404)[3] = 0;
+    ((u32 *)lbl_1_bss_8E404)[4] = 0;
+    ((u32 *)lbl_1_bss_8E404)[5] = 0;
+    ((u32 *)lbl_1_bss_8E404)[6] = 0;
+    ((u32 *)lbl_1_bss_8E404)[7] = 0;
 }
 /* fzgx:end fn_1_13F948 */
 
-/* fzgx:begin fn_1_13F974 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
+/* fzgx:begin fn_1_13F974 */
 extern u32 lbl_801A6410;
-extern char lbl_1_data_419E0[18];
+extern unsigned char lbl_1_data_419E0[18];
 extern u32 fn_1_45D0(u32 arg0, int arg1, void* arg2, int arg3);
-extern u32 lbl_1_bss_8E404[8];
+extern unsigned char lbl_1_bss_8E404[32];
 extern u32 fn_80008BEC(u32 arg0, int arg1, int arg2);
 
-// Allocate a static-display resource for the selected byte-sized slot and initialize it.
-u32 fn_1_13F974(u32 arg0) {
-    u32 slot = arg0 & 0xFF;
+// Allocate and initialize the static-display resource for a byte-sized slot.
+u32 fn_1_13F974(u32 slot_arg) {
+    u32 slot = slot_arg & 0xFF;
+    u32* resource_slots = (u32*)lbl_1_bss_8E404;
 
-    lbl_1_bss_8E404[slot] =
+    resource_slots[slot] =
         fn_1_45D0(lbl_801A6410, 0x440, lbl_1_data_419E0, 0x1528);
-    return fn_80008BEC(lbl_1_bss_8E404[slot], 0, 0x440);
+    return fn_80008BEC(resource_slots[slot], 0, 0x440);
 }
 /* fzgx:end fn_1_13F974 */
 
-/* fzgx:begin fn_1_13F9DC noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
+/* fzgx:begin fn_1_13F9DC */
+extern u8 lbl_1_bss_8E404[32];
 
-extern u32 lbl_1_bss_8E404[8];
-
-// Returns the static-display object selected by the caller's low-byte slot index.
+// Look up the static-display object stored in the caller-selected byte slot.
 u32 fn_1_13F9DC(u32 slot) {
-    return lbl_1_bss_8E404[slot & 0xFF];
+    return ((u32*)lbl_1_bss_8E404)[slot & 0xFF];
 }
 /* fzgx:end fn_1_13F9DC */
 
-/* fzgx:begin fn_1_13F9F0 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-
-extern u32 lbl_1_bss_8E404[8];
+/* fzgx:begin fn_1_13F9F0 */
+extern u8 lbl_1_bss_8E404[32];
 extern u32 lbl_801A6410;
-extern char lbl_1_data_419E0[18];
+extern u8 lbl_1_data_419E0[18];
 extern void fn_1_7F3AC(void* object);
-extern void fn_1_46B4(u32 config, void* object, char* data, int size);
+extern void fn_1_46B4(u32 config, void* object, u8* data, int size);
 
 typedef struct {
     char pad[0x3A4];
@@ -426,14 +412,15 @@ void fn_1_13F9F0(void) {
     u8 slot;
 
     for (slot = 0; slot < 8; slot++) {
-        if (lbl_1_bss_8E404[slot] != 0) {
-            if (((FnObject*)lbl_1_bss_8E404[slot])->unk_3A4 != 0) {
-                fn_1_7F3AC((void*)lbl_1_bss_8E404[slot]);
+        if (((u32 *)lbl_1_bss_8E404)[slot] != 0) {
+            if (((FnObject *)((u32 *)lbl_1_bss_8E404)[slot])->unk_3A4 != 0) {
+                fn_1_7F3AC((void *)((u32 *)lbl_1_bss_8E404)[slot]);
             }
-            fn_1_46B4(lbl_801A6410, (void*)lbl_1_bss_8E404[slot],
+            fn_1_46B4(lbl_801A6410,
+                (void *)((u32 *)lbl_1_bss_8E404)[slot],
                 lbl_1_data_419E0, 0x153E);
         }
-        lbl_1_bss_8E404[slot] = 0;
+        ((u32 *)lbl_1_bss_8E404)[slot] = 0;
     }
 }
 /* fzgx:end fn_1_13F9F0 */
@@ -462,19 +449,10 @@ void fn_1_144EE8(void) {
 }
 /* fzgx:end fn_1_144EE8 */
 
-/* fzgx:begin fn_1_149B64 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/sel_static_disp.h"
+/* fzgx:begin fn_1_149B64 */
+extern void fn_1_149C2C();
 
-extern void fn_1_149CA4(u32 arg0, u32 arg1, u32 arg2, u32 arg3);
-extern void fn_1_5233C(void* arg0, void* arg1);
-extern u32 fn_1_A5DB0(void);
-extern u32 fn_1_A5D88(void);
-extern void fn_80074188(u32 arg0, u32 arg1, u32 arg2, u32 arg3);
-extern void fn_1_149C2C(void* arg0, void* arg1);
-
-// Refresh the display state before publishing the current display and effect IDs.
+// Rebuild the display state and publish the current display and effect IDs.
 void fn_1_149B64(void* display_state, void* display_context) {
     u32 display_id;
     u32 effect_id;
@@ -824,13 +802,7 @@ void fn_1_14CA48(void) {
 }
 /* fzgx:end fn_1_14CA48 */
 
-/* fzgx:begin fn_1_14CA4C noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/sel_static_disp.h"
-
-extern void fn_1_A2D84(u32, u8 *);
-
+/* fzgx:begin fn_1_14CA4C */
 // Arms the display update and refreshes it when the selected value exceeds the current one.
 void fn_1_14CA4C(void) {
     u8 *display_state = (u8 *)&lbl_1_bss_8E518;
@@ -846,33 +818,29 @@ void fn_1_14CA4C(void) {
         : lbl_1_bss_3C30.unk_9;
 
     if (selected_limit > display_state[0x30]) {
-        fn_1_A2D84(0xA9010400, display_state);
+        fn_1_A2D84(0xA9010400);
     }
 }
 /* fzgx:end fn_1_14CA4C */
 
-/* fzgx:begin fn_1_14D5CC noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/sel_static_disp.h"
-
+/* fzgx:begin fn_1_14D5CC */
 extern u32 lbl_801A63C0;
-extern s16 fn_1_14F01C(void *arg0);
-extern s16 fn_1_14F090(void *arg0, s16 arg1);
+extern s16 fn_1_14F01C(s16 value);
+extern s16 fn_1_14F090(s16 value, s16 occurrence);
 extern u32 fn_1_14D6D8(s16 index);
 
-// Generate candidates until one matches the requested flags without forbidden flags.
-s16 fn_1_14D5CC(void *arg0, u32 required_mask, u32 forbidden_mask) {
+// Keep sampling candidates until one satisfies the required and forbidden flags.
+s16 fn_1_14D5CC(s16 arg0, u32 required_mask, u32 forbidden_mask) {
     s16 candidate_index;
-    s32 value;
+    s32 random_value;
 
     do {
         lbl_801A63C0 = lbl_801A63C0 * 0x676a4b6b + 0x33cb;
-        value = (lbl_801A63C0 >> 16) & 0x7fff;
+        random_value = (lbl_801A63C0 >> 16) & 0x7fff;
         candidate_index =
-            fn_1_14F090(arg0, (s16)(value % fn_1_14F01C(arg0)));
-        value = fn_1_14D6D8(candidate_index);
-    } while ((required_mask & value) == 0 ||
+            fn_1_14F090(arg0, (s16)(random_value % fn_1_14F01C(arg0)));
+        random_value = fn_1_14D6D8(candidate_index);
+    } while ((required_mask & random_value) == 0 ||
              (forbidden_mask & fn_1_14D6D8(candidate_index)) != 0);
 
     return candidate_index;
@@ -1159,21 +1127,17 @@ s16 fn_1_14F118(s16 value, void *table) {
 }
 /* fzgx:end fn_1_14F118 */
 
-/* fzgx:begin fn_1_14F19C noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/sel_static_disp.h"
-
-extern f32 lbl_1_rodata_99D8[75];
-extern s16 fn_1_14F090(void *arg, s16 index);
-extern s16 fn_1_14F01C(void *arg);
+/* fzgx:begin fn_1_14F19C */
+extern u32 lbl_1_rodata_99D8[75];
+extern s16 fn_1_14F090(s16 value, s16 occurrence);
+extern s16 fn_1_14F01C(s16 value);
 
 typedef struct {
     u32 values[75];
 } FlagTable;
 
 // Returns the ordinal among enabled entries for the requested value, or -1 if absent.
-s16 fn_1_14F19C(s16 wanted, void *arg, u32 mask) {
+s16 fn_1_14F19C(s16 wanted, s16 arg, u32 mask) {
     FlagTable table;
     s16 entry_index;
     s16 enabled_ordinal;
@@ -1412,11 +1376,7 @@ void fn_1_150F30(StaticDisp *self) {
 }
 /* fzgx:end fn_1_150F30 */
 
-/* fzgx:begin fn_1_150F74 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/sel_static_disp.h"
-
+/* fzgx:begin fn_1_150F74 */
 extern const f32 lbl_1_rodata_CF40[];
 
 typedef struct fn_1_150F74_Object {
@@ -1450,12 +1410,14 @@ typedef struct fn_1_150F74_Entry {
 } fn_1_150F74_Entry;
 
 // Initialize display values and propagate enabled display flags across all entries.
-void fn_1_150F74(fn_1_150F74_Object *obj) {
+void fn_1_150F74(void *self) {
+    fn_1_150F74_Object *obj;
     const f32 *constants;
     fn_1_150F74_Entry *entry;
     u32 *bit_flags;
     s32 index;
 
+    obj = (fn_1_150F74_Object *)self;
     constants = lbl_1_rodata_CF40;
     obj->value_2730 = constants[58];
     obj->value_2734 = constants[23];

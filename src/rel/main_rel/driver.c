@@ -151,11 +151,7 @@ void fn_1_A7A70(void) {
 }
 /* fzgx:end fn_1_A7A70 */
 
-/* fzgx:begin fn_1_A8528 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/driver.h"
-
+/* fzgx:begin fn_1_A8528 */
 extern void lbl_8006DAEC(void);
 extern void lbl_8006DBAC(void *arg0);
 extern void lbl_8006E0A4(void *arg0);
@@ -164,7 +160,6 @@ extern void lbl_8006DB30(void);
 extern void fn_1_A861C(void *arg0, void *arg1);
 extern void fn_1_A8834(void *arg0, void *arg1);
 extern void fn_1_A89B0(void *arg0, void *arg1, s32 arg2);
-extern void (*lbl_1_bss_7168C)(void);
 
 typedef struct FnA8528Object {
     u8 pad_ea[0xea];
@@ -191,7 +186,7 @@ typedef struct FnA8528Config {
 extern FnA8528Config *lbl_801A6D00;
 
 // Initializes the driver's state from the active configuration and shared systems.
-void fn_1_A8528(FnA8528Object *arg0, void *arg1) {
+void fn_1_A8528(void *arg0, void *arg1) {
     s16 orientation[3];
     void *driver_data;
 
@@ -203,16 +198,16 @@ void fn_1_A8528(FnA8528Object *arg0, void *arg1) {
 
     lbl_8006DAEC();
     lbl_8006DBAC(driver_data);
-    lbl_8006E0A4(arg0->unk_114);
-    lbl_8006E0A4(arg0->unk_120);
+    lbl_8006E0A4(((FnA8528Object *)arg0)->unk_114);
+    lbl_8006E0A4(((FnA8528Object *)arg0)->unk_120);
     fn_8006F6A8(orientation);
 
-    arg0->unk_f0 = lbl_801A6D00->unk_0c;
-    arg0->unk_f4 = lbl_801A6D00->unk_1c;
-    arg0->unk_f8 = lbl_801A6D00->unk_2c;
-    arg0->unk_ec = orientation[0];
-    arg0->unk_ea = orientation[1];
-    arg0->unk_ee = orientation[2];
+    ((FnA8528Object *)arg0)->unk_f0 = lbl_801A6D00->unk_0c;
+    ((FnA8528Object *)arg0)->unk_f4 = lbl_801A6D00->unk_1c;
+    ((FnA8528Object *)arg0)->unk_f8 = lbl_801A6D00->unk_2c;
+    ((FnA8528Object *)arg0)->unk_ec = orientation[0];
+    ((FnA8528Object *)arg0)->unk_ea = orientation[1];
+    ((FnA8528Object *)arg0)->unk_ee = orientation[2];
 
     fn_1_A861C(arg0, arg1);
     fn_1_A8834(arg0, arg1);

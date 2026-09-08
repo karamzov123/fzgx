@@ -200,11 +200,7 @@ void fn_1_DB138(BgSanContext *context) {
 }
 /* fzgx:end fn_1_DB138 */
 
-/* fzgx:begin fn_1_DB198 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/bg_san.h"
-
+/* fzgx:begin fn_1_DB198 */
 typedef struct BgSanObject {
     u8 unk_00[0x10];
     s32 unk_10;
@@ -227,13 +223,11 @@ typedef struct BgSanAllocation {
     void *unk_08;
 } BgSanAllocation;
 
-extern u32 fn_1_58C4(BgSanObject *object);
+extern u32 fn_1_58C4(Obj_1_data_2A7E0 *object);
 extern f32 lbl_1_rodata_6644[35];
 extern void lbl_8006DCA4(void *data);
 extern void *fn_1_5448C(BgSanPosition *position);
-extern BgSanAllocation *fn_1_548AC(u32 size);
 extern void fn_1_DB53C(void);
-extern void fn_1_5489C(void *result, BgSanAllocation *allocation);
 
 // Builds a scaled position event when the object is active.
 void fn_1_DB198(BgSanObject *object, void *arg1) {
@@ -241,13 +235,13 @@ void fn_1_DB198(BgSanObject *object, void *arg1) {
     void *result;
     BgSanAllocation *allocation;
 
-    if (fn_1_58C4(object) < 2 && object->unk_10 != 0) {
+    if (fn_1_58C4((Obj_1_data_2A7E0 *)object) < 2 && object->unk_10 != 0) {
         position.unk_00 = (((f32 *)object->unk_14)[3] + object->unk_824) * lbl_1_rodata_6644[0];
         position.unk_04 = (((f32 *)object->unk_14)[4] + object->unk_828) * lbl_1_rodata_6644[0];
         position.unk_08 = (((f32 *)object->unk_14)[5] + object->unk_82c) * lbl_1_rodata_6644[0];
         lbl_8006DCA4(object->unk_14);
         result = fn_1_5448C(&position);
-        allocation = fn_1_548AC(12);
+        allocation = (BgSanAllocation *)fn_1_548AC(12);
         if (allocation != 0) {
             allocation->unk_04 = fn_1_DB53C;
             allocation->unk_08 = arg1;
@@ -339,19 +333,17 @@ void fn_1_DC2F8(void) {
 }
 /* fzgx:end fn_1_DC2F8 */
 
-/* fzgx:begin fn_1_DC33C noprologue */
-#include "rel/main_rel/bg_san.h"
-
-// Refreshes the active background object and commits the generated scene data.
+/* fzgx:begin fn_1_DC33C */
+// Builds the active background scene and publishes it to the renderer.
 void fn_1_DC33C(void) {
-    Obj_1_data_2A7E0_At3C *obj;
-    s32 result;
+    Obj_1_data_2A7E0_At3C *background;
+    s32 scene_data;
 
-    obj = lbl_1_data_2A7E0.unk_3C;
-    result = fn_1_9D260(&lbl_1_data_2A7E0);
-    fn_1_103F58(&obj->unk_1588);
-    fn_1_DC6FC(obj);
-    fn_1_DC5E8(obj, result);
+    background = lbl_1_data_2A7E0.unk_3C;
+    scene_data = (s32)fn_1_9D260(&lbl_1_data_2A7E0);
+    fn_1_103F58(&background->unk_1588);
+    fn_1_DC6FC(background);
+    fn_1_DC5E8(background, scene_data);
     fn_1_9AD88();
 }
 /* fzgx:end fn_1_DC33C */
@@ -415,11 +407,7 @@ void fn_1_DC404(fn_1_DC404_Container *container) {
 }
 /* fzgx:end fn_1_DC404 */
 
-/* fzgx:begin fn_1_DC5E8 noprologue */
-#include "types.h"
-#include "rel/main_rel/globals.h"
-#include "rel/main_rel/bg_san.h"
-
+/* fzgx:begin fn_1_DC5E8 */
 extern void fn_1_103264(void *, void *);
 
 typedef struct fn_1_DC5E8_Entry {
@@ -431,15 +419,17 @@ typedef struct fn_1_DC5E8_Container {
     fn_1_DC5E8_Entry unk_04[1];
 } fn_1_DC5E8_Container;
 
-// Process each entry in the container with the supplied argument.
-void fn_1_DC5E8(fn_1_DC5E8_Container *container, void *arg) {
+// Apply the supplied argument to each active entry in the container.
+void fn_1_DC5E8(Obj_1_data_2A7E0_At3C *container, s32 arg) {
     s32 count;
     fn_1_DC5E8_Entry *entry;
+    fn_1_DC5E8_Container *data;
 
-    entry = container->unk_04;
-    count = container->unk_00;
+    data = (fn_1_DC5E8_Container *)container;
+    entry = data->unk_04;
+    count = data->unk_00;
     while (count > 0) {
-        fn_1_103264(entry, arg);
+        fn_1_103264(entry, (void *)arg);
         count--;
         entry++;
     }

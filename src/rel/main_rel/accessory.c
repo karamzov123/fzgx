@@ -83,13 +83,11 @@ void fn_1_109114(AccessoryObject *self) {
 }
 /* fzgx:end fn_1_109114 */
 
-/* fzgx:begin fn_1_10B7D8 noprologue */
-#include "rel/main_rel/globals.h"
-
-// Initializes the accessory data when an object is available.
+/* fzgx:begin fn_1_10B7D8 */
+// Initializes accessory data only when an accessory object is present.
 void fn_1_10B7D8(void *accessory) {
     if (accessory != 0) {
-        fn_1_10846C(accessory);
+        fn_1_10846C();
     }
 }
 /* fzgx:end fn_1_10B7D8 */
@@ -238,17 +236,17 @@ s32 fn_1_128B00(s16 value) {
 }
 /* fzgx:end fn_1_128B00 */
 
-/* fzgx:begin fn_1_128DD8 noprologue */
-#include "rel/main_rel/globals.h"
-
-extern u8 lbl_1_data_405C0[8];
-
+/* fzgx:begin fn_1_128DD8 */
 // Return the table index for a matching accessory value, or the first unused index.
 u8 fn_1_128DD8(u8 value) {
+    u8 *table;
     u8 index;
+    u8 entry;
 
+    table = (u8 *)&lbl_1_data_405C0;
     for (index = 0; index < 6; index++) {
-        if (lbl_1_data_405C0[index] == value) {
+        entry = table[index];
+        if (entry == value) {
             return index;
         }
     }
