@@ -574,6 +574,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     skip: set = set()                             # instruction indices consumed by the structure (the `b` of a then-block)
     i = -1
     gave_at: Optional[int] = None
+    gave_why = ""
     temps_written: List[Tuple[str, int]] = []
     carried: Dict[str, str] = {}     # register -> local name while inside a loop region
     loop_regions: List[Tuple[int, int, int]] = []  # (body_start, test_start, backbranch_index)
@@ -758,7 +759,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 in_loop.append((b_, t_, k_))
                 continue
             if mn == "b":
-                raise Give()  # an unconditional jump that no if/else or loop explained
+                raise Give("unexplained b")  # an unconditional jump that no if/else or loop explained
             if mn == "blr":
                 if i == len(ins) - 1 or not any(True for _ in ins[i + 1:]):
                     break
@@ -979,7 +980,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                     elif kind == "abs":
                         hit = symbol_at(key + o)
                         if hit is None:
-                            raise Give()  # hardware or unnamed memory: nothing the lint would accept
+                            raise Give(f"unnamed memory 0x{key + o:X}")  # hardware or unnamed memory: nothing the lint would accept
                         sd, so = hit
                         if so == 0 and sd.size <= 8:
                             declare(sd.name, t, far_ref=True); regs[a[0]] = ref(sd.name)
@@ -1284,7 +1285,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             if mn == "bl":
                 callee = a[0]
                 if lookup(callee) is None:
-                    raise Give()
+                    raise Give(f"unknown callee {callee}")
                 # arguments: r3..rN where N is the highest argument register set here; a lower
                 # register never written is a parameter of ours passed straight through
                 # an argument register counts only if this function wrote it since the last call
@@ -1368,6 +1369,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
             if not partial or (not isinstance(e, Give) and i < 0):
                 raise
             gave_at = i
+            gave_why = f"{type(e).__name__}: {str(e)[:60]}" if str(e) else type(e).__name__
             break
     if partial and gave_at is not None:
         left = len(ins) - gave_at
@@ -1375,7 +1377,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         # what the registers held at that point, for the reader: not code, the values are partial
         held = [f"/* {r_} = {e_} */" for r_, e_ in sorted(regs.items()) if e_ and not re.fullmatch(r"(arg\d+|v\d+|t\d+|\d+|0x[0-9A-Fa-f]+)", e_)]
         stmts.extend(held[:12])
-        stmts.append(f"/* NOT LIFTED from here: {left} instructions, starting `{nxt}` */")
+        stmts.append(f"/* NOT LIFTED from here: {left} instructions, starting `{nxt}`" + (f" ({gave_why})" if gave_why and not gave_why.startswith("Give") else "") + " */")
         regs.clear()
     for ln_, asg in pending_ptr.items():
         if any(re.search(rf"\b{re.escape(ln_)}\b", e) for e in regs.values()):
