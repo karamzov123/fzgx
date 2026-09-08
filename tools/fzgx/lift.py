@@ -1099,10 +1099,17 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
                 elif mn == "mullw": regs[d] = f"({use(a[1])} * {use(a[2])})"; rtype[d] = "s32"
                 elif mn == "neg": regs[d] = f"(-{use(a[1])})"; rtype[d] = "s32"
                 elif mn == "or": regs[d] = f"({use(a[1])} | {use(a[2])})"; rtype[d] = "u32"
-                elif mn == "and": regs[d] = f"({use(a[1])} & {use(a[2])})"; rtype[d] = "u32"
+                elif mn == "and":
+                    x_, y_ = use(a[1]), use(a[2])
+                    if rtype.get(a[1]) == "void *" or x_.startswith(("((u8 *)", "(u8 *)", "&")): x_ = f"(u32){x_}"
+                    if rtype.get(a[2]) == "void *" or y_.startswith(("((u8 *)", "(u8 *)", "&")): y_ = f"(u32){y_}"
+                    regs[d] = f"({x_} & {y_})"; rtype[d] = "u32"
                 elif mn == "xor": regs[d] = f"({use(a[1])} ^ {use(a[2])})"; rtype[d] = "u32"
                 elif mn == "ori": regs[d] = f"({use(a[1])} | {_imm(a[2])})"; rtype[d] = "u32"
-                elif mn == "andi.": regs[d] = f"({use(a[1])} & {_imm(a[2])})"; rtype[d] = "u32"
+                elif mn == "andi.":
+                    x_ = use(a[1])
+                    if rtype.get(a[1]) == "void *" or x_.startswith(("((u8 *)", "(u8 *)", "&")): x_ = f"(u32){x_}"
+                    regs[d] = f"({x_} & {_imm(a[2])})"; rtype[d] = "u32"
                 elif mn == "not": regs[d] = f"(~{use(a[1])})"; rtype[d] = "u32"
                 elif mn == "rlwinm":
                     sh, mb, me = _imm(a[2]), _imm(a[3]), _imm(a[4])
@@ -1467,6 +1474,8 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
     for f in fnames:
         body = [re.sub(rf"(= ){re.escape(f)}(?=;)", rf"\1(u32){f}", b) for b in body]
     if ret is not None:
+        if ret.startswith(("&", "((u8 *)", "(u8 *)", "(struct ")):
+            ret = f"(u32){ret}"  # an address returned as an integer
         body.append(f"return {ret};")
     if not partial and (any(("__MULHU__" in b or "__I2D__" in b or "__XORIS__" in b or "__FCTIWZ__" in b) for b in body) or (ret and any(x in ret for x in ("__MULHU__", "__I2D__", "__XORIS__", "__FCTIWZ__")))):
         raise Give()
@@ -1554,7 +1563,7 @@ def _lift(p: Project, module: str, name: str, ins, layout: str = "reverse", site
         sname = f"{name}_{g}"
         body = [b.replace(f"struct {sname} *", "u8 *").replace(f"(struct {sname} *)", "(u8 *)") for b in body]
     ptr_names = [f"arg{i}" for i, r in enumerate(params) if r in fields] + [ln for ln in locals_ if ln.startswith("p_")] + list(pfields)
-    decl_line = re.compile(r"^\s*(struct\s+\w+\s*\*+|[A-Za-z_]\w*\s*\*+|[A-Za-z_]\w*\s+)\s*[A-Za-z_]\w*(\[[^\]]*\])*;$")
+    decl_line = re.compile(r"^\s*(?!return\b)(struct\s+\w+\s*\*+|[A-Za-z_]\w*\s*\*+|[A-Za-z_]\w*\s+)\s*[A-Za-z_]\w*(\[[^\]]*\])*;$")
     for pn in ptr_names:
         body = [re.sub(rf"(?<![\w>.*])({re.escape(pn)})\b(?!\s*->|\s*=\s*\(struct)", r"(u32)\1", b)
                 if not (b.startswith(f"{pn} = ") or decl_line.match(b)) else b for b in body]
