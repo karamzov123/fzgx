@@ -260,7 +260,11 @@ def fan_out(p: Project, a, model: str, symbols: List[str], batch: str, revise: b
 
 def finish_round(p: Project, a, model: str, module: str) -> Dict:
     """The TU-finish pass, a revise round on its queue, the pass again. No hands."""
-    from fzgx import finish  # scoped: only when --finish is used
+    from fzgx import finish, lab  # scoped: only when --finish is used
+    # deterministic passes first: the fixup sweep over this module's plateaus, then the lab
+    sw = api.sweep_attempts(p, module, 85.0, 1000)
+    lb = lab.run(p, 97.0, 400, submit=True)
+    print(f"sweep {module}: {len(sw.get('submitted', []))} submitted, {len(sw.get('pool', []))} pool, {len(sw.get('fixed', []))} fixed; lab: {len(lb.get('matched', []))} matched", flush=True)
     from fzgx.ledger import Ledger  # scoped: same
     out = {"passes": [], "revise": None}
     r = finish.finish(p, module)
@@ -336,7 +340,9 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 0
     if not a.no_trivial and not a.shadow and not a.revise:
         triv = trivial.apply(p)
-        print(f"trivial pass: {triv.get('applied', 0)} matched mechanically")
+        from fzgx import lift  # scoped: the lifter needs the build tree, not the harness
+        lifted = lift.apply(p, [a.module] if a.module else None, 400)
+        print(f"trivial pass: {triv.get('applied', 0)} matched mechanically; lifter: {lifted.get('submitted', 0)} submitted of {lifted.get('lifted', 0)} lifted", flush=True)
     # nothing is carved up front: a unit exists only once a function matches (submit carves it)
 
     t0 = time.time()
