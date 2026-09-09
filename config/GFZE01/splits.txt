@@ -2014,3 +2014,6 @@ dol/fn_80058630.c:
 
 dol/fn_80058680.c:
 	.text       start:0x80058680 end:0x800586E4 align:4
+
+dol/fn_8004BD5C.c:
+	.text       start:0x8004BD5C end:0x8004BD9C align:4
