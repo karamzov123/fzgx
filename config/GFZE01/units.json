@@ -6676,6 +6676,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80058630.c",
+    "symbols": [
+      "fn_80058630"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_800586E4.c",
     "symbols": [
       "fn_800586E4"
