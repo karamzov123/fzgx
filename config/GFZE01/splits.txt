@@ -2002,3 +2002,6 @@ dol/fn_80058ED4.c:
 
 dol/fn_8004AE94.c:
 	.text       start:0x8004AE94 end:0x8004AEE4 align:4
+
+dol/fn_80053A38.c:
+	.text       start:0x80053A38 end:0x80053A84 align:4
