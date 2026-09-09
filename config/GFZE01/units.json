@@ -2356,6 +2356,16 @@
   },
   {
     "module": "main",
+    "source": "dol/__DVDClearWaitingQueue.c",
+    "symbols": [
+      "__DVDClearWaitingQueue"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.2.5n",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/__DVDDequeueWaitingQueue.c",
     "symbols": [
       "__DVDDequeueWaitingQueue"
