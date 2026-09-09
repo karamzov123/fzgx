@@ -1972,3 +1972,6 @@ dol/OSIsThreadTerminated.c:
 
 dol/TRKGetBuffer.c:
 	.text       start:0x80089218 end:0x80089244 align:4
+
+dol/memchr.c:
+	.text       start:0x800802B4 end:0x800802E0 align:4
