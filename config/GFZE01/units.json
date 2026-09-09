@@ -2516,6 +2516,16 @@
   },
   {
     "module": "main",
+    "source": "dol/__memrchr.c",
+    "symbols": [
+      "__memrchr"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.2.5n",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/__prep_buffer.c",
     "symbols": [
       "__prep_buffer"
