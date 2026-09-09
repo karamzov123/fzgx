@@ -4799,3 +4799,9 @@ rel/main_rel/game/fn_1_3F1AC.c:
 
 rel/main_rel/archive/fn_1_131084.c:
 	.text       start:0x00131084 end:0x001310B8 align:4
+
+rel/main_rel/game/fn_1_40EE4.c:
+	.text       start:0x00040EE4 end:0x00040F34 align:4
+
+rel/main_rel/bg_tow/fn_1_1547FC.c:
+	.text       start:0x001547FC end:0x001548A8 align:4

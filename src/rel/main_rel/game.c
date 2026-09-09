@@ -880,6 +880,16 @@ u8 fn_1_40ED4(void) {
 }
 /* fzgx:end fn_1_40ED4 */
 
+/* fzgx:begin fn_1_40EE4 */
+extern u32 GXGetTexBufferSize(u32, u32, u32, u32, u32);
+extern u8 lbl_1_bss_3820C;
+
+u32 fn_1_40EE4(void) {
+    u32 t0;
+    return (((lbl_1_bss_3820C * (((GXGetTexBufferSize(320, 224, 1, 0, 0)) + 31) & ~0x1F)) + 0xF20000) + 16384);
+}
+/* fzgx:end fn_1_40EE4 */
+
 /* fzgx:begin fn_1_40F34 */
 u32 fn_1_40F34(void) {
     return lbl_1_bss_26B4C;

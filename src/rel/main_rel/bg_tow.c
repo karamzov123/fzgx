@@ -60,6 +60,78 @@ void fn_1_154708(u32 arg0) {
 }
 /* fzgx:end fn_1_154708 */
 
+/* fzgx:begin fn_1_1547FC noprologue */
+#include "types.h"
+
+struct fn_1_1547FC_lbl_1_data_49A18 {
+    u8 pad_0[0x90];
+    u32 unk_90;
+    u32 unk_94;
+    u32 unk_98;
+    u32 unk_9C;
+};
+struct fn_1_1547FC_lbl_1_bss_8ED90 {
+    u32 unk_0;
+    u32 unk_4;
+    u8 pad_8[0x4];
+    u32 unk_C;
+};
+
+extern struct fn_1_1547FC_lbl_1_bss_8ED90 lbl_1_bss_8ED90;
+extern struct fn_1_1547FC_lbl_1_data_49A18 lbl_1_data_49A18;
+extern u32 fn_1_426C(u32);
+extern u32 fn_1_435C(u32);
+extern u32 fn_1_46B4(u32, u32, u32, u32);
+extern u32 fn_1_B9C0C(void);
+extern u32 lbl_801A6410;
+
+s32 fn_1_1547FC(u32 arg0, u32 arg1, u32 arg2, u32 arg3) {
+    struct fn_1_1547FC_lbl_1_data_49A18 *p_lbl_1_data_49A18;
+    struct fn_1_1547FC_lbl_1_bss_8ED90 *p_lbl_1_bss_8ED90;
+    u32 v0;
+    u32 v1;
+    u32 v2;
+    u32 v3;
+    u32 v4;
+    s32 v5;
+    u32 t0, t1, t2, t3;
+    p_lbl_1_bss_8ED90 = (struct fn_1_1547FC_lbl_1_bss_8ED90 *)&lbl_1_bss_8ED90;
+    p_lbl_1_data_49A18 = &lbl_1_data_49A18;
+    t0 = fn_1_B9C0C();
+    v0 = p_lbl_1_bss_8ED90->unk_0;
+    v1 = t0;
+    v2 = arg2;
+    v3 = arg3;
+    if (v0 != 0) {
+    v2 = (u32)((u8 *)(u32)p_lbl_1_data_49A18 + 176);
+    v1 = (u32)&lbl_801A6410;
+    v3 = 115;
+    v1 = *(u32 *)((u8 *)v1 + 0);
+    t1 = fn_1_46B4(v1, v0, (u32)v2, v3);
+    v1 = t1;
+    p_lbl_1_bss_8ED90->unk_0 = 0;
+    p_lbl_1_bss_8ED90->unk_4 = 0;
+    }
+    v4 = p_lbl_1_data_49A18->unk_90;
+    p_lbl_1_data_49A18->unk_94 = -1;
+    p_lbl_1_data_49A18->unk_98 = -1;
+    p_lbl_1_data_49A18->unk_9C = -1;
+    v5 = -1;
+    if ((s32)v4 != -1) {
+    v5 = p_lbl_1_bss_8ED90->unk_C;
+    t2 = fn_1_435C(v5);
+    v5 = t2;
+    v5 = p_lbl_1_data_49A18->unk_90;
+    t3 = fn_1_426C(v5);
+    v5 = t3;
+    v5 = 0;
+    p_lbl_1_bss_8ED90->unk_C = v5;
+    p_lbl_1_data_49A18->unk_90 = -1;
+    }
+    return v5;
+}
+/* fzgx:end fn_1_1547FC */
+
 /* fzgx:begin fn_1_1548A8 */
 #include "types.h"
 

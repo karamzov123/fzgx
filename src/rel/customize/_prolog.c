@@ -167,6 +167,102 @@ void fn_3_33A0(void) {
 }
 /* fzgx:end fn_3_33A0 */
 
+/* fzgx:begin fn_3_368C */
+struct fn_3_368C_lbl_3_data_0 {
+    u8 pad_0[0xB8];
+    u32 unk_B8;
+};
+struct fn_3_368C_lbl_3_bss_0 {
+    u8 pad_0[0xF0];
+    u32 unk_F0;
+    u8 pad_F4[0x2C];
+    u32 unk_120;
+};
+
+extern struct fn_3_368C_lbl_3_bss_0 lbl_3_bss_0;
+extern struct fn_3_368C_lbl_3_data_0 lbl_3_data_0;
+extern u32 fn_1_130EE8(u32, u32);
+extern u32 fn_1_3F8C(u32, u32, u32, u32);
+extern u32 fn_1_47F74(u32);
+extern u32 fn_3_4218(void);
+extern u32 fn_3_4C58(void);
+extern u32 fn_3_7CF8(void);
+extern u32 fn_3_9800(void);
+extern void fn_3_255DC(void);
+extern void fn_3_273F4(void);
+extern void fn_3_29508(void);
+extern void fn_3_29C94(void);
+extern void fn_3_2AAF4(void);
+
+u32 fn_3_368C(void) {
+    struct fn_3_368C_lbl_3_data_0 *p_lbl_3_data_0;
+    struct fn_3_368C_lbl_3_bss_0 *p_lbl_3_bss_0;
+    u32 v0;
+    u32 v1;
+    u32 v2;
+    u32 v3;
+    u32 t1, t2, t3, t4, t5, t6, t7, t8, t9, t10;
+    p_lbl_3_bss_0 = (struct fn_3_368C_lbl_3_bss_0 *)&lbl_3_bss_0;
+    p_lbl_3_data_0 = &lbl_3_data_0;
+    v0 = ((u32)p_lbl_3_bss_0 + 0x20000);
+    *(u8 *)((u8 *)v0 + 17316) = 0;
+    v1 = *(u32 *)((u8 *)v0 + 2124);
+    *(u32 *)((u8 *)v0 + 17312) = 0;
+    fn_1_130EE8(v1, *(u32 *)((u8 *)v0 + 2128));
+    v2 = p_lbl_3_bss_0->unk_F0;
+    p_lbl_3_bss_0->unk_120 = -1;
+    v3 = v2;
+    if ((v2 & 0x40000000) != 0 && (s32)p_lbl_3_data_0->unk_B8 == -1) {
+    t1 = fn_3_7CF8();
+    v3 = t1;
+    v3 = (u32)((u8 *)(u32)p_lbl_3_data_0 + 5736);
+    t2 = fn_1_3F8C((u32)v3, (u32)fn_3_255DC, 0, 8);
+    v3 = t2;
+    p_lbl_3_data_0->unk_B8 = v3;
+    } else {
+    if ((v3 & 0x20000000) != 0 && (s32)p_lbl_3_data_0->unk_B8 == -1) {
+    t3 = fn_3_9800();
+    v3 = t3;
+    v3 = (u32)((u8 *)(u32)p_lbl_3_data_0 + 5752);
+    t4 = fn_1_3F8C((u32)v3, (u32)fn_3_273F4, 0, 8);
+    v3 = t4;
+    p_lbl_3_data_0->unk_B8 = v3;
+    } else {
+    if ((v3 & 0x10000000) != 0 && (s32)p_lbl_3_data_0->unk_B8 == -1) {
+    t5 = fn_3_4218();
+    v3 = t5;
+    v3 = (u32)((u8 *)(u32)p_lbl_3_data_0 + 5768);
+    t6 = fn_1_3F8C((u32)v3, (u32)fn_3_29508, 0, 8);
+    v3 = t6;
+    p_lbl_3_data_0->unk_B8 = v3;
+    } else {
+    if ((v3 & 0x8000000) == 0 || (s32)p_lbl_3_data_0->unk_B8 != -1) {
+    if ((v3 & 0x4000000) != 0 && (s32)p_lbl_3_data_0->unk_B8 == -1) {
+    t7 = fn_3_4C58();
+    v3 = t7;
+    v3 = (u32)((u8 *)(u32)p_lbl_3_data_0 + 5784);
+    t8 = fn_1_3F8C((u32)v3, (u32)fn_3_29C94, 0, 8);
+    v3 = t8;
+    p_lbl_3_data_0->unk_B8 = v3;
+    } else {
+    if ((v3 & 0x1000000) != 0 && (s32)p_lbl_3_data_0->unk_B8 == -1) {
+    v3 = 163;
+    t9 = fn_1_47F74(v3);
+    v3 = t9;
+    v3 = (u32)((u8 *)(u32)p_lbl_3_data_0 + 5800);
+    t10 = fn_1_3F8C((u32)v3, (u32)fn_3_2AAF4, 0, 8);
+    v3 = t10;
+    p_lbl_3_data_0->unk_B8 = v3;
+    }
+    }
+    }
+    }
+    }
+    }
+    return v3;
+}
+/* fzgx:end fn_3_368C */
+
 /* fzgx:begin fn_3_3E58 */
 extern struct fn_3_3E58_lbl_3_bss_20850 lbl_3_bss_20850;
 extern struct fn_3_3E58_lbl_3_data_0 lbl_3_data_0;
