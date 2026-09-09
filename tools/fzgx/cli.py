@@ -404,7 +404,10 @@ def cmd_spell(a, p):
         if r.get("body") and a.out:
             Path(a.out).write_text(r["body"]); print(f"wrote {a.out}")
         return 0 if r.get("matched") else 1
-    out = spell.run_drafts(p, a.min_percent, a.max_percent, a.limit, a.workers, a.budget, submit=not a.no_submit)
+    if a.attempts:
+        out = spell.run_attempts(p, a.min_percent, a.limit, a.workers, a.budget, submit=not a.no_submit, module=a.module)
+    else:
+        out = spell.run_drafts(p, a.min_percent, a.max_percent, a.limit, a.workers, a.budget, submit=not a.no_submit)
     print(f"{out['drafts']} drafts, {len(out['matched'])} matched, {out['improved']} improved, {out['candidates']} candidates, {out['secs']} s; families: {out['families']}")
     for s_, pct, path in out["matched"]:
         print(f"  {s_:20s} {pct:5.1f} {' + '.join(path)[:100]}")
@@ -457,6 +460,7 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("symbol", nargs="?"); s.add_argument("--body"); s.add_argument("--out"); s.add_argument("--budget", type=float, default=10.0)
     s.add_argument("--min-percent", type=float, default=0.0); s.add_argument("--max-percent", type=float, default=100.0)
     s.add_argument("--limit", type=int, default=5000); s.add_argument("--workers", type=int, default=3); s.add_argument("--no-submit", action="store_true")
+    s.add_argument("--attempts", action="store_true", help="search the agents' saved plateau bodies instead of the lifter drafts"); s.add_argument("--module")
     s = sub.add_parser("exemplars", help="mine (plateau -> match) edit pairs from the check history"); s.set_defaults(fn=cmd_exemplars)
     s = sub.add_parser("check", help="compile + objdiff one function"); s.set_defaults(fn=cmd_check)
     s.add_argument("symbol"); s.add_argument("--max-diff-lines", type=int, default=80)
