@@ -2020,3 +2020,6 @@ dol/fn_8004BD5C.c:
 
 dol/fn_80056C20.c:
 	.text       start:0x80056C20 end:0x80056C64 align:4
+
+dol/fn_8005870C.c:
+	.text       start:0x8005870C end:0x80058754 align:4
