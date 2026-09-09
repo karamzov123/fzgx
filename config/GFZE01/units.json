@@ -6526,6 +6526,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80057D88.c",
+    "symbols": [
+      "fn_80057D88"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.2.5n",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80057DA0.c",
     "symbols": [
       "fn_80057DA0"

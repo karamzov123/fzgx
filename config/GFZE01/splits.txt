@@ -1981,3 +1981,6 @@ dol/strchr.c:
 
 dol/__memrchr.c:
 	.text       start:0x80080288 end:0x800802B4 align:4
+
+dol/fn_80057D88.c:
+	.text       start:0x80057D88 end:0x80057DA0 align:4
