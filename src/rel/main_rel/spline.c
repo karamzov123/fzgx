@@ -988,6 +988,21 @@ u32 fn_1_FA0A0(void) {
 }
 /* fzgx:end fn_1_FA0A0 */
 
+/* fzgx:begin fn_1_FA154 */
+void fn_1_FA154(u32 byte_index, u32 bit_index) {
+    u32 index;
+    u32 ptr;
+    u32 bit;
+    u32 addr;
+    index = byte_index & 0xff;
+    ptr = lbl_1_bss_84420;
+    bit = bit_index & 0xff;
+    addr = ptr;
+    addr = addr + index;
+    *(u8 *)(3 + addr) |= 1 << bit;
+}
+/* fzgx:end fn_1_FA154 */
+
 /* fzgx:begin fn_1_FA1A8 noprologue */
 #include "types.h"
 

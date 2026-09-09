@@ -244,6 +244,44 @@ void fn_1_80270(void *arg0, void *arg1) {
 }
 /* fzgx:end fn_1_80270 */
 
+/* fzgx:begin fn_1_80C18 noprologue */
+#include "types.h"
+#include "rel/main_rel/car.h"
+
+extern void fn_1_12AB38(void *arg0);
+extern void *fn_1_12AC00(void *arg0);
+extern void fn_1_80294(void *arg0, void *arg1, s32 arg2);
+
+void fn_1_80C18(u8 *arg0, u8 *arg1, s8 arg2) {
+    u8 *data;
+    u8 *p0;
+    u8 *p1;
+    s8 i;
+    s8 count;
+
+    data = (u8 *)&lbl_1_data_1F1D8;
+    fn_1_12AB38(data + 0xe0c);
+    p0 = arg0;
+    p1 = arg1;
+    if (lbl_1_bss_6D82C.unk_0 == 0) {
+        lbl_1_bss_6D82C.unk_0 = (u32)fn_1_12AC00(data + 0x140c);
+    }
+
+    i = 0;
+    while (i < (arg2)) {
+        if (p0 == 0) {
+            break;
+        }
+        fn_1_80294(p1, p0, 0);
+        p0 += 0x440;
+        p1 += 0x20;
+        i++;
+    }
+
+    fn_1_12AB38(data + 0xe20);
+}
+/* fzgx:end fn_1_80C18 */
+
 /* fzgx:begin fn_1_80F1C */
 void fn_1_80F1C(s32 arg0, void *arg1) {
     fn_1_7F658(arg1);

@@ -1426,12 +1426,143 @@ void fn_1_563B8(u32 value) {
 }
 /* fzgx:end fn_1_563B8 */
 
+/* fzgx:begin fn_1_563E4 noprologue */
+#include "types.h"
+
+typedef struct FontState {
+    u8 pad_00[8];
+    f32 scale;
+    u8 pad_0C[6];
+    u8 enabled;
+    u8 color;
+    u32 value;
+    f32 x;
+    f32 y;
+    u8 pad_20[4];
+    u32 state;
+} FontState;
+
+extern void fn_80077B04(f32 scale);
+extern void fn_80074918(u8 a, u8 b, u8 c);
+extern void fn_80071ED4(u8 value, f32 x, f32 y);
+extern void fn_80072014(u32 *value);
+extern void fn_800720B0(u32 value);
+
+void fn_1_563E4(FontState *font) {
+    u32 value;
+    u32 lab_t0;
+    u32 lab_t2;
+
+    fn_80077B04(font->scale);
+    lab_t0 = font->pad_0C[0];
+    lab_t2 = font->pad_0C[2];
+    fn_80074918(lab_t0, font->pad_0C[1], lab_t2);
+    if (font->state == 0) {
+        if (font->enabled != 0) {
+            fn_80071ED4(font->color, font->x, font->y);
+            value = font->value;
+            fn_80072014(&value);
+            fn_800720B0(1);
+        } else {
+            fn_800720B0(0);
+        }
+    }
+}
+/* fzgx:end fn_1_563E4 */
+
+/* fzgx:begin fn_1_56470 noprologue */
+#include "types.h"
+
+typedef struct FontState {
+    u8 unk_00[4];
+    void *unk_04;
+    f32 unk_08;
+    s8 unk_0C;
+    u8 unk_0D;
+    s8 unk_0E;
+    u8 unk_0F;
+    u8 unk_10;
+    u8 unk_11;
+    u8 unk_12;
+    u8 unk_13;
+    u32 unk_14;
+    f32 unk_18;
+    f32 unk_1C;
+    u32 unk_20;
+    u32 unk_24;
+} FontState;
+
+extern void fn_80077B04(FontState *state, f32 value);
+extern void fn_80074B40(FontState *state);
+extern void fn_80074C74(void *value);
+extern void fn_80074918(u8 a, u8 b, u8 c);
+extern void fn_80077BBC(u8 value);
+extern void fn_80037D40(u8 a, u8 b);
+extern void fn_80074A7C(u32 value);
+extern void fn_80077BAC(u32 value);
+extern void fn_80071ED4(u8 value, f32 a, f32 b);
+extern void fn_80072014(void *value);
+extern void fn_800720B0(u32 value);
+
+void fn_1_56470(FontState *state) {
+    u32 value;
+
+    fn_80077B04(state, state->unk_08);
+    fn_80074B40(state);
+    fn_80074C74(&state->unk_04);
+    fn_80074918(state->unk_0C, state->unk_0D, state->unk_0E);
+    fn_80077BBC(state->unk_0F);
+    fn_80037D40(state->unk_10, state->unk_11);
+    fn_80074A7C(state->unk_20);
+    fn_80077BAC(state->unk_24);
+    if (state->unk_24 == 0) {
+        if (state->unk_12 != 0) {
+            fn_80071ED4(state->unk_13, state->unk_18, state->unk_1C);
+            value = state->unk_14;
+            fn_80072014(&value);
+            fn_800720B0(1);
+        } else {
+            fn_800720B0(0);
+        }
+    }
+}
+/* fzgx:end fn_1_56470 */
+
 /* fzgx:begin fn_1_56530 */
 void fn_1_56530(void) {
     lbl_1_bss_6C7A0 = lbl_1_rodata_28A8;
     lbl_1_bss_6C7A4.unk_8 = lbl_1_rodata_28A8;
 }
 /* fzgx:end fn_1_56530 */
+
+/* fzgx:begin fn_1_56554 noprologue */
+#include "types.h"
+#include "rel/main_rel/font.h"
+
+extern void fn_80074B40(void *value);
+extern void fn_80074C74(void *value);
+extern void fn_80074918(u8 value0, u8 value1, u8 value2);
+extern void fn_80077BBC(u8 value);
+extern void fn_80037D40(u8 value0, u8 value1);
+extern void fn_80074A7C(u32 value);
+extern void fn_80077BAC(u32 value);
+
+void fn_1_56554(void) {
+    u32 lab_t0;
+    u32 lab_t2;
+    Obj_1_bss_6C7A4 *font = &lbl_1_bss_6C7A4;
+
+    fn_80074B40(font);
+    fn_80074C74(&font->unk_4);
+    lab_t0 = font->unk_C;
+    lab_t2 = font->unk_E;
+    fn_80074918(lab_t0, font->unk_D, lab_t2);
+    fn_80077BBC(font->unk_F);
+    fn_80037D40(font->unk_10, font->unk_11);
+    fn_80074A7C(font->unk_20);
+    fn_80077BAC(font->unk_24);
+}
+/* fzgx:end fn_1_56554 */
 
 /* fzgx:begin fn_1_565E8 */
 // Return the font data buffer used by the font subsystem.

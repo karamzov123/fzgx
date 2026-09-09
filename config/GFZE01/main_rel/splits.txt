@@ -4805,3 +4805,24 @@ rel/main_rel/game/fn_1_40EE4.c:
 
 rel/main_rel/bg_tow/fn_1_1547FC.c:
 	.text       start:0x001547FC end:0x001548A8 align:4
+
+rel/main_rel/face/fn_1_D3020.c:
+	.text       start:0x000D3020 end:0x000D3144 align:4
+
+rel/main_rel/rep_memcard/fn_1_154FD8.c:
+	.text       start:0x00154FD8 end:0x00155120 align:4
+
+rel/main_rel/font/fn_1_56470.c:
+	.text       start:0x00056470 end:0x00056530 align:4
+
+rel/main_rel/font/fn_1_563E4.c:
+	.text       start:0x000563E4 end:0x00056470 align:4
+
+rel/main_rel/font/fn_1_56554.c:
+	.text       start:0x00056554 end:0x000565E8 align:4
+
+rel/main_rel/spline/fn_1_FA154.c:
+	.text       start:0x000FA154 end:0x000FA180 align:4
+
+rel/main_rel/car/fn_1_80C18.c:
+	.text       start:0x00080C18 end:0x00080CC4 align:4

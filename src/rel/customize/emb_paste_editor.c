@@ -3,6 +3,28 @@ extern u8 lbl_3_bss_8F200[];
 extern void fn_1_FC414(void *, int);
 extern u8 lbl_3_bss_A1778[12];
 
+/* fzgx:begin fn_3_11930 */
+extern u16 lbl_3_bss_7EDD8[52];
+
+struct PasteEntry {
+    u8 pad[0x2c];
+    int active;
+};
+
+int fn_3_11930(void) {
+    u8 i;
+    u8 * base;
+
+    for (i = 0; i < 4; i++) {
+        struct PasteEntry *entry = (struct PasteEntry *)(((u8 *)lbl_3_bss_7EDD8) + i * 4);
+        if (entry->active != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+/* fzgx:end fn_3_11930 */
+
 /* fzgx:begin fn_3_11974 */
 extern u16 lbl_3_bss_7EDD8[52];
 

@@ -170,6 +170,77 @@ u32 fn_1_D2FB0(void) {
 }
 /* fzgx:end fn_1_D2FB0 */
 
+/* fzgx:begin fn_1_D3020 noprologue */
+#include "types.h"
+
+typedef struct LocalData {
+    u8 unk_0[0x34];
+    u32 size;
+} LocalData;
+
+typedef struct Output {
+    void* data;
+    void* aux;
+} Output;
+
+typedef struct Allocated {
+    u8 unk_0[0x20];
+    u32 size;
+    u8 unk_24[0x10];
+    void (*init)(void);
+} Allocated;
+
+extern u32 lbl_801A6CE0;
+extern u32 lbl_801A6CFC;
+extern char lbl_1_data_3DB58[51];
+extern char lbl_1_data_3DB8C[51];
+
+extern int fn_80017160(void*, LocalData*);
+extern void* fn_1_48E8(u32, u32);
+extern int fn_80006354(LocalData*, void*, u32, u32);
+extern void OSLink(void*, void*);
+extern void DVDClose(LocalData*);
+extern void OSReport(char*, ...);
+
+void fn_1_D3020(void* unused, Output* output) {
+    LocalData local;
+    Allocated* object;
+    s32 size;
+
+    if ((lbl_801A6CE0 & 0x8) == 0) {
+        return;
+    }
+    output->data = 0;
+    output->aux = 0;
+    if (fn_80017160(unused, &local) == 0) {
+        return;
+    }
+    size = (local.size + 0x1f) & ~0x1f;
+    if (lbl_801A6CFC < 0x82000000) {
+        object = fn_1_48E8(size, 0x20);
+        output->data = object;
+    } else {
+        OSReport(lbl_1_data_3DB58);
+        return;
+    }
+    if (fn_80006354(&local, output->data, size, 0) != 0) {
+        object = output->data;
+        size = 0x20;
+        if (object->size != 0) {
+            size = object->size;
+        }
+        output->aux = fn_1_48E8(size, 0x20);
+        OSLink(output->data, output->aux);
+        object = output->data;
+        object->init();
+    } else {
+        OSReport(lbl_1_data_3DB8C);
+        output->data = 0;
+    }
+    DVDClose(&local);
+}
+/* fzgx:end fn_1_D3020 */
+
 /* fzgx:begin fn_1_D3144 */
 // fn_1_D3144: Conditionally call function pointer from BSS
 void fn_1_D3144(void) {

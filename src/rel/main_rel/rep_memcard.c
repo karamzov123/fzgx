@@ -156,3 +156,53 @@ void fn_1_154FC0(void) {
     lbl_1_bss_8EDF0.unk_8 &= ~4;
 }
 /* fzgx:end fn_1_154FC0 */
+
+/* fzgx:begin fn_1_154FD8 */
+extern void fn_1_155120(void);
+extern const f64 lbl_1_rodata_D5A8;
+extern void fn_1_496FC(f32, f32);
+extern void fn_1_4955C(f32, f32);
+extern void fn_1_495FC(void);
+extern f32 fn_1_4B090(void *);
+extern int fn_1_4B16C(void *);
+extern const f32 lbl_1_rodata_D5A0;
+extern void fn_1_4966C(f32, f32);
+extern int fn_1_FA638(void);
+extern void fn_1_4AF64(void *, ...);
+extern void fn_1_49614(void);
+
+void fn_1_154FD8(void) {
+    Obj_1_bss_8EDF0 *obj;
+    f32 value;
+    f32 ratio;
+    int count;
+
+    obj = &lbl_1_bss_8EDF0;
+    if ((obj->unk_8 & 1) == 0) {
+        obj->unk_0++;
+        if ((s32)obj->unk_4 != 0) {
+            obj->unk_4--;
+        }
+    }
+
+    if ((s32)obj->unk_4 <= 0) {
+        if (((s32)obj->unk_0 % (s32)obj->unk_30) == 0) {
+            fn_1_155120();
+        }
+    }
+
+    fn_1_496FC((f32)(s32)obj->unk_20, (f32)(s32)obj->unk_24);
+    fn_1_4955C(obj->unk_28, obj->unk_28);
+    fn_1_495FC();
+
+    value = fn_1_4B090(&obj->unk_34);
+    ratio = value / (f32)(fn_1_4B16C(&obj->unk_34));
+    fn_1_4966C(lbl_1_rodata_D5A0, ratio * obj->unk_2C);
+
+    if (fn_1_FA638() != 0) {
+        fn_1_4AF64(&obj->unk_34);
+    }
+
+    fn_1_49614();
+}
+/* fzgx:end fn_1_154FD8 */
