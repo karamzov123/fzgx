@@ -5696,6 +5696,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_8004BED0.c",
+    "symbols": [
+      "fn_8004BED0"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8004BF0C.c",
     "symbols": [
       "fn_8004BF0C"
