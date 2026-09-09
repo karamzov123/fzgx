@@ -7486,6 +7486,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80077BBC.c",
+    "symbols": [
+      "fn_80077BBC"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.2.5n",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80077E0C.c",
     "symbols": [
       "fn_80077E0C"
