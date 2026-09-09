@@ -1987,3 +1987,6 @@ dol/fn_80057D88.c:
 
 dol/fn_80026DB8.c:
 	.text       start:0x80026DB8 end:0x80026DD4 align:4
+
+dol/fn_8004E9A8.c:
+	.text       start:0x8004E9A8 end:0x8004E9D8 align:4
