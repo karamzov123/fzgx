@@ -2046,6 +2046,16 @@
   },
   {
     "module": "main",
+    "source": "dol/OSIsThreadTerminated.c",
+    "symbols": [
+      "OSIsThreadTerminated"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.2.5n",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/OSLink.c",
     "symbols": [
       "OSLink"

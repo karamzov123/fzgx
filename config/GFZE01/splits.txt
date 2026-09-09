@@ -1966,3 +1966,6 @@ dol/fn_80077BBC.c:
 
 dol/fn_800433D0.c:
 	.text       start:0x800433D0 end:0x800433F4 align:4
+
+dol/OSIsThreadTerminated.c:
+	.text       start:0x800102B8 end:0x800102EC align:4
