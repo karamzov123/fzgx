@@ -8136,6 +8136,16 @@
   },
   {
     "module": "main",
+    "source": "dol/strchr.c",
+    "symbols": [
+      "strchr"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.2.5n",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/strlen.c",
     "symbols": [
       "strlen"

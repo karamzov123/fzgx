@@ -1975,3 +1975,6 @@ dol/TRKGetBuffer.c:
 
 dol/memchr.c:
 	.text       start:0x800802B4 end:0x800802E0 align:4
+
+dol/strchr.c:
+	.text       start:0x80083B5C end:0x80083B8C align:4
