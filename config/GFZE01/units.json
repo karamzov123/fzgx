@@ -5546,6 +5546,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_8004AE94.c",
+    "symbols": [
+      "fn_8004AE94"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8004AEE4.c",
     "symbols": [
       "fn_8004AEE4"

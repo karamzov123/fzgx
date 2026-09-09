@@ -1999,3 +1999,6 @@ dol/fn_80058EE4.c:
 
 dol/fn_80058ED4.c:
 	.text       start:0x80058ED4 end:0x80058EE4 align:4
+
+dol/fn_8004AE94.c:
+	.text       start:0x8004AE94 end:0x8004AEE4 align:4
