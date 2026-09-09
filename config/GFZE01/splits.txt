@@ -1969,3 +1969,6 @@ dol/fn_800433D0.c:
 
 dol/OSIsThreadTerminated.c:
 	.text       start:0x800102B8 end:0x800102EC align:4
+
+dol/TRKGetBuffer.c:
+	.text       start:0x80089218 end:0x80089244 align:4

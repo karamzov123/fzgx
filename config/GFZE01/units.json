@@ -2166,6 +2166,16 @@
   },
   {
     "module": "main",
+    "source": "dol/TRKGetBuffer.c",
+    "symbols": [
+      "TRKGetBuffer"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.2.5n",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/TRKInitializeDispatcher.c",
     "symbols": [
       "TRKInitializeDispatcher"
