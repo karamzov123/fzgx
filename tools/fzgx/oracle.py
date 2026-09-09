@@ -408,29 +408,19 @@ def compile_many(project: Project, module: str, sources: List[Path], out_dir: Pa
     out: Dict[Path, Path] = {}
     # mwcc names each object after its source in the -o directory; sources must have distinct stems
     base_cmd = [str(ROOT / "build" / "tools" / "wibo"), str(ROOT / "build" / "compilers" / mw / "mwcceppc.exe")]
-    base_cmd += shlex.split(flags) + ["-c", "-o", str(out_dir)]
+    # -nofail: a source that fails to compile is skipped and the rest of the batch still compiles
+    base_cmd += shlex.split(flags) + ["-nofail", "-c", "-o", str(out_dir)]
     for o in (out_dir / (s.stem + ".o") for s in sources):
         o.unlink(missing_ok=True)
 
     def one_chunk(chunk: List[Path]) -> None:
-        # mwcc stops at the first source that fails: the sources before it are done, the failing
-        # one is skipped, and the rest go into the next invocation
-        todo = list(chunk)
-        while todo:
-            subprocess.run(base_cmd + [str(s) for s in todo], cwd=ROOT, text=True, capture_output=True, timeout=600)
-            k = None
-            for i, s_ in enumerate(todo):
-                if not (out_dir / (s_.stem + ".o")).exists() and k is None:
-                    k = i
-            if k is None:
-                break
-            todo = todo[k + 1:]
+        subprocess.run(base_cmd + [str(s) for s in chunk], cwd=ROOT, text=True, capture_output=True, timeout=900)
 
     # parallel: chunks of up to COMPILE_CHUNK sources, COMPILE_WORKERS mwcc processes at once
     # (a process start is ~80 ms, a source in a batch ~2-8 ms)
     n = len(sources)
     if n > COMPILE_CHUNK:
-        per = max(COMPILE_CHUNK, (n + COMPILE_WORKERS - 1) // COMPILE_WORKERS)
+        per = min(COMPILE_CHUNK_MAX, max(COMPILE_CHUNK, (n + COMPILE_WORKERS - 1) // COMPILE_WORKERS))
         chunks = [sources[i:i + per] for i in range(0, n, per)]
         from concurrent.futures import ThreadPoolExecutor
         with ThreadPoolExecutor(max_workers=COMPILE_WORKERS) as ex:
@@ -445,6 +435,7 @@ def compile_many(project: Project, module: str, sources: List[Path], out_dir: Pa
 
 
 COMPILE_CHUNK = 24
+COMPILE_CHUNK_MAX = 240
 COMPILE_WORKERS = 12
 
 

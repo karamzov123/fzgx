@@ -131,7 +131,9 @@ def extra_families(body: str, name: str) -> List[Tuple[str, str, str]]:
     return out
 
 
-def all_rewrites(body: str, name: str) -> List[Tuple[str, str, str]]:
+def all_rewrites(body: str, name: str, max_per_family: int = 16) -> List[Tuple[str, str, str]]:
+    """Every single-step rewrite, at most `max_per_family` of any one family (the declaration
+    permutations alone would be a hundred; the regalloc search covers them for near matches)."""
     out: List[Tuple[str, str, str]] = []
     for fn in (lambda b, n: lab.perturbations(b, n),
                lambda b, n: [("regalloc", l, t) for l, t in regalloc.rewrites(b, n)],
@@ -140,7 +142,13 @@ def all_rewrites(body: str, name: str) -> List[Tuple[str, str, str]]:
             out += fn(body, name)
         except Exception:
             continue
-    return out
+    counts: Dict[str, int] = {}
+    kept = []
+    for fam, label, text in out:
+        counts[fam] = counts.get(fam, 0) + 1
+        if counts[fam] <= max_per_family:
+            kept.append((fam, label, text))
+    return kept
 
 
 def fitness(tw: List[int], ow: List[int]) -> Tuple[float, float]:
@@ -307,41 +315,231 @@ def run_attempts(p: Project, min_pct: float = 60.0, limit: int = 5000, workers: 
     return run_bodies(p, items[:limit], workers, budget_s, submit, agent="spell")
 
 
-def run_bodies(p: Project, items, workers: int = 3, budget_s: float = 10.0, submit: bool = True, agent: str = "spell") -> Dict[str, object]:
-    from . import api  # scoped: api imports the search modules; importing it at load would be a cycle
+def _env_digest() -> str:
+    import hashlib  # scoped: one digest
+    from .project import ROOT  # scoped: same
+    h = hashlib.sha256()
+    for f in sorted((ROOT / "include").rglob("*.h")):
+        h.update(f.read_bytes())
+    for f in ("spell.py", "lab.py", "regalloc.py", "oracle.py"):
+        h.update((ROOT / "tools" / "fzgx" / f).read_bytes())
+    return h.hexdigest()[:16]
+
+
+class _Body:
+    """One body's search state in the lockstep run."""
+    def __init__(self, p: Project, s: str, m: str, size: int, pct: float, text: str):
+        self.symbol, self.module, self.size, self.pct, self.text = s, m, size, pct, text
+        self.sym = p.resolve(s)
+        self.target = p.target_object_for(self.sym) if self.sym else None
+        self.tw = oracle.words(self.target, self.sym.name) if self.target else None
+        self.root = STATE_DIR / "spell" / p.key(self.sym).replace(":", "__")
+        self.root.mkdir(parents=True, exist_ok=True)
+        (self.root / "base.c").write_text(text)
+        self.mw, self.extra = (None, None)  # decided for every body at once (see _pick_versions)
+        self.seen: Dict[str, Tuple[float, float]] = {}
+        self.frontier: List[Tuple[Tuple[float, float], str, List[str]]] = []
+        self.best: Optional[Tuple[Tuple[float, float], str, List[str]]] = None
+        self.base_fit: Optional[Tuple[float, float]] = None
+        self.tried = 0
+        self.weights: Dict[str, float] = {}
+        self.done = False
+        self.matched: Optional[Tuple[str, List[str]]] = None
+        self.error: Optional[str] = None
+
+    def candidates(self, cap: int) -> List[Tuple[str, List[str]]]:
+        cands: List[Tuple[str, List[str]]] = []
+        for fit, text, path in self.frontier:
+            for fam, label, t2 in all_rewrites(text, self.sym.name):
+                if t2 in self.seen or t2 == text:
+                    continue
+                self.seen[t2] = (-1.0, -1.0)
+                cands.append((t2, path + [f"{fam}: {label}"]))
+        if self.weights:
+            cands.sort(key=lambda c: -self.weights.get(c[1][-1].split(":")[0], 0))
+        return cands[:cap]
+
+
+def run_bodies(p: Project, items, workers: int = 3, budget_s: float = 10.0, submit: bool = True, agent: str = "spell",
+               levels: int = LEVELS, beam: int = 3, cap: int = 120, cap_later: int = 60) -> Dict[str, object]:
+    """The search over many bodies in lockstep: every body's candidates of a level are compiled
+    together (a few hundred files per compiler process instead of a few dozen), scored, and the
+    beams advance together. Bodies searched before under the same headers and tooling with no
+    match are skipped (.fzgx/spell/memo.json)."""
+    import hashlib  # scoped: memo keys
+    from . import api, stuck  # scoped: api imports the search modules; importing it at load would be a cycle
     t0 = time.time()
+    env = _env_digest()
+    memo_path = STATE_DIR / "spell" / "memo.json"
+    try:
+        memo: Dict[str, dict] = json.loads(memo_path.read_text()) if memo_path.exists() else {}
+    except ValueError:
+        memo = {}
+    bodies: List[_Body] = []
+    skipped = 0
+    for s, m, size, pct, text in items:
+        key = f"{env}:{hashlib.sha256(text.encode()).hexdigest()[:24]}"
+        if key in memo and not memo[key].get("matched"):
+            skipped += 1; continue
+        b = _Body(p, s, m, size, pct, text)
+        b.memo_key = key
+        if b.sym is None or b.tw is None or p.unit_of(b.sym):
+            continue
+        bodies.append(b)
 
-    def one(it):
-        s, m, size, pct, text = it
+    CHUNK = 240
+
+    def _pick_versions(bs: List[_Body]) -> None:
+        """Each body's compiler version: the unit's when carved, else the best of the module's
+        candidates for its base text, one batched compile per candidate version."""
+        by_mod: Dict[str, List[_Body]] = {}
+        for b in bs:
+            cands = oracle.version_candidates(p, b.module)
+            if len(cands) == 1:
+                b.mw = None; continue
+            by_mod.setdefault(b.module, []).append(b)
+        for module, members in by_mod.items():
+            cands = oracle.version_candidates(p, module)
+            d = STATE_DIR / "spell" / "_ver" / module
+            d.mkdir(parents=True, exist_ok=True)
+            srcs = []
+            for j, b in enumerate(members):
+                f = d / f"v{j}.c"; f.write_text(b.text); srcs.append(f)
+            per = {}
+            for ver in cands:
+                vd = d / ver.replace("/", "_")
+                if vd.exists():
+                    for old in vd.glob("*.o"):
+                        old.unlink()
+                per[ver] = oracle.compile_many(p, module, srcs, vd, ver)
+            for b, f in zip(members, srcs):
+                best = None
+                for ver in cands:
+                    o = per[ver].get(f)
+                    ow = oracle.words(o, b.sym.name) if o else None
+                    pct = oracle.word_score(b.tw, ow)[0] if ow else -1.0
+                    if best is None or pct > best[0]:
+                        best = (pct, ver)
+                b.mw = best[1] if best else None
+
+    def compile_score(groups: Dict[tuple, List[Tuple[_Body, str, List[str]]]]) -> None:
+        """Every body's candidates of a level, in chunks of CHUNK files, each chunk in a fresh
+        directory (mwcc under wibo slows 16x in a directory of thousands of files), 12 at a time."""
+        jobs = []
+        for (module, mw, extra), members in groups.items():
+            for ci in range(0, len(members), CHUNK):
+                jobs.append((module, mw, extra, members[ci:ci + CHUNK], len(jobs)))
+
+        def run(job):
+            module, mw, extra, members, k = job
+            d = STATE_DIR / "spell" / "_batch" / f"k{k}"
+            d.mkdir(parents=True, exist_ok=True)
+            for old in list(d.glob("*.c")) + list((d / "obj").glob("*.o")) if (d / "obj").exists() else list(d.glob("*.c")):
+                old.unlink()
+            srcs = []
+            for j, (b, text, path) in enumerate(members):
+                f = d / f"c{j}.c"; f.write_text(text); srcs.append(f)
+            objs = oracle.compile_many(p, module, srcs, d / "obj", mw, extra)
+            out_ = []
+            for (b, text, path), f in zip(members, srcs):
+                o = objs.get(f)
+                ow = oracle.words(o, b.sym.name) if o else None
+                out_.append((b, text, path, f, fitness(b.tw, ow) if ow else None))
+            return out_
+
+        with ThreadPoolExecutor(max_workers=12) as ex:
+            for part in ex.map(run, jobs):
+                for b, text, path, f, fit in part:
+                    b.seen[text] = fit if fit else (-1.0, -1.0)
+                    b.results.append((fit, text, path, f))
+
+    _pick_versions(bodies)
+    # level 0: every base, one compile
+    for b in bodies:
+        b.results = []
+    groups: Dict[tuple, List[Tuple[_Body, str, List[str]]]] = {}
+    for b in bodies:
+        groups.setdefault((b.module, b.mw, b.extra), []).append((b, b.text, []))
+    compile_score(groups)
+    for b in bodies:
+        fit = b.results[0][0] if b.results else None
+        if fit is None:
+            b.error = "base does not compile"; b.done = True; continue
+        b.base_fit = fit; b.best = (fit, b.text, []); b.frontier = [(fit, b.text, [])]
+        # the diff rows of the base: which families are likely
         try:
-            r = search(p, s, text, budget_s=budget_s)
-        except Exception as e:
-            return (s, m, size, pct, {"error": str(e)[:80], "matched": False, "best": pct, "tried": 0})
-        return (s, m, size, pct, r)
+            o0 = b.results[0][3].with_suffix(".o").parent / "obj" / b.results[0][3].with_suffix(".o").name
+            rows = oracle.function_rows(p, b.sym.name, b.target, o0) if o0.exists() else None
+            if rows:
+                for k in {k for k in stuck.row_kinds(rows[0], rows[1]) if k}:
+                    for fam in KIND_FAMILIES.get(k.split(":")[0], ()):
+                        b.weights[fam] = b.weights.get(fam, 0) + 1
+                    for fam in KIND_FAMILIES.get(k, ()):
+                        b.weights[fam] = b.weights.get(fam, 0) + 2
+        except Exception:
+            pass
+    matched: List[Tuple[str, float, List[str]]] = []
 
-    with ThreadPoolExecutor(max_workers=workers) as ex:
-        results = list(ex.map(one, items))
-    matched = []; improved = 0; tried = 0
+    def confirm_and_submit(b: _Body, text: str, path: List[str]) -> None:
+        w = b.root / "winner.c"; w.write_text(text)
+        r = oracle.check(p, b.symbol, 0, source=w, mw_version=b.mw)
+        if not (r.ok and (r.matched or r.matched_pool) and oracle.unit_fully_matches(r) is None):
+            return
+        b.matched = (text, path); b.done = True
+        if submit:
+            work = p.work_path(p.key(b.sym)); work.parent.mkdir(parents=True, exist_ok=True); work.write_text(text)
+            sr = api.submit(p, b.symbol, agent=agent, message="spelling search: " + " + ".join(path)[:200], harness="fzgx", model="spell")
+            if not sr.get("ok"):
+                return
+        matched.append((b.symbol, b.pct, path))
+
+    for level in range(levels):
+        active = [b for b in bodies if not b.done]
+        if not active:
+            break
+        groups = {}
+        for b in active:
+            b.results = []
+            for text, path in b.candidates(cap if level == 0 else cap_later):
+                groups.setdefault((b.module, b.mw, b.extra), []).append((b, text, path))
+        n = sum(len(v) for v in groups.values())
+        if n == 0:
+            break
+        tl = time.time()
+        compile_score(groups)
+        print(f"  spell level {level + 1}: {len(active)} bodies, {n} candidates, {time.time() - tl:.1f}s", flush=True)
+        for b in active:
+            scored = [(fit, text, path) for fit, text, path, _ in b.results if fit is not None]
+            b.tried += len(b.results)
+            for fit, text, path in scored:
+                if fit[1] >= 100.0 and not b.done:
+                    confirm_and_submit(b, text, path)
+            if b.done:
+                continue
+            scored.sort(key=lambda x: (-x[0][0], -x[0][1]))
+            if scored and scored[0][0] > b.best[0]:
+                b.best = scored[0]
+            b.frontier = [x for x in scored[:beam] if x[0] >= b.base_fit]
+            if not b.frontier:
+                b.done = True
+    improved = 0; tried = 0
     families: Dict[str, int] = {}
-    for s, m, size, pct, r in results:
-        tried += r.get("tried", 0)
-        if r.get("matched") and r.get("body"):
-            for step in r.get("path", []):
-                fam = step.split(":")[0]
-                families[fam] = families.get(fam, 0) + 1
-            if submit:
-                sym = p.resolve(s)
-                work = p.work_path(p.key(sym)); work.parent.mkdir(parents=True, exist_ok=True); work.write_text(r["body"])
-                sr = api.submit(p, s, agent=agent, message="spelling search: " + " + ".join(r.get("path", []))[:200], harness="fzgx", model="spell")
-                if sr.get("ok"):
-                    matched.append((s, pct, r.get("path")))
-            else:
-                matched.append((s, pct, r.get("path")))
-        elif r.get("body"):
+    results = []
+    for b in bodies:
+        tried += b.tried
+        if b.matched:
+            for step in b.matched[1]:
+                fam = step.split(":")[0]; families[fam] = families.get(fam, 0) + 1
+        elif b.best and b.best[1] != b.text:
             improved += 1
-    out = {"drafts": len(items), "matched": matched, "improved": improved, "candidates": tried, "families": families,
-           "secs": round(time.time() - t0, 1),
-           "results": [(s, m, size, pct, {k: v for k, v in r.items() if k != "body"}) for s, m, size, pct, r in results]}
-    (STATE_DIR / "spell").mkdir(parents=True, exist_ok=True)
+            (b.root / "best.c").write_text(b.best[1])
+        memo[b.memo_key] = {"matched": bool(b.matched), "best": b.best[0][1] if b.best else None}
+        results.append((b.symbol, b.module, b.size, b.pct, {"matched": bool(b.matched), "best": b.best[0][1] if b.best else None,
+                                                             "aligned": b.best[0][0] if b.best else None, "tried": b.tried,
+                                                             "path": (b.matched[1] if b.matched else (b.best[2] if b.best else [])), "error": b.error}))
+    memo_path.parent.mkdir(parents=True, exist_ok=True)
+    memo_path.write_text(json.dumps(memo))
+    out = {"drafts": len(items), "searched": len(bodies), "skipped": skipped, "matched": matched, "improved": improved,
+           "candidates": tried, "families": families, "secs": round(time.time() - t0, 1), "results": results}
     (STATE_DIR / "spell" / "results.json").write_text(json.dumps(out, indent=1))
     return out
