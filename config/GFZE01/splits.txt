@@ -2032,3 +2032,6 @@ dol/fn_8004BD9C.c:
 
 dol/fn_8004BED0.c:
 	.text       start:0x8004BED0 end:0x8004BF0C align:4
+
+dol/fn_800433A4.c:
+	.text       start:0x800433A4 end:0x800433D0 align:4
