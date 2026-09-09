@@ -1963,3 +1963,6 @@ dol/fn_80039AFC.c:
 
 dol/fn_80077BBC.c:
 	.text       start:0x80077BBC end:0x80077BD4 align:4
+
+dol/fn_800433D0.c:
+	.text       start:0x800433D0 end:0x800433F4 align:4
