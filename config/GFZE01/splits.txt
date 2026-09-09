@@ -1993,3 +1993,6 @@ dol/fn_8004E9A8.c:
 
 dol/__DVDClearWaitingQueue.c:
 	.text       start:0x80019E64 end:0x80019E9C align:4
+
+dol/fn_80058EE4.c:
+	.text       start:0x80058EE4 end:0x80058EF4 align:4
