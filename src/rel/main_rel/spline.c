@@ -966,6 +966,18 @@ void fn_1_F8CCC(s32 value) {
 }
 /* fzgx:end fn_1_F8CCC */
 
+/* fzgx:begin fn_1_F8CF0 */
+struct Spline_Bss_4914 {
+    u8 pad[0x4914];
+    u32 val;
+};
+
+u8 fn_1_F8CF0(s32 shift) {
+    u32 val = ((struct Spline_Bss_4914 *)&lbl_1_bss_7F0C0)->val;
+    return __rlwnm(val, (32 - shift) & 0x1F, 31, 31);
+}
+/* fzgx:end fn_1_F8CF0 */
+
 /* fzgx:begin fn_1_F8D10 */
 // Clamps the spline counter to its maximum permitted value.
 u32 fn_1_F8D10(void) {

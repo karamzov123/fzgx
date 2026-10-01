@@ -3849,6 +3849,18 @@ void fn_1_88F84(Fn1_88F84Object *object) {
 }
 /* fzgx:end fn_1_88F84 */
 
+/* fzgx:begin fn_1_892E8 noprologue */
+#include "types.h"
+
+#pragma optimization_level 0
+void fn_1_892E8(u32 *p, u32 val) {
+    val = val - val;
+    p[0] = val;
+    p[1] = val;
+    p[2] = val;
+}
+/* fzgx:end fn_1_892E8 */
+
 /* fzgx:begin fn_1_8A168 */
 void fn_1_8A168(void *arg0) {
     fn_1_892FC(arg0, 0, 0);

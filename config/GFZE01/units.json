@@ -33155,6 +33155,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/car/fn_1_892E8.c",
+    "symbols": [
+      "fn_1_892E8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/car.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/car/fn_1_8A168.c",
     "symbols": [
       "fn_1_8A168"
@@ -49822,6 +49833,17 @@
     "source": "rel/main_rel/spline/fn_1_F8CCC.c",
     "symbols": [
       "fn_1_F8CCC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/spline.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/spline/fn_1_F8CF0.c",
+    "symbols": [
+      "fn_1_F8CF0"
     ],
     "status": "matching",
     "mw_version": null,
