@@ -14,8 +14,9 @@ let config=manager.getProviderConfig('cline');
 if(config && process.env.FZGX_MODEL) config.modelId=process.env.FZGX_MODEL;
 if(!config?.apiKey) throw new Error('Existing Cline login is unavailable; no interactive auth attempted');
 const names=['write_unit','patch_unit','check','read_evidence','release'];
+const tokenLimits={input:Number(process.env.FZGX_MAX_MODEL_INPUT_TOKENS||1000000),output:Number(process.env.FZGX_MAX_MODEL_OUTPUT_TOKENS||128000)};
 if(process.argv.includes('--describe')){
- console.log(JSON.stringify({harness:'cline-sdk',provider:config.providerId,model:config.modelId,effort:'high',tools:names,nativeTools:[],modelTools:[]}));
+ console.log(JSON.stringify({harness:'cline-sdk',provider:config.providerId,model:config.modelId,effort:'high',tools:names,nativeTools:[],modelTools:[],tokenLimits}));
  process.exit(0);
 }
 const settings=manager.getProviderSettings(config.providerId);
@@ -75,23 +76,30 @@ agent=new Agent({providerId:config.providerId,modelId:config.modelId,apiKey:conf
  requestToolApproval:request=>({approved:names.includes(request.toolName)}),
 });
 let usage={inputTokens:0,outputTokens:0};
+let budgetReached=false;
 agent.subscribe(e=>{
  if(e.type==='usage-updated'){
   usage={inputTokens:e.usage.inputTokens||0,outputTokens:e.usage.outputTokens||0};
   const path=join(directory,symbol+'.usage.json');writeFileSync(path+'.tmp',JSON.stringify(usage));renameSync(path+'.tmp',path);
   event(e.type,{usage});
-  if(usage.inputTokens>=Number(process.env.FZGX_MAX_MODEL_INPUT_TOKENS||256000)||usage.outputTokens>=Number(process.env.FZGX_MAX_MODEL_OUTPUT_TOKENS||32000)) agent.abort('Function token budget reached');
+  if(usage.inputTokens>=tokenLimits.input||usage.outputTokens>=tokenLimits.output){budgetReached=true;agent.abort('Function emergency token budget reached; preserve only this candidate');}
  }else if(!e.type.endsWith('-delta') && e.type!=='message-added' && e.type!=='assistant-message') event(e.type);
 });
 for(const sig of ['SIGINT','SIGTERM']) process.on(sig,()=>agent.abort('Host shutdown; drain domain tools'));
 try{
- event('system',{harness:'cline-sdk',model:config.modelId,tools:names,nativeTools:[]});
+ event('system',{harness:'cline-sdk',model:config.modelId,tools:names,nativeTools:[],tokenLimits});
  const result=await agent.run(prompt);
  event('result',{model:config.modelId,status:result.status,usage,text:result.outputText?.slice(-2000)});
  process.exitCode=result.status==='failed'?1:0;
 }catch(error){
- if(!existsSync(terminal)){event('error',{message:String(error.message).slice(0,2000)});process.exitCode=1;}
+ if(!existsSync(terminal)&&!budgetReached){event('error',{message:String(error.message).slice(0,2000)});process.exitCode=1;}
  else event('result',{model:config.modelId,status:'terminal',usage});
 }finally{
+ if(budgetReached && !existsSync(terminal)){
+  const response=await call(['release',symbol,'--agent',identity,'--save-only','--reason','Per-function emergency token budget reached; preserve best candidate without stopping sibling workers']);
+  const result=JSON.parse(response.stdout||'{}');
+  if(response.rc!==0||result.ok===false||!existsSync(terminal)){event('error',{message:'Budget release failed'});process.exitCode=1;}
+  else {event('result',{model:config.modelId,status:'budget-released',usage});process.exitCode=0;}
+ }
  worker.stdin.end();await new Promise(resolve=>worker.once('exit',resolve));
 }

@@ -33,6 +33,15 @@ def defaults():
 def configuration():
     return load(CONTROL, defaults())
 
+def budget_limits(family, parallel, count):
+    if family == 'cline':
+        return dict(input=1000000,output=128000,batch_input=1000000*count,
+                    batch_output=128000*count,log_bytes=12*1024*1024*parallel,
+                    guard_each=False,usage_wait=300)
+    return dict(input=MAX_INPUT_TOKENS,output=MAX_OUTPUT_TOKENS,
+                batch_input=1000000,batch_output=80000,log_bytes=12*1024*1024,
+                guard_each=True,usage_wait=120)
+
 def command(family, batch, symbols, parallel):
     p = POLICY[family]
     return [str(ROOT / '.venv/bin/python'), str(ROOT / 'tools/orchestrate.py'),
@@ -114,15 +123,18 @@ def control(action,family):
         config=configuration();value=config[family]
         if action=='toggle':value['enabled']=not value['enabled']
         elif action=='scale-up':
-            if sum(c['parallel'] for c in config.values() if c['enabled'])>=8:
-                print('Fleet concurrency cap is 8; no extra process launched.');return
-            value['parallel']=min(4,value['parallel']+1);value['enabled']=True
+            desired=min(8 if family=='cline' else 4,value['parallel']+1)
+            others=sum(c['parallel'] for k,c in config.items() if k!=family and c['enabled'])
+            if others+desired>12:
+                print('Fleet concurrency cap is 12; no extra process launched.');return
+            value['parallel']=desired;value['enabled']=True
         elif action=='scale-down':value['parallel']=max(1,value['parallel']-1)
         atomic(CONTROL,config);print(json.dumps(config))
 
 class Job:
     def __init__(self,family,symbols,parallel,gate_passed):
         self.family,self.symbols,self.parallel=family,symbols,parallel
+        self.limits=budget_limits(family,parallel,len(symbols))
         self.batch=f'fleet-v2-{family}-{time.time_ns()}'
         self.started=time.time()
         self.directory=ROOT/'.fzgx/runs'/self.batch
@@ -134,7 +146,7 @@ class Job:
         self.proc=subprocess.Popen(command(family,self.batch,symbols,parallel),cwd=ROOT,
             stdout=self.log,stderr=subprocess.STDOUT,stdin=subprocess.DEVNULL,
             env={**os.environ,'PYTHONUNBUFFERED':'1','FZGX_BOUND_TRANSPORT':'1',
-                'FZGX_MAX_MODEL_INPUT_TOKENS':str(MAX_INPUT_TOKENS),'FZGX_MAX_MODEL_OUTPUT_TOKENS':str(MAX_OUTPUT_TOKENS)})
+                'FZGX_MAX_MODEL_INPUT_TOKENS':str(self.limits['input']),'FZGX_MAX_MODEL_OUTPUT_TOKENS':str(self.limits['output'])})
     def close(self):
         stop_runner(self.proc);self.log.close()
     def text(self):
@@ -166,7 +178,7 @@ def run():
         while not STOP:
             config=configuration();now=time.time()
             for family,job in list(jobs.items()):
-                t=telemetry(job.batch)
+                t=telemetry(job.batch,job.limits)
                 data=dict(t,batch=job.batch,active=len(t['claims']),status=activity_state(job.proc.poll() is None,len(t['claims']),t['last_event'],job.started,now),
                           reason='Live bounded provider; claims/checks from shared ledger, not inferred success.')
                 stop_reason=None
@@ -177,7 +189,7 @@ def run():
                 if stop_reason:
                     data['reason']=stop_reason;publish(dict(statuses,**{family:data}));job.close()
                 if job.proc.poll() is not None:
-                    job.close();t=telemetry(job.batch)
+                    job.close();t=telemetry(job.batch,job.limits)
                     text=job.text();rc=job.proc.returncode
                     rows=[]
                     path=job.directory/'results.json'

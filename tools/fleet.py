@@ -129,7 +129,10 @@ def tail_bytes(path, size=16384, start=0):
     except OSError:
         return ''
 
-def telemetry(batch):
+def telemetry(batch, limits=None):
+    limits = limits or dict(input=MAX_INPUT_TOKENS, output=MAX_OUTPUT_TOKENS,
+                            batch_input=1000000, batch_output=80000,
+                            log_bytes=12*1024*1024, guard_each=True, usage_wait=120)
     directory = ROOT / '.fzgx/runs' / batch
     claims = db_rows("SELECT f.symbol, f.module, a.checks, f.claimed_by FROM functions f LEFT JOIN attempts a ON a.id=(SELECT MAX(id) FROM attempts WHERE symbol=f.symbol AND ended IS NULL) WHERE f.status='claimed' AND substr(f.claimed_by,1,?)=?", (len(batch) + 1, batch + '-'))
     attempts = db_rows('SELECT symbol,checks,outcome,tokens_in,tokens_out FROM attempts WHERE substr(agent,1,?)=?', (len(batch) + 1, batch + '-'))
@@ -140,10 +143,10 @@ def telemetry(batch):
     tokens_in = sum(u.get('inputTokens', 0) for u in usages)
     usage_missing = any(not (directory / f"{c['symbol']}.usage.json").exists()
                         and (directory / f"{c['symbol']}.assignment.json").exists()
-                        and time.time() - (directory / f"{c['symbol']}.assignment.json").stat().st_mtime > 120
+                        and time.time() - (directory / f"{c['symbol']}.assignment.json").stat().st_mtime > limits['usage_wait']
                         for c in claims)
-    over_budget = any(u.get('outputTokens', 0) >= MAX_OUTPUT_TOKENS or u.get('inputTokens', 0) >= MAX_INPUT_TOKENS for u in usages)
-    over_budget = over_budget or tokens_in >= 1000000 or tokens_out >= 80000 or sum(p.stat().st_size for p in files) >= 12 * 1024 * 1024
+    over_budget = limits['guard_each'] and any(u.get('outputTokens', 0) >= limits['output'] or u.get('inputTokens', 0) >= limits['input'] for u in usages)
+    over_budget = over_budget or tokens_in >= limits['batch_input'] or tokens_out >= limits['batch_output'] or sum(p.stat().st_size for p in files) >= limits['log_bytes']
     verified = set()
     verify_ok = None
     for line in tail_bytes(directory / 'verify.jsonl', 131072).splitlines():
