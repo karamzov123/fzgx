@@ -5477,3 +5477,27 @@ dol/fn_80037128.c:
 
 dol/fn_80037190.c:
 	.text       start:0x80037190 end:0x800371F8 align:4
+
+dol/fn_800370E4.c:
+	.text       start:0x800370E4 end:0x80037128 align:4
+
+dol/fn_80037B14.c:
+	.text       start:0x80037B14 end:0x80037B68 align:4
+
+dol/fn_80039B38.c:
+	.text       start:0x80039B38 end:0x80039B7C align:4
+
+dol/fn_80038FD8.c:
+	.text       start:0x80038FD8 end:0x80039020 align:4
+
+dol/fn_80034B7C.c:
+	.text       start:0x80034B7C end:0x80034BB8 align:4
+
+dol/fn_800371F8.c:
+	.text       start:0x800371F8 end:0x8003726C align:4
+
+dol/fn_8003726C.c:
+	.text       start:0x8003726C end:0x800372E0 align:4
+
+dol/fn_800372E0.c:
+	.text       start:0x800372E0 end:0x80037354 align:4
