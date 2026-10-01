@@ -154,9 +154,7 @@ void fn_5_13B0(void) {
 }
 /* fzgx:end fn_5_13B0 */
 
-/* fzgx:begin fn_5_1404 noprologue */
-#include "types.h"
-
+/* fzgx:begin fn_5_1404 */
 #pragma section code_type ".fzgxpool"
 __declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
     volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
@@ -193,8 +191,8 @@ __declspec(section ".fzgxpool") static void fzgx_pool_keep9(void) { const u32 *v
 #pragma section code_type ".text"
 
 extern u8 lbl_5_data_0[];
-extern u8 lbl_5_bss_0[];
-extern u8 lbl_1_bss_970[];
+extern u32 lbl_5_bss_0[8];
+extern struct fn_5_200_lbl_1_bss_970 lbl_1_bss_970;
 extern const f32 lbl_5_rodata_0;
 
 extern void fn_1_49410(void *);
@@ -257,7 +255,7 @@ void fn_5_1404(u8 *arg0) {
     fn_1_4955C((0.5f), (0.5f));
     sp14 = fzgx_pool_table4[0];
     fn_1_49514(&sp14);
-    r31 = lbl_1_bss_970;
+    r31 = (u8 *)&lbl_1_bss_970;
     p = arg0;
     i = 0;
     while (*(s16 *)(p + 2) != -1) {

@@ -51043,6 +51043,17 @@
   },
   {
     "module": "movie",
+    "source": "rel/movie/_prolog/fn_5_2E00.c",
+    "symbols": [
+      "fn_5_2E00"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
+  },
+  {
+    "module": "movie",
     "source": "rel/movie/_prolog/fn_5_320.c",
     "symbols": [
       "fn_5_320"
