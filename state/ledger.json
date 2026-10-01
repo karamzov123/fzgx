@@ -1,5 +1,5 @@
 {
- "generated": 1790876891,
+ "generated": 1790877023,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -91519,8 +91519,8 @@
    "addr": 1254596,
    "size": 688,
    "status": "unmatched",
-   "attempts": 2,
-   "best_percent": 93.941864,
+   "attempts": 3,
+   "best_percent": 95.22093,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
@@ -106917,19 +106917,19 @@
   {
    "symbol": "fn_12_2BE3C",
    "module": "movie_module",
-   "unit": null,
+   "unit": "rel/movie_module/fn_12_2BE3C.c",
    "addr": 179772,
    "size": 700,
-   "status": "unmatched",
-   "attempts": 2,
-   "best_percent": 93.737144,
+   "status": "matched",
+   "attempts": 3,
+   "best_percent": 100.0,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
-   "matched_commit": null,
+   "matched_commit": "c6c2fa77",
    "blocked_reason": null,
    "prev_status": null,
-   "link_state": null
+   "link_state": "verified"
   },
   {
    "symbol": "fn_12_2C0F8",
@@ -472053,16 +472053,16 @@
    "model": null,
    "started": 1790876859,
    "ended": null,
-   "checks": 1,
-   "final_percent": 0.0,
+   "checks": 2,
+   "final_percent": 62.86,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 1,
-   "best_in_attempt": 0.0
+   "stale_checks": 0,
+   "best_in_attempt": 62.86
   },
   {
    "id": 18304,
@@ -472082,6 +472082,44 @@
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 0.0
+  },
+  {
+   "id": 18305,
+   "symbol": "fn_1_1324C4",
+   "agent": "fleet-v2-claude-1790876899591703510-claude-1",
+   "harness": "claude",
+   "model": "claude-opus-5-5",
+   "started": 1790876899,
+   "ended": 1790876983,
+   "checks": 8,
+   "final_percent": 77.23256,
+   "tokens_in": 148223,
+   "tokens_out": 31,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "budget exhausted: 8 checks used",
+   "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_1324C4.1790876983.c",
+   "stale_checks": 3,
+   "best_in_attempt": 95.22093
+  },
+  {
+   "id": 18306,
+   "symbol": "fn_12_2BE3C",
+   "agent": "fleet-v2-claude-1790876899591703510-claude-2",
+   "harness": "claude",
+   "model": "claude-opus-5-5",
+   "started": 1790876983,
+   "ended": 1790877009,
+   "checks": 2,
+   "final_percent": 100.0,
+   "tokens_in": 36235,
+   "tokens_out": 10,
+   "cost_usd": 0.0,
+   "outcome": "matched",
+   "notes": "oracle match accepted automatically",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 100.0
   }
  ],
  "names": [
