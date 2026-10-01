@@ -5330,3 +5330,198 @@ dol/fn_800243C4.c:
 
 dol/fn_80070704.c:
 	.text       start:0x80070704 end:0x8007075C align:4
+
+dol/fn_8000BFC0.c:
+	.text       start:0x8000BFC0 end:0x8000BFC8 align:4
+
+dol/__flush_cache.c:
+	.init       start:0x80003424 end:0x80003458 align:4
+
+dol/fn_80015B24.c:
+	.text       start:0x80015B24 end:0x80015B50 align:4
+
+dol/fn_80015B50.c:
+	.text       start:0x80015B50 end:0x80015B78 align:4
+
+dol/fn_80015B78.c:
+	.text       start:0x80015B78 end:0x80015C1C align:4
+
+dol/__AICallbackStackSwitch.c:
+	.text       start:0x8001E5A8 end:0x8001E600 align:4
+
+dol/GXLoadPosMtxImm.c:
+	.text       start:0x80038C5C end:0x80038CAC align:4
+
+dol/GXLoadNrmMtxImm.c:
+	.text       start:0x80038CAC end:0x80038CFC align:4
+
+dol/fn_8005A59C.c:
+	.text       start:0x8005A59C end:0x8005A5A8 align:4
+
+dol/fn_80078344.c:
+	.text       start:0x80078344 end:0x80078360 align:4
+
+dol/func_8008D6BC.c:
+	.text       start:0x80078D48 end:0x80078D60 align:4
+
+dol/__shl2i.c:
+	.text       start:0x80079D04 end:0x80079D28 align:4
+
+dol/__shr2u.c:
+	.text       start:0x80079D28 end:0x80079D4C align:4
+
+dol/__shr2i.c:
+	.text       start:0x80079D4C end:0x80079D74 align:4
+
+dol/fn_8008AFF0.c:
+	.text       start:0x8008AFF0 end:0x8008B028 align:4
+
+dol/fn_8008CB20.c:
+	.text       start:0x8008CB20 end:0x8008CB28 align:4
+
+dol/fn_8008CB28.c:
+	.text       start:0x8008CB28 end:0x8008CB30 align:4
+
+dol/fn_8008CB30.c:
+	.text       start:0x8008CB30 end:0x8008CB38 align:4
+
+dol/fn_8008CB38.c:
+	.text       start:0x8008CB38 end:0x8008CB40 align:4
+
+dol/fn_8006E2D8.c:
+	.text       start:0x8006E2D8 end:0x8006E324 align:4
+
+dol/mathutil_quat_mult.c:
+	.text       start:0x8006E540 end:0x8006E5B4 align:4
+
+dol/fn_8006FC1C.c:
+	.text       start:0x8006FC1C end:0x8006FC5C align:4
+
+dol/fn_8006FC5C.c:
+	.text       start:0x8006FC5C end:0x8006FCB4 align:4
+
+dol/__cvt_fp2unsigned.c:
+	.text       start:0x80079764 end:0x800797C0 align:4
+
+dol/fn_80023B70.c:
+	.text       start:0x80023B70 end:0x80023D00 align:4
+
+dol/fn_800356B8.c:
+	.text       start:0x800356B8 end:0x80035734 align:4
+
+dol/GXLoadTexMtxImm.c:
+	.text       start:0x80038D34 end:0x80038DE8 align:4
+
+dol/fn_8003AB08.c:
+	.text       start:0x8003AB08 end:0x8003B010 align:4
+
+dol/fn_8003B010.c:
+	.text       start:0x8003B010 end:0x8003B63C align:4
+
+dol/fn_8003B9AC.c:
+	.text       start:0x8003B9AC end:0x8003BB30 align:4
+
+dol/fn_8003BB30.c:
+	.text       start:0x8003BB30 end:0x8003BCE4 align:4
+
+dol/fn_8003BCE4.c:
+	.text       start:0x8003BCE4 end:0x8003BD78 align:4
+
+dol/fn_8003BD78.c:
+	.text       start:0x8003BD78 end:0x8003BE1C align:4
+
+dol/u_gxutil_upload_some_mtx.c:
+	.text       start:0x800724CC end:0x80072558 align:4
+
+dol/fn_80072558.c:
+	.text       start:0x80072558 end:0x800725DC align:4
+
+dol/fn_8006E200.c:
+	.text       start:0x8006E200 end:0x8006E250 align:4
+
+dol/mathutil_mtxA_rotate_x.c:
+	.text       start:0x8006E324 end:0x8006E398 align:4
+
+dol/mathutil_mtxA_rotate_y.c:
+	.text       start:0x8006E398 end:0x8006E424 align:4
+
+dol/mathutil_mtxA_rotate_z.c:
+	.text       start:0x8006E424 end:0x8006E498 align:4
+
+dol/func_80008378.c:
+	.text       start:0x8006E5B4 end:0x8006E5FC align:4
+
+dol/fn_80034D34.c:
+	.text       start:0x80034D34 end:0x80034D9C align:4
+
+dol/fn_80037B68.c:
+	.text       start:0x80037B68 end:0x80037B94 align:4
+
+dol/fn_80037B94.c:
+	.text       start:0x80037B94 end:0x80037BC0 align:4
+
+dol/fn_80037D14.c:
+	.text       start:0x80037D14 end:0x80037D40 align:4
+
+dol/fn_80037BC0.c:
+	.text       start:0x80037BC0 end:0x80037BF4 align:4
+
+dol/fn_80037D40.c:
+	.text       start:0x80037D40 end:0x80037D7C align:4
+
+dol/fn_800370A0.c:
+	.text       start:0x800370A0 end:0x800370E4 align:4
+
+dol/fn_80037128.c:
+	.text       start:0x80037128 end:0x80037190 align:4
+
+dol/fn_80037190.c:
+	.text       start:0x80037190 end:0x800371F8 align:4
+
+dol/fn_800370E4.c:
+	.text       start:0x800370E4 end:0x80037128 align:4
+
+dol/fn_80037B14.c:
+	.text       start:0x80037B14 end:0x80037B68 align:4
+
+dol/fn_80039B38.c:
+	.text       start:0x80039B38 end:0x80039B7C align:4
+
+dol/fn_80038FD8.c:
+	.text       start:0x80038FD8 end:0x80039020 align:4
+
+dol/fn_80034B7C.c:
+	.text       start:0x80034B7C end:0x80034BB8 align:4
+
+dol/fn_800371F8.c:
+	.text       start:0x800371F8 end:0x8003726C align:4
+
+dol/fn_8003726C.c:
+	.text       start:0x8003726C end:0x800372E0 align:4
+
+dol/fn_800372E0.c:
+	.text       start:0x800372E0 end:0x80037354 align:4
+
+dol/fn_80036F24.c:
+	.text       start:0x80036F24 end:0x80036FF0 align:4
+
+dol/fn_80037C2C.c:
+	.text       start:0x80037C2C end:0x80037D14 align:4
+
+dol/fn_80038DE8.c:
+	.text       start:0x80038DE8 end:0x80038EEC align:4
+
+dol/fn_80033650.c:
+	.text       start:0x80033650 end:0x800336EC align:4
+
+dol/fn_80035734.c:
+	.text       start:0x80035734 end:0x80035828 align:4
+
+dol/fn_80035828.c:
+	.text       start:0x80035828 end:0x8003591C align:4
+
+dol/fn_8003401C.c:
+	.text       start:0x8003401C end:0x800340D4 align:4
+
+dol/fn_800365B4.c:
+	.text       start:0x800365B4 end:0x8003666C align:4
