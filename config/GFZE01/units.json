@@ -57743,6 +57743,17 @@
   },
   {
     "module": "pilotpoint",
+    "source": "rel/pilotpoint/pilotpoint/_prolog.c",
+    "symbols": [
+      "_prolog"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/pilotpoint/pilotpoint.c"
+  },
+  {
+    "module": "pilotpoint",
     "source": "rel/pilotpoint/pilotpoint/fn_14_220.c",
     "symbols": [
       "fn_14_220"
