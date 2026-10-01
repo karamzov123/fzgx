@@ -13,7 +13,7 @@ import sys
 import time
 from fleet import (ROOT, CACHE, META, atomic, load, pid_alive, activity_state,
                    cooldown, context_id, db_rows, telemetry, verified_progress,
-                   record_gate, run_gate, stop_runner, tail_bytes, active_runner_pids, MAX_INPUT_TOKENS, MAX_OUTPUT_TOKENS)
+                   record_gate, run_gate, stop_runner, tail_bytes, active_runner_pids)
 
 POLICY = {
     'claude': {'harness':'claude','model':'claude-opus-5-5','effort':'high','display':'Opus 5.5 High'},
@@ -33,24 +33,25 @@ def defaults():
 def configuration():
     return load(CONTROL, defaults())
 
+SESSION_TIMEOUT = 1800   # hang bound only; 16 checks / 5 stale checks end real work
+IDLE_TIMEOUT = 900       # no log event from any session of the batch
+
 def budget_limits(family, parallel, count):
-    if family == 'cline':
-        return dict(input=1000000,output=128000,batch_input=1000000*count,
-                    batch_output=128000*count,log_bytes=12*1024*1024*parallel,
-                    # Usage arrives only when a response ends; a first high-effort
-                    # response of 15-33k tokens takes 150-300+ s, so wait past the
-                    # 600 s session timeout rather than stop the whole batch.
-                    guard_each=False,usage_wait=660)
-    return dict(input=MAX_INPUT_TOKENS,output=MAX_OUTPUT_TOKENS,
-                batch_input=1000000,batch_output=80000,log_bytes=12*1024*1024,
-                guard_each=True,usage_wait=120)
+    # No token guards: a session is already bounded by its check, stale-check
+    # and turn limits, and provider quota rejections have their own cooldown.
+    # Cumulative input counts re-read (cached) context every turn, so the old
+    # 256k guard killed productive Claude sessions as "crashes" at 7 checks.
+    # Only runaway log growth still stops a batch.
+    unlimited=float('inf')
+    return dict(input=unlimited,output=unlimited,batch_input=unlimited,batch_output=unlimited,
+                log_bytes=64*1024*1024*parallel,guard_each=False,usage_wait=unlimited)
 
 def command(family, batch, symbols, parallel):
     p = POLICY[family]
     return [str(ROOT / '.venv/bin/python'), str(ROOT / 'tools/orchestrate.py'),
         '--harness',p['harness'],'--model',p['model'],'--effort',p['effort'],
-        '--parallel',str(parallel),'--tool-parallel','1','--timeout','600',
-        '--max-checks','8','--max-stale','3','--max-attempts','3',
+        '--parallel',str(parallel),'--tool-parallel','1','--timeout',str(SESSION_TIMEOUT),
+        '--max-checks','16','--max-stale','5','--max-attempts','3',
         '--verify-interval','60','--no-trivial','--batch',batch,'--symbols',*symbols]
 
 def choose(rows, seen, context, count, reserved=()):
@@ -140,6 +141,7 @@ class Job:
         self.limits=budget_limits(family,parallel,len(symbols))
         self.batch=f'fleet-v2-{family}-{time.time_ns()}'
         self.started=time.time()
+        self.deadline=SESSION_TIMEOUT*(-(-len(symbols)//parallel))+600
         self.directory=ROOT/'.fzgx/runs'/self.batch
         record_gate(self.directory,gate_passed,self.started)
         (CACHE/'logs').mkdir(parents=True,exist_ok=True)
@@ -149,7 +151,7 @@ class Job:
         self.proc=subprocess.Popen(command(family,self.batch,symbols,parallel),cwd=ROOT,
             stdout=self.log,stderr=subprocess.STDOUT,stdin=subprocess.DEVNULL,
             env={**os.environ,'PYTHONUNBUFFERED':'1','FZGX_BOUND_TRANSPORT':'1',
-                'FZGX_MAX_MODEL_INPUT_TOKENS':str(self.limits['input']),'FZGX_MAX_MODEL_OUTPUT_TOKENS':str(self.limits['output'])})
+                'FZGX_MAX_MODEL_INPUT_TOKENS':'0','FZGX_MAX_MODEL_OUTPUT_TOKENS':'0'})
     def close(self):
         stop_runner(self.proc);self.log.close()
     def text(self):
@@ -187,8 +189,8 @@ def run():
                 stop_reason=None
                 if not config[family]['enabled'] or config[family]['parallel']!=job.parallel:stop_reason='Operator control changed; draining current work.'
                 elif t['verify_ok'] is False:stop_reason='Hash verification failed; saving and holding producers.'
-                elif t['over_budget'] or t['usage_missing']:stop_reason='Token/output guard reached or provider usage telemetry missing; saving best candidate.'
-                elif now-max(t['last_event'],job.started)>300 or now-job.started>1500:stop_reason='Activity/batch deadline; saving best candidate.'
+                elif t['over_budget']:stop_reason='Batch log size guard reached; saving best candidate.'
+                elif now-max(t['last_event'],job.started)>IDLE_TIMEOUT or now-job.started>job.deadline:stop_reason='Activity/batch deadline; saving best candidate.'
                 if stop_reason:
                     data['reason']=stop_reason;publish(dict(statuses,**{family:data}));job.close()
                 if job.proc.poll() is not None:
@@ -206,7 +208,8 @@ def run():
                     elif t['verified']:
                         failures[family]=0;delay=3;state='idle';reason='Batch complete with link-verified matches; selecting fresh work.'
                     else:
-                        failures[family]+=1;delay=min(300,30*failures[family]);state='idle';reason='Batch saved best candidates without a match; bounded automatic backoff.'
+                        # A clean batch without a match is not a provider failure.
+                        failures[family]=0;delay=3;state='idle';reason='Batch saved best candidates without a match; selecting fresh work.'
                     retries[family]=time.time()+delay
                     statuses[family]=dict(t,status=state,reason=stop_reason or reason,active=0,claims=[],failures=failures[family],retry_at=retries[family],batch=job.batch)
                     del jobs[family];persist()

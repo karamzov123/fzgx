@@ -14,7 +14,8 @@ let config=manager.getProviderConfig('cline');
 if(config && process.env.FZGX_MODEL) config.modelId=process.env.FZGX_MODEL;
 if(!config?.apiKey) throw new Error('Existing Cline login is unavailable; no interactive auth attempted');
 const names=['write_unit','patch_unit','check','read_evidence','release'];
-const tokenLimits={input:Number(process.env.FZGX_MAX_MODEL_INPUT_TOKENS||1000000),output:Number(process.env.FZGX_MAX_MODEL_OUTPUT_TOKENS||128000)};
+// 0 disables a guard, as in codex_server.
+const tokenLimits={input:Number(process.env.FZGX_MAX_MODEL_INPUT_TOKENS||0),output:Number(process.env.FZGX_MAX_MODEL_OUTPUT_TOKENS||0)};
 if(process.argv.includes('--describe')){
  console.log(JSON.stringify({harness:'cline-sdk',provider:config.providerId,model:config.modelId,effort:'high',tools:names,nativeTools:[],modelTools:[],tokenLimits}));
  process.exit(0);
@@ -72,7 +73,7 @@ const tools=names.map(name=>createTool({name,description:descriptions[name],inpu
 }}));
 agent=new Agent({providerId:config.providerId,modelId:config.modelId,apiKey:config.apiKey,baseUrl:config.baseUrl,
  options:{...config,reasoningEffort:'high'},systemPrompt:readFileSync(join(root,'tools/codex_matcher.md'),'utf8'),tools,modelTools:[],
- maxIterations:12,toolExecution:'sequential',modelOptions:{maxTokens:32768,reasoningEffort:'high'},
+ maxIterations:40,toolExecution:'sequential',modelOptions:{maxTokens:32768,reasoningEffort:'high'},
  requestToolApproval:request=>({approved:names.includes(request.toolName)}),
 });
 let usage={inputTokens:0,outputTokens:0};
@@ -82,7 +83,7 @@ agent.subscribe(e=>{
   usage={inputTokens:e.usage.inputTokens||0,outputTokens:e.usage.outputTokens||0};
   const path=join(directory,symbol+'.usage.json');writeFileSync(path+'.tmp',JSON.stringify(usage));renameSync(path+'.tmp',path);
   event(e.type,{usage});
-  if(usage.inputTokens>=tokenLimits.input||usage.outputTokens>=tokenLimits.output){budgetReached=true;agent.abort('Function emergency token budget reached; preserve only this candidate');}
+  if((tokenLimits.input&&usage.inputTokens>=tokenLimits.input)||(tokenLimits.output&&usage.outputTokens>=tokenLimits.output)){budgetReached=true;agent.abort('Function emergency token budget reached; preserve only this candidate');}
  }else if(!e.type.endsWith('-delta') && e.type!=='message-added' && e.type!=='assistant-message') event(e.type);
 });
 for(const sig of ['SIGINT','SIGTERM']) process.on(sig,()=>agent.abort('Host shutdown; drain domain tools'));

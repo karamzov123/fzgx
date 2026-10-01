@@ -27,7 +27,7 @@ def claude_command(prompt, model, directory, env):
         '--mcp-config', str(config), '--strict-mcp-config', '--setting-sources', '',
         '--permission-mode', 'dontAsk', '--permission-prompts', 'none',
         '--disable-slash-commands', '--no-chrome', '--no-session-persistence',
-        '--output-format', 'stream-json', '--verbose', '--max-turns', '12',
+        '--output-format', 'stream-json', '--verbose', '--max-turns', '40',
         '--system-prompt', (ROOT / 'tools/codex_matcher.md').read_text()]
 
 def command(family, prompt, model, directory, env):
@@ -74,6 +74,6 @@ def command(family, prompt, model, directory, env):
             'Do not ask for read_unit, context, claim, inventory, resources, shell, files, web, or user input. '
             'All those operations are hard-denied. Source is already in the assignment; continue from it.\n')
         return ['agy', '-p', instruction+prompt, '--model', model, '--effort', 'high', '--mode', 'accept-edits',
-                '--sandbox', '--disable-slash-commands', '--output-format', 'stream-json', '--print-timeout', '600s',
+                '--sandbox', '--disable-slash-commands', '--output-format', 'stream-json', '--print-timeout', '1800s',
                 '--log-file', str(directory / 'agy-runtime.log')]
     raise ValueError('Unknown provider transport')

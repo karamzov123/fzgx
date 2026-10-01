@@ -72,7 +72,9 @@ def run(family, prompt, model, directory, env, timeout_s):
                 counters=usage.update(row)
                 if counters is not None:
                     atomic_usage(directory / f'{symbol}.usage.json', counters)
-                    if counters['inputTokens'] >= int(env.get('FZGX_MAX_MODEL_INPUT_TOKENS','256000')) or counters['outputTokens'] >= int(env.get('FZGX_MAX_MODEL_OUTPUT_TOKENS','32000')):
+                    # 0 disables a guard, as in codex_server.
+                    max_in=int(env.get('FZGX_MAX_MODEL_INPUT_TOKENS','0'));max_out=int(env.get('FZGX_MAX_MODEL_OUTPUT_TOKENS','0'))
+                    if (max_in and counters['inputTokens'] >= max_in) or (max_out and counters['outputTokens'] >= max_out):
                         budget.set()
     reader=threading.Thread(target=read,daemon=True);reader.start()
     started=time.monotonic()
