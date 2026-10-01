@@ -1,5 +1,5 @@
 {
- "generated": 1790879330,
+ "generated": 1790879456,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -76045,19 +76045,19 @@
   {
    "symbol": "fn_1_C1ACC",
    "module": "main_rel",
-   "unit": null,
+   "unit": "rel/main_rel/memcard/fn_1_C1ACC.c",
    "addr": 793292,
    "size": 560,
-   "status": "unmatched",
-   "attempts": 1,
-   "best_percent": 92.25,
+   "status": "matched",
+   "attempts": 2,
+   "best_percent": 100.0,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
-   "matched_commit": null,
+   "matched_commit": "1abe3855",
    "blocked_reason": null,
    "prev_status": null,
-   "link_state": null
+   "link_state": "verified"
   },
   {
    "symbol": "fn_1_C1CFC",
@@ -123088,8 +123088,8 @@
    "addr": 48392,
    "size": 816,
    "status": "unmatched",
-   "attempts": 1,
-   "best_percent": 92.31373,
+   "attempts": 2,
+   "best_percent": 98.28432,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
@@ -473089,6 +473089,44 @@
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 97.993195
+  },
+  {
+   "id": 18358,
+   "symbol": "fn_8_BD08",
+   "agent": "fleet-v2-claude-1790879332536522322-claude-1",
+   "harness": "claude",
+   "model": "claude-opus-5-5",
+   "started": 1790879332,
+   "ended": 1790879423,
+   "checks": 8,
+   "final_percent": 98.28432,
+   "tokens_in": 132253,
+   "tokens_out": 17,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "budget exhausted: 8 checks used",
+   "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_8_BD08.1790879423.c",
+   "stale_checks": 1,
+   "best_in_attempt": 98.28432
+  },
+  {
+   "id": 18359,
+   "symbol": "fn_1_C1ACC",
+   "agent": "fleet-v2-claude-1790879332536522322-claude-2",
+   "harness": "claude",
+   "model": "claude-opus-5-5",
+   "started": 1790879424,
+   "ended": 1790879445,
+   "checks": 2,
+   "final_percent": 100.0,
+   "tokens_in": 39747,
+   "tokens_out": 9,
+   "cost_usd": 0.0,
+   "outcome": "matched",
+   "notes": "oracle match accepted automatically",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 100.0
   }
  ],
  "names": [
