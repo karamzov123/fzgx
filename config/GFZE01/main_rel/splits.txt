@@ -6551,3 +6551,6 @@ rel/main_rel/stcoli/fn_1_287E8.c:
 
 rel/main_rel/driver/fn_1_A75DC.c:
 	.text       start:0x000A75DC end:0x000A7728 align:4
+
+rel/main_rel/effect/fn_1_62AF8.c:
+	.text       start:0x00062AF8 end:0x00062C84 align:4
