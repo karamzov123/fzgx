@@ -59,14 +59,20 @@ def commits_behind_ahead(base, head, cwd=ROOT):
     return behind, ahead
 
 
+import shutil
+
 def test_merge_and_verify(agent_name, agent_info):
     """Test merge into a detached staging worktree and run ninja."""
     staging_dir = ROOT.parent / ".fzgx_staging_test"
     try:
-        # Create temporary staging worktree at current main
+        # Clean up any leftover worktree registration
+        subprocess.run(["git", "worktree", "remove", "--force", str(staging_dir)],
+                       cwd=str(ROOT), capture_output=True)
+        subprocess.run(["git", "worktree", "prune"], cwd=str(ROOT), capture_output=True)
         if staging_dir.exists():
-            run(f"rm -rf {staging_dir}")
-        run(["git", "worktree", "add", "--detach", str(staging_dir), "main"])
+            shutil.rmtree(staging_dir, ignore_errors=True)
+        time.sleep(0.1)
+        run(["git", "worktree", "add", "-f", "--detach", str(staging_dir), "main"])
 
         # Symlink orig and tools into staging
         (staging_dir / "orig").mkdir(parents=True, exist_ok=True)
@@ -100,9 +106,9 @@ def test_merge_and_verify(agent_name, agent_info):
         return True, "verified"
     finally:
         # Clean up staging worktree
-        if staging_dir.exists():
-            subprocess.run(["git", "worktree", "remove", "--force", str(staging_dir)],
-                           cwd=ROOT, capture_output=True)
+        subprocess.run(["git", "worktree", "remove", "--force", str(staging_dir)],
+                       cwd=str(ROOT), capture_output=True)
+        subprocess.run(["git", "worktree", "prune"], cwd=str(ROOT), capture_output=True)
 
 
 def get_commit_details(agent_info, count):
@@ -113,7 +119,7 @@ def get_commit_details(agent_info, count):
 
 def check_and_integrate_agent(agent_name, agent_info, auto_pr=True):
     if not agent_info["path"].exists():
-        return
+        return False
 
     main_rev = get_rev("main")
     branch = agent_info["branch"]
@@ -121,26 +127,42 @@ def check_and_integrate_agent(agent_name, agent_info, auto_pr=True):
     # Check if branch exists
     b_check = run(["git", "rev-parse", "--verify", branch], check=False)
     if b_check.returncode != 0:
-        return
+        return False
 
     behind, ahead = commits_behind_ahead("main", branch)
     if ahead == 0:
-        return  # Nothing to integrate
+        return False  # Nothing to integrate
 
     print(f"\n>>> [{agent_name}] Detected {ahead} new commit(s) ahead of main.")
+
+    # If the branch has diverged behind main, try rebasing the agent branch first if clean
+    if behind > 0:
+        st = run(["git", "status", "--porcelain"], cwd=agent_info["path"]).stdout.strip()
+        uncommitted = [l for l in st.splitlines() if not l.startswith("??")]
+        if not uncommitted:
+            print(f"[{agent_name}] Branch is {behind} commits behind main; auto-rebasing cleanly...")
+            rebase_res = run(["git", "rebase", "main"], cwd=agent_info["path"], check=False)
+            if rebase_res.returncode != 0:
+                run(["git", "rebase", "--abort"], cwd=agent_info["path"], check=False)
+                print(f"[{agent_name}] Auto-rebase conflict; skipping integration for this cycle.")
+                return False
+            behind, ahead = commits_behind_ahead("main", branch)
+            if ahead == 0:
+                print(f"[{agent_name}] All commits were already on main after rebase.")
+                return False
 
     # 1. Local oracle validation
     print(f"[{agent_name}] Running local oracle verification (ninja)...")
     ok, reason = test_merge_and_verify(agent_name, agent_info)
     if not ok:
         print(f"[{agent_name}] FAILED verification: {reason}. Skipping auto-merge.")
-        return
+        return False
 
     print(f"[{agent_name}] Verification PASSED (16 files OK)!")
 
     # 2. Push branch to GitHub
     print(f"[{agent_name}] Pushing {branch} to origin...")
-    run(["git", "push", "origin", branch], cwd=agent_info["path"])
+    run(["git", "push", "-f", "origin", branch], cwd=agent_info["path"])
 
     commit_log = get_commit_details(agent_info, ahead)
 
@@ -153,7 +175,8 @@ def check_and_integrate_agent(agent_name, agent_info, auto_pr=True):
         if prs:
             pr_num = prs[0]["number"]
             pr_url = prs[0]["url"]
-            print(f"[{agent_name}] Updating existing PR #{pr_num} ({pr_url})...")
+            print(f"[{agent_name}] Updating and merging existing PR #{pr_num} ({pr_url})...")
+            run(["gh", "pr", "merge", "--repo", REPO, branch, "--merge"], check=False)
         else:
             title = f"Match ({agent_name}): {ahead} new link-verified function(s)"
             body = (
@@ -170,9 +193,9 @@ def check_and_integrate_agent(agent_name, agent_info, auto_pr=True):
             if pr_create.returncode == 0:
                 pr_url = pr_create.stdout.strip()
                 print(f"[{agent_name}] PR created successfully: {pr_url}")
-                # Auto-merge the PR
+                # Direct merge the PR
                 print(f"[{agent_name}] Merging PR on GitHub...")
-                run(["gh", "pr", "merge", "--repo", REPO, branch, "--merge", "--auto"], check=False)
+                run(["gh", "pr", "merge", "--repo", REPO, branch, "--merge"], check=False)
 
     # 4. Integrate into local main
     print(f"[{agent_name}] Syncing local main...")
@@ -182,17 +205,27 @@ def check_and_integrate_agent(agent_name, agent_info, auto_pr=True):
         run(["git", "merge", "--no-ff", "-m", f"Merge {branch}", branch], cwd=ROOT)
         run(["git", "push", "origin", "main"], cwd=ROOT)
 
+    # Update ledger snapshot
+    run(["uv", "run", "tools/fzgx.py", "sync"], cwd=ROOT, check=False)
+    run(["uv", "run", "tools/fzgx.py", "snapshot"], cwd=ROOT, check=False)
+    st = run(["git", "status", "--porcelain", "state/ledger.json"], cwd=ROOT, check=False).stdout.strip()
+    if st:
+        run(["git", "commit", "-m", f"state: update ledger snapshot after {agent_name} integration", "state/ledger.json"], cwd=ROOT, check=False)
+        run(["git", "push", "origin", "main"], cwd=ROOT, check=False)
+
     # 5. Rebase agent worktrees so none fall behind
     print(f"[{agent_name}] Syncing active worktrees...")
     agents = get_all_agents()
     for other_name, other_info in agents.items():
         if other_info["path"].exists():
-            # If the worktree has no uncommitted changes, rebase cleanly
             st = run(["git", "status", "--porcelain"], cwd=other_info["path"]).stdout.strip()
-            # Ignore untracked files
             uncommitted = [l for l in st.splitlines() if not l.startswith("??")]
             if not uncommitted:
                 run(["git", "rebase", "main"], cwd=other_info["path"], check=False)
+
+    subprocess.run(["notify-send", "-u", "normal", "F-Zero GX Fleet Integration",
+                    f"Successfully integrated {ahead} match(es) from {agent_name} into main!"], check=False)
+    return True
 
 
 def print_status():
