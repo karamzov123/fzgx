@@ -5501,3 +5501,27 @@ dol/fn_8003726C.c:
 
 dol/fn_800372E0.c:
 	.text       start:0x800372E0 end:0x80037354 align:4
+
+dol/fn_80036F24.c:
+	.text       start:0x80036F24 end:0x80036FF0 align:4
+
+dol/fn_80037C2C.c:
+	.text       start:0x80037C2C end:0x80037D14 align:4
+
+dol/fn_80038DE8.c:
+	.text       start:0x80038DE8 end:0x80038EEC align:4
+
+dol/fn_80033650.c:
+	.text       start:0x80033650 end:0x800336EC align:4
+
+dol/fn_80035734.c:
+	.text       start:0x80035734 end:0x80035828 align:4
+
+dol/fn_80035828.c:
+	.text       start:0x80035828 end:0x8003591C align:4
+
+dol/fn_8003401C.c:
+	.text       start:0x8003401C end:0x800340D4 align:4
+
+dol/fn_800365B4.c:
+	.text       start:0x800365B4 end:0x8003666C align:4
