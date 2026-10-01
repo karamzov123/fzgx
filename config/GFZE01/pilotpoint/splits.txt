@@ -128,3 +128,6 @@ rel/pilotpoint/pilotpoint/fn_14_7EAC.c:
 
 rel/pilotpoint/pilotpoint/_prolog.c:
 	.text       start:0x00000000 end:0x00000188 align:4
+
+rel/pilotpoint/pilotpoint/fn_14_82E4.c:
+	.text       start:0x000082E4 end:0x00008600 align:4
