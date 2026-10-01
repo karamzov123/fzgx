@@ -1,8 +1,6 @@
 #include "types.h"
 
 /* fzgx:begin _prolog */
-/* fzgx:begin _prolog noprologue */
-
 struct _prolog_lbl_14_bss_0 {
     u8 pad_0[0x14];
     u32 unk_14;
@@ -10,75 +8,83 @@ struct _prolog_lbl_14_bss_0 {
     u32 unk_1C;
     u32 unk_20;
 };
+
 struct _prolog_lbl_801A6410 {
     u32 unk_0;
 };
-typedef struct _prolog_LocalData LocalData;
-struct _prolog_LocalData {
-    u8 data[0x14B4];
-};
+
+typedef struct Sig_ADXT_Stop_ADXTHandle Sig_ADXT_Stop_ADXTHandle;
 
 extern struct _prolog_lbl_14_bss_0 lbl_14_bss_0;
 extern struct _prolog_lbl_801A6410 lbl_801A6410;
-extern u8 lbl_14_data_2FB0[0xD];
-extern u8 lbl_14_data_2FC0[0x4C];
-extern const f32 lbl_14_rodata_0[12];
-extern u16 lbl_1_bss_96A;
-extern u32 lbl_1_bss_6EAD0;
-extern u32 lbl_1_bss_7167C;
-extern u32 lbl_1_bss_71680;
-extern u32 lbl_1_bss_71684;
+extern u8 lbl_14_data_2FB0;
+extern u8 lbl_14_data_2FC0;
+extern const f32 lbl_14_rodata_0;
+extern s16 lbl_1_bss_96A;
+extern Sig_ADXT_Stop_ADXTHandle **lbl_1_bss_6EAD0;
+
+extern void *lbl_1_bss_7167C[];
+extern void *lbl_1_bss_71680;
+extern void *lbl_1_bss_71684[];
 
 extern void fn_14_220(void);
-extern u32 fn_14_268(void);
 extern void fn_14_2A0(void);
+extern u32 fn_14_268(void);
 extern u32 fn_14_DC2C(void);
 extern u32 fn_1_7BA08(u32, u32, u32);
+extern s32 fn_1_45D0(u32, u32, const void *, s32);
 extern void fn_1_7BA48(u32);
-extern u32 fn_1_45D0(u32, u32, void *, u32);
 extern void fn_1_3CF0(u32, u32);
-extern void fn_1_435C(u32);
-extern u32 fn_1_3F8C(void *, void *, u32, u32);
+extern u32 fn_1_435C(u32);
+extern s32 fn_1_3F8C(const void *, void *, u32, u32);
+extern void fn_1_7BAF8(void);
 extern void fn_1_411A4(u32);
 extern void fn_1_48418(int);
 extern void fn_1_479F0(s16);
 extern void fn_1_159440(int, int);
-extern void fn_1_7BAF8(void);
 extern void fn_8006CE1C(f32);
 extern void fn_1_A8F78(void);
 extern u32 fn_1_A0680(void);
-extern u32 fn_1_A1588(void *, u32);
+extern u32 fn_1_A1588(Sig_ADXT_Stop_ADXTHandle *, u32);
 extern void fn_1_3EF14(void *);
 
 void _prolog(void) {
-    LocalData local;
-    struct _prolog_lbl_14_bss_0 *p;
-    u32 h;
-    p = (struct _prolog_lbl_14_bss_0 *)&lbl_14_bss_0;
+    struct _prolog_lbl_14_bss_0 *p_lbl_14_bss_0;
+    u32 buffer[1328];
 
-    lbl_1_bss_7167C = (u32)fn_14_220;
-    lbl_1_bss_71680 = (u32)fn_14_268;
-    lbl_1_bss_71684 = (u32)fn_14_2A0;
+    p_lbl_14_bss_0 = (struct _prolog_lbl_14_bss_0 *)&lbl_14_bss_0;
 
-    h = fn_1_45D0(lbl_801A6410.unk_0, fn_1_7BA08(0x20, 0x20, 0x40), &lbl_14_data_2FB0, 0x313);
-    p->unk_14 = h;
-    fn_1_7BA48(h);
-    fn_1_3CF0(p->unk_1C = fn_1_45D0(lbl_801A6410.unk_0, 0x173C, &lbl_14_data_2FB0, 0x314), 0x80);
-    fn_1_3CF0(p->unk_20 = fn_1_45D0(lbl_801A6410.unk_0, 0x173C, &lbl_14_data_2FB0, 0x315), 0x80);
-    fn_1_435C(p->unk_20);
-    fn_1_3F8C(&lbl_14_data_2FC0, fn_1_7BAF8, p->unk_14, 2);
+    lbl_1_bss_7167C[0] = (void *)fn_14_220;
+    lbl_1_bss_71680 = (void *)fn_14_268;
+    lbl_1_bss_71684[0] = (void *)fn_14_2A0;
+
+    p_lbl_14_bss_0->unk_14 = fn_1_45D0(lbl_801A6410.unk_0, fn_1_7BA08(0x20, 0x20, 0x40), (const char *)&lbl_14_data_2FB0, 0x313);
+    fn_1_7BA48(p_lbl_14_bss_0->unk_14);
+
+    p_lbl_14_bss_0->unk_1C = fn_1_45D0(lbl_801A6410.unk_0, 0x173C, (const char *)&lbl_14_data_2FB0, 0x314);
+    fn_1_3CF0(p_lbl_14_bss_0->unk_1C, 0x80);
+
+    p_lbl_14_bss_0->unk_20 = fn_1_45D0(lbl_801A6410.unk_0, 0x173C, (const char *)&lbl_14_data_2FB0, 0x315);
+    fn_1_3CF0(p_lbl_14_bss_0->unk_20, 0x80);
+
+    fn_1_435C(p_lbl_14_bss_0->unk_20);
+    fn_1_3F8C(&lbl_14_data_2FC0, (void *)fn_1_7BAF8, p_lbl_14_bss_0->unk_14, 2);
+
     fn_1_411A4(1);
     fn_1_48418(2);
-    fn_1_479F0(0xD);
+    fn_1_479F0(13);
     fn_1_479F0(1);
     fn_1_159440(2, 0);
+
     lbl_1_bss_96A = 0xAC;
-    fn_8006CE1C(lbl_14_rodata_0[0]);
+    fn_8006CE1C(lbl_14_rodata_0);
+
     fn_1_A8F78();
     fn_1_A0680();
-    fn_1_A1588(*(void **)*(u32 *)&lbl_1_bss_6EAD0, 0x1F);
+
+    fn_1_A1588(*lbl_1_bss_6EAD0, 0x1F);
     fn_14_DC2C();
-    fn_1_3EF14(&local);
+    fn_1_3EF14(buffer);
 }
 /* fzgx:end _prolog */
 
