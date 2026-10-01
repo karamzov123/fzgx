@@ -57009,6 +57009,16 @@
   },
   {
     "module": "movie_module",
+    "source": "rel/movie_module/fn_12_A2C4.c",
+    "symbols": [
+      "fn_12_A2C4"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
     "source": "rel/movie_module/fn_12_A660.c",
     "symbols": [
       "fn_12_A660"
