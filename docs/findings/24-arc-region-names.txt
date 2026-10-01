@@ -1,0 +1,67 @@
+# Candidate names for MTXHead.o unit (0x80069AE0-0x8006CE44)
+# Format: addr = candidate ; evidence/confidence
+
+# --- Game-side MTX/engine code (NOT ARC) ---
+0x80069AE0 = fn_80069AE0 ; game code: reads r13->+0x444 flag bit24, tail-calls fn_8006953C; no ARC shape
+0x80069B10 = fn_80069B10 ; game code, refs lbl_801A6C80 (game bss), AXFreeVoice
+0x80069CE4 = fn_80069CE4 ; game code, OSDisableInterrupts/OSRestoreInterrupts around lbl_801A6C80 state
+0x80069FCC = fn_80069FCC ; game math/init, refs sdata2 float consts lbl_801A735x
+0x8006A1F8 = fn_8006A1F8 ; game code, refs lbl_801327AC region (data)
+
+# --- Dolphin ARC library (arc.c, __FILE__ = arc.c @0x801A6610) ---
+0x8006A3DC = ARCInitHandle ; CONFIRMED (already named): magic check 0xAA382D on *(r3), builds ARCHandle fields, asserts "ARCInitHandle: bad archive format" (lbl_801A6C80-offset str) w/ arc_c_str
+0x8006A480 = ARCOpen ; HIGH: resolves path via fn_8006A554, asserts "ARCOpen(): file '%s' was not found under %s in the archive." (@0x801327AC), copies entry offset/len into dirent, returns bool; also memsets 0x80-byte buffer before OSReport
+0x8006A554 = ARCConvertPathToEntrynum ; HIGH: walks '/'-separated path, handles "." and ".." segments, case-insensitive strcmp via tolower (fn_8007ED90) against FST string table (h+0x10), scans sibling entries (stride 12), returns -1 on fail; called by ARCOpen/ARCChangeDir
+0x8006A768 = ArcEntryGetPath ; MEDIUM (internal helper): recursive FST walk (dir bit = word&0x00800000 test rlwinm 0,25) appending '/' + name from string table, bounded by maxlen arg; only caller is fn_8006A8CC
+0x8006A8CC = ARCGetEntryPath ; LOW-MEDIUM: wrapper over ArcEntryGetPath; NUL-terminates, appends '/' when target is a directory, truncation-safe vs maxlen; matches SDK ARCGetEntryPath semantics
+0x8006A998 = ARCGetStartAddr ; MEDIUM: returns *(handle)+handle->[4] i.e. archive base + first-entry offset == start address of archive data
+0x8006A9AC = ARCGetLength ; MEDIUM-HIGH: trivial `return handle->[8]` == archive length field set by ARCInitHandle
+
+# --- GX/GCN game-side engine (post-ARC block) ---
+0x8006A9B4 = ARCChangeDir ; MEDIUM-HIGH (last ARC func): fn_8006A554(path); if found stores result into handle->[0x18] (current dir index set by ARCInitHandle); returns bool. Grouped here for continuity though semantically ARC.
+0x8006AA20 = fn_80069..GXMarkRenderInvalid ; game: writes -1 to byte 0x4D of 0x1248-stride struct at 0x80199670-family base (-0x7fe6xxxx => ~0x80196000)
+0x8006AA44 = fn_8006AA44 ; game: texture/palette struct init from params (byte compares at +2/+0x20, xor test bit28), fills 0x40-entry table
+0x8006AC44 = fn_8006AC44 ; game: companion loader to fn_8006AA44, writes 0x1e/0x22/0x26 fields of 0x1248-stride object
+0x8006AE90 = fn_8006AE90 ; game: clamped interpolation ((new-old)/(2*size-(new-old))*255 -127 clamp) -> GXTexObj-like update, calls fn_8006AA44/fn_8006AC44
+0x8006AF94 = fn_8006AF94 ; game: loops 4 x 0x1248-stride slots at ~0x80196xxx, marks slot invalid (byte 0x4D=-1), calls fn_8006AE90 + fn_8006C92C
+0x8006B048 = fn_8006B048 ; game: big field-by-field struct init (~0x30 offsets, defaults 0x80/-0x40 etc.) on 0x1248-stride object
+0x8006B188 = fn_8006B188 ; game small accessor/init, refs lbl_801A6C88 + lbl_80199670
+0x8006B224 = fn_8006B224 ; game accessor, refs lbl_801A6C88/lbl_80199670
+0x8006B294 = fn_8006B294 ; game init, refs lbl_801A6C8C + float tables lbl_801A737x
+0x8006B3F0 = fn_8006B3F0 ; game accessor (refs lbl_8019DF90 assert-ish bss + lbl_801A6C8C)
+0x8006B470 = fn_8006B470 ; game init, refs lbl_801A6C90/lbl_801A6C94 + lbl_8019E014/lbl_8019E094
+0x8006B55C = fn_8006B55C ; game, refs lbl_801A6C98 + lbl_8019E0xx
+0x8006B628 = fn_8006B628 ; game, refs lbl_8019E014/lbl_8019E094
+0x8006B6F8 = fn_8006B6F8 ; game
+0x8006B7B4 = fn_8006B7B4 ; game
+0x8006B870 = fn_8006B870 ; game
+0x8006B92C = fn_8006B92C ; game reset: calls fn_8006C7E8(state), clears 0x11f4 + 0x40-slot table @0xf4, lazily builds sin table via fn_8006B99C (flag at r13-0x7734)
+0x8006B99C = BuildSinTable ; MEDIUM: fills 0x81 bytes at ~0x80197F90 (base -0x7fe6,-0x2070) using fn_80088598 (sin) with sign symmetry
+0x8006BA74 = fn_8006BA74 ; game alloc: fn_8006BC84 -> range check, picks slot from byte param (+0x1f4 offset), fn_8006BCF8 clear + fn_8006BE0C load, registers ptr at obj+0xf4[slot]; err codes -5/-2
+0x8006BB30 = fn_8006BB30 ; game: lookup obj+0xf4[slot], call fn_8006BE0C, else -2
+0x8006BB74 = fn_8006BB74 ; game: free slot (obj+0xf4[slot]=0)
+0x8006BB9C = fn_8006BB9C ; game: same pattern calling fn_8006C134
+0x8006BBDC = fn_8006BBDC ; game: same pattern calling fn_8006C17C
+0x8006BC1C = fn_8006BC1C ; game init: clears 0x40-slot table @+0xf4, stores param at +0xf0, sentinel -1 at +0x11f4
+0x8006BC50 = fn_8006BC50 ; game: zeroes non-null entries of +0xf4 table
+0x8006BC84 = fn_8006BC84 ; game: allocator helper (returns free slot/count), called by fn_8006BA74
+0x8006BCF8 = fn_8006BCF8 ; game: clears 2x0x20-byte records; lazily fills 0x40-entry halfword tables at ~0x80196000-region using fn_800883E8 (cos/sin), flag r13-0x7728
+0x8006BE0C = fn_8006BE0C ; game: large switchy loader/clampler (many 0xff / -0xff clamps, type switch cmpwi 1/0/9/7) filling record
+0x8006C134 = fn_8006C134 ; game: sets flags at +0x28/+0x2c/+0x30 of object, conditional +0x38 = h[0x12]<<16
+0x8006C17C = fn_8006C17C ; game: clears bits of +0x28
+0x8006C190 = fn_8006C190 ; game: per-object anim update core (calls fn_8006C634/C6E8/C788), big
+0x8006C570 = fn_8006C570 ; game: bound checks vs 0xffff, object counters
+0x8006C634 = fn_8006C634 ; game: piecewise table lookup (cmp 0x40/0x80/0xc0) -> halfword LUT negation
+0x8006C6E8 = fn_8006C6E8 ; game: compares obj+0x24->+0xC against +0x38/+0x3c ranges
+0x8006C788 = fn_8006C788 ; game: checks obj+0x24->+0x64 flag vs 0x10 mask
+0x8006C7E8 = fn_8006C7E8 ; game init: OSGetTick-derived timing seeds (OSTime @0x800000F8), fills 10 floats from sdata2, flag table
+0x8006C92C = fn_8006C92C ; game per-frame update: OSGetTick, derefs 0x1248-stride objs, calls fn_8006C190, fn_800139E8
+0x8006CCC8 = fn_8006CCC8 ; game, refs lbl_8019DF90 + lbl_801A73Ax floats
+0x8006CD20 = fn_8006CD20 ; game: store 2 floats to r13 scratch (-0x771c/-0x7720)
+0x8006CD2C = fn_8006CD2C ; game: read those 2 floats into outputs
+0x8006CD40 = fn_8006CD40 ; game: swap-style float save (stack top)
+0x8006CD50 = fn_8006CD50 ; game render hook: fn_80015EE8, fn_800737E4, fn_8006D758, fn_80038C5C
+0x8006CDA8 = fn_8006CDA8 ; game render hook variant incl. indirect call + fn_8006CE44
+0x8006CDFC = fn_8006CDFC ; game: copy 3 bytes to r13 scratch -0x7718 (color)
+0x8006CE1C = fn_8006CE1C ; game: f1 * const -> int -> byte at color[3]
+0x8006CE44 = fn_8006CE44 ; game display-list/state pusher (fn_80074918/74788/74660/73678/73898/73C6C...)

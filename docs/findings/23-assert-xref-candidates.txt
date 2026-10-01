@@ -1,0 +1,79 @@
+# Assert/string-xref candidate names — mined from all linked objects under build/GFZE01/obj/
+# Method (findings/22): per-function .rela.text relocations to lbl_* syms, VA resolved against
+# orig/GFZE01/sys/main.dol data sections, printable ASCII >=4 kept.
+# Raw data: /tmp/gamehead-id/xref_strings.json   Miner: /tmp/gamehead-id/mine.py
+
+# ---- game/adxt_*.o : CRI ADX middleware (asserts name the API directly) ----
+0x8004BA40 = ADXT_GetDecNumSmpl ; assert "E02080818 ADXT_GetDecNumSmpl: parameter error" (lbl_80090A20)
+0x8004BC0C = ADXT_GetDecNumSmpl_variant ; same assert string as fn_8004BA40
+0x8004CD70 = ADXT_Create ; asserts "E02080804 ADXT_Create: parameter error" (lbl_80091064)
+0x80050698 = ADXF_Stop ; asserts "'pxf->stm' is NULL.(ADXF_Stop)" lbl_800912F0/lbl_800912F8
+0x80051F38 = AHX_attach_helper ; refs "attachAHX" lbl_80091330
+0x80052430 = AHX_AttachEntry ; 15 entrypoints fn_80052430..fn_800538D0 all assert "can not attach AHX." (lbl_80091338)
+0x800557CC = CVFS_GCCI_AddDev_family ; asserts "AddDev #3:failed added a device" (lbl_80091F50); GCCI Ver.1.09 blob nearby
+0x80056730 = gcCiGetFileSize_user ; 13 fns fn_80056730..fn_80056E9C assert "...lose a file.(gcCiGetFileSize)" (lbl_80092188)
+0x80057114 = gcCiGetFileSize_user ; refs lbl_80092188
+0x80059DD8 = SVM_SetCbSvr ; assert "1051001:SVM_SetCbSvr:too many server function" (lbl_800924F8)
+0x8005A24C = SVM_SetCbSvr_related ; refs lbl_800924F8
+0x8005B264 = mfCiOpen_resource_mgr ; asserts "...handle resource.(mfCiOpen)" (lbl_80092790); MFCI Ver.1.05 blob nearby
+0x8005B534 = mfCiOpen_resource_mgr ; refs lbl_80092790
+
+# ---- game/criadx_*.o : CRI container parsers ----
+0x80044C0C = CRI_WAVE_parser ; refs "WAVE" tag lbl_80090098
+0x800456A0 = CRI_FORM_parser ; refs "FORM" tag lbl_800900A0
+0x80046D94 = CRI_SPSD_parser ; refs "SPSD" lbl_80090948 + "(c)CRI" lbl_80090950
+
+# ---- game/axmix_*.o : Dolphin OS heap users inside AX mix code ----
+0x80023684 = axmix_heap_init ; assert "...heap && heap < NumHeaps in %d" (lbl_80128160, OSCreateHeap family)
+0x800244C8 = OSCheckHeap_caller ; assert "OSCheckHeap: Failed 0 <= hd->size in %d" (lbl_80128180)
+0x80024E6C = OSCheckHeap_caller ; refs lbl_80128190 (OSCheckHeap allocated-chain assert)
+0x80025004 = OSCheckHeap_caller ; refs lbl_80128190
+
+# ---- game/gamehead_8005C120.o ----
+0x8006953C = snd_alloc_size_check ; assert "Not Sound Allocation Size %d" (lbl_80092C38); unit also owns "Cannot open %s"
+0x8005DCEC = sdk_banner_and_card_probe ; refs SI/EXI/DVD release stamps (lbl_80129AD0/80129CD0/80129ED0), "Memory Card 251|507|1019", "file area is out of the file"
+
+# ---- dolphin ----
+0x80035420 = ARCInitHandle_or_ARC_open ; GXGeometry.o fn refs __FILE__ "arc.c" (lbl_801A7090); corroborates finding 22 (MTXHead fn_8006A3DC)
+0x80083F10 = MSL_device_link_fn ; refs "...vice link" (lbl_800953A0) in msl_80083E84.o
+0x80086C5C = MSL_strtod_nan ; refs "NAN(" literal (lbl_801A77D0)
+0x80088B00 = TRKTargetConnect ; metrotrk: refs "ECUBE v2.0" (lbl_80095678)
+0x80089BAC = TRK_serialIO_init ; refs "...erialIO - " banner (lbl_800958C4)
+
+# ---- main.o boot path ----
+0x80005738 = main_read_fze_str ; refs "fze.str" (lbl_801A6E44)
+0x80005858 = main_load_sample_rel ; refs "sample.rel" (lbl_801A63C4)
+0x80005B10 = mmu_user_fn ; refs __FILE__ "mmu.c" (lbl_801A6E80)
+0x8000659C = dvdfs_user_fn ; refs __FILE__ "dvdfs.c" (lbl_801A6EF0)
+0x80007B68 = dvd_user_fn ; refs __FILE__ "dvd.c" (lbl_801A6F04)
+
+# =====================================================================
+# Middleware data-blob map (version stamps found in dol data sections;
+# each blob exists TWICE: original + duplicate copy at +0x5EE00)
+# =====================================================================
+# CRI audio middleware block #1: 0x80090000-0x800928FF ; duplicate: 0x80095EA0+ (data1 head)
+#   stamps (offsets given are in blob #1):
+#   ADXT/GC Ver.8.84      Build:May  9 2003 17:11:01  @0x80090001
+#   SKG/GC Ver.0.63       Build:May  9 2003 17:11:05  @0x800900C1
+#   ADXGC Ver.1.21        @0x80091151 ; ADXGCSDK Ver.05Sep2002Patch2 @0x800911B9
+#   ADXF/GC Ver.7.07      @0x80091241 ; AHX/GC Ver.1.24 @0x80091379
+#   CVFS/GC Ver.2.33      @0x800913B1 ; GCCI Ver.1.09    @0x80091F71
+#   LSC/GC Ver.2.11       @0x800922B1 ; SJ/GC Ver.6.14   @0x80092321
+#   SVM/GC Ver.1.51       @0x80092371 ; MFCI/GC Ver.1.05 @0x80092519
+#   AXRNA Ver.1.02        @0x800927B1 ; "(c)CRI" @0x80090950/@0x80090998
+# sasnd (ProDG sound?) blob: "sasnd Ver 1.13h Build:Jul  1 2003 21:06:15" @0x80092BF9
+# Dolphin SDK - OS     release Mar 17 2003 04:20:41 @0x80128510  (blob 0x80127000?-0x8012A000)
+# Dolphin SDK - SI     release Sep  5 2002 05:33:08 @0x80129AAF
+# Dolphin SDK - EXI    release Mar 11 2003 11:19:00 @0x80129C60  (+ "Memory Card 2043|1019|507|251" table @0x80129CFC)
+# Dolphin SDK - DVD    release Oct 29 2002 09:56:49 @0x80129EF0
+# Dolphin SDK - VI     release Sep  5 2002 05:33:13 @0x8012A128
+# Dolphin SDK - PAD    release Sep  5 2002 05:34:02 @0x8012A4F7
+# Dolphin SDK - AI     release Sep  5 2002 05:34:25 @0x8012A550
+# Dolphin SDK - AR     release Sep  5 2002 05:34:27 @0x8012A598
+# Dolphin SDK - ARQ    release Sep  5 2002 05:34:29 @0x8012A5E0
+# Dolphin SDK - AX     release Mar 11 2003 11:19:39 @0x8012A628
+# Dolphin SDK - DSP    release Sep  5 2002 05:35:13 @0x801307A8
+# Dolphin SDK - CARD   release Sep  5 2002 05:35:20 @0x80130968
+# Dolphin SDK - GX     release Feb  7 2003 04:01:13 @0x80130B60
+# Dolphin SDK - PERF   release Sep  5 2002 05:35:44 @0x801314A8
+# REL loader: "fze.sample.rel" @0x801A63C0 / "sample.rel" @0x801A63C4 ; "fze.str" @0x801A6E44
