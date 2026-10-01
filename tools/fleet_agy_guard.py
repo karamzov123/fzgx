@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 import sys
 import time
-TOOLS = {'write_unit', 'patch_unit', 'check', 'read_evidence', 'release'}
+TOOLS = {'write_unit', 'patch_unit', 'check', 'search', 'read_evidence', 'release'}
 
 def decide(payload, server):
     call = payload.get('toolCall') or {}
@@ -39,7 +39,7 @@ def main():
     except Exception:
         allowed = False
     print(json.dumps(dict(decision='allow' if allowed else 'deny',
-        reason='Only the five supervisor-bound decompilation tools are permitted; no shell, file, web, subagent or interactive tools.')))
+        reason='Only the six supervisor-bound decompilation tools are permitted; no shell, file, web, subagent or interactive tools.')))
 
 if __name__ == '__main__':
     main()

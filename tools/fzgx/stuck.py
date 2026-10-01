@@ -17,7 +17,7 @@ import sqlite3
 from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from . import oracle
 from .project import STATE_DIR, Project
@@ -124,6 +124,51 @@ def row_kinds(lrows: List[dict], rrows: List[dict]) -> List[Optional[str]]:
         keys = [k for k in c if ":" in k] or [k for k in c]
         out.append(keys[0] if keys else "other")
     return out
+
+
+_ANON_SECTION = re.compile(r"\.\.\.(?:rodata|data|bss|sdata2?|sbss2?)\.\d+")
+_BASE_DEF = re.compile(r"^addi (r\d+), r\d+, \S+@l$")
+_DISPLACED = re.compile(r"-?0x[0-9a-f]+\((r\d+)\)|^addi r\d+, (r\d+), -?0x[0-9a-f]+$")
+_DISPLACEMENT = re.compile(r"-?0x[0-9a-f]+(?=\(r\d+\))|(?<=, )-?0x[0-9a-f]+$")
+
+
+def layout_rows(lrows: List[dict], rrows: List[dict]) -> set:
+    """Rows a matcher cannot repair by editing its function: the candidate reaches a
+    section or literal pool through its own anonymous object (`...rodata.0`), so the
+    base materialisation and every displacement off that base differ from retail while
+    the instruction and registers agree. The shared-pool and section-layout repairs
+    prime that layout mechanically."""
+    bases, out = set(), set()
+    pairs = list(zip(lrows, rrows))
+    for i, (l, r) in enumerate(pairs):
+        lf, rf = _fmt(l), _fmt(r)
+        if not lf or not rf or lf == rf or not _ANON_SECTION.search(rf):
+            continue
+        if lf != _strip_reloc(lf) and _strip_reloc(lf) == _strip_reloc(rf):
+            out.add(i)
+            m = _BASE_DEF.match(lf)
+            if m:
+                bases.add(m.group(1))
+    if not bases:
+        return set()
+    for i, (l, r) in enumerate(pairs):
+        lf, rf = _fmt(l), _fmt(r)
+        if i in out or not lf or not rf or lf == rf:
+            continue
+        m = _DISPLACED.search(lf)
+        if m and (m.group(1) or m.group(2)) in bases and _DISPLACEMENT.sub("D", lf) == _DISPLACEMENT.sub("D", rf):
+            out.add(i)
+    return out
+
+
+def own_rows(lrows: List[dict], rrows: List[dict], accepted=()) -> Dict[str, Any]:
+    """What is left for the matcher after pool relocations and layout rows."""
+    layout = layout_rows(lrows, rrows) - set(accepted)
+    kinds: Counter = Counter()
+    for i, kind in enumerate(row_kinds(lrows, rrows)):
+        if kind and i not in layout and i not in accepted:
+            kinds[kind.split(":")[0]] += 1
+    return dict(layout=sorted(layout), own=sum(kinds.values()), kinds=dict(kinds.most_common()))
 
 
 def _pure(counts: Dict[str, int], lrows: List[dict], rrows: List[dict]) -> str:

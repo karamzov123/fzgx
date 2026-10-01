@@ -144,16 +144,18 @@ class Ledger:
             "SELECT * FROM attempts WHERE symbol=? AND ended IS NULL ORDER BY id DESC LIMIT 1",
             (symbol,)).fetchone()
 
-    def bump_checks(self, symbol: str, percent: float) -> Dict[str, float]:
+    def bump_checks(self, symbol: str, percent: float, compiled: bool = True) -> Dict[str, float]:
         """Record a check. Returns checks so far, consecutive non-improving checks, and bests."""
         with self.db:
             att = self.current_attempt(symbol)
             improved = att is not None and percent > (att["best_in_attempt"] or 0.0)
             self.db.execute(
                 "UPDATE attempts SET checks=checks+1, final_percent=?, "
-                "stale_checks=CASE WHEN ? THEN 0 ELSE stale_checks+1 END, "
+                # A compile error says nothing about a plateau: it spends a check,
+                # not one of the consecutive non-improving checks.
+                "stale_checks=CASE WHEN ? THEN 0 WHEN ? THEN stale_checks+1 ELSE stale_checks END, "
                 "best_in_attempt=MAX(best_in_attempt, ?) WHERE symbol=? AND ended IS NULL",
-                (percent, improved, percent, symbol))
+                (percent, improved, compiled, percent, symbol))
             self.db.execute(
                 "UPDATE functions SET best_percent=MAX(best_percent, ?) WHERE symbol=?", (percent, symbol))
             att = self.current_attempt(symbol)

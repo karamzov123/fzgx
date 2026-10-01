@@ -659,7 +659,7 @@ class Engine:
         self.emit(dict(stage='clones', families=len(self.clones), shared=len(self.clone_shared),
                        matches=len(self.matched_symbols(history))))
 
-    def run(self, rows, rounds=2, beam=3, max_candidates=80, budget_s=None, captures=None):
+    def run(self, rows, rounds=2, beam=3, max_candidates=80, budget_s=None, captures=None, stop_on_match=False):
         start=time.monotonic(); history=list(rows); seen={r['id'] for r in rows}; initial={}
         self.evaluate(rows)
         for row in rows:
@@ -776,6 +776,8 @@ class Engine:
                       improved=len({r['symbol'] for r in history if r['score']>initial.get(r['symbol'],-1)}))
             stats.append(stat);self.emit(stat)
             self.save(history,stats,start)
+            if stop_on_match and stat['matches']:
+                break
         return self.save(history,stats,start)
 
     def save(self,history,stats,start):
@@ -794,7 +796,7 @@ class Engine:
         return report
 
 
-def try_fix(p, symbol, body, budget_s=30.0, max_candidates=80, base=None):
+def try_fix(p, symbol, body, budget_s=30.0, max_candidates=80, base=None, rounds=2, beam=2):
     """Session/lifter adapter; same engine and transformations as corpus repair."""
     start=time.monotonic()
     if base and not base.ok:
@@ -807,13 +809,13 @@ def try_fix(p, symbol, body, budget_s=30.0, max_candidates=80, base=None):
     if not mw:
         mw,flags=oracle.version_for(p,sym,p.work_path(symbol))
     row=engine.record(symbol,body,mw,flags,label='input')
-    report=engine.run([row],rounds=2,beam=2,max_candidates=max_candidates,budget_s=budget_s)
+    report=engine.run([row],rounds=rounds,beam=beam,max_candidates=max_candidates,budget_s=budget_s,stop_on_match=True)
     best=report['best'][p.key(sym)]; matched=best.get('matched',False)
     check=engine.check(best) if best['score']>=0 else None
     return dict(matched=matched,body=Path(best['source']).read_text() if matched else None,
                 best_body=Path(best['source']).read_text(),label=best.get('label'),
                 best=max(check.percent,check.percent_adjusted) if check and check.ok else 0,
-                base=base.percent if base else row['score'],tried=report['compiled'],secs=time.monotonic()-start,
+                base=base.percent if base else row['score'],tried=report['compiled'],variants=report['compiled']+report['cached'],secs=time.monotonic()-start,
                 mw_version=best['mw'],extra_cflags=best['flags'])
 
 

@@ -7,7 +7,7 @@ import os
 import shlex
 
 ROOT = Path(__file__).resolve().parents[1]
-TOOLS = ['write_unit', 'patch_unit', 'check', 'read_evidence', 'release']
+TOOLS = ['write_unit', 'patch_unit', 'check', 'search', 'read_evidence', 'release']
 
 def mcp_config(directory, env):
     directory.mkdir(parents=True, exist_ok=True)
@@ -40,7 +40,7 @@ def command(family, prompt, model, directory, env):
     if family == 'agy':
         # Project plugins otherwise merge the personal broad fzgx server into
         # the model context. Project a session-local HOME with the SAME account
-        # state and only the five-tool server; personal config is never edited.
+        # state and only the six-tool server; personal config is never edited.
         import shutil
         original_home = Path.home()
         home = directory / 'home'
@@ -69,10 +69,12 @@ def command(family, prompt, model, directory, env):
         (agents / 'hooks.json').write_text(json.dumps({'fleet-bound-policy': {'PreToolUse':[{'matcher':'*','hooks':[hook]}]}}))
         instruction = ('You are a function-bound decompilation matcher. The assigned source/assembly/diff is below. '
             'Your ONLY tool server is fzgx and it exposes write_unit(source), patch_unit(old,new), check(versions), '
-            'read_evidence(section,cursor), release(reason). Use call_mcp_tool with ServerName=fzgx and those exact '
+            'search(), read_evidence(section,cursor), release(reason). Use call_mcp_tool with ServerName=fzgx and those exact '
             'ToolName values. Identity is bound by the host: NEVER pass symbol/agent parameters. '
             'Do not ask for read_unit, context, claim, inventory, resources, shell, files, web, or user input. '
             'All those operations are hard-denied. Source is already in the assignment; continue from it.\n')
+        # AGY has no system-prompt flag: the matcher rules travel in the prompt.
+        instruction += (ROOT / 'tools/codex_matcher.md').read_text() + '\n'
         return ['agy', '-p', instruction+prompt, '--model', model, '--effort', 'high', '--mode', 'accept-edits',
                 '--sandbox', '--disable-slash-commands', '--output-format', 'stream-json', '--print-timeout', '1800s',
                 '--log-file', str(directory / 'agy-runtime.log')]

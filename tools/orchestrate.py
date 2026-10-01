@@ -195,8 +195,12 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
 
     out, rc, proc, setup_secs = '', 0, None, 0.0
     try:
+        bound = os.environ.get('FZGX_BOUND_TRANSPORT') == '1' or harness in ('cline', 'agy')
+        # Bound fleet retries first run the deterministic search on the best saved body;
+        # a match ends the assignment here, before any model request.
         assignment = worker_cli('claim', symbol, '--agent', agent_id,
-                                *([] if revise else ['--check']), timeout_s=timeout)
+                                *([] if revise else ['--check']),
+                                *(['--repair'] if bound and not revise and not shadow else []), timeout_s=max(timeout, 1200))
         if not assignment.get('ok'):
             raise RuntimeError('assignment failed: ' + json.dumps(assignment))
         seed = assignment.get('seed') or {}
@@ -226,7 +230,6 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
                       f'this function and {start}\n'
                       + json.dumps(task))
             (directory / f'{symbol}.prompt.txt').write_text(prompt + '\n')
-            bound = os.environ.get('FZGX_BOUND_TRANSPORT') == '1' or harness in ('cline', 'agy')
             if bound:
                 from fleet_provider import run as run_provider
                 out, rc = run_provider(harness, prompt, model, directory, env, timeout)
@@ -295,8 +298,14 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
     row = l.get(key)
     if not terminal and row and row["status"] == "claimed" and row["claimed_by"] == agent_id:
         try:
+            # The release-time search can take minutes; on a supervisor stop save without it.
+            stopping = False
+            if bound:
+                from fleet_provider import STOP
+                stopping = STOP.is_set()
             worker_cli('release', symbol, '--agent', agent_id,
-                       '--reason', f'harness {outcome} (rc={rc}); saved best candidate automatically', timeout_s=120)
+                       '--reason', f'harness {outcome} (rc={rc}); saved best candidate automatically',
+                       *(['--save-only'] if stopping else []), timeout_s=1200)
             att = l.db.execute('SELECT * FROM attempts WHERE symbol=? AND agent=? ORDER BY id DESC LIMIT 1',
                                (key, agent_id)).fetchone()
             if att and att['ended']:

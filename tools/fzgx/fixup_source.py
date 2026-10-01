@@ -23,6 +23,22 @@ DECL_RE = re.compile(r'^\s*(' + TYPE + r')(?:(?<=\*)\s*|\s+)([A-Za-z_]\w*)'
                      r'((?:\[[^\]]*\])*)\s*(?:=\s*([^;]+))?;\s*(?:(?:/\*.*?\*/|//[^\n]*)\s*)?$')
 
 
+_LITERAL = re.compile(r'"(?:\\.|[^"\\\n])*"|\'(?:\\.|[^\'\\\n])*\'')
+
+
+def _wrap_uses(name, text):
+    """`name` -> `name.value` at variable uses only: never inside a string or character
+    literal ("%d" became "%d.value" and lost fn_14_82E4's match) and never a member
+    of the same spelling (`p->d`, `s.d`)."""
+    pattern = re.compile(r'(?<![.\w])(?<!->)' + re.escape(name) + r'\b(?!\.value)')
+    out, last = [], 0
+    for literal in _LITERAL.finditer(text):
+        out.append(pattern.sub(name + '.value', text[last:literal.start()])); out.append(literal.group(0))
+        last = literal.end()
+    out.append(pattern.sub(name + '.value', text[last:]))
+    return ''.join(out)
+
+
 def _function_body_span(body: str, name: str) -> Optional[Tuple[int, int, int]]:
     m = re.search(rf"\b{re.escape(name)}\s*\([^;{{]*\)\s*\{{", body)
     if not m:
@@ -342,7 +358,7 @@ def wrap_constant_pointers(body: str, name: str) -> List[Tuple[str, str]]:
         stars = typ.count('*')
         new_decl = f"{indent}struct {{ {base_type} {'*' * stars}value; }} {nm};\n"
         rest = body[e0:span[2]]
-        rest = re.sub(r'\b' + re.escape(nm) + r'\b(?!\.value)', nm + '.value', rest)
+        rest = _wrap_uses(nm, rest)
         text = body[:s0] + new_decl + (f"{indent}{nm}.value = {init};\n" if init else "") + rest + body[span[2]:]
         if init:
             # the initializer becomes the first statement after the declarations
@@ -435,7 +451,7 @@ def scalar_carriers(body: str, name: str) -> List[Tuple[str, str]]:
         rest = body[e0:span[2]]
         if not re.search(r'\b' + re.escape(nm) + r'\b', rest):
             continue
-        rest = re.sub(r'\b' + re.escape(nm) + r'\b(?!\.value)', nm + '.value', rest)
+        rest = _wrap_uses(nm, rest)
         out.append((f"one-field carrier {nm}", body[:s0] + f"{indent}struct {{ {base} value; }} {nm};\n" + rest + body[span[2]:]))
     return out
 

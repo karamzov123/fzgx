@@ -35,6 +35,7 @@ MATCHER_TOOLS = [
          old='Exact text occurring once', new='Replacement text'),
     tool('check', 'Probe compiler versions and retain the best compiler for subsequent edits.',
          versions='all, a comma-separated compiler list, or empty to check the current compiler'),
+    tool('search', 'Let the tooling permute your current source mechanically (declaration order, type and sign flips, optimizer pragmas, literal-pool priming). A match is accepted; a better body becomes your work copy. Use at 80% or better when register, pool or L rows remain; three uses per attempt.'),
     tool('read_evidence', 'Read cached object diff or retail data: owned layouts, strings, constants and symbolic table bindings. No compilation or check charged.',
          section='diff or data', cursor='Line cursor from the previous result, or 0 for the first page'),
     tool('release', 'Stop working on this function, saving your best candidate.', reason='Precise remaining technical obstacle'),
@@ -517,6 +518,8 @@ class Matcher:
                             path.unlink(missing_ok=True)
                 elif name == 'check':
                     result = await self.cli('check', self.symbol, *(['--versions', args['versions']] if args['versions'] else []))
+                elif name == 'search':
+                    result = await self.cli('search', self.symbol, '--agent', self.agent)
                 elif name == 'read_evidence':
                     result = await self.cli('read-evidence', self.symbol, '--section', args['section'], '--cursor', args['cursor'])
                 else:

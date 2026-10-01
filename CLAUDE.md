@@ -605,6 +605,11 @@ Rules that hold for everyone:
   Repair provenance must be acyclic; rechecking an identical content-addressed
   candidate must not create a parent reference to itself.
 
+- Matcher sessions have a sixth bound tool, `search` (`fzgx search SYMBOL --agent ID`): the fixup engine at
+  12 rounds x beam 6 on the claimed work copy. The same deep search runs at release for bodies at 80%+ and before
+  a bound retry (`claim --repair`); `<body>.searched.json` records it. Check output marks section/pool layout rows
+  `L` and counts the rows that are the matcher's own. See `docs/FLEET.md` ("Deterministic search in the loop").
+
 ## Layout
 
 - `config/GFZE01/` — dtk config, per-module `symbols.txt`/`splits.txt`, `units.json` (generated units, read by `configure.py`).

@@ -131,6 +131,49 @@ def _spell_fitness(tw, ow) -> float:
     return 100.0 * sum(b.size for b in sm.get_matching_blocks()) / max(len(tw), len(ow))
 
 
+def _tried_edits(key: str, limit: int = 12, budget: int = 3200) -> List[str]:
+    """Edits earlier sessions compiled that did not beat the best score at the time,
+    from the archive of checked bodies: the retry should not pay for them again."""
+    import difflib
+    directory = STATE_DIR / "checks" / key.replace(":", "__")
+    try:
+        index = [json.loads(line) for line in (directory / "index.jsonl").read_text().splitlines() if line.strip()]
+    except (OSError, ValueError):
+        return []
+    index = index[-40:]
+    out: List[str] = []
+    seen = set()
+    best = None
+    previous = None
+    for entry in index:
+        try:
+            body = (directory / f"{entry['n']:03d}.c").read_text()
+        except OSError:
+            previous = None
+            continue
+        score = entry.get('percent') if entry.get('ok') else None
+        if previous is not None and body != previous[0]:
+            changed = [l for l in difflib.unified_diff(previous[0].splitlines(), body.splitlines(), lineterm='', n=0)
+                       if l[:1] in '+-' and not l.startswith(('+++', '---'))]
+            failed = score is None or (best is not None and score <= best + 1e-6)
+            plus = sorted(l[1:].strip() for l in changed if l[0] == '+'); minus = sorted(l[1:].strip() for l in changed if l[0] == '-')
+            if plus == minus:
+                changed = ['~ reordered: ' + ' / '.join(l[1:].strip() for l in changed if l[0] == '+')]
+            text = "\n".join(changed)
+            if failed and changed and text not in seen:
+                seen.add(text)
+                verdict = 'did not compile' if score is None else f"{score:.1f}% (best then {best:.1f}%)"
+                shown = changed if len(changed) <= 10 else changed[:10] + [f"  ... {len(changed) - 10} more changed lines (a larger rewrite)"]
+                out.append("\n".join(shown) + f"\n# -> {verdict}")
+        if score is not None:
+            best = score if best is None else max(best, score)
+        previous = (body, score)
+    out = out[-limit:]
+    while out and sum(len(x) for x in out) > budget:
+        out.pop(0)
+    return out
+
+
 def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
                   budget_tokens: int = 6000, compiler_options: Optional[dict] = None) -> str:
     sym0 = project.resolve(symbol)
@@ -318,27 +361,49 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
             parts.append(f"\n## Current unit\n```c\n{cur}\n```")
 
     if ledger and not supplied_source and not (row and (row["claimed_by"] or "").startswith("shadow-")):
-        att = ledger.db.execute(
-            "SELECT * FROM attempts WHERE symbol=? AND ended IS NOT NULL ORDER BY final_percent DESC, id DESC LIMIT 1",
-            (symbol,)).fetchone()
-        if att and att["best_body_path"] and Path(att["best_body_path"]).exists():
+        # The best saved body that exists here: restored upstream rows name absent files.
+        att = next((a for a in ledger.db.execute(
+            "SELECT * FROM attempts WHERE symbol=? AND ended IS NOT NULL AND best_body_path IS NOT NULL "
+            "ORDER BY MAX(COALESCE(final_percent,0), COALESCE(best_in_attempt,0)) DESC, id DESC",
+            (symbol,)) if Path(a["best_body_path"]).exists()), None)
+        if att:
             body = Path(att["best_body_path"]).read_text()
-            parts.append(f"\n## Best prior attempt ({att['final_percent'] or 0:.1f}%, notes: {att['notes'] or '-'})\n```c\n{body}\n```")
+            score = max(att['final_percent'] or 0, att['best_in_attempt'] or 0)
+            parts.append(f"\n## Best prior attempt ({score:.1f}%, notes: {att['notes'] or '-'})\n```c\n{body}\n```")
             # the plateau itself: which rows still differ and what kind of difference they are, so the
             # next attempt changes their cause instead of resubmitting the same body
             try:
                 from . import oracle, stuck
-                res = oracle.check(project, symbol, 0, source=Path(att["best_body_path"]))
+                saved = Path(att["best_body_path"]).with_suffix('.json')
+                seed = json.loads(saved.read_text()) if saved.exists() else {}
+                res = oracle.check(project, symbol, 0, source=Path(att["best_body_path"]),
+                                   mw_version=seed.get('mw'), extra_cflags=seed.get('flags'))
                 if res.ok and not res.matched:
                     lrows, rrows = getattr(res, "_rows", ([], []))
                     counts = stuck.classify_rows(lrows, rrows)
                     mode = stuck._pure(counts, lrows, rrows)
+                    accepted = getattr(res, '_accepted_rows', set())
+                    mine = stuck.own_rows(lrows, rrows, accepted)
+                    skip = set(mine['layout']) | set(accepted)
                     diffs = [(i, stuck._fmt(a), stuck._fmt(b)) for i, (a, b) in enumerate(zip(lrows, rrows))
-                             if (a.get("diff_kind") or "DIFF_NONE") != "DIFF_NONE" or (b.get("diff_kind") or "DIFF_NONE") != "DIFF_NONE"]
-                    kinds = ", ".join(f"{k} {v}" for k, v in counts.items() if ":" not in k)
+                             if i not in skip and ((a.get("diff_kind") or "DIFF_NONE") != "DIFF_NONE" or (b.get("diff_kind") or "DIFF_NONE") != "DIFF_NONE")]
+                    kinds = ", ".join(f"{k} {v}" for k, v in mine['kinds'].items()) or 'none'
                     lines = [f"{i:4d}  {t:38s} | {o}" for i, t, o in diffs[:24]]
-                    parts.append(f"\n### Why it plateaued: {mode} ({kinds}); {len(diffs)} rows differ (target | prior attempt)\n```\n"
+                    layout = (f" {len(mine['layout'])} more rows differ only by section/pool layout: the tooling repairs those "
+                              "mechanically once these match, so they are not shown and not yours to fix.") if mine['layout'] else ''
+                    parts.append(f"\n### Why it plateaued: {mode} ({kinds}); {len(diffs)} rows are the real residual (target | prior attempt).{layout}\n```\n"
                                  + "\n".join(lines) + ("\n..." if len(diffs) > 24 else "") + "\n```")
+                    try:
+                        marker = json.loads(Path(str(att["best_body_path"]) + '.searched.json').read_text())
+                        parts.append(f"The deterministic search already compiled {marker.get('tried')} variants of this body "
+                                     "(declaration order, type and sign flips, optimizer pragmas, pool and section priming, compiler "
+                                     "responses) without closing it. Do not spend checks on those permutations: change the structure "
+                                     "that produces the rows above (expression shape, a held or removed local, an inlined helper, control flow).")
+                    except (OSError, ValueError):
+                        pass
+                    tried = _tried_edits(project.key(sym))
+                    if tried:
+                        parts.append("\n### Edits already tried on this function (do not repeat them)\n```diff\n" + "\n".join(tried) + "\n```")
                     tips = [t for k, t in MODE_TIPS.items() if k in mode or k in counts or any(k in x for x in counts)]
                     if tips:
                         parts.append("What usually causes this kind of row, from functions that went on to match:\n- " + "\n- ".join(dict.fromkeys(tips)))

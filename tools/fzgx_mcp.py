@@ -153,6 +153,12 @@ async def submit(symbol: str, agent: str, message: str, harness: str = "", model
 
 
 @mcp.tool()
+async def search(symbol: str, agent: str) -> dict:
+    """Run the deterministic search (declaration order, type and sign flips, optimizer pragmas, pool and section priming) on the work copy AGENT has claimed for SYMBOL. An exact result is accepted; a better body replaces the work copy and its diff is returned; otherwise nothing changes."""
+    return await _run('search', symbol, '--agent', agent)
+
+
+@mcp.tool()
 async def release(symbol: str, agent: str, reason: str, harness: str = "", model: str = "") -> dict:
     """Give up on SYMBOL. The best attempt is saved for the next agent; say precisely what still differs."""
     args = ["release", symbol, "--agent", agent, "--reason", reason]

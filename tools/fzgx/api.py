@@ -34,6 +34,12 @@ DEFAULT_TTL = int(os.environ.get('FZGX_CLAIM_TTL', 1800))
 MAX_ATTEMPTS = int(os.environ.get("FZGX_MAX_ATTEMPTS", 3))  # a stronger-tier round raises it for its agents
 MAX_CHECKS = int(os.environ.get("FZGX_MAX_CHECKS", 16))   # per attempt
 MAX_STALE = int(os.environ.get("FZGX_MAX_STALE", 5))     # consecutive checks without improving the attempt's best %
+# Deterministic search (the fixup engine) on a session's body: at release, before a
+# retry's model request, and on demand through the `search` tool.
+SEARCH_S = float(os.environ.get('FZGX_SEARCH_S', 150))        # wall budget per search
+SEARCH_MIN_PERCENT = float(os.environ.get('FZGX_SEARCH_MIN_PERCENT', 80))
+MAX_SEARCHES = int(os.environ.get('FZGX_MAX_SEARCHES', 3))    # `search` tool calls per attempt
+SEARCH_SLOTS = int(os.environ.get('FZGX_SEARCH_SLOTS', 3))    # concurrent 16-wide searches
 STUB = '#include "types.h"\n\n// {symbol}: carved by fzgx; {note}\n'
 SHADOW_PREFIX = "shadow-"   # agent ids with this prefix run A/B trials that never relink or commit
 REVISE_PREFIX = "revise-"   # rewrite an already-matched unit for readability; kept only if still 100%
@@ -475,7 +481,31 @@ def _record_check(p: Project, key: str, src: Optional[Path], res: oracle.CheckRe
         except OSError:
             pass
     if src is not None:
-        stats = Ledger().bump_checks(key, (res.percent_adjusted if res.pool_rows else res.percent) if res.ok else 0.0)
+        stats = Ledger().bump_checks(key, (res.percent_adjusted if res.pool_rows else res.percent) if res.ok else 0.0,
+                                     compiled=res.ok)
+        # The score switches from objdiff's similarity to the adjusted row score once pool
+        # rows appear (after a search installs a primed body), so a closer body can score
+        # lower. Fewer differing rows than this attempt has seen is progress either way.
+        if res.ok and res.instruction_rows and not stats.get('improved'):
+            tracker = p.work_path(key).with_suffix('.rows.json')
+            attempt = Ledger().current_attempt(key)
+            try:
+                seen = json.loads(tracker.read_text())
+            except (OSError, ValueError):
+                seen = {}
+            fewest = seen.get('rows') if attempt and seen.get('attempt') == attempt['id'] else None
+            if attempt and (fewest is None or res.differing_rows < fewest):
+                tracker.write_text(json.dumps(dict(attempt=attempt['id'], rows=res.differing_rows)) + '\n')
+                if fewest is not None:
+                    ledger = Ledger()
+                    with ledger.db:
+                        ledger.db.execute('UPDATE attempts SET stale_checks=0 WHERE id=?', (attempt['id'],))
+                    stats['stale'] = 0
+        elif res.ok and res.instruction_rows:
+            attempt = Ledger().current_attempt(key)
+            if attempt:
+                p.work_path(key).with_suffix('.rows.json').write_text(
+                    json.dumps(dict(attempt=attempt['id'], rows=res.differing_rows)) + '\n')
         if stats.get("improved"):
             best = STATE_DIR / "attempts" / f"{key}.best.c"
             best.parent.mkdir(parents=True, exist_ok=True)
@@ -506,6 +536,14 @@ def format_check(res: Dict[str, Any]) -> str:
     if res.get('instruction_rows') and not res['matched']:
         lines.append(f"{res['differing_rows']} of {res['instruction_rows']} aligned instruction rows still differ "
                      "after accepted relocation equivalences; the displayed % is objdiff's similarity score.")
+    if res.get('layout_rows') and not res['matched']:
+        kinds = ', '.join(f'{k} {v}' for k, v in (res.get('own_kinds') or {}).items()) or 'none'
+        lines.append(f"{res['layout_rows']} of those rows are marked `L`: only the section/pool base or a displacement off it "
+                     'differs, because this unit reaches the data through its own anonymous object. The layout repair '
+                     'primes that mechanically once everything else matches; do not edit for `L` rows. '
+                     f"Rows that are yours to fix: {res.get('own_rows', 0)} ({kinds}).")
+    elif res.get('own_kinds') and not res['matched']:
+        lines.append('Differing rows by kind: ' + ', '.join(f'{k} {v}' for k, v in res['own_kinds'].items()) + '.')
     for conflict in res.get('operand_order', [])[:4]:
         lines.append(f"Operand-order difference at row {conflict['row']}: {conflict['target']} | {conflict['ours']}. "
                      "These inputs use the same physical registers in reversed order; inspect expression lowering and shared temporaries.")
@@ -597,6 +635,8 @@ def _discard_work(p: Project, key: str) -> None:
     p.work_path(key).unlink(missing_ok=True)
     p.work_path(key).with_suffix('.compiler.json').unlink(missing_ok=True)
     p.work_path(key).with_suffix('.diff.json').unlink(missing_ok=True)
+    p.work_path(key).with_suffix('.search.json').unlink(missing_ok=True)
+    p.work_path(key).with_suffix('.rows.json').unlink(missing_ok=True)
     best = STATE_DIR / 'attempts' / f'{key}.best.c'
     best.unlink(missing_ok=True)
     best.with_suffix('.json').unlink(missing_ok=True)
@@ -780,7 +820,9 @@ def release(p: Project, symbol: str, reason: str, harness: Optional[str] = None,
         if not save_only:
             base = oracle.check(p, symbol, 0, source=src,
                                 mw_version=seed.get('mw'), extra_cflags=seed.get('flags'))
-            fx = fixup.try_fix(p, symbol, src.read_text(), budget_s=6.0, base=base)
+            # Near-misses get the full search (minutes); anything else the old quick pass.
+            fx = _search_body(p, symbol, src.read_text(), base) if _searchable(base) else \
+                fixup.try_fix(p, symbol, src.read_text(), budget_s=6.0, base=base)
         if fx.get("matched") and fx.get("body"):
             work.parent.mkdir(parents=True, exist_ok=True)
             work.write_text(fx["body"])
@@ -795,12 +837,23 @@ def release(p: Project, symbol: str, reason: str, harness: Optional[str] = None,
         dest = STATE_DIR / "attempts" / f"{key}.{'shadow.' if shadow else ''}{int(time.time())}.c"
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(src, dest)  # the best-scoring body, not necessarily the last one written
-        dest.with_suffix('.json').write_text(json.dumps(dict(
-            sha256=hashlib.sha256(dest.read_bytes()).hexdigest(), mw=base.mw_version if base else seed.get('mw'),
-            flags=base.extra_cflags if base else seed.get('flags'),
-            percent=(base.percent_adjusted if base.pool_rows else base.percent) if base else seed.get('percent',
-                     dict(l.current_attempt(key) or {}).get('best_in_attempt', 0)))) + '\n')
+        gained = bool(fx.get('searched') and fx.get('best_body') and base and base.ok
+                      and (fx.get('best') or 0) > max(base.percent, base.percent_adjusted or 0) + 1e-6)
+        if gained:
+            # The search did not close it but got nearer: the next attempt starts there.
+            dest.write_text(fx['best_body'])
+            dest.with_suffix('.json').write_text(json.dumps(dict(
+                sha256=hashlib.sha256(dest.read_bytes()).hexdigest(), mw=fx.get('mw_version'),
+                flags=fx.get('extra_cflags'), percent=fx['best'], search=fx.get('label'))) + '\n')
+        else:
+            dest.with_suffix('.json').write_text(json.dumps(dict(
+                sha256=hashlib.sha256(dest.read_bytes()).hexdigest(), mw=base.mw_version if base else seed.get('mw'),
+                flags=base.extra_cflags if base else seed.get('flags'),
+                percent=(base.percent_adjusted if base.pool_rows else base.percent) if base else seed.get('percent',
+                         dict(l.current_attempt(key) or {}).get('best_in_attempt', 0)))) + '\n')
         body_path = str(dest)
+        if fx.get('searched'):
+            _mark_searched(dest, fx)
     best.unlink(missing_ok=True)
     best.with_suffix('.json').unlink(missing_ok=True)
     _discard_work(p, key)
@@ -812,6 +865,165 @@ def release(p: Project, symbol: str, reason: str, harness: Optional[str] = None,
     else:
         out["attempts"] = row["attempts"] + 1
     return out
+
+
+def _searchable(base) -> bool:
+    return bool(base and base.ok and max(base.percent, base.percent_adjusted or 0) >= SEARCH_MIN_PERCENT)
+
+
+def _search_marker(body: Path) -> Path:
+    return Path(str(body) + '.searched.json')
+
+
+def _engine_id() -> str:
+    """Searching the same body again is only useful after the engine changed."""
+    names = ('fixup.py', 'fixup_source.py', 'fixup_evidence.py', 'fixup_layout.py')
+    return hashlib.sha256(b''.join((ROOT / 'tools/fzgx' / n).read_bytes() for n in names
+                                   if (ROOT / 'tools/fzgx' / n).exists())).hexdigest()[:16]
+
+
+def _mark_searched(body: Path, fx: dict) -> None:
+    _search_marker(body).write_text(json.dumps(dict(
+        engine=_engine_id(), sha256=hashlib.sha256(body.read_bytes()).hexdigest(), budget_s=SEARCH_S,
+        tried=fx.get('variants', fx.get('tried')), best=fx.get('best'), secs=round(fx.get('secs') or 0, 1), time=int(time.time()))) + '\n')
+
+
+def _was_searched(body: Path) -> bool:
+    try:
+        saved = json.loads(_search_marker(body).read_text())
+    except (OSError, ValueError):
+        return False
+    return (saved.get('engine') == _engine_id() and saved.get('budget_s', 0) >= SEARCH_S
+            and saved.get('sha256') == hashlib.sha256(body.read_bytes()).hexdigest())
+
+
+def _search_body(p: Project, symbol: str, body: str, base) -> dict:
+    """The full deterministic search on one body: declaration order, type and sign
+    flips, pragmas, pool and section priming, compiler responses. A few searches run
+    at once; the others wait for a slot so each keeps its 16-wide compile pool."""
+    import contextlib
+    import fcntl
+    from . import fixup
+    with contextlib.ExitStack() as stack:
+        handles = [stack.enter_context((STATE_DIR / f'search-{i}.lock').open('w')) for i in range(max(1, SEARCH_SLOTS))]
+        deadline = time.monotonic() + 4 * SEARCH_S
+        held = None
+        while held is None and time.monotonic() < deadline:
+            for handle in handles:
+                try:
+                    fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB); held = handle; break
+                except BlockingIOError:
+                    continue
+            else:
+                time.sleep(0.5)
+        # After a long wait run anyway: a slower search beats none.
+        # Measured on fn_14_82E4: 2 rounds x beam 2 left 11 register rows and an unprimed
+        # pool; 12 x 6 fixed both in 18 s (5,900 compiles), leaving 8 string relocations.
+        fx = fixup.try_fix(p, symbol, body, budget_s=SEARCH_S, max_candidates=600, base=base, rounds=12, beam=6)
+    fx['searched'] = True
+    return fx
+
+
+def preflight_repair(p: Project, symbol: str, agent: str) -> Dict[str, Any]:
+    """Before a retry spends a model request: search the best saved body once per
+    engine version. A match is submitted in the claiming agent's name."""
+    l = Ledger()
+    key = _key(p, symbol)
+    row = l.get(key)
+    if row is None or row['status'] != 'claimed' or row['claimed_by'] != agent or _is_shadow(agent):
+        return dict(ok=False, error='preflight repair needs an ordinary claim by this agent')
+    att = next((a for a in l.db.execute(
+        'SELECT * FROM attempts WHERE symbol=? AND ended IS NOT NULL AND best_body_path IS NOT NULL '
+        'ORDER BY MAX(COALESCE(final_percent,0), COALESCE(best_in_attempt,0)) DESC, id DESC', (key,))
+        if Path(a['best_body_path']).exists()), None)  # restored upstream rows name absent files
+    if not att:
+        return dict(ok=True, searched=False, reason='no saved body')
+    body = Path(att['best_body_path'])
+    if _was_searched(body):
+        return dict(ok=True, searched=False, reason='already searched by this engine')
+    metadata = body.with_suffix('.json')
+    seed = json.loads(metadata.read_text()) if metadata.exists() else {}
+    base = oracle.check(p, symbol, 0, source=body, mw_version=seed.get('mw'), extra_cflags=seed.get('flags'))
+    if not _searchable(base):
+        return dict(ok=True, searched=False, reason='saved body is below the search threshold or does not compile')
+    fx = _search_body(p, symbol, body.read_text(), base)
+    _mark_searched(body, fx)
+    out = dict(ok=True, searched=True, matched=False, tried=fx.get('variants', fx.get('tried')), secs=round(fx.get('secs') or 0, 1),
+               base=fx.get('base'), best=fx.get('best'))
+    if not fx.get('matched') and fx.get('best_body') and (fx.get('best') or 0) > max(base.percent, base.percent_adjusted or 0) + 1e-6:
+        # Nearer but not closed: the retry continues from the searched body, not the old plateau.
+        body.write_text(fx['best_body'])
+        metadata.write_text(json.dumps(dict(sha256=hashlib.sha256(body.read_bytes()).hexdigest(), mw=fx.get('mw_version'),
+                                            flags=fx.get('extra_cflags'), percent=fx['best'], search=fx.get('label'))) + '\n')
+        l.db.execute('UPDATE attempts SET best_in_attempt=MAX(COALESCE(best_in_attempt,0), ?) WHERE id=?', (fx['best'], att['id']))
+        l.db.commit()
+        _mark_searched(body, fx)
+        out['improved'] = True
+    if fx.get('matched') and fx.get('body'):
+        work = p.work_path(key)
+        work.parent.mkdir(parents=True, exist_ok=True)
+        work.write_text(fx['body'])
+        r = submit(p, symbol, agent=agent, message=f"fixup preflight: {fx.get('label')}",
+                   harness=os.environ.get('FZGX_HARNESS'), model=os.environ.get('FZGX_MODEL'),
+                   mw_version=base.mw_version, extra_cflags=base.extra_cflags)
+        out.update(matched=bool(r.get('ok')), submit=r, label=fx.get('label'))
+        if not r.get('ok'):
+            # Leave the claim to the model, starting from the stub as before.
+            work.write_text(STUB.format(symbol=p.resolve(symbol).name, note='write the complete unit with write_unit'))
+    return out
+
+
+def search(p: Project, symbol: str, agent: str) -> Dict[str, Any]:
+    """Matcher tool: run the deterministic search on the current work copy. An exact
+    result is accepted; a better body replaces the work copy; otherwise nothing changes."""
+    l = Ledger()
+    key = _key(p, symbol)
+    row = l.get(key)
+    if row is None or row['status'] != 'claimed' or row['claimed_by'] != agent:
+        return dict(ok=False, error=f'{symbol} is not claimed by {agent}')
+    att = l.current_attempt(key)
+    stop = _budget_stop(att)
+    if stop:
+        return _finish_check(p, symbol, {'ok': False, 'error': stop, 'stop': stop})
+    work = p.work_path(key)
+    name = p.resolve(symbol).name
+    if not work.exists() or work.read_text().strip() == STUB.format(symbol=name, note='write the complete unit with write_unit').strip():
+        return dict(ok=False, error='search needs your own compiling source: write_unit first')
+    counter = work.with_suffix('.search.json')
+    used = {}
+    try:
+        used = json.loads(counter.read_text())
+    except (OSError, ValueError):
+        pass
+    count = used.get('count', 0) if att and used.get('attempt') == att['id'] else 0
+    if count >= MAX_SEARCHES:
+        return dict(ok=False, error=f'search already used {MAX_SEARCHES} times in this attempt; continue with patch_unit')
+    options = _compiler_options(p, key)
+    base = oracle.check(p, symbol, 0, source=work, mw_version=options.get('mw'), extra_cflags=options.get('flags'))
+    if not base.ok:
+        return dict(ok=False, error='the current source does not compile; fix it before searching', check=base.error)
+    if max(base.percent, base.percent_adjusted or 0) < SEARCH_MIN_PERCENT:
+        return dict(ok=False, error=f'search needs a body at {SEARCH_MIN_PERCENT:.0f}% or better; '
+                                    f'this one is at {base.percent:.1f}%. Fix structure first (missing or extra instructions, opcodes).')
+    counter.write_text(json.dumps(dict(attempt=att['id'] if att else None, count=count + 1)) + '\n')
+    before = max(base.percent, base.percent_adjusted or 0)
+    fx = _search_body(p, symbol, work.read_text(), base)
+    summary = dict(candidates=fx.get('variants', fx.get('tried')), seconds=round(fx.get('secs') or 0, 1), searches_left=MAX_SEARCHES - count - 1)
+    improved = fx.get('matched') or (fx.get('best') or 0) > before + 1e-6
+    if not improved or not (fx.get('body') or fx.get('best_body')):
+        return dict(ok=True, improved=False, **summary,
+                    note=f'No candidate beat {before:.1f}%: the remaining rows are not reachable by declaration order, '
+                         'type/sign flips, pragmas or pool priming. They need a structural change in the C '
+                         '(expression shape, a local held or removed, control flow). Your work copy is unchanged; no check was spent.')
+    work.write_text(fx.get('body') or fx['best_body'])
+    if fx.get('mw_version') and att:
+        work.with_suffix('.compiler.json').write_text(json.dumps(dict(
+            attempt_id=att['id'], mw=fx['mw_version'], flags=fx.get('extra_cflags'))) + '\n')
+    result = check(p, symbol)
+    return dict(ok=True, improved=True, change=fx.get('label'), **summary,
+                note='The search installed this body as your work copy; continue from it with patch_unit.',
+                source=work.read_text() if not result.get('terminal') else None,
+                check=format_check(result))
 
 
 def abort_attempt(p: Project, symbol: str, reason: str) -> Dict[str, Any]:

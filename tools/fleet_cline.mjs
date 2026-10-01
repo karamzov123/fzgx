@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Cline's real SDK/runtime and existing login; exactly five domain tools.
+// Cline's real SDK/runtime and existing login; exactly six domain tools.
 import {spawn} from 'node:child_process';
 import {createInterface} from 'node:readline';
 import {readFileSync,writeFileSync,renameSync,existsSync} from 'node:fs';
@@ -13,7 +13,7 @@ const manager=new ProviderSettingsManager();
 let config=manager.getProviderConfig('cline');
 if(config && process.env.FZGX_MODEL) config.modelId=process.env.FZGX_MODEL;
 if(!config?.apiKey) throw new Error('Existing Cline login is unavailable; no interactive auth attempted');
-const names=['write_unit','patch_unit','check','read_evidence','release'];
+const names=['write_unit','patch_unit','check','search','read_evidence','release'];
 // 0 disables a guard, as in codex_server.
 const tokenLimits={input:Number(process.env.FZGX_MAX_MODEL_INPUT_TOKENS||0),output:Number(process.env.FZGX_MAX_MODEL_OUTPUT_TOKENS||0)};
 if(process.argv.includes('--describe')){
@@ -47,8 +47,8 @@ const call=argv=>new Promise((resolve,reject)=>{
 });
 const event=(type,data={})=>console.log(JSON.stringify({timestamp:Date.now()/1000,type,...data}));
 let agent;
-const fields={write_unit:{source:'Complete C source'},patch_unit:{old:'Unique exact text',new:'Replacement text'},check:{versions:'Empty for current compiler, all, or comma-separated versions'},read_evidence:{section:'diff or data',cursor:'0 or next cursor'},release:{reason:'Precise technical obstacle'}};
-const descriptions={write_unit:'Replace the complete assigned C source, compile and diff against retail',patch_unit:'Replace one unique substring, compile and diff',check:'Check current source or probe compilers retaining the best',read_evidence:'Read cached diff or proven retail data without compiling',release:'Save best candidate and stop'};
+const fields={write_unit:{source:'Complete C source'},patch_unit:{old:'Unique exact text',new:'Replacement text'},check:{versions:'Empty for current compiler, all, or comma-separated versions'},search:{},read_evidence:{section:'diff or data',cursor:'0 or next cursor'},release:{reason:'Precise technical obstacle'}};
+const descriptions={write_unit:'Replace the complete assigned C source, compile and diff against retail',patch_unit:'Replace one unique substring, compile and diff',check:'Check current source or probe compilers retaining the best',search:'Let the tooling permute your current source mechanically (declaration order, type/sign flips, pragmas, pool priming); a match is accepted, a better body becomes your work copy; use at 80%+ when register, pool or L rows remain; three uses per attempt',read_evidence:'Read cached diff or proven retail data without compiling',release:'Save best candidate and stop'};
 const tools=names.map(name=>createTool({name,description:descriptions[name],inputSchema:{type:'object',properties:Object.fromEntries(Object.entries(fields[name]).map(([k,v])=>[k,{type:'string',description:v,maxLength:32768}])),required:Object.keys(fields[name]),additionalProperties:false},async execute(input){
  if(Object.keys(input).some(k=>!(k in fields[name]))) throw new Error('Unexpected tool argument');
  event('tool-started',{tool:name}); let paths=[];
@@ -61,6 +61,7 @@ const tools=names.map(name=>createTool({name,description:descriptions[name],inpu
     argv.push(key==='source'?'--file':'--'+key+'-file',path);
    }
   }else if(name==='check') argv=['check',symbol,...(input.versions?['--versions',input.versions]:[])];
+  else if(name==='search') argv=['search',symbol,'--agent',identity];
   else if(name==='read_evidence') argv=['read-evidence',symbol,'--section',input.section,'--cursor',input.cursor];
   else argv=['release',symbol,'--agent',identity,'--reason',input.reason];
   const response=await call(argv);

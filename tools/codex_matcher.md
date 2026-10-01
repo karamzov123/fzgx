@@ -32,3 +32,17 @@ retail instructions to choose what to keep; fix the differing rows and propose n
 A "Mechanical skeleton" is the same lifter stopped partway: its declarations, struct layouts, call
 prototypes and locals are still from the retail code. Keep them, and write the body from the `NOT LIFTED`
 marker on using the disassembly; the leading statements show the register-to-local mapping it chose.
+Make one tool call per turn and read its diff before the next edit: two edits sent together each spend a check,
+and the second is compiled without having seen the first result.
+Rows marked `L` in a diff differ only in a section or literal-pool base, or a displacement off it; rows marked `p`
+are pool relocations. Neither is yours to fix: the tooling primes that layout once every other row matches. The
+check states how many rows are yours and of which kind (regalloc, op, ins, imm, frame, reloc). Work on those.
+search() hands your current source to the deterministic engine: it compiles thousands of variants in seconds
+(declaration and definition order, type and sign flips, optimizer pragmas, literal-pool priming, compiler responses).
+Use it as soon as your body is at 80% or better and what remains is register allocation, pool or `L` rows; do not
+spend your own checks permuting declarations by hand. An exact result is accepted automatically; a better body
+replaces your work copy and its diff is returned; otherwise nothing changes and no check is spent. You get three
+searches per attempt. What it cannot reach needs a structural change in the C: an expression's shape, a local that
+should or should not exist, an inlined helper, control flow, a string or data object referenced by its symbol.
+"Edits already tried" in the context lists changes earlier sessions compiled without gain; do not repeat them.
+A failed compile spends a check but is not counted as a non-improving check.

@@ -30,6 +30,13 @@ def save(project, key, result):
     """Store only the selected version, including failures to invalidate old evidence."""
     rows = getattr(result, '_rows', ([], []))
     lines = oracle._render_diff(*rows, 1 << 30, getattr(result, '_accepted_rows', set()), addresses=True)
+    if result.ok and not result.matched:
+        # Separate what the matcher can change from what the layout repairs own.
+        from . import stuck
+        mine = stuck.own_rows(*rows, getattr(result, '_accepted_rows', set()))
+        layout = {f'{i * 4:04X}' for i in mine['layout']}
+        lines = ['L' + line[1:] if line[2:6] in layout and line[:1] not in ' p' else line for line in lines]
+        result.layout_rows, result.own_rows, result.own_kinds = len(layout), mine['own'], mine['kinds']
     sym = project.resolve(key)
     fn = project.function_asm(sym.module).get(sym.name)
     payload = dict(identity=_identity(project, key), result=result.to_json(), diff=lines,

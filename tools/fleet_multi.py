@@ -51,12 +51,38 @@ def command(family, batch, symbols, parallel):
     return [str(ROOT / '.venv/bin/python'), str(ROOT / 'tools/orchestrate.py'),
         '--harness',p['harness'],'--model',p['model'],'--effort',p['effort'],
         '--parallel',str(parallel),'--tool-parallel','1','--timeout',str(SESSION_TIMEOUT),
-        '--max-checks','16','--max-stale','5','--max-attempts','3',
+        '--max-checks','16','--max-stale','5','--max-attempts','999',
         '--verify-interval','60','--no-trivial','--batch',batch,'--symbols',*symbols]
 
-def choose(rows, seen, context, count, reserved=()):
+ATTEMPT_CAP = 3
+
+def unsearched_near_misses(rows):
+    """Functions past the attempt cap whose best saved body the current search engine
+    has never run on. Each gets one more pass: the claim searches that body first (a
+    match costs no model request), otherwise one model attempt continues from the
+    searched body. Its release marks the body, which ends the eligibility."""
+    from fzgx import api
+    wanted={r['symbol'] for r in rows if r['status']=='unmatched' and r['attempts']>=ATTEMPT_CAP
+            and (r.get('best',r.get('best_percent',0)) or 0)>=90 and r['size']<=1024}
+    if not wanted:
+        return set()
+    engine=api._engine_id();best={}
+    for a in db_rows('SELECT symbol,best_body_path,MAX(COALESCE(final_percent,0),COALESCE(best_in_attempt,0)) score,id '
+                     'FROM attempts WHERE ended IS NOT NULL AND best_body_path IS NOT NULL'):
+        # Restored upstream history names bodies that are not on this machine.
+        if (a['symbol'] in wanted and (a['symbol'] not in best or (a['score'],a['id'])>best[a['symbol']][:2])
+                and Path(a['best_body_path']).exists()):
+            best[a['symbol']]=(a['score'],a['id'],a['best_body_path'])
+    out=set()
+    for symbol,(_,_,path) in best.items():
+        marker=load(Path(path+'.searched.json'),{})
+        if marker.get('engine')!=engine or marker.get('budget_s',0)<api.SEARCH_S:
+            out.add(symbol)
+    return out
+
+def choose(rows, seen, context, count, reserved=(), retry=()):
     claimed_units={(r['module'],r['unit']) for r in rows if r['status']=='claimed' and r.get('unit')}
-    eligible=[r for r in rows if r['status']=='unmatched' and r['attempts']<3 and r['size']<=1024
+    eligible=[r for r in rows if r['status']=='unmatched' and (r['attempts']<ATTEMPT_CAP or r['symbol'] in retry) and r['size']<=1024
               and seen.get(r['symbol'])!=context and r['symbol'] not in reserved
               and not (r.get('unit') and (r['module'],r['unit']) in claimed_units)]
     eligible.sort(key=lambda r:(-(r.get('best',r.get('best_percent',0)) or 0),r['attempts'],r['size'],r['symbol']))
@@ -239,7 +265,7 @@ def run():
                 reserved_units={(index[s]['module'],index[s]['unit']) for s in reserved if s in index and index[s].get('unit')}
                 for row in rows:
                     if row.get('unit') and (row['module'],row['unit']) in reserved_units:row['status']='claimed'
-                symbols=choose(rows,seen,context,cfg['parallel']*2,reserved)
+                symbols=choose(rows,seen,context,cfg['parallel']*2,reserved,unsearched_near_misses(rows))
                 if not symbols:
                     statuses[family]=dict(status='idle',reason='No fresh eligible target below attempt cap; no blind retries.',active=0);retries[family]=time.time()+30;continue
                 for symbol in symbols:seen[symbol]=context

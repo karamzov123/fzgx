@@ -75,6 +75,16 @@ def cmd_claim(a, p):
         # One tool slot covers preparation: a wide claim queue must not hold
         # every first model response behind a second queue of initial checks.
         r['initial_check'] = api.format_check(api.check(p, a.symbol))
+    if r['ok'] and a.repair and not seed:
+        # Search the best saved body before the retry costs a model request.
+        try:
+            r['preflight'] = api.preflight_repair(p, a.symbol, a.agent)
+            if r['preflight'].get('improved'):
+                from .ledger import Ledger
+                r['context'] = api.build_context(p, Ledger(), a.symbol,
+                                                 compiler_options=api._compiler_options(p, api._key(p, a.symbol)))
+        except Exception as error:
+            r['preflight'] = dict(ok=False, error=str(error)[-500:])
     r['timings'] = dict(prepare_secs=round(prepared - started, 3),
                         preflight_secs=round(time.monotonic() - prepared, 3))
     _print(r, a.json); return 0 if r["ok"] else 2
@@ -139,6 +149,11 @@ def cmd_submit(a, p):
     r = api.submit(p, a.symbol, a.agent, a.message or "", a.harness, a.model, a.mw_version, a.extra_cflags,
                    names, a.tokens_in, a.tokens_out, a.cost_usd, a.max_diff_lines)
     _print(r, a.json); return 0 if r["ok"] else 1
+
+
+def cmd_search(a, p):
+    r = api.search(p, a.symbol, a.agent)
+    _print(r, a.json); return 0 if r['ok'] else 2
 
 
 def cmd_release(a, p):
@@ -444,6 +459,9 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--ttl", type=int, default=api.DEFAULT_TTL); s.add_argument("--max-attempts", type=int, default=api.MAX_ATTEMPTS)
     s.add_argument("--no-carve", action="store_true")
     s.add_argument('--check', action='store_true', help='compile a complete seed before returning the assignment')
+    s.add_argument('--repair', action='store_true', help='run the deterministic search on the best saved body first; a match is submitted')
+    s = sub.add_parser('search', help='deterministic search on the claimed work copy'); s.set_defaults(fn=cmd_search)
+    s.add_argument('symbol'); s.add_argument('--agent', default=os.environ.get('FZGX_AGENT_ID', 'agent'))
     s = sub.add_parser("carve", help="carve functions into units without claiming"); s.set_defaults(fn=cmd_carve)
     s.add_argument("symbols", nargs="+"); s.add_argument("--dry-run", action="store_true")
     s = sub.add_parser("context", help="print the context bundle"); s.set_defaults(fn=cmd_context)
@@ -628,7 +646,7 @@ def main(argv: Optional[List[str]] = None, project=None) -> int:
     a = build_parser().parse_args(argv)
     assigned = os.environ.get("FZGX_SYMBOL")
     if assigned:
-        if (a.cmd not in {"claim", "context", "read-unit", "read-evidence", "write-unit", "patch-unit", "check", "submit", "release"}
+        if (a.cmd not in {"claim", "context", "read-unit", "read-evidence", "write-unit", "patch-unit", "check", "search", "submit", "release"}
                 or getattr(a, "symbol", None) != assigned
                 or getattr(a, "agent", os.environ["FZGX_AGENT_ID"]) != os.environ["FZGX_AGENT_ID"]):
             _print({"ok": False, "error": "tool call is outside this worker's assigned function and identity"}, a.json)

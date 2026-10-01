@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Five function-bound MCP tools for non-Codex fleet clients.
+"""Six function-bound MCP tools for non-Codex fleet clients.
 
 The supervisor supplies identity, work copy and initial evidence. Models cannot
 claim, submit, select other symbols, access files, or invoke arbitrary commands.
@@ -17,7 +17,7 @@ SYMBOL = os.environ.get('FZGX_SYMBOL', '')
 AGENT = os.environ.get('FZGX_AGENT_ID', '')
 RESULT = os.environ.get('FZGX_RESULT_FILE', '')
 EVENTS = Path(RESULT).with_name(f'{SYMBOL}.tools.jsonl') if RESULT else None
-mcp = FastMCP('fzgx', instructions='Continue the assigned function. Only bound edit/check/evidence/release tools exist; matching and limits terminate automatically.')
+mcp = FastMCP('fzgx', instructions='Continue the assigned function. Only bound edit/check/search/evidence/release tools exist; matching and limits terminate automatically.')
 
 def binding():
     if not SYMBOL or not AGENT or not RESULT:
@@ -63,6 +63,12 @@ async def check(versions: str = '') -> str:
 async def read_evidence(section: str = 'diff', cursor: int = 0) -> str:
     """Page through the cached diff or proven retail data without compiling."""
     return await invoke('read_evidence', lambda: backend.read_evidence(SYMBOL, section, cursor))
+
+@mcp.tool()
+async def search() -> dict:
+    """Let the tooling permute your current source mechanically (declaration order, type and sign flips, optimizer pragmas, literal-pool priming; thousands of compiles in seconds). Use it once your body is at 80% or better and the remaining rows are register, pool or `L` rows. A match is accepted; a better body becomes your work copy; three uses per attempt."""
+    return await invoke('search', lambda: backend.search(SYMBOL, AGENT))
+
 
 @mcp.tool()
 async def release(reason: str) -> dict:
