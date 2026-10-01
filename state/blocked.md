@@ -20,6 +20,7 @@ below do not imply that declaration order alone can repair a function.
 | `fn_3_255DC` | 240 | 27 |
 | `fn_1_13B98` | 241 | 17 |
 | `fn_12_23F5C` | 87 | 5 |
+| `fn_1_7FD7C` | 3 | 0 |
 
 The 2026-09-15 shared-state pass linked `fn_8001B42C` from C.
 `fn_3_1D338` now has a retail zero palette and corrected multiplication
