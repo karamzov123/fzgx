@@ -5402,3 +5402,36 @@ dol/fn_8006FC5C.c:
 
 dol/__cvt_fp2unsigned.c:
 	.text       start:0x80079764 end:0x800797C0 align:4
+
+dol/fn_80023B70.c:
+	.text       start:0x80023B70 end:0x80023D00 align:4
+
+dol/fn_800356B8.c:
+	.text       start:0x800356B8 end:0x80035734 align:4
+
+dol/GXLoadTexMtxImm.c:
+	.text       start:0x80038D34 end:0x80038DE8 align:4
+
+dol/fn_8003AB08.c:
+	.text       start:0x8003AB08 end:0x8003B010 align:4
+
+dol/fn_8003B010.c:
+	.text       start:0x8003B010 end:0x8003B63C align:4
+
+dol/fn_8003B9AC.c:
+	.text       start:0x8003B9AC end:0x8003BB30 align:4
+
+dol/fn_8003BB30.c:
+	.text       start:0x8003BB30 end:0x8003BCE4 align:4
+
+dol/fn_8003BCE4.c:
+	.text       start:0x8003BCE4 end:0x8003BD78 align:4
+
+dol/fn_8003BD78.c:
+	.text       start:0x8003BD78 end:0x8003BE1C align:4
+
+dol/u_gxutil_upload_some_mtx.c:
+	.text       start:0x800724CC end:0x80072558 align:4
+
+dol/fn_80072558.c:
+	.text       start:0x80072558 end:0x800725DC align:4

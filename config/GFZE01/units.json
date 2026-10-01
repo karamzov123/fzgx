@@ -5415,6 +5415,17 @@
   },
   {
     "module": "main",
+    "source": "dol/GXLoadTexMtxImm.c",
+    "symbols": [
+      "GXLoadTexMtxImm"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
+  },
+  {
+    "module": "main",
     "source": "dol/GXPeekZ.c",
     "symbols": [
       "GXPeekZ"
@@ -15224,6 +15235,17 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80023B70.c",
+    "symbols": [
+      "fn_80023B70"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8002420C.c",
     "symbols": [
       "fn_8002420C"
@@ -16646,6 +16668,17 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_800356B8.c",
+    "symbols": [
+      "fn_800356B8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8003591C.c",
     "symbols": [
       "fn_8003591C"
@@ -16989,6 +17022,28 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_8003AB08.c",
+    "symbols": [
+      "fn_8003AB08"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8003B010.c",
+    "symbols": [
+      "fn_8003B010"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8003B798.c",
     "symbols": [
       "fn_8003B798"
@@ -17016,6 +17071,50 @@
     "status": "matching",
     "mw_version": "GC/1.2.5n",
     "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8003B9AC.c",
+    "symbols": [
+      "fn_8003B9AC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8003BB30.c",
+    "symbols": [
+      "fn_8003BB30"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8003BCE4.c",
+    "symbols": [
+      "fn_8003BCE4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8003BD78.c",
+    "symbols": [
+      "fn_8003BD78"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
   },
   {
     "module": "main",
@@ -22295,6 +22394,17 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80072558.c",
+    "symbols": [
+      "fn_80072558"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80072614.c",
     "symbols": [
       "fn_80072614"
@@ -25506,6 +25616,17 @@
       "-use_lmw_stmw",
       "off"
     ]
+  },
+  {
+    "module": "main",
+    "source": "dol/u_gxutil_upload_some_mtx.c",
+    "symbols": [
+      "u_gxutil_upload_some_mtx"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
   },
   {
     "module": "main",
