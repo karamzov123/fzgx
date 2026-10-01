@@ -241,13 +241,11 @@ void fn_4_894(void) {
 }
 /* fzgx:end fn_4_894 */
 
-/* fzgx:begin _epilog noprologue */
-#include "types.h"
-
+/* fzgx:begin _epilog */
 extern const f32 lbl_4_rodata_4C[45];
-extern u8 lbl_4_bss_4[4];
-extern u8 lbl_4_bss_8[4];
-extern u8 lbl_1_bss_6EAD0[4];
+extern u32 lbl_4_bss_4;
+extern u32 lbl_4_bss_8;
+extern struct _prolog_lbl_1_bss_6EAD0 lbl_1_bss_6EAD0;
 
 extern void fn_8006CE1C(f32);
 extern void fn_1_1596DC(u32);
