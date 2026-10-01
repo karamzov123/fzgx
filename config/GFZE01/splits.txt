@@ -5543,3 +5543,6 @@ dol/__fill_mem.c:
 
 dol/fn_800692A4.c:
 	.text       start:0x800692A4 end:0x8006953C align:4
+
+dol/fn_8003D918.c:
+	.text       start:0x8003D918 end:0x8003DB54 align:4
