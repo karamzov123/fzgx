@@ -66,7 +66,10 @@ function-bound transport and a live acceptance test, not just an MCP config.
 The tooltip shows exact symbols/modules, checks, completed attempts, current
 batch link-verification, unique link-verified progress since this fleet started,
 and last accepted commit. Cached global verifier/backlog records do not count
-as this batch's work. A missing verifier record is unknown, never successful.
+as this batch's work. A missing verifier record is unknown, never successful. Because the watcher is
+silent when no match is pending, each batch records its actual pre-batch
+16-target hash-gate success as initial health (`bootstrap_gate`), with no
+credited matches. Eww's initial value also never claims that Cline is running.
 A PID alone never produces the working state.
 
 GPT left-click toggles work; right-click/wheel-up increases concurrency (max 8);

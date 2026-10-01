@@ -207,6 +207,15 @@ def run_gate():
         hashes = subprocess.run([str(ROOT / 'build/tools/dtk'), 'shasum', '-c', 'config/GFZE01/build.sha1'], cwd=ROOT, stdout=output, stderr=subprocess.STDOUT, timeout=30) if cp.returncode == 0 else None
     return cp.returncode == 0 and hashes is not None and hashes.returncode == 0
 
+def record_gate(directory, passed, timestamp):
+    if passed is not True:
+        raise ValueError('Cannot publish initial health without a passed hash gate')
+    directory.mkdir(parents=True, exist_ok=False)
+    # No-op verification watches are silent. Initial health is the actual
+    # pre-batch 16-target hash gate, not a watcher result or accepted match.
+    (directory / 'verify.jsonl').write_text(json.dumps(dict(timestamp=timestamp, ok=True,
+        verified=[], rejected=[], bootstrap_gate=True)) + '\n')
+
 def active_runner_pids():
     active = []
     for path in Path('/proc').glob('[0-9]*/cmdline'):
@@ -322,6 +331,8 @@ def daemon():
                 data.update(status='idle', reason='No fresh under-1KiB targets below attempt cap. No blind retries or model polling.')
                 publish(data); time.sleep(15); continue
             batch = f'fleet-v2-{time.time_ns()}'
+            directory = ROOT / '.fzgx/runs' / batch
+            record_gate(directory, gate_ok, now)
             for symbol in symbols:
                 seen[symbol] = context
             atomic(HISTORY, seen)
