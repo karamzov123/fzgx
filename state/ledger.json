@@ -1,5 +1,5 @@
 {
- "generated": 1790882195,
+ "generated": 1790882227,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -59524,12 +59524,12 @@
    "unit": null,
    "addr": 366448,
    "size": 768,
-   "status": "claimed",
-   "attempts": 2,
+   "status": "unmatched",
+   "attempts": 3,
    "best_percent": 92.78646,
-   "claimed_by": "fleet-v2-agy-1790881921863832416-agy-2",
-   "claimed_at": 1790882181,
-   "claim_ttl": 2100,
+   "claimed_by": null,
+   "claimed_at": null,
+   "claim_ttl": null,
    "matched_commit": null,
    "blocked_reason": null,
    "prev_status": null,
@@ -473924,7 +473924,7 @@
    "notes": "plateau: 5 consecutive checks without improvement (best 92.8%)",
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_59770.1790881316.c",
    "stale_checks": 5,
-   "best_in_attempt": 92.78646
+   "best_in_attempt": 95.03646
   },
   {
    "id": 18402,
@@ -474196,17 +474196,17 @@
    "id": 18416,
    "symbol": "fn_1_59770",
    "agent": "fleet-v2-agy-1790881921863832416-agy-2",
-   "harness": null,
+   "harness": "agy",
    "model": null,
    "started": 1790882181,
-   "ended": null,
+   "ended": 1790882226,
    "checks": 0,
    "final_percent": null,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
-   "outcome": null,
-   "notes": null,
+   "outcome": "released",
+   "notes": "harness crash (rc=-15); saved best candidate automatically",
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 0.0
