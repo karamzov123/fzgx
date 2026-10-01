@@ -56,13 +56,22 @@ def command(family, batch, symbols, parallel):
 
 ATTEMPT_CAP = 3
 
+def local_attempts():
+    """Attempts this fleet made. The restored upstream history (DeepSeek, effort-none and
+    Luna batches of September) left 464 small functions at 90%+ past the cap with their
+    saved C on another machine; those attempts say nothing about this fleet's models
+    and tools, so they do not count toward its cap."""
+    return {r['symbol']:r['n'] for r in db_rows("SELECT symbol,count(*) n FROM attempts WHERE agent LIKE 'fleet-v2-%' "
+                                                "AND ended IS NOT NULL GROUP BY symbol")}
+
 def unsearched_near_misses(rows):
     """Functions past the attempt cap whose best saved body the current search engine
     has never run on. Each gets one more pass: the claim searches that body first (a
     match costs no model request), otherwise one model attempt continues from the
     searched body. Its release marks the body, which ends the eligibility."""
     from fzgx import api
-    wanted={r['symbol'] for r in rows if r['status']=='unmatched' and r['attempts']>=ATTEMPT_CAP
+    mine=local_attempts()
+    wanted={r['symbol'] for r in rows if r['status']=='unmatched' and mine.get(r['symbol'],0)>=ATTEMPT_CAP
             and (r.get('best',r.get('best_percent',0)) or 0)>=90 and r['size']<=1024}
     if not wanted:
         return set()
@@ -82,10 +91,11 @@ def unsearched_near_misses(rows):
 
 def choose(rows, seen, context, count, reserved=(), retry=()):
     claimed_units={(r['module'],r['unit']) for r in rows if r['status']=='claimed' and r.get('unit')}
-    eligible=[r for r in rows if r['status']=='unmatched' and (r['attempts']<ATTEMPT_CAP or r['symbol'] in retry) and r['size']<=1024
+    mine=local_attempts()
+    eligible=[r for r in rows if r['status']=='unmatched' and (mine.get(r['symbol'],0)<ATTEMPT_CAP or r['symbol'] in retry) and r['size']<=1024
               and seen.get(r['symbol'])!=context and r['symbol'] not in reserved
               and not (r.get('unit') and (r['module'],r['unit']) in claimed_units)]
-    eligible.sort(key=lambda r:(-(r.get('best',r.get('best_percent',0)) or 0),r['attempts'],r['size'],r['symbol']))
+    eligible.sort(key=lambda r:(-(r.get('best',r.get('best_percent',0)) or 0),mine.get(r['symbol'],0),r['size'],r['symbol']))
     used=set(claimed_units)
     selected=[]
     for row in eligible:
