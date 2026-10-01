@@ -5435,3 +5435,18 @@ dol/u_gxutil_upload_some_mtx.c:
 
 dol/fn_80072558.c:
 	.text       start:0x80072558 end:0x800725DC align:4
+
+dol/fn_8006E200.c:
+	.text       start:0x8006E200 end:0x8006E250 align:4
+
+dol/mathutil_mtxA_rotate_x.c:
+	.text       start:0x8006E324 end:0x8006E398 align:4
+
+dol/mathutil_mtxA_rotate_y.c:
+	.text       start:0x8006E398 end:0x8006E424 align:4
+
+dol/mathutil_mtxA_rotate_z.c:
+	.text       start:0x8006E424 end:0x8006E498 align:4
+
+dol/func_80008378.c:
+	.text       start:0x8006E5B4 end:0x8006E5FC align:4

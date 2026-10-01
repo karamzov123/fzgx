@@ -21527,6 +21527,17 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_8006E200.c",
+    "symbols": [
+      "fn_8006E200"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8006E250.c",
     "symbols": [
       "fn_8006E250"
@@ -24923,6 +24934,17 @@
   },
   {
     "module": "main",
+    "source": "dol/func_80008378.c",
+    "symbols": [
+      "func_80008378"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
+  },
+  {
+    "module": "main",
     "source": "dol/func_8008D6BC.c",
     "symbols": [
       "func_8008D6BC"
@@ -25126,6 +25148,39 @@
     "source": "dol/mathutil_init.c",
     "symbols": [
       "mathutil_init"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
+  },
+  {
+    "module": "main",
+    "source": "dol/mathutil_mtxA_rotate_x.c",
+    "symbols": [
+      "mathutil_mtxA_rotate_x"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
+  },
+  {
+    "module": "main",
+    "source": "dol/mathutil_mtxA_rotate_y.c",
+    "symbols": [
+      "mathutil_mtxA_rotate_y"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
+  },
+  {
+    "module": "main",
+    "source": "dol/mathutil_mtxA_rotate_z.c",
+    "symbols": [
+      "mathutil_mtxA_rotate_z"
     ],
     "status": "matching",
     "mw_version": null,
