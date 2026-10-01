@@ -1,5 +1,5 @@
 {
- "generated": 1790885759,
+ "generated": 1790885832,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -50838,7 +50838,7 @@
    "addr": 216888,
    "size": 492,
    "status": "unmatched",
-   "attempts": 6,
+   "attempts": 7,
    "best_percent": 98.69919,
    "claimed_by": null,
    "claimed_at": null,
@@ -101260,7 +101260,7 @@
    "addr": 27432,
    "size": 336,
    "status": "unmatched",
-   "attempts": 6,
+   "attempts": 7,
    "best_percent": 98.690475,
    "claimed_by": null,
    "claimed_at": null,
@@ -479653,8 +479653,8 @@
    "model": null,
    "started": 1790885187,
    "ended": null,
-   "checks": 8,
-   "final_percent": 85.43678,
+   "checks": 10,
+   "final_percent": 89.74712,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -479748,7 +479748,7 @@
    "model": null,
    "started": 1790885187,
    "ended": null,
-   "checks": 3,
+   "checks": 4,
    "final_percent": 74.60345,
    "tokens_in": 0,
    "tokens_out": 0,
@@ -479756,7 +479756,7 @@
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 2,
+   "stale_checks": 3,
    "best_in_attempt": 76.81035
   },
   {
@@ -479834,6 +479834,44 @@
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_7FAA8.1790885758.c",
    "stale_checks": 2,
    "best_in_attempt": 99.392265
+  },
+  {
+   "id": 18713,
+   "symbol": "fn_1_34F38",
+   "agent": "fleet-v2-gpt-1790885821305580790-codex-1",
+   "harness": "codex",
+   "model": "gpt-6.1-sol",
+   "started": 1790885821,
+   "ended": 1790885830,
+   "checks": 0,
+   "final_percent": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "{\"message\": \"You\\u2019ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 4:42 PM.\", \"codexErrorInfo\": \"usageLimitExceeded\", \"additionalDetails\": null, \"misalignment\": null}",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 0.0
+  },
+  {
+   "id": 18714,
+   "symbol": "fn_12_6B28",
+   "agent": "fleet-v2-gpt-1790885821305580790-codex-2",
+   "harness": "codex",
+   "model": "gpt-6.1-sol",
+   "started": 1790885830,
+   "ended": 1790885832,
+   "checks": 0,
+   "final_percent": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "{\"message\": \"You\\u2019ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 4:42 PM.\", \"codexErrorInfo\": \"usageLimitExceeded\", \"additionalDetails\": null, \"misalignment\": null}",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 0.0
   }
  ],
  "names": [
