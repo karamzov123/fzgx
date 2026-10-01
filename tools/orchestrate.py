@@ -214,8 +214,16 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
                 task['source'] = assignment['source']
             if assignment.get('initial_check'):
                 task['initial_check'] = assignment['initial_check']
+            # An unseeded claim installs a stub: a check before the first write only
+            # reports the function missing and spends a check and a stale slot.
+            start = ('installed its work copy. Continue from the supplied C and initial diff.'
+                     if task.get('initial_check') or task.get('source') or task.get('seed') else
+                     'installed an empty stub as its work copy; there is no initial diff. Your first call must be '
+                     'write_unit with a complete unit, built from the best prior attempt or mechanical draft in the '
+                     'context when present. A check or read_evidence before that write returns nothing and spends '
+                     'one of your limited checks.')
             prompt = (f'SYMBOL={symbol} AGENT_ID={agent_id} MODEL={model}. The runner has already assigned '
-                      'this function and installed its work copy. Continue from the supplied C and initial diff.\n'
+                      f'this function and {start}\n'
                       + json.dumps(task))
             (directory / f'{symbol}.prompt.txt').write_text(prompt + '\n')
             bound = os.environ.get('FZGX_BOUND_TRANSPORT') == '1' or harness in ('cline', 'agy')
