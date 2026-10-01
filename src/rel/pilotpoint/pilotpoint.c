@@ -1,5 +1,88 @@
 #include "types.h"
 
+/* fzgx:begin _prolog */
+/* fzgx:begin _prolog noprologue */
+
+struct _prolog_lbl_14_bss_0 {
+    u8 pad_0[0x14];
+    u32 unk_14;
+    u8 pad_18[0x4];
+    u32 unk_1C;
+    u32 unk_20;
+};
+struct _prolog_lbl_801A6410 {
+    u32 unk_0;
+};
+typedef struct _prolog_LocalData LocalData;
+struct _prolog_LocalData {
+    u8 data[0x14B4];
+};
+
+extern struct _prolog_lbl_14_bss_0 lbl_14_bss_0;
+extern struct _prolog_lbl_801A6410 lbl_801A6410;
+extern u8 lbl_14_data_2FB0[0xD];
+extern u8 lbl_14_data_2FC0[0x4C];
+extern const f32 lbl_14_rodata_0[12];
+extern u16 lbl_1_bss_96A;
+extern u32 lbl_1_bss_6EAD0;
+extern u32 lbl_1_bss_7167C;
+extern u32 lbl_1_bss_71680;
+extern u32 lbl_1_bss_71684;
+
+extern void fn_14_220(void);
+extern u32 fn_14_268(void);
+extern void fn_14_2A0(void);
+extern u32 fn_14_DC2C(void);
+extern u32 fn_1_7BA08(u32, u32, u32);
+extern void fn_1_7BA48(u32);
+extern u32 fn_1_45D0(u32, u32, void *, u32);
+extern void fn_1_3CF0(u32, u32);
+extern void fn_1_435C(u32);
+extern u32 fn_1_3F8C(void *, void *, u32, u32);
+extern void fn_1_411A4(u32);
+extern void fn_1_48418(int);
+extern void fn_1_479F0(s16);
+extern void fn_1_159440(int, int);
+extern void fn_1_7BAF8(void);
+extern void fn_8006CE1C(f32);
+extern void fn_1_A8F78(void);
+extern u32 fn_1_A0680(void);
+extern u32 fn_1_A1588(void *, u32);
+extern void fn_1_3EF14(void *);
+
+void _prolog(void) {
+    LocalData local;
+    struct _prolog_lbl_14_bss_0 *p;
+    u32 h;
+    p = (struct _prolog_lbl_14_bss_0 *)&lbl_14_bss_0;
+
+    lbl_1_bss_7167C = (u32)fn_14_220;
+    lbl_1_bss_71680 = (u32)fn_14_268;
+    lbl_1_bss_71684 = (u32)fn_14_2A0;
+
+    h = fn_1_45D0(lbl_801A6410.unk_0, fn_1_7BA08(0x20, 0x20, 0x40), &lbl_14_data_2FB0, 0x313);
+    p->unk_14 = h;
+    fn_1_7BA48(h);
+    fn_1_3CF0(p->unk_1C = fn_1_45D0(lbl_801A6410.unk_0, 0x173C, &lbl_14_data_2FB0, 0x314), 0x80);
+    fn_1_3CF0(p->unk_20 = fn_1_45D0(lbl_801A6410.unk_0, 0x173C, &lbl_14_data_2FB0, 0x315), 0x80);
+    fn_1_435C(p->unk_20);
+    fn_1_3F8C(&lbl_14_data_2FC0, fn_1_7BAF8, p->unk_14, 2);
+    fn_1_411A4(1);
+    fn_1_48418(2);
+    fn_1_479F0(0xD);
+    fn_1_479F0(1);
+    fn_1_159440(2, 0);
+    lbl_1_bss_96A = 0xAC;
+    fn_8006CE1C(lbl_14_rodata_0[0]);
+    fn_1_A8F78();
+    fn_1_A0680();
+    fn_1_A1588(*(void **)*(u32 *)&lbl_1_bss_6EAD0, 0x1F);
+    fn_14_DC2C();
+    fn_1_3EF14(&local);
+}
+/* fzgx:end _prolog */
+/* fzgx:end _prolog */
+
 /* fzgx:begin _epilog */
 struct _epilog_lbl_14_bss_0 {
     u8 pad_0[0x14];
