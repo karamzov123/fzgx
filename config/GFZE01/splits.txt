@@ -5525,3 +5525,12 @@ dol/fn_8003401C.c:
 
 dol/fn_800365B4.c:
 	.text       start:0x800365B4 end:0x8003666C align:4
+
+dol/fn_80034BB8.c:
+	.text       start:0x80034BB8 end:0x80034D0C align:4
+
+dol/fn_80036AC4.c:
+	.text       start:0x80036AC4 end:0x80036C24 align:4
+
+dol/fn_800060D8.c:
+	.text       start:0x800060D8 end:0x80006334 align:4
