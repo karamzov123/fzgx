@@ -16,6 +16,8 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+REPO = "karamzov123/fzgx"
+
 def get_all_agents():
     agents = {}
     res = run(["git", "branch", "--list", "agent/*"], check=False)
@@ -73,6 +75,8 @@ def test_merge_and_verify(agent_name, agent_info):
         run(f"ln -sfn {ROOT / '.venv'} {staging_dir / '.venv'}")
         (staging_dir / "build").mkdir(parents=True, exist_ok=True)
         run(f"ln -sfn {ROOT / 'build' / 'tools'} {staging_dir / 'build' / 'tools'}")
+        run(f"ln -sfn {ROOT / 'build' / 'binutils'} {staging_dir / 'build' / 'binutils'}")
+        run(f"ln -sfn {ROOT / 'build' / 'compilers'} {staging_dir / 'build' / 'compilers'}")
 
         # Attempt merge of agent branch
         head_rev = get_rev(agent_info["branch"])
@@ -171,9 +175,12 @@ def check_and_integrate_agent(agent_name, agent_info, auto_pr=True):
                 run(["gh", "pr", "merge", "--repo", REPO, branch, "--merge", "--auto"], check=False)
 
     # 4. Integrate into local main
-    print(f"[{agent_name}] Merging into local main...")
-    run(["git", "merge", "--ff-only", branch], cwd=ROOT)
-    run(["git", "push", "origin", "main"], cwd=ROOT)
+    print(f"[{agent_name}] Syncing local main...")
+    if auto_pr:
+        run(["git", "pull", "--rebase", "origin", "main"], cwd=ROOT, check=False)
+    else:
+        run(["git", "merge", "--no-ff", "-m", f"Merge {branch}", branch], cwd=ROOT)
+        run(["git", "push", "origin", "main"], cwd=ROOT)
 
     # 5. Rebase agent worktrees so none fall behind
     print(f"[{agent_name}] Syncing active worktrees...")
