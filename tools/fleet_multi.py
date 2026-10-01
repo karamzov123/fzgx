@@ -37,7 +37,10 @@ def budget_limits(family, parallel, count):
     if family == 'cline':
         return dict(input=1000000,output=128000,batch_input=1000000*count,
                     batch_output=128000*count,log_bytes=12*1024*1024*parallel,
-                    guard_each=False,usage_wait=300)
+                    # Usage arrives only when a response ends; a first high-effort
+                    # response of 15-33k tokens takes 150-300+ s, so wait past the
+                    # 600 s session timeout rather than stop the whole batch.
+                    guard_each=False,usage_wait=660)
     return dict(input=MAX_INPUT_TOKENS,output=MAX_OUTPUT_TOKENS,
                 batch_input=1000000,batch_output=80000,log_bytes=12*1024*1024,
                 guard_each=True,usage_wait=120)
