@@ -1,5 +1,5 @@
 {
- "generated": 1790881017,
+ "generated": 1790881185,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -68616,19 +68616,19 @@
   {
    "symbol": "fn_1_8FE74",
    "module": "main_rel",
-   "unit": null,
+   "unit": "rel/main_rel/car/fn_1_8FE74.c",
    "addr": 589428,
    "size": 576,
-   "status": "unmatched",
-   "attempts": 1,
-   "best_percent": 90.826385,
+   "status": "matched",
+   "attempts": 2,
+   "best_percent": 100.0,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
-   "matched_commit": null,
+   "matched_commit": "cee7e321",
    "blocked_reason": null,
    "prev_status": null,
-   "link_state": null
+   "link_state": "verified"
   },
   {
    "symbol": "fn_1_900B4",
@@ -90720,8 +90720,8 @@
    "addr": 1237176,
    "size": 876,
    "status": "unmatched",
-   "attempts": 1,
-   "best_percent": 90.83562,
+   "attempts": 2,
+   "best_percent": 98.69863,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
@@ -115303,7 +115303,7 @@
    "size": 788,
    "status": "claimed",
    "attempts": 2,
-   "best_percent": 96.639595,
+   "best_percent": 98.451775,
    "claimed_by": "fleet-v2-agy-1790880758315501271-agy-1",
    "claimed_at": 1790880758,
    "claim_ttl": 2100,
@@ -473497,7 +473497,7 @@
    "model": null,
    "started": 1790880316,
    "ended": null,
-   "checks": 10,
+   "checks": 13,
    "final_percent": 97.79891,
    "tokens_in": 0,
    "tokens_out": 0,
@@ -473505,7 +473505,7 @@
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 1,
+   "stale_checks": 4,
    "best_in_attempt": 97.79891
   },
   {
@@ -473535,16 +473535,16 @@
    "model": null,
    "started": 1790880316,
    "ended": null,
-   "checks": 8,
-   "final_percent": 86.438354,
+   "checks": 9,
+   "final_percent": 88.0137,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 2,
-   "best_in_attempt": 86.81507
+   "stale_checks": 0,
+   "best_in_attempt": 88.0137
   },
   {
    "id": 18382,
@@ -473554,7 +473554,7 @@
    "model": null,
    "started": 1790880316,
    "ended": null,
-   "checks": 6,
+   "checks": 7,
    "final_percent": 86.22222,
    "tokens_in": 0,
    "tokens_out": 0,
@@ -473562,7 +473562,7 @@
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 2,
+   "stale_checks": 3,
    "best_in_attempt": 89.125
   },
   {
@@ -473706,8 +473706,8 @@
    "model": null,
    "started": 1790880616,
    "ended": null,
-   "checks": 1,
-   "final_percent": 88.29612,
+   "checks": 3,
+   "final_percent": 92.17476,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -473715,7 +473715,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 88.29612
+   "best_in_attempt": 92.17476
   },
   {
    "id": 18391,
@@ -473744,16 +473744,16 @@
    "model": null,
    "started": 1790880758,
    "ended": null,
-   "checks": 3,
-   "final_percent": 72.86,
+   "checks": 9,
+   "final_percent": 98.451775,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 2,
-   "best_in_attempt": 96.639595
+   "stale_checks": 0,
+   "best_in_attempt": 98.451775
   },
   {
    "id": 18393,
@@ -473782,8 +473782,8 @@
    "model": null,
    "started": 1790880817,
    "ended": null,
-   "checks": 0,
-   "final_percent": null,
+   "checks": 3,
+   "final_percent": 81.36596,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -473791,7 +473791,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 0.0
+   "best_in_attempt": 81.36596
   },
   {
    "id": 18395,
@@ -473868,6 +473868,44 @@
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 0.0
+  },
+  {
+   "id": 18399,
+   "symbol": "fn_1_12E0B8",
+   "agent": "fleet-v2-claude-1790881022381306519-claude-1",
+   "harness": "claude",
+   "model": "claude-opus-5-5",
+   "started": 1790881022,
+   "ended": 1790881126,
+   "checks": 8,
+   "final_percent": 51.07306,
+   "tokens_in": 200425,
+   "tokens_out": 37,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "plateau: 5 consecutive checks without improvement (best 98.7%)",
+   "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_12E0B8.1790881126.c",
+   "stale_checks": 5,
+   "best_in_attempt": 98.69863
+  },
+  {
+   "id": 18400,
+   "symbol": "fn_1_8FE74",
+   "agent": "fleet-v2-claude-1790881022381306519-claude-2",
+   "harness": "claude",
+   "model": "claude-opus-5-5",
+   "started": 1790881127,
+   "ended": 1790881175,
+   "checks": 4,
+   "final_percent": 100.0,
+   "tokens_in": 62594,
+   "tokens_out": 18,
+   "cost_usd": 0.0,
+   "outcome": "matched",
+   "notes": "oracle match accepted automatically",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 100.0
   }
  ],
  "names": [
