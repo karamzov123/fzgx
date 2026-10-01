@@ -93,9 +93,9 @@ void _epilog(void) {
     fn_1_41A8();
     fn_1_435C(lbl_15_bss_10);
     fn_1_41A8();
-    fn_1_47A60(0xe);
-    fn_1_48140(0x8c);
-    fn_1_48140(0xbb);
+    fn_1_47A60(0xE);
+    fn_1_48140(0x8C);
+    fn_1_48140(0xBB);
     fn_1_46B4(lbl_801A6410, lbl_15_bss_C, lbl_15_data_A4, 0x192);
     fn_1_46B4(lbl_801A6410, lbl_15_bss_10, lbl_15_data_A4, 0x193);
 }
