@@ -88,6 +88,87 @@ s32 fn_1_12A6D8(void *arg0) {
 }
 /* fzgx:end fn_1_12A6D8 */
 
+/* fzgx:begin fn_1_12A7C4 pool noprologue */
+#include "types.h"
+#include "rel/main_rel/archive.h"
+
+typedef struct {
+    s32 count;
+    s32 loaded;
+    u32 unk_8;
+    u8 entries[1];
+} ArchiveState;
+
+extern s32 fn_8006A480(void *arg0, void *arg1, void *arg2);
+extern void *fn_8006A998(void *arg0);
+extern s32 fn_1_45730(void *arg0, void *arg1);
+extern s32 fn_1_45B2C(void *arg0);
+extern void fn_1_458A0(void *arg0, void *arg1, u32 arg2, u32 arg3);
+extern void fn_1_45850(void *arg0);
+extern void fn_80008BA8(u32 arg0, u32 arg1, u32 arg2);
+
+#pragma opt_propagation on
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+s32 fzgx_obj_lbl_1_bss_897A0;
+s32 lbl_1_bss_897A4;
+u32 lbl_1_bss_897A8;
+u8 fzgx_obj_lbl_1_bss_897AC[1];
+u8 lbl_1_bss_897AC_fill_897AD;
+u16 lbl_1_bss_897AC_fill_897AE;
+u32 lbl_1_bss_897AC_fill_897B0[1740];
+u32 fzgx_obj_lbl_1_bss_8B2E0[48];
+u32 fzgx_obj_lbl_1_bss_8B3A0[83];
+
+#pragma section code_type ".fzgxpool"
+static void fzgx_bss_layout(void) {
+    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_897A0;
+    s = *(u8 *)&lbl_1_bss_897A4;
+    s = *(u8 *)&lbl_1_bss_897A8;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_897AC;
+    s = *(u8 *)&lbl_1_bss_897AC_fill_897AD;
+    s = *(u8 *)&lbl_1_bss_897AC_fill_897AE;
+    s = *(u8 *)&lbl_1_bss_897AC_fill_897B0;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_8B2E0;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_8B3A0;
+}
+#pragma section code_type ".text"
+
+s32 fn_1_12A7C4(void *arg0, void *arg1, void *arg2) {
+    u8 *entries;
+    void *result;
+    u8 work[12];
+    u8 info[0x60];
+
+    
+
+    if (lbl_1_bss_897A4 != 0) {
+        s32 count = fzgx_obj_lbl_1_bss_897A0;
+        entries = fzgx_obj_lbl_1_bss_897AC;
+        if (fn_8006A480(entries + count * 0x6C + 0x4C, arg0, work) != 0) {
+            result = fn_8006A998(work);
+        } else {
+            result = 0;
+        }
+        if (result != 0) {
+            fn_80008BA8((u32)arg1, (u32)result, (u32)arg2);
+        } else {
+            return 0;
+        }
+    } else {
+        if (fn_1_45730(arg0, info) != 0) {
+            s32 aligned;
+            aligned = (fn_1_45B2C(info) + 0x1F) & ~0x1F;
+            fn_1_458A0(info, arg1, aligned, 0);
+            fn_1_45850(info);
+        }
+    }
+
+    return 1;
+}
+#pragma opt_propagation reset
+/* fzgx:end fn_1_12A7C4 */
+
 /* fzgx:begin fn_1_12A8A4 noprologue */
 #include "types.h"
 #include "rel/main_rel/archive.h"
