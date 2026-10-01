@@ -72,7 +72,7 @@ const tools=names.map(name=>createTool({name,description:descriptions[name],inpu
 }}));
 agent=new Agent({providerId:config.providerId,modelId:config.modelId,apiKey:config.apiKey,baseUrl:config.baseUrl,
  options:{...config,reasoningEffort:'high'},systemPrompt:readFileSync(join(root,'tools/codex_matcher.md'),'utf8'),tools,modelTools:[],
- maxIterations:12,toolExecution:'sequential',modelOptions:{maxTokens:8192,reasoningEffort:'high'},
+ maxIterations:12,toolExecution:'sequential',modelOptions:{maxTokens:32768,reasoningEffort:'high'},
  requestToolApproval:request=>({approved:names.includes(request.toolName)}),
 });
 let usage={inputTokens:0,outputTokens:0};

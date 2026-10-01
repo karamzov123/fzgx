@@ -58,8 +58,11 @@ def command(family, prompt, model, directory, env):
             (state_dir/'bin').symlink_to(binaries,target_is_directory=True)
         config = json.loads(mcp_config(directory, env).read_text())
         (config_dir/'mcp_config.json').write_text(json.dumps(config))
-        (state_dir/'settings.json').write_text(json.dumps({'agentMode':'accept-edits','model':model}))
         server='fzgx'
+        # Print mode soft-denies call_mcp_tool unless each bound tool is granted
+        # here; the PreToolUse guard below still denies everything else.
+        (state_dir/'settings.json').write_text(json.dumps({'agentMode':'accept-edits','model':model,
+            'permissions':{'allow':[f'mcp({server}/{tool})' for tool in TOOLS]}}))
         env.update(HOME=str(home), FZGX_MCP_SERVER=server, FZGX_GUARD_LOG=str(directory / 'guard.jsonl'))
         agents=directory/'.agents';agents.mkdir(exist_ok=True)
         hook = {'type':'command', 'command':' '.join(shlex.quote(str(x)) for x in [ROOT / '.venv/bin/python', ROOT / 'tools/fleet_agy_guard.py', server, directory / 'guard.jsonl']), 'timeout':10}
