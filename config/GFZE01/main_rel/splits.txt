@@ -6509,3 +6509,9 @@ rel/main_rel/_prolog/fn_1_1ACC.c:
 
 rel/main_rel/_prolog/fn_1_1FE8.c:
 	.text       start:0x00001FE8 end:0x000021E4 align:4
+
+rel/main_rel/spline/fn_1_F8CF0.c:
+	.text       start:0x000F8CF0 end:0x000F8D10 align:4
+
+rel/main_rel/car/fn_1_892E8.c:
+	.text       start:0x000892E8 end:0x000892FC align:4
