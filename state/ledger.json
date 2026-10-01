@@ -1,5 +1,5 @@
 {
- "generated": 1790886348,
+ "generated": 1790886778,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -49087,8 +49087,8 @@
    "addr": 137552,
    "size": 660,
    "status": "unmatched",
-   "attempts": 3,
-   "best_percent": 98.65455,
+   "attempts": 5,
+   "best_percent": 100.0,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
@@ -68922,19 +68922,19 @@
   {
    "symbol": "fn_1_95238",
    "module": "main_rel",
-   "unit": null,
+   "unit": "rel/main_rel/car/fn_1_95238.c",
    "addr": 610872,
    "size": 724,
-   "status": "unmatched",
-   "attempts": 3,
-   "best_percent": 98.64641,
+   "status": "matched",
+   "attempts": 4,
+   "best_percent": 100.0,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
-   "matched_commit": null,
+   "matched_commit": "bfa7947f",
    "blocked_reason": null,
    "prev_status": null,
-   "link_state": null
+   "link_state": "verified"
   },
   {
    "symbol": "fn_1_9550C",
@@ -475995,7 +475995,7 @@
    "notes": "body recovered from committed state/repairs archives",
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_21950.1790882668.c",
    "stale_checks": 0,
-   "best_in_attempt": 98.65455
+   "best_in_attempt": 99.50303
   },
   {
    "id": 18511,
@@ -477040,7 +477040,7 @@
    "notes": "body recovered from committed state/repairs archives",
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_95238.1790882668.c",
    "stale_checks": 0,
-   "best_in_attempt": 98.756905
+   "best_in_attempt": 99.41989
   },
   {
    "id": 18566,
@@ -479748,16 +479748,16 @@
    "model": null,
    "started": 1790885187,
    "ended": null,
-   "checks": 8,
-   "final_percent": 92.155174,
+   "checks": 10,
+   "final_percent": 92.24138,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 1,
-   "best_in_attempt": 92.155174
+   "stale_checks": 0,
+   "best_in_attempt": 92.24138
   },
   {
    "id": 18709,
@@ -479891,6 +479891,44 @@
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 0.0
+  },
+  {
+   "id": 18716,
+   "symbol": "fn_1_21950",
+   "agent": "fleet-v2-agy-1790886502746264130-agy-1",
+   "harness": "agy",
+   "model": "gemini-3.8-flash-high",
+   "started": 1790886502,
+   "ended": 1790886597,
+   "checks": 2,
+   "final_percent": 100.0,
+   "tokens_in": 79383,
+   "tokens_out": 22191,
+   "cost_usd": 0.0,
+   "outcome": "link-mismatch",
+   "notes": "oracle match accepted automatically [object matched but link differed]",
+   "best_body_path": null,
+   "stale_checks": 1,
+   "best_in_attempt": 100.0
+  },
+  {
+   "id": 18717,
+   "symbol": "fn_1_95238",
+   "agent": "fleet-v2-agy-1790886502746264130-agy-2",
+   "harness": "agy",
+   "model": "gemini-3.8-flash-high",
+   "started": 1790886598,
+   "ended": 1790886769,
+   "checks": 2,
+   "final_percent": 100.0,
+   "tokens_in": 114285,
+   "tokens_out": 51915,
+   "cost_usd": 0.0,
+   "outcome": "matched",
+   "notes": "oracle match accepted automatically",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 100.0
   }
  ],
  "names": [
