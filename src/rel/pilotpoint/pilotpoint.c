@@ -708,6 +708,37 @@ s16 fn_14_33DC(s16 *out) {
 }
 /* fzgx:end fn_14_33DC */
 
+/* fzgx:begin fn_14_342C */
+extern u32 lbl_14_bss_110[20];
+extern u32 lbl_14_bss_8350;
+extern f32 lbl_14_bss_8354[936];
+
+u32 fn_14_342C(void) {
+    u32 result;
+    u32 flags;
+    s16 i;
+    s16 count;
+    s16 target;
+
+    target = ((s16 *)&lbl_14_bss_110)[2];
+    result = (u32)&lbl_14_bss_8354;
+    count = 0;
+
+    for (i = 0; (u32)i < 8; i++) {
+        flags = ((u32 *)&lbl_14_bss_110[i * 2])[3];
+        if (flags & 0x10) {
+            if ((flags & 0x40) || (i == target)) {
+                result = lbl_14_bss_8350 + count * 0x4E0;
+                break;
+            }
+            count++;
+        }
+    }
+
+    return result;
+}
+/* fzgx:end fn_14_342C */
+
 /* fzgx:begin fn_14_34A8 */
 extern u32 lbl_14_bss_110[20];
 extern u32 lbl_14_bss_8350;
