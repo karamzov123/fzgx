@@ -2153,6 +2153,17 @@
   },
   {
     "module": "interview",
+    "source": "rel/interview/interview/fn_17_3160.c",
+    "symbols": [
+      "fn_17_3160"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
+  },
+  {
+    "module": "interview",
     "source": "rel/interview/interview/fn_17_3270.c",
     "symbols": [
       "fn_17_3270"
