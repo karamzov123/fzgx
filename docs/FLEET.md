@@ -1,117 +1,47 @@
 # New fzgx autonomous fleet
 
-This is the `~/projects/fzgx` fleet, not the legacy NATC/PM fleet in
-`fzero-gx-decomp`. Do not operate the old supervisor or repair its profiles when
-working on these icons.
+This is `~/projects/fzgx`, not the legacy NATC/PM fleet. The enabled user service `fzgx-fleet.service` runs `tools/fleet.py daemon`, whose entrypoint delegates to `fleet_multi.py`. Do not enable the conflicting old `fzgx-autopr.service`.
+
+## Explicit model policy
+
+All four providers are enabled, independently controlled, with no silent fallback:
+
+| Provider | Requested model/effort | Runtime identifier |
+| --- | --- | --- |
+| Claude | Opus 5.5 High | claude-opus-5-5, high |
+| GPT | 6.1-Sol Medium | gpt-6.1-sol, medium |
+| AGY | Gemini 3.8 High | gemini-3.8-flash-high, high |
+| Cline | Space Bunny Alpha High | stealth/space-bunny-alpha, high |
+
+AGY's installed authenticated model catalog recognizes that identifier. Quota failure remains quota failure, not permission to choose a different model. Its reset time is parsed for automatic retry.
 
 ## Execution contract
 
-`tools/fleet.py daemon` schedules explicit unique function symbols through the
-existing `tools/orchestrate.py --harness codex` multiplexed app-server transport.
-The model sees only five function-bound matcher tools: `write_unit`, `patch_unit`,
-`check`, `read_evidence`, and `release`. The host assigns/claims the function and
-automatically submits exact matches. Workers cannot run shell, edit repository
-configuration, claim other symbols, or run git. Atomic SQLite claims and private
-work copies prevent overlapping ownership; a serialized verifier relinks,
-checks all 16 retail targets, and commits accepted source locally.
+The host assigns explicit unique symbols through orchestrate.py. Atomic SQLite claims, private source copies, and shared-unit/pending reservation exclusion prevent overlapping assignments. Models receive source, assembly and initial diff, and exactly five function-bound operations: write_unit, patch_unit, check, read_evidence, release. The host binds identity and handles submission and serialized 16-target hash verification. Accepted source is committed locally. Never push automatically.
 
-Default concurrency is four sessions, with two tool subprocess slots. A batch
-contains at most twice the concurrency in distinct symbols. Candidate selection
-uses live inventory, favors saved near-matches and small functions, excludes
-claimed/matched/blocked entries, and never raises the three-attempt cap. The
-first rollout restricts targets to 1 KiB or smaller. Context fingerprints and a
-persistent schedule prevent unchanged repeated sessions; an empty queue idles
-without model calls. No automatic remote push, force push, worktree rebase, or
-PR merge is performed by this supervisor. Existing worker branches remain
-preserved for separately verified recovery.
+GPT uses the constrained Codex app server. Claude uses restricted mode, no builtin tools, strict MCP and no interactive permission prompts. Cline uses its genuine SDK and existing account, five supplied tools, no model/native tools, sequential execution and high reasoning. AGY uses a session-local HOME with the existing account state and only the bound MCP server, plus a PreToolUse deny guard; personal broad project plugins/configuration are not merged. Its native tools are denied rather than prompt-trusted.
 
-## Bounded work and failure recovery
+Eight checks, three stale checks, three attempts, ten-minute sessions, twenty-five-minute batch deadline and five-minute activity watchdog bound work. Per-function response-event usage guards are 256,000 input / 32,000 output tokens. Batch guards are 1,000,000 input / 80,000 output / 12 MiB logs. Counters are durably persisted; response-event guards can overshoot within a response. Missing usage after two minutes stops the batch. Failures back off independently and survive restart. Runtime adapter changes invalidate schedule context; accepted commits do not themselves justify repeated attempts. Empty eligible inventory idles without model calls.
 
-- Eight checks and three stale checks per attempt; ten-minute session timeout.
-- Twenty-five-minute batch deadline and five-minute no-activity watchdog.
-- Per-function cumulative token guards: 128,000 input / 16,000 output.
-- Batch watchdog: 1,000,000 input / 80,000 output tokens / 12 MiB log output.
-- Usage counters are atomically persisted by `codex_server.py` on provider usage
-  events. Reaching a per-function guard stops the batch and drains tools. These
-  are response-event guards, not a guarantee that a provider cannot overshoot
-  inside its current response. Missing usage telemetry for an assigned claimed
-  function after two minutes also stops the batch.
-- Rate/quota errors wait at least 30 minutes; overload waits five minutes; other
-  failures exponentially back off. Backoff survives service restarts.
-- Build/hash gate runs before each batch. An unchanged failed HEAD/context is
-  held without repeated Ninja builds, including across supervisor restarts.
-- A singleton lock prevents two supervisors. Startup waits for any prior bound
-  host, then saves/releases abandoned claims owned by this new fleet only.
-- SIGTERM waits for matcher cleanup. The service uses `KillMode=mixed` and a
-  three-minute stop window, so systemd does not interrupt every tool mutation
-  before the host can drain it. Service crashes have a restart-rate limit.
+A real Ninja and DTK hash gate runs before work. Bootstrap health records credit zero matches. Singleton ownership, orphan recovery, graceful signal draining, mixed systemd kill mode and bounded restarts prevent duplicate hosts and preserve candidate work. Existing old branches/worktrees are preserved.
 
-## Eww integration
+## Eww and diagnostics
 
-The installed `~/.config/eww/scripts/fzgx-agent-fleet.py` is a small compatibility
-wrapper that execs the project `.venv/bin/python tools/fleet.py`. The existing
-bar polling and click handlers continue to use it.
+The wrapper `~/.config/eww/scripts/fzgx-agent-fleet.py` execs the project venv. Icons show green recent claim activity, amber starting/idle, red stalled/error, grey disabled and an hourglass for quota cooldown. Activity is not a match claim. Tooltips include selected model, symbols, checks, batch matches, unique verified fleet total and retry time. Left toggles each family; right/up increases sessions; down decreases them; middle opens logs.
 
-GPT is the supported constrained worker transport. Claude/Cline/AGY icons stay
-off and explain why; their broad-shell CLI launch modes must not be reenabled
-merely by prompt instructions. Supporting another provider requires an enforced
-function-bound transport and a live acceptance test, not just an MCP config.
+Use:
 
-- Green `●` plus a number: current function claims and recent matcher activity.
-  Activity is not a claim that matches have landed.
-- Amber `◌`: starting or awaiting verified health; amber dot: idle/backoff.
-- Red `!`: stalled, blocked, error, or dead/stale supervisor.
-- Grey: disabled/off. Quota cooldown has a separate hourglass indicator.
+    systemctl --user status fzgx-fleet.service
+    ~/.config/eww/scripts/fzgx-agent-fleet.py status
+    journalctl --user -u fzgx-fleet.service -n 50 --no-pager
+    eww poll fzgx-agents
 
-The tooltip shows exact symbols/modules, checks, completed attempts, current
-batch link-verification, unique link-verified progress since this fleet started,
-and last accepted commit. Cached global verifier/backlog records do not count
-as this batch's work. A missing verifier record is unknown, never successful. Because the watcher is
-silent when no match is pending, each batch records its actual pre-batch
-16-target hash-gate success as initial health (`bootstrap_gate`), with no
-credited matches. Eww's initial value also never claims that Cline is running.
-A PID alone never produces the working state.
+State/control/history/runtime live in `~/.cache/fzgx-agents/*-v3.json`. Evidence remains under `.fzgx/runs/fleet-v2-*`; that prefix is retained for progress provenance. Gate log is `~/.cache/fzgx-agents/gate.log`. Eww reload can close the bar: inspect active-windows, reopen bar if needed, and poll before reading cached state.
 
-GPT left-click toggles work; right-click/wheel-up increases concurrency (max 8);
-wheel-down reduces it (min 1). Changes gracefully drain a current batch before
-relaunching. Middle-click opens logs. Unsupported family controls explain the
-disabled state without invoking their model CLI.
+## Verified rollout evidence
 
-## Installed service and diagnostics
+Initial constrained batches accepted fn_12_38340 (38c65f05), fn_12_2EE7C (7e11f357); subsequent fleet telemetry records three unique verified symbols, last e7ce845b. This is not a promised throughput rate.
 
-`fzgx-fleet.service` is enabled for the user session and runs the project venv.
-It conflicts with `fzgx-autopr.service`. The old integration watcher is disabled:
-it repeatedly rebased/built conflicted branches and force-pushed, and is not
-part of the bound transport's commit path.
+The four-provider policy/adapter scratch acceptance suite passes nine checks; the updated controller suite passes ten. Python compile and Node syntax checks pass. Real Ninja, DTK report `16 files OK`, and fzgx lint reports zero findings. No mock tests are added to the repository.
 
-```sh
-systemctl --user status fzgx-fleet.service
-journalctl --user -u fzgx-fleet.service -n 50 --no-pager
-~/.config/eww/scripts/fzgx-agent-fleet.py status
-~/.config/eww/scripts/fzgx-agent-fleet.py toggle gpt
-systemctl --user stop fzgx-fleet.service
-systemctl --user start fzgx-fleet.service
-```
-
-State/control/history/runtime are in `~/.cache/fzgx-agents/*-v2.json`; gate log
-is `~/.cache/fzgx-agents/gate.log`. Bound assignments, usage, tool events,
-terminal results and verification records are in `.fzgx/runs/fleet-v2-*`.
-The pre-repair controller, service, style and state were backed up under
-`~/.cache/fzgx-agents/repair-backup-20261001-111930/`. Worktrees and old logs
-were preserved. Abandoned original worker claims were released through the
-project API, preserving available saved candidates.
-
-## Rollout evidence
-
-The first constrained live batch accepted `fn_12_38340` (commit `38c65f05`) and
-`fn_12_2EE7C` (commit `7e11f357`). Fresh full builds and explicit DTK hash checks
-reported `16 files OK`. Graceful service shutdown left zero claims. Eww polling
-was read back via `eww get fzgx-agents`, the bar stayed open, and its rendering
-was captured with a bar-only Wayland screenshot. This demonstrates real local
-progress and cleanup, not a promised overnight throughput rate.
-
-A scratch acceptance harness checks stale-PID status, candidate exclusion,
-launch flags, cooldown, batch-only accounting, durable token guards, missing
-verifier health, and restart-safe unique verified totals. Per repository policy,
-no mock/unit-test files are added to this source tree. Test script for this
-rollout: `/home/armandofm/.hermes/cache/scratch/fzgx-fleet-acceptance.py`.
+Live restart shows Opus 5.5 High and GPT 6.1-Sol Medium making checked attempts; Space Bunny Alpha High emits genuine model usage through its SDK. AGY's real request is blocked by account quota and autonomously schedules retry using the returned reset duration. Do not report AGY as productive while quota-blocked. Read live status for current counts; these are not static guarantees.

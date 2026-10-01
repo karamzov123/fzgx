@@ -9,6 +9,7 @@ import fcntl
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import signal
 import sqlite3
@@ -24,6 +25,8 @@ HISTORY = CACHE / 'scheduled-v2.json'
 META = {'claude': ('Claude', '󰛄'), 'gpt': ('GPT', '󰭹'), 'cline': ('Cline', '󰊠'), 'agy': ('AGY', '󰆧')}
 DISABLED = 'Disabled: this CLI has no verified function-bound, five-tool transport. GPT runs the constrained fleet.'
 STOP = False
+MAX_INPUT_TOKENS = 256000
+MAX_OUTPUT_TOKENS = 32000
 
 def load(path, fallback):
     try:
@@ -64,16 +67,18 @@ def pick(rows, seen, context, count):
 
 def runner_command(batch, symbols, parallel):
     return [str(ROOT / '.venv/bin/python'), str(ROOT / 'tools/orchestrate.py'), '--harness', 'codex',
-            '--model', 'gpt-6.1-sol', '--effort', 'low', '--parallel', str(parallel),
+            '--model', 'gpt-6.1-sol', '--effort', 'medium', '--parallel', str(parallel),
             '--tool-parallel', '2', '--timeout', '600', '--max-checks', '8',
             '--max-stale', '3', '--max-attempts', '3', '--verify-interval', '60',
             '--no-trivial', '--batch', batch, '--symbols', *symbols]
 
 def cooldown(text, failures):
     text = text.lower()
-    if any(s in text for s in ('429', 'quota', 'resource_exhausted', 'rate_limit', 'rate limit', 'insufficient_balance')):
+    if (re.search(r'(?:http|error|status|code).{0,20}\b429\b', text)
+            or re.search(r'\b429\b.{0,80}(?:quota|resource_exhausted|too.?many)', text)
+            or any(s in text for s in ('resource_exhausted', 'rate_limit', 'rate limit', 'insufficient_balance', 'individual quota'))):
         return 1800
-    if '529' in text or 'overloaded' in text:
+    if re.search(r'(?:http|error|status|code).{0,20}\b529\b', text) or 'overloaded' in text:
         return 300
     return min(1800, 60 * 2 ** min(failures, 5))
 
@@ -113,7 +118,7 @@ def telemetry(batch):
                         and (directory / f"{c['symbol']}.assignment.json").exists()
                         and time.time() - (directory / f"{c['symbol']}.assignment.json").stat().st_mtime > 120
                         for c in claims)
-    over_budget = any(u.get('outputTokens', 0) >= 16000 or u.get('inputTokens', 0) >= 128000 for u in usages)
+    over_budget = any(u.get('outputTokens', 0) >= MAX_OUTPUT_TOKENS or u.get('inputTokens', 0) >= MAX_INPUT_TOKENS for u in usages)
     over_budget = over_budget or tokens_in >= 1000000 or tokens_out >= 80000 or sum(p.stat().st_size for p in files) >= 12 * 1024 * 1024
     verified = set()
     verify_ok = None
@@ -380,4 +385,7 @@ def main():
         raise SystemExit('Unknown fleet command')
 
 if __name__ == '__main__':
-    main()
+    # Four-provider coordinator. V2 helpers above remain for recovery and the
+    # existing acceptance harness, but the GPT-only daemon is not launched.
+    from fleet_multi import main as multi_main
+    multi_main()

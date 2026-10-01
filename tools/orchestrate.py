@@ -29,9 +29,9 @@ from fzgx.ledger import Ledger
 from fzgx.project import ROOT, STATE_DIR, Project
 
 MATCHER_TOOLS = ["Read", "mcp__fzgx__write_unit", "mcp__fzgx__patch_unit", "mcp__fzgx__check", "mcp__fzgx__read_evidence", "mcp__fzgx__release"]
-# The user's defaults are Fable 5.1 (claude) and GPT-6 Astra (codex); matchers must never run on those.
-EXPECTED_MODEL = {"claude": "claude-haiku-4-5", "codex": "gpt-5.6-luna"}
-CLAUDE_MODELS = {"haiku": "claude-haiku-4-5", "sonnet": "claude-sonnet-5", "opus": "claude-opus-5"}
+# Explicit fleet policy. No silent cheaper-model or lower-effort fallback.
+EXPECTED_MODEL = {"claude": "claude-opus-5-5", "codex": "gpt-6.1-sol", "cline": "stealth/space-bunny-alpha", "agy": "gemini-3.8-flash-high"}
+CLAUDE_MODELS = {"haiku": "claude-haiku-4-5", "sonnet": "claude-sonnet-5", "opus": "claude-opus-5-5"}
 # $/M tokens from platform.openai.com/docs/pricing (2026-09-08): input, cached input, cache write, output.
 # Codex reports usage but no cost; Claude Code reports total_cost_usd itself.
 CODEX_PRICES = {"gpt-5.6-luna": (0.20, 0.02, 0.25, 1.20), "gpt-5.6-terra": (2.00, 0.20, 2.50, 12.00),
@@ -122,18 +122,28 @@ def codex_server_cmd(model: str, provider: str, effort: Optional[str], fast: boo
 
 
 def parse_claude(out: str) -> Dict:
+    result = None
+    model = ''
     for line in out.splitlines():
-        if line.startswith("{"):
-            try:
-                d = json.loads(line)
-            except json.JSONDecodeError:
-                continue
-            u = d.get("usage", {})
-            return {"text": d.get("result", ""), "cost": d.get("total_cost_usd", 0.0) or 0.0,
-                    "turns": d.get("num_turns"), "tokens_in": u.get("input_tokens", 0) + u.get("cache_read_input_tokens", 0)
-                    + u.get("cache_creation_input_tokens", 0), "tokens_out": u.get("output_tokens", 0),
-                    "model": next(iter(d.get("modelUsage", {}) or {"": None}), "")}
-    return {"text": out, "cost": 0.0, "turns": None, "tokens_in": 0, "tokens_out": 0, "model": ""}
+        try:
+            row = json.loads(line)
+        except ValueError:
+            continue
+        if not isinstance(row, dict):
+            continue
+        if isinstance(row.get('model'), str):
+            model = row['model']
+        if row.get('type') == 'result' or 'modelUsage' in row:
+            result = row
+    if result is None:
+        return {'text': out, 'cost': 0.0, 'turns': None, 'tokens_in': 0, 'tokens_out': 0, 'model': model}
+    u = result.get('usage') or {}
+    return {'text': result.get('result', ''), 'cost': result.get('total_cost_usd', 0.0) or 0.0,
+            'turns': result.get('num_turns', result.get('turns')),
+            'tokens_in': (u.get('input_tokens', u.get('inputTokens', 0)) + u.get('cache_read_input_tokens', 0)
+                          + u.get('cache_creation_input_tokens', 0)),
+            'tokens_out': u.get('output_tokens', u.get('outputTokens', 0)),
+            'model': next(iter(result.get('modelUsage') or {model: None}), model)}
 
 
 def deepseek_rate_multiplier(timestamp: Optional[str]) -> float:
@@ -197,7 +207,6 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
         (directory / f'{symbol}.assignment.json').write_text(json.dumps(assignment, indent=2) + '\n')
         setup_secs = round(time.time() - t0, 3)
         if not result_file.exists():
-            cmd = claude_cmd(symbol, agent_id, model)
             task = {'context': assignment['context']}
             if seed:
                 task['seed'] = {k: seed[k] for k in ('source', 'kind', 'instruction', 'prior_attempt') if k in seed}
@@ -208,37 +217,37 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
             prompt = (f'SYMBOL={symbol} AGENT_ID={agent_id} MODEL={model}. The runner has already assigned '
                       'this function and installed its work copy. Continue from the supplied C and initial diff.\n'
                       + json.dumps(task))
-            cmd[cmd.index('-p') + 1] = prompt
-            stdin = None
             (directory / f'{symbol}.prompt.txt').write_text(prompt + '\n')
-            # A terminal tool call writes result_file before its MCP response is
-            # returned. Stop the process group before another model request.
-            proc = subprocess.Popen(cmd, cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                    stdin=subprocess.PIPE if stdin else subprocess.DEVNULL,
-                                    start_new_session=True, env=env)
-            first = True
-            while True:
-                remaining = timeout - (time.time() - t0)
-                if remaining <= 0:
-                    raise subprocess.TimeoutExpired(cmd, timeout)
-                try:
-                    so, se = proc.communicate(input=stdin if first else None, timeout=min(0.25, remaining))
-                    out, rc = (so or '') + '\n' + (se or ''), proc.returncode
-                    break
-                except subprocess.TimeoutExpired:
-                    first = False
-                    if result_file.exists():
-                        try:
-                            os.killpg(proc.pid, signal.SIGTERM)
-                        except ProcessLookupError:
-                            pass
-                        try:
-                            so, se = proc.communicate(timeout=5)
-                        except subprocess.TimeoutExpired:
-                            os.killpg(proc.pid, signal.SIGKILL)
-                            so, se = proc.communicate()
+            bound = os.environ.get('FZGX_BOUND_TRANSPORT') == '1' or harness in ('cline', 'agy')
+            if bound:
+                from fleet_provider import run as run_provider
+                out, rc = run_provider(harness, prompt, model, directory, env, timeout)
+            else:
+                cmd = claude_cmd(symbol, agent_id, model)
+                cmd[cmd.index('-p') + 1] = prompt
+                proc = subprocess.Popen(cmd, cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                        stdin=subprocess.DEVNULL, start_new_session=True, env=env)
+                while True:
+                    remaining = timeout - (time.time() - t0)
+                    if remaining <= 0:
+                        raise subprocess.TimeoutExpired(cmd, timeout)
+                    try:
+                        so, se = proc.communicate(timeout=min(0.25, remaining))
                         out, rc = (so or '') + '\n' + (se or ''), proc.returncode
                         break
+                    except subprocess.TimeoutExpired:
+                        if result_file.exists():
+                            try:
+                                os.killpg(proc.pid, signal.SIGTERM)
+                            except ProcessLookupError:
+                                pass
+                            try:
+                                so, se = proc.communicate(timeout=5)
+                            except subprocess.TimeoutExpired:
+                                os.killpg(proc.pid, signal.SIGKILL)
+                                so, se = proc.communicate()
+                            out, rc = (so or '') + '\n' + (se or ''), proc.returncode
+                            break
         else:
             out = 'Completed during deterministic preflight; no model request.\n'
     except subprocess.TimeoutExpired:
@@ -261,6 +270,10 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
         out += '\nHarness error: ' + str(error)
         rc = 1
     info = parse_claude(out)
+    usage_file = result_file.with_name(f'{symbol}.usage.json')
+    if usage_file.exists():
+        usage = json.loads(usage_file.read_text())
+        info['tokens_in'], info['tokens_out'] = usage.get('inputTokens', 0), usage.get('outputTokens', 0)
     key = api._key(p, symbol)
     l = Ledger()
     att = l.db.execute("SELECT * FROM attempts WHERE symbol=? AND agent=? ORDER BY id DESC LIMIT 1",
@@ -282,7 +295,7 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
                 outcome = 'matched' if att['outcome'] in ('matched', 'matched-pool', 'shadow-matched') else outcome + '+released'
         except Exception as error:
             out += '\nAutomatic cleanup failed: ' + str(error)
-    if info["model"] and not info["model"].startswith(EXPECTED_MODEL[harness]):
+    if harness != 'agy' and info["model"] and not info["model"].startswith(EXPECTED_MODEL[harness]):
         outcome = f"WRONG-MODEL({info['model']})"
     pct = 100.0 if outcome == "matched" else (att["best_in_attempt"] if att else None)
     checks = att["checks"] if att else None
@@ -335,10 +348,17 @@ def _fan_out(p: Project, a, model: str, symbols: List[str], batch: str, revise: 
                            codex_server_cmd(model, a.provider, a.effort, a.fast), price_usage))
     results: List[Dict] = []
     spent = 0.0
+    bound = os.environ.get('FZGX_BOUND_TRANSPORT') == '1' or a.harness in ('cline', 'agy')
+    if bound:
+        from fleet_provider import STOP
+        signal.signal(signal.SIGTERM, lambda *_: STOP.set())
+        signal.signal(signal.SIGINT, lambda *_: STOP.set())
     with ThreadPoolExecutor(max_workers=a.parallel) as ex:
         futs = {}
         queue = list(enumerate(symbols, 1))
         while queue or futs:
+            if bound and STOP.is_set():
+                queue.clear()
             while queue and len(futs) < a.parallel and (a.budget_usd is None or spent < a.budget_usd):
                 i, s = queue.pop(0)
                 futs[ex.submit(run_one, p, a.harness, model, s, i, a.timeout, batch, a.shadow, a.fast, revise, a.provider)] = s
@@ -351,6 +371,9 @@ def _fan_out(p: Project, a, model: str, symbols: List[str], batch: str, revise: 
             spent += r["cost"] or 0.0
             if r["outcome"].startswith("WRONG-MODEL"):
                 print(f"ABORT: {r['symbol']} ran on {r['outcome']}; expected {EXPECTED_MODEL[a.harness]}", flush=True)
+                queue.clear()
+            elif bound and r['outcome'].startswith(('crash', 'timeout')):
+                # Stop queued launches until the supervisor applies backoff.
                 queue.clear()
             print(f"  {r['outcome']:16s} {r['symbol']:14s} {'' if r['percent'] is None else f'{r['percent']:.1f}%':7s} "
                   f"checks={r['checks'] if r['checks'] is not None else '-'} turns={r['turns'] or '-'} "
@@ -391,10 +414,10 @@ def finish_round(p: Project, a, model: str, module: str) -> Dict:
 
 def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--harness", choices=["claude", "codex"], default="codex")
+    ap.add_argument("--harness", choices=["claude", "codex", "cline", "agy"], default="codex")
     ap.add_argument("--provider", choices=["openai", "deepseek"], default="openai", help="codex model provider")
     ap.add_argument("--api-key-file", type=Path, help="DeepSeek key file; otherwise use DEEPSEEK_API_KEY")
-    ap.add_argument("--model", help="claude: haiku|sonnet|opus (default haiku); codex: model name (default gpt-5.6-luna)")
+    ap.add_argument("--model", help="explicit provider model; defaults: Opus 5.5 / GPT 6.1-Sol / Space Bunny Alpha / Gemini 3.8 High")
     ap.add_argument("--parallel", type=int, default=48)
     ap.add_argument("--tool-parallel", type=int, default=min(16, os.cpu_count() or 4),
                     help="maximum simultaneous local tool processes, independent of model sessions")
@@ -461,11 +484,12 @@ def main(argv: Optional[List[str]] = None) -> int:
     os.environ['FZGX_CLAIM_TTL'] = str(max(api.DEFAULT_TTL, a.timeout + 300))
     if a.seeds:
         os.environ['FZGX_SEEDS'] = str(a.seeds.resolve())
-    model = a.model or ("haiku" if a.harness == "claude" else "gpt-5.6-luna")
+    model = a.model or EXPECTED_MODEL[a.harness]
+    a.effort = a.effort or ('medium' if a.harness == 'codex' else 'high')
     if a.harness == "claude":
         EXPECTED_MODEL["claude"] = CLAUDE_MODELS.get(model, model)  # the guard checks the tier that was asked for
     elif a.model:
-        EXPECTED_MODEL["codex"] = a.model
+        EXPECTED_MODEL[a.harness] = a.model
     p = Project()
 
     if a.finish_only:
