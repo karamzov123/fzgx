@@ -5333,3 +5333,72 @@ dol/fn_80070704.c:
 
 dol/fn_8000BFC0.c:
 	.text       start:0x8000BFC0 end:0x8000BFC8 align:4
+
+dol/__flush_cache.c:
+	.init       start:0x80003424 end:0x80003458 align:4
+
+dol/fn_80015B24.c:
+	.text       start:0x80015B24 end:0x80015B50 align:4
+
+dol/fn_80015B50.c:
+	.text       start:0x80015B50 end:0x80015B78 align:4
+
+dol/fn_80015B78.c:
+	.text       start:0x80015B78 end:0x80015C1C align:4
+
+dol/__AICallbackStackSwitch.c:
+	.text       start:0x8001E5A8 end:0x8001E600 align:4
+
+dol/GXLoadPosMtxImm.c:
+	.text       start:0x80038C5C end:0x80038CAC align:4
+
+dol/GXLoadNrmMtxImm.c:
+	.text       start:0x80038CAC end:0x80038CFC align:4
+
+dol/fn_8005A59C.c:
+	.text       start:0x8005A59C end:0x8005A5A8 align:4
+
+dol/fn_80078344.c:
+	.text       start:0x80078344 end:0x80078360 align:4
+
+dol/func_8008D6BC.c:
+	.text       start:0x80078D48 end:0x80078D60 align:4
+
+dol/__shl2i.c:
+	.text       start:0x80079D04 end:0x80079D28 align:4
+
+dol/__shr2u.c:
+	.text       start:0x80079D28 end:0x80079D4C align:4
+
+dol/__shr2i.c:
+	.text       start:0x80079D4C end:0x80079D74 align:4
+
+dol/fn_8008AFF0.c:
+	.text       start:0x8008AFF0 end:0x8008B028 align:4
+
+dol/fn_8008CB20.c:
+	.text       start:0x8008CB20 end:0x8008CB28 align:4
+
+dol/fn_8008CB28.c:
+	.text       start:0x8008CB28 end:0x8008CB30 align:4
+
+dol/fn_8008CB30.c:
+	.text       start:0x8008CB30 end:0x8008CB38 align:4
+
+dol/fn_8008CB38.c:
+	.text       start:0x8008CB38 end:0x8008CB40 align:4
+
+dol/fn_8006E2D8.c:
+	.text       start:0x8006E2D8 end:0x8006E324 align:4
+
+dol/mathutil_quat_mult.c:
+	.text       start:0x8006E540 end:0x8006E5B4 align:4
+
+dol/fn_8006FC1C.c:
+	.text       start:0x8006FC1C end:0x8006FC5C align:4
+
+dol/fn_8006FC5C.c:
+	.text       start:0x8006FC5C end:0x8006FCB4 align:4
+
+dol/__cvt_fp2unsigned.c:
+	.text       start:0x80079764 end:0x800797C0 align:4
