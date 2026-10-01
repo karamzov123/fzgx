@@ -5537,3 +5537,6 @@ dol/fn_800060D8.c:
 
 dol/fn_80005B10.c:
 	.text       start:0x80005B10 end:0x80005E0C align:4
+
+dol/__fill_mem.c:
+	.init       start:0x80003488 end:0x80003540 align:4
