@@ -34033,6 +34033,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/car/fn_1_8FE74.c",
+    "symbols": [
+      "fn_1_8FE74"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/car.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/car/fn_1_900B4.c",
     "symbols": [
       "fn_1_900B4"

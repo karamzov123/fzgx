@@ -5362,6 +5362,88 @@ void fn_1_8F5A4(Fn1_8F5A4_Object *obj) {
 }
 /* fzgx:end fn_1_8F5A4 */
 
+/* fzgx:begin fn_1_8FE74 noprologue */
+#include "types.h"
+#include "rel/main_rel/car.h"
+
+typedef struct Sig_fn_1_41418_Fn41418Data {
+    u32 count;
+    char *strings;
+} Sig_fn_1_41418_Fn41418Data;
+extern void fn_1_A8DD4(const char *, ...);
+extern void fn_1_A8F40(u8);
+extern char *fn_1_41418(Sig_fn_1_41418_Fn41418Data *, u32);
+
+typedef struct Fn8FE74Sub {
+    u8 pad[0x4C];
+    f32 unk_4C;
+    f32 unk_50;
+} Fn8FE74Sub;
+
+typedef struct Fn8FE74Entry {
+    u16 unk_0;
+    u8 pad2[6];
+    Fn8FE74Sub *unk_8;
+    Sig_fn_1_41418_Fn41418Data *unk_C;
+    u8 pad10[0x10];
+} Fn8FE74Entry;
+
+typedef struct Fn8FE74Obj {
+    u8 pad[0x148];
+    Fn8FE74Entry unk_148;
+    Fn8FE74Entry unk_168;
+    Fn8FE74Entry unk_188;
+    Fn8FE74Entry unk_1A8;
+    Fn8FE74Entry unk_1C8;
+    Fn8FE74Entry unk_1E8;
+    Fn8FE74Entry unk_208[20];
+} Fn8FE74Obj;
+
+void fn_1_8FE74(Fn8FE74Obj *arg0, Fn8FE74Entry *arg1, s32 arg2) {
+    char *name;
+    char *base = (char *)&lbl_1_data_209C0;
+    char *fmt;
+    s32 i;
+
+    if (arg1->unk_8 == NULL || arg1->unk_C == NULL) {
+        return;
+    }
+    if (arg1 == &arg0->unk_148) {
+        name = base + 0x6EFC;
+    } else if (arg1 == &arg0->unk_168) {
+        name = base + 0x6F04;
+    } else if (arg1 == &arg0->unk_188) {
+        name = base + 0x6F0C;
+    } else if (arg1 == &arg0->unk_1A8) {
+        name = base + 0x6F14;
+    } else if (arg1 == &arg0->unk_1C8) {
+        name = base + 0x6F1C;
+    } else if (arg1 == &arg0->unk_1E8) {
+        name = base + 0x6F24;
+    } else {
+        for (i = 0; i < 20; i++) {
+            if (arg1 == &arg0->unk_208[i]) {
+                name = base + 0x6F2C;
+                break;
+            }
+        }
+    }
+    fmt = base + 0x6F38;
+    if (arg2) {
+        fmt = base + 0x6F34;
+    }
+    fn_1_A8DD4(fmt);
+    fn_1_A8F40(0x33);
+    fn_1_A8DD4(base + 0x6F3C, name);
+    fn_1_A8F40(0xFF);
+    fn_1_A8DD4(base + 0x6F40, arg1->unk_0);
+    fn_1_A8F40(0xF3);
+    fn_1_A8DD4(base + 0x6F48, arg1->unk_8->unk_4C, arg1->unk_8->unk_50);
+    fn_1_A8F40(0xFF);
+    fn_1_A8DD4(base + 0x6F58, fn_1_41418(arg1->unk_C, arg1->unk_0));
+}
+/* fzgx:end fn_1_8FE74 */
+
 /* fzgx:begin fn_1_900B4 */
 u32 fn_1_900B4(void) {
     return lbl_1_bss_6E978[0];
