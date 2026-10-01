@@ -2619,6 +2619,105 @@ f32 fn_1_2B478(void *arg0) {
 }
 /* fzgx:end fn_1_2B478 */
 
+/* fzgx:begin fn_1_2BBD0 noprologue */
+#include "dolphin/hw_regs.h"
+#include "types.h"
+
+extern f32 lbl_1_rodata_92C[10];
+extern f32 lbl_8006D0B4(f32 arg0);
+extern void lbl_8006DAEC(void);
+extern void lbl_8006DBAC(void *arg0);
+extern void fn_8006E250(void *arg0, void *arg1);
+extern void lbl_8006D668(void *arg0);
+extern void lbl_8006DB30(void);
+
+typedef struct Fn_1_2BBD0Vec {
+    f32 x;
+    f32 y;
+    f32 z;
+} Fn_1_2BBD0Vec;
+
+typedef struct Fn_1_2BBD0 {
+    unsigned char pad00[0x7c];
+    f32 field7c;
+    f32 field80;
+    f32 field84;
+    unsigned char pad88[0x42c];
+    Fn_1_2BBD0Vec position;
+    u8 active;
+    u8 value4c1;
+} Fn_1_2BBD0;
+
+typedef struct Fn_1_2BBD0Arg {
+    unsigned char pad00[0x04];
+    s16 value04;
+    unsigned char pad06[0x76];
+    f32 field7c;
+    f32 field80;
+    f32 field84;
+} Fn_1_2BBD0Arg;
+
+#pragma opt_common_subs off
+#pragma opt_lifetimes off
+static inline f32 fn_1_2BBD0_read_pointer(Fn_1_2BBD0Vec * owner) { return owner->z; }
+#pragma opt_propagation off
+void fn_1_2BBD0(Fn_1_2BBD0 *self, Fn_1_2BBD0Arg *other, f32 threshold) {
+    if (self->active == 0) {
+        Fn_1_2BBD0Vec vec;
+        f32 sum;
+        f32 vc;
+        f32 vb;
+        f32 va;
+
+        sum = self->position.x * self->position.x;
+        sum += self->position.y * self->position.y;
+        sum += self->position.z * self->position.z;
+        if (threshold < lbl_8006D0B4(sum)) {
+            lbl_8006DAEC();
+            lbl_8006DBAC(((0xec) + ((char *)self)));
+            va = self->field7c;
+            vb = self->field80;
+            vc = self->field84;
+            *(volatile f32 *)(LC_BASE + 0xC) = va; /* hardware DI regs */
+            *(volatile f32 *)(LC_BASE + 0x1C) = vb; /* Hardware access must remain ordered. */
+            *(volatile f32 *)(LC_BASE + 0x2C) = vc; /* Hardware access must remain ordered. */
+            fn_8006E250(&other->field7c, &vec);
+            lbl_8006D668(&vec);
+            if (fn_1_2BBD0_read_pointer(&vec) < (*((lbl_1_rodata_92C) + (0)))) {
+                self->position = vec;
+                self->value4c1 = other->value04;
+                lbl_8006D668(&self->position);
+            }
+            lbl_8006DB30();
+        }
+    } else if (self->value4c1 == other->value04) {
+        f32 wc;
+        f32 wb;
+        f32 wa;
+
+        lbl_8006DAEC();
+        lbl_8006DBAC((char *)self + 0xec);
+        wa = self->field7c;
+        wb = self->field80;
+        wc = self->field84;
+        *(volatile f32 *)(LC_BASE + 0xC) = wa; /* hardware DI regs */
+        *(volatile f32 *)(LC_BASE + 0x1C) = wb; /* Hardware access must remain ordered. */
+        *(volatile f32 *)(LC_BASE + 0x2C) = wc; /* Hardware access must remain ordered. */
+        fn_8006E250(&other->field7c, &self->position);
+        lbl_8006D668(&self->position);
+        if (self->position.z > (*((lbl_1_rodata_92C) + (0)))) {
+            self->position.z = (*((lbl_1_rodata_92C) + (0)));
+        }
+        lbl_8006DB30();
+    }
+}
+#pragma opt_propagation reset
+
+#pragma opt_lifetimes reset
+
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_2BBD0 */
+
 /* fzgx:begin fn_1_2C688 */
 u32 fn_1_2C688(u32 arg0, u32 arg1, u32 arg2) {
     u32 v1;
