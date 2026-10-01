@@ -33,3 +33,20 @@ Its arithmetic, initialized data and all 867 pointer bindings are verified.
 The adjacent `fn_10_1D314` remains unmatched at 121 words / 15 shape edits;
 its corrected source is in `state/repairs/large_closures_20260915.json.gz`.
 See `docs/batches/2026-09-15-large-closures.md`.
+## src/rel/movie/ attempt-cap triage (cline-7)
+
+All remaining unmatched functions in the movie module hit the claim attempt
+cap before this session, so none could be worked. Blocked pending triage;
+best objdiff score recorded for the next agent.
+
+| Function | Bytes | Attempts | Best % |
+| --- | ---: | ---: | ---: |
+| `fn_5_6E8` | 184 | 5 | 94.85 |
+| `fn_5_37C` | 332 | 6 | 93.34 |
+| `fn_5_4C8` | 444 | 5 | 92.93 |
+| `fn_5_7A0` | 3088 | 3 | 82.96 |
+| `fn_5_1404` | 664 | 3 | 98.28 |
+| `fn_5_169C` | 2656 | 3 | 68.02 |
+| `fn_5_2C54` | 428 | 3 | 76.83 |
+| `fn_5_3C44` | 528 | 3 | 94.81 |
+| `movie:_prolog` | 512 | 3 | 90.70 |
