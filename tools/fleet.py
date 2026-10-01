@@ -72,8 +72,32 @@ def runner_command(batch, symbols, parallel):
             '--max-stale', '3', '--max-attempts', '3', '--verify-interval', '60',
             '--no-trivial', '--batch', batch, '--symbols', *symbols]
 
+def provider_error_text(text):
+    """Classify provider errors, never event names or model/source content."""
+    errors = []
+    for line in text.splitlines():
+        try:
+            row = json.loads(line)
+        except ValueError:
+            errors.append(line)
+            continue
+        if not isinstance(row, dict):
+            continue
+        if row.get('type') == 'rate_limit_event':
+            info = row.get('rate_limit_info') or {}
+            if info.get('status') == 'rejected':
+                errors.append('rate_limit_error: provider rejected request')
+            # allowed/allowed_warning are informative, not request failures.
+            continue
+        if row.get('type') == 'error' or row.get('is_error'):
+            errors.append(json.dumps({k: row[k] for k in ('error', 'errors', 'message', 'result') if k in row}))
+        result = row.get('result')
+        if isinstance(result, dict) and result.get('error'):
+            errors.append(str(result['error']))
+    return '\n'.join(errors)
+
 def cooldown(text, failures):
-    text = text.lower()
+    text = provider_error_text(text).lower()
     if (re.search(r'(?:http|error|status|code).{0,20}\b429\b', text)
             or re.search(r'\b429\b.{0,80}(?:quota|resource_exhausted|too.?many)', text)
             or any(s in text for s in ('resource_exhausted', 'rate_limit', 'rate limit', 'insufficient_balance', 'individual quota'))):

@@ -36,6 +36,8 @@ Use:
     journalctl --user -u fzgx-fleet.service -n 50 --no-pager
     eww poll fzgx-agents
 
+Claude stream events named `rate_limit_event` are not themselves failures. `allowed` and `allowed_warning` permit requests; only `rejected` indicates an actual quota rejection. Quota classification examines structured error fields rather than assistant/tool text or event names. A captured live-log regression and allowed/rejected/error cases verify this boundary. The false Claude cooldown was cleared and a fresh Opus session performed a compiler check after restart.
+
 State/control/history/runtime live in `~/.cache/fzgx-agents/*-v3.json`. Evidence remains under `.fzgx/runs/fleet-v2-*`; that prefix is retained for progress provenance. Gate log is `~/.cache/fzgx-agents/gate.log`. Eww reload can close the bar: inspect active-windows, reopen bar if needed, and poll before reading cached state.
 
 ## Verified rollout evidence
