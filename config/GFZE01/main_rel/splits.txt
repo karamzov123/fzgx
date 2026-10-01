@@ -6527,3 +6527,6 @@ rel/main_rel/effect/fn_1_62794.c:
 
 rel/main_rel/bg_cas/fn_1_FBC5C.c:
 	.text       start:0x000FBC5C end:0x000FBEA8 align:4
+
+rel/main_rel/memcard/fn_1_C1ACC.c:
+	.text       start:0x000C1ACC end:0x000C1CFC align:4

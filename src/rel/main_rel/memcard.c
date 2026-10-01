@@ -8883,6 +8883,47 @@ void fn_1_C17CC(void) {
 }
 /* fzgx:end fn_1_C17CC */
 
+/* fzgx:begin fn_1_C1ACC */
+extern void* lbl_801A6410;
+extern void fn_1_46B4(void *, u32, void *, int);
+extern void fn_80008BEC(void *dst, s32 value, s32 size);
+
+typedef struct {
+    u32 unk_0[11];
+    u32 unk_2C;
+} MemcardEntry;
+
+void fn_1_C1ACC(u32 arg0, MemcardEntry *arg1) {
+    int i;
+    int idx;
+    int which;
+    MemcardEntry (*tbl)[127];
+
+    if (arg1->unk_2C != 0) {
+        fn_1_46B4(lbl_801A6410, arg1->unk_2C, &lbl_1_data_3C7B8, 0x32F8);
+        arg1->unk_2C = 0;
+    }
+    tbl = (MemcardEntry (*)[127])((u8 *)&lbl_1_bss_77380);
+    for (i = 0; i < 127; i++) {
+        if (&((MemcardEntry *)&lbl_1_bss_77380)[i] == arg1) {
+            idx = i;
+            which = 0;
+            break;
+        }
+        if ((MemcardEntry *)((u8 *)&((MemcardEntry *)&lbl_1_bss_77380)[i] + 0x1800) == arg1) {
+            idx = i;
+            which = 1;
+            break;
+        }
+    }
+    for (i = idx; i < 126; i++) {
+        ((MemcardEntry *)((u8 *)&lbl_1_bss_77380 + which * 0x1800))[i] =
+            ((MemcardEntry *)((u8 *)&lbl_1_bss_77380 + which * 0x1800))[i + 1];
+    }
+    fn_80008BEC(&((MemcardEntry *)((u8 *)&lbl_1_bss_77380 + which * 0x1800))[126], 0, 0x30);
+}
+/* fzgx:end fn_1_C1ACC */
+
 /* fzgx:begin fn_1_C23CC */
 extern void fn_80008BA8(void *arg0, void *arg1, u32 arg2);
 

@@ -43347,6 +43347,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/memcard/fn_1_C1ACC.c",
+    "symbols": [
+      "fn_1_C1ACC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/memcard.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/memcard/fn_1_C23CC.c",
     "symbols": [
       "fn_1_C23CC"
