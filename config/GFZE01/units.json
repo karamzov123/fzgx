@@ -16451,6 +16451,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80034D34.c",
+    "symbols": [
+      "fn_80034D34"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80034ECC.c",
     "symbols": [
       "fn_80034ECC"
@@ -16854,6 +16864,36 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_800370A0.c",
+    "symbols": [
+      "fn_800370A0"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.2.5n",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80037128.c",
+    "symbols": [
+      "fn_80037128"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80037190.c",
+    "symbols": [
+      "fn_80037190"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_800377C8.c",
     "symbols": [
       "fn_800377C8"
@@ -16864,9 +16904,59 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80037B68.c",
+    "symbols": [
+      "fn_80037B68"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80037B94.c",
+    "symbols": [
+      "fn_80037B94"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80037BC0.c",
+    "symbols": [
+      "fn_80037BC0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80037BF4.c",
     "symbols": [
       "fn_80037BF4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80037D14.c",
+    "symbols": [
+      "fn_80037D14"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80037D40.c",
+    "symbols": [
+      "fn_80037D40"
     ],
     "status": "matching",
     "mw_version": null,
