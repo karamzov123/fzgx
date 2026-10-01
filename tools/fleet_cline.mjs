@@ -95,11 +95,13 @@ try{
  if(!existsSync(terminal)&&!budgetReached){event('error',{message:String(error.message).slice(0,2000)});process.exitCode=1;}
  else event('result',{model:config.modelId,status:'terminal',usage});
 }finally{
+try{
  if(budgetReached && !existsSync(terminal)){
   const response=await call(['release',symbol,'--agent',identity,'--save-only','--reason','Per-function emergency token budget reached; preserve best candidate without stopping sibling workers']);
   const result=JSON.parse(response.stdout||'{}');
   if(response.rc!==0||result.ok===false||!existsSync(terminal)){event('error',{message:'Budget release failed'});process.exitCode=1;}
   else {event('result',{model:config.modelId,status:'budget-released',usage});process.exitCode=0;}
  }
- worker.stdin.end();await new Promise(resolve=>worker.once('exit',resolve));
+}catch(error){event('error',{message:'Budget release failed: '+String(error.message).slice(0,1000)});process.exitCode=1;}
+finally{worker.stdin.end();await new Promise(resolve=>worker.once('exit',resolve));}
 }
