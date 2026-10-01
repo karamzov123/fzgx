@@ -61,9 +61,16 @@ here, so no `src/rel/movie/` function is left silently attempt-capped.
 into `src/rel/movie/_prolog.c` and the claim tool reports `status is matched`.
 Only `fzgx inventory --module movie` still reports it as unmatched, so the
 inventory status view is stale for symbols that are already merged into a
-translation unit. The `fzgx context` attempts field is authoritative and shows
-the real cap state (e.g. `fn_5_2E00` is `attempts: 3`, though inventory prints
-`att=1`).
+translation unit.
+
+Correction (cline-7, later session): the `fzgx context` "attempts so far" line
+is NOT authoritative for cap state, and the earlier claim in this file that it
+is was wrong. The cap is enforced from the ledger counter, which `inventory`
+reports. A symbol can show `attempts so far: 1` in `context` and still be
+unclaimable: `fn_5_2E00` and `fn_5_6E8` both display 1-2 in `context` yet
+`fzgx claim` refuses both with "attempt cap 3 reached". Judge claimability from
+`fzgx inventory`, not from `context`, and do not read a low `context` counter as
+an invitation to retry.
 
 Unblocking any of these needs triage judgement, not another blind attempt: the
 four near-misses (`fn_5_6E8` 94.85, `fn_5_37C` 93.34, `fn_5_4C8` 92.93,
