@@ -632,6 +632,46 @@ void fn_1_1300(void) {
 }
 /* fzgx:end fn_1_1300 */
 
+/* fzgx:begin fn_1_1ACC */
+#define CLAMP(x, l, h) (((x) < (l)) ? (l) : (((x) > (h)) ? (h) : (x)))
+
+s8 fn_1_1ACC(s8 arg0, u8 *arg1, u8 *arg2) {
+    s32 val;
+    s32 diff;
+    BOOL is_neg;
+    u32 total;
+    s32 res;
+
+    if (arg0 == 0) {
+        return 0;
+    }
+
+    if (arg0 < 0) {
+        val = CLAMP(arg0, -arg1[1], 0);
+        if (val >= -arg2[1]) {
+            return 0;
+        }
+        diff = __abs(val) - arg2[1];
+        is_neg = TRUE;
+        total = arg1[1] - arg2[1];
+    } else {
+        val = CLAMP(arg0, 0, arg1[0]);
+        if (val <= arg2[0]) {
+            return 0;
+        }
+        diff = val - arg2[0];
+        is_neg = FALSE;
+        total = arg1[0] - arg2[0];
+    }
+
+    res = (s8)((diff * 100.0f) / total);
+    if (is_neg) {
+        res = -res;
+    }
+    return res;
+}
+/* fzgx:end fn_1_1ACC */
+
 /* fzgx:begin fn_1_1C00 */
 void fn_1_1C00(const u8 *values, u32 flags, u16 *result) {
     u8 value0;
