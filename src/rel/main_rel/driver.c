@@ -49,6 +49,116 @@ extern void fn_1_A8528(void *arg0, void *arg1);
 extern u32 fn_1_A7024(f32, f32, f32, f32);
 extern u32 fn_80074918(u32, u32, u32);
 
+/* fzgx:begin fn_1_A75DC noprologue */
+#include "types.h"
+
+typedef struct {
+    u8 pad_0[0x8];
+    void *unk_8;
+    u8 pad_C[0x4];
+    u32 unk_10;
+} Fn1A75dcResult;
+
+typedef struct {
+    u8 pad_0[0x328];
+    s8 unk_328;
+    u8 pad_329[0x6b];
+    void *unk_394;
+} Fn1A75dcObject;
+
+typedef struct {
+    u8 pad_0[0x108];
+    Fn1A75dcResult *unk_108;
+} Fn1A75dcEntry;
+
+typedef struct {
+    u8 pad_0[0x18];
+    char unk_18[0xc];
+    char unk_24[0x10];
+    char unk_34[0x8];
+    char unk_3c[0x10];
+} Fn1A75dcData;
+
+u8 lbl_1_data_34348[12] = {0x00,0x01,0x05,0x07,0x08,0x0C,0x0D,0x10,0x12,0x17,0x00,0x00};
+u8 lbl_1_data_34354[12] = {0x64,0x72,0x69,0x76,0x65,0x72,0x2E,0x63,0x00,0x00,0x00,0x00};
+char lbl_1_data_34354__fzgx_offset_C[12] = {0x25U,0x73U,0x5FU,0x31U,0x30U,0x30U,0x2EU,0x74U,0x70U,0x6CU,0x00U,0x00U};
+char lbl_1_data_34354__fzgx_offset_18[16] = {0x25U,0x73U,0x5FU,0x31U,0x30U,0x30U,0x5FU,0x63U,0x76U,0x25U,0x64U,0x2EU,0x74U,0x70U,0x6CU,0x00U};
+char lbl_1_data_34354__fzgx_offset_28[8] = {0x63U,0x68U,0x61U,0x72U,0x61U,0x2FU,0x00U,0x00U};
+char lbl_1_data_34354__fzgx_offset_30[16] = {0x2EU,0x2EU,0x00U,0x00U,0x63U,0x68U,0x61U,0x72U,0x61U,0x00U,0x00U,0x00U,0x25U,0x73U,0x5FU,0x31U};
+u8 lbl_1_data_34354__fzgx_offset_40[8] = {0x30,0x30,0x2E,0x67,0x6D,0x61,0x00,0x00};
+extern const char *lbl_1_data_20D1C[];
+
+extern s32 fn_1_12C930(s32);
+extern s32 fn_1_12CCB0(s32, s16);
+extern Fn1A75dcResult *fn_1_D3884(void *);
+extern void fn_80006E10(const char *);
+extern void sprintf(char *, const char *, ...);
+extern void *fn_80077D40(Fn1A75dcResult *);
+extern void *fn_80071470(void *, s32);
+extern void fn_80008BA8(void *, void *, void *);
+extern void fn_80071718(Fn1A75dcResult *);
+
+#pragma opt_common_subs on
+#pragma opt_lifetimes off
+static inline Fn1A75dcResult * fn_1_A75DC_read_pointer(Fn1A75dcEntry * owner) { return owner->unk_108; }
+#pragma opt_propagation off
+static inline void * fn_1_A75DC_read_pointer_(Fn1A75dcObject * owner) { return owner->unk_394; }
+#pragma opt_loop_invariants off
+void fn_1_A75DC(Fn1A75dcObject *obj, void *arg) {
+    s32 i;
+    Fn1A75dcObject *entry;
+    s32 index;
+    s16 lab_t1;
+    struct { void * value; } other;
+    Fn1A75dcResult *result;
+    void *first_value;
+    char buffer[0x80];
+
+    Fn1A75dcData *data;
+    fn_80006E10(lbl_1_data_34354__fzgx_offset_28);
+    index = obj->unk_328;
+    entry = obj;
+    i = 0;
+    while (i < 3) {
+        Fn1A75dcEntry *item = (Fn1A75dcEntry *)fn_1_A75DC_read_pointer_(entry);
+        if (item != 0) {
+            s8 slot;
+            if (((0) == (i))) {
+                slot = fn_1_12C930(index);
+            } else {
+                lab_t1 = (s16)(i - 1);
+                slot = fn_1_12CCB0(index, lab_t1);
+            }
+            if (slot >= 0) {
+                if ((s32)arg == 0) {
+                    sprintf(buffer, lbl_1_data_34354__fzgx_offset_C,
+                        (*((lbl_1_data_20D1C) + (slot))));
+                } else {
+                    sprintf(buffer, lbl_1_data_34354__fzgx_offset_18,
+                        (*((lbl_1_data_20D1C) + (slot))), arg);
+                }
+                result = fn_1_D3884(buffer);
+                other.value = fn_80077D40(result);
+                first_value = fn_80071470(result->unk_8, 0);
+                fn_80008BA8(fn_80071470(fn_1_A75DC_read_pointer(item)->unk_8, 0),
+                    first_value, other.value);
+                fn_80071718(result);
+            }
+        }
+        i++;
+        entry = (Fn1A75dcObject *)((u8 *)entry + 4);
+    }
+    fn_80006E10(lbl_1_data_34354__fzgx_offset_30);
+}
+#pragma opt_loop_invariants reset
+
+#pragma opt_propagation reset
+
+#pragma opt_lifetimes reset
+
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_A75DC */
+
 /* fzgx:begin fn_1_A7728 */
 typedef struct FnA7728Resource {
     u8 pad_104[0x104];

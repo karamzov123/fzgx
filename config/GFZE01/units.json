@@ -34828,6 +34828,27 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/driver/fn_1_A75DC.c",
+    "symbols": [
+      "fn_1_A75DC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/driver.c",
+    "pool": {
+      "...data.0": "lbl_1_data_34348",
+      "lbl_1_data_34348": "lbl_1_data_34348",
+      "lbl_1_data_34354": "lbl_1_data_34354",
+      "lbl_1_data_34354__fzgx_offset_C": "lbl_1_data_34354+0xC",
+      "lbl_1_data_34354__fzgx_offset_18": "lbl_1_data_34354+0x18",
+      "lbl_1_data_34354__fzgx_offset_28": "lbl_1_data_34354+0x28",
+      "lbl_1_data_34354__fzgx_offset_30": "lbl_1_data_34354+0x30",
+      "lbl_1_data_34354__fzgx_offset_40": "lbl_1_data_34354+0x40"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/driver/fn_1_A7728.c",
     "symbols": [
       "fn_1_A7728"
