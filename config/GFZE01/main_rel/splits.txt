@@ -6521,3 +6521,6 @@ rel/main_rel/stcoli/fn_1_2A8D0.c:
 
 rel/main_rel/stcoli/fn_1_2D524.c:
 	.text       start:0x0002D524 end:0x0002D888 align:4
+
+rel/main_rel/effect/fn_1_62794.c:
+	.text       start:0x00062794 end:0x00062AF8 align:4

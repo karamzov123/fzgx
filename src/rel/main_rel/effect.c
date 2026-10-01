@@ -196,7 +196,6 @@ void fn_1_58C6C(void) {
 /* fzgx:end fn_1_58C6C */
 
 /* fzgx:begin fn_1_58D38 */
-
 typedef struct fn_1_58D38_EffectState {
     fn_1_58D38_EffectEntry *unk_00;
     fn_1_58D38_EffectEntry *unk_04;
@@ -252,7 +251,6 @@ void fn_1_58D38(void) {
 /* fzgx:end fn_1_58D38 */
 
 /* fzgx:begin fn_1_58E3C */
-
 typedef struct {
     s8 unk_0;
     u8 pad_1;
@@ -553,7 +551,6 @@ void fn_1_59510(void) {
 /* fzgx:end fn_1_59510 */
 
 /* fzgx:begin fn_1_59514 */
-
 void fn_1_59514(void *obj) {
     if (*(s32 *)((u8 *)obj + 0x10) == 0) {
         u32 s = lbl_1_data_1D628 * 0x41c64e6d + 0x3039;
@@ -1694,9 +1691,6 @@ void fn_1_5FE30(fn_1_5FE30_FZeroObject *object) {
 /* fzgx:end fn_1_5FE30 */
 
 /* fzgx:begin fn_1_5FEBC */
-
-
-
 void fn_1_5FEBC(fn_1_5FEBC_EffectObject *object) {
     u8 result[12];
     u8 data[64];
@@ -1787,7 +1781,6 @@ void fn_1_601B4(EffectState *effect) {
 /* fzgx:end fn_1_601B4 */
 
 /* fzgx:begin fn_1_60734 */
-
 typedef struct Fn60734 {
     u8 pad_00[0x0e];
     s16 unk_0e;
@@ -2516,8 +2509,6 @@ void fn_1_61CE8(void) {
 /* fzgx:end fn_1_61CE8 */
 
 /* fzgx:begin fn_1_61D08 */
-
-
 typedef struct {
     u8 pad_0[0x20];
     void *unk_20;
@@ -2752,9 +2743,6 @@ fn_1_61D08_EffectObject *obj;
 /* fzgx:end fn_1_61D08 */
 
 /* fzgx:begin fn_1_61E60 */
-
-
-
 // Releases the effect resources and clears the active effect references.
 int fn_1_61E60(object)
 Fn1_61E60Object *object;
@@ -2778,6 +2766,131 @@ void fn_1_620C4(void) {
 }
 /* fzgx:end fn_1_620C4 */
 
+/* fzgx:begin fn_1_62794 noprologue */
+#include "types.h"
+
+typedef struct { u32 dummy[8]; } TexObj62794;
+
+struct fn_1_62794_pool {
+    u8 pad_0[0x50];
+    f32 unk_50;
+    f32 unk_54;
+    u8 pad_58[0x154];
+    f32 unk_1AC;
+};
+
+extern struct fn_1_62794_pool lbl_1_rodata_2950;
+extern f32 *lbl_801A6D00;
+extern void *lbl_801A63D0;
+extern void GXLoadTexMtxImm(f32 *, u32, u32);
+extern void fn_800720B0(u32);
+extern void lbl_8006DAEC(void);
+extern void lbl_8006DFD8(void *);
+extern void GXInitTexObj(TexObj62794 *, void *, u16, u16, s32, s32, s32, u8);
+extern void fn_8003526C(void *, u8);
+extern void fn_80038BFC(f32 *);
+extern void fn_80038F10(f32 *);
+extern void fn_80072864(u32);
+extern void fn_800728A8(s32, s32, s32, s32);
+extern void fn_80072AB0(s32, s32, s32);
+extern void fn_80072C24(s32, s32, s32, s32, s32);
+extern void fn_80072CC4(s32, s32, s32, s32, s32);
+extern void fn_80072D64(s32, s32, s32, s32, u8, s32);
+extern void fn_80072E20(s32, s32, s32, s32, u8, s32);
+extern void fn_800734A8(u32, s32, s32, s32);
+extern void fn_80073678(u32);
+extern void fn_80073778(void *, s32);
+extern void fn_80073898(u32);
+extern void fn_800738E0(s32, s32, s32);
+extern void fn_80073A58(int, void *, s8);
+extern void fn_80074300(u16, u16, u16, u16);
+extern void fn_80074438(u16, u16, u32, u32);
+extern void fn_800745A4(u32, s32, s32, u32, u32, u32);
+extern void fn_80074660(u32);
+extern void fn_80074788(u32);
+extern void fn_800747D0(u32, u32, s32, s32, u32, s32, s32);
+extern void fn_80074918(u8, s32, u8);
+extern void fn_80073B50(u32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern void lbl_8006D758(void);
+extern void lbl_8006DB30(void);
+extern void lbl_8006DB74(void *);
+
+#pragma opt_lifetimes off
+void fn_1_62794(void *arg0) {
+    struct fn_1_62794_pool *pool;
+    s32 w;
+    s32 h;
+    void *buf;
+    f32 half;
+    f32 zero;
+    u32 loc_7C[12];
+    TexObj62794 loc_5C;
+    f32 loc_44[6];
+    f32 loc_28[7];
+    f32 loc_10[6];
+
+    pool = (struct fn_1_62794_pool *)&lbl_1_rodata_2950;
+    buf = lbl_801A63D0;
+    fn_80038F10(loc_44);
+    w = (s32)((2)[loc_44]) >> 1;
+    h = (s32)((3)[loc_44]) >> 1;
+    fn_80074300((s32)((0)[loc_44]), (s32)((1)[loc_44]), (s32)((2)[loc_44]), (s32)((3)[loc_44]));
+    fn_80074438(w, h, 4, 1);
+    fn_8003526C(buf, 0);
+    GXInitTexObj(&loc_5C, buf, w, h, 4, 0, 0, 0);
+    fn_80072864(0);
+    fn_80038BFC(loc_28);
+    lbl_8006DAEC();
+    lbl_8006DAEC();
+    lbl_8006D758();
+    {
+        f32 hh = pool->unk_1AC;
+        f32 t = hh * ((1)[loc_28]);
+        hh = pool->unk_54;
+        lbl_801A6D00[0] = t;
+        lbl_801A6D00[2] = hh + (f32)(hh * ((2)[loc_28]));
+        lbl_801A6D00[5] = hh * ((3)[loc_28]);
+        lbl_801A6D00[6] = hh + (f32)(hh * ((4)[loc_28]));
+    }
+    lbl_8006DB74(loc_7C);
+    lbl_8006DB30();
+    lbl_8006DFD8(loc_7C);
+    GXLoadTexMtxImm(lbl_801A6D00, 30, 0);
+    lbl_8006DB30();
+    zero = pool->unk_50;
+    half = pool->unk_54;
+    loc_10[0] = zero;
+    loc_10[1] = half;
+    loc_10[2] = zero;
+    loc_10[3] = half;
+    loc_10[4] = zero;
+    loc_10[5] = zero;
+    fn_80073A58(1, loc_10, 0);
+    fn_80074788(1);
+    fn_800747D0(0, 0, 0, 0, 0, 0, 2);
+    fn_800747D0(2, 0, 0, 1, 0, 0, 2);
+    fn_80073778(&loc_5C, 0);
+    fn_80073778(arg0, 1);
+    fn_800745A4(0, 0, 0, 30, 0, 125);
+    fn_800734A8(0, 0, 0, 4);
+    fn_80072AB0(0, 0, 0);
+    fn_80072C24(0, 15, 15, 15, 8);
+    fn_80072D64(0, 0, 0, 0, 1, 0);
+    fn_80072CC4(0, 7, 7, 7, 5);
+    fn_80072E20(0, 0, 0, 0, 1, 0);
+    fn_80074918(1, 7, 0);
+    fn_800720B0(0);
+    fn_800728A8(1, 4, 1, 0);
+    fn_800745A4(1, 0, 0, 30, 0, 125);
+    fn_800738E0(0, 1, 1);
+    fn_80073B50(0, 0, 0, 0, 1, 0, 0, 0, 0, 0);
+    fn_80073678(1);
+    fn_80074660(2);
+    fn_80073898(1);
+}
+#pragma opt_lifetimes reset
+/* fzgx:end fn_1_62794 */
+
 /* fzgx:begin fn_1_6312C */
 // fn_1_6312C: empty in retail (single blr).
 void fn_1_6312C(void) {
@@ -2796,7 +2909,6 @@ void fn_1_63130(struct fn_1_63130_obj *obj) {
 /* fzgx:end fn_1_63130 */
 
 /* fzgx:begin fn_1_632D4 */
-
 struct fn_1_632D4_obj {
     u8 unk_00[0x1C];
     f32 unk_1C;
@@ -3150,7 +3262,6 @@ void fn_1_65268(Object *object) {
 /* fzgx:end fn_1_65268 */
 
 /* fzgx:begin fn_1_652F4 */
-
 typedef struct {
     u8 pad_00[0x18];
     s16 unk_18;
@@ -3855,7 +3966,6 @@ void fn_1_6742C(void) {
 /* fzgx:end fn_1_6742C */
 
 /* fzgx:begin fn_1_6755C */
-
 typedef struct {
     u8 pad_0[0x18];
     s16 unk_18;
