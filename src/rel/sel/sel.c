@@ -2654,6 +2654,99 @@ void fn_10_FF08(void) {
 }
 /* fzgx:end fn_10_FF08 */
 
+/* fzgx:begin fn_10_FF54 */
+#include "rel/sel/sel.h"
+
+typedef struct SelEntry {
+    u8 pad_0[0xe];
+    s16 unk_E;
+    u8 pad_10[0x10];
+} SelEntry;
+
+typedef struct SelState {
+    SelEntry entries[4];
+    u8 pad_80[0x14];
+    u32 flags;
+    u32 bits;
+    u8 pad_9c[2];
+    u8 unk_9E;
+    u8 pad_9f[5];
+    u8 *items;
+} SelState;
+
+extern f32 lbl_10_rodata_158[19];
+extern SelState lbl_1_bss_8B3A0;
+extern s32 lbl_801A66B4;
+extern void *lbl_1_data_418D4[];
+
+extern void fn_10_12C14(void);
+extern void fn_10_19040(void);
+extern void fn_10_1973C(void);
+extern void fn_10_21C44(s32);
+extern void fn_10_12024(void);
+extern void fn_10_117D0(void);
+extern void fn_10_10DB0(void);
+extern void fn_10_18A50(void *, u32);
+extern void fn_10_21DA8(void);
+extern void *fn_10_21C20(s32, s16);
+extern void fn_1_13D02C(void);
+extern void fn_1_49410(void);
+extern void fn_1_133DBC(s32);
+extern void fn_1_134AD4(void);
+extern void fn_1_13DA0C(void);
+extern void fn_1_13DC54(void);
+extern void fn_1_13DDB8(void);
+extern void fn_1_1380F0(void *);
+extern void fn_1_13B328(u32, s32);
+extern void fn_1_134EE4(s32, s32, s32, f32);
+extern void fn_1_135894(s16, s16, s32, s32, s32, s32, s32, f32, f32);
+extern void fn_1_136174(s16, s32, s32, s32, s16, s32, s32, f32, f32);
+extern void fn_1_13EDDC(s32, s32, s32, s32, s32);
+extern void fn_1_1363F0(s32, s32, s32);
+extern void fn_1_1368A0(s32, s32, s32, f32, f32, f32, f32, f32);
+
+static inline f32 *fn_10_FF54_array_read(f32 *array) { return array; }
+#pragma opt_common_subs off
+void fn_10_FF54(void) {
+    f32 *pool = lbl_10_rodata_158;
+    s32 idx = lbl_1_bss_8B3A0.unk_9E;
+    s16 val = lbl_1_bss_8B3A0.entries[(s16)idx].unk_E;
+
+    fn_1_13D02C();
+    fn_1_49410();
+    if ((lbl_1_bss_8B3A0.flags & 0x80000000) == 0) {
+        lbl_10_bss_55690.unk_0 = lbl_10_bss_55690.unk_4 = fn_10_FF54_array_read(pool)[17];
+        fn_10_12C14();
+        fn_10_19040();
+        fn_10_1973C();
+        fn_10_21C44(val);
+    }
+    fn_10_12024();
+    fn_1_133DBC(1);
+    fn_1_134AD4();
+    fn_1_13DA0C();
+    fn_1_13DC54();
+    fn_1_13DDB8();
+    fn_10_117D0();
+    fn_10_10DB0();
+    fn_10_18A50(&lbl_1_bss_8B3A0, 0xac);
+    if (lbl_1_bss_8B3A0.items[0x19] != 0) {
+        fn_10_21DA8();
+        fn_1_1380F0(lbl_1_data_418D4[lbl_801A66B4]);
+    } else {
+        fn_1_1380F0(fn_10_21C20(8, (s16)lbl_801A66B4));
+    }
+    fn_1_13B328(0x40800000, 0);
+    fn_1_134EE4(0, 1, 0, fn_10_FF54_array_read(pool)[19]);
+    fn_1_135894(0xd5, 0x16e - (lbl_801A66B4 == 5 ? 0 : (val > 0x28 ? 4 : 7)), 6, val, 0, idx, 0, fn_10_FF54_array_read(pool)[17], fn_10_FF54_array_read(pool)[17]);
+    fn_1_136174(0xd5, 0x163, 1, val, (s16)lbl_801A66B4, idx, 0, fn_10_FF54_array_read(pool)[18], fn_10_FF54_array_read(pool)[18]);
+    fn_1_13EDDC(0x1f9, 0x181, val, idx, 0);
+    fn_1_1363F0(idx, 0, 1);
+    fn_1_1368A0(val, idx, 0, fn_10_FF54_array_read(pool)[157], fn_10_FF54_array_read(pool)[158], fn_10_FF54_array_read(pool)[159], fn_10_FF54_array_read(pool)[17], fn_10_FF54_array_read(pool)[17]);
+}
+#pragma opt_common_subs reset
+/* fzgx:end fn_10_FF54 */
+
 /* fzgx:begin fn_10_10C24 */
 #include "font.h"
 
