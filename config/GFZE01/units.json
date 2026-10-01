@@ -12540,6 +12540,24 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80005B10.c",
+    "symbols": [
+      "fn_80005B10"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "pool": {
+      "@21": "lbl_801A6E5C",
+      "@22": "lbl_801A6E60",
+      "@23": "lbl_801A6E70",
+      "@24": "lbl_801A6E78",
+      "@25": "lbl_801A6E80",
+      "@26": "lbl_801A6E88"
+    }
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80005E0C.c",
     "symbols": [
       "fn_80005E0C"
