@@ -6545,3 +6545,6 @@ rel/main_rel/stcoli/fn_1_2BBD0.c:
 
 rel/main_rel/archive/fn_1_12A7C4.c:
 	.text       start:0x0012A7C4 end:0x0012A8A4 align:4
+
+rel/main_rel/stcoli/fn_1_287E8.c:
+	.text       start:0x000287E8 end:0x000289B4 align:4
