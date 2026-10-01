@@ -62306,6 +62306,22 @@
   },
   {
     "module": "title",
+    "source": "rel/title/operation/fn_8_C9A8.c",
+    "symbols": [
+      "fn_8_C9A8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/operation.c",
+    "pool": {
+      "...rodata.0": "lbl_8_rodata_160",
+      "@13": "lbl_8_rodata_188",
+      "@23": "lbl_8_rodata_198"
+    }
+  },
+  {
+    "module": "title",
     "source": "rel/title/operation/fn_8_CC2C.c",
     "symbols": [
       "fn_8_CC2C"
