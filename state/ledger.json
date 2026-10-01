@@ -1,5 +1,5 @@
 {
- "generated": 1790869914,
+ "generated": 1790870162,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -11721,7 +11721,7 @@
    "addr": 2147556468,
    "size": 836,
    "status": "unmatched",
-   "attempts": 2,
+   "attempts": 3,
    "best_percent": 96.33493,
    "claimed_by": null,
    "claimed_at": null,
@@ -60273,7 +60273,7 @@
    "addr": 382208,
    "size": 536,
    "status": "unmatched",
-   "attempts": 2,
+   "attempts": 3,
    "best_percent": 96.291046,
    "claimed_by": null,
    "claimed_at": null,
@@ -471189,6 +471189,44 @@
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_2DB50.1790869914.c",
    "stale_checks": 3,
    "best_in_attempt": 90.976746
+  },
+  {
+   "id": 18258,
+   "symbol": "SIInterruptHandler",
+   "agent": "fleet-v2-1790870038057274409-codex-1",
+   "harness": "codex",
+   "model": "gpt-6.1-sol",
+   "started": 1790870038,
+   "ended": 1790870097,
+   "checks": 3,
+   "final_percent": 0.0,
+   "tokens_in": 69538,
+   "tokens_out": 1221,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "plateau: 3 consecutive checks without improvement (best 0.0%)",
+   "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/SIInterruptHandler.1790870097.c",
+   "stale_checks": 3,
+   "best_in_attempt": 0.0
+  },
+  {
+   "id": 18259,
+   "symbol": "fn_1_5D500",
+   "agent": "fleet-v2-1790870038057274409-codex-2",
+   "harness": "codex",
+   "model": "gpt-6.1-sol",
+   "started": 1790870097,
+   "ended": 1790870161,
+   "checks": 8,
+   "final_percent": 82.84,
+   "tokens_in": 121696,
+   "tokens_out": 1340,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "budget exhausted: 8 checks used",
+   "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_5D500.1790870161.c",
+   "stale_checks": 2,
+   "best_in_attempt": 82.84
   }
  ],
  "names": [
