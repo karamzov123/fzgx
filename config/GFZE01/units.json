@@ -2418,6 +2418,17 @@
   },
   {
     "module": "interview",
+    "source": "rel/interview/interview/fn_17_7098.c",
+    "symbols": [
+      "fn_17_7098"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
+  },
+  {
+    "module": "interview",
     "source": "rel/interview/interview/fn_17_71C0.c",
     "symbols": [
       "fn_17_71C0"

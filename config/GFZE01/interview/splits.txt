@@ -125,3 +125,6 @@ rel/interview/interview/fn_17_8C7C.c:
 
 rel/interview/interview/fn_17_750C.c:
 	.text       start:0x0000750C end:0x00007728 align:4
+
+rel/interview/interview/fn_17_7098.c:
+	.text       start:0x00007098 end:0x000071C0 align:4
