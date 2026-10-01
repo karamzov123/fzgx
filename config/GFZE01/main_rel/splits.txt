@@ -6554,3 +6554,6 @@ rel/main_rel/driver/fn_1_A75DC.c:
 
 rel/main_rel/effect/fn_1_62AF8.c:
 	.text       start:0x00062AF8 end:0x00062C84 align:4
+
+rel/main_rel/car/fn_1_95238.c:
+	.text       start:0x00095238 end:0x0009550C align:4

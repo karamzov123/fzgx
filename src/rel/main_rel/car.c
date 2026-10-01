@@ -5749,6 +5749,156 @@ void fn_1_95210(void *arg0) {
 }
 /* fzgx:end fn_1_95210 */
 
+/* fzgx:begin fn_1_95238 noprologue */
+#include "types.h"
+
+typedef struct {
+    u8 count;
+    u8 field_1;
+    u16 field_2;
+    u8 pad04[0x3c];
+    f32 field_40;
+    u8 pad44[0x24];
+    f32 field_68;
+    f32 field_6c;
+} EventList;
+
+typedef struct Sig_fn_1_41418_Fn41418Data {
+    u32 count;
+    char *strings;
+} Sig_fn_1_41418_Fn41418Data;
+
+typedef struct Sig_fn_1_97174_Fn197174Owner Sig_fn_1_97174_Fn197174Owner;
+struct Sig_fn_1_97174_Fn197174Owner {
+    u8 unk_00[0x14];
+    u8 *base;
+};
+
+typedef struct fn_1_95238_lbl_801A6D00 {
+    u32 unk_0;
+} fn_1_95238_lbl_801A6D00;
+
+extern const f32 lbl_1_rodata_3F6C;
+extern char * fn_1_41418(Sig_fn_1_41418_Fn41418Data *, u32);
+extern s32 fn_1_97174(Sig_fn_1_97174_Fn197174Owner *, void *, void *);
+extern fn_1_95238_lbl_801A6D00 lbl_801A6D00;
+extern u32 mathutil_mtxA_rotate_y(u32);
+extern u32 mathutil_mtxA_rotate_z(u32);
+extern void fn_1_4270C(void *, void *, u32);
+extern void fn_1_93734(u32, u32);
+extern void lbl_8006D758(void);
+extern void lbl_8006DAEC(void);
+extern void lbl_8006DB30(void);
+extern void lbl_8006DFC4(u32);
+extern void lbl_8006E0B4(f32, f32, f32);
+extern void lbl_8006E14C(f32);
+extern void mathutil_mtxA_rotate_x(u32);
+
+static inline void fn_1_95238_store(f32 *destination, f32 value) { *destination = value; }
+static inline void fn_1_95238_call_fn_1_4270C(void * a0, void * a1, u32 a2) { fn_1_4270C(a0, a1, a2); }
+
+void fn_1_95238(u32 arg0, EventList *arg1) {
+    f32 *fzgx_value;
+    fn_1_95238_lbl_801A6D00 *p_lbl_801A6D00;
+    struct { u16 value; } v3;
+    u8 *v2;
+    u8 *v1;
+    u32 v0;
+    u32 v4;
+    u32 v5;
+    s32 v7;
+    void *v9;
+    u32 v10;
+    s32 v11;
+    u32 v12;
+    struct { u16 value; } v13;
+    f32 v6;
+    struct { f32 value; } v14;
+    s32 v15;
+    void *v16;
+
+    arg1->field_1 = 0;
+    fzgx_value = &(arg1->field_68);
+    *fzgx_value = lbl_1_rodata_3F6C;
+    p_lbl_801A6D00 = (fn_1_95238_lbl_801A6D00 *)&lbl_801A6D00;
+    fn_1_95238_store(&(arg1->field_6c), lbl_1_rodata_3F6C);
+    v2 = (u8 *)arg1;
+    v1 = (u8 *)arg1;
+    v0 = 0;
+    while (v0 < arg1->count) {
+        v3.value = *(u16 *)(v2 + 2);
+        v4 = *(u32 *)((u8 *)arg0 + 0x1c);
+        lbl_8006DAEC();
+        lbl_8006D758();
+        lbl_8006E0B4(*(f32 *)((u8 *)arg0 + 0xa8), (*(f32 *)((u8 *)arg0 + 0xac) + *(f32 *)((u8 *)arg0 + 0xb4)), *(f32 *)((u8 *)arg0 + 0xb0));
+        mathutil_mtxA_rotate_z(*(s16 *)((u8 *)arg0 + 0xa4));
+        mathutil_mtxA_rotate_y(*(s16 *)((u8 *)arg0 + 0xa0));
+        mathutil_mtxA_rotate_x(*(s16 *)(((0xa2) + ((u8 *)arg0))));
+        lbl_8006E14C(*(f32 *)((u8 *)arg0 + 0xb8));
+        lbl_8006DFC4((*(u32 *)((u8 *)*(u32 *)((u8 *)arg0 + 0x150) + 8) + 0x88));
+        v5 = p_lbl_801A6D00->unk_0;
+        v14.value = *(f32 *)((u8 *)v5 + 12);
+        v6 = *(f32 *)((u8 *)v5 + 44);
+        lbl_8006DB30();
+        *(f32 *)((u8 *)arg0 + 0xa8) = v14.value;
+        *(f32 *)((u8 *)arg0 + 0xb0) = v6;
+        if (v4) {
+            v7 = fn_1_97174((Sig_fn_1_97174_Fn197174Owner *)v4, (void *)0, fn_1_41418((Sig_fn_1_41418_Fn41418Data *)*(u32 *)((u8 *)*(u32 *)((u8 *)arg0 + 0x150) + 0x24), v3.value));
+            if (v7 < 0) {
+                v7 = 0;
+            }
+            *(u16 *)((u8 *)v4 + 0x12) = 0;
+            if ((s32)*(u8 *)((u8 *)v4 + 0x26) > 0) {
+                v9 = *(void **)((u8 *)v4 + 0x28);
+            } else {
+                v9 = (void *)(*(u32 *)((u8 *)v4 + 0x34) + (-(s32)*(u8 *)((u8 *)v4 + 0x4c)) * 12);
+            }
+            *(u16 *)((u8 *)v9 + 0xa) = (u16)v7;
+        }
+        fn_1_93734(arg0, (u32)fn_1_41418((Sig_fn_1_41418_Fn41418Data *)*(u32 *)((u8 *)arg0 + 0x154), v3.value));
+        fn_1_4270C((void *)*(u32 *)((u8 *)arg0 + 0x150), (void *)0, v3.value);
+        *(u16 *)((u8 *)arg0 + 0x148) = v3.value;
+        arg1->field_6c = arg1->field_6c + *(f32 *)((u8 *)*(u32 *)((u8 *)arg0 + 0x150) + 0x50);
+        *(f32 *)(v1 + 0x40) = *(f32 *)((u8 *)*(u32 *)((u8 *)arg0 + 0x150) + 0x50);
+        v2 += 2;
+        v1 += 4;
+        v0++;
+    }
+    v13.value = *(u16 *)((u8 *)arg1 + 2);
+    v11 = *(u32 *)((u8 *)arg0 + 0x1c);
+    lbl_8006DAEC();
+    lbl_8006D758();
+    lbl_8006E0B4(*(f32 *)((u8 *)arg0 + 0xa8), (*(f32 *)((u8 *)arg0 + 0xac) + *(f32 *)((u8 *)arg0 + 0xb4)), *(f32 *)((u8 *)arg0 + 0xb0));
+    mathutil_mtxA_rotate_z(*(s16 *)((u8 *)arg0 + 0xa4));
+    mathutil_mtxA_rotate_y(*(s16 *)((u8 *)arg0 + 0xa0));
+    mathutil_mtxA_rotate_x(*(s16 *)(((0xa2) + ((u8 *)arg0))));
+    lbl_8006E14C(*(f32 *)((u8 *)arg0 + 0xb8));
+    lbl_8006DFC4((*(u32 *)((u8 *)*(u32 *)((u8 *)arg0 + 0x150) + 8) + 0x88));
+    v12 = lbl_801A6D00.unk_0;
+    v14.value = *(f32 *)((u8 *)v12 + 12);
+    v6 = *(f32 *)((u8 *)v12 + 44);
+    lbl_8006DB30();
+    *(f32 *)((u8 *)arg0 + 0xa8) = v14.value;
+    *(f32 *)((u8 *)arg0 + 0xb0) = v6;
+    if (v11 != 0U) {
+        v15 = fn_1_97174((Sig_fn_1_97174_Fn197174Owner *)v11, (void *)0, fn_1_41418((Sig_fn_1_41418_Fn41418Data *)*(u32 *)((u8 *)*(u32 *)((u8 *)arg0 + 0x150) + 0x24), v13.value));
+        if (v15 < 0) {
+            v15 = 0;
+        }
+        *(u16 *)((u8 *)v11 + 0x12) = 0;
+        if ((s32)*(u8 *)((u8 *)v11 + 0x26) > 0) {
+            v16 = *(void **)((u8 *)v11 + 0x28);
+        } else {
+            v16 = (void *)(*(u32 *)((u8 *)v11 + 0x34) + (-(s32)*(u8 *)((u8 *)v11 + 0x4c)) * 12);
+        }
+        *(u16 *)((u8 *)v16 + 0xa) = (u16)v15;
+    }
+    fn_1_93734(arg0, (u32)fn_1_41418((Sig_fn_1_41418_Fn41418Data *)*(u32 *)((u8 *)arg0 + 0x154), v13.value));
+    fn_1_95238_call_fn_1_4270C((void *)*(u32 *)((u8 *)arg0 + 0x150), (void *)0, v13.value);
+    *(u16 *)((u8 *)arg0 + 0x148) = v13.value;
+}
+/* fzgx:end fn_1_95238 */
+
 /* fzgx:begin fn_1_9550C */
 typedef struct {
     u8 count;
