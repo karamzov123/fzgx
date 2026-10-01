@@ -241,13 +241,11 @@ void fn_4_894(void) {
 }
 /* fzgx:end fn_4_894 */
 
-/* fzgx:begin _epilog noprologue */
-#include "types.h"
-
+/* fzgx:begin _epilog */
 extern const f32 lbl_4_rodata_4C[45];
-extern u8 lbl_4_bss_4[4];
-extern u8 lbl_4_bss_8[4];
-extern u8 lbl_1_bss_6EAD0[4];
+extern u32 lbl_4_bss_4;
+extern u32 lbl_4_bss_8;
+extern struct _prolog_lbl_1_bss_6EAD0 lbl_1_bss_6EAD0;
 
 extern void fn_8006CE1C(f32);
 extern void fn_1_1596DC(u32);
@@ -661,6 +659,78 @@ s32 fn_4_4B74(u32 arg0, u32 arg1) {
     return 31 - __cntlzw(v);
 }
 /* fzgx:end fn_4_4B74 */
+
+/* fzgx:begin fn_4_4CB8 noprologue */
+#include "types.h"
+
+struct fn_4_4CB8_obj {
+    u16 unk_0;
+    u16 unk_2;
+    u16 unk_4;
+    u16 unk_6;
+    u32 unk_8;
+    u32 unk_C;
+    u32 unk_10;
+    u32 unk_14;
+    u32 unk_18;
+};
+
+extern struct fn_4_4CB8_obj lbl_4_bss_C4[];
+
+void fn_4_4CB8(s32 arg0, u32 arg1, s32 arg2) {
+    struct { u32 value; } idx;
+    u32 v;
+
+    v = 1 << arg2;
+
+    switch (arg0) {
+    case 0:
+    case 4:
+    default:
+        idx.value = 0;
+        break;
+    case 1:
+        idx.value = 0;
+        break;
+    case 2:
+        idx.value = 1;
+        break;
+    case 3:
+        idx.value = 2;
+        break;
+    }
+
+    switch (arg1) {
+    case 0:
+        lbl_4_bss_C4[idx.value].unk_0 = v;
+        break;
+    case 1:
+        lbl_4_bss_C4[idx.value].unk_2 = v;
+        break;
+    case 2:
+        lbl_4_bss_C4[idx.value].unk_4 = v;
+        break;
+    case 3:
+        lbl_4_bss_C4[idx.value].unk_6 = v;
+        break;
+    case 4:
+        lbl_4_bss_C4[idx.value].unk_8 = v;
+        break;
+    case 5:
+        lbl_4_bss_C4[idx.value].unk_C = v;
+        break;
+    case 6:
+        lbl_4_bss_C4[idx.value].unk_10 = v;
+        break;
+    case 7:
+        lbl_4_bss_C4[idx.value].unk_14 = v;
+        break;
+    case 8:
+        lbl_4_bss_C4[idx.value].unk_18 = v;
+        break;
+    }
+}
+/* fzgx:end fn_4_4CB8 */
 
 /* fzgx:begin fn_4_6678 noprologue */
 #include "types.h"
