@@ -13157,6 +13157,17 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_8000BFC0.c",
+    "symbols": [
+      "fn_8000BFC0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "asm": true
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8000CE30.c",
     "symbols": [
       "fn_8000CE30"
