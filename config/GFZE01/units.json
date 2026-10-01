@@ -28830,6 +28830,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/bg_cas/fn_1_FBC5C.c",
+    "symbols": [
+      "fn_1_FBC5C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/bg_cas.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/bg_cas/fn_1_FBEA8.c",
     "symbols": [
       "fn_1_FBEA8"

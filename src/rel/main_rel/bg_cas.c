@@ -289,6 +289,131 @@ void fn_1_FB9DC(int index) {
 }
 /* fzgx:end fn_1_FB9DC */
 
+/* fzgx:begin fn_1_FBC5C noprologue */
+#include "types.h"
+
+typedef struct {
+    f32 v[27];
+} CasPool;
+extern CasPool lbl_1_rodata_7590;
+
+typedef struct {
+    u8 pad_0[0x18];
+    f32 unk_18;
+    f32 unk_1C;
+    f32 unk_20;
+    f32 unk_24;
+    f32 unk_28;
+    f32 unk_2C;
+    f32 unk_30;
+    f32 unk_34;
+    f32 unk_38;
+    u8 pad_3C[0x24];
+} CasSub;
+
+typedef struct {
+    CasSub a[3];
+    CasSub b[3];
+    u8 pad_240[0x14];
+    u8 unk_254[3];
+    u8 pad_257;
+    f32 unk_258[3];
+    f32 unk_264[3];
+} CasEntry;
+
+extern CasEntry lbl_1_bss_84454[];
+
+void fn_1_FBC5C(u8 idx) {
+    CasEntry * p;
+    f32 *k = (f32 *)&lbl_1_rodata_7590;
+    int i;
+    p = &lbl_1_bss_84454[idx];
+
+    for (i = 0; i < 3; i++) {
+        p->a[i].unk_18 = k[2];
+        p->a[i].unk_1C = k[2];
+        p->a[i].unk_20 = k[2];
+        p->a[i].unk_30 = k[9];
+        p->a[i].unk_34 = k[9];
+        p->a[i].unk_38 = k[9];
+        p->b[i].unk_18 = (i == 1) ? k[10] : k[2];
+        p->b[i].unk_1C = k[2];
+        p->b[i].unk_20 = k[2];
+        p->b[i].unk_24 = k[2];
+        p->b[i].unk_28 = k[2];
+        p->b[i].unk_2C = k[2];
+        p->unk_258[i] = k[11];
+        p->unk_264[i] = k[12];
+        p->unk_254[i] = 0;
+    }
+
+    for (i = 0; i < 3; i++) {
+        switch (idx) {
+        case 0:
+            p->a[i].unk_24 = k[13];
+            p->a[i].unk_28 = k[14];
+            p->b[i].unk_30 = k[15];
+            p->b[i].unk_34 = k[15];
+            break;
+        case 1:
+            p->a[i].unk_24 = k[16];
+            p->a[i].unk_28 = k[17];
+            p->b[i].unk_30 = k[18];
+            p->b[i].unk_34 = k[15];
+            break;
+        case 2:
+            p->b[i].unk_30 = k[9];
+            p->b[i].unk_34 = k[9];
+            break;
+        case 3:
+            p->b[i].unk_30 = k[9];
+            p->b[i].unk_34 = k[9];
+            break;
+        case 4:
+            p->b[i].unk_30 = k[9];
+            p->b[i].unk_34 = k[15];
+            p->unk_258[i] = k[19];
+            p->unk_264[i] = k[20];
+            break;
+        }
+        p->b[i].unk_24 = p->a[i].unk_24 / k[21];
+        p->b[i].unk_28 = p->a[i].unk_28 / k[21];
+    }
+
+    switch (idx) {
+    case 0:
+        break;
+    case 1:
+        p->unk_258[0] = k[18];
+        p->unk_264[0] = k[18];
+        p->b[0].unk_24 = k[22];
+        p->b[0].unk_28 = k[22];
+        break;
+    case 2:
+        p->b[0].unk_24 = k[23];
+        p->b[0].unk_28 = k[23];
+        p->unk_258[0] = k[2];
+        p->unk_264[0] = k[18];
+        p->unk_264[2] = k[24];
+        break;
+    case 3:
+        p->b[0].unk_24 = k[25];
+        p->b[0].unk_28 = k[2];
+        p->unk_258[0] = k[11];
+        p->unk_264[0] = k[12];
+        p->b[2].unk_24 = k[26];
+        p->b[2].unk_28 = k[2];
+        p->b[2].unk_30 = k[15];
+        p->b[2].unk_34 = k[15];
+        p->unk_258[2] = k[19];
+        p->unk_264[2] = k[19];
+        break;
+    case 4:
+        break;
+    }
+}
+/* fzgx:end fn_1_FBC5C */
+
 /* fzgx:begin fn_1_FBEA8 */
 extern void lbl_8006DB74(void *);
 
