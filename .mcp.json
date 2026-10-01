@@ -1,9 +1,3 @@
 {
-  "mcpServers": {
-    "fzgx": {
-      "type": "stdio",
-      "command": "uv",
-      "args": ["run", "tools/fzgx_mcp.py"]
-    }
-  }
+  "mcpServers": {}
 }

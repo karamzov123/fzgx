@@ -161,7 +161,24 @@ def inventory(p: Project, module: Optional[str] = None, status: Optional[str] = 
 # ---------------------------------------------------------------------- claim
 def _seed_record(key: str) -> dict:
     manifest = os.environ.get('FZGX_SEEDS')
-    return json.loads(Path(manifest).read_text()).get(key, {}) if manifest else {}
+    if manifest and Path(manifest).exists():
+        data = json.loads(Path(manifest).read_text()).get(key, {})
+        if data:
+            return data
+    sym = key.split(":")[-1]
+    for cand in (key, sym):
+        donor = ROOT / "state" / "donor_seeds" / f"{cand}.c"
+        if donor.exists():
+            body = donor.read_text()
+            return {
+                "id": f"donor-{cand}",
+                "symbol": key,
+                "path": str(donor),
+                "sha256": hashlib.sha256(body.encode()).hexdigest(),
+                "kind": "donor_seed",
+                "source": body,
+            }
+    return {}
 
 
 def _compiler_options(p: Project, key: str) -> dict:
