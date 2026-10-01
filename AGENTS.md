@@ -9,7 +9,11 @@ Do not add unit tests to this repository. Validate tooling changes against real
 functions with MWCC, retail object diffs, `fzgx lint`, and the 16-target hash check.
 Commit completed work locally before reporting it finished. Include the tooling,
 provenance, and dependent source changes needed to reproduce generated matches.
-Never push.
+Matchers and integration tooling must never push. The user-authorized
+`tools/fleet_integrator.py` publisher is the sole exception: it may publish a
+clean, hash/lint-verified pinned local `main` commit to the approved fork using
+a normal fast-forward push. It must never accept candidates, merge, rebase,
+force-push, or change worker ownership.
 
 ## Matcher (one function per session)
 

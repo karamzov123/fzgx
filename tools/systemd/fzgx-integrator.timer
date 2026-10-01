@@ -1,0 +1,11 @@
+[Unit]
+Description=Periodically publish verified fzgx commits without integrating candidates
+
+[Timer]
+OnBootSec=90s
+OnUnitInactiveSec=2min
+AccuracySec=10s
+Unit=fzgx-integrator.service
+
+[Install]
+WantedBy=timers.target

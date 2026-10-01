@@ -17,7 +17,7 @@ AGY's installed authenticated model catalog recognizes that identifier. Quota fa
 
 ## Execution contract
 
-The host assigns explicit unique symbols through orchestrate.py. Atomic SQLite claims, private source copies, and shared-unit/pending reservation exclusion prevent overlapping assignments. Models receive source, assembly and initial diff, and exactly five function-bound operations: write_unit, patch_unit, check, read_evidence, release. The host binds identity and handles submission and serialized 16-target hash verification. Accepted source is committed locally. Never push automatically.
+The host assigns explicit unique symbols through orchestrate.py. Atomic SQLite claims, private source copies, and shared-unit/pending reservation exclusion prevent overlapping assignments. Models receive source, assembly and initial diff, and exactly five function-bound operations: write_unit, patch_unit, check, read_evidence, release. The host binds identity and handles submission and serialized 16-target hash verification. Accepted source is committed locally by the existing verifier. Worker/model transports never push. A separate user-authorized deterministic publisher forwards verified local main commits to the fork; it does not integrate candidates.
 
 GPT uses the constrained Codex app server. Claude uses restricted mode, no builtin tools, strict MCP and no interactive permission prompts. Cline uses its genuine SDK and existing account, five supplied tools, no model/native tools, sequential execution and high reasoning. AGY uses a session-local HOME with the existing account state and only the bound MCP server, plus a PreToolUse deny guard; personal broad project plugins/configuration are not merged. Its native tools are denied rather than prompt-trusted.
 
@@ -39,6 +39,28 @@ Use:
 Claude stream events named `rate_limit_event` are not themselves failures. `allowed` and `allowed_warning` permit requests; only `rejected` indicates an actual quota rejection. Quota classification examines structured error fields rather than assistant/tool text or event names. A captured live-log regression and allowed/rejected/error cases verify this boundary. The false Claude cooldown was cleared and a fresh Opus session performed a compiler check after restart.
 
 State/control/history/runtime live in `~/.cache/fzgx-agents/*-v3.json`. Evidence remains under `.fzgx/runs/fleet-v2-*`; that prefix is retained for progress provenance. Gate log is `~/.cache/fzgx-agents/gate.log`. Eww reload can close the bar: inspect active-windows, reopen bar if needed, and poll before reading cached state.
+
+## Non-competing fork integrator
+
+`tools/fleet_integrator.py` is a deterministic publisher, not another decompilation agent. The existing `fzgx verify` watchers remain the sole owners of candidate acceptance and source commits. The publisher does not drain pending candidates, manipulate claims, stage files, commit, merge, rebase, reset, or force-push.
+
+`fzgx-integrator.timer` runs a single oneshot approximately every two minutes. It requires local main and the exact origin fetch/push URL `https://github.com/karamzov123/fzgx.git`. It checks remote main ancestry and blocks on unknown/divergent history. It rejects obvious retail/auth artifacts in outgoing commits. This filename screen is not a general secret scanner; never commit secrets or proprietary binaries.
+
+For a new SHA it acquires the existing submit.lock then build.lock nonblockingly. Busy locks yield immediately to workers/verifier. Pending ledger/dependency records and tracked/index changes defer publication without modifying them. Untracked personal files are preserved and never staged. A clean unchanged HEAD must pass Ninja's GFZE01/ok target, an explicit 16-target DTK hash check, and lint. Failed gates are persisted and not rebuilt for an unchanged commit. Success persists a receipt for that exact SHA; unchanged verified commits do not rebuild during network retries.
+
+Compiler locks are released before network operations. A normal explicit-SHA fast-forward push updates only fork main, and an exact ls-remote readback is required before reporting publication. Newer local commits wait for the next tick. Network timeouts/auth failures produce status and retry on the timer; interactive login is prohibited. Divergence never triggers a merge or force push. The old fzgx-autopr.service stays disabled/conflicting.
+
+Reproducible service templates live in tools/systemd/. Operational state and gate log live in `~/.cache/fzgx-agents/integrator-v1.json` and `integrator-v1.gate.log`.
+
+    .venv/bin/python tools/fleet_integrator.py status
+    systemctl --user status fzgx-integrator.timer
+    journalctl --user -u fzgx-integrator.service -n 20 --no-pager
+
+To stop automatic publication without stopping matching:
+
+    systemctl --user disable --now fzgx-integrator.timer
+
+Real local Git/bare-remote acceptance fixtures cover fast-forward/readback, unchanged gate suppression, dirty/index preservation, pending work, compiler-lock yielding, failed-gate suppression, changing HEAD, untracked preservation, remote divergence, destination/branch rejection and outgoing retail-artifact rejection. No unit tests are added to the project repository.
 
 ## Verified rollout evidence
 
