@@ -1,59 +1,48 @@
 #include "types.h"
+#include "dolphin/hw_regs.h"
 
-struct fn_800060D8_Glyph {
+typedef struct {
     void *image;
     u16 code;
     u16 width;
-};
+} FontGlyph;
 
 typedef struct {
     u32 dummy[8];
-} fn_800060D8_GXTexObj;
-
-typedef union {
-    u8 u8;
-    u16 u16;
-    u32 u32;
-    f32 f32;
-} GXWGFifoReg;
-
-#define GXWGFifoAddress ((u32)(0xCC00 << 16) + 0x8000)
-// Hardware FIFO register is intentionally volatile.
-#define GXWGFifo (*(volatile GXWGFifoReg *)GXWGFifoAddress)
+} GXTexObj;
 
 extern s16 lbl_801A66EC;
-extern struct fn_800060D8_Glyph lbl_8015B940[];
+extern FontGlyph lbl_8015B940[];
 
 extern s32 fn_80006334(u8 *);
-extern void GXInitTexObj(fn_800060D8_GXTexObj *, void *, u16, u16, u32, u32, u32, u8);
+extern void GXInitTexObj(GXTexObj *, void *, u16, u16, s32, s32, s32, u8);
 extern void GXInvalidateTexAll(void);
-extern void fn_80073778(fn_800060D8_GXTexObj *, s32);
-extern void fn_8003462C(u32, u32, u32);
+extern void fn_80073778(GXTexObj *, s32);
+extern void fn_8003462C(s32, s32, u16);
 
-static inline struct fn_800060D8_Glyph *fn_800060D8_find(s32 code) {
-    struct fn_800060D8_Glyph *glyph = lbl_8015B940;
+#define FIFO_F32(v) (*(volatile f32 *)GX_FIFO_BASE = (v))  /* fzgx-allow: A2,S2 GX write-gather FIFO (hw_regs.h) */
+
+static inline FontGlyph *find_glyph(s32 code) {
+    FontGlyph *glyph = lbl_8015B940;
     s32 i;
 
-    for (i = 0; i < lbl_801A66EC; i++) {
+    for (i = 0; i < lbl_801A66EC; i++, glyph++) {
         if (glyph->code == code) {
             return glyph;
         }
-        glyph++;
     }
-    return 0;
+    return NULL;
 }
 
 void fn_800060D8(u8 *str, f32 x, f32 y, f32 z) {
-    fn_800060D8_GXTexObj texObj;
-    struct fn_800060D8_Glyph *glyph;
+    GXTexObj obj;
+    FontGlyph *glyph;
     u32 code;
-    f64 bottom;
-    f32 depth;
-    f32 bot;
-    f32 right;
+    f32 nz;
+    f32 y2;
+    f32 x2;
 
-    depth = -z;
-    bottom = 24.0 + y;
+    nz = -z;
     while (*str != 0) {
         if (fn_80006334(str)) {
             code = *(u16 *)str;
@@ -66,36 +55,36 @@ void fn_800060D8(u8 *str, f32 x, f32 y, f32 z) {
             x += 8.0;
             continue;
         }
-        glyph = fn_800060D8_find(code);
-        if (glyph == 0) {
+        glyph = find_glyph(code);
+        if (glyph == NULL) {
             continue;
         }
-        GXInitTexObj(&texObj, glyph->image, 0x18, 0x18, 0, 0, 0, 0);
+        GXInitTexObj(&obj, glyph->image, 24, 24, 0, 0, 0, 0);
         GXInvalidateTexAll();
-        fn_80073778(&texObj, 0);
-        right = x + (f32)glyph->width;
-        bot = bottom;
+        fn_80073778(&obj, 0);
+        y2 = 24.0 + y;
+        x2 = x + glyph->width;
         fn_8003462C(0x80, 7, 4);
-        GXWGFifo.f32 = x;
-        GXWGFifo.f32 = y;
-        GXWGFifo.f32 = depth;
-        GXWGFifo.f32 = 0.0f;
-        GXWGFifo.f32 = 0.0f;
-        GXWGFifo.f32 = right;
-        GXWGFifo.f32 = y;
-        GXWGFifo.f32 = depth;
-        GXWGFifo.f32 = glyph->width / 24.0;
-        GXWGFifo.f32 = 0.0f;
-        GXWGFifo.f32 = right;
-        GXWGFifo.f32 = bot;
-        GXWGFifo.f32 = depth;
-        GXWGFifo.f32 = glyph->width / 24.0;
-        GXWGFifo.f32 = 1.0f;
-        GXWGFifo.f32 = x;
-        GXWGFifo.f32 = bot;
-        GXWGFifo.f32 = depth;
-        GXWGFifo.f32 = 0.0f;
-        GXWGFifo.f32 = 1.0f;
-        x += (f32)glyph->width;
+        FIFO_F32(x);
+        FIFO_F32(y);
+        FIFO_F32(nz);
+        FIFO_F32(0.0f);
+        FIFO_F32(0.0f);
+        FIFO_F32(x2);
+        FIFO_F32(y);
+        FIFO_F32(nz);
+        FIFO_F32(glyph->width / 24.0);
+        FIFO_F32(0.0f);
+        FIFO_F32(x2);
+        FIFO_F32(y2);
+        FIFO_F32(nz);
+        FIFO_F32(glyph->width / 24.0);
+        FIFO_F32(1.0f);
+        FIFO_F32(x);
+        FIFO_F32(y2);
+        FIFO_F32(nz);
+        FIFO_F32(0.0f);
+        FIFO_F32(1.0f);
+        x += glyph->width;
     }
 }
