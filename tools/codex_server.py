@@ -410,6 +410,18 @@ class Matcher:
                              if message.get('emittedAtMs') else utcnow())
                 self.samples.append((timestamp, delta))
             self.total = total
+            # Durable cumulative counters: supervisor budgets must not depend
+            # on finding a usage event in a truncated session-log tail.
+            usage = self.directory / f'{self.symbol}.usage.json'
+            staging = usage.with_suffix('.usage.tmp')
+            staging.write_text(json.dumps(total) + '\n')
+            staging.replace(usage)
+            max_in = int(os.environ.get('FZGX_MAX_MODEL_INPUT_TOKENS', '0'))
+            max_out = int(os.environ.get('FZGX_MAX_MODEL_OUTPUT_TOKENS', '0'))
+            if ((max_in and total.get('inputTokens', 0) >= max_in)
+                    or (max_out and total.get('outputTokens', 0) >= max_out)):
+                self.error = 'Function token budget reached; saving work and stopping batch'
+                self.server.stopping.set()
         elif method == 'turn/completed':
             turn = params['turn']
             if turn.get('error'):
