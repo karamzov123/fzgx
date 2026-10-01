@@ -57183,6 +57183,17 @@
   },
   {
     "module": "option",
+    "source": "rel/option/_prolog/fn_4_4834.c",
+    "symbols": [
+      "fn_4_4834"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/option/_prolog.c"
+  },
+  {
+    "module": "option",
     "source": "rel/option/_prolog/fn_4_4B10.c",
     "symbols": [
       "fn_4_4B10"
@@ -57877,6 +57888,17 @@
     "source": "rel/pilotpoint/pilotpoint/fn_14_7E04.c",
     "symbols": [
       "fn_14_7E04"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/pilotpoint/pilotpoint.c"
+  },
+  {
+    "module": "pilotpoint",
+    "source": "rel/pilotpoint/pilotpoint/fn_14_7EAC.c",
+    "symbols": [
+      "fn_14_7EAC"
     ],
     "status": "matching",
     "mw_version": null,

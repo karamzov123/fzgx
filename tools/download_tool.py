@@ -109,10 +109,12 @@ def download(url, response, output) -> None:
                 os.chmod(os.path.join(root, name), 0o755)
         output.touch(mode=0o755)  # Update dir modtime
     else:
-        with open(output, "wb") as f:
+        tmp = output.with_name(f".{output.name}.tmp.{os.getpid()}")
+        with open(tmp, "wb") as f:
             shutil.copyfileobj(response, f)
-        st = os.stat(output)
-        os.chmod(output, st.st_mode | stat.S_IEXEC)
+        st = os.stat(tmp)
+        os.chmod(tmp, st.st_mode | stat.S_IEXEC | 0o755)
+        os.replace(tmp, output)
 
 
 def main() -> None:
