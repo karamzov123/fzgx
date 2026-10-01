@@ -62084,6 +62084,17 @@
   },
   {
     "module": "winning",
+    "source": "rel/winning/winning/fn_15_38FC.c",
+    "symbols": [
+      "fn_15_38FC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/winning/winning.c"
+  },
+  {
+    "module": "winning",
     "source": "rel/winning/winning/fn_15_398C.c",
     "symbols": [
       "fn_15_398C"

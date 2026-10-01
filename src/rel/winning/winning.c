@@ -1630,6 +1630,30 @@ void fn_15_3174(void * arg0) {
 #pragma opt_propagation reset
 /* fzgx:end fn_15_3174 */
 
+/* fzgx:begin fn_15_38FC */
+extern u32 lbl_15_bss_D4[32];
+extern u8 lbl_15_data_A4[176];
+extern u32 lbl_801A6410;
+extern void fn_1_469BC(void);
+extern void fn_1_8F494(void *);
+extern u32 fn_1_46B4(u32, u32, const u8 *, int);
+
+void fn_15_38FC(void) {
+    u32 *p;
+    s16 i;
+
+    fn_1_469BC();
+    p = lbl_15_bss_D4;
+    for (i = 0; i < 0x1D; i++) {
+        if (p[i] != 0) {
+            fn_1_8F494((void *)p[i]);
+            fn_1_46B4(lbl_801A6410, p[i], lbl_15_data_A4, 0x9DA);
+            p[i] = 0;
+        }
+    }
+}
+/* fzgx:end fn_15_38FC */
+
 /* fzgx:begin fn_15_398C */
 struct fn_15_398C_entry {
     u8 pad_0[0x18];
