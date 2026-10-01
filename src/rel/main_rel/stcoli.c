@@ -396,8 +396,6 @@ int fn_1_17C6C(int current, int next, int limit) {
 /* fzgx:end fn_1_17C6C */
 
 /* fzgx:begin fn_1_17D5C */
-
-
 void fn_1_17D5C(Node *node, u32 *acc) {
     Node *root;
     s32 i1;
@@ -1070,8 +1068,6 @@ void fn_1_1902C(StcoliNode *root, StcoliVec *vec, void *arg3, f32 value) {
 /* fzgx:end fn_1_1902C */
 
 /* fzgx:begin fn_1_20258 */
-
-
 typedef struct Fn_1_20258 {
     unsigned char pad00[0x30];
     f32 field30;
@@ -1174,7 +1170,6 @@ int fn_1_20994(void *arg, f32 *out) {
 /* fzgx:end fn_1_20994 */
 
 /* fzgx:begin fn_1_21644 */
-
 void *fn_1_21644(void *arg0, f32 *arg1, void *arg2) {
     int local;
 
@@ -2487,6 +2482,118 @@ int fn_1_2A694(O *self, void *arg1, V *swap, u32 mask, V *out0, V *out1) {
 #pragma opt_propagation reset
 /* fzgx:end fn_1_2A694 */
 
+/* fzgx:begin fn_1_2A8D0 noprologue */
+#include "types.h"
+
+typedef struct Sig_fn_1_2A694_N { u8 p[0x98]; u32 v98; u32 v9c; } Sig_fn_1_2A694_N;
+typedef struct Sig_fn_1_2A694_O { u32 flags; s16 id; u8 p[0x46e]; s8 v474; u8 p2[0x23]; u32 field498; Sig_fn_1_2A694_N *field49c; u8 p3[0xec]; u32 field58c; } Sig_fn_1_2A694_O;
+typedef struct Sig_fn_1_2A694_V { f32 x; f32 y; f32 z; } Sig_fn_1_2A694_V;
+
+struct fn_1_2A8D0_Copy12 { u32 a[3]; };
+
+extern int fn_1_15578(void *, void *, void *, void *, u32, void *, u32, u32 *, u32, void *);
+extern u8 * fn_1_14F04(void);
+extern void * fn_1_868C0(s8);
+extern void fn_1_F7338(int, int, int);
+extern void lbl_8006DAEC(void);
+extern void lbl_8006DB30(void);
+extern void lbl_8006E1B0(void *, void *);
+
+int fn_1_2A8D0(Sig_fn_1_2A694_O * arg0, u8 * arg1, u32 * arg2, u32 arg3, Sig_fn_1_2A694_V * arg4, u32 * arg5, u32 * arg6, u32 arg7) {
+    struct { u32 a[3]; } loc_20;
+    struct fn_1_2A8D0_Copy12 loc_14;
+    u32 loc_10;
+    u32 v1;
+    u32 v3;
+    int v2;
+    u8 * t4;
+    u8 * t5;
+    Sig_fn_1_2A694_N *v0;
+
+    lbl_8006E1B0(arg1, arg1 + 24);
+    lbl_8006DAEC();
+    loc_14 = *(struct fn_1_2A8D0_Copy12 *)(arg1 + 24);
+    v0 = arg0->field49c;
+    v2 = fn_1_15578(&loc_14, arg1 + 12, &loc_10, &loc_20, arg3, &v0->v9c, v0->v98, arg2, arg0->field498, arg0);
+    lbl_8006DB30();
+    if (arg2 != 0) {
+        v1 = arg2[0];
+        arg2[0] = arg2[1];
+        arg2[1] = v1;
+    }
+    arg4[0].x = 0.0f;
+    arg4[0].y = 0.0f;
+    arg4[0].z = 0.0f;
+    arg4[1].x = 0.0f;
+    arg4[1].y = 0.0f;
+    arg4[1].z = 0.0f;
+    arg4[2].x = 0.0f;
+    arg4[2].y = 0.0f;
+    arg4[2].z = 0.0f;
+    arg4[3].x = 0.0f;
+    arg4[3].y = 0.0f;
+    arg4[3].z = 0.0f;
+    arg5[3] = 0;
+    arg5[2] = 0;
+    arg5[1] = 0;
+    arg5[0] = 0;
+    if (v2 != 0) {
+        t4 = fn_1_14F04();
+        if (*(u32 *)(t4 + 208) != 0) {
+            *(struct fn_1_2A8D0_Copy12 *)&arg4[0] = *(struct fn_1_2A8D0_Copy12 *)(t4 + 240);
+            arg5[0] = *(u32 *)(t4 + 264);
+            arg6[0] |= arg7;
+        }
+        if (*(u32 *)(t4 + 136) != 0) {
+            *(struct fn_1_2A8D0_Copy12 *)&arg4[1] = *(struct fn_1_2A8D0_Copy12 *)(t4 + 168);
+            arg5[1] = *(u32 *)(t4 + 192);
+            arg6[1] |= arg7;
+        }
+        v3 = *(u32 *)(t4 + 352);
+        if (v3 != 0) {
+            if (v3 & 0x100) {
+                arg0->flags |= 0x800;
+                v2 = 0;
+            } else if (v3 & 0x600) {
+                *(struct fn_1_2A8D0_Copy12 *)&arg4[2] = *(struct fn_1_2A8D0_Copy12 *)(t4 + 384);
+                t5 = fn_1_868C0((s8)arg0->id);
+                if (!(arg0->field58c & 0x10)) {
+                    if (arg0->v474 != -1) {
+                        fn_1_F7338(arg0->v474, 2, 30);
+                    }
+                    arg0->flags |= 0x800;
+                    arg0->flags |= 0x80;
+                    arg0->flags |= 0x800000;
+                    arg0->flags |= 0x40000000;
+                    arg0->field58c |= 0x10;
+                    *(f32 *)((u8 *)arg0 + 388) = 0.0f;
+                    *(f32 *)((u8 *)arg0 + 548) = 0.0f;
+                    *(f32 *)((u8 *)arg0 + 148) = 0.0f;
+                    *(f32 *)((u8 *)arg0 + 152) = 0.0f;
+                    *(f32 *)((u8 *)arg0 + 156) = 0.0f;
+                    *(f32 *)((u8 *)arg0 + 160) = 0.0f;
+                    *(f32 *)((u8 *)arg0 + 164) = 0.0f;
+                    *(f32 *)((u8 *)arg0 + 168) = 0.0f;
+                    *(f32 *)((u8 *)arg0 + 380) = 0.0f;
+                    arg0->field58c &= ~0x80;
+                    *(u32 *)(t5 + 912) &= ~0x200000;
+                    *(u32 *)(t5 + 912) |= 0x1000000;
+                }
+            } else {
+                *(struct fn_1_2A8D0_Copy12 *)&arg4[2] = *(struct fn_1_2A8D0_Copy12 *)(t4 + 384);
+            }
+            arg6[2] |= arg7;
+        }
+        if (*(u32 *)(t4 + 64) != 0) {
+            *(struct fn_1_2A8D0_Copy12 *)&arg4[3] = *(struct fn_1_2A8D0_Copy12 *)(t4 + 96);
+            arg5[3] = *(u32 *)(t4 + 120);
+            arg6[3] |= arg7;
+        }
+    }
+    return v2;
+}
+/* fzgx:end fn_1_2A8D0 */
+
 /* fzgx:begin fn_1_2B478 */
 struct fn_1_2B478_Arg0 {
     u8 pad_0[0x1C8];
@@ -2513,7 +2620,6 @@ f32 fn_1_2B478(void *arg0) {
 /* fzgx:end fn_1_2B478 */
 
 /* fzgx:begin fn_1_2C688 */
-
 u32 fn_1_2C688(u32 arg0, u32 arg1, u32 arg2) {
     u32 v1;
     s32 v0;
