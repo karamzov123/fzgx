@@ -2551,6 +2551,17 @@
     }
   },
   {
+    "module": "interview",
+    "source": "rel/interview/interview/fn_17_9F8.c",
+    "symbols": [
+      "fn_17_9F8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/interview/interview.c"
+  },
+  {
     "module": "main",
     "source": "dol/ADXAMP_Start.c",
     "symbols": [

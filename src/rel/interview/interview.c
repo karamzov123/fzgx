@@ -120,6 +120,136 @@ void fn_17_394(void) {
 }
 /* fzgx:end fn_17_394 */
 
+/* fzgx:begin fn_17_9F8 */
+struct fn_17_9F8_state {
+    u8 pad_00[0x14];
+    u32 unk_14;
+    u32 unk_18;
+    s32 unk_1c;
+    u8 pad_20[4];
+    u32 unk_24;
+    u8 pad_28[8];
+    u8 unk_30;
+    u8 pad_31[0x27];
+    u32 flags_58;
+    u16 unk_5c;
+    u8 pad_5e[0x9A];
+    u8 unk_f8;
+    u8 unk_f9;
+    u8 unk_fa;
+    u8 unk_fb;
+};
+
+struct fn_17_9F8_audio {
+    u32 unk_0;
+};
+
+struct fn_17_9F8_sys {
+    u8 pad_0[0xE2];
+    u8 unk_E2;
+};
+
+extern struct fn_17_9F8_state lbl_17_bss_0;
+extern struct fn_17_9F8_audio lbl_1_bss_6EAB4;
+extern struct fn_17_9F8_sys lbl_1_bss_5138;
+extern u32 *lbl_1_bss_6EAD0;
+
+extern s32 fn_1_C24A4(void);
+extern u32 fn_1_B7C00(void);
+extern void fn_1_4A00(s32, s32, u32);
+extern s32 fn_1_4C10(void);
+extern void fn_1_A2A70(s32, s32);
+extern void ADXT_Stop(u32);
+extern void fn_1_3FDA8(u32, u32);
+
+void fn_17_9F8(void) {
+    s32 tmp_call12;
+    u8 fzgx_value;
+    struct fn_17_9F8_state *st = &lbl_17_bss_0;
+    u8 flag;
+    s32 lab_t1;
+
+    if (st->flags_58 & 0x200000) {
+        if (fn_1_C24A4()) {
+            st->unk_24 = 0x1e;
+            return;
+        }
+        flag = fn_1_B7C00();
+        if (flag != 0) {
+            st->unk_24 = 0x1e;
+            return;
+        }
+        st->flags_58 |= 0x10000000;
+        fn_1_4A00(0, 0x1e, st->unk_18);
+        return;
+    }
+
+    if (st->unk_5c >= 4 && st->unk_5c <= 5) {
+        return;
+    }
+    if (fn_1_4C10() != 0) {
+        return;
+    }
+    if ((st->unk_f9 != 0 || st->unk_fa != 0) && st->unk_fb != 0 && st->unk_5c >= 0xb) {
+        return;
+    }
+    if (st->flags_58 & 0x10000000) {
+        return;
+    }
+    if (st->flags_58 & 1 && st->unk_1c < 0x3c) {
+        return;
+    }
+
+    if (st->flags_58 & 1 && st->unk_5c < 4) {
+        st->flags_58 |= 0x10000000;
+        ADXT_Stop(lbl_1_bss_6EAD0[1]);
+        fn_1_4A00(0, 0x1e, st->unk_18);
+        return;
+    }
+    if (st->flags_58 & 1 && st->unk_5c < 0xc) {
+        st->flags_58 |= 0x10000000;
+        lbl_1_bss_6EAB4.unk_0 |= 0xa4;
+        fn_1_A2A70(4, 1);
+        ADXT_Stop(((1)[lbl_1_bss_6EAD0]));
+        fn_1_4A00(0, 0x1e, st->unk_18);
+        return;
+    }
+
+    if (st->unk_f8 == 3 || (st->flags_58 & 0x20000000)) {
+        st->flags_58 |= 0x10000000;
+        lbl_1_bss_6EAB4.unk_0 |= 0xac;
+        fn_1_A2A70(0xc, 0x1d);
+        fn_1_4A00(0, 0x1e, st->unk_18);
+        return;
+    }
+
+    if (st->unk_30 == 0) {
+        fn_1_3FDA8(st->unk_14, st->unk_18);
+    }
+    fzgx_value = 1;
+    st->unk_30 = fzgx_value;
+    if ((s32)lbl_1_bss_5138.unk_E2 != 0) {
+        return;
+    }
+    tmp_call12 = fn_1_C24A4();
+    if (tmp_call12) {
+        st->unk_24 = 0x1e;
+        return;
+    }
+    flag = fn_1_B7C00();
+    if (flag != 0) {
+        st->unk_24 = 0x1e;
+        return;
+    }
+    st->flags_58 |= 0x10000000;
+    lbl_1_bss_6EAB4.unk_0 |= 0x2c;
+    fn_1_A2A70(0xc, 0x1d);
+    lab_t1 = 0x1e;
+    fn_1_4A00(0, lab_t1, st->unk_18);
+    st->unk_30 = 0;
+}
+/* fzgx:end fn_17_9F8 */
+
 /* fzgx:begin fn_17_1794 */
 // fn_17_1794: empty in retail (single blr).
 void fn_17_1794(void) {
