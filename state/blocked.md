@@ -50,3 +50,22 @@ best objdiff score recorded for the next agent.
 | `fn_5_2C54` | 428 | 3 | 76.83 |
 | `fn_5_3C44` | 528 | 3 | 94.81 |
 | `movie:_prolog` | 512 | 3 | 90.70 |
+| `fn_5_20FC` | 2904 | 3 | 40.59 |
+| `fn_5_2E00` | 3576 | 3 | 61.01 |
+
+This closes the module: all 10 remaining unmatched functions are recorded
+here, so no `src/rel/movie/` function is left silently attempt-capped.
+`fn_5_20FC` and `fn_5_2E00` were missing from the first table.
+
+`fn_5_1404` is listed above but is no longer blocked: it has since been merged
+into `src/rel/movie/_prolog.c` and the claim tool reports `status is matched`.
+Only `fzgx inventory --module movie` still reports it as unmatched, so the
+inventory status view is stale for symbols that are already merged into a
+translation unit. The `fzgx context` attempts field is authoritative and shows
+the real cap state (e.g. `fn_5_2E00` is `attempts: 3`, though inventory prints
+`att=1`).
+
+Unblocking any of these needs triage judgement, not another blind attempt: the
+four near-misses (`fn_5_6E8` 94.85, `fn_5_37C` 93.34, `fn_5_4C8` 92.93,
+`fn_5_3C44` 94.81) should be re-derived from the saved diff corpora rather than
+resubmitted.
