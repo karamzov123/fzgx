@@ -29335,6 +29335,22 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/bg_common/fn_1_1185B4.c",
+    "symbols": [
+      "fn_1_1185B4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/bg_common.c",
+    "pool": {
+      "...rodata.0": "lbl_1_rodata_7AB8",
+      "@41": "lbl_1_rodata_7B1C",
+      "@42": "lbl_1_rodata_7B20"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/bg_for/fn_1_DCBF4.c",
     "symbols": [
       "fn_1_DCBF4"

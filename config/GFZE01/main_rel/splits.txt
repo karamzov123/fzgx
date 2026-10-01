@@ -6536,3 +6536,6 @@ rel/main_rel/effect/fn_1_620C8.c:
 
 rel/main_rel/car/fn_1_8FE74.c:
 	.text       start:0x0008FE74 end:0x000900B4 align:4
+
+rel/main_rel/bg_common/fn_1_1185B4.c:
+	.text       start:0x001185B4 end:0x001188CC align:4
