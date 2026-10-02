@@ -145,6 +145,82 @@ void fn_1_7E7A4(Fn1_7E7A4Data *arg0) {
 }
 /* fzgx:end fn_1_7E7A4 */
 
+/* fzgx:begin fn_1_7E9C4 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/car_test.h"
+
+extern u32 fn_1_5910(void);
+extern void fn_1_5634C(s32 arg0);
+extern void fn_1_5635C(s32 arg0, f32 arg1, f32 arg2);
+extern void fn_1_56374(u8 arg0, u8 arg1, u8 arg2);
+extern void fn_1_7EB0C(void);
+
+typedef struct {
+    s8 unk_0;
+    f32 unk_4;
+    f32 unk_8;
+    u8 unk_C;
+    u8 unk_D;
+    u8 unk_E;
+    s8 unk_F;
+    s32 unk_10;
+    s32 unk_14;
+} Entry7E9C4;
+
+typedef struct {
+    s8 unk_0;
+    f32 unk_4;
+    f32 unk_8;
+    u8 unk_C;
+    u8 unk_D;
+    u8 unk_E;
+    s8 unk_F;
+} Cur7E9C4;
+
+static inline s32 check7E9C4(u32 idx) {
+    Entry7E9C4 *e = &((Entry7E9C4 *)&lbl_1_bss_6D620)[idx];
+    s32 sel = 0;
+
+    if (e->unk_F != 0 || e->unk_10 < 0x20) {
+        sel = 1;
+    }
+    return sel;
+}
+
+void fn_1_7E9C4(void) {
+    s32 sel;
+    if (lbl_1_bss_3BE0 != 0 && (s8)lbl_1_bss_6D7F0 == 0) {
+        u32 off;
+
+        off = fn_1_5910() * 0x18;
+        sel = 0;
+        if (*((s8 *)&lbl_1_bss_6D620 + off + 0xF) != 0 ||
+            *(s32 *)((s8 *)&lbl_1_bss_6D620 + off + 0x10) < 0x20) {
+            sel = 1;
+        }
+        ((Cur7E9C4 *)&lbl_1_bss_6D7F4)->unk_F = sel != 0;
+        ((Cur7E9C4 *)&lbl_1_bss_6D7F4)->unk_0 = ((u8 *)&lbl_1_bss_6D620)[off];
+        ((Cur7E9C4 *)&lbl_1_bss_6D7F4)->unk_4 = *(f32 *)((u8 *)&lbl_1_bss_6D620 + off + 0x4);
+        ((Cur7E9C4 *)&lbl_1_bss_6D7F4)->unk_8 = *(f32 *)((((off) + (0x8)) + ((u8 *)&lbl_1_bss_6D620)));
+        ((Cur7E9C4 *)&lbl_1_bss_6D7F4)->unk_C = *((u8 *)&lbl_1_bss_6D620 + off + 0xC);
+        ((Cur7E9C4 *)&lbl_1_bss_6D7F4)->unk_D = *((u8 *)&lbl_1_bss_6D620 + off + 0xD);
+        ((Cur7E9C4 *)&lbl_1_bss_6D7F4)->unk_E = *((u8 *)&lbl_1_bss_6D620 + off + 0xE);
+    }
+
+    fn_1_5634C(((Cur7E9C4 *)&lbl_1_bss_6D7F4)->unk_F);
+    if (((Cur7E9C4 *)&lbl_1_bss_6D7F4)->unk_F != 0) {
+        fn_1_5635C(((Cur7E9C4 *)&lbl_1_bss_6D7F4)->unk_0,
+                   ((Cur7E9C4 *)&lbl_1_bss_6D7F4)->unk_4,
+                   ((Cur7E9C4 *)&lbl_1_bss_6D7F4)->unk_8);
+        fn_1_56374(((Cur7E9C4 *)&lbl_1_bss_6D7F4)->unk_C,
+                   ((Cur7E9C4 *)&lbl_1_bss_6D7F4)->unk_D,
+                   ((Cur7E9C4 *)&lbl_1_bss_6D7F4)->unk_E);
+    }
+    fn_1_7EB0C();
+}
+/* fzgx:end fn_1_7E9C4 */
+
 /* fzgx:begin fn_1_7EAE8 */
 // fn_1_7EAE8: main_rel .text:0x0007EAE8 size 0x24
 // Wrapper that calls fn_1_5634C with argument 0.
