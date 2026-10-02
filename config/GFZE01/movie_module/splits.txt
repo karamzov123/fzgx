@@ -1829,3 +1829,6 @@ rel/movie_module/fn_12_224FC.c:
 
 rel/movie_module/fn_12_39678.c:
 	.text       start:0x00039678 end:0x00039930 align:4
+
+rel/movie_module/fn_12_32EAC.c:
+	.text       start:0x00032EAC end:0x000330E0 align:4
