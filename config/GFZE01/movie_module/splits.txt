@@ -1823,3 +1823,6 @@ rel/movie_module/fn_12_2C640.c:
 
 rel/movie_module/fn_12_22888.c:
 	.text       start:0x00022888 end:0x00022954 align:4
+
+rel/movie_module/fn_12_224FC.c:
+	.text       start:0x000224FC end:0x00022668 align:4
