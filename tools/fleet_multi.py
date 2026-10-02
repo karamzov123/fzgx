@@ -116,7 +116,8 @@ def unsearched_near_misses(rows):
     from fzgx import api
     mine=local_attempts()
     wanted={r['symbol'] for r in rows if r['status']=='unmatched' and mine.get(r['symbol'],0)>=ATTEMPT_CAP
-            and (r.get('best',r.get('best_percent',0)) or 0)>=90 and r['size']<=1024}
+            and (r.get('best',r.get('best_percent',0)) or 0)>=90
+            and size_allowed(r['size'], r.get('best',r.get('best_percent',0)))}
     if not wanted:
         return set()
     engine=api._engine_id();best={}
@@ -151,10 +152,21 @@ def unsearched_near_misses(rows):
             out.add(symbol)
     return out
 
+SIZE_GATE = 1024
+NEAR_MISS_PCT = 95.0
+# A saved body that already diffs at this closeness is worth more per compile than
+# a cold small function, so the size gate widens for it instead of excluding it
+# outright. The 1024B gate is a throughput heuristic, not a correctness rule: 51
+# near-misses above it (fn_1_FD3A8 at 99.49%, fn_10_107D4 at 98.19%) had a local
+# body ready and were never scheduled.
+def size_allowed(size, best):
+    return size<=SIZE_GATE or (best or 0)>=NEAR_MISS_PCT
+
 def choose(rows, seen, context, count, reserved=(), retry=()):
     claimed_units={(r['module'],r['unit']) for r in rows if r['status']=='claimed' and r.get('unit')}
     mine=local_attempts()
-    eligible=[r for r in rows if r['status']=='unmatched' and (mine.get(r['symbol'],0)<ATTEMPT_CAP or r['symbol'] in retry) and r['size']<=1024
+    eligible=[r for r in rows if r['status']=='unmatched' and (mine.get(r['symbol'],0)<ATTEMPT_CAP or r['symbol'] in retry)
+              and size_allowed(r['size'], r.get('best',r.get('best_percent',0)))
               and seen.get(r['symbol'])!=context and r['symbol'] not in reserved
               and not (r.get('unit') and (r['module'],r['unit']) in claimed_units)]
     eligible.sort(key=lambda r:(-(r.get('best',r.get('best_percent',0)) or 0),mine.get(r['symbol'],0),r['size'],r['symbol']))
