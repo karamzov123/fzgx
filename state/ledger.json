@@ -1,5 +1,5 @@
 {
- "generated": 1790941243,
+ "generated": 1790941285,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -91362,19 +91362,19 @@
   {
    "symbol": "fn_1_131620",
    "module": "main_rel",
-   "unit": null,
+   "unit": "rel/main_rel/custom_memcard/fn_1_131620.c",
    "addr": 1250848,
    "size": 404,
-   "status": "claimed",
-   "attempts": 3,
-   "best_percent": 94.44554,
-   "claimed_by": "fleet-v2-gpt-1790941021650280457-codex-2",
-   "claimed_at": 1790941142,
-   "claim_ttl": 2100,
+   "status": "matched",
+   "attempts": 4,
+   "best_percent": 100.0,
+   "claimed_by": null,
+   "claimed_at": null,
+   "claim_ttl": null,
    "matched_commit": null,
    "blocked_reason": null,
    "prev_status": null,
-   "link_state": null
+   "link_state": "pool"
   },
   {
    "symbol": "fn_1_1317B4",
@@ -495537,7 +495537,7 @@
    "model": null,
    "started": 1790939589,
    "ended": null,
-   "checks": 12,
+   "checks": 14,
    "final_percent": 67.73864,
    "tokens_in": 0,
    "tokens_out": 0,
@@ -495545,8 +495545,8 @@
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 4,
-   "best_in_attempt": 73.0
+   "stale_checks": 1,
+   "best_in_attempt": 81.48864
   },
   {
    "id": 19540,
@@ -495932,20 +495932,20 @@
    "id": 19560,
    "symbol": "fn_1_131620",
    "agent": "fleet-v2-gpt-1790941021650280457-codex-2",
-   "harness": null,
-   "model": null,
+   "harness": "codex",
+   "model": "gpt-6.1-sol",
    "started": 1790941142,
-   "ended": null,
-   "checks": 8,
-   "final_percent": 94.44554,
-   "tokens_in": 0,
-   "tokens_out": 0,
+   "ended": 1790941276,
+   "checks": 12,
+   "final_percent": 100.0,
+   "tokens_in": 357902,
+   "tokens_out": 2669,
    "cost_usd": 0.0,
-   "outcome": null,
-   "notes": null,
+   "outcome": "matched-pool",
+   "notes": "oracle match accepted automatically [pool: lbl_1_bss_8CA40=owned BSS base, lbl_1_bss_8CA40=owned BSS base, lbl_1_bss_8CA40=verified BSS object[4], lbl_1_bss_8E380=verified BSS object[1], lbl_1_bss_8E384=verified BSS object[68], lbl_1_bss_8CA40=BSS object[4]]",
    "best_body_path": null,
-   "stale_checks": 1,
-   "best_in_attempt": 94.44554
+   "stale_checks": 0,
+   "best_in_attempt": 100.0
   }
  ],
  "names": [
