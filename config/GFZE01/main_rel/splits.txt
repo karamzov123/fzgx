@@ -6740,3 +6740,6 @@ rel/main_rel/car/fn_1_8E728.c:
 
 rel/main_rel/cloth/fn_1_106CAC.c:
 	.text       start:0x00106CAC end:0x00106D30 align:4
+
+rel/main_rel/effect/fn_1_640A4.c:
+	.text       start:0x000640A4 end:0x000642E8 align:4

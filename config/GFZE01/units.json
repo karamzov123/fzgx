@@ -37130,6 +37130,23 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/effect/fn_1_640A4.c",
+    "symbols": [
+      "fn_1_640A4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/effect.c",
+    "pool": {
+      "...rodata.0": "lbl_1_rodata_2950",
+      "@13": "lbl_1_rodata_2978",
+      "@16": "lbl_1_rodata_2988",
+      "@8": "lbl_1_rodata_295C"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/effect/fn_1_642E8.c",
     "symbols": [
       "fn_1_642E8"
