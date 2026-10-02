@@ -731,6 +731,35 @@ void fn_1_FD27C(fn_1_FD27C_Fn1FD27CArg0 *arg0, fn_1_FD27C_Fn1FD27CArg1 *arg1) {
 }
 /* fzgx:end fn_1_FD27C */
 
+/* fzgx:begin fn_1_FD324 */
+typedef struct {
+	u8 pad390[0x390];
+	u32 a;
+	u8 pad3a0[0xC];
+	u32 b;
+	u32 c;
+} Obj_fd324;
+
+int fn_1_FD324(void *arg0) {
+	Obj_fd324 *p;
+
+	if (arg0 == 0) {
+		return 0;
+	}
+	p = *(Obj_fd324 **)arg0;
+	if (p == 0) {
+		return 0;
+	}
+	if ((__rlwnm(p->a, 6, 31, 31) != 0 && p->b == 0)) {
+		return 0;
+	}
+	if (p->c == 0) {
+		return 0;
+	}
+	return 1;
+}
+/* fzgx:end fn_1_FD324 */
+
 /* fzgx:begin fn_1_FD388 */
 void fn_1_FD388(void) {
     fn_1_FD3A8();
