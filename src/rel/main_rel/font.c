@@ -3666,6 +3666,99 @@ void fn_1_55C48(Fn1_55C48Object *value) {
 #pragma opt_propagation reset
 /* fzgx:end fn_1_55C48 */
 
+/* fzgx:begin fn_1_55D6C noprologue */
+#include "types.h"
+#include "rel/main_rel/font.h"
+
+extern void lbl_8006DBAC(void *value);
+extern void fn_80072558(void);
+extern void fn_800749B0(s32 index, void *value);
+extern u8 lbl_801A66CC[];
+
+typedef struct {
+    u8 unk_00[8];
+    void *unk_08;
+    u8 unk_0C[0x30];
+    u16 unk_3C;
+    u8 unk_3E[2];
+    u8 unk_40[0x28];
+    void *unk_68;
+    u8 unk_70[0xC];
+    u32 unk_78;
+    u32 unk_7C;
+    void (*unk_80)(void *, u32, u32);
+} Fn1_55D6CObject;
+
+#pragma opt_common_subs off
+static inline void * fn_1_55D6C_read_pointer(Fn1_55D6CObject * owner) { return owner->unk_68; }
+#pragma opt_common_subs reset
+
+#pragma opt_propagation off
+#pragma opt_pointer_analysis off
+static inline void * fn_1_55D6C_read_pointer_(Fn1_55D6CObject * owner) { return owner->unk_08; }
+#pragma opt_common_subs off
+void fn_1_55D6C(Fn1_55D6CObject *value) {
+    Fn1_55D6CObject * entry;
+    s32 lab_t0__2;
+    s32 lab_t0_;
+    u32 lab_t0;
+    s32 offset;
+    Fn1_55D6CObject * entry_2;
+    lbl_8006DBAC((u8 *)value + 0xc);
+    fn_80072558();
+    fn_1_56470((u8 *)value + 0x40);
+    fn_1_7BEAC(value->unk_3C);
+
+    {
+
+        s32 i;
+        Obj_1_bss_6C7CC *state;
+
+        entry = value;
+        state = (Obj_1_bss_6C7CC *)&lbl_1_bss_6C7CC;
+        for (i = 0; i < 4; i++) {
+            if (((0) != (fn_1_55D6C_read_pointer(entry)))) {
+                lab_t0 = i;
+                lab_t0_ = lab_t0;
+                fn_800749B0(lab_t0_, fn_1_55D6C_read_pointer(entry));
+            } else if ((__rlwnm(state->unk_0, ((u32)(i + 1) % 32), 31, 31) != 0)) {
+                lab_t0__2 = i;
+                fn_800749B0(lab_t0__2, 0);
+            }
+            entry = (Fn1_55D6CObject *)((u8 *)entry + 4);
+        }
+    }
+
+    value->unk_80(fn_1_55D6C_read_pointer_(value), value->unk_78, value->unk_7C);
+    fn_1_56554();
+
+    {
+        u32 *table;
+        Obj_1_bss_6C7CC *state;
+
+        s32 j;
+
+        state = (Obj_1_bss_6C7CC *)&lbl_1_bss_6C7CC;
+        table = (u32 *)&lbl_801A66CC;
+        entry_2 = value;
+        for (j = 0, offset = 0; j < 4; j++, offset += 0x30, entry_2 = (Fn1_55D6CObject *)((u8 *)entry_2 + 4)) {
+            if ((__rlwnm(state->unk_0, ((u32)(j + 1) % 32), 31, 31) != 0)) {
+                lab_t0__2 = j;
+                fn_800749B0(lab_t0__2, (((0xe0) + ((u8 *)*table)) + (offset)));
+            } else if (fn_1_55D6C_read_pointer(entry_2) != 0) {
+                lab_t0__2 = j;
+                fn_800749B0(lab_t0__2, 0);
+            }
+        }
+    }
+}
+#pragma opt_common_subs reset
+
+#pragma opt_pointer_analysis reset
+
+#pragma opt_propagation reset
+/* fzgx:end fn_1_55D6C */
+
 /* fzgx:begin fn_1_55EA0 noprologue */
 #include "types.h"
 #include "rel/main_rel/font.h"
