@@ -629,6 +629,154 @@ void fn_1_FCF74(void) {
 }
 /* fzgx:end fn_1_FCF74 */
 
+/* fzgx:begin fn_1_FCFA4 noprologue */
+#include "types.h"
+#include "rel/main_rel/bg_cas.h"
+
+typedef struct {
+    u8 r, g, b, a;
+} Sig_fn_800371F8_GXColor;
+
+typedef s32 (*Fn)(void *);
+typedef void (*DrawFn)(void *, void *);
+
+typedef struct {
+    u8 pad_0[0x320];
+    s16 unk_320;
+} Ctx;
+
+typedef struct {
+    u8 pad_0[0x40F0];
+    u32 unk_40F0;
+    u8 pad_4100[0x4100 - 0x40F4];
+} Part;
+
+typedef struct {
+    u8 pad_0[0x420];
+    Fn unk_420;
+    Fn unk_424;
+    u8 pad_428[4];
+    DrawFn unk_42C;
+} Sub;
+
+typedef struct {
+    s32 unk_0;
+    u8 unk_4;
+    u8 pad_5[7];
+    u32 unk_C;
+    u8 pad_10[0x10];
+    Part part[1];
+    u8 pad_4120[0x10000 - 0x4120];
+    Sub sub;
+} Manager;
+
+extern s16 camera_get_output(void);
+extern s32 camera_get_state(void);
+extern u32 camera_get_status(void);
+extern u32 lbl_1_rodata_7608;
+extern u8 fn_1_3F854(void);
+extern void fn_8007245C(u32);
+extern void fn_800724C8(void);
+extern void fn_80074788(u32);
+extern void fn_800747D0(u32, u32, s32, s32, u32, s32, s32);
+extern void fn_800371F8(s32, Sig_fn_800371F8_GXColor *);
+extern void fn_80074918(u8, s32, u8);
+extern void fn_800720B0(u32);
+extern void fn_80072864(u32);
+
+static inline Fn fn_1_FCFA4_read_pointer(Manager * owner) { return owner->sub.unk_420; }
+void fn_1_FCFA4(void *arg0) {
+    s32 tmp_call4;
+    u32 nxt;
+    Fn f0;
+    Fn f1;
+    u8 cur;
+    u32 status;
+    u8 state;
+    u8 lim;
+    Ctx *p;
+    Manager *m = arg0;
+    u8 ok;
+    Sig_fn_800371F8_GXColor c;
+    u32 v;
+    s32 i;
+
+    if (m == 0) {
+        return;
+    }
+    f0 = fn_1_FCFA4_read_pointer(m);
+    if (f0 != 0 && f0((void *)((u8 *)m + 0x10000)) != 0) {
+        return;
+    }
+    if (lbl_1_bss_850C6.unk_0 != 0) {
+        return;
+    }
+    if ((m->unk_C & 0x40000000) != 0) {
+        p = (Ctx *)m->unk_0;
+        status = camera_get_status();
+        state = (u8)camera_get_state();
+        lim = (u8)fn_1_3F854();
+        if (p == 0) {
+            ok = 0;
+        } else {
+            cur = ((u8 *)&lbl_1_data_3EFB0)[p->unk_320];
+            if ((s16)status == 2 && state == 6) {
+                tmp_call4 = camera_get_output();
+                if (!((s16)tmp_call4 == p->unk_320)) {
+                    ok = 0;
+                } else {
+                    goto allowed; /* fzgx-allow: S1 shared success block matches retail control flow */
+                }
+            } else if ((s16)status == 2) {
+                goto allowed; /* fzgx-allow: S1 shared success block matches retail control flow */
+            } else {
+                /* fzgx-allow: S2 retail reloads the counter independently of the saved value */
+                nxt = (u8)(((volatile u8 *)&lbl_1_data_3EFB0)[p->unk_320] + 1);
+                ((u8 *)&lbl_1_data_3EFB0)[p->unk_320] = nxt;
+                if ((u32)nxt >= (u32)lim) {
+                    ((u8 *)&lbl_1_data_3EFB0)[p->unk_320] = 0;
+                }
+                if (!(cur == p->unk_320)) {
+                    ok = 0;
+                } else {
+                    goto allowed; /* fzgx-allow: S1 shared success block matches retail control flow */
+                }
+            }
+        }
+    } else {
+        if (!((m->unk_C & 0x80000000) == 0)) {
+            ok = 0;
+        } else {
+allowed:
+            ok = 1;
+        }
+    }
+    if (ok == 0) {
+        return;
+    }
+    f1 = m->sub.unk_424;
+    if (f1 != 0 && f1(m) == 0) {
+        return;
+    }
+    fn_800724C8();
+    fn_8007245C(0x2200);
+    v = lbl_1_rodata_7608;
+    fn_80074788(1);
+    fn_800747D0(4, 0, 0, 0, 0, 2, 2);
+    c = *(Sig_fn_800371F8_GXColor *)&v;
+    fn_800371F8(0, &c);
+    fn_80074918(1, 7, 0);
+    fn_800720B0(0);
+    fn_80072864(2);
+    for (i = 0; (s16)i < m->unk_4; i++) {
+        if (m->part[i].unk_40F0 != 0) {
+            lbl_1_data_3EFA8 = (u32)&m->part[i];
+            m->sub.unk_42C(m, &m->part[i]);
+        }
+    }
+}
+/* fzgx:end fn_1_FCFA4 */
+
 /* fzgx:begin fn_1_FD1D4 */
 extern void fn_80008BEC(void *arg0, int arg1, int arg2);
 extern void fn_1_FCA10(void);
