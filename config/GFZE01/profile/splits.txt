@@ -122,3 +122,6 @@ rel/profile/fn_16_6B24.c:
 
 rel/profile/fn_16_5F18.c:
 	.text       start:0x00005F18 end:0x0000607C align:4
+
+rel/profile/fn_16_69B8.c:
+	.text       start:0x000069B8 end:0x00006B24 align:4
