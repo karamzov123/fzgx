@@ -1090,6 +1090,90 @@ void fn_1_4B8CC(void) {
 }
 /* fzgx:end fn_1_4B8CC */
 
+/* fzgx:begin fn_1_4B8DC noprologue */
+#include "rel/main_rel/font.h"
+
+extern void fn_1_4B8BC(void);
+extern u32 OSGetArenaHi(void);
+extern s32 fn_80006B70(void *, void *);
+extern void OSReport(const char *, ...);
+extern void OSPanic(const char *, int, const char *, ...);
+
+typedef struct {
+    u32 unk_0;
+    u8 pad_4[0x48];
+} MsgData;
+
+extern u32 fn_80006DE8(MsgData *);
+extern u32 fn_8000B360(u32, u32);
+extern u32 fn_80006D1C(MsgData *, void *, u32, u32);
+extern u32 fn_8002071C(void);
+extern u32 ARGetDMAStatus(void);
+extern u32 fn_800206FC(u32);
+extern void DCFlushRange(void *, u32);
+
+typedef void (*ARQCallback)(u32);
+
+typedef struct {
+    void *next;
+    u32 owner;
+    u32 type;
+    u32 priority;
+    u32 source;
+    u32 dest;
+    u32 length;
+    ARQCallback callback;
+} ARQRequest;
+
+extern void ARQPostRequest(ARQRequest *, u32, u32, u32, void *, u32, u32, ARQCallback);
+extern void OSSetArenaHi(u32);
+
+void fn_1_4B8DC(void)
+{
+    u8 *base = (u8 *)&lbl_1_data_1A3B8;
+    u32 size;
+    void *src = base + 0x2014;
+    MsgData msg;
+    u32 arenaHi;
+    void *p;
+    u32 q;
+    s32 flag;
+    s32 tmp_call2;
+
+    arenaHi = OSGetArenaHi();
+
+    tmp_call2 = fn_80006B70(src, &msg);
+    if (tmp_call2 == 0) {
+        OSReport((const char *)base + 0x2030, src);
+        OSPanic((const char *)base + 0x1910, 0xA77,
+            (const char *)base + 0x2040);
+    }
+
+    size = (fn_80006DE8(&msg) + 0x1F) & ~0x1F;
+    p = (void *)fn_8000B360(size, 0x20);
+    fn_80006D1C(&msg, p, size, 0);
+    flag = 1;
+    (void) flag;  /* fzgx: keeps the web at its definition */
+    q = fn_8002071C();
+
+    while (ARGetDMAStatus() != 0) {
+    }
+
+    fn_800206FC(size);
+    lbl_1_bss_4BA58 = 1;
+    DCFlushRange(p, size);
+    ARQPostRequest((ARQRequest *)&lbl_1_bss_4BA60[0], 1, 0, 1, p, 0xF96000,
+        size, (ARQCallback)fn_1_4B8BC);
+
+    /* the AR completion flag is polled in place; the load must not be hoisted */
+    while (flag == 1 && *(volatile s32 *)&lbl_1_bss_4BA58 != 0) {
+    }
+
+    fn_800206FC(q);
+    OSSetArenaHi(arenaHi);
+}
+/* fzgx:end fn_1_4B8DC */
+
 /* fzgx:begin fn_1_4BD48 */
 // fn_1_4BD48: empty in retail (single blr).
 void fn_1_4BD48(void) {
