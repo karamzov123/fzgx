@@ -2424,6 +2424,17 @@
   },
   {
     "module": "interview",
+    "source": "rel/interview/interview/fn_17_6B2C.c",
+    "symbols": [
+      "fn_17_6B2C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/interview/interview.c"
+  },
+  {
+    "module": "interview",
     "source": "rel/interview/interview/fn_17_6F30.c",
     "symbols": [
       "fn_17_6F30"
