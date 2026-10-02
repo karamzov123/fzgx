@@ -1224,6 +1224,124 @@ void fn_10_4A84(void) {
 }
 /* fzgx:end fn_10_4A84 */
 
+/* fzgx:begin fn_10_4AE0 pool */
+#include "rel/sel/sel.h"
+
+extern u8 lbl_1_bss_8B3A0;
+extern u32 lbl_1_bss_980[];
+extern s16 lbl_1_bss_962;
+typedef struct Sig_fn_1_152840_Entry {
+    s16 id;
+    u8 pad[2];
+    u32 flags;
+} Sig_fn_1_152840_Entry;
+extern int fn_1_152840(s16, Sig_fn_1_152840_Entry *, s16, s16);
+typedef struct {
+    u16 unk0;
+    u32 unk4;
+    u8 unk8;
+    u8 pad9[3];
+    u32 unkC;
+    u32 unk10;
+    u32 unk14;
+    u32 unk18;
+} Sig_fn_1_12C0EC_FnData;
+extern void fn_1_12C0EC(Sig_fn_1_12C0EC_FnData *);
+
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+u32 fzgx_obj_lbl_10_bss_0[5];
+u32 fzgx_obj_lbl_10_bss_14;
+s16 fzgx_obj_lbl_10_bss_18;
+s16 fzgx_obj_lbl_10_bss_1A;
+u32 fzgx_obj_lbl_10_bss_1C;
+u8 lbl_10_bss_1C_fill_1D;
+u16 lbl_10_bss_1C_fill_1E;
+u32 lbl_10_bss_1C_fill_20[232];
+u32 fzgx_obj_lbl_10_bss_3C0[74736];
+
+#pragma section code_type ".fzgxpool"
+static void fzgx_bss_layout(void) {
+    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */
+    s = *(u8 *)&fzgx_obj_lbl_10_bss_0;
+    s = *(u8 *)&fzgx_obj_lbl_10_bss_14;
+    s = *(u8 *)&fzgx_obj_lbl_10_bss_18;
+    s = *(u8 *)&fzgx_obj_lbl_10_bss_1A;
+    s = *(u8 *)&fzgx_obj_lbl_10_bss_1C;
+    s = *(u8 *)&lbl_10_bss_1C_fill_1D;
+    s = *(u8 *)&lbl_10_bss_1C_fill_1E;
+    s = *(u8 *)&lbl_10_bss_1C_fill_20;
+    s = *(u8 *)&fzgx_obj_lbl_10_bss_3C0;
+}
+#pragma section code_type ".text"
+
+#pragma opt_dead_assignments off
+#pragma opt_lifetimes off
+u32 fn_10_4AE0(u32 arg0, u32 initial_count) {
+    s16 v0;
+    s64 *mask;
+    s64 masks[4];
+    s16 *slot;
+    s16 i;
+    s16 selected;
+    u32 arg1;
+    u8 *base;
+    u8 *p_lbl_10_bss_0;
+    base = (u8 *)&lbl_1_bss_8B3A0;
+    v0 = (s16)arg0;
+    p_lbl_10_bss_0 = (u8 *)&fzgx_obj_lbl_10_bss_0;
+    arg1 = initial_count;
+    slot = (s16 *)(base + v0 * 32);
+    selected = *(slot += 7);
+    if (selected == -1) {
+        if (*(u32 *)((u8 *)&lbl_1_bss_8B3A0 + 0x94) & 0x40000000)
+            selected = ((s16 *)&lbl_10_data_55C)[v0];
+        else
+            selected = (&lbl_10_data_554)[v0];
+    }
+    mask = &masks[v0];
+    *mask = 0;
+    for (i = 0; i < 4; i++) {
+        if ((s16)arg0 != i) {
+            if ((s16)fn_1_152840(*(s16 *)((u8 *)&lbl_1_bss_8B3A0 + i * 32 + 14),
+                 (Sig_fn_1_152840_Entry *)&fzgx_obj_lbl_10_bss_1C,
+                 fzgx_obj_lbl_10_bss_1A, fzgx_obj_lbl_10_bss_18) == 1) {
+                *mask |= (s32)(1 << *(s16 *)((u8 *)&lbl_1_bss_8B3A0 + i * 32 + 14));
+            }
+        }
+    }
+    if (lbl_1_bss_980[v0] == 0x09000000 ||
+        lbl_1_bss_980[v0] == 0x88000000 ||
+        lbl_1_bss_980[v0] == 0x8B100000 ||
+        lbl_1_bss_980[v0] == 0x08000000 ||
+        (s16)arg0 == *(u8 *)((u8 *)&lbl_1_bss_8B3A0 + 0x9E)) {
+        if (*(s16 *)((u8 *)&lbl_1_bss_8B3A0 + 4) > (s16)arg1) {
+            if (*(u32 *)((u8 *)&lbl_1_bss_8B3A0 + 0x94) & 0x10000000) {
+                while (!(s16)fn_1_152840(selected,
+                       (Sig_fn_1_152840_Entry *)&fzgx_obj_lbl_10_bss_1C,
+                       fzgx_obj_lbl_10_bss_1A, fzgx_obj_lbl_10_bss_18) ||
+                       ((((s32)(1 << selected)) & (*mask))) != 0) {
+                    selected = (selected + 1) % 41;
+                }
+            }
+            *slot = selected;
+            arg1++;
+        } else {
+            *slot = -1;
+            fn_1_12C0EC((Sig_fn_1_12C0EC_FnData *)(*(u8 **)((u8 *)&lbl_1_bss_8B3A0 + 0xA4) +
+                (lbl_1_bss_962 - 14) * 0x94 + v0 * 0x1C + 0x24));
+        }
+    } else {
+        *slot = -1;
+        fn_1_12C0EC((Sig_fn_1_12C0EC_FnData *)(*(u8 **)((u8 *)&lbl_1_bss_8B3A0 + 0xA4) +
+            (lbl_1_bss_962 - 14) * 0x94 + v0 * 0x1C + 0x24));
+    }
+    return arg1;
+}
+#pragma opt_lifetimes reset
+
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_10_4AE0 */
+
 /* fzgx:begin fn_10_5148 */
 extern u8 lbl_10_bss_0[];
 extern char lbl_10_data_6A4[11];
