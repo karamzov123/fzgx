@@ -2191,6 +2191,17 @@
   },
   {
     "module": "interview",
+    "source": "rel/interview/interview/fn_17_2B9C.c",
+    "symbols": [
+      "fn_17_2B9C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/interview/interview.c"
+  },
+  {
+    "module": "interview",
     "source": "rel/interview/interview/fn_17_2D24.c",
     "symbols": [
       "fn_17_2D24"

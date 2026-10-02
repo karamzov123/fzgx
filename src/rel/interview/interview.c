@@ -256,6 +256,68 @@ void fn_17_1794(void) {
 }
 /* fzgx:end fn_17_1794 */
 
+/* fzgx:begin fn_17_2B9C */
+#include "rel/interview/interview.h"
+
+typedef struct InterviewControl {
+    u8 pad0[0x28];
+    u8 unk_28;
+    u8 pad29[7];
+    u8 unk_30;
+    u8 pad31[0x27];
+    u32 unk_58;
+    u8 pad5C[0xCC];
+    u8 unk_128;
+} InterviewControl;
+typedef struct InterviewInput {
+    u8 pad0[8];
+    u16 unk_8;
+    u8 padA[10];
+} InterviewInput;
+typedef struct InterviewTimer {
+    u8 pad0[0xE0];
+    u8 unk_E0;
+    u8 unk_E1;
+    u8 unk_E2;
+} InterviewTimer;
+extern InterviewInput lbl_1_bss_9F8[];
+extern u8 lbl_1_bss_25E98;
+extern InterviewTimer lbl_1_bss_5138;
+extern u32 fn_17_1798(void);
+extern void fn_17_9F8(void);
+extern u8 fn_1_B7C00(void);
+extern void fn_1_FA650(void);
+
+void fn_17_2B9C(void) {
+    InterviewControl *state = (InterviewControl *)&lbl_17_bss_0;
+    if (state->unk_58 & 1) {
+        fn_17_1798();
+    }
+    if (state->unk_58 & 1) {
+        if (((((lbl_1_bss_9F8[lbl_1_bss_25E98].unk_8 >> 8) & 1) ||
+              ((lbl_1_bss_9F8[lbl_1_bss_25E98].unk_8 >> 12) & 1)) &&
+              !fn_1_B7C00() && state->unk_28 && !state->unk_128) || state->unk_30) {
+            fn_17_9F8();
+        }
+        if ((lbl_1_bss_9F8[lbl_1_bss_25E98].unk_8 >> 4) & 1) {
+            fn_1_FA650();
+        }
+    } else {
+        if ((((lbl_1_bss_9F8[lbl_1_bss_25E98].unk_8 >> 12) & 1) &&
+             !fn_1_B7C00() && state->unk_28 && !state->unk_128) || state->unk_30) {
+            fn_17_9F8();
+        }
+    }
+    if ((s32)lbl_1_bss_5138.unk_E2 != 0) {
+        s32 pressed = (lbl_1_bss_9F8[lbl_1_bss_25E98].unk_8 >> 8) & 1;
+        if (lbl_1_bss_5138.unk_E2 != 0 && pressed != 0 &&
+            lbl_1_bss_5138.unk_E0 >= 15 && lbl_1_bss_5138.unk_E0 <= 120) {
+            lbl_1_bss_5138.unk_E0 = 120;
+        }
+    }
+}
+/* fzgx:end fn_17_2B9C */
+
 /* fzgx:begin fn_17_2D24 */
 extern u32 lbl_17_bss_14;
 extern u32 lbl_17_bss_18[2];
