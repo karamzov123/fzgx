@@ -915,6 +915,73 @@ void fn_1_F1960(void *arg0, void *arg1, u32 arg2) {
 }
 /* fzgx:end fn_1_F1960 */
 
+/* fzgx:begin fn_1_F1A24 noprologue */
+#include "rel/main_rel/ghost.h"
+
+extern u32 lbl_801A6410;
+extern u8 lbl_1_data_3E358[];
+extern void fn_1_F1950(void);
+extern void fn_1_46B4(u32, u32, u8 *, u32);
+extern u32 fn_1_4630(u32, u32, u8 *, u32);
+extern u32 fn_8002071C(void);
+extern void fn_800206FC(u32);
+extern u32 ARGetDMAStatus(void);
+extern void DCInvalidateRange(void *, u32);
+extern void ARQPostRequest(void *, u32, u32, u32, u32, void *, u32, void (*)(void));
+extern void OSReport(const char *, ...);
+
+#pragma opt_common_subs off
+#pragma opt_loop_invariants off
+#pragma opt_strength_reduction off
+static inline void fn_1_F1A24_read(u8 *bss, void *buf, u32 addr, u32 len) {
+    s8 work[0x18];
+    u32 old;
+
+    old = fn_8002071C();
+    fn_800206FC(len);
+    *(u32 *)(bss + 0x3b7c) = 0;
+    while (ARGetDMAStatus() != 0) {
+    }
+    DCInvalidateRange(buf, len);
+    ARQPostRequest(work, 1, 1, 1, addr, buf, len, fn_1_F1950);
+    while (*(s32 *)(bss + 0x3b7c) == 0) {
+    }
+    fn_800206FC(old);
+}
+
+void fn_1_F1A24(void) {
+    u32 *entry;
+    u32 size;
+    u8 *bss;
+    u8 *buffer;
+    u8 *data;
+    u32 i;
+
+    data = lbl_1_data_3E358;
+    bss = (u8 *)&lbl_1_bss_7B180;
+    entry = (u32 *)(((0x16b4) + (bss)));
+    size = 0xf24000;
+    i = 0;
+    while (i < bss[0x1754]) {
+        if (((0) != (*entry))) {
+            fn_1_46B4(lbl_801A6410, *entry, data + 0x2d4, 0x12a7);
+        }
+        *entry = fn_1_4630(lbl_801A6410, 0x3ec0, data + 0x2d4, 0x12a9);
+        fn_1_F1A24_read(bss, (void *)*entry, size, 0x3ec0);
+        buffer = (u8 *)(*entry);
+        OSReport((const char *)(data + 0x4a0), *buffer);
+        OSReport((const char *)(data + 0x4b0), buffer + 8);
+        OSReport((const char *)(data + 0x4bc), *(u16 *)(buffer + 0x18));
+        entry++;
+        size += 0x3ec0;
+        i++;
+    }
+}
+#pragma opt_strength_reduction reset
+#pragma opt_loop_invariants reset
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_F1A24 */
+
 /* fzgx:begin fn_1_F1B78 */
 void fn_1_F1B78(u32 value) {
     lbl_1_bss_7C848[0] = value;
