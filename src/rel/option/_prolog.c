@@ -57,6 +57,65 @@ extern s32 lbl_1_bss_970;
 extern u8 lbl_4_bss_2;
 extern u16 lbl_1_bss_968;
 
+/* fzgx:begin fn_4_0 noprologue */
+#include "types.h"
+
+extern u32 lbl_1_bss_9F8;
+extern void fn_1_A2D84(u32);
+
+/* Volatile input-state reads preserve the separate repeated halfword loads in retail. */
+s32 fn_4_0(u32 out0, u32 a, u32 b, s32 index, u32 select)
+{
+    u32 x, y;
+    s32 n;
+    u32 res, mid;
+    u8 *p;
+
+    n = 0;
+    res = out0;
+    if (index == -1) {
+        if (select == 0) {
+            x = ((*(volatile u16 *)((u8 *)&lbl_1_bss_9F8 + 0x10) >> 3) & 1) /* volatile: preserve repeated input-state reads in retail. */
+             || ((*(volatile u16 *)((u8 *)&lbl_1_bss_9F8 + 0x12) >> 3) & 1); /* volatile: preserve repeated input-state reads in retail. */
+            y = ((*(volatile u16 *)((u8 *)&lbl_1_bss_9F8 + 0x10) >> 2) & 1) /* volatile: preserve repeated input-state reads in retail. */
+             || ((*(volatile u16 *)((u8 *)&lbl_1_bss_9F8 + 0x12) >> 2) & 1); /* volatile: preserve repeated input-state reads in retail. */
+        } else {
+            x = (*(volatile u16 *)((u8 *)&lbl_1_bss_9F8 + 0x10) & 1) /* volatile: preserve repeated input-state reads in retail. */
+             || (*(volatile u16 *)((u8 *)&lbl_1_bss_9F8 + 0x12) & 1); /* volatile: preserve repeated input-state reads in retail. */
+            y = ((*(volatile u16 *)((u8 *)&lbl_1_bss_9F8 + 0x10) >> 1) & 1) /* volatile: preserve repeated input-state reads in retail. */
+             || ((*(volatile u16 *)((u8 *)&lbl_1_bss_9F8 + 0x12) >> 1) & 1); /* volatile: preserve repeated input-state reads in retail. */
+        }
+    } else {
+        if (select == 0) {
+            p = (u8 *)&lbl_1_bss_9F8 + ((0x14) * (index));
+            x = ((*(volatile u16 *)(p += 0x10) >> 3) & 1) /* volatile: preserve repeated input-state reads in retail. */
+             || ((*(volatile u16 *)((((index * 0x14) + ((u32)&lbl_1_bss_9F8)) + (0x12))) >> 3) & 1); /* volatile: preserve repeated input-state reads in retail. */
+            y = ((*(volatile u16 *)p >> 2) & 1) /* volatile: preserve repeated input-state reads in retail. */
+             || ((*(volatile u16 *)(((index * 0x14) + ((0x12) + ((u32)&lbl_1_bss_9F8)))) >> 2) & 1); /* volatile: preserve repeated input-state reads in retail. */
+        } else {
+            p = (u8 *)&lbl_1_bss_9F8 + index * 0x14;
+            x = (*(volatile u16 *)(p += 0x10) & 1) /* volatile: preserve repeated input-state reads in retail. */
+             || (*(volatile u16 *)(((index * 0x14) + ((0x12) + ((u32)&lbl_1_bss_9F8)))) & 1); /* volatile: preserve repeated input-state reads in retail. */
+            y = ((*(volatile u16 *)p >> 1) & 1) /* volatile: preserve repeated input-state reads in retail. */
+             || ((*(volatile u16 *)(((index * 0x14) + ((0x12) + ((u32)&lbl_1_bss_9F8)))) >> 1) & 1); /* volatile: preserve repeated input-state reads in retail. */
+        }
+    }
+    if (x) n = -1;
+    if (y) n++;
+    if ((u32)(b - a) == 1) {
+        if (n == -1) res = a;
+        else if (n == 1) res = b;
+    } else {
+        mid = out0 + n;
+        if ((s32)mid < (s32)a) res = b;
+        else if (mid > b) res = a;
+        else res = mid;
+    }
+    if (out0 != res) fn_1_A2D84(0xA9010000);
+    return res;
+}
+/* fzgx:end fn_4_0 */
+
 /* fzgx:begin fn_4_250 */
 #include "font.h"
 

@@ -59928,6 +59928,17 @@
   },
   {
     "module": "option",
+    "source": "rel/option/_prolog/fn_4_0.c",
+    "symbols": [
+      "fn_4_0"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/option/_prolog.c"
+  },
+  {
+    "module": "option",
     "source": "rel/option/_prolog/fn_4_250.c",
     "symbols": [
       "fn_4_250"
