@@ -73,6 +73,68 @@ void fn_1_49F0(u32 *value) {
 }
 /* fzgx:end fn_1_49F0 */
 
+/* fzgx:begin fn_1_4A00 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/alloc.h"
+
+extern void fn_1_4BB0(void);
+extern f32 fn_1_4D14(Obj_1_data_2CDC *data);
+extern const f32 lbl_1_rodata_160;
+extern const f32 lbl_1_rodata_164;
+extern void fn_1_4CD8(void);
+extern void fn_8006CE1C(f32 value);
+extern u32 fn_1_435C(void *value);
+extern void fn_1_4E60(void);
+extern s16 fn_1_3F8C(u8 *data, void (*callback)(void), Obj_1_data_2CDC *object, u32 count);
+extern void fn_1_4DE0(void);
+extern void fn_1_4010(s32 value, void (*callback)(void));
+
+void fn_1_4A00(s32 enabled, u8 mode, void *value) {
+    Obj_1_data_2CDC *data = &lbl_1_data_2CDC;
+    void *allocated;
+
+    if (data->unk_6 != -1) {
+        fn_1_4BB0();
+        lbl_1_data_2CDC.unk_4 = (u16)(s16)(lbl_1_rodata_160 * fn_1_4D14(&lbl_1_data_2CDC));
+    } else if (enabled != 0) {
+        data->unk_4 = -1;
+    } else {
+        data->unk_4 = 0;
+    }
+    lbl_1_data_2CDC.unk_3 = 0;
+    if (mode == 0) {
+        if (enabled != 0) fn_1_4CD8();
+        else fn_8006CE1C(lbl_1_rodata_164);
+        return;
+    }
+    if (enabled != 0) {
+        lbl_1_data_2CDC.unk_3 |= 2;
+        if (lbl_1_data_2CDC.unk_4 < 0x100) {
+            fn_1_4CD8();
+            lbl_1_data_2CDC.unk_4 = 0;
+            return;
+        }
+    } else {
+        lbl_1_data_2CDC.unk_3 |= 4;
+        if (lbl_1_data_2CDC.unk_4 > 0xff00) {
+            fn_8006CE1C(lbl_1_rodata_164);
+            lbl_1_data_2CDC.unk_4 = -1;
+            return;
+        }
+    }
+    lbl_1_data_2CDC.unk_3 |= 1;
+    lbl_1_data_2CDC.unk_1 = 0;
+    lbl_1_data_2CDC.unk_2 = 1;
+    lbl_1_data_2CDC.unk_0 = mode;
+    lbl_1_data_2CDC.unk_C = (u32)value;
+    allocated = (void *)fn_1_435C(value);
+    data->unk_6 = (s16)fn_1_3F8C(lbl_1_data_2CEC, fn_1_4E60, &lbl_1_data_2CDC, 0);
+    fn_1_4010(data->unk_6, fn_1_4DE0);
+    fn_1_435C(allocated);
+}
+/* fzgx:end fn_1_4A00 */
+
 /* fzgx:begin fn_1_4BB0 */
 void fn_1_4BB0(void) {
     if (lbl_1_data_2CDC.unk_3 & 1) {

@@ -6557,3 +6557,9 @@ rel/main_rel/effect/fn_1_62AF8.c:
 
 rel/main_rel/car/fn_1_95238.c:
 	.text       start:0x00095238 end:0x0009550C align:4
+
+rel/main_rel/alloc/fn_1_4A00.c:
+	.text       start:0x00004A00 end:0x00004BB0 align:4
+
+rel/main_rel/shadowmap/fn_1_579A0.c:
+	.text       start:0x000579A0 end:0x00057A70 align:4
