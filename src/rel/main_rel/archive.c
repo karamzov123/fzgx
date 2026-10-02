@@ -764,6 +764,55 @@ void fn_1_12C47C(void *arg0, void *arg1, s32 arg2) {
 }
 /* fzgx:end fn_1_12C47C */
 
+/* fzgx:begin fn_1_12C5E4 */
+typedef struct {
+    u8 pad0[0x328];
+    s8 flag;
+    u8 pad329[0x37c - 0x329];
+    void *items[4];
+    u8 pad38c[0x3b8 - 0x38c];
+    s16 values[4];
+    u8 pad3c0[0x440 - 0x3c0];
+} FnData;
+
+extern void fn_80071718(void *arg);
+extern void fn_80008BEC(void *arg, s32 value, void *table);
+
+#pragma opt_common_subs off
+void fn_1_12C5E4(FnData *arg) {
+    FnData *base;
+    struct { s16 value; } outer;
+    FnData *p;
+    struct { s16 value; } inner;
+    FnData *q;
+    void *zero;
+    s8 tmp_ra2;
+
+    base = arg;
+    outer.value = 0;
+    p = base;
+    zero = 0;
+    while (outer.value < 0x29) {
+        tmp_ra2 = p->flag;
+        if ((s8)tmp_ra2 >= 0 && (s8)tmp_ra2 <= 0x28) {
+            inner.value = 0;
+            q = p;
+            while (inner.value < 4) {
+                if ((p->values[0] % 4) != inner.value && q->items[inner.value] != 0) {
+                    fn_80071718(q->items[inner.value]);
+                    q->items[inner.value] = zero;
+                }
+                inner.value++;
+            }
+        }
+        p++;
+        outer.value++;
+    }
+    fn_80008BEC(base, 0, (void *)((u32)0x10000 - 0x51C0));
+}
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_12C5E4 */
+
 /* fzgx:begin fn_1_12C6BC */
 void fn_1_12C6BC(void *arg) {
     u8 *p;
