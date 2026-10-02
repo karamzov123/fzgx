@@ -1019,6 +1019,77 @@ void fn_1_128F10(void) {
 }
 /* fzgx:end fn_1_128F10 */
 
+/* fzgx:begin fn_1_128F54 */
+extern s8 fn_1_86624(void);
+extern u32 fn_1_58C4(void);
+extern s32 fn_1_6B48(u32 index);
+extern const f32 lbl_1_rodata_8068;
+extern f32 lbl_1_rodata_806C[61];
+extern f32 fn_1_8CAF4(s16, u32);
+
+void fn_1_128F54(void) {
+    struct { u32 value; } inner_count;
+    u32 outer_count;
+    struct { s16 value; } item;
+    u32 i;
+    u32 j;
+    int found;
+    f32 limit;
+    u32 spell_call;
+
+{
+    struct { u32 value; } fzgx_loop_inner_count_553;
+    u32 fzgx_loop_outer_count_553;
+    spell_call = fn_1_86624();
+
+    fzgx_loop_inner_count_553.value = spell_call;
+    fzgx_loop_outer_count_553 = fn_1_58C4();
+    i = 0;
+    while (i < fzgx_loop_outer_count_553) {
+        item.value = fn_1_6B48(i);
+        if ((u32)item.value == 0xFFFFFFFF) {
+            ((f32 *)&lbl_1_bss_89770)[i] = lbl_1_rodata_8068;
+            ((u32 *)&lbl_1_bss_89760)[i] = 0;
+        } else {
+{
+    int fzgx_loop_found_1003;
+    f32 fzgx_loop_limit_1003;
+            fzgx_loop_found_1003 = 0;
+            fzgx_loop_limit_1003 = lbl_1_rodata_806C[0];
+            j = 0;
+            while (j < fzgx_loop_inner_count_553.value) {
+                if (item.value != j) {
+                    f32 value = fn_1_8CAF4(item.value, j);
+                    if (!(value > fzgx_loop_limit_1003)) {
+                        if (!fzgx_loop_found_1003) {
+                            ((f32 *)&lbl_1_bss_89770)[i] = value;
+                            fzgx_loop_found_1003 = 1;
+                            ((u32 *)&lbl_1_bss_89760)[i] = j;
+                        }
+                        if (value > ((f32 *)&lbl_1_bss_89770)[i]) {
+                            ((u32 *)&lbl_1_bss_89760)[i] = j;
+                            ((f32 *)&lbl_1_bss_89770)[i] = value;
+                        }
+                    }
+                }
+                j++;
+            }
+    found = fzgx_loop_found_1003;
+    limit = fzgx_loop_limit_1003;
+}
+            if (!found) {
+                ((u32 *)&lbl_1_bss_89760)[i] = 0;
+                ((f32 *)&lbl_1_bss_89770)[i] = lbl_1_rodata_8068;
+            }
+        }
+        i++;
+    }
+    inner_count.value = fzgx_loop_inner_count_553.value;
+    outer_count = fzgx_loop_outer_count_553;
+}
+}
+/* fzgx:end fn_1_128F54 */
+
 /* fzgx:begin fn_1_129D9C */
 #include "types.h"
 #include "rel/main_rel/accessory.h"

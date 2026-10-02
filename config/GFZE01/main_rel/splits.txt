@@ -6620,3 +6620,6 @@ rel/main_rel/ghost/fn_1_F1A24.c:
 
 rel/main_rel/font/fn_1_48C28.c:
 	.text       start:0x00048C28 end:0x00048D80 align:4
+
+rel/main_rel/accessory/fn_1_128F54.c:
+	.text       start:0x00128F54 end:0x0012907C align:4
