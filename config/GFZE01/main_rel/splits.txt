@@ -6605,3 +6605,6 @@ rel/main_rel/font/fn_1_55EA0.c:
 
 rel/main_rel/ranking/fn_1_157070.c:
 	.text       start:0x00157070 end:0x00157200 align:4
+
+rel/main_rel/bg_san/fn_1_DC084.c:
+	.text       start:0x000DC084 end:0x000DC1B8 align:4

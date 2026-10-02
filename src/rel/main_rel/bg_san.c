@@ -535,6 +535,51 @@ void fn_1_DB198(BgSanObject *object, void *arg1) {
 }
 /* fzgx:end fn_1_DB198 */
 
+/* fzgx:begin fn_1_DC084 */
+typedef struct Vec3 {
+    f32 x;
+    f32 y;
+    f32 z;
+} Vec3;
+
+extern int fn_1_58C4(void);
+extern void fn_1_681C(u8 index, Vec3 *out);
+extern f32 lbl_8006D0B4(f32 value);
+
+static inline f32 distance_squared(Vec3 *a, Vec3 *b) {
+    f32 dx = a->x;
+    f32 dy = a->y;
+    f32 dz = a->z;
+
+    dx -= b->x;
+    dy -= b->y;
+    dz -= b->z;
+
+    dx = dx * dx;
+    dx += dy * dy;
+    dx += dz * dz;
+    return dx;
+}
+
+f32 fn_1_DC084(Vec3 *pos) {
+    Vec3 point;
+    u32 i;
+    f32 best;
+    u32 count;
+
+    count = fn_1_58C4();
+    fn_1_681C(0, &point);
+    best = lbl_8006D0B4(distance_squared(pos, &point));
+    for (i = 1; i < count; i++) {
+        fn_1_681C((u8)i, &point);
+        best = best < lbl_8006D0B4(distance_squared(pos, &point))
+                   ? best
+                   : lbl_8006D0B4(distance_squared(pos, &point));
+    }
+    return best;
+}
+/* fzgx:end fn_1_DC084 */
+
 /* fzgx:begin fn_1_DC1B8 */
 // fn_1_DC1B8: returns a constant.
 int fn_1_DC1B8(void) {
