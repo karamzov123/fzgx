@@ -32796,6 +32796,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_ABAC.c",
+    "symbols": [
+      "fn_1_ABAC"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/camera.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/camera/fn_1_B81C.c",
     "symbols": [
       "fn_1_B81C"

@@ -1478,6 +1478,111 @@ block_7:
 }
 /* fzgx:end fn_1_AA54 */
 
+/* fzgx:begin fn_1_ABAC noprologue */
+#include "types.h"
+#include "rel/main_rel/camera.h"
+
+typedef struct {
+    u8 pad_0[2];
+    s16 unk_2;
+    u8 pad_4[0xA2];
+    s16 unk_A6;
+    s16 unk_A8;
+} ABACObject;
+typedef struct {
+    u8 pad_0[0x214];
+    u16 unk_214;
+} ABACState;
+
+extern ABACState *fn_1_86254(int);
+extern s32 fn_1_F2F34(void);
+extern s32 camera_get_entry_field_0xa4(u32);
+extern u16 fn_1_86678(int);
+extern s8 fn_1_86634(int);
+extern void fn_1_715C(u8, s32);
+extern u32 fn_1_864E8(int);
+extern s32 fn_1_40BB4(void);
+extern u8 lbl_1_bss_CC0[152];
+
+typedef union {
+    u16 raw;
+    struct {
+        u16 pad:12;
+        u16 decrease:1;
+        u16 increase:1;
+        u16 rest:2;
+    } bits;
+} ABACFlags;
+static inline u32 abac_increase(u16 raw) {
+    return (raw >> 2) & 1;
+}
+static inline u32 abac_decrease(u16 raw) {
+    return (raw >> 3) & 1;
+}
+typedef struct {
+    u8 pad:6;
+    u8 increase:1;
+    u8 decrease:1;
+} ABACByteFlags;
+
+#pragma opt_strength_reduction off
+void fn_1_ABAC(ABACObject *arg0) {
+    u16 controller;
+    ABACState *state;
+    s8 camera;
+    struct { s32 value; } value;
+
+    state = fn_1_86254(arg0->unk_2);
+    if (fn_1_F2F34()) {
+        controller = 0;
+        camera = 0;
+        value.value = camera_get_entry_field_0xa4(0);
+    } else {
+        controller = fn_1_86678(arg0->unk_2);
+        camera = fn_1_86634(arg0->unk_2);
+        value.value = camera_get_entry_field_0xa4((u8)camera);
+    }
+    if (state->unk_214 > 1) {
+        fn_1_715C(camera, 5);
+    } else if (1 == state->unk_214) {
+        fn_1_715C(camera, arg0->unk_A6);
+    } else if (fn_1_864E8(arg0->unk_2) & 0x80) {
+        fn_1_715C(camera, 5);
+    } else {
+        arg0->unk_A6 = value.value;
+        if ((s8)controller != -1 && *(s16 *)&lbl_1_bss_960 != 10 && !fn_1_40BB4()) {
+            if (fn_1_F2F34()) {
+                /* Volatile input flags are sampled separately for each direction. */
+                if (abac_increase(*(volatile u16 *)((u8 *)&lbl_1_bss_9F8.unk_10 + (s8)controller * 0x14)) ||
+                    abac_increase(((Obj_1_bss_9F8 *)((u8 *)&lbl_1_bss_9F8 + (s8)controller * 0x14))->unk_12)) {
+                    value.value = value.value + 1;
+                }
+                /* Volatile input flags are sampled separately for each direction. */
+                if (abac_decrease(*(volatile u16 *)((u8 *)&lbl_1_bss_9F8.unk_10 + (s8)controller * 0x14)) ||
+                    abac_decrease(((Obj_1_bss_9F8 *)((u8 *)&lbl_1_bss_9F8 + (s8)controller * 0x14))->unk_12)) {
+                    value.value = value.value - 1;
+                }
+            } else {
+                if (((ABACByteFlags *)&lbl_1_bss_CC0[(s8)controller])->increase) {
+                    value.value = (s16)(((1) + (value.value)));
+                }
+                if (((ABACByteFlags *)&lbl_1_bss_CC0[(s8)controller])->decrease) {
+                    value.value = value.value - 1;
+                }
+            }
+            if ((s16)value.value <= 0) value.value = 0;
+            if (arg0->unk_A8 == 1) {
+                if ((u32)(s16)value.value >= 12) value.value = 11;
+            } else {
+                if ((u32)(s16)value.value >= 4) value.value = 3;
+            }
+            fn_1_715C(camera, value.value);
+        }
+    }
+}
+#pragma opt_strength_reduction reset
+/* fzgx:end fn_1_ABAC */
+
 /* fzgx:begin camera_get_position_delta */
 typedef struct Vec3 {
     f32 x;
