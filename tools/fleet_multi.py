@@ -290,29 +290,108 @@ def publish(families):
     atomic(STATE,dict(families=families,heartbeat=time.time(),supervisor_pid=os.getpid(),
                        total_verified=total,last_landing=last))
 
+GLYPH = {'working':'●', 'starting':'◌', 'idle':'·', 'rate-limited':'⏳',
+         'stalled':'◐', 'error':'✕', 'blocked':'⊘', 'off':''}
+
+def brief(text, limit=120):
+    """One short human line from a provider failure blob.
+
+    Provider failures arrive as raw JSON and stream text. That used to be dropped
+    into the tooltip verbatim and cut at a flat 300 characters, so it ended
+    mid-word ("4.7s\\nve") and buried the one fact that mattered. Classify the
+    known failures first; fall back to the first line, cut on a word boundary.
+    """
+    t = ' '.join(str(text or '').split())
+    if not t:
+        return ''
+    low = t.lower()
+    # A diagnostic key alone is not a failure: respect its boolean value.
+    if re.search(r'\bverify_ok["\']?\s*:\s*false\b', low):
+        return 'hash verification failed - matches rejected'
+    if re.search(r'\bover_budget["\']?\s*:\s*true\b', low):
+        return 'token/output budget reached'
+    known = (
+        ('hash verification',     'hash verification failed - matches rejected'),
+        ('rate limit',            'provider rate limit'),
+        ('quota',                 'provider quota/credit rejection'),
+        ('credit',                'provider quota/credit rejection'),
+        ('billing',               'provider quota/credit rejection'),
+        ('wrong-model',           'provider returned the wrong model'),
+        ('interrupted',           'session interrupted by provider'),
+        ('went stale',            'no log progress - sessions went stale'),
+        ('stale',                 'no log progress - sessions went stale'),
+        ('deadline',              'batch hit its time bound'),
+        ('timeout',               'batch hit its time bound'),
+        ('incomplete',            'batch ended incomplete'),
+        ('crash',                 'session crashed'),
+        ('transport',             'transport failure'),
+        ('no provider',           'no provider returned a result'),
+    )
+    for needle, human in known:
+        if needle in low:
+            return human
+    if len(t) <= limit:
+        return t
+    cut = t[:limit].rsplit(' ', 1)[0].rstrip(' ,;:-')
+    return (cut or t[:limit]) + '...'
+
+def dur(seconds):
+    s = int(max(0, seconds))
+    if s < 60:
+        return f'{s}s'
+    if s < 3600:
+        return f'{s // 60}m'
+    return f'{s // 3600}h{(s % 3600) // 60:02d}m'
+
 def status():
     config=configuration();state=load(STATE,{})
-    fresh=time.time()-state.get('heartbeat',0)<30 and pid_alive(state.get('supervisor_pid'))
+    now=time.time()
+    fresh=now-state.get('heartbeat',0)<30 and pid_alive(state.get('supervisor_pid'))
     result={}
     for family,(name,icon) in META.items():
         on=config[family]['enabled']
         data=state.get('families',{}).get(family,{})
         current=(data.get('status','starting') if fresh else 'error') if on else 'off'
-        reason=data.get('reason','Starting constrained provider transport.') if fresh else 'Supervisor stopped/stale; no active work inferred from a PID.'
-        if not on: reason='Stopped by operator.'
+        if not on:
+            why='stopped by operator'
+        elif fresh:
+            why=brief(data.get('reason','')) or 'starting constrained provider transport'
+        else:
+            why='supervisor stopped or heartbeat is stale'
         active=data.get('active',0) if fresh and on else 0
-        suffix={'working':'●','starting':'◌','idle':'·','blocked':'!','error':'!','stalled':'!','rate-limited':'⏳','off':''}.get(current,'!')
-        tip=f"{name}: {current.upper()} — {POLICY[family]['display']}\n{reason}\n{active} claimed / {config[family]['parallel']} session limit"
-        tip+=f"\nBatch: {data.get('checks',0)} checks, {data.get('completed',0)} finished, {data.get('verified',0)} link-verified"
-        tip+=f"\nFleet total: {state.get('total_verified',0)} unique link-verified; last commit {state.get('last_landing','none')}"
-        tip+='\n'+'\n'.join(f"{c['module']}: {c['symbol']} ({c.get('checks') or 0} checks)" for c in data.get('claims',[]))
+        glyph=GLYPH.get(current,'!')
+
+        # Fixed order, one fact per line: what it is, why, the numbers, what to do.
+        lines=[f'{name}  {glyph} {current.upper()}', POLICY[family]['display'], '', f'Why: {why}']
+        checks=data.get('checks') or 0
+        done=data.get('completed') or 0
+        verified=data.get('verified') or 0
+        lines.append('')
+        lines.append(f'{checks} checks · {done} done · {verified} verified')
+        lines.append(f'Fleet: {state.get("total_verified",0)} verified · last {state.get("last_landing","none")}')
+        if active:
+            lines.append(f'Sessions: {active} active / {config[family]["parallel"]} allowed')
+        failures=data.get('failures') or 0
+        if data.get('retry_at',0)>now:
+            lines.append(f'Retry in {dur(data["retry_at"]-now)}'
+                         + (f' · {failures} failed batch{"es" if failures != 1 else ""}' if failures else ''))
+        claims=data.get('claims') or []
+        if claims:
+            lines.append('')
+            lines.append('Work: ' + ', '.join(
+                f'{c["module"]}:{c["symbol"]} ({c.get("checks") or 0})' for c in claims[:3]))
+            if len(claims) > 3:
+                lines.append(f'  +{len(claims) - 3} more')
         if family in SURGE:
-            tip+='\n'+data.get('surge_reason','Surge capacity is fleet-managed from paid-provider availability.')
-        if data.get('retry_at',0)>time.time():tip+=f"\nAutomatic retry in {int(data['retry_at']-time.time())}s; no model fallback."
-        tip+='\nLeft: toggle | Right/up: +session | Down: -session | Middle: logs'
+            lines.append('')
+            lines.append(data.get('surge_reason') or
+                         'Surge capacity is fleet-managed from paid-provider availability.')
+        lines.append('')
+        lines.append('Left: toggle | Right/up: +session | Down: -session | Middle: logs')
         result[family]=dict(on=on,status=current,count=active,icon=icon,name=name,
-                           checks=data.get('checks',0),surge_reason=data.get('surge_reason',''),
-                           label=icon+suffix+(str(active) if active else ''),tooltip=tip)
+                           glyph=glyph,why=why,checks=checks,surge_reason=data.get('surge_reason',''),
+                           label=icon+glyph+(str(active) if active else ''),
+                           tooltip='\n'.join(lines))
     return result
 
 MANAGED = 'Surge capacity is fleet-managed: it comes and goes with paid-provider availability, so it is not manually switchable. Use the paid tiles to change fleet size.'
@@ -499,7 +578,18 @@ def run():
                           surge_reason=previous.get('surge_reason',''),
                           reason='Live bounded provider; claims/checks from shared ledger, not inferred success.')
                 stop_reason=None
+                # A stop this supervisor asked for is not a provider fault. The
+                # batch is SIGTERMed on purpose, so its nonzero exit and the
+                # crash rows its sessions leave in the ledger are consequences of
+                # our own signal, not of the provider failing. Scoring them as a
+                # fault made every resize punish the tile it resized: cline was
+                # launched at parallel 8, the control file said 2, the drain
+                # aborted 8 sessions at 0% checks in ~8s each and drove failures
+                # to 10 with a backoff, so the operator's own change silenced the
+                # family. Both drains below are planned, and neither is evidence.
+                planned_drain=False
                 if not config[family]['enabled'] or config[family]['parallel']!=job.parallel:
+                    planned_drain=True
                     stop_reason=('Surge capacity retired; draining current work.' if family in SURGE
                                  else 'Operator control changed; draining current work.')
                 elif t['verify_ok'] is False:stop_reason='Hash verification failed; saving and holding producers.'
@@ -513,7 +603,15 @@ def run():
                     rows=batch_outcomes(job.batch)
                     broken=rc!=0 or t['verify_ok'] is not True or any(str(r['outcome']).startswith(('crash','timeout','incomplete','WRONG-MODEL')) for r in rows)
                     rate=cooldown(text,0)==1800
-                    if rate or broken:
+                    if planned_drain:
+                        # We asked for this stop, so it is neither a rate limit nor
+                        # a fault: keep the provider's failure history untouched and
+                        # go straight back to work on the next tick. Counting it
+                        # would let an operator resize manufacture the backoff it
+                        # then has to wait out, and would bury the real reason under
+                        # a provider error the provider never reported.
+                        delay=3;state='idle';reason=stop_reason
+                    elif rate or broken:
                         failures[family]+=1;delay=retry_delay(text,failures[family]);state='rate-limited' if rate else 'error'
                         # Report the provider's own words, not the last line of
                         # the stream: that is usually a tool-timing event, which
