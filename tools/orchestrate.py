@@ -49,6 +49,32 @@ CODEX_DISABLE = ["plugins", "recommended_plugins", "plugin_sharing", "remote_plu
                  "shell_snapshot", "shell_snapshot_v2"]
 
 
+def _refusal(out: str) -> Optional[str]:
+    """'rate-limited' when the harness output shows the provider refused the request.
+
+    A quota or rate refusal exits rc=1 like any other harness failure, so every one of
+    them was recorded as a crash: 58 of 127 crashes in one day were refusals, including
+    every claude attempt (its weekly limit, `rateLimitType: seven_day`). That hid the
+    real cause in batch reports and in any crash-rate measurement. The refusal text is
+    only inspected here, when no tool already produced a terminal outcome.
+    """
+    try:
+        from fleet import provider_error_text  # scoped: fleet imports this module
+    except Exception:
+        return None
+    try:
+        errors = provider_error_text(out or "")
+    except Exception:
+        return None
+    if not errors:
+        return None
+    blob = str(errors).lower()  # provider_error_text returns joined text, not a list
+    if any(word in blob for word in ("rate_limit", "rate limit", "quota", "credit", "billing",
+                                     "usage limit", "overage", "429", "too many requests")):
+        return "rate-limited"
+    return None
+
+
 def select(p: Project, spec: str) -> List[str]:
     """module:min:max:count — untouched, uncarved functions spread across sizes."""
     module, lo, hi, n = spec.split(":")
@@ -293,7 +319,7 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
     terminal = att and att["outcome"] in ("matched", "matched-pool", "released", "shadow-matched", "shadow-released")
     # Tool outcomes and counters are authoritative; models sometimes misformat or miscount RESULT.
     outcome = att["outcome"].removeprefix("shadow-") if terminal else (
-        "timeout" if rc == -9 else "incomplete" if rc == 0 else "crash")
+        "timeout" if rc == -9 else "incomplete" if rc == 0 else _refusal(out) or "crash")
     if outcome == "matched-pool":
         outcome = "matched"
     row = l.get(key)
@@ -394,7 +420,7 @@ def _fan_out(p: Project, a, model: str, symbols: List[str], batch: str, revise: 
             if r["outcome"].startswith("WRONG-MODEL"):
                 print(f"ABORT: {r['symbol']} ran on {r['outcome']}; expected {EXPECTED_MODEL[a.harness]}", flush=True)
                 queue.clear()
-            elif bound and r['outcome'].startswith(('crash', 'timeout')):
+            elif bound and r['outcome'].startswith(('crash', 'timeout', 'rate-limited')):
                 # Stop queued launches until the supervisor applies backoff.
                 queue.clear()
             print(f"  {r['outcome']:16s} {r['symbol']:14s} {'' if r['percent'] is None else f'{r['percent']:.1f}%':7s} "
