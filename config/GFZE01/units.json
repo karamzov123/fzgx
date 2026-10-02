@@ -64664,6 +64664,17 @@
   },
   {
     "module": "title",
+    "source": "rel/title/title/fn_8_23AC.c",
+    "symbols": [
+      "fn_8_23AC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/title.c"
+  },
+  {
+    "module": "title",
     "source": "rel/title/title/fn_8_25F8.c",
     "symbols": [
       "fn_8_25F8"
