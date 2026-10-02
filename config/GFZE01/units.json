@@ -1261,6 +1261,17 @@
   },
   {
     "module": "customize",
+    "source": "rel/customize/emb_paste_editor/fn_3_118BC.c",
+    "symbols": [
+      "fn_3_118BC"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/customize/emb_paste_editor.c"
+  },
+  {
+    "module": "customize",
     "source": "rel/customize/emb_paste_editor/fn_3_11930.c",
     "symbols": [
       "fn_3_11930"
