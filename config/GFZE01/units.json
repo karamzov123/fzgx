@@ -63895,6 +63895,17 @@
   },
   {
     "module": "title",
+    "source": "rel/title/title/fn_8_663C.c",
+    "symbols": [
+      "fn_8_663C"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/title/title.c"
+  },
+  {
+    "module": "title",
     "source": "rel/title/title/fn_8_67B0.c",
     "symbols": [
       "fn_8_67B0"
