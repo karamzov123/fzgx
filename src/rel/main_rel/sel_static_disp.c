@@ -670,6 +670,104 @@ void fn_1_134A4C(void) {
 }
 /* fzgx:end fn_1_134A4C */
 
+/* fzgx:begin fn_1_134AD4 noprologue */
+#include "types.h"
+#include "font.h"
+
+extern FontDrawPacket lbl_1_rodata_26F8;
+extern const f32 lbl_1_rodata_861C;
+extern const f32 lbl_1_rodata_85F4;
+extern int fn_1_4F734(FontDrawPacket *);
+extern const f32 lbl_1_rodata_8658;
+extern const f32 lbl_1_rodata_8838;
+extern const f32 lbl_1_rodata_883C;
+extern const f32 lbl_1_rodata_8840;
+extern s32 fn_1_A5DC4(void);
+extern u16 fn_1_486C4(u32);
+extern u32 fn_1_48690(u32);
+extern void fn_1_51678(FontDrawPacket *, u32, s16, s16, s16, s16);
+extern const f32 lbl_1_rodata_8844;
+extern const f32 lbl_1_rodata_8848;
+extern const f32 lbl_1_rodata_884C;
+extern const f32 lbl_1_rodata_8850;
+extern const f32 lbl_1_rodata_885C;
+extern const f32 lbl_1_rodata_8854;
+extern const f32 lbl_1_rodata_8858;
+
+void fn_1_134AD4(void) {
+	FontDrawPacket p;
+
+	p = lbl_1_rodata_26F8;
+	p.image = 0x10000 - 0x65FC;
+	p.x = lbl_1_rodata_861C;
+	p.y = lbl_1_rodata_861C;
+	p.z = lbl_1_rodata_85F4;
+	fn_1_4F734(&p);
+
+	p = lbl_1_rodata_26F8;
+	p.image = 0x10000 - 0x65FB;
+	p.x = lbl_1_rodata_8658;
+	p.y = lbl_1_rodata_861C;
+	p.z = lbl_1_rodata_8838;
+	fn_1_4F734(&p);
+
+	p = lbl_1_rodata_26F8;
+	p.image = 0x10000 - 0x65FF;
+	p.x = lbl_1_rodata_861C;
+	p.y = lbl_1_rodata_883C;
+	p.z = lbl_1_rodata_8840;
+	fn_1_4F734(&p);
+
+	if ((s8)fn_1_A5DC4() != 0) {
+		p = lbl_1_rodata_26F8;
+		p.image = 0x10000 - 0x65FA;
+		fn_1_51678(&p, p.image, 0, 0,
+			(s16)((fn_1_48690(p.image) >> 1) & 0x7FFF),
+			(s16)fn_1_486C4(p.image));
+		p.x = lbl_1_rodata_8844;
+		p.y = lbl_1_rodata_861C;
+		p.z = lbl_1_rodata_8848;
+		fn_1_4F734(&p);
+
+		p = lbl_1_rodata_26F8;
+		p.image = 0x10000 - 0x65FA;
+		fn_1_51678(&p, p.image,
+			(s16)((fn_1_48690(p.image) >> 1) & 0x7FFF), 0,
+			(s16)((fn_1_48690(p.image) >> 1) & 0x7FFF),
+			(s16)fn_1_486C4(p.image));
+		p.x = lbl_1_rodata_884C;
+		p.y = lbl_1_rodata_861C;
+		p.z = lbl_1_rodata_8850;
+		p.flags = 7;
+		fn_1_4F734(&p);
+
+		p = lbl_1_rodata_26F8;
+		p.image = 0x10000 - 0x65FD;
+		fn_1_51678(&p, p.image, 0, 0,
+			(s16)((fn_1_48690(p.image) >> 1) & 0x7FFF),
+			(s16)fn_1_486C4(p.image));
+		p.x = lbl_1_rodata_8844;
+		p.y = lbl_1_rodata_8854;
+		p.z = lbl_1_rodata_8858;
+		p.scale_y = p.scale_y * lbl_1_rodata_885C;
+		fn_1_4F734(&p);
+
+		p = lbl_1_rodata_26F8;
+		p.image = 0x10000 - 0x65FD;
+		fn_1_51678(&p, p.image,
+			(s16)((fn_1_48690(p.image) >> 1) & 0x7FFF), 0,
+			(s16)((fn_1_48690(p.image) >> 1) & 0x7FFF),
+			(s16)fn_1_486C4(p.image));
+		p.x = lbl_1_rodata_884C;
+		p.y = lbl_1_rodata_8854;
+		p.z = lbl_1_rodata_8858;
+		p.scale_y = p.scale_y * lbl_1_rodata_885C;
+		p.flags = 7;
+		fn_1_4F734(&p);
+	}
+}
+/* fzgx:end fn_1_134AD4 */
+
 /* fzgx:begin fn_1_134EE4 */
 #pragma opt_strength_reduction on
 void fn_1_134EE4(s32 arg0, s32 arg1, s32 arg2, f32 farg0) {
