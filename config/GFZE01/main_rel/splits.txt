@@ -6641,3 +6641,6 @@ rel/main_rel/game/fn_1_34F38.c:
 
 rel/main_rel/font/fn_1_553C4.c:
 	.text       start:0x000553C4 end:0x0005557C align:4
+
+rel/main_rel/stcoli/fn_1_28F08.c:
+	.text       start:0x00028F08 end:0x00029044 align:4

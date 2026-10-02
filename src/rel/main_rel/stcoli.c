@@ -2339,6 +2339,98 @@ void fn_1_287E8(Fn_1_287E8 *self) {
 #pragma opt_common_subs reset
 /* fzgx:end fn_1_287E8 */
 
+/* fzgx:begin fn_1_28F08 noprologue */
+#include "dolphin/types.h"
+
+extern const struct fn_1_28F08_lbl_1_rodata_840_pool {
+    u8 pad_0[0xC];
+    f32 unk_C;
+    u8 pad_10[0x24C];
+    f32 unk_25C;
+    u8 pad_260[0x48];
+    f32 unk_2A8;
+    f32 unk_2AC;
+} lbl_1_rodata_840;
+
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+} Vec3;
+
+typedef struct {
+    f32 m[10];
+    f64 d;
+} Mtx;
+
+typedef struct {
+    f32 pad[43];
+    f32 inv_x;
+    f32 inv_y;
+    f32 inv_z;
+} ScaleInfo;
+
+extern f32 lbl_8006D0B4(f32);
+extern void fn_8006E7E4(void *, void *, s32);
+extern void lbl_8006DAEC(void);
+extern void mathutil_mtxA_from_quat(void *);
+extern void lbl_8006DB74(Mtx *);
+extern void lbl_8006DB30(void);
+extern void lbl_8006DFC4(Mtx *);
+
+static inline f32 fn_1_28F08_operand(f32 left, f32 right) { return left + right; }
+#pragma opt_common_subs off
+#pragma opt_propagation off
+static inline f32 fn_1_28F08_read_pointer(Vec3 * owner) { return owner->z; }
+void fn_1_28F08(ScaleInfo *scale, Vec3 *src, f32 bias)
+{
+    f32 fzgx_live;
+    struct fn_1_28F08_lbl_1_rodata_840_pool *pool_lbl_1_rodata_840 = (struct fn_1_28F08_lbl_1_rodata_840_pool *)&lbl_1_rodata_840;
+    Vec3 v;
+    Mtx mtx;
+    f32 sum;
+    f32 len;
+
+    v.x = src->x;
+    v.y = src->y + bias;
+    v.z = src->z;
+
+    if (v.x > pool_lbl_1_rodata_840->unk_25C) {
+        v.x -= pool_lbl_1_rodata_840->unk_25C;
+    } else if (v.x < pool_lbl_1_rodata_840->unk_2A8) {
+        v.x += pool_lbl_1_rodata_840->unk_25C;
+    } else {
+        v.x = pool_lbl_1_rodata_840->unk_C;
+    }
+
+    if (fn_1_28F08_read_pointer(&v) > pool_lbl_1_rodata_840->unk_25C) {
+        v.z -= pool_lbl_1_rodata_840->unk_25C;
+    } else if (fn_1_28F08_read_pointer(&v) < pool_lbl_1_rodata_840->unk_2A8) {
+        v.z += pool_lbl_1_rodata_840->unk_25C;
+    } else {
+        v.z = pool_lbl_1_rodata_840->unk_C;
+    }
+
+    v.x = v.x / scale->inv_x;
+    fzgx_live = v.y;
+    v.y = fzgx_live / scale->inv_y;
+    v.z = fn_1_28F08_read_pointer(&v) / scale->inv_z;
+
+    fzgx_live = v.y;
+    len = lbl_8006D0B4(fn_1_28F08_operand((v.x * v.x), (fzgx_live * fzgx_live)) + fn_1_28F08_read_pointer(&v) * fn_1_28F08_read_pointer(&v));
+
+    fn_8006E7E4(&v, &v, (s32)(pool_lbl_1_rodata_840->unk_2AC * len));
+    lbl_8006DAEC();
+    mathutil_mtxA_from_quat(&v);
+    lbl_8006DB74(&mtx);
+    lbl_8006DB30();
+    lbl_8006DFC4(&mtx);
+}
+#pragma opt_propagation reset
+
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_28F08 */
+
 /* fzgx:begin fn_1_2A2A4 */
 typedef struct {
     u8 pad00[0xec];
