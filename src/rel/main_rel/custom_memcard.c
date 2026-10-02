@@ -177,6 +177,94 @@ void fn_1_131558(void) {
 }
 /* fzgx:end fn_1_131558 */
 
+/* fzgx:begin fn_1_131620 pool */
+extern u32 lbl_801A6410;
+extern u8 fn_1_B7C00(void);
+extern s32 fn_1_B7CD4(void);
+extern s32 fn_1_B7C5C(void);
+extern void OSReport(const char*, ...);
+extern void fn_1_46B4(u32, void*, u8*, s32);
+
+typedef struct {
+    u8 pad_00[0x24];
+    u32 unk_24;
+    u32 unk_28;
+    void* unk_2C;
+} MemcardEntry;
+typedef struct {
+    s32 unk_00;
+    s32 unk_04;
+    s32 unk_08;
+    u8 pad_0C[8];
+    void** unk_14;
+    u8 pad_18[0x128];
+    MemcardEntry unk_140[128];
+} MemcardState;
+
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+s32 fzgx_obj_lbl_1_bss_8CA40;
+u32 lbl_1_bss_8CA44_fill_8CA44;
+s32 lbl_1_bss_8CA44_4;
+u32 lbl_1_bss_8CA44_fill_8CA4C[2];
+void**lbl_1_bss_8CA44_10;
+u32 lbl_1_bss_8CA44_fill_8CA58[5];
+u32 lbl_1_bss_8CA6C_fill_8CA6C[69];
+MemcardEntry lbl_1_bss_8CA6C_114[128];
+u8 fzgx_obj_lbl_1_bss_8E380;
+u8 lbl_1_bss_8CA40_gap_8E381;
+u16 lbl_1_bss_8CA40_gap_8E381_fill_8E382;
+u32 fzgx_obj_lbl_1_bss_8E384[17];
+
+#pragma section code_type ".fzgxpool"
+static void fzgx_bss_layout(void) {
+    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_8CA40;
+    s = *(u8 *)&lbl_1_bss_8CA44_fill_8CA44;
+    s = *(u8 *)&lbl_1_bss_8CA44_4;
+    s = *(u8 *)&lbl_1_bss_8CA44_fill_8CA4C;
+    s = *(u8 *)&lbl_1_bss_8CA44_10;
+    s = *(u8 *)&lbl_1_bss_8CA44_fill_8CA58;
+    s = *(u8 *)&lbl_1_bss_8CA6C_fill_8CA6C;
+    s = *(u8 *)&lbl_1_bss_8CA6C_114;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_8E380;
+    s = *(u8 *)&lbl_1_bss_8CA40_gap_8E381;
+    s = *(u8 *)&lbl_1_bss_8CA40_gap_8E381_fill_8E382;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_8E384;
+}
+#pragma section code_type ".text"
+
+void fn_1_131620(void) {
+    
+    struct { u32 value; } i;
+    MemcardEntry* entry;
+    u32 lab_t1;
+    if (fn_1_B7C00() == 0) {
+        if (fn_1_B7CD4() == 0) {
+            lab_t1 = fn_1_B7C5C();
+            OSReport((const char*)lbl_1_data_40EF8, lab_t1);
+            entry = lbl_1_bss_8CA6C_114;
+            for (i.value = 0; i.value < 128; i.value++) {
+                if (entry[i.value].unk_24 != 0) {
+                    fn_1_46B4(lbl_801A6410, entry[i.value].unk_2C, lbl_1_data_40EA4, 0x1c9);
+                }
+            }
+            fzgx_obj_lbl_1_bss_8CA40 = -1;
+        } else {
+            entry = lbl_1_bss_8CA6C_114;
+            for (i.value = 0; i.value < 128; i.value++, entry++) {
+                if (entry->unk_24 != 0) {
+                    lbl_1_bss_8CA44_10[i.value] = entry->unk_2C;
+                } else {
+                    lbl_1_bss_8CA44_10[i.value] = 0;
+                }
+            }
+            fzgx_obj_lbl_1_bss_8CA40 = -1;
+            lbl_1_bss_8CA44_4 = -1;
+        }
+    }
+}
+/* fzgx:end fn_1_131620 */
+
 /* fzgx:begin fn_1_1317B4 */
 u32 fn_1_1317B4(void) {
     return lbl_1_bss_8CA6C[0];
