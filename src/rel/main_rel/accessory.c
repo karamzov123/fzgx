@@ -1281,6 +1281,93 @@ void fn_1_12A080(void) {
 #pragma opt_propagation reset
 /* fzgx:end fn_1_12A080 */
 
+/* fzgx:begin fn_1_12A0E0 noprologue */
+#include "dolphin/hw_regs.h"
+#include "dolphin/types.h"
+#include "rel/main_rel/accessory.h"
+#include "psvec.h"
+
+extern u32 lbl_1_rodata_8068;
+extern void fn_1_520A0(void);
+extern void fn_1_52070(u32);
+extern f32 fn_1_A71AC(void);
+extern void fn_1_49410(void);
+extern void fn_1_494DC(s16);
+extern void fn_1_49514(u32 *);
+extern void fn_1_4954C(f32);
+extern void fn_1_496FC(f32, f32);
+extern void fn_1_12A080(void);
+extern void fn_1_49738(void (*)(void));
+extern void fn_1_495FC(void);
+extern void fn_1_495C8(u8);
+extern void fn_1_495A0(f32);
+extern void fn_1_4955C(f32, f32);
+extern void fn_1_4966C(f32, f32);
+extern void fn_1_4A0D8(const char *);
+extern void fn_1_520CC(void);
+extern void lbl_8006DBAC(void *);
+extern int fn_80083BCC(const char *, const char *);
+typedef struct { f32 value0, value1, value2; } Sig_fn_8006F78C_Fn8006F78CData;
+extern void fn_8006F78C(void *, Sig_fn_8006F78C_Fn8006F78CData *, f32);
+typedef struct {
+    u8 unk_00[8];
+    u8 unk_08[0x30];
+    f32 unk_38;
+    char unk_3C[1];
+} DisplayData;
+
+static inline f32 fn_1_12A0E0_read_pointer(Sig_fn_8006F78C_Fn8006F78CData * owner) { return owner->value1; }
+#pragma opt_propagation off
+#pragma opt_common_subs off
+void fn_1_12A0E0(DisplayData *arg0)
+{
+    f32 fzgx_live;
+    f32 z;
+    f32 scale;
+    f32 x;
+    f32 y;
+    u8 *pool = (u8 *)&lbl_1_rodata_8068;
+    f32 depth;
+    f32 size;
+    Sig_fn_8006F78C_Fn8006F78CData vec;
+    u32 color;
+    fn_1_520A0();
+    fn_1_52070(0x140);
+    scale = fn_1_A71AC();
+    lbl_8006DBAC(arg0->unk_08);
+    fn_1_49410();
+    fn_1_494DC(5);
+    if (fn_80083BCC(arg0->unk_3C, (const char *)&lbl_1_data_405F4) == 0) {
+        color = *(u32 *)(pool + 0xE4);
+        fn_1_49514(&color);
+    }
+    z = *(f32 *)(LC_BASE + 0x2C);
+    x = *(f32 *)(LC_BASE + 0xC);
+    y = *(f32 *)(LC_BASE + 0x1C);
+    depth = (f32)(*(f64 *)(pool + 0xE8) - *(f64 *)(pool + 0xF0) / z);
+    psvec_set(&vec, z, y, x);
+    fn_1_4954C(-depth);
+    fn_8006F78C(&vec, &vec, scale);
+    fzgx_live = vec.value0;
+    fn_1_496FC(fzgx_live, fn_1_12A0E0_read_pointer(&vec));
+    fn_1_49738(fn_1_12A080);
+    fn_1_495FC();
+    fn_1_495C8(0x11);
+    if (arg0->unk_38 < *(f32 *)(pool + 0x60)) {
+        arg0->unk_38 = *(f32 *)(pool + 0x60);
+    }
+    fn_1_495A0(*(f32 *)(pool + 0x6C));
+    size = *(f32 *)(pool + 0xB0) * arg0->unk_38;
+    fn_1_4955C(size, size);
+    fn_1_4966C(*(f32 *)pool, *(f32 *)pool);
+    fn_1_4A0D8(arg0->unk_3C);
+    fn_1_520CC();
+}
+#pragma opt_common_subs reset
+
+#pragma opt_propagation reset
+/* fzgx:end fn_1_12A0E0 */
+
 /* fzgx:begin fn_1_12A24C */
 s8 fn_1_12A24C(s8 arg) {
     if ((s8)fn_1_86678((s32)arg) == -1) {
