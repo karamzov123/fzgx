@@ -6662,3 +6662,6 @@ rel/main_rel/effect/fn_1_5B078.c:
 
 rel/main_rel/spline/fn_1_F5458.c:
 	.text       start:0x000F5458 end:0x000F55C4 align:4
+
+rel/main_rel/background/fn_1_9F4B4.c:
+	.text       start:0x0009F4B4 end:0x0009F7DC align:4

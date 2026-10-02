@@ -28712,6 +28712,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/background/fn_1_9F4B4.c",
+    "symbols": [
+      "fn_1_9F4B4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/background.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/bg_aur/fn_1_151AF0.c",
     "symbols": [
       "fn_1_151AF0"
