@@ -52594,6 +52594,22 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/stcoli/fn_1_21950.c",
+    "symbols": [
+      "fn_1_21950"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/stcoli.c",
+    "pool": {
+      "...rodata.0": "lbl_1_rodata_6C8",
+      "@6": "lbl_1_rodata_6D0",
+      "@12": "lbl_1_rodata_6E8"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/stcoli/fn_1_21BE4.c",
     "symbols": [
       "fn_1_21BE4"

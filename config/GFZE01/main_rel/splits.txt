@@ -6827,3 +6827,6 @@ rel/main_rel/motasglist/fn_1_449A8.c:
 
 rel/main_rel/stcoli/fn_1_207DC.c:
 	.text       start:0x000207DC end:0x00020994 align:4
+
+rel/main_rel/stcoli/fn_1_21950.c:
+	.text       start:0x00021950 end:0x00021BE4 align:4

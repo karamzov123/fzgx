@@ -1283,6 +1283,153 @@ void fn_1_2192C(void *self, void *arg) {
 }
 /* fzgx:end fn_1_2192C */
 
+/* fzgx:begin fn_1_21950 noprologue */
+#include "types.h"
+
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    d = 4503601774854144.0;
+    s = 0.0f;
+    s = 1.0f;
+    s = -5.0f;
+    s = 10.0f;
+    s = -1.0f;
+    s = 2.0f;
+    s = 0.5f;
+    s = 2.5f;
+    s = 1.7000000476837158f;
+    s = 0.0010000000474974513f;
+    s = 182.04444885253906f;
+    s = -0.5f;
+}
+#pragma section code_type ".text"
+
+struct fn_1_21950_lbl_1_rodata_6C8 {
+    u8 pad_0[0x8];
+    f32 unk_8;
+    u8 pad_C[0x14];
+    f32 unk_20;
+    u8 pad_24[0x10];
+    f32 unk_34;
+};
+
+extern struct fn_1_21950_lbl_1_rodata_6C8 lbl_1_rodata_6C8;
+extern u32 lbl_8006DCA4(void);
+extern void lbl_8006E1B0(void *, void *);
+extern void fn_8003462C(u32, u32, u32);
+extern void fn_80072558(void);
+extern void lbl_8006DAEC(void);
+extern void lbl_8006DB30(void);
+
+#define GX_FIFO (*(volatile f32 *)((u8 *)0xCC010000 - 0x8000))  /* fzgx-allow: A1,A2 GX write-gather FIFO pipe */
+
+static inline void gx_pos3(f32 x, f32 y, f32 z) {
+    GX_FIFO = x;
+    GX_FIFO = y;
+    GX_FIFO = z;
+}
+
+#pragma opt_propagation off
+void fn_1_21950(u32 arg0, f32 arg1, f32 arg2) {
+    struct fn_1_21950_lbl_1_rodata_6C8 *p_lbl_1_rodata_6C8;
+    f32 v0;
+    f32 v11_2;
+    u32 v2;
+    u32 v5;
+    f32 v4;
+    f32 v6;
+    f32 v7;
+    f32 v8;
+    f32 v9;
+    f32 v10;
+    f32 v11;
+    f32 v12;
+    f32 v13;
+    f32 v14;
+    struct { f32 a[3]; } loc_44;
+    f32 loc_38[3];
+    f32 loc_2C[3];
+    f32 loc_20[3];
+    f32 loc_14[3];
+    f32 loc_8[3];
+    void * lab_t0;
+    /* frame */
+
+    p_lbl_1_rodata_6C8 = (struct fn_1_21950_lbl_1_rodata_6C8 *)&lbl_1_rodata_6C8;
+    v2 = (((0.0f)) != arg1);
+    v5 = (((0.0f)) != arg2);
+    v4 = ((-0.5f));
+    loc_8[0] = v4;
+    loc_8[1] = ((0.0f));
+    loc_8[2] = ((0.0f));
+    loc_8[0] = (v4 * *(f32 *)((u8 *)arg0 + 0));
+    lab_t0 = loc_8;
+    lbl_8006E1B0(lab_t0, loc_8);
+    v6 = ((0.0f));
+    v7 = ((0.5f));
+    loc_14[1] = v6;
+    loc_14[0] = v7;
+    loc_14[2] = v6;
+    loc_14[0] = (v7 * *(f32 *)((u8 *)arg0 + 0));
+    lbl_8006E1B0(loc_14, loc_14);
+    if ((s32)v2 != 0) {
+    v8 = ((0.0f));
+    v9 = ((-0.5f));
+    loc_20[1] = v8;
+    loc_20[0] = v9;
+    loc_20[2] = v8;
+    loc_20[0] = (v9 * *(f32 *)((u8 *)arg0 + 0));
+    lbl_8006E1B0(loc_20, loc_20);
+    v11 = ((0.0f));
+    v10 = ((-0.5f));
+    loc_2C[1] = arg1;
+    loc_2C[0] = v10;
+    loc_2C[2] = v11;
+    loc_2C[0] = (v10 * *(f32 *)((u8 *)arg0 + 0));
+    lbl_8006E1B0(loc_2C, loc_2C);
+    }
+    if ((s32)v5 != 0) {
+    v11_2 = ((0.0f));
+    v12 = ((0.5f));
+    loc_38[1] = v11_2;
+    loc_38[0] = v12;
+    loc_38[2] = v11_2;
+    loc_38[0] = (v12 * *(f32 *)((u8 *)arg0 + 0));
+    lbl_8006E1B0(loc_38, loc_38);
+    v14 = ((0.0f));
+    v13 = ((0.5f));
+    loc_44.a[1] = arg2;
+    loc_44.a[0] = v13;
+    loc_44.a[2] = v14;
+    loc_44.a[0] = (v13 * *(f32 *)((u8 *)arg0 + 0));
+    lbl_8006E1B0(&loc_44, &loc_44);
+    }
+    lbl_8006DAEC();
+    lbl_8006DCA4();
+    fn_80072558();
+    fn_8003462C(0xb0, 0, 2);
+    GX_FIFO = loc_8[0];
+    GX_FIFO = loc_8[1];
+    GX_FIFO = loc_8[2];
+    GX_FIFO = loc_14[0];
+    GX_FIFO = loc_14[1];
+    GX_FIFO = loc_14[2];
+    if ((s32)v2 != 0) {
+    fn_8003462C(0xb0, 0, 2);
+    gx_pos3(loc_20[0], loc_20[1], loc_20[2]);
+    gx_pos3(loc_2C[0], loc_2C[1], loc_2C[2]);
+    }
+    if ((s32)v5 != 0) {
+    fn_8003462C(0xb0, 0, 2);
+    gx_pos3(loc_38[0], loc_38[1], loc_38[2]);
+    gx_pos3(loc_44.a[0], loc_44.a[1], loc_44.a[2]);
+    }
+    lbl_8006DB30();
+}
+#pragma opt_propagation reset
+/* fzgx:end fn_1_21950 */
+
 /* fzgx:begin fn_1_21BE4 */
 typedef struct Fn_1_21BE4 {
     u32 flags;
