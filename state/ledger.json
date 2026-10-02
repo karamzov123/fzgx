@@ -1,5 +1,5 @@
 {
- "generated": 1790936220,
+ "generated": 1790936522,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -4900,19 +4900,19 @@
   {
    "symbol": "fn_3_23724",
    "module": "customize",
-   "unit": null,
+   "unit": "rel/customize/toolkit/fn_3_23724.c",
    "addr": 145188,
    "size": 760,
-   "status": "unmatched",
-   "attempts": 3,
-   "best_percent": 91.53684,
+   "status": "matched",
+   "attempts": 4,
+   "best_percent": 100.0,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
    "matched_commit": null,
    "blocked_reason": null,
    "prev_status": null,
-   "link_state": null
+   "link_state": "pool"
   },
   {
    "symbol": "fn_3_23A1C",
@@ -38361,7 +38361,7 @@
    "size": 356,
    "status": "claimed",
    "attempts": 5,
-   "best_percent": 91.91011,
+   "best_percent": 95.44944,
    "claimed_by": "fleet-v2-cline-1790936140366841204-cline-3",
    "claimed_at": 1790936140,
    "claim_ttl": 2100,
@@ -51212,8 +51212,8 @@
    "addr": 233968,
    "size": 560,
    "status": "unmatched",
-   "attempts": 4,
-   "best_percent": 91.564285,
+   "attempts": 5,
+   "best_percent": 95.62857,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
@@ -65272,7 +65272,7 @@
    "size": 572,
    "status": "claimed",
    "attempts": 3,
-   "best_percent": 91.888115,
+   "best_percent": 96.328674,
    "claimed_by": "fleet-v2-cline-1790936140366841204-cline-4",
    "claimed_at": 1790936140,
    "claim_ttl": 2100,
@@ -80725,7 +80725,7 @@
    "size": 444,
    "status": "claimed",
    "attempts": 5,
-   "best_percent": 92.1982,
+   "best_percent": 93.9009,
    "claimed_by": "fleet-v2-oc4-1790935221470596860-opencode-1",
    "claimed_at": 1790935221,
    "claim_ttl": 2100,
@@ -494131,7 +494131,7 @@
    "model": null,
    "started": 1790934961,
    "ended": null,
-   "checks": 6,
+   "checks": 8,
    "final_percent": 60.94,
    "tokens_in": 0,
    "tokens_out": 0,
@@ -494139,7 +494139,7 @@
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 2,
+   "stale_checks": 4,
    "best_in_attempt": 91.02
   },
   {
@@ -494207,16 +494207,16 @@
    "model": null,
    "started": 1790935221,
    "ended": null,
-   "checks": 5,
-   "final_percent": 85.60361,
+   "checks": 7,
+   "final_percent": 93.9009,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 1,
-   "best_in_attempt": 87.54054
+   "stale_checks": 0,
+   "best_in_attempt": 93.9009
   },
   {
    "id": 19470,
@@ -494359,16 +494359,16 @@
    "model": null,
    "started": 1790936140,
    "ended": null,
-   "checks": 0,
-   "final_percent": null,
+   "checks": 2,
+   "final_percent": 84.85,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 0,
-   "best_in_attempt": 0.0
+   "stale_checks": 1,
+   "best_in_attempt": 84.85
   },
   {
    "id": 19478,
@@ -494378,8 +494378,8 @@
    "model": null,
    "started": 1790936140,
    "ended": null,
-   "checks": 0,
-   "final_percent": null,
+   "checks": 4,
+   "final_percent": 74.47541,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -494387,7 +494387,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 0.0
+   "best_in_attempt": 74.47541
   },
   {
    "id": 19479,
@@ -494397,8 +494397,8 @@
    "model": null,
    "started": 1790936140,
    "ended": null,
-   "checks": 0,
-   "final_percent": null,
+   "checks": 1,
+   "final_percent": 96.328674,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -494406,7 +494406,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 0.0
+   "best_in_attempt": 96.328674
   },
   {
    "id": 19480,
@@ -494435,8 +494435,8 @@
    "model": null,
    "started": 1790936140,
    "ended": null,
-   "checks": 0,
-   "final_percent": null,
+   "checks": 2,
+   "final_percent": 87.14286,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -494444,7 +494444,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 0.0
+   "best_in_attempt": 87.14286
   },
   {
    "id": 19482,
@@ -494454,15 +494454,15 @@
    "model": null,
    "started": 1790936140,
    "ended": null,
-   "checks": 1,
-   "final_percent": 76.86275,
+   "checks": 6,
+   "final_percent": 72.45098,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 0,
+   "stale_checks": 4,
    "best_in_attempt": 76.86275
   },
   {
@@ -494473,16 +494473,16 @@
    "model": null,
    "started": 1790936140,
    "ended": null,
-   "checks": 0,
-   "final_percent": null,
+   "checks": 8,
+   "final_percent": 95.16854,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 0,
-   "best_in_attempt": 0.0
+   "stale_checks": 4,
+   "best_in_attempt": 95.44944
   },
   {
    "id": 19484,
@@ -494492,8 +494492,8 @@
    "model": null,
    "started": 1790936140,
    "ended": null,
-   "checks": 0,
-   "final_percent": null,
+   "checks": 1,
+   "final_percent": 80.82609,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -494501,7 +494501,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 0.0
+   "best_in_attempt": 80.82609
   },
   {
    "id": 19485,
@@ -494511,8 +494511,8 @@
    "model": null,
    "started": 1790936209,
    "ended": null,
-   "checks": 0,
-   "final_percent": null,
+   "checks": 2,
+   "final_percent": 80.21477,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -494520,7 +494520,45 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 0.0
+   "best_in_attempt": 80.21477
+  },
+  {
+   "id": 19486,
+   "symbol": "fn_1_391F0",
+   "agent": "fleet-v2-gpt-1790936225176734972-codex-1",
+   "harness": "codex",
+   "model": "gpt-6.1-sol",
+   "started": 1790936225,
+   "ended": 1790936368,
+   "checks": 10,
+   "final_percent": 95.62857,
+   "tokens_in": 307261,
+   "tokens_out": 2515,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "plateau: 5 consecutive checks without improvement (best 95.6%)",
+   "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_391F0.1790936368.c",
+   "stale_checks": 5,
+   "best_in_attempt": 95.62857
+  },
+  {
+   "id": 19487,
+   "symbol": "fn_3_23724",
+   "agent": "fleet-v2-gpt-1790936225176734972-codex-2",
+   "harness": "codex",
+   "model": "gpt-6.1-sol",
+   "started": 1790936368,
+   "ended": 1790936511,
+   "checks": 6,
+   "final_percent": 100.0,
+   "tokens_in": 216467,
+   "tokens_out": 2016,
+   "cost_usd": 0.0,
+   "outcome": "matched-pool",
+   "notes": "oracle match accepted automatically [pool: lbl_3_rodata_768=initializer[948], lbl_3_rodata_768+0x78=initializer[4], lbl_3_rodata_800=initializer[8], lbl_3_rodata_8F0=initializer[4], lbl_3_rodata_768=literal pool[952]]",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 100.0
   }
  ],
  "names": [
