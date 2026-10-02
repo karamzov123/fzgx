@@ -1,5 +1,5 @@
 {
- "generated": 1790950328,
+ "generated": 1790950461,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -83202,19 +83202,19 @@
   {
    "symbol": "fn_1_F2E50",
    "module": "main_rel",
-   "unit": null,
+   "unit": "rel/main_rel/replay/fn_1_F2E50.c",
    "addr": 994896,
    "size": 104,
-   "status": "claimed",
-   "attempts": 7,
-   "best_percent": 87.69231,
-   "claimed_by": "fleet-v2-oc4-1790948553017390262-opencode-2",
-   "claimed_at": 1790949901,
-   "claim_ttl": 2100,
+   "status": "matched",
+   "attempts": 8,
+   "best_percent": 100.0,
+   "claimed_by": null,
+   "claimed_at": null,
+   "claim_ttl": null,
    "matched_commit": null,
    "blocked_reason": null,
    "prev_status": null,
-   "link_state": null
+   "link_state": "pool"
   },
   {
    "symbol": "fn_1_F2EB8",
@@ -497532,15 +497532,15 @@
    "model": null,
    "started": 1790949283,
    "ended": null,
-   "checks": 6,
-   "final_percent": 89.354164,
+   "checks": 7,
+   "final_percent": 79.17,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 4,
+   "stale_checks": 0,
    "best_in_attempt": 89.513885
   },
   {
@@ -497566,20 +497566,20 @@
    "id": 19646,
    "symbol": "fn_1_F2E50",
    "agent": "fleet-v2-oc4-1790948553017390262-opencode-2",
-   "harness": null,
-   "model": null,
+   "harness": "opencode",
+   "model": "opencode/space-bunny-free",
    "started": 1790949901,
-   "ended": null,
-   "checks": 7,
-   "final_percent": 86.46154,
-   "tokens_in": 0,
-   "tokens_out": 0,
+   "ended": 1790950451,
+   "checks": 9,
+   "final_percent": 100.0,
+   "tokens_in": 225864,
+   "tokens_out": 4645,
    "cost_usd": 0.0,
-   "outcome": null,
-   "notes": null,
+   "outcome": "matched-pool",
+   "notes": "oracle match accepted automatically [pool: lbl_1_bss_7EFD0=owned BSS base, lbl_1_bss_7EFD0=owned BSS base, lbl_1_bss_7EFD0=verified BSS object[2], lbl_1_bss_7EFD4=verified BSS object[1], lbl_1_bss_7EFD8=verified BSS object[68], lbl_1_bss_7F01C=verified BSS object[2]]",
    "best_body_path": null,
-   "stale_checks": 1,
-   "best_in_attempt": 86.46154
+   "stale_checks": 0,
+   "best_in_attempt": 100.0
   },
   {
    "id": 19647,
@@ -497627,7 +497627,7 @@
    "model": null,
    "started": 1790950173,
    "ended": null,
-   "checks": 8,
+   "checks": 11,
    "final_percent": 87.57143,
    "tokens_in": 0,
    "tokens_out": 0,
@@ -497635,7 +497635,7 @@
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 1,
+   "stale_checks": 3,
    "best_in_attempt": 87.57143
   }
  ],
