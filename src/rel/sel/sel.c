@@ -1300,6 +1300,83 @@ void fn_10_757C(void) {
 }
 /* fzgx:end fn_10_757C */
 
+/* fzgx:begin fn_10_7E84 */
+extern u8 lbl_1_bss_8B3A0[];
+extern u8 lbl_1_bss_6D82C[];
+extern u8 lbl_10_bss_0[];
+
+extern void fn_1_8F494(void *value);
+extern s32 fn_1_12CB04(s16 value);
+extern void fn_1_12C000(void *value, s32 arg);
+extern void fn_1_435C(u32 value);
+extern void fn_1_426C(s32 value);
+extern void fn_10_96F8(void *value, s32 arg);
+extern void fn_80071718(void *value);
+
+#pragma opt_propagation on
+static inline u8 *fn_10_7E84_array_read(u8 *array) { return array; }
+static inline u8 fn_10_7E84_array_read_(u8 *array, s32 index) { return array[index]; }
+#pragma opt_lifetimes off
+void fn_10_7E84(void) {
+    u8 *state;
+    s16 index;
+    u32 flags;
+    u8 *rec;
+    u8 *call_ptr;
+    u8 *ptr;
+    s32 i;
+    u8 *base;
+    s16 count;
+
+    base = lbl_10_bss_0 + 0x50000;
+    state = lbl_1_bss_8B3A0;
+    index = fn_10_7E84_array_read_(state, 0x9e);
+    flags = *(u32 *)(state + 0x94);
+    rec = state + (index << 5);
+    count = *(s16 *)(rec + 0xe);
+    rec = (u8 *)((u32)rec + 0xe);
+
+    if ((flags & (1u << 31)) == 0) {
+        call_ptr = base + 0x1b7c;
+        call_ptr += index * 0x4e0;
+        fn_1_8F494(call_ptr);
+        ptr = base + 0x2efc;
+        ptr += index * 0x9c0;
+        i = 0;
+        while ((s16)i < (s16)fn_1_12CB04(count)) {
+            fn_1_8F494(ptr);
+            ptr += 0x4e0;
+            i++;
+        }
+    }
+
+    flags = *(u32 *)(state + 0x94);
+    if ((flags & (1u << 31)) == 0) {
+        fn_1_12C000(base + 0x17ec, 1);
+        fn_1_12C000(base + 0x197c, 1);
+    }
+
+    if (*(s32 *)(base + 0x1740) != -1) {
+        fn_1_435C(*(u32 *)(base - 0x6c78));
+        fn_1_426C(*(s32 *)(base + 0x1740));
+        *(s32 *)(base + 0x1740) = -1;
+    }
+
+    fn_10_96F8(base - 0x6c60, 0);
+    if (*(void **)lbl_1_bss_6D82C != 0) {
+        fn_80071718(*(void **)lbl_1_bss_6D82C);
+        *(u32 **)lbl_1_bss_6D82C = 0;
+    }
+
+    *(s16 *)rec = -1;
+    flags = *(u32 *)(state + 0x94);
+    *(u32 *)(state + 0x94) = flags & 0xfffff7ff;
+}
+#pragma opt_lifetimes reset
+
+#pragma opt_propagation reset
+/* fzgx:end fn_10_7E84 */
+
 /* fzgx:begin fn_10_82BC */
 extern s32 lbl_10_bss_51740;
 extern u32 lbl_10_bss_49388;
