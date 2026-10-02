@@ -6758,3 +6758,6 @@ rel/main_rel/ghost/fn_1_F1C54.c:
 
 rel/main_rel/load/fn_1_46B44.c:
 	.text       start:0x00046B44 end:0x00046BA0 align:4
+
+rel/main_rel/camera/fn_1_66B8.c:
+	.text       start:0x000066B8 end:0x0000681C align:4

@@ -189,6 +189,82 @@ void camera_update_state(__typeof__(lbl_1_bss_F68) state) {
 }
 /* fzgx:end camera_update_state */
 
+/* fzgx:begin fn_1_66B8 noprologue */
+#include "types.h"
+#include "psvec.h"
+#include "rel/main_rel/camera.h"
+
+extern void fn_1_550A8(void);
+extern void fn_1_550E0(void);
+extern void fn_1_54E00(void *);
+extern s32 fn_1_54E34(void *, f32);
+extern void lbl_8006DAEC(void);
+extern void lbl_8006DBAC(void *);
+extern void lbl_8006DB30(void);
+
+typedef Obj_1_bss_F68_Target fn_1_66B8_Obj;
+
+struct fn_1_66B8_Global {
+	u8 *unk_0;
+	u8 *unk_4;
+	u8 *unk_8;
+};
+
+struct fn_1_66B8_Vec {
+	f32 x;
+	f32 y;
+	f32 z;
+};
+
+#pragma opt_propagation off
+s32 fn_1_66B8(void *arg0, f32 arg1) {
+	struct fn_1_66B8_Vec v;
+	u8 *a;
+	struct fn_1_66B8_Global *g = (struct fn_1_66B8_Global *)&lbl_1_bss_F68;
+	u32 off;
+	u32 i;
+	u8 *sel;
+	s32 ret = 0;
+	void *p = arg0;
+
+	if (g->unk_0 == 0) {
+		return 0;
+	}
+	if (p == 0) {
+		p = &v;
+		psvec_set(&v, *(f32 *)(0xE0000000 + 0x2C), *(f32 *)(0xE0000000 + 0x1C),
+				 *(f32 *)(0xE0000000 + 0xC));
+	}
+	fn_1_550A8();
+	lbl_8006DAEC();
+	for (i = 0, off = 0; i < ((fn_1_66B8_Obj *)g->unk_0)->unk_49; i++) {
+		if ((i == 0 && ((s8)((fn_1_66B8_Obj *)g->unk_0)->unk_48 == 9
+					  || (s8)((fn_1_66B8_Obj *)g->unk_0)->unk_48 == 10))
+			|| (i == 3 && (s32)((fn_1_66B8_Obj *)g->unk_0)->unk_48 == 6)) {
+			sel = g->unk_8 + 0x12C;
+			a = g->unk_8 + 0x15C;
+		} else if (i == 1 && (s32)((fn_1_66B8_Obj *)g->unk_0)->unk_48 == 10) {
+			sel = g->unk_4 + 0xDC;
+			a = g->unk_4 + 0x15C;
+		} else {
+			sel = g->unk_4 + off + 0xDC;
+			a = g->unk_4 + off + 0x15C;
+		}
+		fn_1_54E00(a);
+		lbl_8006DBAC(sel);
+		if (fn_1_54E34(p, arg1) != 0) {
+			ret = 1;
+			break;
+		}
+		off += 0x1FC;
+	}
+	lbl_8006DB30();
+	fn_1_550E0();
+	return ret;
+}
+#pragma opt_propagation reset
+/* fzgx:end fn_1_66B8 */
+
 /* fzgx:begin fn_1_681C */
 #include "types.h"
 
