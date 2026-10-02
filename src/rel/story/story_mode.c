@@ -1,5 +1,116 @@
 #include "types.h"
 
+/* fzgx:begin _prolog */
+struct _prolog_bss_9C {
+    s8 unk_0;
+    u8 unk_1;
+    u8 unk_2;
+    u8 unk_3;
+    s16 unk_4;
+    s16 unk_6;
+    s32 unk_8;
+};
+struct _prolog_lbl_7_bss_0 {
+    u32 unk_0;
+    u8 pad_4[0xC];
+    struct _prolog_bss_9C *unk_10;
+    u8 *unk_14;
+    u32 unk_18;
+    u32 unk_1C;
+    u32 unk_20;
+};
+struct _prolog_lbl_801A6410 {
+    u32 unk_0;
+};
+struct _prolog_bss_970 {
+    u32 unk_0;
+    u8 unk_4;
+};
+struct _prolog_bss_58 {
+    u8 pad_0[0x1C];
+    u32 unk_1C;
+};
+struct _prolog_bss_7F0C0 {
+    u8 pad_0[0x64];
+    u16 unk_64;
+};
+struct _prolog_data_414 {
+    u16 unk_0;
+};
+
+extern struct _prolog_lbl_7_bss_0 lbl_7_bss_0;
+extern struct _prolog_lbl_801A6410 lbl_801A6410;
+extern struct _prolog_bss_9C lbl_1_bss_9C;
+extern struct _prolog_bss_970 lbl_1_bss_970;
+extern struct _prolog_bss_58 lbl_1_bss_58;
+extern struct _prolog_bss_7F0C0 lbl_1_bss_7F0C0;
+extern struct _prolog_data_414 lbl_1_data_414;
+extern s16 lbl_1_bss_964;
+extern s16 lbl_1_bss_96A;
+extern u8 lbl_7_rodata_0[];
+extern char lbl_7_data_13A3C[];
+extern char lbl_7_data_13A4C[];
+extern void *lbl_1_bss_7167C;
+extern void *lbl_1_bss_71680;
+extern void *lbl_1_bss_71684;
+
+extern u32 fn_7_244(void);
+extern void fn_7_25C(void);
+extern void fn_7_388(void);
+extern void fn_1_A8F78(void);
+extern u32 fn_1_45D0(u32, u32, const char *, int);
+extern void fn_1_3CF0(u32, int);
+extern void fn_1_F9EB0(int, int);
+extern u32 fn_1_7BA08(int, int, int);
+extern void fn_1_7BA48(void);
+extern void fn_1_7BAF8(void);
+extern void fn_1_3F8C(const char *, void *, u32, int);
+
+#pragma opt_dead_assignments off
+void _prolog(void) {
+    struct _prolog_lbl_7_bss_0 *p;
+    p = (struct _prolog_lbl_7_bss_0 *)&lbl_7_bss_0;
+    p->unk_10 = &lbl_1_bss_9C;
+    p->unk_14 = lbl_7_rodata_0 + p->unk_10->unk_0 * 0x84;
+    p->unk_10->unk_4 = 6;
+    fn_1_A8F78();
+    p->unk_18 = fn_1_45D0(lbl_801A6410.unk_0, 0x5cc, lbl_7_data_13A3C, 333);
+    p->unk_1C = fn_1_45D0(lbl_801A6410.unk_0, 0x5cc, lbl_7_data_13A3C, 334);
+    fn_1_3CF0(p->unk_18, 4);
+    fn_1_3CF0(p->unk_1C, 4);
+    p->unk_20 = 1;
+    lbl_1_bss_970.unk_0 = 0;
+    lbl_1_bss_970.unk_4 = 0;
+    if (lbl_1_bss_964 == 1 && p->unk_10->unk_8 == 0x86) {
+        lbl_1_bss_9C.unk_3 = 0;
+    }
+    if (lbl_1_bss_964 == 8 && p->unk_10->unk_0 == 0) {
+        fn_1_F9EB0(0, 0);
+    }
+    if (lbl_1_bss_964 == 8 && p->unk_10->unk_8 == 0x89) {
+        if (lbl_1_bss_58.unk_1C & 2) {
+            lbl_1_bss_96A = 0x87;
+        } else {
+            lbl_1_bss_96A = 0x89;
+        }
+    } else {
+        lbl_1_bss_96A = p->unk_10->unk_8;
+    }
+    if (lbl_1_data_414.unk_0 == 0xffff) {
+        u16 v = lbl_1_bss_7F0C0.unk_64;
+        lbl_1_bss_96A = 0x86;
+        lbl_1_data_414.unk_0 = v;
+    }
+    p->unk_0 = fn_1_45D0(lbl_801A6410.unk_0, fn_1_7BA08(0x20, 0x20, 0x40), lbl_7_data_13A3C, 390);
+    fn_1_7BA48();
+    fn_1_3F8C(lbl_7_data_13A4C, fn_1_7BAF8, p->unk_0, 2);
+    lbl_1_bss_7167C = fn_7_244;
+    lbl_1_bss_71680 = fn_7_25C;
+    lbl_1_bss_71684 = fn_7_388;
+}
+#pragma opt_dead_assignments reset
+/* fzgx:end _prolog */
+
 /* fzgx:begin fn_7_244 */
 extern struct fn_7_244_lbl_7_bss_C lbl_7_bss_C;
 

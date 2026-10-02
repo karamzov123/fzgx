@@ -61890,6 +61890,17 @@
   },
   {
     "module": "story",
+    "source": "rel/story/story_mode/_prolog.c",
+    "symbols": [
+      "_prolog"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/story/story_mode.c"
+  },
+  {
+    "module": "story",
     "source": "rel/story/story_mode/fn_7_1134.c",
     "symbols": [
       "fn_7_1134"
