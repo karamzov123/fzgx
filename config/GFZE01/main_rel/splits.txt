@@ -6806,3 +6806,6 @@ rel/main_rel/effect_car/fn_1_6FD58.c:
 
 rel/main_rel/screen_effect/fn_1_727BC.c:
 	.text       start:0x000727BC end:0x00072848 align:4
+
+rel/main_rel/effect/fn_1_61070.c:
+	.text       start:0x00061070 end:0x000611EC align:4
