@@ -6731,3 +6731,6 @@ rel/main_rel/custom_memcard/fn_1_131390.c:
 
 rel/main_rel/effect/fn_1_58994.c:
 	.text       start:0x00058994 end:0x00058C6C align:4
+
+rel/main_rel/spline/fn_1_F7A20.c:
+	.text       start:0x000F7A20 end:0x000F7B2C align:4

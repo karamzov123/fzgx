@@ -50673,6 +50673,25 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/spline/fn_1_F7A20.c",
+    "symbols": [
+      "fn_1_F7A20"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/spline.c",
+    "pool": {
+      "...bss.0": "lbl_1_bss_7F0A0",
+      "lbl_1_bss_7F0A0": "lbl_1_bss_7F0A0",
+      "fzgx_obj_lbl_1_bss_7F0C0": "lbl_1_bss_7F0C0",
+      "fzgx_obj_lbl_1_bss_84420": "lbl_1_bss_84420",
+      "fzgx_obj_lbl_1_bss_84428": "lbl_1_bss_84428",
+      "fzgx_obj_lbl_1_bss_84450": "lbl_1_bss_84450"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/spline/fn_1_F7B2C.c",
     "symbols": [
       "fn_1_F7B2C"
