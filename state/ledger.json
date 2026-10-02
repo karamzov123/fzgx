@@ -1,5 +1,5 @@
 {
- "generated": 1790953786,
+ "generated": 1790954043,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -5500,7 +5500,7 @@
    "size": 280,
    "status": "claimed",
    "attempts": 4,
-   "best_percent": 90.34286,
+   "best_percent": 91.91428,
    "claimed_by": "fleet-v2-oc1-1790951248400568875-opencode-2",
    "claimed_at": 1790952242,
    "claim_ttl": 2100,
@@ -78323,19 +78323,19 @@
   {
    "symbol": "fn_1_D3FDC",
    "module": "main_rel",
-   "unit": null,
+   "unit": "rel/main_rel/mdlload/fn_1_D3FDC.c",
    "addr": 868316,
    "size": 408,
-   "status": "unmatched",
-   "attempts": 3,
-   "best_percent": 86.55882,
+   "status": "matched",
+   "attempts": 4,
+   "best_percent": 100.0,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
-   "matched_commit": null,
+   "matched_commit": "248229c4",
    "blocked_reason": null,
    "prev_status": null,
-   "link_state": null
+   "link_state": "verified"
   },
   {
    "symbol": "fn_1_D4174",
@@ -90631,19 +90631,19 @@
   {
    "symbol": "fn_1_12CEA8",
    "module": "main_rel",
-   "unit": null,
+   "unit": "rel/main_rel/archive/fn_1_12CEA8.c",
    "addr": 1232552,
    "size": 940,
-   "status": "unmatched",
-   "attempts": 1,
-   "best_percent": 86.57872,
+   "status": "matched",
+   "attempts": 2,
+   "best_percent": 100.0,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
-   "matched_commit": null,
+   "matched_commit": "a9b5c8d0",
    "blocked_reason": null,
    "prev_status": null,
-   "link_state": null
+   "link_state": "verified"
   },
   {
    "symbol": "fn_1_12D254",
@@ -498121,16 +498121,16 @@
    "model": null,
    "started": 1790952242,
    "ended": null,
-   "checks": 11,
-   "final_percent": 90.34286,
+   "checks": 14,
+   "final_percent": 91.91428,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 3,
-   "best_in_attempt": 90.34286
+   "stale_checks": 0,
+   "best_in_attempt": 91.91428
   },
   {
    "id": 19676,
@@ -498140,8 +498140,8 @@
    "model": null,
    "started": 1790953133,
    "ended": null,
-   "checks": 1,
-   "final_percent": 55.398438,
+   "checks": 2,
+   "final_percent": 65.671875,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -498149,7 +498149,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 55.398438
+   "best_in_attempt": 65.671875
   },
   {
    "id": 19677,
@@ -498159,16 +498159,16 @@
    "model": null,
    "started": 1790953214,
    "ended": null,
-   "checks": 5,
-   "final_percent": 69.354836,
+   "checks": 7,
+   "final_percent": 59.677418,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 2,
-   "best_in_attempt": 72.741936
+   "stale_checks": 1,
+   "best_in_attempt": 77.90323
   },
   {
    "id": 19678,
@@ -498245,6 +498245,44 @@
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 0.0
+  },
+  {
+   "id": 19682,
+   "symbol": "fn_1_12CEA8",
+   "agent": "fleet-v2-gpt-1790953850081453956-codex-1",
+   "harness": "codex",
+   "model": "gpt-6.1-sol",
+   "started": 1790953850,
+   "ended": 1790953955,
+   "checks": 7,
+   "final_percent": 100.0,
+   "tokens_in": 196612,
+   "tokens_out": 1775,
+   "cost_usd": 0.0,
+   "outcome": "matched",
+   "notes": "oracle match accepted automatically",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 100.0
+  },
+  {
+   "id": 19683,
+   "symbol": "fn_1_D3FDC",
+   "agent": "fleet-v2-gpt-1790953850081453956-codex-2",
+   "harness": "codex",
+   "model": "gpt-6.1-sol",
+   "started": 1790953955,
+   "ended": 1790954038,
+   "checks": 7,
+   "final_percent": 100.0,
+   "tokens_in": 164401,
+   "tokens_out": 836,
+   "cost_usd": 0.0,
+   "outcome": "matched",
+   "notes": "oracle match accepted automatically",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 100.0
   }
  ],
  "names": [
