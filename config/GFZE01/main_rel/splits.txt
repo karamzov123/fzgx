@@ -6902,3 +6902,6 @@ rel/main_rel/screen_effect/fn_1_7BAF8.c:
 
 rel/main_rel/phys/fn_1_E52F8.c:
 	.text       start:0x000E52F8 end:0x000E5430 align:4
+
+rel/main_rel/screen_effect/fn_1_76A94.c:
+	.text       start:0x00076A94 end:0x00076BD0 align:4

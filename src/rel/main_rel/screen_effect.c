@@ -1596,6 +1596,137 @@ void fn_1_76964(Fn1_76964Obj *obj) {
 }
 /* fzgx:end fn_1_76964 */
 
+/* fzgx:begin fn_1_76A94 noprologue */
+#include "types.h"
+
+typedef enum Sig_GXInitTexObj__GXTexFmt {
+    Sig_GXInitTexObj_GX_TF_I4 = 0x0,
+    Sig_GXInitTexObj_GX_TF_I8 = 0x1,
+    Sig_GXInitTexObj_GX_TF_IA4 = 0x2,
+    Sig_GXInitTexObj_GX_TF_IA8 = 0x3,
+    Sig_GXInitTexObj_GX_TF_RGB565 = 0x4,
+    Sig_GXInitTexObj_GX_TF_RGB5A3 = 0x5,
+    Sig_GXInitTexObj_GX_TF_RGBA8 = 0x6,
+    Sig_GXInitTexObj_GX_TF_CMPR = 0xE,
+    Sig_GXInitTexObj_GX_CTF_R4 = 0x0 | 0x20,
+    Sig_GXInitTexObj_GX_CTF_RA4 = 0x2 | 0x20,
+    Sig_GXInitTexObj_GX_CTF_RA8 = 0x3 | 0x20,
+    Sig_GXInitTexObj_GX_CTF_YUVA8 = 0x6 | 0x20,
+    Sig_GXInitTexObj_GX_CTF_A8 = 0x7 | 0x20,
+    Sig_GXInitTexObj_GX_CTF_R8 = 0x8 | 0x20,
+    Sig_GXInitTexObj_GX_CTF_G8 = 0x9 | 0x20,
+    Sig_GXInitTexObj_GX_CTF_B8 = 0xA | 0x20,
+    Sig_GXInitTexObj_GX_CTF_RG8 = 0xB | 0x20,
+    Sig_GXInitTexObj_GX_CTF_GB8 = 0xC | 0x20,
+    Sig_GXInitTexObj_GX_TF_Z8 = 0x1 | 0x10,
+    Sig_GXInitTexObj_GX_TF_Z16 = 0x3 | 0x10,
+    Sig_GXInitTexObj_GX_TF_Z24X8 = 0x6 | 0x10,
+    Sig_GXInitTexObj_GX_CTF_Z4 = 0x0 | 0x10 | 0x20,
+    Sig_GXInitTexObj_GX_CTF_Z8M = 0x9 | 0x10 | 0x20,
+    Sig_GXInitTexObj_GX_CTF_Z8L = 0xA | 0x10 | 0x20,
+    Sig_GXInitTexObj_GX_CTF_Z16L = 0xC | 0x10 | 0x20,
+    Sig_GXInitTexObj_GX_TF_A8 = Sig_GXInitTexObj_GX_CTF_A8,
+} Sig_GXInitTexObj__GXTexFmt;
+typedef struct Sig_GXInitTexObj__GXTexObj {
+    u32 dummy[8];
+} Sig_GXInitTexObj_GXTexObj;
+typedef enum Sig_GXInitTexObj__GXTexWrapMode {
+    Sig_GXInitTexObj_GX_CLAMP,
+    Sig_GXInitTexObj_GX_REPEAT,
+    Sig_GXInitTexObj_GX_MIRROR,
+    Sig_GXInitTexObj_GX_MAX_TEXWRAPMODE,
+} Sig_GXInitTexObj__GXTexWrapMode;
+typedef enum Sig_GXInitTexObjLOD__GXAnisotropy {
+    Sig_GXInitTexObjLOD_GX_ANISO_1,
+    Sig_GXInitTexObjLOD_GX_ANISO_2,
+    Sig_GXInitTexObjLOD_GX_ANISO_4,
+    Sig_GXInitTexObjLOD_GX_MAX_ANISOTROPY,
+} Sig_GXInitTexObjLOD_GXAnisotropy;
+typedef u8 Sig_GXInitTexObjLOD_GXBool;
+typedef enum Sig_GXInitTexObjLOD__GXTexFilter {
+    Sig_GXInitTexObjLOD_GX_NEAR,
+    Sig_GXInitTexObjLOD_GX_LINEAR,
+    Sig_GXInitTexObjLOD_GX_NEAR_MIP_NEAR,
+    Sig_GXInitTexObjLOD_GX_LIN_MIP_NEAR,
+    Sig_GXInitTexObjLOD_GX_NEAR_MIP_LIN,
+    Sig_GXInitTexObjLOD_GX_LIN_MIP_LIN,
+} Sig_GXInitTexObjLOD_GXTexFilter;
+typedef struct Sig_GXInitTexObjLOD__GXTexObj {
+    u32 texture_filter;
+    u32 texture_lod;
+    u32 texture_size;
+    u32 texture_address;
+    u32 user_data;
+    u32 texture_format;
+    u32 tlut_name;
+    u16 texture_time_count;
+    u8 texture_tile_type;
+    u8 texture_flags;
+} Sig_GXInitTexObjLOD_GXTexObj;
+extern void GXInitTexObj(Sig_GXInitTexObj_GXTexObj *, void *, u16, u16, Sig_GXInitTexObj__GXTexFmt, Sig_GXInitTexObj__GXTexWrapMode, Sig_GXInitTexObj__GXTexWrapMode, u8);
+extern void GXInitTexObjLOD(Sig_GXInitTexObjLOD_GXTexObj *, Sig_GXInitTexObjLOD_GXTexFilter, Sig_GXInitTexObjLOD_GXTexFilter, f32, f32, f32, Sig_GXInitTexObjLOD_GXBool, Sig_GXInitTexObjLOD_GXBool, Sig_GXInitTexObjLOD_GXAnisotropy);
+
+typedef struct {
+    u8 pad_0[5];
+    u8 unk_5;
+    u8 pad_6[0x102];
+} Obj_1_data_1D9B8;
+extern Obj_1_data_1D9B8 lbl_1_data_1D9B8;
+typedef struct {
+    u8 pad_0[4];
+    u32 unk_4;
+    u8 pad_8[0x50];
+} Obj_1_data_1D960;
+extern Obj_1_data_1D960 lbl_1_data_1D960;
+extern const f32 lbl_1_rodata_31A0;
+
+struct fn_1_76A94_Obj {
+    u8 pad_0[0xA0];
+    u32 unk_A0[15];
+    u32 unk_DC;
+    u8 pad_E0[0x20];
+    s16 unk_100;
+    s16 unk_102;
+};
+
+#pragma opt_dead_assignments off
+void fn_1_76A94(struct fn_1_76A94_Obj *obj, u32 arg1) {
+    u32 * fzgx_live;
+    u32 i;
+    u32 fmt;
+    u32 w;
+    u32 h;
+    u32 fidx;
+    u32 *tbl;
+    u8 *row;
+
+    i = arg1 & 0xFF;
+    row = (u8 *)&lbl_1_data_1D9B8 + (obj->unk_DC * 6);
+    tbl = (u32 *)&lbl_1_data_1D960;
+    fmt = row[i];
+    fidx = fmt << 3;
+    if (fmt == 3) {
+        w = 64;
+        h = 64;
+    } else if (fmt == 8) {
+        w = obj->unk_100 / 2;
+        h = obj->unk_102 / 2;
+    } else {
+        w = obj->unk_100;
+        h = obj->unk_102;
+    }
+    if (fmt != 3) {
+        fzgx_live = obj->unk_A0;
+        GXInitTexObj((Sig_GXInitTexObj_GXTexObj *)((u8 *)obj + i * 32), (void *)fzgx_live[i], w, h, *(u32 *)((u8 *)tbl + fidx), Sig_GXInitTexObj_GX_CLAMP, Sig_GXInitTexObj_GX_CLAMP, 0);
+    } else {
+        fzgx_live = obj->unk_A0;
+        GXInitTexObj((Sig_GXInitTexObj_GXTexObj *)((u8 *)obj + i * 32), (void *)fzgx_live[i], w, h, *(u32 *)((u8 *)tbl + fidx), Sig_GXInitTexObj_GX_REPEAT, Sig_GXInitTexObj_GX_REPEAT, 0);
+    }
+    GXInitTexObjLOD((Sig_GXInitTexObjLOD_GXTexObj *)((u8 *)obj + i * 32), Sig_GXInitTexObjLOD_GX_LINEAR, Sig_GXInitTexObjLOD_GX_LINEAR, lbl_1_rodata_31A0, lbl_1_rodata_31A0, lbl_1_rodata_31A0, 0, 0, Sig_GXInitTexObjLOD_GX_ANISO_1);
+}
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_1_76A94 */
+
 /* fzgx:begin fn_1_76BD0 */
 void fn_1_76BD0(u8 index, u8 value) {
     Obj_1_bss_6C8EC *obj =
