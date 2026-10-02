@@ -17744,6 +17744,20 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_8003DD48.c",
+    "symbols": [
+      "fn_8003DD48"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.2.5n",
+    "extra_cflags": [],
+    "pool": {
+      "@2": "lbl_8012B590",
+      "@3": "lbl_8012B5D0"
+    }
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8003DFF8.c",
     "symbols": [
       "fn_8003DFF8"
