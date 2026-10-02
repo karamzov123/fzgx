@@ -603,6 +603,56 @@ s16 fn_1_6B48(s32 index) {
 #pragma opt_common_subs reset
 /* fzgx:end fn_1_6B48 */
 
+/* fzgx:begin fn_1_6BC0 */
+typedef struct {
+    u8 pad_0[0x475];
+    s8 active;
+} CameraObject;
+
+extern s8 fn_1_86624(void);
+extern CameraObject *fn_1_86254(s32 index);
+
+static inline void change_camera(u32 flags, GameCameraEntry *entries) {
+    s16 *fzgx_value;
+    s16 old_index;
+    struct { u32 value; } new_index;
+
+    old_index = entries->unk_2;
+    { s32 __reg_value_new_index = old_index; new_index.value = __reg_value_new_index; }
+    if (((flags >> 1) & 1) != 0) {
+        { s32 __reg_value_new_index = old_index + 1; new_index.value = __reg_value_new_index; }
+        if ((s16)new_index.value == fn_1_86624()) {
+            { s32 __reg_value_new_index = 0; new_index.value = __reg_value_new_index; }
+        }
+    } else if ((flags & 1) != 0) {
+        { s32 __reg_value_new_index = old_index - 1; new_index.value = __reg_value_new_index; }
+        if ((s16)new_index.value < 0) {
+            { s32 __reg_value_new_index = (s16)(fn_1_86624() - 1); new_index.value = __reg_value_new_index; }
+        }
+    }
+    if ((s16)new_index.value == old_index) {
+        return;
+    }
+    fzgx_value = &(game_camera_entries->unk_2);
+    *fzgx_value = (s16)new_index.value;
+    fn_1_86254(old_index)->active = -1;
+    fn_1_86254((s16)new_index.value)->active = 0;
+}
+#pragma opt_propagation off
+void fn_1_6BC0(u32 lab_unused0, u32 lab_unused1, u32 lab_unused2) {
+    Obj_1_bss_F68_Target *state;
+    state = lbl_1_bss_F68;
+    if (state == 0) {
+        return;
+    }
+    if ((s8)state->unk_48 != 0) {
+        return;
+    }
+    change_camera(lbl_1_bss_9F8.unk_8, game_camera_entries);
+}
+#pragma opt_propagation reset
+/* fzgx:end fn_1_6BC0 */
+
 /* fzgx:begin camera_set_result */
 void camera_set_result(s16 value) {
     // Update the camera result only while the camera state is active.

@@ -32560,6 +32560,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_6BC0.c",
+    "symbols": [
+      "fn_1_6BC0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/camera.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/camera/fn_1_6D2C.c",
     "symbols": [
       "fn_1_6D2C"
