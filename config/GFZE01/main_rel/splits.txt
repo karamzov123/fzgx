@@ -6575,3 +6575,6 @@ rel/main_rel/screen_effect/fn_1_79654.c:
 
 rel/main_rel/spline/fn_1_FA89C.c:
 	.text       start:0x000FA89C end:0x000FAB40 align:4
+
+rel/main_rel/ranking/fn_1_159804.c:
+	.text       start:0x00159804 end:0x001598C4 align:4

@@ -1471,6 +1471,51 @@ void fn_1_1596DC(int index) {
 }
 /* fzgx:end fn_1_1596DC */
 
+/* fzgx:begin fn_1_159804 noprologue */
+#include "types.h"
+
+typedef struct {
+    u32 unk_0;
+    u32 unk_4;
+    s16 unk_8[16];
+    s16 unk_28;
+    s16 unk_2a;
+    u8 unk_2c;
+    u8 pad_2d[0xb];
+    s32 unk_38;
+} RankingEntry;
+
+s16 fn_1_159804(s16 value, RankingEntry *entry) {
+    s16 start = entry->unk_28;
+    int count = 0;
+    int found = 0;
+    int next;
+    s16 pos;
+
+    while (entry->unk_2a + 1 != start && (entry->unk_2a != 15 || start != 0)) {
+        next = start + 1;
+        pos = next > 15 ? 0 : (next < 0 ? 15 : next);
+
+        if (value == entry->unk_8[start]) {
+            found = 1;
+        }
+        if (found) {
+            entry->unk_8[start] = entry->unk_8[pos];
+        }
+        start = pos;
+
+        count++;
+        if (count > 16) {
+            start = -1;
+            break;
+        }
+    }
+
+    entry->unk_8[entry->unk_2a] = value;
+    return start;
+}
+/* fzgx:end fn_1_159804 */
+
 /* fzgx:begin fn_1_1598C4 noprologue */
 #include "types.h"
 
