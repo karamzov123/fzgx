@@ -62,8 +62,19 @@ def activity_state(alive, claims, last_event, started, now):
         return 'stalled'
     return 'starting'
 
+def link_failed():
+    """Symbols whose last attempt matched the object and was rejected by the link.
+
+    A model session cannot diagnose these: the object oracle cannot see the link, so
+    there is no matcher tool that shows which bytes moved. They need `fzgx why-link`.
+    """
+    from fleet_multi import link_failed as _shared
+    return _shared()
+
 def pick(rows, seen, context, count):
+    linkfail = link_failed()
     eligible = [r for r in rows if r['status'] == 'unmatched' and r['attempts'] < 3
+                and r['symbol'] not in linkfail
                 and seen.get(r['symbol']) != context and r['size'] <= 1024]
     # Saved near-matches first, then small untouched targets. Never raise caps.
     eligible.sort(key=lambda r: (-(r.get('best', r.get('best_percent', 0)) or 0), r['attempts'], r['size'], r['symbol']))

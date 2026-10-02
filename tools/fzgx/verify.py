@@ -7,6 +7,7 @@ import time
 import json
 import os
 import signal
+import hashlib
 from typing import Dict, List, Optional
 from pathlib import Path
 
@@ -102,6 +103,20 @@ def verify(p: Project, message: Optional[str] = None) -> Dict[str, object]:
                     src = ROOT / "src" / units[k]
                     if src.exists():
                         keep.write_bytes(src.read_bytes())
+                # The unit is about to be uncarved, so this body is the only copy of a
+                # reconstruction whose object already matches retail exactly. Record it the
+                # way every other saved body is recorded: with its compiler settings, and as
+                # the attempt's best_body_path. Left unrecorded it reached nobody - the
+                # repair corpus, the next attempt's context and the near-miss search all
+                # select saved bodies through best_body_path, and a NULL row hid a 100%
+                # body from all three, so the function was re-derived from scratch forever.
+                if keep.exists() and keep.read_text().strip():
+                    keep.with_suffix('.json').write_text(json.dumps(dict(
+                        sha256=hashlib.sha256(keep.read_bytes()).hexdigest(),
+                        mw=(rec or {}).get('mw_version'), flags=(rec or {}).get('extra_cflags'),
+                        percent=100.0, link_fail=True)) + '\n')
+                    l.db.execute("UPDATE attempts SET best_body_path=? WHERE id="
+                                 "(SELECT id FROM attempts WHERE symbol=? ORDER BY id DESC LIMIT 1)", (str(keep), k))
                 l.db.execute("UPDATE functions SET status='unmatched', link_state=NULL, attempts=attempts+1 WHERE symbol=?", (k,))
                 l.db.execute("UPDATE attempts SET outcome='link-mismatch', notes=COALESCE(notes,'')||' [object matched but link differed]' "
                              "WHERE id=(SELECT id FROM attempts WHERE symbol=? ORDER BY id DESC LIMIT 1)", (k,))

@@ -1442,17 +1442,43 @@ def byte_diff(project: Project, module: str) -> Dict[str, object]:
 def why_link(project: Project, symbol: str) -> Dict[str, object]:
     """Link with just this function's unit flipped to Matching and name where the bytes
     differ. The unit must exist (a rejected match keeps its split range). Restores the
-    status afterwards. Deterministic diagnosis for 'matched at the object, not at link'."""
+    status afterwards. Deterministic diagnosis for 'matched at the object, not at link'.
+
+    A rejected match does NOT keep its split range: verify uncarves it, so the unit and
+    the range are both gone and this function used to bail with "no unit for this
+    function" for exactly the population it exists to diagnose. The rejected body is
+    preserved under `.fzgx/attempts/<key>.linkfail.*.c`, so the unit is carved again from
+    that body, diagnosed, and uncarved again afterwards.
+    """
     from .ledger import Ledger  # scoped: avoid the ledger import at oracle load
     sym = project.resolve(symbol)
-    unit_src = project.unit_of(sym) if sym else None
-    if not unit_src:
-        return {"ok": False, "error": "no unit for this function"}
+    if sym is None:
+        return {"ok": False, "error": "unknown symbol"}
     key = project.key(sym)
+    unit_src = project.unit_of(sym)
     body = None
     for cand in sorted((STATE_DIR / "attempts").glob(f"{key}.linkfail.*.c"), reverse=True):
-        body = cand.read_text()
-        break
+        if cand.read_text().strip():
+            body = cand.read_text()
+            break
+    recarved = False
+    if not unit_src and body:
+        # Rebuild the unit this diagnosis needs from the rejected body. Carve only; the
+        # relink below supplies the content, and everything is undone before returning.
+        from .api import carve  # scoped: api imports oracle
+        from .ledger import Ledger as _Ledger
+        try:
+            carve(project, symbol)
+        except Exception as error:  # a carve needs the build tree; report, do not raise
+            return {"ok": False, "error": f"cannot re-carve the rejected unit: {error}",
+                    "preserved_body": str(sorted((STATE_DIR / "attempts").glob(f"{key}.linkfail.*.c"))[-1])}
+        _Ledger().db.execute("UPDATE functions SET unit=? WHERE symbol=?",
+                             (project.unit_of(sym), key))
+        unit_src = project.unit_of(sym)
+        recarved = True
+    if not unit_src:
+        return {"ok": False, "error": "no unit for this function",
+                "note": "no preserved link-fail body either; nothing to diagnose"}
     with build_lock():
         rec = project.unit_record(unit_src)
         src_path = unit_source_path(project, unit_src)
@@ -1488,4 +1514,9 @@ def why_link(project: Project, symbol: str) -> Dict[str, object]:
             tufile.remove(project, rec)
         configure(project)
         relink(project)
-    return {"ok": True, "symbol": symbol, "unit": unit_src, "diag": diag}
+    if recarved:
+        # Put the tree back exactly as the diagnosis found it: verify had already uncarved
+        # this unit, so a diagnosis must not leave a split range and a stub behind.
+        from .uncarve import uncarve  # scoped: uncarve imports oracle
+        uncarve(project, [unit_src])
+    return {"ok": True, "symbol": symbol, "unit": unit_src, "recarved": recarved, "diag": diag}

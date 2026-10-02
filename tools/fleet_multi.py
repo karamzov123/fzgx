@@ -162,10 +162,32 @@ NEAR_MISS_PCT = 95.0
 def size_allowed(size, best):
     return size<=SIZE_GATE or (best or 0)>=NEAR_MISS_PCT
 
+_linkfail_cache = {'at': 0.0, 'symbols': frozenset()}
+
+def link_failed():
+    """Symbols whose last attempt matched the object and was rejected by the link.
+
+    These need `fzgx why-link`, not another model session. The object oracle cannot
+    see the link, so a matcher has no tool that shows why the bytes moved, and a new
+    session re-derives the same body from a stub and fails identically - five functions
+    sat at best_percent 100.0 and unmatched for exactly that reason. Sorted by -best
+    these are otherwise the *first* targets chosen, so they consumed the highest-value
+    slots in the fleet. Retired from model dispatch until the link difference is read.
+    """
+    now = time.time()
+    if now - _linkfail_cache['at'] > 5.0:
+        _linkfail_cache['symbols'] = frozenset(r['symbol'] for r in db_rows(
+            "SELECT symbol FROM attempts a WHERE outcome='link-mismatch' AND id=("
+            "SELECT MAX(b.id) FROM attempts b WHERE b.symbol=a.symbol)"))
+        _linkfail_cache['at'] = now
+    return _linkfail_cache['symbols']
+
 def choose(rows, seen, context, count, reserved=(), retry=()):
     claimed_units={(r['module'],r['unit']) for r in rows if r['status']=='claimed' and r.get('unit')}
     mine=local_attempts()
+    linkfail=link_failed()
     eligible=[r for r in rows if r['status']=='unmatched' and (mine.get(r['symbol'],0)<ATTEMPT_CAP or r['symbol'] in retry)
+              and r['symbol'] not in linkfail
               and size_allowed(r['size'], r.get('best',r.get('best_percent',0)))
               and seen.get(r['symbol'])!=context and r['symbol'] not in reserved
               and not (r.get('unit') and (r['module'],r['unit']) in claimed_units)]
