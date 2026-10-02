@@ -915,6 +915,67 @@ void fn_1_433A4(Fn1433A4Object *dst, Fn1433A4Object *src) {
 }
 /* fzgx:end fn_1_433A4 */
 
+/* fzgx:begin fn_1_449A8 noprologue */
+#include "types.h"
+#include "psvec.h"
+
+extern void lbl_8006DB74(void *mtx);
+extern void fn_8006E978(void *out, void *a, void *b);
+extern void mathutil_mtxA_from_quat(void *q);
+extern void lbl_8006DFC4(void *mtx);
+extern f32 *lbl_801A6D00;
+
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+} Vec4;
+
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+} Vec3;
+
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+} Quat;
+
+typedef struct {
+    u8 data[56];
+} TmpMtx;
+
+void fn_1_449A8(void *vector) {
+    Vec3 src;
+    Vec3 v;
+    Quat q;
+    TmpMtx m;
+    Vec4 *p;
+
+    p = (Vec4 *)lbl_801A6D00;
+    src.x = p[0].x;
+    src.y = p[1].x;
+    src.z = p[2].x;
+
+    lbl_8006DB74(&m);
+
+    psvec_set(&v, *(f32 *)(0xE0000000 + 0x2C), *(f32 *)(0xE0000000 + 0x1C),
+        *(f32 *)(0xE0000000 + 0x0C));
+
+    fn_8006E978(&q, &src, vector);
+    mathutil_mtxA_from_quat(&q);
+    lbl_8006DFC4(&m);
+
+    *(f32 *)(0xE0000000 + 0x0C) = v.x;
+    *(f32 *)(0xE0000000 + 0x1C) = v.y;
+    *(f32 *)(0xE0000000 + 0x2C) = v.z;
+}
+/* fzgx:end fn_1_449A8 */
+
 /* fzgx:begin fn_1_451D4 */
 void fn_1_451D4(void) {
     lbl_1_bss_384CC = 0;

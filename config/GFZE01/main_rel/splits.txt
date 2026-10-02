@@ -6821,3 +6821,6 @@ rel/main_rel/archive/fn_1_130C84.c:
 
 rel/main_rel/effect/fn_1_5AF28.c:
 	.text       start:0x0005AF28 end:0x0005B074 align:4
+
+rel/main_rel/motasglist/fn_1_449A8.c:
+	.text       start:0x000449A8 end:0x00044A74 align:4
