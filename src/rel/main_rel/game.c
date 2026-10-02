@@ -429,8 +429,6 @@ void fn_1_327F8(struct fn_1_327F8_Arg0 *arg0, u32 arg1) {
 /* fzgx:end fn_1_327F8 */
 
 /* fzgx:begin fn_1_33890 */
-
-
 typedef struct {
     u8 pad_0[0x5];
     u8 unk_5;
@@ -511,8 +509,70 @@ fallback:
 }
 /* fzgx:end fn_1_33890 */
 
-/* fzgx:begin fn_1_35124 */
+/* fzgx:begin fn_1_34E08 noprologue */
+#include "types.h"
 
+struct fn_1_34E08_lbl_1_bss_8B3A0 {
+    u8 pad_0[0xE];
+    s16 unk_E;
+};
+
+extern int sprintf(char *, const char *, ...);
+extern s32 fn_1_465D0(void *, s32);
+extern struct fn_1_34E08_lbl_1_bss_8B3A0 lbl_1_bss_8B3A0;
+extern u8 * fn_1_36AD0(void);
+extern u8 lbl_1_bss_26B5C[];
+extern u8 lbl_1_data_5730[];
+extern void * fn_1_7F518(s16, void *, s32);
+extern void fn_1_12AB38(u32);
+extern void fn_1_8001C(void);
+
+void fn_1_34E08(void) {
+    char loc_28[32];
+    u8 *p_lbl_1_data_5730;
+    s32 v2;
+    u16 v0;
+    char loc_8[32];
+    u8 *p_lbl_1_bss_26B5C;
+    void * lab_t0;
+
+    p_lbl_1_data_5730 = (u8 *)&lbl_1_data_5730;
+{
+    s16 v1;
+    v1 = (lbl_1_bss_8B3A0.unk_E);
+    if (v1 > 40) {
+        u8 *t0 = fn_1_36AD0();
+        v1 = 50;
+        if ((((0x40000000) & (*(u32 *)t0))) == 0) {
+            v1 = *(u8 *)(t0 + 0x81A0);
+        }
+    }
+    p_lbl_1_bss_26B5C = &lbl_1_bss_26B5C[-1];
+    *++p_lbl_1_bss_26B5C = v1;
+}
+    fn_1_34AC0((u32)p_lbl_1_bss_26B5C, 1, 0x1e, 1);
+    fn_1_8001C();
+    fn_1_12AB38((u32)(p_lbl_1_data_5730 + 0xce4));
+    fn_1_465D0((void *)(p_lbl_1_data_5730 + 0xcf0), 1);
+    p_lbl_1_bss_26B5C = &lbl_1_bss_26B5C[0];
+    v2 = 0;
+    while ((s16)v2 < 30) {
+        if ((s16)v2 == 0) {
+            sprintf(loc_28, (const char *)(p_lbl_1_data_5730 + 0xd00),
+                    fn_1_7F518(*(s8 *)((u8 *)((u8 *)(p_lbl_1_bss_26B5C) + v2 * 0x1)), loc_8, 0));
+        } else {
+            sprintf(loc_28, (const char *)(p_lbl_1_data_5730 + 0xd0c),
+                    fn_1_7F518(*(s8 *)((u8 *)((u8 *)(p_lbl_1_bss_26B5C) + v2 * 0x1)), loc_8, 0));
+        }
+        lab_t0 = loc_28;
+        fn_1_465D0(lab_t0, 1);
+        v2++;
+    }
+    fn_1_12AB38((u32)(p_lbl_1_data_5730 + 0xd18));
+}
+/* fzgx:end fn_1_34E08 */
+
+/* fzgx:begin fn_1_35124 */
 void fn_1_35124(void) {
     OSGetTick();
     fn_1_A0978();
@@ -521,7 +581,6 @@ void fn_1_35124(void) {
 /* fzgx:end fn_1_35124 */
 
 /* fzgx:begin fn_1_3514C */
-
 void fn_1_3514C(void* arg0, int arg1) {
     if (arg1 == 1) {
         fn_1_35174();
@@ -530,15 +589,12 @@ void fn_1_3514C(void* arg0, int arg1) {
 /* fzgx:end fn_1_3514C */
 
 /* fzgx:begin fn_1_35174 */
-
 // fn_1_35174: empty in retail (single blr).
 void fn_1_35174(void) {
 }
 /* fzgx:end fn_1_35174 */
 
 /* fzgx:begin fn_1_35178 */
-
-
 // Decrement the counter while the associated state is active.
 void fn_1_35178(u32* arg0) {
     if (fn_1_3EFA8() == 0) {
@@ -567,7 +623,6 @@ void fn_1_35178(u32* arg0) {
 /* fzgx:end fn_1_35178 */
 
 /* fzgx:begin fn_1_36A94 */
-
 // Clears one indexed 0x81c0-byte entry in the shared buffer.
 void fn_1_36A94(u32 arg0, u32 arg1) {
     u8 *entry = lbl_1_bss_5480;
@@ -585,7 +640,6 @@ u8* fn_1_36AD0(void) {
 /* fzgx:end fn_1_36AD0 */
 
 /* fzgx:begin fn_1_36ADC */
-
 void fn_1_36ADC(void) {
     fn_80008BEC(lbl_1_bss_5480, (int)(void *)(0), 0x20700);
 }
@@ -854,8 +908,6 @@ default: {
 /* fzgx:end fn_1_3908C */
 
 /* fzgx:begin fn_1_3A2C4 */
-
-
 void fn_1_3A2C4(void) {
     s64 time;
     u32 lo, hi;
@@ -877,8 +929,6 @@ void fn_1_3A2C4(void) {
 /* fzgx:end fn_1_3A2C4 */
 
 /* fzgx:begin fn_1_3DDAC */
-
-
 // Initializes global game state and configures startup resources.
 void fn_1_3DDAC(void) {
     fn_1_4A00(1, 0x1e, lbl_1_bss_5100);
@@ -903,8 +953,6 @@ void fn_1_3DDAC(void) {
 /* fzgx:end fn_1_3DDAC */
 
 /* fzgx:begin fn_1_3E5D0 */
-
-
 // Resets both state objects and advances the game initialization sequence.
 void fn_1_3E5D0(void) {
     fn_1_435C( (u32)((void *)lbl_1_bss_25B88.unk_0));
@@ -929,8 +977,6 @@ void fn_1_3E66C(void) {
 /* fzgx:end fn_1_3E66C */
 
 /* fzgx:begin fn_1_3E670 */
-
-
 void fn_1_3E670(void) {
     fn_1_4A00(1, 0x1e, lbl_1_bss_5100);
     lbl_1_bss_26C28 = 0;
@@ -941,21 +987,18 @@ void fn_1_3E670(void) {
 /* fzgx:end fn_1_3E670 */
 
 /* fzgx:begin fn_1_3EA70 */
-
 void fn_1_3EA70(void) {
     fn_1_A8F78();
 }
 /* fzgx:end fn_1_3EA70 */
 
 /* fzgx:begin fn_1_3EF08 */
-
 void fn_1_3EF08(u8 value) {
     lbl_1_bss_262F4 = value;
 }
 /* fzgx:end fn_1_3EF08 */
 
 /* fzgx:begin fn_1_3EF14 */
-
 static inline s16 current_mode(void) {
     return *(s16 *)&lbl_1_bss_960;
 }
@@ -983,7 +1026,6 @@ void fn_1_3EF8C(u8 value) {
 /* fzgx:end fn_1_3EF8C */
 
 /* fzgx:begin fn_1_3EFA8 */
-
 typedef struct MainRelState {
     u8 pad_0000[0x12];
     u8 unk_12;
@@ -1010,7 +1052,6 @@ s32 fn_1_3EFA8(void) {
 /* fzgx:end fn_1_3EFA8 */
 
 /* fzgx:begin fn_1_3EFF0 */
-
 void fn_1_3EFF0(u32 arg1, u8 arg2) {
     lbl_1_bss_25E74[0] = arg1;
     lbl_1_bss_3C10 = arg2;
@@ -1027,7 +1068,6 @@ void fn_1_3F02C(u32 arg1) {
 /* fzgx:end fn_1_3F02C */
 
 /* fzgx:begin fn_1_3F038 */
-
 // Initializes the game state and reports whether startup has completed.
 int fn_1_3F038(void) {
     if (lbl_1_bss_26C58 != 0) {
@@ -1060,7 +1100,6 @@ s16 fn_1_3F0C8(void) {
 /* fzgx:end fn_1_3F0C8 */
 
 /* fzgx:begin fn_1_3F0D8 */
-
 u8 *fn_1_3F0D8(u32 index, f32 *value, u8 *flag) {
     u8 idx = (u8)index;
     *value = lbl_1_bss_26304[idx];
@@ -1137,7 +1176,6 @@ s32 fn_1_3F1D4(void) {
 /* fzgx:end fn_1_3F1D4 */
 
 /* fzgx:begin fn_1_3F1F8 */
-
 u8 fn_1_3F1F8(void) {
     if (lbl_1_bss_3C30.unk_A6 != 0xff) {
         return fn_1_12EF24(lbl_1_bss_3C30.unk_A6, lbl_1_bss_3C30.unk_A7);
@@ -1156,15 +1194,12 @@ u8 fn_1_3F23C(u32 index) {
 /* fzgx:end fn_1_3F23C */
 
 /* fzgx:begin fn_1_3F250 */
-
 u8 fn_1_3F250(u32 index) {
     return lbl_1_bss_523C[index & 0xff];
 }
 /* fzgx:end fn_1_3F250 */
 
 /* fzgx:begin fn_1_3F264 */
-
-
 // Return the stored entry byte, or the indexed fallback when no entry exists.
 u8 fn_1_3F264(u32 index) {
     u32 masked = index & 0xff;
@@ -1179,7 +1214,6 @@ u8 fn_1_3F264(u32 index) {
 /* fzgx:end fn_1_3F264 */
 
 /* fzgx:begin fn_1_3F440 */
-
 // Reports an out-of-range index and returns the corresponding limit when valid.
 s32 fn_1_3F440(u8 index) {
     u8 *limits;
@@ -1198,8 +1232,6 @@ s32 fn_1_3F440(u8 index) {
 /* fzgx:end fn_1_3F440 */
 
 /* fzgx:begin fn_1_3F4FC */
-
-
 void fn_1_3F4FC(void) {
     u8 *dp;
     s16 i;
@@ -1255,7 +1287,6 @@ void fn_1_3F75C(void) {
 /* fzgx:end fn_1_3F75C */
 
 /* fzgx:begin fn_1_3F7A0 */
-
 void fn_1_3F7A0(u32* self) {
     self[0] = fn_1_46C60();
 }
@@ -1325,7 +1356,6 @@ u8 fn_1_3F864(void) {
 /* fzgx:end fn_1_3F864 */
 
 /* fzgx:begin fn_1_3F894 */
-
 // Enables the associated game state and records the current mode.
 void fn_1_3F894(void) {
     lbl_1_bss_53F4 = lbl_1_bss_3C30.unk_7;
@@ -1335,7 +1365,6 @@ void fn_1_3F894(void) {
 /* fzgx:end fn_1_3F894 */
 
 /* fzgx:begin fn_1_3F8C0 */
-
 u32 fn_1_3F8C0(void) {
     return lbl_1_bss_262F8[0];
 }
@@ -1364,7 +1393,6 @@ void fn_1_3FBF4(u32 arg0) {
 /* fzgx:end fn_1_3FBF4 */
 
 /* fzgx:begin fn_1_3FC18 */
-
 u16 fn_1_3FC18(void) {
     return lbl_1_bss_26C68[0];
 }
@@ -1418,7 +1446,6 @@ u32 fn_1_3FC9C(void) {
 /* fzgx:end fn_1_3FC9C */
 
 /* fzgx:begin fn_1_3FCB0 */
-
 static inline u32 fn_1_3FCB0_operand(u32 left, u32 right) { left &= right; return left; }
 #pragma opt_propagation off
 void fn_1_3FCB0(s32 value) {
@@ -1431,10 +1458,6 @@ void fn_1_3FCB0(s32 value) {
 /* fzgx:end fn_1_3FCB0 */
 
 /* fzgx:begin fn_1_3FCF8 */
-
-
-
-
 struct fn_1_3FCF8_lbl_1_bss_3C30 {
     u8 pad_0[0x1478];
     u16 unk_1478;
@@ -1564,7 +1587,6 @@ done:
 /* fzgx:end fn_1_3FDA8 */
 
 /* fzgx:begin fn_1_3FF90 */
-
 void fn_1_3FF90(void) {
     u32 bss_25b88;
     u32 bss_25ca4;
@@ -1625,7 +1647,6 @@ void fn_1_3FF90(void) {
 /* fzgx:end fn_1_3FF90 */
 
 /* fzgx:begin fn_1_4017C */
-
 int fn_1_4017C(void) {
     int i;
     int result1;
@@ -1648,7 +1669,6 @@ int fn_1_4017C(void) {
 /* fzgx:end fn_1_4017C */
 
 /* fzgx:begin fn_1_40224 */
-
 int fn_1_40224(void) {
     int result;
 
@@ -1713,7 +1733,6 @@ int fn_1_40354(void) {
 /* fzgx:end fn_1_40354 */
 
 /* fzgx:begin fn_1_40710 */
-
 typedef struct {
     u8 state;
     u8 enabled;
@@ -1805,7 +1824,6 @@ update_state:
 /* fzgx:end fn_1_40710 */
 
 /* fzgx:begin fn_1_40B14 */
-
 u8 *fn_1_40B14(void) {
     return lbl_1_bss_26B54;
 }
@@ -1858,8 +1876,6 @@ void fn_1_40BD4(void) {
 /* fzgx:end fn_1_40BD4 */
 
 /* fzgx:begin fn_1_40D44 */
-
-
 void fn_1_40D44(void) {
     u32 result;
     u32 state;
@@ -1933,9 +1949,6 @@ u8 fn_1_40ED4(void) {
 /* fzgx:end fn_1_40ED4 */
 
 /* fzgx:begin fn_1_40EE4 */
-
-
-
 u32 fn_1_40EE4(void) {
     u32 t0;
     return (((lbl_1_bss_3820C * (((GXGetTexBufferSize(320, 224, 1, 0, 0)) + 31) & ~0x1F)) + 0xF20000) + 16384);
@@ -1943,22 +1956,18 @@ u32 fn_1_40EE4(void) {
 /* fzgx:end fn_1_40EE4 */
 
 /* fzgx:begin fn_1_40F34 */
-
 u32 fn_1_40F34(void) {
     return lbl_1_bss_26B4C;
 }
 /* fzgx:end fn_1_40F34 */
 
 /* fzgx:begin fn_1_40F44 */
-
 u8 fn_1_40F44(void) {
     return lbl_1_bss_25E90[0];
 }
 /* fzgx:end fn_1_40F44 */
 
 /* fzgx:begin fn_1_40F54 */
-
-
 // Initializes the related game state with the standard allocation size.
 void fn_1_40F54(void *arg0) {
     fn_1_48B0( (u32)(void *)(arg0), 0x20);
@@ -2004,7 +2013,6 @@ void fn_1_40F78(void) {
 /* fzgx:end fn_1_40F78 */
 
 /* fzgx:begin fn_1_4100C */
-
 // Initializes both shared data blocks with their default state.
 void fn_1_4100C(void) {
     fn_1_465D0((char *)lbl_1_data_66E0, 1);
@@ -2035,7 +2043,6 @@ void fn_1_41048(void) {
 /* fzgx:end fn_1_41048 */
 
 /* fzgx:begin fn_1_410A0 */
-
 void fn_1_410A0(void) {
     if (lbl_1_bss_38458 != 0) {
         fn_800711A8(lbl_1_bss_38458);
@@ -2050,7 +2057,6 @@ void fn_1_410A0(void) {
 /* fzgx:end fn_1_410A0 */
 
 /* fzgx:begin fn_1_41104 */
-
 // Forwards the selected message entry to the formatter.
 void fn_1_41104(u32 message_index) {
     char *message = *(char **)(lbl_1_data_66A0 + message_index * sizeof(char *));
@@ -2080,7 +2086,6 @@ void fn_1_41134(void *unused, char *value) {
 /* fzgx:end fn_1_41134 */
 
 /* fzgx:begin fn_1_411A4 */
-
 // Forwards the indexed message entry to the follow-up handler.
 void fn_1_411A4(u32 index) {
     fn_1_411D4(index, ((char **)lbl_1_data_66A0)[index]);
@@ -2245,7 +2250,6 @@ void fn_1_41328(RelocData *data) {
 /* fzgx:end fn_1_41328 */
 
 /* fzgx:begin fn_1_41418 */
-
 typedef struct Fn41418Data {
     u32 count;
     char *strings;
@@ -2274,7 +2278,6 @@ char *fn_1_41418(Fn41418Data *data, u32 index) {
 /* fzgx:end fn_1_41418 */
 
 /* fzgx:begin fn_1_41488 */
-
 typedef struct Fn41488Data {
     u32 count;
     char *strings;
