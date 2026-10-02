@@ -1799,3 +1799,6 @@ rel/movie_module/fn_12_3B15C.c:
 
 rel/movie_module/fn_12_232DC.c:
 	.text       start:0x000232DC end:0x00023410 align:4
+
+rel/movie_module/fn_12_6A90.c:
+	.text       start:0x00006A90 end:0x00006B28 align:4
