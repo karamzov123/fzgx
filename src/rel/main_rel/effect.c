@@ -4004,6 +4004,55 @@ void fn_1_648D8(void) {
 }
 /* fzgx:end fn_1_648D8 */
 
+/* fzgx:begin fn_1_64E1C noprologue */
+#include "types.h"
+
+extern f32 lbl_1_rodata_295C;
+extern f32 lbl_1_rodata_2978;
+extern const f64 lbl_1_rodata_2988;
+extern u32 fn_1_55210(u32);
+extern u32 mathutil_mtxA_rotate_x(u32);
+extern void fn_1_55FC4(f32);
+extern void fn_1_55FF0(f32);
+extern void fn_80072558(void);
+extern void lbl_8006D9D8(u32);
+extern void lbl_8006E14C(f32);
+extern void mathutil_mtxA_rotate_y(u32);
+extern void mathutil_mtxA_rotate_z(u32);
+
+void fn_1_64E1C(void * arg0) {
+    f32 v0;
+    u32 v1;
+    f32 v2;
+    f32 v3;
+    u32 v4;
+    f32 v5;
+    struct { f32 a[3]; } loc_8;
+    v0 = *(f32 *)((u8 *)arg0 + 44);
+    v1 = *(u32 *)((u8 *)arg0 + 52);
+    loc_8.a[0] = (f32)(*(f32 *)((u8 *)arg0 + 60) + (f32)(v0 * *(f32 *)((u8 *)arg0 + 160)));
+    loc_8.a[1] = (f32)(*(f32 *)((u8 *)arg0 + 64) + (f32)(v0 * *(f32 *)((u8 *)arg0 + 164)));
+    v2 = *(f32 *)((u8 *)arg0 + 68);
+    loc_8.a[2] = (f32)(v2 + (f32)(v0 * *(f32 *)((u8 *)arg0 + 168)));
+    v3 = *(f32 *)((u8 *)arg0 + 40);
+    lbl_8006D9D8((u32)&loc_8);
+    mathutil_mtxA_rotate_y(*(s16 *)((u8 *)arg0 + 86));
+    mathutil_mtxA_rotate_x(*(s16 *)((u8 *)arg0 + 84));
+    mathutil_mtxA_rotate_z(*(s16 *)((u8 *)arg0 + 88));
+    lbl_8006E14C(v3);
+    fn_1_55FC4(v3);
+    fn_80072558();
+    v4 = *(u32 *)((u8 *)arg0 + 16);
+    if ((s32)v4 < 20) {
+        v5 = (f32)(lbl_1_rodata_295C * (f32)(s32)v4);
+    } else {
+        v5 = lbl_1_rodata_2978;
+    }
+    fn_1_55FF0(v5);
+    fn_1_55210(v1);
+}
+/* fzgx:end fn_1_64E1C */
+
 /* fzgx:begin fn_1_64F2C */
 #pragma section code_type ".fzgxpool"
 __declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {

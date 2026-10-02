@@ -6698,3 +6698,6 @@ rel/main_rel/archive/fn_1_12C930.c:
 
 rel/main_rel/sel_static_disp/fn_1_134AD4.c:
 	.text       start:0x00134AD4 end:0x00134EE4 align:4
+
+rel/main_rel/effect/fn_1_64E1C.c:
+	.text       start:0x00064E1C end:0x00064F2C align:4
