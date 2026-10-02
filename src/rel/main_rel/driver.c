@@ -49,6 +49,96 @@ extern void fn_1_A8528(void *arg0, void *arg1);
 extern u32 fn_1_A7024(f32, f32, f32, f32);
 extern u32 fn_80074918(u32, u32, u32);
 
+/* fzgx:begin fn_1_A744C noprologue */
+#include "types.h"
+#include "rel/main_rel/driver.h"
+
+typedef struct Resource {
+    u8 pad_0[8];
+    void *unk_8;
+} Resource;
+typedef struct Slot {
+    u8 pad_0[0x108];
+    Resource *unk_108;
+} Slot;
+typedef struct Entry {
+    u8 pad_0[0x328];
+    s8 unk_328;
+    u8 pad_329[0x6B];
+    Slot *unk_394[3];
+    u8 pad_3A0[0x18];
+    s16 unk_3B8;
+    u8 pad_3BA[0x86];
+} Entry;
+
+extern s32 fn_1_12C930(s32);
+extern s16 fn_1_12CCB0(s16, s16);
+extern Resource *fn_1_D3884(char *);
+extern void fn_80006E10(const char *);
+extern int sprintf(char *, const char *, ...);
+extern u32 fn_80077D40(void);
+extern u32 fn_80071470(void *, u32);
+extern void fn_80008BA8(u32, u32, u32);
+extern void fn_80071718(Resource *);
+
+#pragma opt_common_subs off
+static inline s16 fn_1_A744C_call_fn_1_12CCB0(s16 a1, s16 a0) { return fn_1_12CCB0(a0, a1); }
+static inline Slot * fn_1_A744C_array_read(Slot * *array, s32 index) { return array[index]; }
+void fn_1_A744C(Entry *entries, u32 count) {
+    char buffer[128];
+    s16 variant;
+    s32 j;
+    Entry *subentry;
+    s32 driver;
+    char * lab_t0;
+    s32 variantArg;
+    s8 index;
+    Slot *slot;
+    Resource *resource;
+    s32 variantChoice;
+    u32 i;
+    Entry *entry;
+    char *strings = (char *)&lbl_1_data_34348;
+    char * lab_t0_;
+    fn_80006E10(strings + 0x34);
+    for (i = 0, entry = entries; i < count; i++, entry = (Entry *)((char *)entry + 0x440)) {
+        variant = entry->unk_3B8 % 4;
+        if (variant != 0) {
+            subentry = entry;
+            variantChoice = variant;
+            variantArg = variant;
+            driver = entry->unk_328;
+            for (j = 0; j < 3; j++, subentry = (Entry *)((char *)subentry + 4)) {
+                slot = fn_1_A744C_array_read(subentry->unk_394, 0);
+                if (slot != 0) {
+                    if (j == 0) {
+                        index = fn_1_12C930(driver);
+                    } else {
+                        index = fn_1_A744C_call_fn_1_12CCB0(j - 1, driver);
+                    }
+                    if (index >= 0) {
+                        if (variantChoice == 0) {
+                            lab_t0 = buffer;
+                            lab_t0_ = lab_t0;
+                            sprintf(lab_t0_, strings + 0x18, ((char **)lbl_1_data_20D1C)[index]);
+                        } else {
+                            lab_t0 = buffer;
+                            lab_t0_ = lab_t0;
+                            sprintf(lab_t0_, strings + 0x24, ((char **)lbl_1_data_20D1C)[index], variantArg);
+                        }
+                        resource = fn_1_D3884(buffer);
+                        fn_80008BA8(fn_80071470(slot->unk_108->unk_8, 0), (fn_80071470(resource->unk_8, 0)), (fn_80077D40()));
+                        fn_80071718(resource);
+                    }
+                }
+            }
+        }
+    }
+    fn_80006E10(strings + 0x3C);
+}
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_A744C */
+
 /* fzgx:begin fn_1_A75DC noprologue */
 #include "types.h"
 
