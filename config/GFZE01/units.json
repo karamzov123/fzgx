@@ -36858,6 +36858,23 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/effect/fn_1_5B450.c",
+    "symbols": [
+      "fn_1_5B450"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/effect.c",
+    "pool": {
+      "...rodata.0": "lbl_1_rodata_2950",
+      "@16": "lbl_1_rodata_2988",
+      "@5": "lbl_1_rodata_2950",
+      "@13": "lbl_1_rodata_2978"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/effect/fn_1_5B578.c",
     "symbols": [
       "fn_1_5B578"

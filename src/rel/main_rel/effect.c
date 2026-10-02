@@ -1677,6 +1677,119 @@ void fn_1_5B3D0(struct fn_1_5B3D0_Arg0 *arg0) {
 #pragma opt_common_subs reset
 /* fzgx:end fn_1_5B3D0 */
 
+/* fzgx:begin fn_1_5B450 noprologue */
+#include "types.h"
+#include "rel/main_rel/effect.h"
+
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 60.0f;
+    s = 0.10000000149011612f;
+    s = 32767.0f;
+    s = 0.05000000074505806f;
+    d = 0.07;
+    s = 20000.0f;
+    s = 0.0f;
+    d = 4503599627370496.0;
+    s = 1.0f;
+    s = -0.029999999329447746f;
+    d = 15.0;
+    d = 4503601774854144.0;
+    d = 1.5;
+    d = 0.5;
+}
+static const u32 fzgx_pool_table2[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep2(void) { const u32 *volatile cp; cp = fzgx_pool_table2; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime3(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 0.5f;
+    s = 8.0f;
+    s = 255.0f;
+    s = 15.0f;
+    s = 0.20000000298023224f;
+    s = 0.07999999821186066f;
+    s = 0.25f;
+    s = 0.9800000190734863f;
+    s = 0.9900000095367432f;
+    s = 40.0f;
+    s = 20.0f;
+    s = 1.5f;
+    s = 0.44999998807907104f;
+    s = -2.0f;
+    s = 0.0833333358168602f;
+    s = 0.15000000596046448f;
+    s = 0.125f;
+    s = -0.4000000059604645f;
+    s = -0.30000001192092896f;
+    s = 2.0f;
+    s = 250.0f;
+    d = 0.6;
+    d = 0.4;
+    s = 0.30000001192092896f;
+    s = -0.004000000189989805f;
+    s = 0.01666666753590107f;
+    s = 65536.0f;
+    s = 4096.0f;
+    s = 0.9599999785423279f;
+    s = 0.4000000059604645f;
+    s = 0.05050000175833702f;
+    s = 0.050999999046325684f;
+    s = 0.949999988079071f;
+}
+#pragma section code_type ".text"
+#pragma opt_propagation off
+
+extern u32 lbl_801A6D00;
+extern s32 fn_1_8645C(s16, u32);
+extern void lbl_8006E1B0(void *, void *);
+extern u32 lbl_1_data_1D628;
+
+typedef struct Fn1_5B450Object {
+    u8 pad_00[0x10];
+    s32 unk_10;
+    u8 pad_14[0x04];
+    s16 unk_18;
+    u8 pad_1a[0x02];
+    f32 unk_1c;
+    f32 unk_20;
+    f32 unk_24;
+    f32 unk_28;
+    f32 unk_2c;
+    u8 pad_30[0x28];
+    s16 unk_58;
+} Fn1_5B450Object;
+
+void fn_1_5B450(Fn1_5B450Object *arg0) {
+    f32 scale;
+    u32 random_value;
+    u32 *statep;
+    u32 rnd;
+    s32 frame;
+    f32 t;
+
+    fn_1_8645C(arg0->unk_18, lbl_801A6D00);
+    lbl_8006E1B0((u8 *)arg0 + 0x94, (u8 *)arg0 + 0x3c);
+
+    scale = 0.95f;
+    statep = &lbl_1_data_1D628;
+    *statep = *statep * 0x41c64e6d + 0x3039;
+    rnd = (*statep >> 16) & 0x7fff;
+    arg0->unk_58 += rnd;
+
+    arg0->unk_2c *= scale;
+    arg0->unk_28 += arg0->unk_2c;
+
+    frame = arg0->unk_10;
+    if ((f32)frame < 60.0f) {
+        t = 1.0f - 1.0f / (f32)(frame + 1);
+        arg0->unk_1c *= t;
+        arg0->unk_20 *= 0.99f * t;
+        arg0->unk_24 *= scale * t;
+    }
+}
+/* fzgx:end fn_1_5B450 */
+
 /* fzgx:begin fn_1_5B578 noprologue */
 #include "rel/main_rel/effect.h"
 
