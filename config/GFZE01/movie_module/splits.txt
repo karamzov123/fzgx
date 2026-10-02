@@ -1772,3 +1772,6 @@ rel/movie_module/fn_12_2105C.c:
 
 rel/movie_module/fn_12_A2C4.c:
 	.text       start:0x0000A2C4 end:0x0000A374 align:4
+
+rel/movie_module/fn_12_29FF8.c:
+	.text       start:0x00029FF8 end:0x0002A308 align:4
