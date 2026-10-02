@@ -1,5 +1,5 @@
 {
- "generated": 1790955265,
+ "generated": 1790955332,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -60901,12 +60901,12 @@
    "unit": null,
    "addr": 398192,
    "size": 720,
-   "status": "unmatched",
+   "status": "claimed",
    "attempts": 2,
    "best_percent": 85.62778,
-   "claimed_by": null,
-   "claimed_at": null,
-   "claim_ttl": null,
+   "claimed_by": "fleet-v2-gpt-1790955272196426311-codex-1",
+   "claimed_at": 1790955272,
+   "claim_ttl": 2100,
    "matched_commit": null,
    "blocked_reason": null,
    "prev_status": null,
@@ -104710,12 +104710,12 @@
    "unit": null,
    "addr": 145152,
    "size": 620,
-   "status": "claimed",
-   "attempts": 3,
+   "status": "unmatched",
+   "attempts": 4,
    "best_percent": 86.41936,
-   "claimed_by": "fleet-v2-oc1-1790954295996884454-opencode-2",
-   "claimed_at": 1790954843,
-   "claim_ttl": 2100,
+   "claimed_by": null,
+   "claimed_at": null,
+   "claim_ttl": null,
    "matched_commit": null,
    "blocked_reason": null,
    "prev_status": null,
@@ -109064,7 +109064,7 @@
    "size": 328,
    "status": "claimed",
    "attempts": 4,
-   "best_percent": 88.62195,
+   "best_percent": 89.30488,
    "claimed_by": "fleet-v2-oc2-1790955055695205471-opencode-1",
    "claimed_at": 1790955055,
    "claim_ttl": 2100,
@@ -465783,8 +465783,8 @@
    "model": null,
    "started": 1790844305,
    "ended": null,
-   "checks": 3,
-   "final_percent": 68.572914,
+   "checks": 4,
+   "final_percent": 78.458336,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -465792,7 +465792,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 68.572914
+   "best_in_attempt": 78.458336
   },
   {
    "id": 17974,
@@ -468880,8 +468880,8 @@
    "model": null,
    "started": 1790858859,
    "ended": null,
-   "checks": 3,
-   "final_percent": 68.572914,
+   "checks": 4,
+   "final_percent": 78.458336,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -468889,7 +468889,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 68.572914
+   "best_in_attempt": 78.458336
   },
   {
    "id": 18137,
@@ -498330,16 +498330,16 @@
    "model": null,
    "started": 1790954289,
    "ended": null,
-   "checks": 3,
-   "final_percent": 60.12766,
+   "checks": 4,
+   "final_percent": 67.82269,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 1,
-   "best_in_attempt": 63.404255
+   "stale_checks": 0,
+   "best_in_attempt": 67.82269
   },
   {
    "id": 19687,
@@ -498463,8 +498463,8 @@
    "model": null,
    "started": 1790954667,
    "ended": null,
-   "checks": 5,
-   "final_percent": 81.50625,
+   "checks": 6,
+   "final_percent": 81.625,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -498472,7 +498472,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 81.50625
+   "best_in_attempt": 81.625
   },
   {
    "id": 19694,
@@ -498520,8 +498520,8 @@
    "model": null,
    "started": 1790954667,
    "ended": null,
-   "checks": 3,
-   "final_percent": 68.572914,
+   "checks": 4,
+   "final_percent": 78.458336,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -498529,7 +498529,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 68.572914
+   "best_in_attempt": 78.458336
   },
   {
    "id": 19697,
@@ -498611,17 +498611,17 @@
    "id": 19701,
    "symbol": "fn_12_23700",
    "agent": "fleet-v2-oc1-1790954295996884454-opencode-2",
-   "harness": null,
+   "harness": "opencode",
    "model": null,
    "started": 1790954843,
-   "ended": null,
+   "ended": 1790955330,
    "checks": 0,
    "final_percent": null,
-   "tokens_in": 0,
-   "tokens_out": 0,
+   "tokens_in": 13063,
+   "tokens_out": 1,
    "cost_usd": 0.0,
-   "outcome": null,
-   "notes": null,
+   "outcome": "released",
+   "notes": "harness incomplete (rc=0); saved best candidate automatically",
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 0.0
@@ -498672,8 +498672,8 @@
    "model": null,
    "started": 1790955003,
    "ended": null,
-   "checks": 1,
-   "final_percent": 65.0087,
+   "checks": 2,
+   "final_percent": 80.2,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -498681,7 +498681,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 65.0087
+   "best_in_attempt": 80.2
   },
   {
    "id": 19705,
@@ -498691,8 +498691,8 @@
    "model": null,
    "started": 1790955055,
    "ended": null,
-   "checks": 6,
-   "final_percent": 88.62195,
+   "checks": 7,
+   "final_percent": 89.30488,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -498700,7 +498700,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 88.62195
+   "best_in_attempt": 89.30488
   },
   {
    "id": 19706,
@@ -498710,8 +498710,8 @@
    "model": null,
    "started": 1790955065,
    "ended": null,
-   "checks": 1,
-   "final_percent": 61.648,
+   "checks": 2,
+   "final_percent": 61.728,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -498719,7 +498719,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 61.648
+   "best_in_attempt": 61.728
   },
   {
    "id": 19707,
@@ -498748,8 +498748,8 @@
    "model": null,
    "started": 1790955186,
    "ended": null,
-   "checks": 0,
-   "final_percent": null,
+   "checks": 1,
+   "final_percent": 78.613335,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -498757,6 +498757,25 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
+   "best_in_attempt": 78.613335
+  },
+  {
+   "id": 19709,
+   "symbol": "fn_1_61370",
+   "agent": "fleet-v2-gpt-1790955272196426311-codex-1",
+   "harness": null,
+   "model": null,
+   "started": 1790955272,
+   "ended": null,
+   "checks": 1,
+   "final_percent": 0.0,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0,
+   "outcome": null,
+   "notes": null,
+   "best_body_path": null,
+   "stale_checks": 1,
    "best_in_attempt": 0.0
   }
  ],
