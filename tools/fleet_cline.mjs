@@ -77,11 +77,18 @@ agent=new Agent({providerId:config.providerId,modelId:config.modelId,apiKey:conf
  maxIterations:40,toolExecution:'sequential',modelOptions:{maxTokens:32768,reasoningEffort:'high'},
  requestToolApproval:request=>({approved:names.includes(request.toolName)}),
 });
-let usage={inputTokens:0,outputTokens:0};
+let usage={inputTokens:0,outputTokens:0,cacheReadTokens:0,cacheWriteTokens:0,totalCost:0};
 let budgetReached=false;
 agent.subscribe(e=>{
  if(e.type==='usage-updated'){
-  usage={inputTokens:e.usage.inputTokens||0,outputTokens:e.usage.outputTokens||0};
+  // The SDK reports cache counters on this same event. Dropping them made every
+  // cline row look 0% cached, because nothing downstream could see a rate the
+  // harness never recorded (see docs/findings/276). inputTokens is cache-INCLUSIVE
+  // (turn N reads exactly turn N-1's inputTokens), so cacheReadTokens is a subset
+  // of it and must never be added on top; effective = input - 0.9*cacheRead.
+  usage={inputTokens:e.usage.inputTokens||0,outputTokens:e.usage.outputTokens||0,
+         cacheReadTokens:e.usage.cacheReadTokens||0,cacheWriteTokens:e.usage.cacheWriteTokens||0,
+         totalCost:e.usage.totalCost||0};
   const path=join(directory,symbol+'.usage.json');writeFileSync(path+'.tmp',JSON.stringify(usage));renameSync(path+'.tmp',path);
   event(e.type,{usage});
   if((tokenLimits.input&&usage.inputTokens>=tokenLimits.input)||(tokenLimits.output&&usage.outputTokens>=tokenLimits.output)){budgetReached=true;agent.abort('Function emergency token budget reached; preserve only this candidate');}

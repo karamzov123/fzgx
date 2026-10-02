@@ -45,7 +45,13 @@ class Usage:
             usage = row['result'].get('usage') or {}
             self.total = dict(inputTokens=(usage.get('input_tokens', 0) or 0)+(usage.get('cache_read_tokens', 0) or 0), outputTokens=usage.get('output_tokens', 0) or 0)
         if kind == 'usage-updated' and isinstance(row.get('usage'), dict):
-            self.total = dict(inputTokens=row['usage'].get('inputTokens', 0), outputTokens=row['usage'].get('outputTokens', 0))
+            # inputTokens is cache-inclusive; carry the cache split through so cost
+            # and cross-family comparisons are measured rather than assumed
+            # (docs/findings/276). Never add cacheRead on top of inputTokens.
+            self.total = dict(inputTokens=row['usage'].get('inputTokens', 0), outputTokens=row['usage'].get('outputTokens', 0),
+                              cacheReadTokens=row['usage'].get('cacheReadTokens', 0) or 0,
+                              cacheWriteTokens=row['usage'].get('cacheWriteTokens', 0) or 0,
+                              totalCost=row['usage'].get('totalCost', 0) or 0)
         msg = row.get('message') or {}
         if isinstance(msg, dict) and isinstance(msg.get('usage'), dict):
             usage = msg['usage']

@@ -27,7 +27,11 @@ CREATE TABLE IF NOT EXISTS attempts (
   id INTEGER PRIMARY KEY, symbol TEXT, agent TEXT, harness TEXT, model TEXT,
   started INTEGER, ended INTEGER, checks INTEGER DEFAULT 0, final_percent REAL,
   tokens_in INTEGER DEFAULT 0, tokens_out INTEGER DEFAULT 0, cost_usd REAL DEFAULT 0,
-  outcome TEXT, notes TEXT, best_body_path TEXT
+  outcome TEXT, notes TEXT, best_body_path TEXT,
+  -- Cache split. tokens_in is cache-INCLUSIVE; these are the subset read from the
+  -- provider cache, so effective billed input = tokens_in - 0.9*cache_read_tokens.
+  -- Added by migration for existing ledgers; see docs/findings/276.
+  cache_read_tokens INTEGER DEFAULT 0, cache_write_tokens INTEGER DEFAULT 0
 );
 CREATE TABLE IF NOT EXISTS names (
   id INTEGER PRIMARY KEY, kind TEXT, target TEXT, proposed TEXT, rationale TEXT,
@@ -57,7 +61,8 @@ class Ledger:
         self.db.execute("PRAGMA busy_timeout=30000")
         self.db.executescript(SCHEMA)
         cols = {r[1] for r in self.db.execute("PRAGMA table_info(attempts)")}
-        for col, decl in (("stale_checks", "INTEGER DEFAULT 0"), ("best_in_attempt", "REAL DEFAULT 0")):
+        for col, decl in (("stale_checks", "INTEGER DEFAULT 0"), ("best_in_attempt", "REAL DEFAULT 0"),
+                       ("cache_read_tokens", "INTEGER DEFAULT 0"), ("cache_write_tokens", "INTEGER DEFAULT 0")):
             if col not in cols:
                 self.db.execute(f"ALTER TABLE attempts ADD COLUMN {col} {decl}")
         fcols = {r[1] for r in self.db.execute("PRAGMA table_info(functions)")}

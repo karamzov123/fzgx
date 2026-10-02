@@ -312,6 +312,23 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
     if usage_file.exists():
         usage = json.loads(usage_file.read_text())
         info['tokens_in'], info['tokens_out'] = usage.get('inputTokens', 0), usage.get('outputTokens', 0)
+        # Prefer the provider's own cost when it reports one. Every CLI harness
+        # previously landed cost_usd=0 because the rate tables have no entry for
+        # these models, which made cline look free and broke cost-per-match
+        # comparisons (docs/findings/276). inputTokens is cache-inclusive, so the
+        # cache split is carried alongside it and never added on top.
+        info['cache_read_tokens'] = usage.get('cacheReadTokens', 0) or 0
+        info['cache_write_tokens'] = usage.get('cacheWriteTokens', 0) or 0
+        if usage.get('totalCost'):
+            info['cost'] = usage['totalCost']
+            info['cost_basis'] = 'provider-reported'
+        elif harness == 'cline':
+            # This provider reports no cost and no public rate exists, so a dollar
+            # figure would be invented. Record the cache split and compare attempts
+            # in effective tokens instead (docs/findings/276).
+            info['cost'] = 0.0
+            info['cost_basis'] = ('unpriced: no provider rate for stealth/space-bunny-alpha; '
+                                  'use effective tokens (input - 0.9*cacheRead) to compare')
     key = api._key(p, symbol)
     l = Ledger()
     att = l.db.execute("SELECT * FROM attempts WHERE symbol=? AND agent=? ORDER BY id DESC LIMIT 1",
@@ -348,14 +365,18 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
     pct = 100.0 if outcome == "matched" else (att["best_in_attempt"] if att else None)
     checks = att["checks"] if att else None
     # cost accounting onto the attempt this agent opened
-    l.db.execute("UPDATE attempts SET tokens_in=?, tokens_out=?, cost_usd=?, harness=?, model=COALESCE(NULLIF(?, ''), model) "
+    l.db.execute("UPDATE attempts SET tokens_in=?, tokens_out=?, cost_usd=?, harness=?, model=COALESCE(NULLIF(?, ''), model), "
+                 "cache_read_tokens=?, cache_write_tokens=? "
                  "WHERE id=(SELECT id FROM attempts WHERE symbol=? AND agent=? ORDER BY id DESC LIMIT 1)",
-                 (info["tokens_in"], info["tokens_out"], info["cost"], harness, info["model"], key, agent_id))
+                 (info["tokens_in"], info["tokens_out"], info["cost"], harness, info["model"],
+                  info.get("cache_read_tokens", 0), info.get("cache_write_tokens", 0), key, agent_id))
     log = STATE_DIR / "runs" / batch / f"{symbol}.log"
     log.parent.mkdir(parents=True, exist_ok=True)
     log.write_text(out)
     return {"symbol": symbol, "outcome": outcome, "percent": pct, "checks": checks, "cost": info["cost"], "model": info["model"],
             "cost_basis": info.get("cost_basis", "provider-reported"),
+            "cache_read_tokens": info.get("cache_read_tokens", 0),
+            "cache_write_tokens": info.get("cache_write_tokens", 0),
             "tokens_in": info["tokens_in"], "tokens_out": info["tokens_out"], "turns": info["turns"],
             "secs": round(time.time() - t0, 1), "setup_secs": setup_secs, "model_started": proc is not None, "rc": rc}
 
