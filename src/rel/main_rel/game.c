@@ -572,6 +572,131 @@ void fn_1_34E08(void) {
 }
 /* fzgx:end fn_1_34E08 */
 
+/* fzgx:begin fn_1_34F38 noprologue */
+#include "rel/main_rel/game.h"
+
+extern f32 lbl_1_rodata_BD8;
+extern u8 lbl_1_bss_6F1E4[85];
+extern Obj_1_bss_3C30 lbl_1_bss_3C30;
+extern u32 fn_8004CD70(int arg0, void* arg1, const char* arg2);
+extern void fn_1_A2E24(int arg0, u32 arg1, int arg2);
+extern void fn_80067344(int arg0, int arg1, u32 arg2, int arg3);
+extern Obj_1_bss_3C30* fn_1_86254(void);
+extern void fn_1_A2DF4(int arg0, u32 arg1, int arg2);
+extern void fn_1_35124(void);
+extern void fn_1_4030(void (*func)(void));
+extern const char lbl_1_rodata_4A248[];
+
+typedef struct {
+    u32 unk_0;
+    u32 unk_4;
+    u8 pad_8[8];
+    u8 pad_10[0x20];
+} InitObj;
+
+typedef struct {
+    u8 pad_0[8];
+    f32 unk_8;
+} Obj_1_86254;
+
+#pragma opt_propagation off
+#pragma opt_lifetimes off
+#pragma opt_common_subs off
+void fn_1_34F38(InitObj* obj) {
+    u16* table;
+    struct { u8* value; } state;
+    u8* rodata;
+    struct { s8 value; } i;
+    int lab_t0;
+    int lab_t0_;
+    int lab_t2;
+    int lab_t0__;
+    int lab_t0___;
+
+    rodata = (u8*)&lbl_1_rodata_BD8;
+    if (obj != 0) {
+        if (obj->unk_0 == 0) {
+            obj->unk_0 = fn_8004CD70(2, &obj->pad_10[0],
+                (const char *)(0x50000 - 0x5db8));
+        }
+        if (obj->unk_4 == 0) {
+            obj->unk_4 = fn_8004CD70(2, (u8*)obj + 0x4a258,
+                (const char *)(0x50000 - 0x5db8));
+        }
+    }
+
+    fn_1_A2E24(0x10, 0xa0100000, 0x7f);
+    fn_1_A2E24(0x10, 0xa0110000, 0);
+    fn_80067344(1, 0xf, 0xb0270000, 0x7f);
+
+    state.value = (u8*)&lbl_1_bss_6F1E4;
+    table = (u16*)(rodata + 0x254);
+    {
+    s8 fzgx_loop_i_1335;
+for (fzgx_loop_i_1335 = 0; fzgx_loop_i_1335 < 4; fzgx_loop_i_1335++) {
+        s32 id = fzgx_loop_i_1335;
+        i.value = id;
+        if (lbl_1_bss_3C30.unk_8 > i.value) {
+            Obj_1_86254* value = (Obj_1_86254*)fn_1_86254();
+            if (value->unk_8 <= *(f32*)(rodata + 0x25c)) {
+                *(u16*)(((8) + (state.value))) = 4;
+            } else if (value->unk_8 <= *(f32*)(rodata + 0x260)) {
+                *(u16*)(state.value + 8) = 0;
+            } else {
+                *(u16*)(state.value + 8) = 5;
+            }
+        } else {
+            *(u16*)(state.value + 8) = *table;
+        }
+        lab_t0 = (s8)fzgx_loop_i_1335;
+        lab_t0_ = lab_t0;
+        lab_t0__ = lab_t0_;
+        fn_1_A2DF4(lab_t0__, 0xa5000000, *(u16*)(state.value + 8));
+        state.value += 0x14;
+        table++;
+    }
+    i.value = fzgx_loop_i_1335;
+}
+
+    lab_t0 = 4;
+    lab_t0_ = lab_t0;
+    lab_t0__ = lab_t0_;
+    lab_t0___ = lab_t0__;
+    fn_1_A2DF4(lab_t0___, 0xa5000000, 0xa);
+    lab_t0 = 5;
+    lab_t0_ = lab_t0;
+    lab_t2 = 9;
+    lab_t0__ = lab_t0_;
+    fn_1_A2DF4(lab_t0__, 0xa5000000, lab_t2);
+    lab_t0 = 7;
+    lab_t0_ = lab_t0;
+    lab_t0__ = lab_t0_;
+    fn_1_A2DF4(lab_t0__, 0xa5000000, 6);
+    lab_t0 = 6;
+    lab_t0_ = lab_t0;
+    lab_t0__ = lab_t0_;
+    fn_1_A2DF4(lab_t0__, 0xa5000000, 7);
+
+    for (i.value = 0; i.value < 0x10; i.value++) {
+        lab_t0 = i.value;
+        lab_t0_ = lab_t0;
+        lab_t0 = i.value;
+        lab_t0__ = lab_t0_;
+        fn_1_A2DF4(lab_t0__, 0xa6000000, 0);
+        lab_t0_ = lab_t0;
+        lab_t0__ = lab_t0_;
+        fn_1_A2DF4(lab_t0__, 0xa5100000, 0);
+    }
+
+    fn_1_4030(fn_1_35124);
+}
+#pragma opt_common_subs reset
+
+#pragma opt_lifetimes reset
+
+#pragma opt_propagation reset
+/* fzgx:end fn_1_34F38 */
+
 /* fzgx:begin fn_1_35124 */
 void fn_1_35124(void) {
     OSGetTick();
