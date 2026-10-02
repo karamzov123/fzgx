@@ -702,6 +702,240 @@ void fn_1_E174(f32 arg0) {
 #pragma opt_lifetimes reset
 /* fzgx:end fn_1_E174 */
 
+/* fzgx:begin fn_1_EBE4 noprologue */
+#include "types.h"
+
+typedef struct Sig_ADXT_Stop_AdxSjdHandle Sig_ADXT_Stop_AdxSjdHandle;
+typedef struct Sig_ADXT_Stop_ADXStream Sig_ADXT_Stop_ADXStream;
+typedef struct Sig_ADXT_Stop_AXRNAHandle Sig_ADXT_Stop_AXRNAHandle;
+typedef struct Sig_ADXT_Stop_SJInterface Sig_ADXT_Stop_SJInterface;
+typedef struct Sig_ADXT_Stop_SJ Sig_ADXT_Stop_SJ;
+typedef struct Sig_ADXT_Stop_ADX_AMP Sig_ADXT_Stop_ADX_AMP;
+typedef struct Sig_ADXT_Stop_LSCObject Sig_ADXT_Stop_LSCObject;
+typedef struct {
+    unsigned char *data;
+    int len;
+} Sig_ADXT_Stop_SJCK;
+typedef void (*Sig_ADXT_Stop_SJErrorCallback)(void *object, int error);
+struct Sig_ADXT_Stop_SJInterface {
+    void *reserved[3];
+    void (*destroy)(Sig_ADXT_Stop_SJ *sj);
+    const void *(*get_uuid)(Sig_ADXT_Stop_SJ *sj);
+    void (*reset)(Sig_ADXT_Stop_SJ *sj);
+    void (*get_chunk)(Sig_ADXT_Stop_SJ *sj, int channel, int max_size, Sig_ADXT_Stop_SJCK *chunk);
+    void (*unget_chunk)(Sig_ADXT_Stop_SJ *sj, int channel, Sig_ADXT_Stop_SJCK *chunk);
+    void (*put_chunk)(Sig_ADXT_Stop_SJ *sj, int channel, Sig_ADXT_Stop_SJCK *chunk);
+    int (*get_num_data)(Sig_ADXT_Stop_SJ *sj, int channel);
+    int (*is_get_chunk)(Sig_ADXT_Stop_SJ *sj, int channel, int size, int *available);
+    void (*entry_error_func)(Sig_ADXT_Stop_SJ *sj, Sig_ADXT_Stop_SJErrorCallback callback, void *object);
+};
+struct Sig_ADXT_Stop_SJ {
+    const Sig_ADXT_Stop_SJInterface *interface;
+};
+typedef struct Sig_ADXT_Stop_ADXTHandle {
+    s8 used;
+    s8 status;
+    s8 stream_type;
+    s8 maximum_channels;
+    Sig_ADXT_Stop_AdxSjdHandle *decoder;
+    Sig_ADXT_Stop_ADXStream *stream;
+    Sig_ADXT_Stop_AXRNAHandle *rna;
+    Sig_ADXT_Stop_SJ *stream_sj;
+    Sig_ADXT_Stop_SJ *input_sj;
+    Sig_ADXT_Stop_SJ *output_sj[2];
+    u8 *input_buffer;
+    s32 input_buffer_size;
+    s32 input_extra_size;
+    u8 *output_buffer;
+    s32 output_buffer_size;
+    s32 output_buffer_distance;
+    s32 server_frequency;
+    s16 stream_buffer_sectors;
+    s16 minimum_buffer_sectors;
+    s16 output_volume;
+    s16 output_pan[2];
+    s16 field_46;
+    s32 maximum_decode_samples;
+    s32 loop_count;
+    s32 link_data_length;
+    s32 field_54;
+    s32 field_58;
+    s32 field_5C;
+    s16 error_code;
+    u8 reserved_62[2];
+    s32 field_64;
+    s16 field_68;
+    s16 field_6A;
+    s8 stream_loop_enabled;
+    s8 auto_receiver;
+    u8 reserved_6E[2];
+    s8 suppress_playback;
+    s8 decoder_ready;
+    s8 paused;
+    u8 reserved_73;
+    Sig_ADXT_Stop_ADX_AMP *amplifier;
+    Sig_ADXT_Stop_SJ *amplifier_input[2];
+    Sig_ADXT_Stop_SJ *amplifier_output[2];
+    s32 time_offset;
+    s32 eos_sector;
+    s32 loop_sample_count;
+    Sig_ADXT_Stop_LSCObject *linked_stream_controller;
+    s8 link_enabled;
+    u8 reserved_99[3];
+    u32 playback_time;
+    s32 playback_start_vsync;
+    s32 linked_decoded_samples;
+    s8 pending_stream_start;
+    u8 reserved_A9[3];
+    u8 *work_end;
+    const char *pending_filename;
+    void *pending_directory;
+    s32 pending_file_offset;
+    s32 pending_file_sectors;
+} Sig_ADXT_Stop_ADXTHandle;
+
+struct fn_1_EBE4_Arg0 {
+    u8 pad_0[0xC];
+    u32 unk_C;
+};
+struct fn_1_EBE4_lbl_1_bss_1148 {
+    u8 unk_0;
+    u8 pad_1[0xB];
+    f32 unk_C;
+    u8 pad_10[0x4];
+    u8 unk_14;
+    u8 pad_15[0x64F];
+    u8 unk_664;
+    u8 pad_665[0x1];
+    u16 unk_666;
+    u32 unk_668;
+    u8 unk_66C;
+    u8 pad_66D[0x3];
+    u32 unk_670;
+    u32 unk_674;
+    u8 unk_678;
+};
+struct fn_1_EBE4_lbl_1_data_43B8 {
+    u8 pad_0[0x148];
+    s16 unk_148;
+    u16 unk_14A;
+    u16 unk_14C;
+};
+
+typedef struct {
+    u32 w0;
+    u32 w1;
+} EBE4Pair;
+
+extern f32 lbl_1_rodata_4F4;
+extern s16 fn_1_7B054(void);
+extern s16 lbl_1_bss_960;
+extern struct fn_1_EBE4_lbl_1_bss_1148 lbl_1_bss_1148;
+extern struct fn_1_EBE4_lbl_1_data_43B8 lbl_1_data_43B8;
+extern u32 fn_1_A1588(Sig_ADXT_Stop_ADXTHandle *, u32);
+extern u32 fn_1_A1CE8(u32);
+extern u32 fn_1_F2F34(void);
+extern u32 lbl_1_bss_6EAD0;
+extern u8 lbl_1_bss_6F243;
+extern void fn_1_10138(void *);
+extern void fn_1_8840(void);
+
+u32 fn_1_EBE4(struct fn_1_EBE4_Arg0 *arg0, s32 arg1, u32 arg2, f32 arg3) {
+    void * v2;
+    struct fn_1_EBE4_lbl_1_bss_1148 *p_lbl_1_bss_1148;
+    void * v0;
+    u32 v4;
+    u32 v5;
+    struct fn_1_EBE4_lbl_1_data_43B8 *p_lbl_1_data_43B8;
+    u32 v3;
+    u32 v1;
+    u32 v6;
+    s16 t0;
+    u32 t3;
+    u32 t4;
+    u32 t5;
+    p_lbl_1_data_43B8 = (struct fn_1_EBE4_lbl_1_data_43B8 *)&lbl_1_data_43B8;
+    p_lbl_1_bss_1148 = (struct fn_1_EBE4_lbl_1_bss_1148 *)&lbl_1_bss_1148;
+    p_lbl_1_bss_1148->unk_666 = 0;
+    p_lbl_1_bss_1148->unk_668 = -1;
+    v0 = (void *)(((u8 *)(u32)p_lbl_1_data_43B8 + 208));
+    p_lbl_1_data_43B8->unk_14C = 60;
+    p_lbl_1_bss_1148->unk_C = lbl_1_rodata_4F4;
+    p_lbl_1_bss_1148->unk_14 = 0;
+    p_lbl_1_bss_1148->unk_0 = 0;
+    p_lbl_1_bss_1148->unk_66C = 0;
+    arg0->unk_C = (arg0->unk_C & 0xFFF7FFFF);
+    v1 = 0;
+    v2 = v0;
+    v3 = (u32)arg0;
+    do {
+    t0 = fn_1_7B054();
+    v3 = t0;
+    v3 = (s16)v3;
+    if (*(s32 *)((u8 *)v2 + 0) == (s32)v3) {
+    *(u32 *)((u8 *)(u32)arg0 + 12) = (*(u32 *)((u8 *)(u32)arg0 + 12) | 0x80000);
+    }
+    v1++;
+    v2 = (void *)(((u8 *)v2 + 4));
+    } while (v1 < 26);
+    if ((s32)arg2 != 0) {
+    *(u8 *)((u8 *)arg0 + 0) = 6;
+    *(u16 *)((u8 *)arg0 + 18) = 5;
+    *(u16 *)((u8 *)arg0 + 20) = 0;
+    *(u32 *)((u8 *)arg0 + 24) = 0;
+    *(u16 *)((u8 *)arg0 + 16) = 0;
+    fn_1_10138(arg0);
+    } else {
+    *(u8 *)((u8 *)arg0 + 0) = 5;
+    *(u16 *)((u8 *)arg0 + 18) = 2;
+    *(u16 *)((u8 *)arg0 + 20) = 9;
+    *(u32 *)((u8 *)arg0 + 24) = 0;
+    *(u16 *)((u8 *)arg0 + 16) = 0;
+    }
+    *(u8 *)((u8 *)arg0 + 1) = 0;
+    *(u16 *)((u8 *)arg0 + 100) = 210;
+    *(u16 *)((u8 *)arg0 + 106) = 0;
+    *(u32 *)((u8 *)arg0 + 12) = (*(u32 *)((u8 *)arg0 + 12) & 0xFFDFFFFF);
+    *(f32 *)((u8 *)arg0 + 96) = arg3;
+    *(u16 *)((u8 *)arg0 + 92) = 0;
+    *(EBE4Pair *)((u8 *)arg0 + 0x28) = *(EBE4Pair *)((u8 *)arg0 + 0x1C);
+    *(u32 *)((u8 *)arg0 + 48) = *(u32 *)((u8 *)arg0 + 36);
+    *(u16 *)((u8 *)arg0 + 8) = arg1;
+    *(u16 *)((u8 *)arg0 + 6) = arg1;
+    p_lbl_1_bss_1148->unk_670 = 0;
+    p_lbl_1_bss_1148->unk_674 = 0;
+    fn_1_8840();
+    if (lbl_1_bss_960 == 10 && (s32)arg2 == 0) {
+    p_lbl_1_bss_1148->unk_664 = 0;
+    p_lbl_1_bss_1148->unk_678 = 2;
+    *(u8 *)((u8 *)arg0 + 0) = 0;
+    p_lbl_1_data_43B8->unk_14A = 42;
+    lbl_1_bss_6F243 = 0;
+    if (((s16)(p_lbl_1_data_43B8->unk_148)) != 42) {
+    p_lbl_1_data_43B8->unk_148 = 42;
+    }
+    v6 = (u32)&lbl_1_bss_6EAD0;
+    v6 = *(u32 *)((u8 *)v6 + 0);
+    v6 = *(u32 *)((u8 *)v6 + 0);
+    t3 = fn_1_A1588((Sig_ADXT_Stop_ADXTHandle *)v6, 1);
+    v6 = t3;
+    v6 = (p_lbl_1_data_43B8->unk_148 & 0xFF);
+    t4 = fn_1_A1CE8(v6);
+    v6 = t4;
+    } else {
+    t5 = fn_1_F2F34();
+    v6 = t5;
+    if ((s32)v6 != 0 && (s32)arg2 == 0) {
+    *(u8 *)((u8 *)arg0 + 0) = 0;
+    }
+    }
+    if (p_lbl_1_bss_1148->unk_664 != 0) {
+    p_lbl_1_bss_1148->unk_678 = 2;
+    }
+    return v6;
+}
+/* fzgx:end fn_1_EBE4 */
+
 /* fzgx:begin fn_1_EE04 */
 typedef struct {
     u8 pad[2];
