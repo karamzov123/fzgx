@@ -723,6 +723,110 @@ s32 fn_9_120C(struct Car *car) {
 }
 /* fzgx:end fn_9_120C */
 
+/* fzgx:begin colchg_selcar_disp noprologue */
+#include "rel/car_colchg/car_colchg.h"
+#include "dolphin/types.h"
+
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 0.0f;
+    s = 0.25f;
+}
+static const u32 fzgx_pool_table2[3] = {0x00000000, 0x00000000, 0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep2(void) { const u32 *volatile cp; cp = fzgx_pool_table2; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime3(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 160.0f;
+    s = 50.0f;
+    s = -10.0f;
+    s = 182.04444885253906f;
+    s = 2.0f;
+    s = 1.0f;
+}
+static const u32 fzgx_pool_table4[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep4(void) { const u32 *volatile cp; cp = fzgx_pool_table4; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime5(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    d = 4503599627370496.0;
+    s = 250.0f;
+    s = 255.0f;
+    s = 0.5f;
+    s = 480.0f;
+    d = 4503601774854144.0;
+}
+#pragma section code_type ".text"
+
+typedef struct { u32 words[2]; f32 x; f32 y; u32 rest[18]; } SelectionPanel;
+extern const SelectionPanel lbl_1_rodata_26F8;
+extern s16 *lbl_1_data_1FB6C[];
+extern u16 lbl_1_bss_D58;
+extern void fn_1_496FC(f32, f32);
+extern void fn_1_4AE0C(const char *, ...);
+extern char *fn_1_7F49C(s16, s16, char *);
+extern unsigned long strlen(const char *);
+extern char *fn_80083DB0(char *, const char *);
+extern void fn_1_4B83C(char *, const char *, const char *, const char *);
+extern int sprintf(char *, const char *, ...);
+extern f32 fn_1_4B040(const char *);
+extern void fn_1_4955C(f32, f32);
+extern s32 fn_9_120C(void *);
+extern void fn_9_1310(u32);
+extern u32 fn_1_8D3F8(void *, const SelectionPanel *, void *, void *);
+
+void colchg_selcar_disp(void *cars)
+{
+    char format[32];
+    char longest[32];
+    char text[32];
+    char name[32];
+    SelectionPanel panel;
+    s16 *data = (s16 *)&lbl_9_data_0;
+    s16 car_id = lbl_9_bss_8->unk_0;
+    s16 i;
+    s32 max_length;
+    s16 *car = lbl_1_data_1FB6C[car_id];
+    fn_1_496FC(160.0f, 50.0f);
+    fn_1_4AE0C((char *)data + 0x100);
+    max_length = 0;
+    fn_1_7F49C(lbl_9_bss_8->unk_0, *data, name);
+    for (i = 0; i < 41; i++) {
+        s32 length = strlen(name);
+        if (length > max_length) {
+            max_length = length;
+            fn_80083DB0(longest, name);
+        }
+    }
+    fn_1_4B83C(format, (char *)data + 0x118, longest, name);
+    sprintf(text, format, name);
+    fn_1_4955C(250.0f / fn_1_4B040(text), 1.0f);
+    fn_1_4AE0C(text);
+    fn_1_4955C(1.0f, 1.0f);
+    fn_1_4955C(1.0f, 1.0f);
+    fn_1_4AE0C((char *)data + 0x120, lbl_9_bss_8->unk_0);
+    if (((lbl_1_bss_D58 >> 8) & 1) && *car == -1) {
+        fn_1_4AE0C((char *)data + 0x128);
+    }
+    {
+    s16 fzgx_loop_i_1785;
+for (fzgx_loop_i_1785 = 0; fzgx_loop_i_1785 < 2; fzgx_loop_i_1785++) {
+        panel = lbl_1_rodata_26F8;
+        panel.y = 255.0f;
+        panel.x = 0.5f * (480.0f * (fzgx_loop_i_1785 % 2));
+        switch (fzgx_loop_i_1785) {
+        case 0:
+            fn_1_8D3F8(lbl_9_bss_14 + fzgx_loop_i_1785 * 100, &panel, fn_9_120C, (u8 *)cars + car_id * 0x440);
+            break;
+        case 1:
+            fn_1_8D3F8(lbl_9_bss_14 + fzgx_loop_i_1785 * 100, &panel, fn_9_1310, (u8 *)cars + car_id * 0x440);
+            break;
+        }
+    }
+    i = fzgx_loop_i_1785;
+}
+}
+/* fzgx:end colchg_selcar_disp */
+
 /* fzgx:begin colchg_chgcol_disp */
 extern u8 lbl_9_data_178[20];
 extern u8 lbl_9_bss_14[200];
