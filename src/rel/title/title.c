@@ -71,6 +71,103 @@ void _prolog(void) {
 }
 /* fzgx:end _prolog */
 
+/* fzgx:begin fn_8_954 */
+extern struct fn_8_954_lbl_8_bss_0 lbl_8_bss_0;
+extern struct fn_8_954_lbl_1_bss_9C8 lbl_1_bss_9C8;
+extern struct fn_8_954_lbl_1_bss_9F8 lbl_1_bss_9F8;
+extern struct fn_8_954_lbl_1_bss_8B3A0 lbl_1_bss_8B3A0;
+extern s16 lbl_1_bss_968;
+extern s16 lbl_1_bss_96A;
+extern u8 lbl_801A66B8;
+extern u8 lbl_801A66BA;
+extern s32 fn_1_4C10(void);
+extern s32 fn_1_4CAC(void);
+extern void fn_1_4A00(s32, u8, void *);
+extern void fn_1_A5EFC(void);
+
+struct fn_8_954_lbl_8_bss_0 {
+    u8 pad_0[1];
+    u8 unk_1;
+    u8 unk_2;
+    u8 pad_3[0x235];
+    u32 unk_238;
+    u8 pad_23C[1];
+    u8 unk_23D;
+};
+struct fn_8_954_lbl_1_bss_9C8 {
+    u8 pad_0[0xA];
+    s8 unk_A;
+};
+struct fn_8_954_lbl_1_bss_9F8 {
+    u8 pad_0[8];
+    u16 unk_8;
+};
+struct fn_8_954_lbl_1_bss_8B3A0 {
+    u8 pad_0[0x94];
+    u32 unk_94;
+    u8 pad_98[6];
+    u8 unk_9E;
+};
+
+#pragma opt_dead_code off
+#pragma opt_dead_assignments off
+#pragma opt_propagation off
+static inline s32 check_input(struct fn_8_954_lbl_1_bss_9F8 *unused,
+                             struct fn_8_954_lbl_1_bss_9C8 *unused2, s32 unused3) {
+    struct fn_8_954_lbl_1_bss_9C8 *q;
+    struct fn_8_954_lbl_1_bss_9F8 *w;
+    s32 zero;
+    s32 result;
+    q = &lbl_1_bss_9C8;
+    w = &lbl_1_bss_9F8;
+    zero = 0;
+    if (q->unk_A == 0 && (w->unk_8 & 0x1000) != 0) {
+        result = 1;
+        lbl_1_bss_8B3A0.unk_9E = zero;
+    } else {
+        result = 0;
+    }
+    return result;
+}
+
+void fn_8_954(void) {
+    struct fn_8_954_lbl_8_bss_0 *p;
+    p = &lbl_8_bss_0;
+    if (lbl_1_bss_968 != -1 || lbl_1_bss_96A != -1) {
+        return;
+    }
+    {
+        if (p->unk_2 == 0 || p->unk_1 == 0) {
+            if (p->unk_23D == 0) {
+                if (p->unk_2 == 0) {
+                    return;
+                }
+                if (check_input(&lbl_1_bss_9F8, &lbl_1_bss_9C8, 0) == 0) {
+                    return;
+                }
+                if (fn_1_4C10() == 0 || fn_1_4CAC() != 0) {
+                    fn_1_4A00(0, 0xF, (void *)p->unk_238);
+                }
+                p->unk_23D = 1;
+                return;
+            }
+            if (fn_1_4C10() != 0) {
+                return;
+            }
+        }
+        if (!lbl_801A66B8) {
+            fn_1_A5EFC();
+            lbl_801A66B8 = 1;
+        }
+        lbl_1_bss_8B3A0.unk_94 = 0;
+        lbl_1_bss_968 = 1;
+        p->unk_23D = 0;
+        p->unk_1 = 0;
+        lbl_801A66BA = 0;
+    }
+}
+/* fzgx:end fn_8_954 */
+
 /* fzgx:begin fn_8_AA8 */
 extern struct fn_8_AA8_lbl_8_bss_234 lbl_8_bss_234;
 extern struct fn_8_AA8_lbl_8_bss_238 lbl_8_bss_238;
