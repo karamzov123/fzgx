@@ -20565,6 +20565,19 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80053F38.c",
+    "symbols": [
+      "fn_80053F38"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [
+      "-use_lmw_stmw",
+      "on"
+    ]
+  },
+  {
+    "module": "main",
     "source": "dol/fn_800541EC.c",
     "symbols": [
       "fn_800541EC"
