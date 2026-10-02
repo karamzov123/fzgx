@@ -50072,6 +50072,18 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/sound/fn_1_A2FC8.c",
+    "symbols": [
+      "fn_1_A2FC8"
+    ],
+    "status": "nonmatching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/sound.c",
+    "pool": true
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/sound/fn_1_A358C.c",
     "symbols": [
       "fn_1_A358C"

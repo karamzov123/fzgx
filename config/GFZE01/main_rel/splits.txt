@@ -6719,3 +6719,6 @@ rel/main_rel/effect/fn_1_660EC.c:
 
 rel/main_rel/ranking/fn_1_155FB4.c:
 	.text       start:0x00155FB4 end:0x00156198 align:4
+
+rel/main_rel/sound/fn_1_A2FC8.c:
+	.text       start:0x000A2FC8 end:0x000A31E4 align:4
