@@ -6755,3 +6755,6 @@ rel/main_rel/font/fn_1_4B8DC.c:
 
 rel/main_rel/ghost/fn_1_F1C54.c:
 	.text       start:0x000F1C54 end:0x000F1D60 align:4
+
+rel/main_rel/load/fn_1_46B44.c:
+	.text       start:0x00046B44 end:0x00046BA0 align:4

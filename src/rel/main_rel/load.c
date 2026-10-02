@@ -540,6 +540,71 @@ u32 fn_1_46A8C(u32 value) {
 }
 /* fzgx:end fn_1_46A8C */
 
+/* fzgx:begin fn_1_46B44 pool */
+struct fn_1_46B44_entry {
+    u32 type;
+    u32 value;
+    u32 unk_8;
+};
+
+struct fn_1_46B44_lbl_1_bss_384C0 {
+    u32 unk_0;
+    u32 unk_4;
+    u8 unk_8[0x4010];
+    struct fn_1_46B44_entry entries[0x200];
+};
+
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+u32 fzgx_obj_lbl_1_bss_384C0;
+u32 lbl_1_bss_384C4;
+u32 fzgx_obj_lbl_1_bss_384C8;
+u32 lbl_1_bss_384CC;
+u32 fzgx_obj_lbl_1_bss_384D0[2];
+u32 lbl_1_bss_384D8_fill_384D8[4096];
+struct fn_1_46B44_entry lbl_1_bss_384D8_4000[0x200];
+
+#pragma section code_type ".fzgxpool"
+static void fzgx_bss_layout(void) {
+    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_384C0;
+    s = *(u8 *)&lbl_1_bss_384C4;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_384C8;
+    s = *(u8 *)&lbl_1_bss_384CC;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_384D0;
+    s = *(u8 *)&lbl_1_bss_384D8_fill_384D8;
+    s = *(u8 *)&lbl_1_bss_384D8_4000;
+}
+#pragma section code_type ".text"
+
+u32 fn_1_46B44(u32 arg0, u32 arg1) {
+    u32 v0;
+    s32 v1;
+    struct fn_1_46B44_entry *v2;
+    s32 current;
+
+    
+    v0 = fzgx_obj_lbl_1_bss_384C0;
+    v1 = v0 + 1;
+    current = v0;
+    if (v1 >= 512) {
+        v1 = 0;
+    }
+    if ((s32)lbl_1_bss_384C4 == v1) {
+        return -1;
+    }
+    v2 = lbl_1_bss_384D8_4000;
+    {
+        u32 type = 13;
+        fzgx_obj_lbl_1_bss_384C0 = v1;
+        v2 += v0;
+        v2->type = type;
+    }
+    v2->value = arg0;
+    v2->unk_8 = arg1;
+    return current;
+}
+/* fzgx:end fn_1_46B44 */
+
 /* fzgx:begin fn_1_46BA0 pool */
 struct fn_1_46BA0_lbl_1_bss_384C0 {
     u32 unk_0;
