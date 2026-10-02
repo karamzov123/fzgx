@@ -23276,6 +23276,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_800725DC.c",
+    "symbols": [
+      "fn_800725DC"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80072614.c",
     "symbols": [
       "fn_80072614"
