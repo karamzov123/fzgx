@@ -63670,6 +63670,24 @@
   },
   {
     "module": "sel",
+    "source": "rel/sel/sel/fn_10_F57C.c",
+    "symbols": [
+      "fn_10_F57C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/sel/sel.c",
+    "pool": {
+      "...rodata.0": "lbl_10_rodata_158",
+      "@27": "lbl_10_rodata_1E8",
+      "@11": "lbl_10_rodata_1A4",
+      "@126": "lbl_10_rodata_3AC",
+      "fzgx_pool_table1": "lbl_10_rodata_158"
+    }
+  },
+  {
+    "module": "sel",
     "source": "rel/sel/sel/fn_10_FF08.c",
     "symbols": [
       "fn_10_FF08"
