@@ -54,3 +54,4 @@ compile_commands.json
 .ruff_cache/
 .cache/
 *.pyc
+state/blocked-records/*.db
