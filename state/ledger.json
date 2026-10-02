@@ -1,5 +1,5 @@
 {
- "generated": 1790938511,
+ "generated": 1790938585,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -46040,19 +46040,19 @@
   {
    "symbol": "fn_1_66B8",
    "module": "main_rel",
-   "unit": null,
+   "unit": "rel/main_rel/camera/fn_1_66B8.c",
    "addr": 26296,
    "size": 356,
-   "status": "claimed",
-   "attempts": 4,
-   "best_percent": 96.955055,
-   "claimed_by": "fleet-v2-oc4-1790937370320756505-opencode-2",
-   "claimed_at": 1790937510,
-   "claim_ttl": 2100,
-   "matched_commit": null,
+   "status": "matched",
+   "attempts": 5,
+   "best_percent": 100.0,
+   "claimed_by": null,
+   "claimed_at": null,
+   "claim_ttl": null,
+   "matched_commit": "d1cfcd12",
    "blocked_reason": null,
    "prev_status": null,
-   "link_state": null
+   "link_state": "verified"
   },
   {
    "symbol": "fn_1_681C",
@@ -84550,7 +84550,7 @@
    "size": 400,
    "status": "claimed",
    "attempts": 3,
-   "best_percent": 93.15,
+   "best_percent": 97.6,
    "claimed_by": "fleet-v2-gpt-1790938438467424982-codex-1",
    "claimed_at": 1790938438,
    "claim_ttl": 2100,
@@ -494944,20 +494944,20 @@
    "id": 19508,
    "symbol": "fn_1_66B8",
    "agent": "fleet-v2-oc4-1790937370320756505-opencode-2",
-   "harness": null,
-   "model": null,
+   "harness": "opencode",
+   "model": "opencode/space-bunny-free",
    "started": 1790937510,
-   "ended": null,
-   "checks": 6,
-   "final_percent": 96.89888,
-   "tokens_in": 0,
-   "tokens_out": 0,
+   "ended": 1790938575,
+   "checks": 8,
+   "final_percent": 100.0,
+   "tokens_in": 430303,
+   "tokens_out": 4650,
    "cost_usd": 0.0,
-   "outcome": null,
-   "notes": null,
+   "outcome": "matched",
+   "notes": "oracle match accepted automatically",
    "best_body_path": null,
-   "stale_checks": 2,
-   "best_in_attempt": 96.955055
+   "stale_checks": 0,
+   "best_in_attempt": 100.0
   },
   {
    "id": 19509,
@@ -495081,16 +495081,16 @@
    "model": null,
    "started": 1790938438,
    "ended": null,
-   "checks": 3,
-   "final_percent": 91.85,
+   "checks": 5,
+   "final_percent": 97.6,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 2,
-   "best_in_attempt": 93.15
+   "stale_checks": 1,
+   "best_in_attempt": 97.6
   }
  ],
  "names": [
