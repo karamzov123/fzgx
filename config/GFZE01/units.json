@@ -31537,6 +31537,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/burner/fn_1_F8E30.c",
+    "symbols": [
+      "fn_1_F8E30"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/burner.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/camera/camera_are_flags_enabled.c",
     "symbols": [
       "camera_are_flags_enabled"
