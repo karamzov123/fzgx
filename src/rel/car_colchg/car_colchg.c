@@ -723,6 +723,63 @@ s32 fn_9_120C(struct Car *car) {
 }
 /* fzgx:end fn_9_120C */
 
+/* fzgx:begin fn_9_1310 */
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d; /* fzgx-allow: S2 pool primer sinks */
+    s = 0.0f;
+    s = 0.25f;
+}
+static const u32 fzgx_pool_table2[3] = {0, 0, 0}; /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static inline void fzgx_pool_keep2(void) { const u32 *volatile cp; cp = fzgx_pool_table2; } /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime3(void) {
+    volatile f32 s; volatile f64 d; /* fzgx-allow: S2 pool primer sinks */
+    s = 160.0f;
+    s = 50.0f;
+    s = -10.0f;
+    s = 182.04444885253906f;
+    s = 2.0f;
+    s = 1.0f;
+}
+static const u32 fzgx_pool_table4[1] = {0}; /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep4(void) { const u32 *volatile cp; cp = fzgx_pool_table4; } /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static inline void fzgx_pool_prime5(void) {
+    volatile f32 s; volatile f64 d; /* fzgx-allow: S2 pool primer sinks */
+    d = 4503599627370496.0;
+}
+#pragma section code_type ".text"
+struct Car_9_1310 {
+    u8 pad_0[0x3b8];
+    s16 unk_3b8;
+};
+extern u32 lbl_801A66A0;
+void lbl_8006D7F4(f32, f32, f32);
+void mathutil_mtxA_rotate_y(s32);
+void mathutil_mtxA_rotate_x(s32);
+void lbl_8006E14C(f32);
+extern void fn_80072558(void);
+void fn_1_870BC(struct Car_9_1310 *, s8, struct Car_9_1310 *, s32, u8, f32);
+#pragma opt_propagation on
+s32 fn_9_1310(struct Car_9_1310 *car) {
+    u32 *rng;
+    f32 angle;
+    struct { s32 value; } color;
+    struct { struct Car_9_1310 *value; } held_car;
+    held_car.value = car;
+    color.value = lbl_9_bss_8->unk_C;
+    lbl_8006D7F4(0.0f, 0.0f, -10.0f);
+    mathutil_mtxA_rotate_y(-0x8000);
+    rng = &lbl_801A66A0;
+    mathutil_mtxA_rotate_x(0x2000);
+    angle = 182.04444885253906f * (f32)(*rng % 0x168);
+    mathutil_mtxA_rotate_y((s32)angle);
+    lbl_8006E14C(2.0f);
+    fn_80072558();
+    fn_1_870BC(held_car.value, (s8)color.value, held_car.value, 0, (u8)held_car.value->unk_3b8, 1.0f);
+    return 0;
+}
+/* fzgx:end fn_9_1310 */
+
 /* fzgx:begin colchg_selcar_disp noprologue */
 #include "rel/car_colchg/car_colchg.h"
 #include "dolphin/types.h"
