@@ -1,5 +1,5 @@
 {
- "generated": 1790975047,
+ "generated": 1790975048,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -544168,8 +544168,8 @@
    "model": null,
    "started": 1790974960,
    "ended": null,
-   "checks": 0,
-   "final_percent": null,
+   "checks": 1,
+   "final_percent": 97.24719,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -544177,7 +544177,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 0.0,
+   "best_in_attempt": 97.24719,
    "cache_read_tokens": 0,
    "cache_write_tokens": 0
   },
