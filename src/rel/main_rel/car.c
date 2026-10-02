@@ -1151,6 +1151,67 @@ s8 fn_1_84124(Fn184124Object *obj, s8 direction, s8 index, u8 *count) {
 }
 /* fzgx:end fn_1_84124 */
 
+/* fzgx:begin fn_1_8421C noprologue */
+#include "types.h"
+#include "rel/main_rel/car.h"
+
+struct fn_1_8421C_Arg0 {
+    u8 pad_0[0x320];
+    s16 unk_320;
+    u8 pad_322[0x6A];
+    u8 unk_38C;
+};
+
+static inline s8 clamp_selection(s8 value) {
+    return value < 0 ? 0 : value > 5 ? 5 : value;
+}
+
+static inline s8 forward_selection(struct fn_1_8421C_Arg0 *arg0, s8 arg1, s8 *distance) {
+    s8 v0;
+    if (arg1 == 5) return arg1;
+    if (arg1 < 0 || arg1 > 5) return clamp_selection(arg1);
+    v0 = arg1;
+    while (v0 < 5) {
+        if (arg0->unk_38C & (1 << v0)) return v0;
+        v0++;
+        (*distance)++;
+    }
+    return -1;
+}
+
+static inline s8 backward_selection(struct fn_1_8421C_Arg0 *arg0, s8 arg1, s8 *distance) {
+    if (arg1 == 5) return arg1;
+    if (arg1 < 0 || arg1 > 5) return clamp_selection(arg1);
+    while (arg1 > -1) {
+        if (arg0->unk_38C & (1 << arg1)) return arg1;
+        arg1--;
+        (*distance)++;
+    }
+    return -1;
+}
+
+static inline s8 select_result(struct fn_1_8421C_Arg0 *arg0, s8 v0, s8 v3, s8 v1, s8 v4) {
+    if (v0 == -1) return v3;
+    if (v3 == -1) return v0;
+    if (v1 > v4) return v0;
+    if (v1 < v4) return v3;
+    if (lbl_1_bss_6D9A0[arg0->unk_320] == 1) return v0;
+    return v3;
+}
+
+s8 fn_1_8421C(struct fn_1_8421C_Arg0 *arg0, s8 arg1) {
+    s8 v0;
+    s8 v1 = 0;
+    s8 v3;
+    s8 v4;
+    v0 = forward_selection(arg0, arg1, &v1);
+    v4 = 0;
+    v3 = backward_selection(arg0, arg1, &v4);
+    if (v0 == -1 && v3 == -1) return 3;
+    return select_result(arg0, v0, v3, v1, v4);
+}
+/* fzgx:end fn_1_8421C */
+
 /* fzgx:begin fn_1_843BC */
 typedef struct {
     u8 _pad[0x32c];
