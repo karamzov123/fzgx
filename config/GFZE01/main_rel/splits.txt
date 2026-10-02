@@ -6854,3 +6854,6 @@ rel/main_rel/effect/fn_1_5B578.c:
 
 rel/main_rel/effect/fn_1_5B450.c:
 	.text       start:0x0005B450 end:0x0005B578 align:4
+
+rel/main_rel/memcard/fn_1_BFBF4.c:
+	.text       start:0x000BFBF4 end:0x000BFCF8 align:4
