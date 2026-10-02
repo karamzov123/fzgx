@@ -43333,6 +43333,20 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/load/fn_1_47AD4.c",
+    "symbols": [
+      "fn_1_47AD4"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/load.c",
+    "pool": {
+      "@54": "lbl_1_data_1A364"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/load/fn_1_485E8.c",
     "symbols": [
       "fn_1_485E8"
