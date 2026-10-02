@@ -6701,3 +6701,6 @@ rel/main_rel/sel_static_disp/fn_1_134AD4.c:
 
 rel/main_rel/effect/fn_1_64E1C.c:
 	.text       start:0x00064E1C end:0x00064F2C align:4
+
+rel/main_rel/ranking/fn_1_156218.c:
+	.text       start:0x00156218 end:0x001563E8 align:4

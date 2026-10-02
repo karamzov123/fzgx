@@ -175,6 +175,44 @@ u32 *fn_1_156198(u32 arg0) {
 }
 /* fzgx:end fn_1_156198 */
 
+/* fzgx:begin fn_1_156218 noprologue */
+#include "rel/main_rel/ranking.h"
+
+extern void fn_1_12EF80(u32, void *, void *);
+
+typedef struct {
+    u32 words[8];
+} RankingRecord;
+
+typedef struct {
+    u8 pad[0x18];
+    u16 value;
+} RankingValue;
+
+s32 fn_1_156218(s16 id, RankingRecord *record, RankingValue *value, RankingRecord *extra)
+{
+    s16 row;
+    s16 column;
+    s32 index;
+    s32 i;
+
+    fn_1_12EF80(id, &row, &column);
+    index = column + row * 6;
+    for (i = 0; i < 10; i++) {
+        if (*(u16 *)&((Obj_1_bss_7F0C0 *)((u8 *)&lbl_1_bss_7F0C0 + index * 0x180 + i * 0x20))->unk_110 != 0) {
+            *record = *(RankingRecord *)((u8 *)&lbl_1_bss_7F0C0.unk_F8 + index * 0x180 + i * 0x20);
+            *extra = *(RankingRecord *)((u8 *)&lbl_1_bss_7F0C0.unk_238 + index * 0x180);
+            value->value = *(u16 *)((u8 *)&lbl_1_bss_7F0C0.unk_258 + index * 0x180);
+            return 1;
+        }
+    }
+    *record = *(RankingRecord *)((u8 *)&lbl_1_bss_7F0C0.unk_F8 + index * 0x180);
+    *extra = *(RankingRecord *)((u8 *)&lbl_1_bss_7F0C0.unk_238 + index * 0x180);
+    value->value = *(u16 *)((u8 *)&lbl_1_bss_7F0C0.unk_258 + index * 0x180);
+    return 0;
+}
+/* fzgx:end fn_1_156218 */
+
 /* fzgx:begin fn_1_1563E8 */
 u16 fn_1_1563E8(u8 *data, s32 len) {
     u16 table[256];
