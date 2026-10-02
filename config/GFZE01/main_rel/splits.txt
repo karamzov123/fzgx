@@ -6830,3 +6830,6 @@ rel/main_rel/stcoli/fn_1_207DC.c:
 
 rel/main_rel/stcoli/fn_1_21950.c:
 	.text       start:0x00021950 end:0x00021BE4 align:4
+
+rel/main_rel/avline/fn_1_58248.c:
+	.text       start:0x00058248 end:0x000584AC align:4
