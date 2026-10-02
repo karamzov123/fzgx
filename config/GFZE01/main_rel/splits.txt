@@ -6563,3 +6563,6 @@ rel/main_rel/alloc/fn_1_4A00.c:
 
 rel/main_rel/shadowmap/fn_1_579A0.c:
 	.text       start:0x000579A0 end:0x00057A70 align:4
+
+rel/main_rel/font/fn_1_55C48.c:
+	.text       start:0x00055C48 end:0x00055D6C align:4
