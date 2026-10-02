@@ -670,6 +670,63 @@ void fn_10_3268(void) {
 }
 /* fzgx:end fn_10_3268 */
 
+/* fzgx:begin fn_10_3954 */
+typedef struct {
+    u8 a;
+    u8 pad[3];
+    u32 arr[1];
+} SelEnt;
+
+typedef struct {
+    u8 pad0[0x40e00];
+    u32 flags;
+    u8 b4;
+    u8 b5;
+    u8 pad1[0x48FA0 - 0x40e06];
+    u8 x;
+    u8 pad2[3];
+    SelEnt e[3];
+} SelBig;
+
+extern u8 lbl_1_bss_8B3A0[];
+extern u32 lbl_10_bss_3C0[74736];
+extern u8 fn_1_128B00(s16);
+extern s16 fn_1_14F270(u8, s16, u32);
+extern u32 fn_1_151BE8(u8, s32);
+
+#define SEL ((SelBig *)lbl_10_bss_3C0)
+
+void fn_10_3954(void) {
+    s16 i;
+    s16 j;
+
+    if ((*(u32 *)(0x94 + lbl_1_bss_8B3A0) & ((u32)1 << 30)) == 0) {
+        SEL->flags &= ~((u32)3 << 30);
+        return;
+    }
+
+    if ((SEL->flags & ((u32)1 << 31)) != 0 &&
+        (SEL->flags & ((u32)1 << 30)) != 0) {
+        return;
+    }
+
+    SEL->flags |= ((u32)3 << 30);
+    SEL->b5 = 0x31;
+
+    for (i = 0; i < 3; i++) {
+        SEL->e[i].a = fn_1_14F270(fn_1_128B00(i), i, (u32)1 << 31);
+    }
+
+    SEL->x = fn_1_128B00(i);
+
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 1; j++) {
+            SEL->e[i].arr[j] = fn_1_151BE8(SEL->e[i].a, j);
+        }
+    }
+}
+/* fzgx:end fn_10_3954 */
+
 /* fzgx:begin fn_10_3A98 */
 typedef struct {
     u8 pad[4];
