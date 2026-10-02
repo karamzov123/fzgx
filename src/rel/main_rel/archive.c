@@ -1130,6 +1130,124 @@ s16 fn_1_12CCB0(s16 arg0, s16 arg1) {
 }
 /* fzgx:end fn_1_12CCB0 */
 
+/* fzgx:begin fn_1_12CEA8 */
+extern void *fn_1_12F118(void);
+extern u8 *fn_1_36AD0(void);
+extern void fn_1_12D354(void *, void *, void *);
+extern u32 fn_1_8F198(u32, u32, void *, u32);
+typedef struct {
+    u8 pad_0[0x4];
+    s32 field_4;
+    s32 field_8;
+    s32 field_c;
+    s32 field_10;
+    s32 field_14;
+} Sig_fn_1_8F45C_Fn1_8F45C_Object;
+extern void fn_1_8F45C(Sig_fn_1_8F45C_Fn1_8F45C_Object *, u32, void *, u32);
+
+typedef struct {
+    u8 pad_0[5];
+    u8 id;
+    u8 pad_6[0x819A];
+    u8 kind;
+    u8 pad_81a1[0x1f];
+} Entry;
+
+static inline u32 get_kind(u32 arg0) {
+    Entry *base;
+    s16 i;
+    if ((s16)arg0 < 41)
+        return arg0;
+    base = fn_1_12F118();
+    if (!base)
+        return 6;
+    if ((u8 *)base != fn_1_36AD0()) {
+        for (i = 0; i < 9; i++) {
+            if ((s16)arg0 == base[i].id)
+                return base[i].kind;
+        }
+    } else {
+        if ((s16)arg0 >= 50 && (s16)arg0 <= 53)
+            return base[(s16)arg0 - 50].kind;
+        if ((s16)arg0 >= 54 && (s16)arg0 <= 57)
+            return base[(s16)arg0 - 54].kind;
+        for (i = 0; i < 4; i++) {
+            if ((s16)arg0 == base[i].id)
+                return base[i].kind;
+        }
+    }
+    return 6;
+}
+
+static inline s16 get_item(u32 arg0, s16 i) {
+    switch ((s16)get_kind(arg0)) {
+    case 21:
+        switch (i) {
+        case 0: return 41;
+        default: return -1;
+        }
+    case 33:
+        switch (i) {
+        case 0: return 42;
+        case 1: return 43;
+        default: return -1;
+        }
+    default: return -1;
+    }
+}
+
+static inline s16 get_count(u32 arg0) {
+    switch ((s16)get_kind(arg0)) {
+    case 21: return 1;
+    case 33: return 2;
+    default: return 0;
+    }
+}
+
+#pragma opt_dead_assignments off
+void fn_1_12CEA8(u32 arg0, u32 arg1, void *arg2, u32 arg3, s32 arg4) {
+    u32 v9;
+    u32 v1;
+    u32 v2;
+    s32 v3;
+    s32 v4;
+    s32 v5;
+    u32 v6;
+    u32 v7;
+    u32 v8;
+    s16 v0;
+    s16 item;
+    v0 = (s16)arg0;
+    v1 = v0 - 50;
+    v2 = 0x81c0;
+    v3 = v1 * v2;
+{
+    s32 fzgx_loop_v5_2101;
+    v4 = (v0 - 54) * v2;
+    fzgx_loop_v5_2101 = 0;
+    v6 = v2;
+    v7 = arg1;
+    v8 = 0;
+    v9 = arg1;
+    while ((s16)fzgx_loop_v5_2101 < get_count(arg0)) {
+        item = get_item(arg0, (s16)fzgx_loop_v5_2101);
+        if (item != -1) {
+            if ((s32)arg4) {
+                fn_1_12D354((void *)item, arg2, (void *)v9);
+                fn_1_8F198(v9, item, arg2, arg3);
+            } else {
+                fn_1_8F45C((Sig_fn_1_8F45C_Fn1_8F45C_Object *)v9, item, arg2, arg3);
+            }
+        }
+        v9 += 0x4e0;
+        fzgx_loop_v5_2101++;
+    }
+    v5 = fzgx_loop_v5_2101;
+}
+}
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_1_12CEA8 */
+
 /* fzgx:begin fn_1_12D254 */
 #include "types.h"
 
