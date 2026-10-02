@@ -575,3 +575,6 @@ rel/sel/sel/fn_10_1E57C.c:
 
 rel/sel/sel/fn_10_FF54.c:
 	.text       start:0x0000FF54 end:0x00010168 align:4
+
+rel/sel/sel/fn_10_4838.c:
+	.text       start:0x00004838 end:0x00004A84 align:4

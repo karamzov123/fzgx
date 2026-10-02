@@ -29395,6 +29395,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/bg_common/fn_1_105AB8.c",
+    "symbols": [
+      "fn_1_105AB8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/bg_common.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/bg_common/fn_1_1067A8.c",
     "symbols": [
       "fn_1_1067A8"
@@ -61185,6 +61196,17 @@
     "source": "rel/sel/sel/fn_10_472C.c",
     "symbols": [
       "fn_10_472C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/sel/sel.c"
+  },
+  {
+    "module": "sel",
+    "source": "rel/sel/sel/fn_10_4838.c",
+    "symbols": [
+      "fn_10_4838"
     ],
     "status": "matching",
     "mw_version": null,
