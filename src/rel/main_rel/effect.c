@@ -1725,6 +1725,114 @@ void fn_1_5D918(void) {
 }
 /* fzgx:end fn_1_5D918 */
 
+/* fzgx:begin fn_1_5E3C4 */
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 60.0f;
+    s = 0.10000000149011612f;
+    s = 32767.0f;
+    s = 0.05000000074505806f;
+    d = 0.07;
+    s = 20000.0f;
+    s = 0.0f;
+    d = 4503599627370496.0;
+    s = 1.0f;
+    s = -0.029999999329447746f;
+    d = 15.0;
+    d = 4503601774854144.0;
+    d = 1.5;
+    d = 0.5;
+}
+static const u32 fzgx_pool_table2[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep2(void) { const u32 *volatile cp; cp = fzgx_pool_table2; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime3(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 0.5f;
+    s = 8.0f;
+    s = 255.0f;
+    s = 15.0f;
+    s = 0.20000000298023224f;
+    s = 0.07999999821186066f;
+    s = 0.25f;
+    s = 0.9800000190734863f;
+    s = 0.9900000095367432f;
+    s = 40.0f;
+    s = 20.0f;
+    s = 1.5f;
+    s = 0.44999998807907104f;
+    s = -2.0f;
+    s = 0.0833333358168602f;
+    s = 0.15000000596046448f;
+    s = 0.125f;
+    s = -0.4000000059604645f;
+    s = -0.30000001192092896f;
+    s = 2.0f;
+    s = 250.0f;
+    d = 0.6;
+    d = 0.4;
+    s = 0.30000001192092896f;
+    s = -0.004000000189989805f;
+    s = 0.01666666753590107f;
+    s = 65536.0f;
+    s = 4096.0f;
+    s = 0.9599999785423279f;
+    s = 0.4000000059604645f;
+    s = 0.05050000175833702f;
+}
+#pragma section code_type ".text"
+
+struct fn_1_5E3C4_Arg0 {
+    u8 pad_0[0x10];
+    u32 unk_10;
+    u8 pad_14[0x9E];
+    u16 unk_B2;
+};
+
+#pragma opt_dead_assignments off
+#pragma opt_strength_reduction off
+f32 fn_1_5E3C4(struct fn_1_5E3C4_Arg0 *arg0, f32 arg1) {
+    f32 v0;
+    u32 v1;
+    f64 v2;
+    f32 v4;
+    f32 v5;
+    f32 v6;
+    u32 v7;
+    f64 v8;
+    f32 v10;
+    f32 v11;
+    f32 v12;
+    v0 = arg1;
+    if (arg0->unk_B2 == 1) {
+        if (((0) == ((s32)(*(u32 volatile *)&arg0->unk_10)))) { /* Retail requires a distinct field reload. */
+            v1 = lbl_1_data_1D628 * 0x41C64E6D + 12345;
+            v2 = 4503599627370496.0;
+            v4 = 0.25f;
+            v5 = 0.400000006f;
+            lbl_1_data_1D628 = v1;
+            v6 = 60.0f;
+            v0 = (f32)(u32)((v1 >> 16) & 0x7FFF);
+            arg0->unk_10 = (s32)(f32)(v6 * (f32)(v5 + (f32)(v4 * (f32)(v0 / (32767.0f)))));
+        }
+    } else {
+        if (((0) == ((s32)(*(u32 volatile *)&arg0->unk_10)))) { /* Retail requires a distinct field reload. */
+            v7 = lbl_1_data_1D628 * 0x41C64E6D + 12345;
+            v8 = 4503599627370496.0;
+            v10 = 0.25f;
+            v11 = 0.0799999982f;
+            v12 = 60.0f;
+            lbl_1_data_1D628 = v7;
+            v0 = (f32)(u32)((v7 >> 16) & 0x7FFF);
+            arg0->unk_10 = (s32)(f32)(v12 * (f32)(v11 + (f32)(v10 * (f32)(v0 / (32767.0f)))));
+        }
+    }
+    return v0;
+}
+#pragma opt_strength_reduction reset
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_1_5E3C4 */
+
 /* fzgx:begin fn_1_5EB08 */
 typedef struct FnObj {
     u8 pad18[0x18];
