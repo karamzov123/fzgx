@@ -339,6 +339,101 @@ s32 fn_1_DAB5C(s32 mode, Fn1DAB5C_Obj **arg) {
 }
 /* fzgx:end fn_1_DAB5C */
 
+/* fzgx:begin fn_1_DABB4 */
+typedef struct {
+    f32 x, y, z;
+} Fn1DABB4_Vec;
+
+extern const Fn1DABB4_Vec lbl_1_rodata_662C;
+
+extern void lbl_8006D91C(s16);
+extern void mathutil_mtxA_rotate_y(s16);
+extern void mathutil_mtxA_rotate_x(s16);
+extern void lbl_8006E1C0(void *, void *);
+extern void lbl_8006D7DC(void *);
+extern void mathutil_mtxA_rotate_z(s16);
+extern void lbl_8006E13C(void *);
+extern void lbl_8006DB74(void *);
+
+typedef struct {
+    u32 unk_0;
+    f32 unk_4;
+    f32 unk_8;
+    f32 unk_C;
+    u8 pad_10[0xC];
+    u32 unk_1C;
+    u8 pad_20[0x2C];
+    f32 unk_4C;
+} Fn1DABB4_Entry;
+
+typedef struct {
+    u8 pad[0x10];
+    s32 count;
+    Fn1DABB4_Entry e[30];
+} Fn1DABB4_Mgr;
+
+typedef struct {
+    u32 unk_0;
+    u8 pad_4[0x8];
+    f32 unk_C;
+    f32 unk_10;
+    f32 unk_14;
+    s16 unk_18;
+    s16 unk_1A;
+    s16 unk_1C;
+    f32 unk_20;
+    f32 unk_24;
+    f32 unk_28;
+} Fn1DABB4_Obj;
+
+#define MAX(a, b) (((a) > (b)) ? (a) : (b))
+
+u32 fn_1_DABB4(s32 mode, Fn1DABB4_Obj *arg1) {
+    Obj_1_data_2A7E0_At3C *manager;
+
+    manager = lbl_1_data_2A7E0.unk_3C;
+    switch (mode) {
+    case 0:
+        arg1->unk_0 |= 0x02000000;
+        break;
+    case 1:
+        arg1->unk_0 |= 0x02000000;
+        break;
+    case 2:
+    case 3:
+        arg1->unk_0 |= 0x02000000;
+        break;
+    case 4:
+        arg1->unk_0 |= 0x04000000;
+        if ((s32)manager->unk_10 < 0x1e) {
+            Fn1DABB4_Entry *entry = &((Fn1DABB4_Mgr *)manager)->e[((Fn1DABB4_Mgr *)manager)->count];
+            Fn1DABB4_Vec values = lbl_1_rodata_662C;
+            entry->unk_0 = (u32)arg1;
+            entry->unk_4 = arg1->unk_C;
+            entry->unk_8 = arg1->unk_10;
+            entry->unk_C = arg1->unk_14;
+            lbl_8006D91C(arg1->unk_1C);
+            mathutil_mtxA_rotate_y(arg1->unk_1A);
+            mathutil_mtxA_rotate_x(arg1->unk_18);
+            lbl_8006E1C0(&values, (u8 *)entry + 0x10);
+            lbl_8006D7DC(&arg1->unk_C);
+            mathutil_mtxA_rotate_z(arg1->unk_1C);
+            mathutil_mtxA_rotate_y(arg1->unk_1A);
+            mathutil_mtxA_rotate_x(arg1->unk_18);
+            lbl_8006E13C(&arg1->unk_20);
+            lbl_8006DB74((u8 *)entry + 0x1C);
+            ((Fn1DABB4_Mgr *)manager)->count++;
+            entry->unk_4C = MAX(arg1->unk_20, MAX(arg1->unk_24, arg1->unk_28));
+        }
+        break;
+    case 8:
+        manager->unk_BD8 = (u32)arg1;
+        break;
+    }
+    return 1;
+}
+/* fzgx:end fn_1_DABB4 */
+
 /* fzgx:begin fn_1_DAD68 */
 // fn_1_DAD68: empty in retail (single blr).
 void fn_1_DAD68(void) {

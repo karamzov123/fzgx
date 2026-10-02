@@ -6629,3 +6629,6 @@ rel/main_rel/effect/fn_1_67F20.c:
 
 rel/main_rel/motasglist/fn_1_41518.c:
 	.text       start:0x00041518 end:0x00041850 align:4
+
+rel/main_rel/bg_san/fn_1_DABB4.c:
+	.text       start:0x000DABB4 end:0x000DAD68 align:4
