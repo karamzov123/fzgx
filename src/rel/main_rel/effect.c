@@ -1677,6 +1677,122 @@ void fn_1_5B3D0(struct fn_1_5B3D0_Arg0 *arg0) {
 #pragma opt_common_subs reset
 /* fzgx:end fn_1_5B3D0 */
 
+/* fzgx:begin fn_1_5B578 noprologue */
+#include "rel/main_rel/effect.h"
+
+extern const struct fn_1_5B578_lbl_1_rodata_2950_pool {
+    u8 pad_0[0x4];
+    f32 unk_4;
+    u8 pad_8[0x20];
+    f32 unk_28;
+    u8 pad_2C[0x38];
+    f32 unk_64;
+    u8 pad_68[0x38];
+    f32 unk_A0;
+    u8 pad_A4[0x3C];
+    f32 unk_E0;
+} lbl_1_rodata_2950;
+
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+} Vec_1_5B578_T;
+
+typedef struct {
+    u8 pad_0[8];
+    u32 unk_8;
+} Obj_1_5B578_Scene_T;
+
+typedef struct {
+    u8 pad_0[0x70];
+    u32 unk_70;
+} Obj_1_5B578_World_T;
+
+typedef struct {
+    u8 pad_0[0x14];
+    f32 unk_14;
+} Obj_1_5B578_Entity_T;
+
+typedef struct {
+    u8 pad_8[8];
+    Vec_1_5B578_T vec;
+} Obj_1_5B578_Child_T;
+
+typedef struct {
+    u8 pad_0[2];
+    s16 unk_2;
+    u8 pad_4[0x18];
+    f32 unk_1c;
+    f32 unk_20;
+    f32 unk_24;
+    f32 unk_28;
+    u8 pad_2c[8];
+    Obj_1_5B578_Child_T *unk_34;
+    u8 pad_38[4];
+    u32 unk_3c;
+} Obj_1_5B578_T;
+
+extern u32 lbl_801A66A0;
+
+extern s32 fn_1_54E34(Vec_1_5B578_T *, f32);
+extern void fn_1_56000(u8, u8, u8);
+extern void fn_1_5621C(f32, f32, f32, f32);
+extern void fn_1_557C4(void *);
+extern void *lbl_8006D9D8(void *);
+extern void lbl_8006D7B0(void);
+extern void lbl_8006E14C(f32);
+extern f32 lbl_8006D0B4(f32);
+extern void *lbl_8006DB74(void *);
+extern void lbl_8006D848(f32);
+extern void *lbl_8006DFC4(void *);
+
+void fn_1_5B578(Obj_1_5B578_T *p)
+{
+    struct fn_1_5B578_lbl_1_rodata_2950_pool *pool_lbl_1_rodata_2950 = (struct fn_1_5B578_lbl_1_rodata_2950_pool *)&lbl_1_rodata_2950;
+    Obj_1_5B578_Child_T *child;
+    f32 d;
+    f32 t;
+    f32 acc;
+    f32 vx;
+    f32 vy;
+    f32 vz;
+    /* volatile: the update calls leave this vector in its frame slot */
+    volatile Vec_1_5B578_T v;
+    Obj_1_5B578_Entity_T *entity;
+    u32 debug[12];
+
+    child = p->unk_34;
+    t = ((lbl_801A66A0 + p->unk_2) & 1) ? pool_lbl_1_rodata_2950->unk_28 : pool_lbl_1_rodata_2950->unk_E0;
+    lbl_8006D9D8(&p->unk_3c);
+    if (fn_1_54E34(&child->vec, p->unk_28) == 0) {
+        return;
+    }
+    entity = (Obj_1_5B578_Entity_T *)(u32)((Obj_1_5B578_World_T *)(u32)((Obj_1_5B578_Scene_T *)lbl_1_bss_38458->pad_0)->unk_8)->unk_70;
+    lbl_8006D7B0();
+    d = p->unk_28 / entity->unk_14;
+    lbl_8006E14C(d * t);
+    vx = v.x;
+    vy = v.y;
+    vz = v.z;
+    acc = vx * vx;
+    acc += vy * vy;
+    acc += vz * vz;
+    t = lbl_8006D0B4(acc);
+    if (t > pool_lbl_1_rodata_2950->unk_4 + (f32)(pool_lbl_1_rodata_2950->unk_A0 * p->unk_28)) {
+        lbl_8006DB74(debug);
+        lbl_8006D848((t - (f32)(pool_lbl_1_rodata_2950->unk_A0 * p->unk_28)) / t);
+        lbl_8006DFC4(debug);
+    }
+    fn_1_56000(1, 3, 0);
+    fn_1_5621C(p->unk_1c, p->unk_20, p->unk_24, pool_lbl_1_rodata_2950->unk_64);
+    fn_1_557C4(entity);
+    t = pool_lbl_1_rodata_2950->unk_28;
+    fn_1_5621C(t, t, t, t);
+    fn_1_56000(1, 3, 1);
+}
+/* fzgx:end fn_1_5B578 */
+
 /* fzgx:begin fn_1_5B6F0 */
 // fn_1_5B6F0: empty in retail (single blr).
 void fn_1_5B6F0(void) {

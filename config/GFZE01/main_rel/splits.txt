@@ -6848,3 +6848,6 @@ rel/main_rel/rep_memcard/fn_1_155120.c:
 
 rel/main_rel/effect/fn_1_60C88.c:
 	.text       start:0x00060C88 end:0x00060D54 align:4
+
+rel/main_rel/effect/fn_1_5B578.c:
+	.text       start:0x0005B578 end:0x0005B6F0 align:4
