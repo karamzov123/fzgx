@@ -23,6 +23,10 @@ CONTROL = CACHE / 'control-v2.json'
 STATE = CACHE / 'status-v2.json'
 HISTORY = CACHE / 'scheduled-v2.json'
 META = {'claude': ('Claude', '󰛄'), 'gpt': ('GPT', '󰭹'), 'cline': ('Cline', '󰊠'), 'agy': ('AGY', '󰆧')}
+# Surge capacity. These four opencode instances are not a standing part of the
+# fleet: fleet_multi enables them only while the paid providers are down and
+# retires them again once they recover.
+META.update({f'oc{n}': (f'Bunny {n}', '\U000f0a9b') for n in range(1, 5)})
 DISABLED = 'Disabled: this CLI has no verified function-bound, five-tool transport. GPT runs the constrained fleet.'
 STOP = False
 MAX_INPUT_TOKENS = 256000
@@ -89,18 +93,44 @@ def provider_error_text(text):
                 errors.append('rate_limit_error: provider rejected request')
             # allowed/allowed_warning are informative, not request failures.
             continue
-        if row.get('type') == 'error' or row.get('is_error'):
-            errors.append(json.dumps({k: row[k] for k in ('error', 'errors', 'message', 'result') if k in row}))
-        result = row.get('result')
-        if isinstance(result, dict) and result.get('error'):
-            errors.append(str(result['error']))
-    return '\n'.join(errors)
+        # The codex app-server reports failures as events, not result rows:
+        # {"method":"error","params":{"error":{"message":...}}} and the same
+        # shape under turn/completed. Without this branch a usage-limit refusal
+        # extracted no text at all, so it was classified as a generic error,
+        # given a 60s backoff, and retried into the wall.
+        for container in (row, row.get('params') or {}):
+            if not isinstance(container, dict):
+                continue
+            failure = container.get('error')
+            if isinstance(failure, dict):
+                errors.append(json.dumps(failure)[:2000])
+            elif failure:
+                errors.append(str(failure)[:2000])
+            if container.get('type') == 'error' or container.get('is_error'):
+                errors.append(json.dumps({k: container[k] for k in
+                                          ('error', 'errors', 'message', 'result', 'codexErrorInfo')
+                                          if k in container})[:2000])
+            result = container.get('result')
+            if isinstance(result, dict) and result.get('error'):
+                errors.append(str(result['error'])[:2000])
+    seen = set()
+    unique = []
+    for item in errors:
+        if item and item not in seen:
+            seen.add(item)
+            unique.append(item)
+    return '\n'.join(unique)
+
+RATE_LIMITED = ('resource_exhausted', 'rate_limit', 'rate limit', 'insufficient_balance',
+                'individual quota', 'usage limit', 'usage_limit', 'usagelimitexceeded',
+                'usagelimit', 'out of credits', 'insufficient credits', 'quota exceeded',
+                'credit balance is too low')
 
 def cooldown(text, failures):
     text = provider_error_text(text).lower()
     if (re.search(r'(?:http|error|status|code).{0,20}\b429\b', text)
             or re.search(r'\b429\b.{0,80}(?:quota|resource_exhausted|too.?many)', text)
-            or any(s in text for s in ('resource_exhausted', 'rate_limit', 'rate limit', 'insufficient_balance', 'individual quota'))):
+            or any(s in text for s in RATE_LIMITED)):
         return 1800
     if re.search(r'(?:http|error|status|code).{0,20}\b529\b', text) or 'overloaded' in text:
         return 300
@@ -135,7 +165,11 @@ def telemetry(batch, limits=None):
                             log_bytes=12*1024*1024, guard_each=True, usage_wait=120)
     directory = ROOT / '.fzgx/runs' / batch
     claims = db_rows("SELECT f.symbol, f.module, a.checks, f.claimed_by FROM functions f LEFT JOIN attempts a ON a.id=(SELECT MAX(id) FROM attempts WHERE symbol=f.symbol AND ended IS NULL) WHERE f.status='claimed' AND substr(f.claimed_by,1,?)=?", (len(batch) + 1, batch + '-'))
-    attempts = db_rows('SELECT symbol,checks,outcome,tokens_in,tokens_out FROM attempts WHERE substr(agent,1,?)=?', (len(batch) + 1, batch + '-'))
+    # Sargable equivalent of substr(agent,1,len(batch)+1)=batch||'-': every agent
+    # for this batch is 'batch-<harness>-<n>', and '-' (0x2d) sorts below '0' (0x30),
+    # so the prefix is an exact range. Verified identical row-for-row over every
+    # agent prefix in the ledger, and it uses idx_attempts_agent instead of scanning.
+    attempts = db_rows('SELECT symbol,checks,outcome,tokens_in,tokens_out FROM attempts WHERE agent>=? AND agent<?', (batch + '-', batch + '0'))
     files = list(directory.glob('*.jsonl')) + list(directory.glob('*.assignment.json')) + list(directory.glob('*.terminal.json')) + list(directory.glob('*.log'))
     last = max((p.stat().st_mtime for p in files), default=0)
     usages = [load(path, {}) for path in directory.glob('*.usage.json')]
@@ -166,9 +200,26 @@ def telemetry(batch, limits=None):
             'verify_ok': verify_ok, 'last_event': last, 'directory': str(directory),
             'tokens_in': tokens_in, 'tokens_out': tokens_out, 'over_budget': over_budget, 'usage_missing': usage_missing}
 
+_progress_cache = {'key': None, 'total': 0, 'last': 'none'}
+
 def verified_progress():
+    """Fleet-wide count of link-verified matches and the newest landing commit.
+
+    publish() calls this on every 3-second tick, and the query behind it is a
+    DISTINCT plus ORDER BY over the whole 6MB attempts table joined to functions
+    (two temp B-trees, ~14MB read). The answer only moves when a match is
+    accepted, so gate the recompute on the newest accepted attempt id: one index
+    seek instead of a full materialisation, 20 times a minute.
+    """
+    probe = db_rows("SELECT MAX(id) m FROM attempts WHERE outcome='matched' AND ended IS NOT NULL")
+    key = probe[0]['m'] if probe else None
+    if key == _progress_cache['key']:
+        return _progress_cache['total'], _progress_cache['last']
     rows = db_rows("SELECT DISTINCT a.symbol, f.matched_commit, a.ended FROM attempts a JOIN functions f ON f.symbol=a.symbol WHERE substr(a.agent,1,9)='fleet-v2-' AND a.outcome='matched' AND f.status='matched' AND f.link_state='verified' ORDER BY a.ended DESC")
-    return len({r['symbol'] for r in rows}), (rows[0]['matched_commit'] if rows else 'none')
+    total = len({r['symbol'] for r in rows})
+    last = rows[0]['matched_commit'] if rows else 'none'
+    _progress_cache.update(key=key, total=total, last=last)
+    return total, last
 
 def publish(data):
     total, last = verified_progress()

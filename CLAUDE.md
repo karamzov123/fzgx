@@ -234,8 +234,9 @@ Rules that hold for everyone:
   Functions **under 256 bytes** (`--max-size 255`) are a repair corpus, not a prerequisite. `fzgx stuck --max-size 255` classifies the saved attempts; `fzgx fixup --max-size 255`
   searches them. `fzgx reuse --max-size 255` rebinds verified C when retail instruction
   shapes agree, retaining registers, immediates, relocation kinds/addends and branch targets;
-  all candidates pass the oracle and `fzgx verify`. Use 48 headless Luna workers only for
-  remaining work the deterministic tools cannot compute. Do not add unit tests: use real
+  all candidates pass the oracle and `fzgx verify`. Do not launch Luna agents or
+  swarms (see `AGENTS.md`); remaining work goes to the bound matcher fleet in
+  `docs/FLEET.md`. Do not add unit tests: use real
   MWCC/object-diff checks, lint, and the 16-target hash check.
 - Readability tooling: `fzgx tu-organize` (TU directories from `tus.json`), `fzgx headers`
   (layouts from disassembly → `include/rel/<module>/globals.h`, offset self-checked under MWCC;
@@ -259,9 +260,13 @@ Rules that hold for everyone:
 - `tools/seeds/asserts.py` → `state/seeds/asserts_<module>.json` (file:line + message per
   assert call); `tools/seeds/debug_strings.py --write` refreshes `tus.json` from `__FILE__`
   anchors (then `fzgx tu-organize` and regenerate headers).
-- Batches: `uv run tools/orchestrate.py --harness codex ...` (codex only; tiers: gpt-5.6-luna, then gpt-5.6-terra;
-  Sonnet and Gemini Flash were tried and dropped) (headless, one report
-  per batch, periodic live verification and a final drain). Never use in-process subagents.
+- Batches: the fleet daemon owns batch launches (`tools/fleet_multi.py`, started as
+  `tools/fleet.py daemon`, which delegates to it). To run one by hand:
+  `uv run tools/fzgx.py` for the manual CLI, or
+  `uv run tools/orchestrate.py --harness <claude|codex|cline|agy|opencode> ...`
+  (headless, one report per batch, periodic live verification and a final drain).
+  Harnesses and pinned models are listed in `docs/FLEET.md`; never edit personal
+  auth or config, and never use in-process subagents.
 - DeepSeek trials use the same Codex harness: `--provider deepseek --model deepseek-flash`
   selects DeepSeek-V4.1-Flash. Supply `DEEPSEEK_API_KEY` or `--api-key-file PATH`;
   keys stay outside the repository and out of command arguments. The provider and

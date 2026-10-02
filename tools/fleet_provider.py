@@ -7,7 +7,7 @@ import signal
 import subprocess
 import threading
 import time
-from fleet_clients import command
+from fleet_clients import client_root, command
 
 STOP = threading.Event()
 
@@ -23,6 +23,18 @@ class Usage:
         # Cline publishes cumulative counters; Claude publishes per-message
         # counters and a cumulative final result. Never sum repeated deltas.
         kind = row.get('type')
+        if kind == 'step_finish':
+            # opencode reports per-step counters on the part, never a cumulative
+            # result object, so accumulate steps exactly like per-message usage.
+            step = row.get('step-finish') or row.get('part') or {}
+            tokens = step.get('tokens') if isinstance(step, dict) else None
+            if isinstance(tokens, dict):
+                cache = tokens.get('cache') or {}
+                key = 'oc-' + str(row.get('messageID') or step.get('messageID') or len(self.messages))
+                self.messages[key] = dict(
+                    inputTokens=(tokens.get('input', 0) or 0) + (cache.get('read', 0) or 0) + (cache.get('write', 0) or 0),
+                    outputTokens=tokens.get('output', 0) or 0)
+                self.total = {k: sum(v[k] for v in self.messages.values()) for k in ('inputTokens', 'outputTokens')}
         if row.get('event') == 'step_update':
             step = row.get('step_update') or {}
             usage = step.get('usage')
@@ -48,7 +60,7 @@ class Usage:
         return self.total
 
 def run(family, prompt, model, directory, env, timeout_s):
-    client = Path.home() / '.cache/fzgx-agents/clients' / env['FZGX_AGENT_ID']
+    client = client_root(family, env['FZGX_AGENT_ID'])
     client.mkdir(parents=True, exist_ok=True)
     cmd=command(family,prompt,model,client,env)
     symbol=env['FZGX_SYMBOL']
@@ -59,6 +71,7 @@ def run(family, prompt, model, directory, env, timeout_s):
                           text=True,start_new_session=True,bufsize=1)
     usage=Usage()
     budget=threading.Event()
+    violation=threading.Event()
     def read():
         with log_path.open('w',buffering=1) as log:
             for line in proc.stdout:
@@ -69,6 +82,17 @@ def run(family, prompt, model, directory, env, timeout_s):
                     continue
                 if not isinstance(row,dict):
                     continue
+                # The toolset is pinned by the session-local agent config, which
+                # is the only thing standing between a matcher and a shell. If a
+                # call ever escapes it, stop the session immediately instead of
+                # letting it wander through the tree burning the assignment.
+                if row.get('type') == 'tool_use':
+                    name=(row.get('part') or {}).get('tool') or ''
+                    if not name.startswith('fzgx_'):
+                        violation.set()
+                        with (directory / 'violations.jsonl').open('a') as out:
+                            out.write(json.dumps(dict(timestamp=time.time(),
+                                                       tool=name, agent=env['FZGX_AGENT_ID']))+'\n')
                 counters=usage.update(row)
                 if counters is not None:
                     atomic_usage(directory / f'{symbol}.usage.json', counters)
@@ -80,7 +104,7 @@ def run(family, prompt, model, directory, env, timeout_s):
     started=time.monotonic()
     try:
         while proc.poll() is None:
-            if terminal.exists() or STOP.is_set() or budget.is_set() or time.monotonic()-started > timeout_s:
+            if terminal.exists() or STOP.is_set() or budget.is_set() or violation.is_set() or time.monotonic()-started > timeout_s:
                 # Interrupt the client, not all of its compiler/MCP children.
                 # Function-bound tool operations drain before claim cleanup.
                 proc.send_signal(signal.SIGTERM)

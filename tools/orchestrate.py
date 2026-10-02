@@ -30,7 +30,8 @@ from fzgx.project import ROOT, STATE_DIR, Project
 
 MATCHER_TOOLS = ["Read", "mcp__fzgx__write_unit", "mcp__fzgx__patch_unit", "mcp__fzgx__check", "mcp__fzgx__read_evidence", "mcp__fzgx__release"]
 # Explicit fleet policy. No silent cheaper-model or lower-effort fallback.
-EXPECTED_MODEL = {"claude": "claude-opus-5-5", "codex": "gpt-6.1-sol", "cline": "stealth/space-bunny-alpha", "agy": "gemini-3.8-flash-high"}
+BOUND_HARNESS = ("cline", "agy", "opencode")
+EXPECTED_MODEL = {"claude": "claude-opus-5-5", "codex": "gpt-6.1-sol", "cline": "stealth/space-bunny-alpha", "agy": "gemini-3.8-flash-high", "opencode": "opencode/space-bunny-free"}
 CLAUDE_MODELS = {"haiku": "claude-haiku-4-5", "sonnet": "claude-sonnet-5", "opus": "claude-opus-5-5"}
 # $/M tokens from platform.openai.com/docs/pricing (2026-09-08): input, cached input, cache write, output.
 # Codex reports usage but no cost; Claude Code reports total_cost_usd itself.
@@ -195,7 +196,7 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
 
     out, rc, proc, setup_secs = '', 0, None, 0.0
     try:
-        bound = os.environ.get('FZGX_BOUND_TRANSPORT') == '1' or harness in ('cline', 'agy')
+        bound = os.environ.get('FZGX_BOUND_TRANSPORT') == '1' or harness in BOUND_HARNESS
         # Bound fleet retries first run the deterministic search on the best saved body;
         # a match ends the assignment here, before any model request.
         assignment = worker_cli('claim', symbol, '--agent', agent_id,
@@ -312,7 +313,11 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
                 outcome = 'matched' if att['outcome'] in ('matched', 'matched-pool', 'shadow-matched') else outcome + '+released'
         except Exception as error:
             out += '\nAutomatic cleanup failed: ' + str(error)
-    if harness != 'agy' and info["model"] and not info["model"].startswith(EXPECTED_MODEL[harness]):
+    # AGY and opencode report no model string: AGY's transport masks it, and
+    # opencode's model is pinned by the session-local agent config rather than
+    # self-reported. Both are excluded so a future field cannot cause a false
+    # WRONG-MODEL abort.
+    if harness not in ('agy', 'opencode') and info["model"] and not info["model"].startswith(EXPECTED_MODEL[harness]):
         outcome = f"WRONG-MODEL({info['model']})"
     pct = 100.0 if outcome == "matched" else (att["best_in_attempt"] if att else None)
     checks = att["checks"] if att else None
@@ -365,7 +370,7 @@ def _fan_out(p: Project, a, model: str, symbols: List[str], batch: str, revise: 
                            codex_server_cmd(model, a.provider, a.effort, a.fast), price_usage))
     results: List[Dict] = []
     spent = 0.0
-    bound = os.environ.get('FZGX_BOUND_TRANSPORT') == '1' or a.harness in ('cline', 'agy')
+    bound = os.environ.get('FZGX_BOUND_TRANSPORT') == '1' or a.harness in BOUND_HARNESS
     if bound:
         from fleet_provider import STOP
         signal.signal(signal.SIGTERM, lambda *_: STOP.set())
@@ -431,7 +436,7 @@ def finish_round(p: Project, a, model: str, module: str) -> Dict:
 
 def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--harness", choices=["claude", "codex", "cline", "agy"], default="codex")
+    ap.add_argument("--harness", choices=["claude", "codex", "cline", "agy", "opencode"], default="codex")
     ap.add_argument("--provider", choices=["openai", "deepseek"], default="openai", help="codex model provider")
     ap.add_argument("--api-key-file", type=Path, help="DeepSeek key file; otherwise use DEEPSEEK_API_KEY")
     ap.add_argument("--model", help="explicit provider model; defaults: Opus 5.5 / GPT 6.1-Sol / Space Bunny Alpha / Gemini 3.8 High")

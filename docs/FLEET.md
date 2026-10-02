@@ -4,7 +4,7 @@ This is `~/projects/fzgx`, not the legacy NATC/PM fleet. The enabled user servic
 
 ## Explicit model policy
 
-All four providers are enabled, independently controlled, with no silent fallback:
+Four standing providers, independently controlled, with no silent fallback:
 
 | Provider | Requested model/effort | Runtime identifier |
 | --- | --- | --- |
@@ -14,6 +14,34 @@ All four providers are enabled, independently controlled, with no silent fallbac
 | Cline | Space Bunny Alpha High | stealth/space-bunny-alpha, high |
 
 AGY's installed authenticated model catalog recognizes that identifier. Quota failure remains quota failure, not permission to choose a different model. Its reset time is parsed for automatic retry.
+
+## Fleet-managed surge capacity (opencode)
+
+Four `oc1`..`oc4` families run `opencode/space-bunny-free` at variant `xhigh` on the
+same contract as every other matcher: one function per session, six bound tools, no
+shell, no filesystem. They are **not** standing fleet and are not operator-controlled
+(`fleet.py toggle oc1` is refused with an explanation). They are enabled and retired
+automatically from measured paid-provider availability, in `fleet_multi.apply_surge`:
+
+- A paid provider is *down* when it is rate-limited, in error, or switched off by the
+  operator. Idle, starting and blocked providers are not down.
+- Two or more down starts a dwell timer. After **600 s cumulative** down time the four
+  come up. Cumulative, not wall-clock, so a single five-minute outage buys nothing
+  while a provider that keeps lapsing and re-limiting does count.
+- While up, capacity is surrendered only after **1800 s** of all providers healthy, and
+  re-arming then requires fresh evidence.
+- The dwell lives in `runtime-v3.json`, so a service restart cannot reset it.
+- `FLEET_CAP` (18) bounds total sessions across all families; if the standing fleet
+  leaves no room the tile says so rather than starting a partial group silently.
+
+The opencode transport has three constraints that are load-bearing and easy to
+regress: the client runs from a directory outside `$HOME` (opencode loads `AGENTS.md`
+upward, and `~/AGENTS.md` is an unrelated project's contract); `XDG_CONFIG_HOME` points
+at a shared private config root that exposes only the six bound tools (writing the
+config without redirecting `XDG_CONFIG_HOME` leaves the session with a full shell); and
+the binary is resolved explicitly to the official client, because the free models answer
+403 `FreeTierError` on any other build. A runtime guard in `fleet_provider.run` kills any
+session whose first non-`fzgx_*` tool call appears.
 
 ## Execution contract
 
@@ -37,8 +65,35 @@ Measured on the day's sessions: about 70% of a near-miss's residual rows were re
 - Check output marks rows `L` when only a section/pool base or a displacement off it differs (`stuck.layout_rows`) and states how many rows are the matcher's, by kind. The retry context lists only those rows, says when the search has already exhausted permutations, and lists edits earlier sessions compiled without gain (`context._tried_edits`).
 - A failed compile spends a check but not a stale check; fewer differing rows than the attempt has seen resets the stale counter (the score metric changes once pool rows appear).
 - Functions past the three-attempt cap with a saved body at 90% or better that the current engine has not searched are eligible once more (`fleet_multi.unsearched_near_misses`); the release marker ends that. The claim cap is therefore enforced by selection, not by `--max-attempts`.
-- Restored upstream history names saved bodies under `/Users/rayan/fzgx/.fzgx/attempts/` that are not on this machine: of 567 capped functions at 90%+ under 1 KiB, 464 have no local body. Those upstream attempts (DeepSeek, effort-none and Luna batches) no longer count toward this fleet's cap: selection counts only `fleet-v2-*` attempts (`fleet_multi.local_attempts`), which raised the eligible pool under 1 KiB from 434 to 1,390 functions and its 90%+ share from 15 to 579. Without a local body they start from the mechanical draft; the committed repair archives hold C for only a few of them.
+- Restored upstream history names saved bodies under `/Users/rayan/fzgx/.fzgx/attempts/` that are not on this machine: of 567 capped functions at 90%+ under 1 KiB, 464 have no local body. Those upstream attempts (DeepSeek, effort-none and Luna batches) no longer count toward this fleet's cap: selection counts only `fleet-v2-*` attempts (`fleet_multi.local_attempts`), which raised the eligible pool under 1 KiB from 434 to 1,390 functions and its 90%+ share from 15 to 579 (a 2026-10-01 snapshot; both pools shrink as the fleet matches and caps functions). Without a local body they start from the mechanical draft; the committed repair archives hold C for only a few of them.
 - First result: `fn_14_82E4` (99.0% under Claude and AGY) matched after one `search` (register rows and pool primed) plus two structural edits. One of those undid an engine bug, fixed here: the one-field carrier rewrite renamed text inside string literals (`"%d"` became `"%d.value"`).
+
+## What counts as an attempt (2026-10-02)
+
+`local_attempts()` counts a `fleet-v2-*` attempt only if it ran a check, spent tokens,
+or matched. A provider refused for quota, credits or transport still writes an *ended*
+attempt row, but one with no checks and no tokens: no evidence and no work. Those rows
+were consuming a slot against the three-attempt cap and retiring the function from
+selection. 139 such rows existed when this was measured (58 codex, the rest
+agy/claude/cline/opencode), and about 27 functions were at the cap on nothing but those
+rows; fixing the predicate returned them to the pool with no data migration. Both
+numbers move while the fleet runs. Upstream history (below) is still excluded for the
+original reason.
+
+Provider refusals are also now read correctly. The Codex app-server reports them as
+events (`{"method":"error","params":{"error":{...}}}`) and Claude as a result row;
+`provider_error_text` previously matched neither shape, so a usage limit extracted no
+text, was classified a generic error, and got a 60 s backoff instead of the rate-limit
+path. Reset times are now taken from the provider: `try again at Oct 2nd, 2026 1:08 AM`,
+`try again at 1:08 AM` (date omitted), `resets 1am`, and `Resets in 46h40m56s` all
+resolve to the stated wall clock.
+
+Broken-batch detection reads terminal outcomes from the ledger
+(`fleet_multi.batch_outcomes`). It used to read `<run dir>/results.json`, a filename
+nothing has ever written — the codex transport writes `results.jsonl` and the bound
+harnesses write no results file at all — so the list was always empty and a batch whose
+every session crashed was treated as a clean batch that matched nothing, relaunched
+three seconds later, indefinitely.
 
 ## Eww and diagnostics
 

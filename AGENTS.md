@@ -89,8 +89,9 @@ entrypoints. Reject stale frozen targets before accepting their scores.
 Prioritize the largest unresolved regions and their saved near-match corpus.
 Inspect value flow, control flow, data layout and compiler evidence; fix the
 structural causes directly. Do not launch Luna agents or swarms. Record measured
-repairs in `docs/batches/<date>.md` and commit `state/ledger.json` via
-`fzgx snapshot`.
+repairs in `docs/batches/<date>.md`, which is intentionally untracked (see
+`79a5ea74`), so it is a local report and not a deliverable; committed provenance
+goes to `state/ledger.json` via `fzgx snapshot` and to `state/repairs/`.
 
 Model sessions (`--parallel`) and local tool processes (`--tool-parallel`) have
 separate limits. App-server JSON-RPC command backpressure is separate again;

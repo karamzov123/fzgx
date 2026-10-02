@@ -40,6 +40,10 @@ CREATE TABLE IF NOT EXISTS batches (
 );
 CREATE INDEX IF NOT EXISTS idx_functions_status ON functions(status);
 CREATE INDEX IF NOT EXISTS idx_attempts_symbol ON attempts(symbol);
+-- Batch telemetry reads attempts by the batch prefix of `agent`. substr(agent,1,N)=?
+-- is not sargable, so that predicate full-scanned the table on every scheduler
+-- tick; this index lets it become a range seek.
+CREATE INDEX IF NOT EXISTS idx_attempts_agent ON attempts(agent);
 """
 
 
