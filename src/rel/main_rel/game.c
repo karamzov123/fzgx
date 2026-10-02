@@ -1948,6 +1948,121 @@ update_state:
 }
 /* fzgx:end fn_1_40710 */
 
+/* fzgx:begin fn_1_408E8 noprologue */
+#include "types.h"
+
+struct fn_1_408E8_Copy88 { u32 a[22]; };
+struct fn_1_408E8_lbl_1_rodata_BD8 {
+    u8 pad_0[0x4];
+    f32 unk_4;
+    u8 pad_8[0x4];
+    f32 unk_C;
+    u8 pad_10[0x2C];
+    f32 unk_3C;
+    u8 pad_40[4];
+    f32 unk_44;
+    u8 pad_48[0x174];
+    f32 unk_1BC;
+    u8 pad_1C0[0xC];
+    f32 unk_1CC;
+    u8 pad_1D0[0xC];
+    f32 unk_1DC;
+    u8 pad_1E0[0x15C];
+    u32 unk_33C;
+    f32 unk_340;
+};
+extern struct fn_1_408E8_lbl_1_rodata_BD8 lbl_1_rodata_BD8;
+extern struct fn_1_408E8_Copy88 lbl_1_rodata_26F8;
+extern u32 fn_1_403D4(void *);
+extern u32 fn_1_50A90(void *, s32, s32, s32, s32);
+extern void fn_1_49514(u32 *);
+extern void fn_1_49614(void);
+
+static inline f32 fn_1_408E8_read_pointer(struct fn_1_408E8_lbl_1_rodata_BD8 * owner) { return owner->unk_1BC; }
+static inline f32 fn_1_408E8_read_one(struct fn_1_408E8_lbl_1_rodata_BD8 * owner) { return owner->unk_C; }
+#pragma opt_common_subs off
+#pragma opt_propagation off
+void fn_1_408E8(void *arg0, u32 arg1, u32 arg2, s32 arg3, s32 arg4, f32 arg5) {
+    f32 fzgx_live;
+    struct fn_1_408E8_lbl_1_rodata_BD8 *p_lbl_1_rodata_BD8;
+    f32 v0;
+    f32 v1;
+    f32 v2;
+    f32 v3;
+    f32 v4;
+    u8 v5;
+    f32 v0_2;
+    s32 v6;
+    s32 v7;
+    f32 v8;
+    u32 prefix;
+    struct fn_1_408E8_Copy88 packet;
+    s32 v7_2;
+    s32 width;
+    s32 height;
+    s32 lab_t3;
+    p_lbl_1_rodata_BD8 = (struct fn_1_408E8_lbl_1_rodata_BD8 *)&lbl_1_rodata_BD8;
+    if ((*(u8 *)((u8 *)arg0 + 3) & 1) != 0) {
+        v0 = *(f32 *)((u8 *)arg0 + 8);
+        if (v0 < p_lbl_1_rodata_BD8->unk_340)
+            *(f32 *)((u8 *)arg0 + 8) = v0 + fn_1_408E8_read_pointer(p_lbl_1_rodata_BD8);
+        else
+            *(f32 *)((u8 *)arg0 + 8) = p_lbl_1_rodata_BD8->unk_C;
+    } else {
+        v0_2 = *(f32 *)((u8 *)arg0 + 8);
+        v1 = fn_1_408E8_read_pointer(p_lbl_1_rodata_BD8);
+        if (v0_2 > v1)
+            *(f32 *)((u8 *)arg0 + 8) = v0_2 - v1;
+        else {
+            *(f32 *)((u8 *)arg0 + 8) = p_lbl_1_rodata_BD8->unk_4;
+            return;
+        }
+    }
+    v2 = p_lbl_1_rodata_BD8->unk_1CC;
+    fzgx_live = *(f32 *)((u8 *)arg0 + 8);
+    v3 = fn_1_408E8_read_one(p_lbl_1_rodata_BD8);
+    v4 = v2 * fzgx_live;
+    if (v4 > v3) v4 = v3;
+    v5 = *(u8 *)arg0;
+    v6 = arg3;
+    v7 = arg4;
+    switch (v5) {
+    case 1:
+        if (*(u32 *)((u8 *)arg0 + 32) != 0) break;
+    case 0:
+        v6 = (s32)(*(f32 *)((u8 *)arg0 + 24) * v4);
+        v7_2 = (s32)(*(f32 *)((u8 *)arg0 + 28) * v4);
+        break;
+    case 2:
+        fn_1_403D4(arg0);
+        v6 = (s32)*(f32 *)((u8 *)arg0 + 24);
+        v7_2 = (s32)(*(f32 *)((u8 *)arg0 + 28) * v4);
+        break;
+    default: return;
+    }
+    packet = lbl_1_rodata_26F8;
+    *(f32 *)&packet.a[1] = *(f32 *)((u8 *)arg0 + 16);
+    *(f32 *)&packet.a[2] = *(f32 *)((u8 *)arg0 + 20);
+    *(f32 *)&packet.a[3] = *(f32 *)((u8 *)arg0 + 12);
+    packet.a[12] = 10;
+    packet.a[0] = 2;
+    v8 = *(f32 *)((u8 *)arg0 + 8);
+    *(f32 *)&packet.a[11] = v8;
+    width = (s32)(p_lbl_1_rodata_BD8->unk_1DC * (f32)(p_lbl_1_rodata_BD8->unk_44 * v8));
+    height = (s32)(p_lbl_1_rodata_BD8->unk_1DC * (f32)(p_lbl_1_rodata_BD8->unk_3C * v8));
+    if (width > 18 || v6 > 18) width = 18;
+    if (height > 45 || v7_2 > 45) height = 45;
+    lab_t3 = v6;
+    fn_1_50A90(&packet, width, height, lab_t3, v7_2);
+    prefix = p_lbl_1_rodata_BD8->unk_33C;
+    fn_1_49514(&prefix);
+    fn_1_49614();
+}
+#pragma opt_propagation reset
+
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_408E8 */
+
 /* fzgx:begin fn_1_40B14 */
 u8 *fn_1_40B14(void) {
     return lbl_1_bss_26B54;

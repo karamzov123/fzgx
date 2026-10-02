@@ -6869,3 +6869,6 @@ rel/main_rel/stcoli/fn_1_2A500.c:
 
 rel/main_rel/bg_lig/fn_1_D7A10.c:
 	.text       start:0x000D7A10 end:0x000D7B7C align:4
+
+rel/main_rel/game/fn_1_408E8.c:
+	.text       start:0x000408E8 end:0x00040B14 align:4
