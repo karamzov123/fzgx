@@ -45668,6 +45668,23 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/phys/fn_1_E52F8.c",
+    "symbols": [
+      "fn_1_E52F8"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/phys.c",
+    "pool": {
+      "...rodata.0": "lbl_1_rodata_6780",
+      "@48": "lbl_1_rodata_6800",
+      "@144": "lbl_1_rodata_69CC",
+      "@11": "lbl_1_rodata_6780+0x18"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/phys/fn_1_E5430.c",
     "symbols": [
       "fn_1_E5430"
