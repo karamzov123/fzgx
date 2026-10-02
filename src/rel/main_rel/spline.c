@@ -64,6 +64,60 @@ extern u16 lbl_1_data_414[36];
 extern void fn_8001D3E4(int index, int value);
 extern u32 lbl_801A66A0;
 
+/* fzgx:begin fn_1_F5458 */
+extern const f32 lbl_1_rodata_6D74;
+extern const f32 lbl_1_rodata_6D6C;
+
+extern void fn_8006EB4C(void *arg0, void *arg1, void *arg2, f32 arg3);
+extern void fn_1_F55C4(void *arg0, void *arg1, void *arg2, void *arg3);
+extern void fn_1_F588C(void *arg0, void *arg1, void *arg2, f32 arg3);
+
+void fn_1_F5458(void *arg0, u32 count, f32 value, f32 *samples, void *table) {
+    u32 index;
+    s32 offset;
+    f32 lower;
+    f32 upper;
+    f32 ratio;
+    u8 work3[16];
+    u8 work2[16];
+    u8 work1[16];
+    u8 work0[16];
+    f64 lab_t3;
+
+    index = 0;
+    while (index < count) {
+        if (samples[index] > value) {
+            index -= 1;
+            break;
+        }
+        index++;
+    }
+
+    offset = index << 2;
+    lower = samples[index];
+    upper = samples[index + 1];
+    ratio = (value - lower) / (upper - lower);
+
+    if (index >= count - 1) {
+        ratio = lbl_1_rodata_6D74;
+        index = count - 2;
+    }
+
+    if (index < 1 || count - 3 < index) {
+        fn_8006EB4C(arg0, (u8 *)table + (index << 4), ((16) + ((u8 *)table + (index << 4))), ratio);
+    } else {
+        fn_1_F55C4(work2, (u8 *)table + (index << 4), (u8 *)table + (index << 4) + 16,
+                   (u8 *)table + (index << 4) + 32);
+        fn_1_F55C4(work3, (u8 *)table + (index << 4) - 16, (u8 *)table + (index << 4),
+                   (u8 *)table + (index << 4) + 16);
+        fn_1_F588C(work1, (u8 *)table + (index << 4), (u8 *)table + (index << 4) + 16, ratio);
+        fn_1_F588C(work0, work3, work2, ratio);
+        lab_t3 = ((((lbl_1_rodata_6D6C)) * ((ratio))) * ((lbl_1_rodata_6D74 - ratio)));
+        fn_1_F588C(arg0, work1, work0, lab_t3);
+    }
+}
+/* fzgx:end fn_1_F5458 */
+
 /* fzgx:begin fn_1_F55C4 */
 void fn_1_F55C4(f32 *out, f32 *arg1, f32 *in, f32 *arg3) {
     f32 temp[4];

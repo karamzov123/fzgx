@@ -36157,6 +36157,23 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/effect/fn_1_5B078.c",
+    "symbols": [
+      "fn_1_5B078"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/effect.c",
+    "pool": {
+      "...rodata.0": "lbl_1_rodata_2950",
+      "@6": "lbl_1_rodata_2954",
+      "@5": "lbl_1_rodata_2950",
+      "@27": "lbl_1_rodata_29A4"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/effect/fn_1_5B30C.c",
     "symbols": [
       "fn_1_5B30C"
@@ -49954,6 +49971,17 @@
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/sound.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/spline/fn_1_F5458.c",
+    "symbols": [
+      "fn_1_F5458"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/spline.c"
   },
   {
     "module": "main_rel",

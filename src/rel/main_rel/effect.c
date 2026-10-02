@@ -955,6 +955,100 @@ void fn_1_5B074(void) {
 }
 /* fzgx:end fn_1_5B074 */
 
+/* fzgx:begin fn_1_5B078 noprologue */
+#include "dolphin/types.h"
+#include "rel/main_rel/effect.h"
+
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 60.0f;
+    s = 0.10000000149011612f;
+    s = 32767.0f;
+    s = 0.05000000074505806f;
+    d = 0.07;
+    s = 20000.0f;
+    s = 0.0f;
+    d = 4503599627370496.0;
+    s = 1.0f;
+    s = -0.029999999329447746f;
+    d = 15.0;
+    d = 4503601774854144.0;
+    d = 1.5;
+    d = 0.5;
+}
+static const u32 fzgx_pool_table2[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep2(void) { const u32 *volatile cp; cp = fzgx_pool_table2; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime3(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 0.5f;
+    s = 8.0f;
+    s = 255.0f;
+    s = 15.0f;
+    s = 0.20000000298023224f;
+    s = 0.07999999821186066f;
+    s = 0.25f;
+    s = 0.9800000190734863f;
+    s = 0.9900000095367432f;
+    s = 40.0f;
+    s = 20.0f;
+    s = 1.5f;
+    s = 0.44999998807907104f;
+    s = -2.0f;
+    s = 0.0833333358168602f;
+    s = 0.15000000596046448f;
+    s = 0.125f;
+    s = -0.4000000059604645f;
+    s = -0.30000001192092896f;
+    s = 2.0f;
+    s = 250.0f;
+    d = 0.6;
+    d = 0.4;
+    s = 0.30000001192092896f;
+    s = -0.004000000189989805f;
+    s = 0.01666666753590107f;
+    s = 65536.0f;
+    s = 4096.0f;
+    s = 0.9599999785423279f;
+}
+#pragma section code_type ".text"
+
+struct fx_5b078_out {
+    u8 pad_00[0x10];
+    s32 field_10;
+    u8 pad_14[0x44];
+    s16 field_58;
+    u8 pad_5a[0x4];
+    s16 field_5e;
+    u8 pad_60[0x54];
+    f32 field_b4;
+};
+
+void fn_1_5B078(struct fx_5b078_out *out)
+{
+    u32 rnd;
+    u32 n;
+    u32 n_2;
+
+    lbl_1_data_1D628 = lbl_1_data_1D628 * 0x41C64E6Du + 0x3039u;
+    rnd = lbl_1_data_1D628;
+    n = (rnd >> 16) & 0x7FFFu;
+    out->field_10 = (s32)(((f32)(n / 32767.0f * 0.1f) + 0.125f) * 60.0f);
+
+    lbl_1_data_1D628 = lbl_1_data_1D628 * 0x41C64E6Du + 0x3039u;
+    rnd = lbl_1_data_1D628;
+    n = (rnd >> 16) & 0x7FFFu;
+    out->field_58 = (s16)((n / 32767.0f - 0.5f) * 65536.0f);
+
+    lbl_1_data_1D628 = lbl_1_data_1D628 * 0x41C64E6Du + 0x3039u;
+    rnd = lbl_1_data_1D628;
+    n_2 = (rnd >> 16) & 0x7FFFu;
+    out->field_5e = (s16)((n_2 / 32767.0f - 0.5f) * 4096.0f);
+
+    out->field_b4 = 0.5f;
+}
+/* fzgx:end fn_1_5B078 */
+
 /* fzgx:begin fn_1_5B30C */
 struct fn_1_5B30C_Arg0 {
     u8 pad_0[0x34];
