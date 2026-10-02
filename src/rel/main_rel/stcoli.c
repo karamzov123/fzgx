@@ -3271,6 +3271,84 @@ f32 fn_1_2A41C(Fn_1_2A41C *self, int arg) {
 }
 /* fzgx:end fn_1_2A41C */
 
+/* fzgx:begin fn_1_2A500 noprologue */
+#include "dolphin/types.h"
+
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+} Vec3;
+
+/* result block passed to the helper; the helper fills scale and vec */
+struct CalcOut {
+    u32 flags;
+    void *self;
+    f32 scale;
+    Vec3 v;
+};
+
+extern void *fn_1_8627C(s32 id);
+extern s32 fn_1_15578(Vec3 *outVec, Vec3 *pos, f32 *outScale, void *a, void *b,
+                     void *c, u32 d, u32 e);
+extern void lbl_8006DAEC(void);
+extern f32 lbl_8006D0B4(f32 x);
+extern void lbl_8006DB30(void);
+extern const f32 lbl_1_rodata_854[2];
+extern const f32 lbl_1_rodata_84C[2];
+
+static inline f32 fn_1_2A500_read_pointer(Vec3 * owner) { return owner->x; }
+static inline f32 fn_1_2A500_read_y(Vec3 * owner) { return owner->y; }
+static inline f32 fn_1_2A500_read_z(Vec3 * owner) { return owner->z; }
+#pragma opt_common_subs off
+s32 fn_1_2A500(void *self, Vec3 *out, Vec3 *pos, void *a, void *b, f32 *outF)
+{
+    u32 *fzgx_value;
+    void *mgr = fn_1_8627C(*(s16 *)((u8 *)self + 4));
+    struct CalcOut res;
+    s32 found_2;
+    s32 found;
+    f32 f;
+
+    lbl_8006DAEC();
+
+    res.v = *out;
+    fzgx_value = &(res.flags);
+    *fzgx_value = *(u32 *)((u8 *)self + 0x498);
+    res.self = self;
+
+    found = fn_1_15578(&res.v, pos, &res.scale, a, b,
+                       (u8 *)mgr + 0x9C, *(u32 *)((u8 *)mgr + 0x98), 0);
+
+    if (found != 0) {
+        f32 dz = fn_1_2A500_read_z(out);
+        f32 dy = fn_1_2A500_read_y(out);
+        f32 dx = fn_1_2A500_read_pointer(out);
+        f32 d;
+
+        dz = dz - pos->z;
+        dy = dy - pos->y;
+        dx = dx - pos->x;
+        d = (f32)(dx * dx);
+        d = d + dy * dy;
+        d = d + dz * dz;
+
+        f = (lbl_1_rodata_854[0] - res.scale) * lbl_8006D0B4(d);
+
+        *out = res.v;
+        found_2 = 1;
+    } else {
+        f = lbl_1_rodata_84C[0];
+        found_2 = 0;
+    }
+
+    lbl_8006DB30();
+    *outF = f;
+    return found_2;
+}
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_2A500 */
+
 /* fzgx:begin fn_1_2A638 */
 typedef struct Fn_1_2A638 {
     unsigned char pad00[0x08];
