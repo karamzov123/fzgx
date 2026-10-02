@@ -764,6 +764,45 @@ void fn_1_12C47C(void *arg0, void *arg1, s32 arg2) {
 }
 /* fzgx:end fn_1_12C47C */
 
+/* fzgx:begin fn_1_12C524 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/archive.h"
+
+struct Sig_fn_80071718_fn_80071718_Arg0 {
+    u8 pad_0[0xC];
+    u32 unk_C;
+};
+extern void fn_80071718(struct Sig_fn_80071718_fn_80071718_Arg0 *);
+
+void fn_1_12C524(void *arg) {
+    struct { s16 value; } j;
+    u8 *q;
+    u8 *p;
+    s16 i;
+    p = arg;
+    i = 0;
+    while (i < 41) {
+        if (*(s8 *)(p + 0x328) >= 0 && *(s8 *)(p + 0x328) <= 40) {
+            j.value = 0;
+            q = p;
+            while (j.value < 4) {
+                if (*(s16 *)(p + 0x3b8) % 4 != j.value) {
+                    if (*(struct Sig_fn_80071718_fn_80071718_Arg0 **)(q + 0x37c)) {
+                        fn_80071718(*(struct Sig_fn_80071718_fn_80071718_Arg0 **)(q + 0x37c));
+                        *(struct Sig_fn_80071718_fn_80071718_Arg0 **)(q + 0x37c) = 0;
+                    }
+                }
+                q += 4;
+                j.value++;
+            }
+        }
+        p += 0x440;
+        i++;
+    }
+}
+/* fzgx:end fn_1_12C524 */
+
 /* fzgx:begin fn_1_12C5E4 */
 typedef struct {
     u8 pad0[0x328];

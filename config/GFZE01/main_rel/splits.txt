@@ -6686,3 +6686,6 @@ rel/main_rel/effect/fn_1_5E3C4.c:
 
 rel/main_rel/driver/fn_1_A744C.c:
 	.text       start:0x000A744C end:0x000A75DC align:4
+
+rel/main_rel/archive/fn_1_12C524.c:
+	.text       start:0x0012C524 end:0x0012C5E4 align:4
