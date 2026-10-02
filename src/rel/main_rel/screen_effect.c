@@ -1857,6 +1857,75 @@ void fn_1_791B0(void) {
 #pragma opt_common_subs reset
 /* fzgx:end fn_1_791B0 */
 
+/* fzgx:begin fn_1_79654 */
+typedef struct {
+    u8 pad[0x30];
+    f32 mtx[3][4];
+} Cam_801A6D00;
+
+extern Cam_801A6D00 *lbl_801A6D00[];
+extern s8 camera_get_state(void);
+extern u8 fn_1_5348(void);
+extern u32 fn_1_58C4(void);
+extern void fn_1_550A8(void);
+extern void fn_1_7926C(s32);
+extern void fn_1_550E0(void);
+extern void lbl_8006DD14(void *, void *);
+extern void fn_80038F10(f32 *);
+extern void fn_80038FD8(u32 *, u32 *, u32 *, u32 *);
+extern void fn_80038BFC(f32 *);
+extern void fn_80072270(f32 *);
+extern void fn_80074188(u32, u32, u32, u32);
+extern void fn_80038EEC(f32, f32, f32, f32, f32, f32);
+
+void fn_1_79654(void) {
+    f32 mtx[3][4];
+    f32 proj[6];
+    f32 vp[7];
+    u32 a;
+    u32 b;
+    u32 c;
+    u32 d;
+    u8 mode;
+    u32 i;
+    s8 state;
+    struct { s32 value; } flag;
+
+    if ((*(s16 *)&lbl_1_bss_960 == 2 || *(s16 *)&lbl_1_bss_960 == 9) && lbl_1_bss_6D778.unk_0 != 0) {
+        mode = 0;
+        state = camera_get_state();
+        if (state == 0) {
+            if ((((u32 *)&lbl_1_data_3D544)[0] >> 23) & 1) {
+                mode = 1;
+            }
+        } else if (state == 7 || (state == 6 && fn_1_5348() == 4)) {
+            for (i = 0; i < fn_1_58C4(); i++) {
+                if ((((u32 *)&lbl_1_data_3D544)[i] >> 23) & 1) {
+                    mode = fn_1_58C4();
+                }
+            }
+        }
+        if (mode == 1 || (u8)(mode - 3) <= 1) {
+            lbl_8006DD14(lbl_801A6D00[0]->mtx, mtx);
+            fn_80038F10(proj);
+            fn_80038FD8(&a, &b, &c, &d);
+            fn_80038BFC(vp);
+            fn_1_550A8();
+            flag.value = 1;
+            if (!((u8)(mode - 3) <= 1)) {
+                flag.value = 0;
+            }
+            fn_1_7926C(flag.value);
+            fn_1_550E0();
+            fn_80072270(vp);
+            fn_80074188(a, b, c, d);
+            fn_80038EEC(proj[0], proj[1], proj[2], proj[3], proj[4], proj[5]);
+            lbl_8006DD14(mtx, lbl_801A6D00[0]->mtx);
+        }
+    }
+}
+/* fzgx:end fn_1_79654 */
+
 /* fzgx:begin fn_1_79810 */
 typedef struct {
     f32 unk_0;
