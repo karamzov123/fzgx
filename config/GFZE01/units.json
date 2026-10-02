@@ -17463,6 +17463,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80039C40.c",
+    "symbols": [
+      "fn_80039C40"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.2.5n",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8003A760.c",
     "symbols": [
       "fn_8003A760"
