@@ -36414,6 +36414,26 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/effect/fn_1_5D500.c",
+    "symbols": [
+      "fn_1_5D500"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/effect.c",
+    "pool": {
+      "...rodata.0": "lbl_1_rodata_2950",
+      "@8": "lbl_1_rodata_295C",
+      "@6": "lbl_1_rodata_2954",
+      "@27": "lbl_1_rodata_29A4",
+      "@20": "lbl_1_rodata_2978",
+      "@29": "lbl_1_rodata_29AC",
+      "@23": "lbl_1_rodata_2988"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/effect/fn_1_5D88C.c",
     "symbols": [
       "fn_1_5D88C"
