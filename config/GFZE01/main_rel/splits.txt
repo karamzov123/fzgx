@@ -6773,3 +6773,6 @@ rel/main_rel/custom_memcard/fn_1_131620.c:
 
 rel/main_rel/stcoli/fn_1_251F8.c:
 	.text       start:0x000251F8 end:0x000253A4 align:4
+
+rel/main_rel/car_test/fn_1_83D28.c:
+	.text       start:0x00083D28 end:0x00084038 align:4
