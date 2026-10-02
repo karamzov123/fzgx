@@ -906,6 +906,49 @@ int fn_1_F8334(s16 value) {
 }
 /* fzgx:end fn_1_F8334 */
 
+/* fzgx:begin fn_1_F83F0 */
+extern int fn_1_14D6D8(s16);
+
+static inline int test_bits(u64 bits) {
+    if (bits != 0) {
+        return 1;
+    }
+    return 0;
+}
+
+void fn_1_F83F0(s16 arg0) {
+    int v5 = 0;
+    int v0;
+    u64 mask;
+
+    if (arg0 > 63) {
+        mask = 1ULL << (s16)(arg0 - 64);
+        v0 = test_bits(*(u64 *)&lbl_1_bss_7F0C0.unk_28 & mask);
+    } else {
+        mask = 1ULL << arg0;
+        v0 = test_bits(*(u64 *)&lbl_1_bss_7F0C0.unk_20 & mask);
+    }
+    if (v0 == 0) {
+        if ((fn_1_14D6D8(arg0) & 0x20000000) == 0) {
+            v5 = 1;
+        }
+    }
+    if (arg0 > 63) {
+        mask = 1ULL << (s16)(arg0 - 64);
+        *(u64 *)&lbl_1_bss_7F0C0.unk_28 |= mask;
+        if (v5 == 1) {
+            *(u64 *)&lbl_1_bss_7F0C0.unk_58 |= mask;
+        }
+    } else {
+        mask = 1ULL << arg0;
+        *(u64 *)&lbl_1_bss_7F0C0.unk_20 |= mask;
+        if (v5 == 1) {
+            *(u64 *)&lbl_1_bss_7F0C0.unk_50 |= mask;
+        }
+    }
+}
+/* fzgx:end fn_1_F83F0 */
+
 /* fzgx:begin fn_1_F8580 */
 void fn_1_F8580(void) {
     lbl_1_bss_7F0C0.unk_5C = 0;
