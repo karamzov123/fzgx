@@ -1,5 +1,5 @@
 {
- "generated": 1790917363,
+ "generated": 1790917601,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -107092,7 +107092,7 @@
    "size": 204,
    "status": "claimed",
    "attempts": 7,
-   "best_percent": 98.13725,
+   "best_percent": 99.31373,
    "claimed_by": "fleet-v2-cline-1790917225362357902-cline-8",
    "claimed_at": 1790917225,
    "claim_ttl": 2100,
@@ -122421,19 +122421,19 @@
   {
    "symbol": "fn_8_663C",
    "module": "title",
-   "unit": null,
+   "unit": "rel/title/title/fn_8_663C.c",
    "addr": 26172,
    "size": 372,
-   "status": "claimed",
-   "attempts": 6,
-   "best_percent": 98.27957,
-   "claimed_by": "fleet-v2-oc3-1790916838687124294-opencode-2",
-   "claimed_at": 1790917339,
-   "claim_ttl": 2100,
-   "matched_commit": null,
+   "status": "matched",
+   "attempts": 7,
+   "best_percent": 100.0,
+   "claimed_by": null,
+   "claimed_at": null,
+   "claim_ttl": null,
+   "matched_commit": "f2ef7a93",
    "blocked_reason": null,
    "prev_status": null,
-   "link_state": null
+   "link_state": "verified"
   },
   {
    "symbol": "fn_8_67B0",
@@ -488488,7 +488488,7 @@
    "model": null,
    "started": 1790917054,
    "ended": null,
-   "checks": 3,
+   "checks": 7,
    "final_percent": 95.95,
    "tokens_in": 0,
    "tokens_out": 0,
@@ -488496,7 +488496,7 @@
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 2,
+   "stale_checks": 4,
    "best_in_attempt": 95.95
   },
   {
@@ -488507,15 +488507,15 @@
    "model": null,
    "started": 1790917225,
    "ended": null,
-   "checks": 2,
-   "final_percent": 96.75676,
+   "checks": 5,
+   "final_percent": 46.405407,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 1,
+   "stale_checks": 4,
    "best_in_attempt": 97.16216
   },
   {
@@ -488526,15 +488526,15 @@
    "model": null,
    "started": 1790917225,
    "ended": null,
-   "checks": 1,
-   "final_percent": 98.1982,
+   "checks": 3,
+   "final_percent": 92.87387,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 0,
+   "stale_checks": 2,
    "best_in_attempt": 98.1982
   },
   {
@@ -488545,8 +488545,8 @@
    "model": null,
    "started": 1790917225,
    "ended": null,
-   "checks": 2,
-   "final_percent": 61.431374,
+   "checks": 8,
+   "final_percent": 99.31373,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -488554,7 +488554,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 61.431374
+   "best_in_attempt": 99.31373
   },
   {
    "id": 19172,
@@ -488583,7 +488583,7 @@
    "model": null,
    "started": 1790917225,
    "ended": null,
-   "checks": 1,
+   "checks": 4,
    "final_percent": 98.22581,
    "tokens_in": 0,
    "tokens_out": 0,
@@ -488591,7 +488591,7 @@
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 0,
+   "stale_checks": 2,
    "best_in_attempt": 98.22581
   },
   {
@@ -488621,8 +488621,8 @@
    "model": null,
    "started": 1790917225,
    "ended": null,
-   "checks": 0,
-   "final_percent": null,
+   "checks": 3,
+   "final_percent": 97.0274,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -488630,7 +488630,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 0.0
+   "best_in_attempt": 97.36073
   },
   {
    "id": 19176,
@@ -488640,16 +488640,16 @@
    "model": null,
    "started": 1790917225,
    "ended": null,
-   "checks": 0,
-   "final_percent": null,
+   "checks": 2,
+   "final_percent": 96.434105,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 0,
-   "best_in_attempt": 0.0
+   "stale_checks": 1,
+   "best_in_attempt": 96.78294
   },
   {
    "id": 19177,
@@ -488678,7 +488678,7 @@
    "model": null,
    "started": 1790917261,
    "ended": null,
-   "checks": 1,
+   "checks": 3,
    "final_percent": 99.210526,
    "tokens_in": 0,
    "tokens_out": 0,
@@ -488686,7 +488686,7 @@
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 0,
+   "stale_checks": 1,
    "best_in_attempt": 99.210526
   },
   {
@@ -488697,16 +488697,16 @@
    "model": null,
    "started": 1790917302,
    "ended": null,
-   "checks": 0,
-   "final_percent": null,
+   "checks": 3,
+   "final_percent": 88.37,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 0,
-   "best_in_attempt": 0.0
+   "stale_checks": 1,
+   "best_in_attempt": 92.25
   },
   {
    "id": 19180,
@@ -488731,20 +488731,20 @@
    "id": 19181,
    "symbol": "fn_8_663C",
    "agent": "fleet-v2-oc3-1790916838687124294-opencode-2",
-   "harness": null,
-   "model": null,
+   "harness": "opencode",
+   "model": "opencode/space-bunny-free",
    "started": 1790917339,
-   "ended": null,
-   "checks": 0,
-   "final_percent": null,
-   "tokens_in": 0,
-   "tokens_out": 0,
+   "ended": 1790917590,
+   "checks": 5,
+   "final_percent": 100.0,
+   "tokens_in": 68757,
+   "tokens_out": 2742,
    "cost_usd": 0.0,
-   "outcome": null,
-   "notes": null,
+   "outcome": "matched",
+   "notes": "oracle match accepted automatically",
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 0.0
+   "best_in_attempt": 100.0
   }
  ],
  "names": [
