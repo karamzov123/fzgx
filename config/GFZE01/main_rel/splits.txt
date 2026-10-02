@@ -6653,3 +6653,6 @@ rel/main_rel/sel_static_disp/fn_1_14EBF8.c:
 
 rel/main_rel/burner/fn_1_F8E30.c:
 	.text       start:0x000F8E30 end:0x000F9028 align:4
+
+rel/main_rel/driver/fn_1_A79D8.c:
+	.text       start:0x000A79D8 end:0x000A7A70 align:4

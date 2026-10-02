@@ -291,6 +291,34 @@ void fn_1_A7968(void) {
 }
 /* fzgx:end fn_1_A7968 */
 
+/* fzgx:begin fn_1_A79D8 */
+struct fn_1_A79D8_Vec {
+    u32 unk_0;
+    u32 unk_4;
+    u32 unk_8;
+};
+
+struct fn_1_A79D8_Obj {
+    u8 unk_0[0x114];
+    struct fn_1_A79D8_Vec vec;
+};
+
+extern u32 lbl_1_bss_6F638;
+extern void fn_1_A8528(void *, void *);
+extern void fn_1_A8270(void *, void *);
+
+void fn_1_A79D8(u32 arg0, struct fn_1_A79D8_Vec *arg1) {
+    u32 *table = *(u32 **)&lbl_1_bss_6F638;
+    struct fn_1_A79D8_Obj *obj = (struct fn_1_A79D8_Obj *)table[arg0];
+    struct fn_1_A79D8_Vec old = obj->vec;
+
+    obj->vec = *arg1;
+    fn_1_A8528(obj, 0);
+    fn_1_A8270(obj, 0);
+    obj->vec = old;
+}
+/* fzgx:end fn_1_A79D8 */
+
 /* fzgx:begin fn_1_A7A70 */
 void fn_1_A7A70(void) {
     s32 index;

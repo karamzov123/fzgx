@@ -35303,6 +35303,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/driver/fn_1_A79D8.c",
+    "symbols": [
+      "fn_1_A79D8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/driver.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/driver/fn_1_A7A70.c",
     "symbols": [
       "fn_1_A7A70"
