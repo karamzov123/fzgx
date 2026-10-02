@@ -1413,6 +1413,86 @@ void camera_save_parameters(f32 first_parameter, f32 second_parameter) {
 }
 /* fzgx:end camera_save_parameters */
 
+/* fzgx:begin fn_1_BFA0 pool noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/camera.h"
+
+extern u32 fn_1_CC5C(void);
+extern void lbl_8006D9D8(void *);
+extern void lbl_8006E14C(f32);
+extern void fn_1_55FC4(f32);
+extern void fn_80072558(void);
+extern void fn_1_55FF0(f32);
+extern u32 lbl_801A6CE0;
+extern u32 lbl_1_bss_38454;
+extern u32 fn_1_55210(u32);
+
+typedef struct CameraUpdateState {
+    u8 unk_00[4];
+    u8 unk_04;
+    u8 unk_05[3];
+    u8 unk_08[40];
+    f32 unk_30;
+    f32 unk_34;
+    u8 unk_38;
+} CameraUpdateState;
+
+#pragma opt_propagation off
+static inline void update_camera_transform(u8 *value) {
+    lbl_8006D9D8(value + 0x10);
+}
+
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+u32 fzgx_obj_lbl_1_bss_1010;
+u8 lbl_1_bss_1014;
+u8 lbl_1_bss_1010_gap_1015;
+u16 lbl_1_bss_1010_gap_1015_fill_1016;
+u8 fzgx_obj_camera_state;
+u8 camera_state_fill_1019;
+u16 camera_state_fill_101A;
+u32 camera_state_fill_101C[8];
+u32 lbl_1_bss_103C;
+f32 lbl_1_bss_1040;
+f32 lbl_1_bss_1044;
+u8 fzgx_obj_camera_flag_0;
+
+#pragma section code_type ".fzgxpool"
+static void fzgx_bss_layout(void) {
+    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_1010;
+    s = *(u8 *)&lbl_1_bss_1014;
+    s = *(u8 *)&lbl_1_bss_1010_gap_1015;
+    s = *(u8 *)&lbl_1_bss_1010_gap_1015_fill_1016;
+    s = *(u8 *)&fzgx_obj_camera_state;
+    s = *(u8 *)&camera_state_fill_1019;
+    s = *(u8 *)&camera_state_fill_101A;
+    s = *(u8 *)&camera_state_fill_101C;
+    s = *(u8 *)&lbl_1_bss_103C;
+    s = *(u8 *)&lbl_1_bss_1040;
+    s = *(u8 *)&lbl_1_bss_1044;
+    s = *(u8 *)&fzgx_obj_camera_flag_0;
+}
+#pragma section code_type ".text"
+
+void fn_1_BFA0(void) {
+    
+    if (lbl_1_bss_1014 != 0) {
+        fn_1_CC5C();
+    }
+    if (fzgx_obj_camera_flag_0 != 0) {
+        update_camera_transform((*(u8 (*)[40])&fzgx_obj_camera_state));
+        lbl_8006E14C(lbl_1_bss_1044);
+        fn_1_55FC4(lbl_1_bss_1044);
+        fn_80072558();
+        fn_1_55FF0(lbl_1_bss_1040);
+        if (lbl_801A6CE0 & 1) {
+            fn_1_55210(*(u32 *)(*(u32 *)(lbl_1_bss_38454 + 8) + 0x20));
+        }
+    }
+}
+/* fzgx:end fn_1_BFA0 */
+
 /* fzgx:begin fn_1_C038 */
 void fn_1_C038(s32 value, f32 start, f32 end) {
     f32 difference;

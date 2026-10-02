@@ -31943,6 +31943,18 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_BFA0.c",
+    "symbols": [
+      "fn_1_BFA0"
+    ],
+    "status": "nonmatching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/camera.c",
+    "pool": true
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/camera/fn_1_C038.c",
     "symbols": [
       "fn_1_C038"
