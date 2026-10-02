@@ -1835,3 +1835,6 @@ rel/movie_module/fn_12_32EAC.c:
 
 rel/movie_module/fn_12_2ADDC.c:
 	.text       start:0x0002ADDC end:0x0002AF5C align:4
+
+rel/movie_module/fn_12_325F4.c:
+	.text       start:0x000325F4 end:0x0003267C align:4
