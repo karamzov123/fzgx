@@ -554,6 +554,77 @@ void camera_forward_status(void) {
 }
 /* fzgx:end camera_forward_status */
 
+/* fzgx:begin fn_1_6D2C noprologue */
+#include "types.h"
+#include "rel/main_rel/camera.h"
+
+extern CameraState *camera_get_state_object(void);
+extern void OSPanic(u8 *file, int line, u8 *message, ...);
+
+typedef struct {
+    Obj_1_bss_F68_Target *unk_0;
+    u32 unk_4;
+    u32 unk_8;
+} F68State;
+
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+Obj_1_bss_F68_Target *fzgx_obj_lbl_1_bss_F68;
+u32 fzgx_obj_game_camera_entries;
+u32 fzgx_obj_live_camera;
+u8 lbl_1_bss_F74;
+u8 lbl_1_bss_F75;
+u8 lbl_1_bss_F76;
+
+#pragma section code_type ".fzgxpool"
+static void fzgx_bss_layout(void) {
+    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_F68;
+    s = *(u8 *)&fzgx_obj_game_camera_entries;
+    s = *(u8 *)&fzgx_obj_live_camera;
+    s = *(u8 *)&lbl_1_bss_F74;
+    s = *(u8 *)&lbl_1_bss_F75;
+    s = *(u8 *)&lbl_1_bss_F76;
+}
+#pragma section code_type ".text"
+
+static inline u8 fn_1_6D2C_array_read(s32 index, u8 *array) { return array[index]; }
+#pragma opt_dead_assignments off
+u32 fn_1_6D2C(u32 index) {
+    
+    Obj_1_bss_F68_Target *obj;
+    u8 *row;
+    s8 mode;
+
+    obj = fzgx_obj_lbl_1_bss_F68;
+
+    if (obj == 0) {
+        OSPanic(lbl_1_data_3318, 0x546, (u8 *)&lbl_1_data_35B0);
+        return 0;
+    }
+
+    if (obj->unk_0 & 0x80000000) {
+        return *(u32 *)camera_get_state_object();
+    }
+
+    mode = obj->unk_48;
+
+    switch (mode) {
+case 9: case 10: {
+
+        return *(u32 *)((u8 *)fzgx_obj_live_camera + 0xC);
+    
+} break;
+default: {
+
+        row = (u8 *)fzgx_obj_game_camera_entries + index * 0x1FC;
+        return fn_1_6D2C_array_read(4, row);
+    
+} break;
+}
+}
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_1_6D2C */
+
 /* fzgx:begin fn_1_6EC0 */
 u32 fn_1_6EC0(u8 index) {
     Obj_1_bss_F68_Target *state = lbl_1_bss_F68;
