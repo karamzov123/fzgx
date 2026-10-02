@@ -6836,3 +6836,6 @@ rel/main_rel/avline/fn_1_58248.c:
 
 rel/main_rel/game/fn_1_41CB8.c:
 	.text       start:0x00041CB8 end:0x00041E34 align:4
+
+rel/main_rel/stcoli/fn_1_29968.c:
+	.text       start:0x00029968 end:0x00029A0C align:4

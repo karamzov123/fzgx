@@ -52880,6 +52880,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/stcoli/fn_1_29968.c",
+    "symbols": [
+      "fn_1_29968"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/stcoli.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/stcoli/fn_1_2A2A4.c",
     "symbols": [
       "fn_1_2A2A4"

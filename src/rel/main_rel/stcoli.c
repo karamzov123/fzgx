@@ -2840,6 +2840,76 @@ void fn_1_28F08(ScaleInfo *scale, Vec3 *src, f32 bias)
 #pragma opt_common_subs reset
 /* fzgx:end fn_1_28F08 */
 
+/* fzgx:begin fn_1_29968 noprologue */
+#include "dolphin/types.h"
+
+extern const struct fn_1_29968_lbl_1_rodata_840_pool {
+    u8 pad_0[0x14];
+    f32 unk_14;
+    u8 pad_18[0x50];
+    f32 unk_68;
+    u8 pad_6C[0x12C];
+    f32 unk_198;
+    u8 pad_19C[0x164];
+    f32 unk_300;
+    f32 unk_304;
+} lbl_1_rodata_840;
+
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+} Vec3;
+
+typedef struct {
+    f32 m[10];
+    f64 d;
+} Mtx;
+
+typedef struct {
+    u8 pad_0[0x254];
+    f32 unk_254;
+    u8 pad_258[0xB4];
+    f32 unk_30C;
+    u8 pad_310[0x2D0];
+    Mtx unk_5E0;
+} Owner;
+
+extern void lbl_8006DAEC(void);
+extern u32 mathutil_mtxA_rotate_x(u32);
+extern void lbl_8006DB74(Mtx *);
+extern void lbl_8006DB30(void);
+
+#pragma opt_common_subs off
+#pragma opt_loop_invariants off
+void fn_1_29968(Owner *self)
+{
+    f32 fzgx_live;
+    f32 num;
+    f32 v;
+    f32 scale;
+    struct fn_1_29968_lbl_1_rodata_840_pool *pool_lbl_1_rodata_840 = (struct fn_1_29968_lbl_1_rodata_840_pool *)&lbl_1_rodata_840;
+    f32 step;
+    f32 t;
+
+    lbl_8006DAEC();
+    fzgx_live = -self->unk_254;
+    num = self->unk_30C;
+    t = num;
+    t = t / fzgx_live;
+    v = t - pool_lbl_1_rodata_840->unk_14;
+    scale = pool_lbl_1_rodata_840->unk_198;
+    step = pool_lbl_1_rodata_840->unk_300;
+    v = (v < pool_lbl_1_rodata_840->unk_304) ? pool_lbl_1_rodata_840->unk_304 : ((v > pool_lbl_1_rodata_840->unk_68) ? pool_lbl_1_rodata_840->unk_68 : v);
+    mathutil_mtxA_rotate_x((s32)(scale * (step * v)));
+    lbl_8006DB74(&self->unk_5E0);
+    lbl_8006DB30();
+}
+#pragma opt_loop_invariants reset
+
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_29968 */
+
 /* fzgx:begin fn_1_2A2A4 */
 typedef struct {
     u8 pad00[0xec];
