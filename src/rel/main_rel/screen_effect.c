@@ -121,6 +121,39 @@ void fn_1_72768(u32 arg0, u32 arg1) {
 }
 /* fzgx:end fn_1_72768 */
 
+/* fzgx:begin fn_1_727BC */
+struct fn_1_727BC_lbl_1_data_1D960_58_E6 {
+    u8 pad_0[0x5];
+    u8 unk_5;
+};
+extern void OSPanic(const char *, int, const char *, ...);
+
+static inline struct fn_1_727BC_lbl_1_data_1D960_58_E6 *fn_1_727BC_array_read(struct fn_1_727BC_lbl_1_data_1D960_58_E6 *array) { return array; }
+#pragma opt_dead_assignments off
+void fn_1_727BC(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4) {
+    u32 v0;
+    s32 v1;
+    s32 v2;
+    s32 v3;
+    Obj_1_data_1D960 *data = &lbl_1_data_1D960;
+    Obj_1_bss_6C8EC *obj;
+    struct fn_1_727BC_lbl_1_data_1D960_58_E6 *table;
+    s32 valid;
+    v0 = (arg0 & 0xFF);
+    obj = (Obj_1_bss_6C8EC *)((u8 *)&lbl_1_bss_6C8EC + v0 * 0x10C);
+    if (v0 <= 7) {
+        v1 = obj->unk_DC;
+        v2 = (arg1 & 0xFF);
+        table = (struct fn_1_727BC_lbl_1_data_1D960_58_E6 *)(data + 1);
+        v3 = fn_1_727BC_array_read(table)[v1].unk_5 - 1;
+        valid = v2 <= v3;
+        if (valid != 0U && v1 != 0) return;
+    }
+    OSPanic((const char *)data + 0x160, 394, (const char *)data + 0x18C);
+}
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_1_727BC */
+
 /* fzgx:begin fn_1_72848 */
 extern void fn_1_76650(void *);
 
