@@ -1538,6 +1538,187 @@ void fn_1_139F18(Fn139F18Obj* self) {
 }
 /* fzgx:end fn_1_139F18 */
 
+/* fzgx:begin fn_1_13A038 noprologue */
+#include "rel/main_rel/sel_static_disp.h"
+
+typedef struct {
+    f32 unk_00;
+    f32 unk_04;
+    f32 unk_08;
+    f32 unk_0C;
+    f32 unk_10;
+    f32 unk_14;
+    f32 unk_18;
+    f32 unk_1C;
+    f32 unk_20;
+    f32 unk_24;
+    f32 unk_28;
+    f32 unk_2C;
+    u32 unk_30;
+    u8 unk_34[0x24];
+} Track;
+
+typedef struct {
+    u16 unk_00;
+    u8 unk_02[0x1E];
+    u32 unk_20;
+    u8 unk_24[0x14];
+    f32 unk_38;
+    f32 unk_3C;
+    f32 unk_40;
+    f32 unk_44;
+    f32 unk_48;
+    f32 unk_4C;
+} Car;
+
+extern const f32 lbl_1_rodata_861C;
+extern const f32 lbl_1_rodata_8BC0;
+extern const f32 lbl_1_rodata_8BC4;
+extern const f32 lbl_1_rodata_8BC8;
+extern const f32 lbl_1_rodata_8BCC;
+extern const f32 lbl_1_rodata_8BD0;
+extern const f32 lbl_1_rodata_8B60;
+extern const f32 lbl_1_rodata_8BD4;
+extern const f32 lbl_1_rodata_8638;
+extern const f32 lbl_1_rodata_8BD8;
+extern const f32 lbl_1_rodata_87D0;
+extern Track lbl_1_rodata_26F8;
+
+typedef struct {
+    f32 unk_00;
+    f32 unk_04;
+    f32 unk_08;
+    f32 unk_0C;
+    f32 unk_10;
+    f32 unk_14;
+    f32 unk_18;
+    f32 unk_1C;
+    f32 unk_20;
+    f32 unk_24;
+    u16 unk_28;
+    u16 unk_2A;
+    u16 unk_2C;
+    u16 unk_2E;
+    u16 unk_30;
+    u16 unk_32;
+    u32 unk_34;
+    u8 unk_38;
+    u8 unk_39;
+    u8 unk_3A;
+    u8 unk_3B;
+    u32 unk_3C;
+    u8 unk_40[4];
+    f32 unk_44;
+    f32 unk_48;
+    f32 unk_4C;
+    f32 unk_50;
+    u16 unk_54;
+    u16 unk_56;
+    u32 unk_58;
+    u8 unk_5C[4];
+} Sig_fn_1_8CED0_Fn1_8CED0State;
+
+typedef struct {
+    f32 field_00;
+    f32 field_04;
+    f32 field_08;
+    f32 field_0c;
+    f32 field_10;
+    f32 field_14;
+    f32 field_18;
+    f32 field_1c;
+    f32 field_20;
+    f32 field_24;
+    u16 field_28;
+    u16 field_2a;
+    u16 field_2c;
+    u16 field_2e;
+    u16 field_30;
+    u16 field_32;
+    u32 field_34;
+    u8 field_38;
+    u8 field_39;
+    u8 field_3a;
+    u8 pad_3b;
+    u32 field_3c;
+    u8 field_40[4];
+    f32 field_44;
+    f32 field_48;
+    f32 field_4c;
+    f32 field_50;
+    s16 field_54;
+    u8 pad_56[2];
+    s32 field_58;
+    u8 field_5c[4];
+    u32 field_60;
+} Sig_fn_1_8D3F8_Fn1_8D3F8Car;
+
+extern void fn_1_8CED0(Sig_fn_1_8CED0_Fn1_8CED0State *, u16, u16);
+extern u32 fn_1_8D3F8(Sig_fn_1_8D3F8_Fn1_8D3F8Car *, Track *, void (*)(void), void *);
+extern void fn_1_131C08(void);
+extern void _savegpr_27(void);
+extern void _restgpr_27(void);
+
+#pragma opt_loop_invariants off
+void fn_1_13A038(Car *car)
+{
+    f32 *fzgx_value;
+    Track v;
+    s32 x;
+    u32 off;
+    s32 i;
+
+    car->unk_38 = lbl_1_rodata_861C;
+    car->unk_3C = lbl_1_rodata_8BC0;
+    fzgx_value = &(car->unk_40);
+    *fzgx_value = lbl_1_rodata_8BC4;
+    car->unk_44 = lbl_1_rodata_861C;
+    car->unk_4C = lbl_1_rodata_861C;
+
+    i = 0;
+    x = 140;
+    off = 0;
+
+    for (; i < 4; i++) {
+        s16 kind = ((Obj_1_bss_8B3A0 *)((u8 *)&lbl_1_bss_8B3A0 + i * 0x20))->unk_E;
+
+        if (kind == -1)
+            continue;
+
+        car->unk_00 = (u16)i;
+
+        if (kind == 0x20)
+            car->unk_48 = lbl_1_rodata_8BC8;
+        else if (kind == 0x27)
+            car->unk_48 = lbl_1_rodata_8BCC;
+        else
+            car->unk_48 = lbl_1_rodata_8BD0;
+
+        v = lbl_1_rodata_26F8;
+        v.unk_04 = lbl_1_rodata_8B60;
+        v.unk_08 = (f32)(s32)x;
+        v.unk_0C = lbl_1_rodata_8BD4;
+        v.unk_30 = 10;
+
+        if (lbl_1_bss_8CA28.unk_0 != 0) {
+            v.unk_10 *= lbl_1_rodata_8638;
+            v.unk_14 *= lbl_1_rodata_8638;
+        }
+
+        v.unk_10 *= lbl_1_rodata_8BD8;
+        v.unk_14 *= lbl_1_rodata_8BD8;
+
+        fn_1_8CED0((Sig_fn_1_8CED0_Fn1_8CED0State *)(car->unk_20 + off), 0x1A0, 0xC0);
+        *(f32 *)(car->unk_20 + off + 0x44) = lbl_1_rodata_87D0;
+        fn_1_8D3F8((Sig_fn_1_8D3F8_Fn1_8D3F8Car *)(car->unk_20 + off), &v, fn_1_131C08, car);
+
+        x += 201;
+        off += 100;
+    }
+}
+#pragma opt_loop_invariants reset
+/* fzgx:end fn_1_13A038 */
+
 /* fzgx:begin fn_1_13A848 */
 void fn_1_13A848(s16 arg0, s16 arg1, void* arg2, void* arg3, int arg4, f32 arg5, f32 arg6) {
     fn_1_49410();
