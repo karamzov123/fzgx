@@ -703,6 +703,111 @@ void fn_1_156B18(fn_1_156B18_State *state) {
 }
 /* fzgx:end fn_1_156B18 */
 
+/* fzgx:begin fn_1_157070 */
+extern f32 lbl_1_rodata_D8C8[18];
+extern s32 fn_8006B55C(u32, void *, void *);
+extern s32 fn_8006B628(u32, void *);
+extern s32 fn_8006B6F8(u32);
+
+typedef struct {
+    u32 flags;
+    u32 value04;
+    u8 unk08[8];
+    u32 handle10;
+    u8 unk14[0x20];
+    f32 value34;
+    u8 unk38[0x10];
+    f32 value48;
+    u8 flags4c;
+} State;
+
+typedef struct {
+    u8 unk0;
+    u8 pad1[3];
+    u32 unk4;
+    u32 unk8;
+    u8 unkc;
+    u8 padd;
+    u16 unke;
+    u16 unk10;
+    u16 unk12;
+    u16 unk14;
+    u8 pad16[2];
+    u32 unk18;
+    u32 unk1c;
+    u8 unk20;
+    u8 unk21;
+} Request;
+
+#pragma opt_common_subs off
+static inline void fn_1_157070_store(u32 value, u32 *destination) { *destination = value; }
+static inline f32 fn_1_157070_read_pointer(State * owner) { return owner->value34; }
+#pragma opt_strength_reduction off
+void fn_1_157070(State *state) {
+    u8 *fzgx_value__;
+    f32 fzgx_live;
+    u8 fzgx_value_;
+    u16 *fzgx_value;
+    f32 *table = lbl_1_rodata_D8C8;
+    u32 handle;
+    struct { u32 value; } success;
+    Request request;
+    f32 amount;
+
+    if (state->flags4c & 4) {
+        fzgx_live = fn_1_157070_read_pointer(state);
+        amount = -state->value48 / fzgx_live;
+        amount = (amount - table[14]) / table[15];
+        if (amount > table[11]) {
+            amount = table[11];
+        } else if (amount < table[0]) {
+            amount = table[0];
+        }
+
+        success.value = 0;
+        request.unk0 = 2;
+        request.unk4 = (s32)(table[16] * amount) + 300;
+        fn_1_157070_store(0, &(request.unk8));
+        fzgx_value__ = &(request.unkc);
+        *fzgx_value__ = (u8)((s32)(table[17] * amount) + 80);
+        request.unke = 90;
+        request.unk10 = 100;
+        fzgx_value = &(request.unk12);
+        *fzgx_value = 0;
+        request.unk14 = 0;
+        request.unk18 = 5;
+        request.unk1c = 200;
+        request.unk20 = 0;
+        request.unk21 = 0;
+
+        if (!(state->flags & 4)) {
+            u32 h = state->handle10;
+            u32 v = state->value04;
+
+            if (h + 0x10000 == 0xffff) {
+                if (fn_8006B55C(v, &state->handle10, &request) >= 0) {
+                    success.value = 1;
+                }
+            } else {
+                if (fn_8006B628(h, &request) >= 0) {
+                    success.value = 1;
+                }
+            }
+            if ((s32)success.value != 0 && !(state->flags & 4)) {
+                if (fn_8006B6F8(state->handle10) >= 0) {
+                    state->flags |= 4;
+                }
+            }
+        } else {
+            fn_8006B6F8(state->handle10);
+        }
+    }
+}
+#pragma opt_strength_reduction reset
+
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_157070 */
+
 /* fzgx:begin fn_1_157200 */
 extern const f32 lbl_1_rodata_D910;
 extern f32 lbl_1_rodata_D914[3];
