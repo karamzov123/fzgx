@@ -65884,6 +65884,17 @@
   },
   {
     "module": "winning",
+    "source": "rel/winning/winning/fn_15_435C.c",
+    "symbols": [
+      "fn_15_435C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/winning/winning.c"
+  },
+  {
+    "module": "winning",
     "source": "rel/winning/winning/fn_15_4568.c",
     "symbols": [
       "fn_15_4568"

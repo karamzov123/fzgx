@@ -1935,6 +1935,159 @@ void fn_15_4060(void) {
 }
 /* fzgx:end fn_15_4060 */
 
+/* fzgx:begin fn_15_435C */
+#include "rel/main_rel/camera.h"
+
+struct fn_15_435C_lbl_15_rodata_0 {
+    u8 pad_0[0x70];
+    f32 unk_70;
+    u8 pad_74[0xC];
+    f32 unk_80;
+    f32 unk_84;
+    u8 pad_88[0x90];
+    u32 unk_118;
+    u32 unk_11C;
+    u32 unk_120;
+    f32 unk_124;
+};
+
+struct fn_15_435C_lbl_15_bss_0 {
+    u8 pad_0[0x38];
+    s16 unk_38;
+    u8 pad_3A[0x32];
+    u32 unk_6C;
+    u32 unk_70;
+    u8 pad_74[0x24];
+    s16 unk_98;
+    u8 pad_9A[2];
+    u32 unk_9C[1];
+};
+
+struct fn_15_435C_lbl_15_data_0 {
+    u8 pad_0[0x50];
+    u32 unk_50[0x2D];
+    u8 pad_104[0x1D0];
+    char unk_2D4[0x14];
+    char unk_2E8[0x10];
+    char unk_2F8[0x10];
+    char unk_308[0x10];
+    char unk_318[0x20];
+    char unk_338[0x2C];
+    char unk_364[0x40];
+};
+
+struct fn_15_435C_cam {
+    u8 pad_0[0x1C];
+    f32 unk_1C;
+};
+
+struct fn_15_435C_elem {
+    u8 pad_0[0x88];
+    u32 unk_88;
+};
+
+extern struct fn_15_435C_lbl_15_rodata_0 lbl_15_rodata_0;
+extern struct fn_15_435C_lbl_15_bss_0 lbl_15_bss_0;
+extern struct fn_15_435C_lbl_15_data_0 lbl_15_data_0;
+extern u32 lbl_1_data_20B14[];
+
+extern CameraState * camera_get_state_object(void);
+extern void fn_1_49410(void);
+extern void fn_1_4954C(f32);
+extern void fn_1_4955C(f32, f32);
+extern void fn_1_495FC(void);
+extern void fn_1_496FC(f32, f32);
+extern void fn_1_49514(u32 *);
+extern s16 fn_1_12C930(s16);
+extern s16 fn_1_12C710(int);
+extern s16 fn_1_7F49C(s16, s16, void *);
+extern void fn_1_4AE0C(const char *, ...);
+extern void fn_1_4A0D8(const char *);
+
+#pragma opt_loop_invariants off
+#pragma opt_common_subs off
+#pragma opt_propagation off
+#pragma opt_lifetimes off
+void fn_15_435C(void) {
+    u32 buf[8];
+    u32 v[6];
+    struct fn_15_435C_lbl_15_rodata_0 *p_ro = &lbl_15_rodata_0;
+    struct fn_15_435C_lbl_15_data_0 *p_data = &lbl_15_data_0;
+    struct fn_15_435C_lbl_15_bss_0 *p_bss = &lbl_15_bss_0;
+    struct fn_15_435C_cam *p_cam;
+    struct fn_15_435C_elem **p_ent;
+    u32 *p_tbl;
+    s32 i;
+
+    v[3] = p_ro->unk_118;
+    v[4] = p_ro->unk_11C;
+    v[5] = p_ro->unk_120;
+    p_cam = (struct fn_15_435C_cam *)camera_get_state_object();
+    fn_1_49410();
+    fn_1_4954C(p_ro->unk_70);
+    fn_1_4955C(p_ro->unk_84, p_ro->unk_84);
+    fn_1_495FC();
+    fn_1_496FC(p_ro->unk_80, p_ro->unk_124);
+    v[0] = v[5];
+    p_ent = (struct fn_15_435C_elem **)((u8 *)p_bss + 0x9C);
+    i = 0;
+
+    while (i < (s32)p_bss->unk_38 + 3) {
+        if (i == (s32)p_bss->unk_6C) {
+            v[2] = v[3];
+            fn_1_49514(&v[2]);
+        }
+        else {
+            v[1] = v[0];
+            fn_1_49514(&v[1]);
+        }
+
+        if (i < (s32)p_bss->unk_38) {
+            struct fn_15_435C_elem *p_e = *p_ent;
+            u32 v_tbl = lbl_1_data_20B14[(s16)fn_1_12C930((s16)p_e->unk_88)];
+
+            fn_1_7F49C(fn_1_12C710(p_e->unk_88), 5, buf);
+            fn_1_4AE0C(p_data->unk_2D4, i + 1, v_tbl, buf);
+        }
+        else {
+            switch (i - (s32)p_bss->unk_38) {
+            case 0:
+                p_tbl = p_data->unk_50;
+                fn_1_4AE0C(p_data->unk_2E8, p_tbl[p_bss->unk_70]);
+                break;
+            case 1: {
+                f32 f_live = p_cam->unk_1C;
+                fn_1_4AE0C(p_data->unk_2F8, f_live);
+                break;
+            }
+            case 2:
+                switch (p_bss->unk_98 % 3) {
+                case 0:
+                    fn_1_4A0D8(p_data->unk_308);
+                    break;
+                case 1:
+                    fn_1_4A0D8(p_data->unk_318);
+                    break;
+                default:
+                    fn_1_4A0D8(p_data->unk_338);
+                    break;
+                }
+                break;
+            default:
+                fn_1_4AE0C(p_data->unk_364);
+                break;
+            }
+        }
+        p_ent++;
+        i++;
+    }
+}
+#pragma opt_lifetimes reset
+#pragma opt_propagation reset
+#pragma opt_common_subs reset
+#pragma opt_loop_invariants reset
+/* fzgx:end fn_15_435C */
+
 /* fzgx:begin fn_15_4568 */
 extern u16 lbl_15_bss_154;
 
