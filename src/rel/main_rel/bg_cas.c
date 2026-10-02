@@ -808,6 +808,75 @@ s32 fn_1_FDB40(void **arg0) {
 }
 /* fzgx:end fn_1_FDB40 */
 
+/* fzgx:begin fn_1_FDC00 */
+typedef struct Sig_fn_1_14E09C_Fn14E09CValue { void *value; } Sig_fn_1_14E09C_Fn14E09CValue;
+typedef struct Sig_fn_1_14E09C_Fn14E09CRef { u8 pad8[8]; Sig_fn_1_14E09C_Fn14E09CValue *value; } Sig_fn_1_14E09C_Fn14E09CRef;
+typedef struct Sig_fn_1_14E09C_Fn14E09CObj { u8 pad344[0x344]; Sig_fn_1_14E09C_Fn14E09CRef *ref; } Sig_fn_1_14E09C_Fn14E09CObj;
+struct Sig_fn_1_87238_ModelItem { u32 flags; char pad[0x1c]; };
+struct Sig_fn_1_87238_Model { char pad[0x18]; u16 count; char pad2[0x26]; struct Sig_fn_1_87238_ModelItem items[1]; };
+struct Sig_fn_1_87238_CarSlot { struct Sig_fn_1_87238_Model **model_ptr; char pad[8]; };
+struct Sig_fn_1_87238_fn_1_87238_Car { char pad[0x328]; s8 field_0x328; char pad1[0xb]; struct Sig_fn_1_87238_CarSlot slots[1]; char pad2[0x50]; u32 flags; };
+struct fn_1_FDC00_Arg1 { u8 pad_0[0x40F0]; s16 *unk_40F0; };
+struct fn_1_FDC00_lbl_1_rodata_7650 { u32 unk_0; u32 unk_4; u32 unk_8; };
+extern u32 lbl_1_rodata_7650[3];
+extern f32 lbl_1_rodata_761C[13];
+extern void fn_1_14DE80(void *, void *, void *, s8, f32);
+extern void fn_1_14E054(Sig_fn_1_14E09C_Fn14E09CObj *, void *, s8, f32);
+extern void fn_1_14E198(void *, void *, s8, f32);
+extern void fn_1_55210(void *);
+extern void fn_1_87238(struct Sig_fn_1_87238_fn_1_87238_Car *, s8, f32);
+void fn_1_FDC00(void *arg0, struct fn_1_FDC00_Arg1 *arg1, f32 arg2) {
+    u8 *v0;
+    s8 v3;
+    s16 v4;
+    struct fn_1_FDC00_lbl_1_rodata_7650 loc_10;
+    u32 loc_C;
+    u32 loc_8;
+    if (arg0 != 0) {
+        v0 = *(u8 **)arg0;
+        v3 = (s8)*(s16 *)(v0 + 954);
+        if ((*(u32 *)(v0 + 912) & 0x4000000) != 0) {
+            loc_C = 0;
+            loc_8 = 0;
+            loc_10 = *(struct fn_1_FDC00_lbl_1_rodata_7650 *)lbl_1_rodata_7650;
+            v4 = *arg1->unk_40F0;
+            v0 = *(u8 **)(v0 + 928);
+            switch (v4) {
+            case 0:
+                fn_1_14DE80(v0, &loc_C, &loc_8, v3, lbl_1_rodata_761C[0]);
+                break;
+            case 1:
+                fn_1_14E054((Sig_fn_1_14E09C_Fn14E09CObj *)v0, &loc_10, v3, lbl_1_rodata_761C[0]);
+                break;
+            case 2:
+                fn_1_14E198(v0, &loc_10, v3, lbl_1_rodata_761C[0]);
+                break;
+            }
+        } else {
+            v4 = *arg1->unk_40F0;
+            if (v4 == 0) {
+                fn_1_87238((struct Sig_fn_1_87238_fn_1_87238_Car *)v0, v3, lbl_1_rodata_761C[0]);
+            } else if (*(s8 *)(v0 + 808) == 4) {
+                v0 += v3 * 12;
+                v0 = *(u8 **)(v0 + 820);
+                fn_1_55210(((void **)v0)[v4]);
+            } else if (*(s8 *)(v0 + 808) == 40) {
+                if (v3 == 0) {
+                    v0 += v3 * 12;
+                    v0 = *(u8 **)(v0 + 820);
+                    v0 += v4 * 4;
+                    fn_1_55210(*(void **)(v0 + 8));
+                } else {
+                    v0 += v3 * 12;
+                    v0 = *(u8 **)(v0 + 820);
+                    fn_1_55210(((void **)v0)[v4]);
+                }
+            }
+        }
+    }
+}
+/* fzgx:end fn_1_FDC00 */
+
 /* fzgx:begin fn_1_FDFF4 */
 #include "rel/main_rel/bg_cas.h"
 
