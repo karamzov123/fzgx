@@ -285,6 +285,85 @@ void fn_1_154FD8(void) {
 }
 /* fzgx:end fn_1_154FD8 */
 
+/* fzgx:begin fn_1_155120 */
+extern Obj_1_bss_8EDF0_At10 *fn_1_15530C(Obj_1_bss_8EDF0_At10 *arg);
+extern void fn_1_A8EB0(int arg0, int arg1);
+
+#pragma opt_common_subs off
+#pragma opt_propagation off
+#pragma opt_lifetimes off
+void fn_1_155120(void) {
+    Obj_1_bss_8EDF0 *state = &lbl_1_bss_8EDF0;
+    Obj_1_bss_8EDF0_At10 *p = state->unk_10;
+    Obj_1_bss_8EDF0_At10 *q;
+    u32 ch;
+    s8 next;
+
+    ch = (u8)(p->unk_0);
+    if (ch == 0) {
+        return;
+    }
+    switch (ch) {
+    case 0:
+        break;
+    case 92:
+        p = (Obj_1_bss_8EDF0_At10 *)((u8 *)p + 1);
+        state->unk_10 = fn_1_15530C(p);
+        break;
+    case 91:
+        fn_1_A8EB0(20, 20);
+        while ((ch = (q = state->unk_10)->unk_0) != 93) {
+            ch = (u8)(state->unk_10->unk_0);
+            if ((ch & 0x80) == 0) {
+                state->unk_10 =
+                    (Obj_1_bss_8EDF0_At10 *)((u8 *)state->unk_10 + 1);
+                state->unk_14++;
+                *((u8 *)state + 0x34 + state->unk_1C) = ch;
+            } else {
+                next = q->unk_1;
+                state->unk_10 =
+                    (Obj_1_bss_8EDF0_At10 *)((u8 *)state->unk_10 + 2);
+                state->unk_14 += 2;
+                *(((state->unk_1C) + (((u8 *)state) + (0x34)))) = ch;
+                *((u8 *)state + 0x35 + state->unk_1C) = next;
+            }
+            state->unk_1C = state->unk_14 + state->unk_18 * 30;
+        }
+        state->unk_10 =
+            (Obj_1_bss_8EDF0_At10 *)((u8 *)state->unk_10 + 1);
+        state->unk_14++;
+        ((u8 *)&state->unk_34)[state->unk_1C] = ch;
+        state->unk_1C = state->unk_14 + state->unk_18 * 30;
+        break;
+    case 10:
+        p = (Obj_1_bss_8EDF0_At10 *)((u8 *)p + 1);
+        state->unk_10 = p;
+        state->unk_14++;
+        ((u8 *)&state->unk_34)[state->unk_1C] = 10;
+        break;
+    default:
+        if ((ch & 0x80) == 0) {
+            state->unk_10 =
+                (Obj_1_bss_8EDF0_At10 *)((u8 *)state->unk_10 + 1);
+            state->unk_14++;
+            ((u8 *)&state->unk_34)[state->unk_1C] = ch;
+        } else {
+            next = state->unk_10->unk_1;
+            state->unk_10 =
+                (Obj_1_bss_8EDF0_At10 *)((u8 *)state->unk_10 + 2);
+            state->unk_14 += 2;
+            ((u8 *)&state->unk_34)[state->unk_1C] = ch;
+            ((u8 *)&state->unk_35)[state->unk_1C] = next;
+        }
+        break;
+    }
+    state->unk_1C = state->unk_14 + state->unk_18 * 30;
+}
+#pragma opt_lifetimes reset
+
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_155120 */
+
 /* fzgx:begin fn_1_15530C noprologue */
 #include "types.h"
 #include "rel/main_rel/rep_memcard.h"
