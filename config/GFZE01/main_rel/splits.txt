@@ -6647,3 +6647,6 @@ rel/main_rel/stcoli/fn_1_28F08.c:
 
 rel/main_rel/bg_win/fn_1_15BB34.c:
 	.text       start:0x0015BB34 end:0x0015BBC4 align:4
+
+rel/main_rel/sel_static_disp/fn_1_14EBF8.c:
+	.text       start:0x0014EBF8 end:0x0014ED00 align:4

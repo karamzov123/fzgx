@@ -452,7 +452,6 @@ extern u32 fn_80008BEC(u32 arg0, int arg1, int arg2);
 extern void fn_1_7F3AC(void* object);
 
 /* fzgx:begin fn_1_1332FC */
-
 typedef struct {
     u32 v[8];
 } Word32;
@@ -500,8 +499,6 @@ void fn_1_1332FC(s32 left, s32 top, u8 page) {
 /* fzgx:end fn_1_1332FC */
 
 /* fzgx:begin fn_1_13354C */
-
-
 typedef struct {
     u32 v[16];
 } Defaults;
@@ -572,7 +569,6 @@ void fn_1_133968(void) {
 /* fzgx:end fn_1_133968 */
 
 /* fzgx:begin fn_1_133A8C */
-
 void fn_1_133A8C(void) {
     FontDrawPacket packet;
     s16 result;
@@ -600,7 +596,6 @@ void fn_1_133A8C(void) {
 /* fzgx:end fn_1_133A8C */
 
 /* fzgx:begin fn_1_133BD8 */
-
 typedef union {
     u32 raw[22];
     struct {
@@ -662,8 +657,6 @@ void fn_1_133DE0(void* arg0) {
 /* fzgx:end fn_1_133DE0 */
 
 /* fzgx:begin fn_1_134A4C */
-
-
 void fn_1_134A4C(void) {
     StaticDispParams params;
 
@@ -678,8 +671,6 @@ void fn_1_134A4C(void) {
 /* fzgx:end fn_1_134A4C */
 
 /* fzgx:begin fn_1_134EE4 */
-
-
 #pragma opt_strength_reduction on
 void fn_1_134EE4(s32 arg0, s32 arg1, s32 arg2, f32 farg0) {
     FontDrawPacket packet;
@@ -836,7 +827,6 @@ void fn_1_134EE4(s32 arg0, s32 arg1, s32 arg2, f32 farg0) {
 /* fzgx:end fn_1_134EE4 */
 
 /* fzgx:begin fn_1_135894 */
-
 void fn_1_135894(void* arg0, void* arg1, void* arg2, void* arg3, void* arg4, void* arg5, void* arg6, f32 arg7, f32 arg8) { fn_1_135D7C(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, lbl_1_rodata_87DC);
 }
 /* fzgx:end fn_1_135894 */
@@ -1049,7 +1039,6 @@ void fn_1_137288(int index, void* value0, void* value1, void* value2, s16 select
 /* fzgx:end fn_1_137288 */
 
 /* fzgx:begin fn_1_1373B0 */
-
 void fn_1_1373B0(s16 arg0, u8* arg1, u8* arg2, u8* arg3, s16 arg4) {
     struct { u8* value; } base;
     u8* tmp;
@@ -1145,7 +1134,6 @@ void fn_1_13923C(u32 arg0, u32 arg1) {
 /* fzgx:end fn_1_13923C */
 
 /* fzgx:begin fn_1_1392E0 */
-
 typedef struct {
     u8 pad_0[0x54];
     f32 unk_54;
@@ -1196,7 +1184,6 @@ void fn_1_1392E0(Fn1392E0Arg0 *arg0, Fn1392E0Arg1 *arg1) {
 /* fzgx:end fn_1_1392E0 */
 
 /* fzgx:begin fn_1_139A3C */
-
 int fn_1_139A3C(int arg0) {
     s32 index = (s16)arg0;
 
@@ -1329,7 +1316,6 @@ void fn_1_139AEC(Arg0Struct *arg0) {
 /* fzgx:end fn_1_139AEC */
 
 /* fzgx:begin fn_1_139D60 */
-
 /* 0x20-byte stride view of the state table at lbl_1_bss_8B3A0. */
 typedef struct {
     u8 pad_0[0xE];
@@ -1539,7 +1525,6 @@ void fn_1_13A9B8(f32 arg7, f32 arg8, s16 arg0, s16 arg1, int arg2, void* arg3,
 /* fzgx:end fn_1_13A9B8 */
 
 /* fzgx:begin fn_1_13B24C */
-
 s32 fn_1_13B24C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, const char* arg4) {
     f32 temp;
 
@@ -1554,9 +1539,6 @@ s32 fn_1_13B24C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, const char* arg4) {
 /* fzgx:end fn_1_13B24C */
 
 /* fzgx:begin fn_1_13B328 */
-
-
-
 void fn_1_13B328(u32 arg0, s32 arg1) {
     FontDrawPacket packet;
     PtrTab tab;
@@ -1625,8 +1607,6 @@ void fn_1_13C16C(void) {
 /* fzgx:end fn_1_13C16C */
 
 /* fzgx:begin fn_1_13C1A0 */
-
-
 struct Copy88 { u32 words[22]; };
 struct Copy200 { u32 words[10][5]; };
 
@@ -1701,8 +1681,6 @@ void fn_1_13C1A0(u8 *arg0) {
 /* fzgx:end fn_1_13C1A0 */
 
 /* fzgx:begin fn_1_13D460 */
-
-
 static inline s32 fn_1_13D460_strip_position(s32 x, s32 y) { return x + y; }
 #pragma opt_propagation off
 #pragma opt_lifetimes off
@@ -1806,8 +1784,6 @@ void fn_1_13D460(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 /* fzgx:end fn_1_13D460 */
 
 /* fzgx:begin fn_1_13DA0C */
-
-
 // Register the three groups of static display configurations.
 void fn_1_13DA0C(void) {
     struct Struct_26F8 config;
@@ -1911,7 +1887,6 @@ void fn_1_13E054(void* arg0, void* arg1, void* arg2, int arg3) {
 /* fzgx:end fn_1_13E054 */
 
 /* fzgx:begin fn_1_13EDDC */
-
 // Build the selected display data unless the caller requested the cached path.
 void fn_1_13EDDC(u32 arg0, u32 arg1, u32 arg2, u32 arg3, s32 arg4) {
     u32 display_data[47];
@@ -1957,7 +1932,6 @@ u32 fn_1_13F72C(s16 arg0, u32 arg1, f32 farg0) {
 /* fzgx:end fn_1_13F72C */
 
 /* fzgx:begin fn_1_13F81C */
-
 // Clear the cached display-resource handles before loading a new selection.
 void fn_1_13F81C(void) {
     u32 *handles = (u32 *)(((u8 *)&lbl_1_bss_8E3E4));
@@ -1995,8 +1969,6 @@ u32 fn_1_13F8B0(u32 key) {
 /* fzgx:end fn_1_13F8B0 */
 
 /* fzgx:begin fn_1_13F8C4 */
-
-
 void fn_1_13F8C4(s32 arg_sp0) {
     s32 temp_r27;
     u8 var_r26;
@@ -2189,7 +2161,6 @@ void fn_1_14108C(s16 arg0, s32 arg1, s32 arg2) {
 /* fzgx:end fn_1_14108C */
 
 /* fzgx:begin fn_1_141338 */
-
 // Pass through the caller's arguments and append the default scale factor.
 void fn_1_141338(u32 arg0, u32 arg1, u32 arg2, u32 arg3, f32 arg4) {
     fn_1_141360(arg0, arg1, arg2, arg3, arg4, lbl_1_rodata_863C);
@@ -2197,7 +2168,6 @@ void fn_1_141338(u32 arg0, u32 arg1, u32 arg2, u32 arg3, f32 arg4) {
 /* fzgx:end fn_1_141338 */
 
 /* fzgx:begin fn_1_141614 */
-
 void fn_1_141614(s16 arg0) {
     fn_1_49410();
     fn_1_494DC(8);
@@ -2224,7 +2194,6 @@ void fn_1_141614(s16 arg0) {
 /* fzgx:end fn_1_141614 */
 
 /* fzgx:begin fn_1_141754 */
-
 typedef struct {
     u32 w[3];
 } Copy9214;
@@ -2344,7 +2313,6 @@ void fn_1_1420A4(void) {
 /* fzgx:end fn_1_1420A4 */
 
 /* fzgx:begin fn_1_1424E8 */
-
 void fn_1_1424E8(u32 unused, s32 arg1) {
     FontDrawPacket loc_8;
     s32 mode;
@@ -2554,7 +2522,6 @@ void fn_1_144EE8(void) {
 /* fzgx:end fn_1_144EE8 */
 
 /* fzgx:begin fn_1_146B5C */
-
 #pragma opt_propagation off
 void fn_1_146B5C(u32 unused, u8 *arg1) {
     s32 pos;
@@ -2586,7 +2553,6 @@ void fn_1_146B5C(u32 unused, u8 *arg1) {
 /* fzgx:end fn_1_146B5C */
 
 /* fzgx:begin fn_1_149B24 */
-
 typedef struct {
     f32 value0;
     u8 pad[8];
@@ -2661,8 +2627,6 @@ void fn_1_149C2C(void) {
 /* fzgx:end fn_1_149C2C */
 
 /* fzgx:begin fn_1_149C64 */
-
-
 // Initialize the static display state with the default viewport dimensions.
 void fn_1_149C64(void) {
     struct fn_1_149C64_lbl_1_bss_8E43C *display_state = &lbl_1_bss_8E43C;
@@ -2673,7 +2637,6 @@ void fn_1_149C64(void) {
 /* fzgx:end fn_1_149C64 */
 
 /* fzgx:begin fn_1_149CA4 */
-
 void fn_1_149CA4(u32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     fn_1_520A0();
     fn_1_52070(0x140);
@@ -2785,7 +2748,6 @@ void fn_1_14A17C(void) {
 /* fzgx:end fn_1_14A17C */
 
 /* fzgx:begin fn_1_14A1AC */
-
 typedef struct {
     u8 pad_0[0x8];
     u8 unk_8;
@@ -3023,7 +2985,6 @@ u32 fn_1_14BE30(void) {
 /* fzgx:end fn_1_14BE30 */
 
 /* fzgx:begin fn_1_14BED0 */
-
 void fn_1_14BED0(void) {
     Obj_1_bss_9F8 *obj_9f8;
 
@@ -3135,7 +3096,6 @@ void fn_1_14C968(void) {
 /* fzgx:end fn_1_14C968 */
 
 /* fzgx:begin fn_1_14C9A0 */
-
 void fn_1_14C9A0(void) {
     int state = lbl_1_bss_5138[0xe2];
 
@@ -3252,7 +3212,6 @@ u32 fn_1_14D6D8(s16 index) {
 /* fzgx:end fn_1_14D6D8 */
 
 /* fzgx:begin fn_1_14D728 */
-
 typedef struct { u32 values[75]; } InitTable;
 
 static inline u32 fn_1_14D728_array_read(u32 *array, s32 index) { return array[index]; }
@@ -3307,7 +3266,6 @@ void fn_1_14D728(Source *source, Display *displays) {
 /* fzgx:end fn_1_14D728 */
 
 /* fzgx:begin fn_1_14D8DC */
-
 void fn_1_14D8DC(u8 *arg0, u8 *arg1, s16 arg2) {
     u8 *data;
     u8 *p1;
@@ -3336,7 +3294,6 @@ void fn_1_14D8DC(u8 *arg0, u8 *arg1, s16 arg2) {
 /* fzgx:end fn_1_14D8DC */
 
 /* fzgx:begin fn_1_14DB48 */
-
 typedef struct {
     u16 values[3];
     u32 extra;
@@ -3397,7 +3354,6 @@ void fn_1_14DBCC(Fn1_14DBCC_Item *arg0) {
 /* fzgx:end fn_1_14DBCC */
 
 /* fzgx:begin fn_1_14DC68 */
-
 typedef struct {
     u8 pad_0[0x340];
     void *unk_340;
@@ -3688,7 +3644,6 @@ int fn_1_14E944(const Fn1_14E944Entry *arg0, const Fn1_14E944Entry *arg1) {
 /* fzgx:end fn_1_14E944 */
 
 /* fzgx:begin fn_1_14E9E4 */
-
 typedef struct {
     Fn1_14E9E4Entry entries[75];
 } Fn1_14E9E4Blob;
@@ -3704,7 +3659,6 @@ void fn_1_14E9E4(int arg0, void *arg1) {
 /* fzgx:end fn_1_14E9E4 */
 
 /* fzgx:begin fn_1_14EA74 */
-
 typedef struct {
     u8 bytes[0x708];
 } Fn1_14EA74Blob;
@@ -3748,6 +3702,40 @@ char *fn_1_14EA74(s16 arg0, char *arg1, s16 arg2) {
 #pragma opt_propagation reset
 /* fzgx:end fn_1_14EA74 */
 
+/* fzgx:begin fn_1_14EBF8 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/sel_static_disp.h"
+
+extern u8 lbl_1_rodata_A894[1800];
+extern s16 fn_1_14FE48(void *arg0, void *arg1);
+extern s32 fn_1_14FDAC(void *arg0, void *arg1, s16 arg2, void *arg3);
+extern int sprintf(char *arg0, const char *arg1, ...);
+
+typedef struct {
+    void *word[75][6];
+} Table1800;
+
+u32 fn_1_14EBF8(s16 arg0, u32 arg1, s16 arg2) {
+    char *data = (char *)lbl_1_data_43E78;
+    char buf0[64];
+    Table1800 table;
+    char buf3[64];
+
+    table = *(Table1800 *)lbl_1_rodata_A894;
+
+    if (fn_1_14FE48(table.word[arg0][arg2], data + 0x2428) < 2) {
+        sprintf((char *)arg1, data + 0x242c,
+                fn_1_14FDAC(table.word[arg0][arg2], data + 0x2428, 0, buf0));
+    } else {
+        sprintf((char *)arg1, data + 0x2438,
+                fn_1_14FDAC(table.word[arg0][arg2], data + 0x2428, 2, buf0),
+                fn_1_14FDAC(table.word[arg0][arg2], data + 0x2428, 3, buf3));
+    }
+    return arg1;
+}
+/* fzgx:end fn_1_14EBF8 */
+
 /* fzgx:begin fn_1_14ED00 */
 typedef struct {
     u32 values[5];
@@ -3777,7 +3765,6 @@ s32 fn_1_14ED00(s32 arg0, void *arg1, s32 arg2) {
 /* fzgx:end fn_1_14ED00 */
 
 /* fzgx:begin fn_1_14EE00 */
-
 typedef struct {
     u32 word[60];
 } Table240;
@@ -4067,7 +4054,6 @@ void fn_1_14F38C(fn_1_14F38C_StaticDisp *disp, u8 *table) {
 /* fzgx:end fn_1_14F38C */
 
 /* fzgx:begin fn_1_14F46C */
-
 typedef struct {
     char *entries[75];
 } StaticDisplayStrings;
@@ -4190,7 +4176,6 @@ void fn_1_14FD7C(u32 *arg0, u32 arg1) {
 /* fzgx:end fn_1_14FD7C */
 
 /* fzgx:begin fn_1_14FDAC */
-
 void *fn_1_14FDAC(void *arg0, void *arg1, s16 arg2, void *arg3) {
     u8 local[0x40];
     void *value;
@@ -4214,7 +4199,6 @@ void *fn_1_14FDAC(void *arg0, void *arg1, s16 arg2, void *arg3) {
 /* fzgx:end fn_1_14FDAC */
 
 /* fzgx:begin fn_1_14FE48 */
-
 s32 fn_1_14FE48(void *arg0, void *arg1) {
     u8 data[64];
     void *value;
@@ -4232,8 +4216,6 @@ s32 fn_1_14FE48(void *arg0, void *arg1) {
 /* fzgx:end fn_1_14FE48 */
 
 /* fzgx:begin fn_1_150464 */
-
-
 void fn_1_150464(u32 arg0) {
     u32 v2;
     u32 v1;
@@ -4273,7 +4255,6 @@ void fn_1_150500(void) {
 /* fzgx:end fn_1_150500 */
 
 /* fzgx:begin fn_1_150518 */
-
 // Reset the active object's counters and re-run its two setup passes.
 void fn_1_150518(void) {
     Obj_1_data_2A7E0_At3C *obj = lbl_1_data_2A7E0.unk_3C;
@@ -4338,8 +4319,6 @@ void fn_1_150650(void) {
 /* fzgx:end fn_1_150650 */
 
 /* fzgx:begin fn_1_150C8C */
-
-
 // Marks each static display entry active before updating it.
 void fn_1_150C8C(fn_1_150C8C_Object *obj) {
     s32 count;
@@ -4407,7 +4386,6 @@ void fn_1_150ED0(fn_1_150ED0_Object *obj, void *arg) {
 /* fzgx:end fn_1_150ED0 */
 
 /* fzgx:begin fn_1_150F30 */
-
 // Reset the display state before rebuilding its static entries.
 void fn_1_150F30(fn_1_150F30_StaticDisp *self) {
     self->unk_2728 = 0;
@@ -4496,12 +4474,6 @@ void fn_1_150F74(void *self) {
 /* fzgx:end fn_1_150F74 */
 
 /* fzgx:begin fn_1_151668 */
-
-
-
-
-
-
 void fn_1_151668(fn_1_151668_StaticDisp *self) {
     s32 i;
     s32 j;
