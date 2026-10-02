@@ -2412,3 +2412,74 @@ void fn_1_7B4C0(void) {
     lbl_1_data_1DFA4.unk_8 = -1;
 }
 /* fzgx:end fn_1_7B4C0 */
+
+/* fzgx:begin fn_1_7BB80 */
+extern void OSPanic(const char *, int, const char *, ...);
+extern void fn_800356B8(void *, int);
+
+typedef struct {
+    u32 unk_0;
+    u32 unk_4;
+    u32 unk_8;
+    u32 unk_c;
+    u32 unk_10;
+    u32 unk_14;
+    u32 unk_18;
+    u32 unk_1c;
+    u32 unk_20;
+    u32 unk_24;
+    u32 unk_28;
+    u32 unk_2c;
+    u32 unk_30;
+    u32 unk_34;
+    u32 unk_38;
+    u32 unk_3c;
+} Fn17BB80Entry;
+
+typedef struct {
+    u16 unk_0;
+    u8 pad_2[0x12];
+    u16 unk_14;
+    u8 pad_16[0x6];
+    Fn17BB80Entry *unk_1C;
+    u8 pad_20[0x8];
+    u16 unk_28[8];
+} Fn17BB80State;
+
+#pragma opt_propagation off
+static inline void fn_1_7BB80_set(u16 val, u16 *arr, s32 off) {
+    *(u16 *)((u8 *)arr + off) = val;
+}
+#pragma opt_propagation reset
+
+
+static inline u16 * fn_1_7BB80_read_pointer(Fn17BB80State * owner) { return owner->unk_28; }
+#pragma opt_dead_assignments off
+#pragma opt_lifetimes off
+void fn_1_7BB80(Fn17BB80Entry *arg0, s32 arg1) {
+    Fn17BB80Entry * fzgx_live;
+    u8 *data = (u8 *)&lbl_1_data_1E558;
+    Fn17BB80State *bss = (Fn17BB80State *)&lbl_1_bss_6D7A8;
+    s32 index;
+    struct { u32 value; } lab_t2;
+
+    if ((u32)bss->unk_14 >= bss->unk_0) {
+        OSPanic((const char *)(data + 0x8ec), 0x79, (const char *)(data + 0x8f4));
+    }
+
+    fzgx_live = bss->unk_1C;
+    fzgx_live[bss->unk_14] = *arg0;
+    index = 31 - __cntlzw(arg1);
+
+    if (index > 7 || index < 0) {
+        OSPanic((const char *)(data + 0x8ec), 0x30, (const char *)(0x904 + data));
+    }
+
+    fn_1_7BB80_set(bss->unk_14, fn_1_7BB80_read_pointer(bss), (lab_t2.value = index << 1));
+    fn_800356B8(arg0, arg1);
+    bss->unk_14++;
+}
+#pragma opt_lifetimes reset
+
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_1_7BB80 */
