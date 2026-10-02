@@ -5585,3 +5585,6 @@ dol/fn_8006FB20.c:
 
 dol/fn_8006FA24.c:
 	.text       start:0x8006FA24 end:0x8006FB20 align:4
+
+dol/fn_80025E18.c:
+	.text       start:0x80025E18 end:0x80025EE0 align:4
