@@ -2571,6 +2571,24 @@
   },
   {
     "module": "interview",
+    "source": "rel/interview/interview/fn_17_802C.c",
+    "symbols": [
+      "fn_17_802C"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/interview/interview.c",
+    "pool": {
+      "...rodata.0": "lbl_17_rodata_0",
+      "@36": "lbl_17_rodata_68",
+      "@10": "lbl_17_rodata_18",
+      "@12": "lbl_17_rodata_20",
+      "@11": "lbl_17_rodata_1C"
+    }
+  },
+  {
+    "module": "interview",
     "source": "rel/interview/interview/fn_17_86C4.c",
     "symbols": [
       "fn_17_86C4"
