@@ -492022,8 +492022,8 @@
    "model": null,
    "started": 1790926302,
    "ended": null,
-   "checks": 4,
-   "final_percent": 98.78788,
+   "checks": 5,
+   "final_percent": 0.0,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -492136,8 +492136,8 @@
    "model": null,
    "started": 1790926302,
    "ended": null,
-   "checks": 0,
-   "final_percent": null,
+   "checks": 1,
+   "final_percent": 80.76923,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -492145,7 +492145,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 0.0
+   "best_in_attempt": 80.76923
   },
   {
    "id": 19361,
