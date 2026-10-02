@@ -136,6 +136,166 @@ void fn_1_155FA8(u32 value) {
 }
 /* fzgx:end fn_1_155FA8 */
 
+/* fzgx:begin fn_1_155FB4 pool noprologue */
+typedef signed long s32;
+
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned long u32;
+
+typedef float f32;
+typedef double f64;
+
+typedef unsigned long size_t;
+
+/* lbl_1_bss_8EF20: .bss size 0x48, 5 refs from ranking.c */
+typedef struct {
+f32 unk_0; /* 12 loads, 6 stores */
+u32 unk_4; /* 2 loads, 0 stores */
+f64 unk_8; /* 8 loads, 6 stores */
+f64 unk_10; /* 8 loads, 6 stores */
+u16 unk_18; /* 10 loads, 6 stores */
+u8 unk_1A; /* 2 loads, 0 stores */
+u8 pad_1B[0x5];
+f64 unk_20; /* 8 loads, 6 stores */
+f64 unk_28; /* 8 loads, 6 stores */
+f64 unk_30; /* 9 loads, 10 stores */
+u32 unk_38; /* 2 loads, 0 stores */
+u8 pad_3C[0x16];
+u8 unk_52; /* 2 loads, 0 stores */
+u8 pad_53[0x15];
+u8 unk_68; /* 0 loads, 4 stores */
+u8 pad_69[0x7];
+u32 unk_70; /* 1 loads, 0 stores */
+u8 pad_74[0x2C];
+u8 unk_A0; /* 0 loads, 2 stores */
+u8 pad_A1[0x7];
+u32 unk_A8; /* 1 loads, 0 stores */
+u8 pad_AC[0x2C];
+u8 unk_D8; /* 0 loads, 2 stores */
+u8 pad_D9[0x7];
+u32 unk_E0; /* 1 loads, 0 stores */
+u8 pad_E4[0x2C];
+u8 unk_110; /* 0 loads, 2 stores */
+} Obj_1_bss_8EF20_At0;
+typedef struct {
+Obj_1_bss_8EF20_At0 *unk_0; /* 17 loads, 3 stores */
+u8 pad_4[0x3C];
+u32 unk_40; /* 1 loads, 2 stores */
+u8 pad_44[0x4];
+} Obj_1_bss_8EF20;
+
+extern void fn_1_3EF14(void *);
+extern char *strncpy(char *, const char *, size_t);
+typedef struct {
+u32 unk_0;
+u8 pad_4[0x1440];
+u32 unk_1444;
+u8 pad_1448[0x14];
+u16 unk_145C;
+u8 unk_145E;
+u8 unk_145F;
+u8 unk_1460;
+u8 unk_1461;
+u8 unk_1462;
+u8 unk_1463;
+u8 pad_1464[0x5C];
+} Rec_155FB4;
+typedef struct {
+u32 unk_0;
+u8 pad_4[0x14];
+u16 unk_18;
+u8 unk_1A;
+u8 pad_1B[5];
+u8 pad_20[0x18];
+} Entry_155FB4;
+typedef struct {
+    u8 lab_pad[8];
+Entry_155FB4 *tab1;
+u8 pad_4[0x44];
+Entry_155FB4 tab2[10];
+u8 pad_278[0x250];
+char nm[0x11];
+} G_155FB4;
+/* the record fields compared after the loop-invariant id are re-read every pass */
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+Entry_155FB4 *fzgx_obj_lbl_1_bss_8EF20;
+u32 lbl_1_bss_8EF20_fill_8EF24[17];
+u8 fzgx_obj_lbl_1_bss_8EF68;
+u8 lbl_1_bss_8EF68_fill_8EF69;
+u16 lbl_1_bss_8EF68_fill_8EF6A;
+u32 lbl_1_bss_8EF68_fill_8EF6C[285];
+u32 fzgx_obj_lbl_1_bss_8F3E0;
+u32 lbl_1_bss_8F3E4_fill_8F3E4;
+char lbl_1_bss_8F3E4_4[0x11];
+u8 lbl_1_bss_8F3E4_fill_8F3F9;
+u16 lbl_1_bss_8F3E4_fill_8F3FA;
+u32 lbl_1_bss_8F3FC[9];
+u32 lbl_1_bss_8F420[2];
+
+#pragma section code_type ".fzgxpool"
+static void fzgx_bss_layout(void) {
+    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_8EF20;
+    s = *(u8 *)&lbl_1_bss_8EF20_fill_8EF24;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_8EF68;
+    s = *(u8 *)&lbl_1_bss_8EF68_fill_8EF69;
+    s = *(u8 *)&lbl_1_bss_8EF68_fill_8EF6A;
+    s = *(u8 *)&lbl_1_bss_8EF68_fill_8EF6C;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_8F3E0;
+    s = *(u8 *)&lbl_1_bss_8F3E4_fill_8F3E4;
+    s = *(u8 *)&lbl_1_bss_8F3E4_4;
+    s = *(u8 *)&lbl_1_bss_8F3E4_fill_8F3F9;
+    s = *(u8 *)&lbl_1_bss_8F3E4_fill_8F3FA;
+    s = *(u8 *)&lbl_1_bss_8F3FC;
+    s = *(u8 *)&lbl_1_bss_8F420;
+}
+#pragma section code_type ".text"
+
+static inline Entry_155FB4 *fn_1_155FB4_array_read(Entry_155FB4 *array) { return array; }
+#pragma opt_loop_invariants off
+void fn_1_155FB4(char *arg) {
+Rec_155FB4 rec;
+
+Entry_155FB4 *a;
+Entry_155FB4 *p;
+s32 i;
+    size_t lab_t2;
+lab_t2 = 0x10;
+strncpy(lbl_1_bss_8F3E4_4, arg, lab_t2);
+lbl_1_bss_8F3E4_4[0x10] = 0;
+fn_1_3EF14((void *)&rec);
+if (rec.unk_0 & 0x1000) {
+a = fzgx_obj_lbl_1_bss_8EF20;
+for (i = 9; i >= 0; i--) {
+/* record fields other than the loop-invariant id are re-read on every pass: retail reloads them inside the loop */
+#define VRF(f) (((volatile Rec_155FB4 *)&rec)->f)
+if (fn_1_155FB4_array_read(a)[i].unk_0 == rec.unk_1444 && a[i].unk_18 == VRF(unk_145C)
+&& a[i].unk_1A == VRF(unk_145E) && a[i].pad_1B[0] == VRF(unk_145F)
+&& a[i].pad_1B[1] == VRF(unk_1460) && a[i].pad_1B[2] == VRF(unk_1461)
+&& a[i].pad_1B[3] == VRF(unk_1462) && a[i].pad_1B[4] == VRF(unk_1463) ) {
+strncpy((char *)&a[i].pad_4[4], arg, 0x10);
+break;
+}
+}
+p = ((Entry_155FB4 *)((u8 *)&fzgx_obj_lbl_1_bss_8EF68)) ;
+for (i = 9; i >= 0; i--) {
+if (((Entry_155FB4 *)((u8 *)&fzgx_obj_lbl_1_bss_8EF68)) [i].unk_0 == rec.unk_1444 && ((Entry_155FB4 *)((u8 *)&fzgx_obj_lbl_1_bss_8EF68)) [i].unk_18 == VRF(unk_145C)
+&& ((Entry_155FB4 *)((u8 *)&fzgx_obj_lbl_1_bss_8EF68)) [i].unk_1A == VRF(unk_145E)
+&& ((Entry_155FB4 *)((u8 *)&fzgx_obj_lbl_1_bss_8EF68)) [i].pad_1B[0] == VRF(unk_145F)
+&& ((Entry_155FB4 *)((u8 *)&fzgx_obj_lbl_1_bss_8EF68)) [i].pad_1B[1] == VRF(unk_1460)
+&& ((Entry_155FB4 *)((u8 *)&fzgx_obj_lbl_1_bss_8EF68)) [i].pad_1B[2] == VRF(unk_1461)
+&& ((Entry_155FB4 *)((u8 *)&fzgx_obj_lbl_1_bss_8EF68)) [i].pad_1B[3] == VRF(unk_1462)
+&& ((Entry_155FB4 *)((u8 *)&fzgx_obj_lbl_1_bss_8EF68)) [i].pad_1B[4] == VRF(unk_1463) ) {
+strncpy((char *)&((Entry_155FB4 *)((u8 *)&fzgx_obj_lbl_1_bss_8EF68)) [i].pad_4[4], arg, 0x10);
+break;
+}
+}
+}
+}
+#pragma opt_loop_invariants reset
+/* fzgx:end fn_1_155FB4 */
+
 /* fzgx:begin fn_1_156198 */
 u32 *fn_1_156198(u32 arg0) {
     u32 v0;

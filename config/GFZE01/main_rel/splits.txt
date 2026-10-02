@@ -6716,3 +6716,6 @@ rel/main_rel/font/fn_1_55D6C.c:
 
 rel/main_rel/effect/fn_1_660EC.c:
 	.text       start:0x000660EC end:0x00066254 align:4
+
+rel/main_rel/ranking/fn_1_155FB4.c:
+	.text       start:0x00155FB4 end:0x00156198 align:4
