@@ -40,18 +40,12 @@ void fn_3_1552C(void) {
 /* fzgx:end fn_3_1552C */
 
 /* fzgx:begin fn_3_1560C */
-
-
-
 void fn_3_1560C(void) {
     *(u32 *)((*(u8 (*)[28])&lbl_3_bss_A23EC) + 0xC) = (u32)1 << 31;
 }
 /* fzgx:end fn_3_1560C */
 
 /* fzgx:begin fn_3_15620 */
-
-
-
 void fn_3_15620(void) {
     *(u8 *)((*(u8 (*)[28])&lbl_3_bss_A23EC) + 0x10) = 0;
     *(u32 *)((*(u8 (*)[28])&lbl_3_bss_A23EC) + 0xc) = 0x40000000;
@@ -68,9 +62,6 @@ void fn_3_1563C(void) {
 /* fzgx:end fn_3_1563C */
 
 /* fzgx:begin fn_3_156A8 */
-
-
-
 void fn_3_156A8(void) {
     u8 value = ((*(u8 (*)[28])&lbl_3_bss_A23EC)[0x11] & 0x7f) << 1;
     (*(u8 (*)[28])&lbl_3_bss_A23EC)[0x11] = value;
@@ -80,6 +71,33 @@ void fn_3_156A8(void) {
 }
 /* fzgx:end fn_3_156A8 */
 
+/* fzgx:begin fn_3_16FD0 */
+typedef struct BorderColor { u8 r, g, b, a; } BorderColor;
+extern BorderColor lbl_3_rodata_5EC;
+extern u32 fn_3_14794(u32, s16, s16, void *);
+
+void fn_3_16FD0(u32 arg0) {
+    BorderColor color = lbl_3_rodata_5EC;
+    u32 i;
+    for (i = 0; i < 64; i++) {
+        BorderColor top = color;
+        fn_3_14794(arg0, (s16)i, 0, &top);
+        {
+            BorderColor bottom = color;
+            fn_3_14794(arg0, (s16)i, 63, &bottom);
+        }
+    }
+    for (i = 0; i < 64; i++) {
+        BorderColor left = color;
+        fn_3_14794(arg0, 0, (s16)i, &left);
+        {
+            BorderColor right = color;
+            fn_3_14794(arg0, 63, (s16)i, &right);
+        }
+    }
+}
+/* fzgx:end fn_3_16FD0 */
+
 /* fzgx:begin fn_3_170E0 */
 void fn_3_170E0(void) {
     fn_3_17100();
@@ -87,9 +105,6 @@ void fn_3_170E0(void) {
 /* fzgx:end fn_3_170E0 */
 
 /* fzgx:begin fn_3_17820 */
-
-
-
 u32 fn_3_17820(void) {
     return *(u32 *)&(*(u16 (*)[20])&lbl_3_bss_A2410)[2];
 }

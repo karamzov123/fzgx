@@ -1076,6 +1076,17 @@
   },
   {
     "module": "customize",
+    "source": "rel/customize/editor/fn_3_16FD0.c",
+    "symbols": [
+      "fn_3_16FD0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/editor.c"
+  },
+  {
+    "module": "customize",
     "source": "rel/customize/editor/fn_3_170E0.c",
     "symbols": [
       "fn_3_170E0"

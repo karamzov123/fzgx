@@ -473,3 +473,6 @@ rel/customize/toolkit/fn_3_1A488.c:
 
 rel/customize/emb_memcard/fn_3_12FD4.c:
 	.text       start:0x00012FD4 end:0x0001304C align:4
+
+rel/customize/editor/fn_3_16FD0.c:
+	.text       start:0x00016FD0 end:0x00017098 align:4
