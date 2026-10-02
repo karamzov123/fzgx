@@ -45,6 +45,68 @@ void fn_1_1312F0(void) {
 }
 /* fzgx:end fn_1_1312F0 */
 
+/* fzgx:begin fn_1_131390 noprologue */
+#include "types.h"
+#include "dolphin/os/OSTime.h"
+
+typedef struct {
+    u8 unk_0;
+    u8 pad_1[3];
+    u32 unk_4;
+    u32 unk_8;
+    u32 unk_C;
+    u8 pad_10[0x14];
+} MemcardRequest;
+
+typedef struct {
+    s32 unk_00;
+    s32 unk_04;
+    s32 unk_08;
+    u8 pad_0C[4];
+    u32 unk_10;
+    u8 pad_14[4];
+    u32 unk_18;
+} MemcardState;
+
+extern MemcardState lbl_1_bss_8CA40;
+extern u32 lbl_801A6410;
+extern u8 lbl_1_data_40EA4[0x54];
+extern u8 lbl_1_data_40F0C[0x22];
+
+extern void OSPanic(const char* arg0, s32 arg1, const char* arg2, ...);
+extern u32 fn_1_4630(u32 arg0, u32 arg1, u8* arg2, u32 arg3);
+extern void fn_80008BEC(void* dst, s32 value, u32 size);
+extern void fn_1_AA6D8(s32 arg0, u8 arg1, void* arg2);
+
+void fn_1_131390(void) {
+    MemcardState* state = &lbl_1_bss_8CA40;
+    OSCalendarTime cal;
+    MemcardRequest request;
+    u8* buf;
+
+    if (state->unk_10 == 0) {
+        OSPanic((const char*)lbl_1_data_40EA4, 0x147, (const char*)lbl_1_data_40F0C);
+        state->unk_00 = -1;
+        state->unk_08 = -1;
+        state->unk_10 = 0;
+    } else if (state->unk_08 == -1) {
+        state->unk_00 = -1;
+    } else {
+        buf = (u8*)fn_1_4630(lbl_801A6410, 0x20700, lbl_1_data_40EA4, 0x154);
+        state->unk_18 = (u32)buf;
+        fn_80008BEC(buf, 0, 0x20700);
+        OSTicksToCalendarTime(OSGetTime(), &cal);
+        fn_80008BEC(&request, 0, 0x24);
+        request.unk_4 = 0x104;
+        request.unk_0 = 3;
+        request.unk_C = state->unk_18;
+        request.unk_8 = 0;
+        fn_1_AA6D8(2, state->unk_08, &request);
+        state->unk_04 = 5;
+    }
+}
+/* fzgx:end fn_1_131390 */
+
 /* fzgx:begin fn_1_1314A4 */
 // Reset the card state and release the card after an unavailable-card report.
 void fn_1_1314A4(void) {
