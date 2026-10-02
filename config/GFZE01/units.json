@@ -35268,6 +35268,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/cloth/fn_1_106CAC.c",
+    "symbols": [
+      "fn_1_106CAC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/cloth.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/custom_memcard/fn_1_1312F0.c",
     "symbols": [
       "fn_1_1312F0"

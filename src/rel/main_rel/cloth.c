@@ -192,3 +192,20 @@ void fn_1_1030A4(Cloth *self) {
     }
 }
 /* fzgx:end fn_1_1030A4 */
+
+/* fzgx:begin fn_1_106CAC */
+extern s32 fn_1_151AF0(void *arg0, int arg1, void *arg2, void *arg3, void *arg4, void *arg5);
+
+s32 fn_1_106CAC(void) {
+    Obj_1_bss_85280 *base = &lbl_1_bss_85280;
+
+    if (*(s32 *)((u8 *)base + 0x248) == 2) {
+        return 0;
+    }
+
+    fn_1_151AF0((void *)base->unk_4, 0, (void *)((u32 *)&lbl_1_data_3F284)[*(u8 *)((u8 *)base + 0x908)], 0, 0, (void *)base->unk_0);
+    *(u8 *)((u8 *)base + 0x908) = 1 - *(u8 *)((u8 *)base + 0x908);
+    *(s32 *)((u8 *)base + 0x248) = 1;
+    return 0;
+}
+/* fzgx:end fn_1_106CAC */

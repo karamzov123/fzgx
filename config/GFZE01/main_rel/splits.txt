@@ -6737,3 +6737,6 @@ rel/main_rel/spline/fn_1_F7A20.c:
 
 rel/main_rel/car/fn_1_8E728.c:
 	.text       start:0x0008E728 end:0x0008E7D0 align:4
+
+rel/main_rel/cloth/fn_1_106CAC.c:
+	.text       start:0x00106CAC end:0x00106D30 align:4
