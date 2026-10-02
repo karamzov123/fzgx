@@ -3181,6 +3181,103 @@ f32 fn_1_2B478(void *arg0) {
 }
 /* fzgx:end fn_1_2B478 */
 
+/* fzgx:begin fn_1_2BA48 noprologue */
+#include "rel/main_rel/stcoli.h"
+#include "psvec.h"
+
+extern u32 fn_1_2B684(u32);
+extern f32 lbl_1_rodata_84C[2];
+extern void *fn_1_868C0(s8);
+extern void fn_1_F7338(s32, s32, s32);
+extern void fn_1_A2D84(u32);
+extern u32 lbl_801A66C8[2];
+
+typedef struct {
+	f32 x;
+	f32 y;
+	f32 z;
+} Vec3;
+
+typedef struct {
+	u32 a;
+	u32 b;
+	u32 c;
+} U24;
+
+typedef struct {
+	u32 unk_0;
+	s16 unk_4;
+	u8 pad_6[0x76];
+	U24 unk_7c;
+	U24 unk_88;
+	f32 unk_94;
+	f32 unk_98;
+	f32 unk_9c;
+	u8 pad_a0[0x3d4];
+	u8 unk_474;
+	u8 unk_475;
+	u8 pad_476[0x6a];
+	u16 unk_4e0;
+	Vec3 unk_4e4;
+	Vec3 unk_4f0;
+	u8 pad_4fc[0x11];
+	u8 unk_50d;
+	u8 pad_50e[0x7e];
+	u32 unk_58c;
+} St;
+
+typedef struct {
+	u8 pad_0[0x390];
+	u32 unk_390;
+} Obj;
+
+void fn_1_2BA48(St *p) {
+	s32 v = 0x3c;
+	Obj *g;
+	f32 z;
+	u32 n;
+	U24 c;
+
+	if (*(s16 *)&lbl_1_bss_960 != 9) {
+		v = 0xf0;
+	}
+	if (!(p->unk_0 & 0x2)) {
+		fn_1_2B684((u32)p);
+	}
+	if (p->unk_4e0 < 0x3c) {
+		psvec_add(&p->unk_4f0, &p->unk_4e4, &p->unk_4e4);
+	}
+	n = p->unk_50d + 1;
+	p->unk_50d = n;
+	if ((u8)n >= (u16)v) {
+		if (!(p->unk_0 & 0x2)) {
+			z = lbl_1_rodata_84C[0];
+			p->unk_94 = z;
+			p->unk_98 = z;
+			p->unk_9c = z;
+			c = p->unk_88;
+			p->unk_7c = c;
+			g = (Obj *)fn_1_868C0((s8)p->unk_4);
+			if (!(p->unk_58c & 0x90)) {
+				p->unk_58c = p->unk_58c | 0x80;
+				p->unk_58c = p->unk_58c | 0x100;
+				g->unk_390 = g->unk_390 | 0x200000;
+				if ((s8)p->unk_474 != -1) {
+					fn_1_F7338((s32)(s8)p->unk_474, 2, 0x1e);
+				}
+			}
+			if (*lbl_801A66C8 + p->unk_4 == 0) {
+				fn_1_A2D84(0xa9092e00);
+				if ((s8)p->unk_475 != -1 && !(p->unk_0 & 0x4000200)) {
+					fn_1_A2D84(0xa9091200);
+				}
+			}
+		}
+		p->unk_50d = v;
+	}
+}
+/* fzgx:end fn_1_2BA48 */
+
 /* fzgx:begin fn_1_2BBD0 noprologue */
 #include "dolphin/hw_regs.h"
 #include "types.h"

@@ -52641,6 +52641,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/stcoli/fn_1_2BA48.c",
+    "symbols": [
+      "fn_1_2BA48"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/stcoli.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/stcoli/fn_1_2BBD0.c",
     "symbols": [
       "fn_1_2BBD0"

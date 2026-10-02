@@ -6785,3 +6785,6 @@ rel/main_rel/car/fn_1_8421C.c:
 
 rel/main_rel/replay/fn_1_F2E50.c:
 	.text       start:0x000F2E50 end:0x000F2EB8 align:4
+
+rel/main_rel/stcoli/fn_1_2BA48.c:
+	.text       start:0x0002BA48 end:0x0002BBD0 align:4
