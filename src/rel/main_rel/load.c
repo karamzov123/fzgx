@@ -118,6 +118,57 @@ void fn_1_45890(void) {
 }
 /* fzgx:end fn_1_45890 */
 
+/* fzgx:begin fn_1_458A0 */
+typedef void (*Sig_ARQPostRequest_ARQCallback)(u32 pointerToARQRequest);
+typedef struct Sig_ARQPostRequest_ARQRequest {
+    struct Sig_ARQPostRequest_ARQRequest *next;
+    u32 owner;
+    u32 type;
+    u32 priority;
+    u32 source;
+    u32 dest;
+    u32 length;
+    Sig_ARQPostRequest_ARQCallback callback;
+} Sig_ARQPostRequest_ARQRequest;
+struct fn_1_458A0_Arg0 {
+    u32 unk_0;
+    u8 pad_4[0x50];
+    u32 unk_54;
+};
+extern void ARQPostRequest(Sig_ARQPostRequest_ARQRequest *, u32, u32, u32, u32, void *, u32, Sig_ARQPostRequest_ARQCallback);
+extern void DCInvalidateRange(void *, u32);
+extern void fn_1_45890(void);
+extern void fn_1_D3214(void);
+extern int fn_1_45AD4(void);
+extern u32 fn_80006D1C(void *arg0);
+
+static inline void set_load_flag(void) {
+    lbl_1_bss_384D0 = 1;
+}
+
+#pragma opt_propagation off
+u32 fn_1_458A0(struct fn_1_458A0_Arg0 *arg0, void *arg1, u32 arg2, u32 arg3) {
+    struct { u32 a[10]; } req;
+    struct { u32 value; } len;
+    struct { u32 value; } lab_t1;
+    len.value = arg2;
+    switch ((s32)arg0->unk_0) {
+    case 1:
+        set_load_flag();
+        lab_t1.value = len.value;
+        DCInvalidateRange(arg1, lab_t1.value);
+        ARQPostRequest((Sig_ARQPostRequest_ARQRequest *)&req, 0, 1, 1, arg0->unk_54 + arg3, arg1, len.value, (Sig_ARQPostRequest_ARQCallback)fn_1_45890);
+        while (fn_1_45AD4() != 0) {
+            fn_1_D3214();
+        }
+        return len.value;
+    default:
+        return fn_80006D1C((u8 *)arg0 + 4);
+    }
+}
+#pragma opt_propagation reset
+/* fzgx:end fn_1_458A0 */
+
 /* fzgx:begin fn_1_45AD4 */
 // Reports whether loading is already active or any load slot is occupied.
 int fn_1_45AD4(void) {

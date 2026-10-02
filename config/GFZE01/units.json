@@ -43057,6 +43057,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/load/fn_1_458A0.c",
+    "symbols": [
+      "fn_1_458A0"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/load.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/load/fn_1_45AD4.c",
     "symbols": [
       "fn_1_45AD4"
