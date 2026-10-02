@@ -36688,6 +36688,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/effect/fn_1_5AF28.c",
+    "symbols": [
+      "fn_1_5AF28"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/effect.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/effect/fn_1_5B074.c",
     "symbols": [
       "fn_1_5B074"

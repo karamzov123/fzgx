@@ -6818,3 +6818,6 @@ rel/main_rel/phys/fn_1_EB29C.c:
 
 rel/main_rel/archive/fn_1_130C84.c:
 	.text       start:0x00130C84 end:0x00130EE8 align:4
+
+rel/main_rel/effect/fn_1_5AF28.c:
+	.text       start:0x0005AF28 end:0x0005B074 align:4

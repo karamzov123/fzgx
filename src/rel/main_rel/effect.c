@@ -1364,6 +1364,89 @@ void fn_1_5ABCC(Fn1_5ABCCOutput *out) {
 #pragma opt_loop_invariants reset
 /* fzgx:end fn_1_5ABCC */
 
+/* fzgx:begin fn_1_5AF28 noprologue */
+#include "dolphin/types.h"
+#include "psvec.h"
+
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+} Vec3;
+
+typedef struct {
+    f32 m[12];
+} Mtx;
+
+typedef struct {
+    u8 pad_0[0x8];
+    Vec3 v8;
+    f32 f14;
+} NodeObj;
+
+typedef struct {
+    u8 pad_0[0x1C];
+    f32 f1C;
+    f32 f20;
+    f32 f24;
+    f32 f28;
+    u8 pad_2C[0x8];
+    NodeObj *unk_34;
+    u8 pad_38[0x4];
+    u32 unk_3C;
+} SelfObj;
+
+extern const f32 lbl_1_rodata_2954[2];
+extern const f32 lbl_1_rodata_2978[4];
+extern void lbl_8006D9D8(void *);
+extern void lbl_8006D7B0(void);
+extern void lbl_8006E14C(f32);
+extern s32 fn_1_54E34(Vec3 *, f32);
+extern f32 lbl_8006D0B4(f32);
+extern void lbl_8006DB74(void *);
+extern void lbl_8006D848(f32);
+extern void lbl_8006DFC4(void *);
+extern void fn_1_5621C(f32, f32, f32, f32);
+extern void fn_1_56000(u8, u8, u8);
+extern void fn_1_557C4(void *);
+
+#pragma opt_common_subs on
+static inline f32 fn_1_5AF28_read_pointer(SelfObj * owner) { return owner->f28; }
+void fn_1_5AF28(SelfObj *arg0) {
+    f32 fzgx_live_;
+    f32 fzgx_live;
+    NodeObj *r;
+    Mtx pos;
+    Vec3 dir;
+    f32 len;
+
+    r = arg0->unk_34;
+    lbl_8006D9D8(&arg0->unk_3C);
+    lbl_8006D7B0();
+    lbl_8006E14C(arg0->f28 / r->f14);
+    if (fn_1_54E34(&r->v8, arg0->f28) != 0) {
+        psvec_set(&dir, *(f32 *)(0xE0000000 + 0x2C), *(f32 *)(0xE0000000 + 0x1C), *(f32 *)(0xE0000000 + 0x0C));
+        len = dir.x * dir.x;
+        fzgx_live = dir.y;
+        len += fzgx_live * fzgx_live;
+        fzgx_live_ = dir.z;
+        len += fzgx_live_ * fzgx_live_;
+        len = lbl_8006D0B4(len);
+        if (len > fn_1_5AF28_read_pointer(arg0) + lbl_1_rodata_2954[0]) {
+            lbl_8006DB74(&pos);
+            lbl_8006D848((len - arg0->f28) / len);
+            lbl_8006DFC4(&pos);
+        }
+        fn_1_5621C(arg0->f1C, arg0->f20, arg0->f24, lbl_1_rodata_2978[0]);
+        fn_1_56000(1, 3, 0);
+        fn_1_557C4(r);
+        fn_1_5621C(lbl_1_rodata_2978[0], lbl_1_rodata_2978[0], lbl_1_rodata_2978[0], lbl_1_rodata_2978[0]);
+        fn_1_56000(1, 3, 1);
+    }
+}
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_5AF28 */
+
 /* fzgx:begin fn_1_5B074 */
 // fn_1_5B074: empty in retail (single blr).
 void fn_1_5B074(void) {
