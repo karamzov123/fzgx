@@ -546,6 +546,65 @@ void fn_1_D3F88(void *base) {
 }
 /* fzgx:end fn_1_D3F88 */
 
+/* fzgx:begin fn_1_D3FDC noprologue */
+#include "dolphin/types.h"
+
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 30.0f;
+    s = 0.6499999761581421f;
+    s = 0.75f;
+    s = 1.0f;
+    s = 0.0f;
+    s = 182.04444885253906f;
+    d = 0.5;
+    d = 2.0;
+    d = 4503599627370496.0;
+}
+#pragma section code_type ".text"
+#define fabs(x) __fabs(x)
+
+extern u32 lbl_801A66A0;
+extern f32 lbl_8006D188(u32);
+extern void fn_1_1030D4(void *, void *);
+
+typedef struct ColorEntry {
+    u8 pad0[8];
+    u32 flags;
+    u8 padC[0x20];
+    f32 red;
+    f32 green;
+    f32 blue;
+    u8 pad38[0x74];
+} ColorEntry;
+
+void fn_1_D3FDC(void *arg0, void *arg1)
+{
+    s32 count;
+    ColorEntry *entry = (ColorEntry *)((u8 *)arg0 + 0xE7E4);
+    count = *(s32 *)((u8 *)arg0 + 0xE7E0);
+    while (count > 0) {
+        if ((entry->flags >> 28) & 1) {
+            entry->red = 0.65f;
+            entry->green = 0.75f;
+            entry->blue = 1.0f;
+        } else if ((entry->flags >> 29) & 1) {
+            entry->red = 1.0f;
+            entry->green = 0.0f;
+            entry->blue = 0.0f;
+        } else {
+            entry->red = fabs(lbl_8006D188((s32)(182.04444885253906f * (f32)lbl_801A66A0)));
+            entry->green = fabs(lbl_8006D188((s32)(0.5 * (182.04444885253906f * (f32)lbl_801A66A0))));
+            entry->blue = fabs(lbl_8006D188((s32)(2.0 * (182.04444885253906f * (f32)lbl_801A66A0))));
+        }
+        fn_1_1030D4(entry, arg1);
+        count--;
+        entry++;
+    }
+}
+/* fzgx:end fn_1_D3FDC */
+
 /* fzgx:begin fn_1_D4174 */
 // Process each model-load entry in the caller-provided table.
 void fn_1_D4174(void *base, void *arg) {

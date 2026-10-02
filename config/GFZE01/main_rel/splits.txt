@@ -6791,3 +6791,6 @@ rel/main_rel/stcoli/fn_1_2BA48.c:
 
 rel/main_rel/archive/fn_1_12CEA8.c:
 	.text       start:0x0012CEA8 end:0x0012D254 align:4
+
+rel/main_rel/mdlload/fn_1_D3FDC.c:
+	.text       start:0x000D3FDC end:0x000D4174 align:4
