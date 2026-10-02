@@ -45772,6 +45772,18 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/phys/fn_1_EB29C.c",
+    "symbols": [
+      "fn_1_EB29C"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/phys.c",
+    "pool": true
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/phys/fn_1_EF924.c",
     "symbols": [
       "fn_1_EF924"
