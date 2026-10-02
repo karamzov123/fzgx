@@ -126,6 +126,7 @@ def verify(p: Project, message: Optional[str] = None) -> Dict[str, object]:
             files = sorted(path for path in set(files) if Path(path).exists() or
                            subprocess.run(['git', 'ls-files', '--error-unmatch', path],
                                           cwd=ROOT, capture_output=True).returncode == 0)
+            oracle.clear_stale_index_lock()
             subprocess.run(["git", "add", '--', *files], cwd=ROOT, capture_output=True, check=True)
             msg = message or f"match: {len(good)} functions link-verified"
             names = ", ".join(p.key(p.resolve(k)) for k in good[:8]) + (" ..." if len(good) > 8 else "")

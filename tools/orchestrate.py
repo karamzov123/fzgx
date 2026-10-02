@@ -24,7 +24,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from fzgx import api, reuse, trivial
+from fzgx import api, oracle, reuse, trivial
 from fzgx.ledger import Ledger
 from fzgx.project import ROOT, STATE_DIR, Project
 
@@ -589,10 +589,13 @@ def main(argv: Optional[List[str]] = None) -> int:
                      f"{r['checks'] if r['checks'] is not None else ''} | {r['turns'] or ''} | {r['cost']:.3f} | {r['secs']} |")
     rep.parent.mkdir(parents=True, exist_ok=True)
     rep.write_text("\n".join(lines) + "\n")
-    api.snapshot(p)
-    subprocess.run(["git", "add", str(ROOT / "state" / "ledger.json")], cwd=ROOT, capture_output=True, check=True)
-    subprocess.run(["git", "commit", '--only', "-q", "-m", f"batch {a.batch}: {len(matched)}/{len(results)} matched ({a.harness}/{model})",
-                    '--', str(ROOT / 'state/ledger.json')], cwd=ROOT, capture_output=True, check=True)
+    # Four provider batches end independently; the index has one writer at a time.
+    with oracle.build_lock('submit.lock', timeout_s=1800):
+        oracle.clear_stale_index_lock()
+        api.snapshot(p)
+        subprocess.run(["git", "add", str(ROOT / "state" / "ledger.json")], cwd=ROOT, capture_output=True, check=True)
+        subprocess.run(["git", "commit", '--only', "-q", "-m", f"batch {a.batch}: {len(matched)}/{len(results)} matched ({a.harness}/{model})",
+                        '--', str(ROOT / 'state/ledger.json')], cwd=ROOT, capture_output=True, check=True)
     print(json.dumps({k: v for k, v in summary.items() if k != "results"}))
     return 0 if ver.get("ok") and not other else 1
 

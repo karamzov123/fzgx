@@ -25,6 +25,10 @@ Sixteen checks, five stale checks (the matcher core's defaults), three attempts 
 
 A real Ninja and DTK hash gate runs before work. Bootstrap health records credit zero matches. Singleton ownership, orphan recovery, graceful signal draining, mixed systemd kill mode and bounded restarts prevent duplicate hosts and preserve candidate work. Existing old branches/worktrees are preserved.
 
+## Git index ownership (2026-10-01)
+
+The fleet stopped committing for 70 minutes: four provider batches each ended with an unlocked `snapshot` + `git add state/ledger.json`, and `snapshot` truncated the 13 MB file in place. A rewrite under another batch's `git add` kills git with SIGBUS (reproduced: 32 of 60 adds), git does not remove `.git/index.lock` on that signal, and every later `git add` exits 128, so each verifier failed, every family was held and backed off, and one pool match stayed uncommitted. Now `Ledger.snapshot` replaces the file atomically, the batch-end snapshot commit holds `submit.lock` like the verifier, and both call `oracle.clear_stale_index_lock()` first (lock older than 30 s and no git process in the repository). Symptom to recognise: all families `error` with `Hash verification failed; saving and holding producers.` while `gate.log` says `16 files OK`; read the batch's `verify.stderr.log`.
+
 ## Deterministic search in the loop (2026-10-01)
 
 Measured on the day's sessions: about 70% of a near-miss's residual rows were register allocation, agents permuted declarations by hand at one check per guess, and the repair engine ran only at release with 2 rounds x beam 2 in 6 seconds. The same engine at 12 rounds x beam 6 compiles 6,000-14,000 variants in 12-18 seconds.

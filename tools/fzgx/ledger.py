@@ -7,6 +7,7 @@ state/ledger.json so history survives machines and sessions.
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
 import time
 from pathlib import Path
@@ -239,7 +240,11 @@ class Ledger:
             "names": [dict(r) for r in self.db.execute("SELECT * FROM names ORDER BY id")],
             "batches": [dict(r) for r in self.db.execute("SELECT * FROM batches ORDER BY started")],
         }
-        path.write_text(json.dumps(data, indent=1) + "\n")
+        # Replace, never truncate in place: git maps the file while hashing it, and a
+        # concurrent batch's rewrite killed `git add` with SIGBUS, leaving index.lock.
+        tmp = path.with_name(f"{path.name}.{os.getpid()}.tmp")
+        tmp.write_text(json.dumps(data, indent=1) + "\n")
+        os.replace(tmp, path)
         return path
 
     def restore(self, path: Optional[Path] = None) -> int:
