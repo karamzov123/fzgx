@@ -5636,3 +5636,6 @@ dol/TRKTargetSupportRequest.c:
 
 dol/fn_80008C20.c:
 	.text       start:0x80008C20 end:0x80008DB4 align:4
+
+dol/fn_8005A7F8.c:
+	.text       start:0x8005A7F8 end:0x8005A94C align:4
