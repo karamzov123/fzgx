@@ -110,3 +110,6 @@ rel/winning/winning/fn_15_3174.c:
 
 rel/winning/winning/fn_15_38FC.c:
 	.text       start:0x000038FC end:0x0000398C align:4
+
+rel/winning/winning/fn_15_2AE4.c:
+	.text       start:0x00002AE4 end:0x00002CEC align:4

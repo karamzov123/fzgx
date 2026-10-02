@@ -1122,6 +1122,117 @@ void fn_15_2620(struct fn_15_2620_Arg0 *arg0) {
 }
 /* fzgx:end fn_15_2620 */
 
+/* fzgx:begin fn_15_2AE4 */
+// lbl_15_bss_0 layout recovered from the accesses in this function.
+struct fn_15_2AE4_bss0 {
+    u8 pad_0[0x4];
+    u8 unk_4;
+    u8 pad_5[0x27];
+    u8 *unk_2C;
+    u8 pad_30[0x8];
+    s16 unk_38;
+    u8 pad_3A[0x1A];
+    u32 unk_54;
+    u32 unk_58;
+    u32 unk_5C;
+    u8 pad_60[0x3C];
+    u32 unk_9C[12];
+};
+
+// One 8-byte entry walked by both passes below.
+struct fn_15_2AE4_rec {
+    u8 *unk_0;
+    u8 unk_4;
+    u8 pad_5[3];
+};
+
+extern struct fn_15_2AE4_bss0 lbl_15_bss_0;
+extern s16 fn_1_12CB04(s16);
+extern s16 fn_1_12CCB0(s16, s16);
+extern u32 fn_15_2458(s16, s16, s16, u32);
+
+#pragma opt_common_subs off
+#pragma peephole off
+#pragma opt_loop_invariants off
+static inline struct fn_15_2AE4_rec *fn_15_2AE4_array_read(struct fn_15_2AE4_rec *array) { return array; }
+void fn_15_2AE4(void) {
+    u8 * fzgx_live;
+    struct fn_15_2AE4_bss0 *b;
+    s16 n;
+    u32 *p;
+    struct { s16 value; } c;
+    s16 i;
+    struct fn_15_2AE4_rec *recs;
+    s16 k;
+    u32 lab_t3;
+
+    b = &lbl_15_bss_0;
+    b->unk_58 = 1;
+    b->unk_54 = 1;
+    b->unk_5C = 1;
+    b->unk_4 = 0;
+    fzgx_live = b->unk_2C;
+    recs = (struct fn_15_2AE4_rec *)fzgx_live;
+    p = b->unk_9C;
+    {
+    s16 fzgx_loop_i_994;
+for (fzgx_loop_i_994 = 0; fzgx_loop_i_994 < 12; fzgx_loop_i_994 += 6) {
+        p[0] = 0;
+        p[1] = 0;
+        p[2] = 0;
+        p[3] = 0;
+        p[4] = 0;
+        p[5] = 0;
+        p += 6;
+    }
+    i = fzgx_loop_i_994;
+}
+
+    n = b->unk_38;
+    for (i = 0; i < n; i++) {
+        c.value = fn_15_2AE4_array_read(recs)[i].unk_4;
+        if (c.value >= 0x29) {
+            // Wide codes collapse to one representative byte.
+            c.value = *(u8 *)(fn_15_2AE4_array_read(recs)[i].unk_0 + 0x81a0);
+        }
+        if (c.value == 0x22) {
+            b->unk_4++;
+        }
+    }
+
+    for (i = 0; i < b->unk_38; i++) {
+        c.value = fn_15_2AE4_array_read(recs)[i].unk_4;
+        if (c.value >= 0x29) {
+            c.value = *(u8 *)((*((i) + (recs))).unk_0 + 0x81a0);
+        }
+        switch (fn_1_12CB04(c.value)) {
+        case 2:
+            k = b->unk_38 + i * 2;
+            fn_15_2458(c.value, i, i, 0x30000000);
+            fn_15_2458(fn_1_12CCB0(c.value, 0), k, i, 0x30000000);
+            fn_15_2458(fn_1_12CCB0(c.value, 1), (s16)(k + 1), i, 0x30000000);
+            break;
+        case 1:
+            k = b->unk_38 + i * 2;
+            lab_t3 = 0x30000000;
+            fn_15_2458(c.value, i, i, lab_t3);
+            fn_15_2458(fn_1_12CCB0(c.value, 0), k, i, 0x30000000);
+            break;
+        case 0:
+            fn_15_2458(c.value, i, i, 0x60000000);
+            break;
+        default:
+            break;
+        }
+    }
+}
+#pragma opt_loop_invariants reset
+
+#pragma peephole reset
+
+#pragma opt_common_subs reset
+/* fzgx:end fn_15_2AE4 */
+
 /* fzgx:begin fn_15_2CEC */
 // fn_15_2CEC: empty in retail (single blr).
 void fn_15_2CEC(void) {
