@@ -6626,3 +6626,6 @@ rel/main_rel/accessory/fn_1_128F54.c:
 
 rel/main_rel/effect/fn_1_67F20.c:
 	.text       start:0x00067F20 end:0x00068054 align:4
+
+rel/main_rel/motasglist/fn_1_41518.c:
+	.text       start:0x00041518 end:0x00041850 align:4

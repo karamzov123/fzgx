@@ -22,6 +22,208 @@ extern void fn_8006E5FC(void *);
 extern const f32 lbl_1_rodata_F50;
 extern const f32 lbl_1_rodata_F54;
 
+/* fzgx:begin fn_1_41518 noprologue */
+#include "types.h"
+#include "rel/main_rel/motasglist.h"
+
+typedef struct SigData {
+    u16 value0;
+    u16 value2;
+    s16 value4;
+    u16 pad6;
+    u32 value8;
+} SigData;
+
+typedef struct Elem {
+    u16 unk_00;
+    u16 unk_02;
+    u8 unk_04;
+    u8 unk_05;
+    u16 unk_06;
+    u16 unk_08;
+    u16 unk_0A;
+    u16 unk_0C;
+    u16 unk_0E;
+    u16 unk_10;
+    u16 unk_12;
+    f32 unk_14;
+    f32 unk_18;
+    u32 unk_1C;
+    u32 unk_20;
+    u32 unk_24;
+    u32 *unk_28;
+    u32 unk_2C;
+    u32 unk_30;
+} Elem;
+
+typedef struct In {
+    u8 unk_00[4];
+    u16 unk_04;
+    u8 unk_06;
+    u8 unk_07;
+    u32 unk_08;
+    u32 unk_0C;
+    u16 unk_10;
+    u16 unk_12;
+    u32 unk_14;
+    u32 unk_18;
+    u32 unk_1C;
+    u8 unk_20;
+    u8 unk_21;
+    u16 unk_22;
+    u32 unk_24;
+} In;
+
+typedef struct Ent12 {
+    u8 *unk_00;
+    Elem *unk_04;
+    u16 unk_08;
+    u16 unk_0A;
+} Ent12;
+
+typedef struct Src {
+    u16 unk_00;
+    u16 unk_02;
+    u8 unk_04;
+    u8 unk_05;
+    u16 unk_06;
+    u16 unk_08;
+    u16 unk_0A;
+    u16 unk_0C;
+    u16 unk_0E;
+    f32 unk_10;
+    f32 unk_14;
+    u32 unk_18;
+    u32 unk_1C;
+    u32 unk_20;
+} Src;
+
+typedef struct Ent8 {
+    u16 unk_00;
+    u16 unk_02;
+    u32 unk_04;
+} Ent8;
+
+typedef struct Out {
+    u8 unk_00;
+    u8 unk_01;
+    u16 unk_02;
+    u32 unk_04;
+    u32 unk_08;
+    Elem *unk_0C;
+    u16 unk_10;
+    u16 unk_12;
+    u8 *unk_14;
+    u32 unk_18;
+    u32 unk_1C;
+    u8 *unk_20;
+    u16 unk_24;
+    u8 unk_26;
+    u8 unk_27;
+    Ent12 *unk_28;
+    SigData *unk_2C;
+    SigData *unk_30;
+    u32 unk_34;
+    u32 unk_38;
+    u32 unk_3C;
+    u32 unk_40;
+    u32 unk_44;
+    u16 unk_48;
+    u16 unk_4A;
+    u8 unk_4C;
+} Out;
+
+struct Pool {
+    u32 unk_0;
+};
+
+struct SigPtr {
+    const SigData *value;
+};
+
+extern struct Pool lbl_801A6410;
+extern u8 lbl_1_data_6710[16];
+extern void *fn_1_45D0(u32 pool, u32 size, u8 *table, u32 id);
+extern void fn_1_42458(SigData *dst, const SigData *src);
+
+Out *fn_1_41518(In *p) {
+    Out *out = (Out *)fn_1_45D0(lbl_801A6410.unk_0, 0x60, lbl_1_data_6720, 0x63);
+    In *arg0 = p;
+    struct SigPtr sig;
+    s32 i;
+
+    out->unk_00 = arg0->unk_20;
+    out->unk_02 = arg0->unk_22 | 4;
+    out->unk_0C = (Elem *)fn_1_45D0(lbl_801A6410.unk_0, (arg0->unk_04 * 52 + 31) & ~31, lbl_1_data_6720, 0x67);
+    out->unk_10 = arg0->unk_04;
+    out->unk_12 = 0;
+    out->unk_04 = 0;
+    out->unk_01 = arg0->unk_21;
+    out->unk_24 = arg0->unk_10;
+    out->unk_18 = arg0->unk_18;
+    out->unk_26 = arg0->unk_06;
+    out->unk_28 = (Ent12 *)fn_1_45D0(lbl_801A6410.unk_0, (arg0->unk_06 * 12 + 31) & ~31, lbl_1_data_6720, 0x70);
+    out->unk_14 = (u8 *)arg0 + arg0->unk_1C;
+    out->unk_1C = 0;
+    out->unk_08 = 0;
+    out->unk_34 = 0;
+    out->unk_27 = 0;
+    out->unk_38 = 0;
+    out->unk_3C = 0;
+    out->unk_40 = 0;
+    out->unk_48 = 0;
+    out->unk_4C = 0;
+    out->unk_44 = 0;
+    out->unk_4A = 0;
+    if (out->unk_24 != 0) {
+        out->unk_20 = (u8 *)arg0 + arg0->unk_14;
+    } else {
+        out->unk_20 = 0;
+    }
+    out->unk_2C = (SigData *)fn_1_45D0(lbl_801A6410.unk_0, ((arg0->unk_21 << 4) + 31) & ~31, lbl_1_data_6720, 0x82);
+    out->unk_30 = (SigData *)fn_1_45D0(lbl_801A6410.unk_0, ((arg0->unk_21 << 4) + 31) & ~31, lbl_1_data_6720, 0x83);
+    sig.value = (const SigData *)lbl_1_data_6710;
+    for (i = 0; i < (s32)arg0->unk_21; i++) {
+        fn_1_42458((SigData *)((u8 *)out->unk_2C + i * 16), sig.value);
+        fn_1_42458((SigData *)((u8 *)out->unk_30 + i * 16), sig.value);
+    }
+    {
+        s32 k;
+        const Src *s = (const Src *)((u8 *)arg0 + arg0->unk_08);
+        u32 *paths = (u32 *)((u8 *)arg0 + arg0->unk_0C);
+        const Ent8 *e = (const Ent8 *)((u8 *)arg0 + arg0->unk_24);
+        for (i = 0; i < (s32)arg0->unk_06; i++) {
+            Ent12 *d = &out->unk_28[i];
+            d->unk_00 = out->unk_14 + e[i].unk_04;
+            d->unk_04 = out->unk_0C + e[i].unk_00;
+            d->unk_08 = e[i].unk_02;
+            d->unk_0A = 0;
+        }
+        for (i = 0; i < (s32)arg0->unk_04; i++) {
+            Elem *d = &out->unk_0C[k = i];
+            d->unk_00 = s[k].unk_00;
+            d->unk_04 = s[k].unk_04;
+            d->unk_05 = s[k].unk_05;
+            d->unk_06 = s[k].unk_06;
+            d->unk_08 = s[k].unk_08;
+            d->unk_0A = s[k].unk_0A;
+            d->unk_0C = s[k].unk_0C;
+            d->unk_0E = s[k].unk_0E;
+            d->unk_14 = s[k].unk_10;
+            d->unk_18 = s[k].unk_14;
+            d->unk_1C = s[k].unk_1C;
+            d->unk_20 = s[k].unk_18;
+            d->unk_24 = s[k].unk_20;
+            d->unk_10 = 0;
+            d->unk_30 = 0;
+            d->unk_2C = 0;
+            d->unk_28 = paths + k * arg0->unk_21;
+        }
+    }
+    return out;
+}
+/* fzgx:end fn_1_41518 */
+
 /* fzgx:begin fn_1_41850 */
 struct fn_1_41850_Arg0 {
     u8 pad_0[0x2];
