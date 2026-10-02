@@ -994,6 +994,129 @@ u8 fn_1_F1B84(void) {
 }
 /* fzgx:end fn_1_F1B84 */
 
+/* fzgx:begin fn_1_F1C54 pool noprologue */
+#include "rel/main_rel/ghost.h"
+
+extern int sprintf(char *, const char *, ...);
+typedef struct {
+    u8 pad_0[0x20];
+    s32 unk_20;
+    u8 pad_24[0x16cc - 0x24];
+    u8 unk_16CC;
+    u8 pad_16cd[0x174e - 0x16cd];
+    u8 unk_174E;
+    u8 pad_174f[0x3b80 - 0x174f];
+    u8 unk_3B80[1][0x11];
+} GhostState;
+#pragma opt_propagation off
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+u32 fzgx_obj_lbl_1_bss_7B180[2];
+u32 fzgx_obj_lbl_1_bss_7B188[2];
+u32 lbl_1_bss_7B190[2];
+u32 lbl_1_bss_7B198;
+u32 lbl_1_bss_7B19C_fill_7B19C;
+s32 lbl_1_bss_7B19C_4;
+u32 fzgx_obj_lbl_1_bss_7B1A4[2];
+u32 fzgx_obj_lbl_1_bss_7B1AC[1270];
+u32 fzgx_obj_lbl_1_bss_7C584[177];
+u32 lbl_1_bss_7C848_fill_7C848;
+u8 lbl_1_bss_7C848_4;
+u8 lbl_1_bss_7C848_fill_7C84D;
+u16 lbl_1_bss_7C848_fill_7C84E;
+u32 lbl_1_bss_7C850[3];
+u32 fzgx_obj_lbl_1_bss_7C85C[28];
+u8 lbl_1_bss_7C85C_fill_7C8CC;
+u8 lbl_1_bss_7C8CD;
+u8 lbl_1_bss_7C8CE;
+u8 lbl_1_bss_7C8CE_fill_7C8CF;
+u32 lbl_1_bss_7C8CE_fill_7C8D0[17];
+u32 lbl_1_bss_7C914[13];
+u32 lbl_1_bss_7C948;
+u32 lbl_1_bss_7C94C[67];
+u32 lbl_1_bss_7CA58[2020];
+u32 fzgx_obj_lbl_1_bss_7E9E8[6];
+u32 lbl_1_bss_7EA00[14];
+u32 lbl_1_bss_7EA38[159];
+u32 fzgx_obj_lbl_1_bss_7ECB4[18];
+u32 lbl_1_bss_7ECFC_fill_7ECFC;
+u8 lbl_1_bss_7ECFC_4[1][0x11];
+u8 lbl_1_bss_7ECFC_fill_7ED11;
+u16 lbl_1_bss_7ECFC_fill_7ED12;
+u32 lbl_1_bss_7ECFC_fill_7ED14[17];
+
+#pragma section code_type ".fzgxpool"
+static void fzgx_bss_layout(void) {
+    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_7B180;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_7B188;
+    s = *(u8 *)&lbl_1_bss_7B190;
+    s = *(u8 *)&lbl_1_bss_7B198;
+    s = *(u8 *)&lbl_1_bss_7B19C_fill_7B19C;
+    s = *(u8 *)&lbl_1_bss_7B19C_4;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_7B1A4;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_7B1AC;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_7C584;
+    s = *(u8 *)&lbl_1_bss_7C848_fill_7C848;
+    s = *(u8 *)&lbl_1_bss_7C848_4;
+    s = *(u8 *)&lbl_1_bss_7C848_fill_7C84D;
+    s = *(u8 *)&lbl_1_bss_7C848_fill_7C84E;
+    s = *(u8 *)&lbl_1_bss_7C850;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_7C85C;
+    s = *(u8 *)&lbl_1_bss_7C85C_fill_7C8CC;
+    s = *(u8 *)&lbl_1_bss_7C8CD;
+    s = *(u8 *)&lbl_1_bss_7C8CE;
+    s = *(u8 *)&lbl_1_bss_7C8CE_fill_7C8CF;
+    s = *(u8 *)&lbl_1_bss_7C8CE_fill_7C8D0;
+    s = *(u8 *)&lbl_1_bss_7C914;
+    s = *(u8 *)&lbl_1_bss_7C948;
+    s = *(u8 *)&lbl_1_bss_7C94C;
+    s = *(u8 *)&lbl_1_bss_7CA58;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_7E9E8;
+    s = *(u8 *)&lbl_1_bss_7EA00;
+    s = *(u8 *)&lbl_1_bss_7EA38;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_7ECB4;
+    s = *(u8 *)&lbl_1_bss_7ECFC_fill_7ECFC;
+    s = *(u8 *)&lbl_1_bss_7ECFC_4;
+    s = *(u8 *)&lbl_1_bss_7ECFC_fill_7ED11;
+    s = *(u8 *)&lbl_1_bss_7ECFC_fill_7ED12;
+    s = *(u8 *)&lbl_1_bss_7ECFC_fill_7ED14;
+}
+#pragma section code_type ".text"
+
+extern void OSReport(const char *, ...);
+#pragma section code_type ".fzgxpool"
+static void fzgx_string_layout(void) {
+    /* fzgx-allow: S2 layout primer: MWCC emits string literals in first-use order; the section is dropped at integration */
+    OSReport("STAFF");
+    OSReport("G%d");
+}
+#pragma section code_type ".text"
+
+u8 *fn_1_F1C54(s32 index) {
+    
+    u8 v = lbl_1_bss_7C848_4;
+    const char *lab_t1;
+    if (v != 0xff) {
+        if ((index == (s32)lbl_1_bss_7C8CE - 1 && lbl_1_bss_7B19C_4 == 0) ||
+            (index == (s32)lbl_1_bss_7C8CE - 2 && lbl_1_bss_7B19C_4 != 0)) {
+            lab_t1 = (const char *)"STAFF";
+            sprintf((char *)lbl_1_bss_7ECFC_4[index], lab_t1);
+            goto done; /* Keep the verified branch to done. */
+        }
+    }
+    if (v != 0xff && index == (s32)lbl_1_bss_7C8CE - 1 && lbl_1_bss_7B19C_4 != 0) {
+        lab_t1 = (const char *)"G%d";
+        sprintf((char *)lbl_1_bss_7ECFC_4[index], lab_t1, index);
+    } else {
+        lab_t1 = (const char *)"G%d";
+        sprintf((char *)lbl_1_bss_7ECFC_4[index], lab_t1, index + 1);
+    }
+done:
+    return (u8 *)lbl_1_bss_7ECFC_4[index];
+}
+#pragma opt_propagation reset
+/* fzgx:end fn_1_F1C54 */
+
 /* fzgx:begin fn_1_F1D60 */
 u32 fn_1_F1D60(void) {
     return lbl_1_bss_7C948;

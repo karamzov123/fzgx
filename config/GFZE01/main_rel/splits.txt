@@ -6752,3 +6752,6 @@ rel/main_rel/camera/fn_1_6D2C.c:
 
 rel/main_rel/font/fn_1_4B8DC.c:
 	.text       start:0x0004B8DC end:0x0004BA24 align:4
+
+rel/main_rel/ghost/fn_1_F1C54.c:
+	.text       start:0x000F1C54 end:0x000F1D60 align:4
