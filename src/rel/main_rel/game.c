@@ -2516,3 +2516,100 @@ int fn_1_41488(Fn41488Data *data, const char *value) {
     return -1;
 }
 /* fzgx:end fn_1_41488 */
+
+/* fzgx:begin fn_1_41CB8 */
+typedef struct Fn41CB8Node {
+    u8 pad0[0x30];
+    struct Fn41CB8Node *next;
+} Fn41CB8Node;
+
+typedef struct Fn41CB8Entry {
+    u8 pad0[4];
+    Fn41CB8Node *next;
+    u8 pad8[2];
+    u16 count;
+} Fn41CB8Entry;
+
+typedef struct Fn41CB8Data {
+    u8 pad0[1];
+    u8 count;
+    u16 flags;
+    u8 pad4[4];
+    void *resource;
+    u8 padC[6];
+    u16 index;
+    u8 pad14[18];
+    u8 limit;
+    u8 pad27[1];
+    Fn41CB8Entry *table_a;
+    void *items_a;
+    void *items_b;
+    Fn41CB8Entry *table_b;
+    u8 pad38[20];
+    u8 base_index;
+} Fn41CB8Data;
+
+extern void fn_1_42E74(void *resource);
+extern void *fn_1_42044(Fn41CB8Data *data, int index);
+extern void *fn_1_42254(Fn41CB8Data *data, int index);
+extern void fn_1_42458(void *entry, void *resource);
+extern u8 lbl_1_data_6710[16];
+
+static inline void fn_1_41CB8_walk(Fn41CB8Entry *entry, int n) {
+    Fn41CB8Node *node;
+    int j;
+    node = entry->next;
+    j = 0;
+    while (j < n) {
+        node = node->next;
+        j++;
+    }
+}
+
+#pragma opt_lifetimes on
+static inline void * fn_1_41CB8_read_pointer(Fn41CB8Data * owner) { return owner->items_b; }
+void fn_1_41CB8(Fn41CB8Data *data) {
+    Fn41CB8Entry *entry;
+    u32 offset;
+    int i;
+    void *a;
+    void *b;
+    void *c;
+    void *resource;
+
+    fn_1_42E74(data->resource);
+
+    if (data->index < data->limit) {
+        entry = (Fn41CB8Entry *)((u8 *)data->table_a + data->index * 12);
+        (void) entry;  /* fzgx: keeps the web at its definition */
+    } else if (data->table_b != 0) {
+        entry = (Fn41CB8Entry *)((u8 *)data->table_b
+            + (data->index - data->base_index) * 12);
+    }
+
+    if ((data->flags & 1) == 0) {
+        fn_1_41CB8_walk(entry, entry->count);
+    }
+
+    i = 0;
+    offset = 0;
+    while (i < data->count) {
+        a = fn_1_42044(data, i);
+        b = (u8 *)data->items_a + offset;
+        c = (u8 *)fn_1_41CB8_read_pointer(data) + offset;
+        if (a != 0) {
+            resource = fn_1_42254(data, i);
+        } else {
+            a = lbl_1_data_6710;
+            resource = lbl_1_data_6710;
+        }
+        if (((0) == ((*(u16 *)b & 4)))) {
+            fn_1_42458(b, resource);
+        }
+        fn_1_42458(c, a);
+        offset += 16;
+        i++;
+    }
+}
+#pragma opt_lifetimes reset
+/* fzgx:end fn_1_41CB8 */
