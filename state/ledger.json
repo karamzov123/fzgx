@@ -1,5 +1,5 @@
 {
- "generated": 1790924621,
+ "generated": 1790924669,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -101239,19 +101239,19 @@
   {
    "symbol": "fn_12_6A90",
    "module": "movie_module",
-   "unit": null,
+   "unit": "rel/movie_module/fn_12_6A90.c",
    "addr": 27280,
    "size": 152,
-   "status": "unmatched",
-   "attempts": 9,
-   "best_percent": 95.13158,
+   "status": "matched",
+   "attempts": 10,
+   "best_percent": 100.0,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
-   "matched_commit": null,
+   "matched_commit": "369c71f9",
    "blocked_reason": null,
    "prev_status": null,
-   "link_state": null
+   "link_state": "verified"
   },
   {
    "symbol": "fn_12_6B28",
@@ -465241,7 +465241,7 @@
    "notes": "95.2% (99/289 rows differ), up from the prior 84.3% best. Body recovered: full control flow, all 10 fn_8003462C prim calls, the 72 FIFO stores in retail order, the fn_800746A8(0xa,0) call whose dead 3rd arg correctly picks up the CSE'd `lis r5,0xcc01` FIFO base, and the register allocation (r31=pool base, r30/r29/r28 = args 4/3/2; f31..f25 = span_a,span_b,zbase,ymid,zpad,ymax,ymin) all match. Three signatures are non-obvious and worth keeping: fn_1_4B068 must be declared returning f32 (its result is live in f1 across the fn_1_4B090 call); fn_800746A8 must be declared with TWO parameters (MWCC rejects the 3-arg call, and a 2-param declaration leaves r5 holding the FIFO base, which is exactly retail); fn_1_495B0 takes 0x80000000U, not 0x8000 (`lis r3,0x8000`).\n\nBLOCKER (needs tooling, not more matcher attempts): every `lfs/lfd fX, disp(r31)` row differs only in pool displacement, and the FPR-permuted `stfs` rows that follow are downstream of that. `check` compiles the work file standalone, so our private `...rodata.0` starts at our first literal, whereas retail's r31 base is the module-wide `lbl_4_rodata_0` spanning 0x000..0x137 (78 words). Retail places 5.0f at 0x48, the 2^52 double at 0x78, 0.8f at 0xc4, 110.0f at 0xc8 and 160/210/480/-0.01/20/10/0.01/140/0.001 at 0x10c..0x134, i.e. those 14 constants are introduced by OTHER option-module functions earlier in the TU, and the ~63 intervening words belong to literals this function never reads. read_evidence(section=\"data\") supplies only the 15 constants fn_4_1444 itself reads, so the intervening bytes are unrecoverable here. Closing this needs the documented `native_pool_objects` + `shared_pool_primer` path seeded with the full retail lbl_4_rodata_0 bytes (0x0..0x137); note fn_4_250's block in src/rel/option/_prolog.c already anchors 167.0f/38.0f/0.5f at 0x0/0x4/0x8, which is how the 0x8 anchor was confirmed.\n\nSecondary, may be closable once the pool is right (4 rows, all `fadds` operand order): retail emits `fadds fX, f31, f3` / `fadds f0, f30, f4` for the `span + const` adds while the `fsubs f3, f30, f4` subtracts already match in source order; ours emits the adds reversed (`fadds f1, f1, f31`). Same registers, reversed slots, at rows 187/189/215/227. One unresolved artefact: an extra `fmr f28, f1` after the 0.5f load at row 0xFC \u2014 our 0.5f literal is CSE'd across fn_1_49590(0.5f) and the `0.5f * (20.0f + line_h)` multiply, whereas retail loads it twice (0x1530 and 0x1548), which is also why our ymax lands in f27 instead of f26.",
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_4_1444.1790843114.c",
    "stale_checks": 0,
-   "best_in_attempt": 95.19649
+   "best_in_attempt": 96.50877
   },
   {
    "id": 17945,
@@ -491300,15 +491300,15 @@
    "model": null,
    "started": 1790923878,
    "ended": null,
-   "checks": 7,
-   "final_percent": 85.85714,
+   "checks": 9,
+   "final_percent": 85.88,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 1,
+   "stale_checks": 0,
    "best_in_attempt": 89.725716
   },
   {
@@ -491338,15 +491338,15 @@
    "model": null,
    "started": 1790923878,
    "ended": null,
-   "checks": 8,
-   "final_percent": 89.59677,
+   "checks": 9,
+   "final_percent": 89.1129,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 3,
+   "stale_checks": 4,
    "best_in_attempt": 89.67742
   },
   {
@@ -491357,8 +491357,8 @@
    "model": null,
    "started": 1790923878,
    "ended": null,
-   "checks": 8,
-   "final_percent": 93.71564,
+   "checks": 9,
+   "final_percent": 94.23697,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -491366,7 +491366,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 93.71564
+   "best_in_attempt": 94.23697
   },
   {
    "id": 19320,
@@ -491397,8 +491397,8 @@
    "ended": 1790924621,
    "checks": 9,
    "final_percent": 74.88,
-   "tokens_in": 0,
-   "tokens_out": 0,
+   "tokens_in": 1479600,
+   "tokens_out": 7519,
    "cost_usd": 0.0,
    "outcome": "released",
    "notes": "plateau: 5 consecutive checks without improvement (best 94.9%)",
@@ -491433,8 +491433,8 @@
    "model": null,
    "started": 1790924099,
    "ended": null,
-   "checks": 7,
-   "final_percent": 90.0,
+   "checks": 8,
+   "final_percent": 89.40476,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -491490,8 +491490,8 @@
    "model": null,
    "started": 1790924328,
    "ended": null,
-   "checks": 2,
-   "final_percent": 88.68235,
+   "checks": 4,
+   "final_percent": 88.74117,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -491499,7 +491499,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 88.68235
+   "best_in_attempt": 88.74117
   },
   {
    "id": 19327,
@@ -491585,8 +491585,8 @@
    "model": null,
    "started": 1790924553,
    "ended": null,
-   "checks": 0,
-   "final_percent": null,
+   "checks": 2,
+   "final_percent": 87.020836,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -491594,7 +491594,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 0.0
+   "best_in_attempt": 87.020836
   },
   {
    "id": 19332,
@@ -491652,6 +491652,25 @@
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 0.0
+  },
+  {
+   "id": 19335,
+   "symbol": "fn_12_6A90",
+   "agent": "fleet-v2-gpt-1790924012260750238-codex-2",
+   "harness": "codex",
+   "model": "gpt-6.1-sol",
+   "started": 1790924621,
+   "ended": 1790924648,
+   "checks": 2,
+   "final_percent": 100.0,
+   "tokens_in": 55730,
+   "tokens_out": 464,
+   "cost_usd": 0.0,
+   "outcome": "matched",
+   "notes": "oracle match accepted automatically",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 100.0
   }
  ],
  "names": [
