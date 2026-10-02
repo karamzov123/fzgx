@@ -2413,6 +2413,77 @@ void fn_1_7B4C0(void) {
 }
 /* fzgx:end fn_1_7B4C0 */
 
+/* fzgx:begin fn_1_7BAF8 pool noprologue */
+#include "types.h"
+
+extern u16 fn_800793D4(u8 *, u32, u32);
+
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+u32 lbl_1_bss_6D7A8[2];
+u32 lbl_1_bss_6D7A8_8;
+u32 lbl_1_bss_6D7A8_C;
+u32 lbl_1_bss_6D7A8_10;
+u16 lbl_1_bss_6D7A8_14;
+u16 lbl_1_bss_6D7A8_16;
+u16 lbl_1_bss_6D7C0;
+u16 lbl_1_bss_6D7C0_fill_6D7C2;
+u32 lbl_1_bss_6D7C0_fill_6D7C4[3];
+u16 lbl_1_bss_6D7C0_10[8];
+u32 lbl_1_bss_6D7C0_20;
+u32 lbl_1_bss_6D7C0_fill_6D7E4;
+u32 fzgx_obj_lbl_1_bss_6D7E8[2];
+u8 fzgx_obj_lbl_1_bss_6D7F0;
+u8 lbl_1_bss_6D7A8_gap_6D7F1;
+u16 lbl_1_bss_6D7A8_gap_6D7F2_fill;
+u32 fzgx_obj_lbl_1_bss_6D7F4[11];
+
+#pragma section code_type ".fzgxpool"
+static void fzgx_bss_layout(void) {
+    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */
+    s = *(u8 *)&lbl_1_bss_6D7A8;
+    s = *(u8 *)&lbl_1_bss_6D7A8_8;
+    s = *(u8 *)&lbl_1_bss_6D7A8_C;
+    s = *(u8 *)&lbl_1_bss_6D7A8_10;
+    s = *(u8 *)&lbl_1_bss_6D7A8_14;
+    s = *(u8 *)&lbl_1_bss_6D7A8_16;
+    s = *(u8 *)&lbl_1_bss_6D7C0;
+    s = *(u8 *)&lbl_1_bss_6D7C0_fill_6D7C2;
+    s = *(u8 *)&lbl_1_bss_6D7C0_fill_6D7C4;
+    s = *(u8 *)&lbl_1_bss_6D7C0_10;
+    s = *(u8 *)&lbl_1_bss_6D7C0_20;
+    s = *(u8 *)&lbl_1_bss_6D7C0_fill_6D7E4;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6D7E8;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6D7F0;
+    s = *(u8 *)&lbl_1_bss_6D7A8_gap_6D7F1;
+    s = *(u8 *)&lbl_1_bss_6D7A8_gap_6D7F2_fill;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6D7F4;
+}
+#pragma section code_type ".text"
+
+#pragma opt_strength_reduction off
+void fn_1_7BAF8(u8 *arg0) {
+    u16 *blk;
+    u32 v1;
+
+    fn_800793D4(arg0, 0, (lbl_1_bss_6D7A8_10) + (lbl_1_bss_6D7A8_8 + lbl_1_bss_6D7A8_C));
+    v1 = 0x10000 - 1;
+    lbl_1_bss_6D7C0 = 0;
+    lbl_1_bss_6D7A8_16 = 0;
+    lbl_1_bss_6D7A8_14 = 0;
+    blk = &lbl_1_bss_6D7C0_10[0];
+    blk[0] = v1;
+    blk[1] = v1;
+    blk[2] = v1;
+    blk[3] = v1;
+    blk[4] = v1;
+    blk[5] = v1;
+    blk[6] = v1;
+    blk[7] = v1;
+    lbl_1_bss_6D7C0_20 = 0;
+}
+#pragma opt_strength_reduction reset
+/* fzgx:end fn_1_7BAF8 */
+
 /* fzgx:begin fn_1_7BB80 */
 extern void OSPanic(const char *, int, const char *, ...);
 extern void fn_800356B8(void *, int);

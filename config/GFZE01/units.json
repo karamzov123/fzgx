@@ -48695,6 +48695,18 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/screen_effect/fn_1_7BAF8.c",
+    "symbols": [
+      "fn_1_7BAF8"
+    ],
+    "status": "nonmatching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/screen_effect.c",
+    "pool": true
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/screen_effect/fn_1_7BB80.c",
     "symbols": [
       "fn_1_7BB80"
