@@ -32843,6 +32843,18 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/camera/fn_1_A888.c",
+    "symbols": [
+      "fn_1_A888"
+    ],
+    "status": "nonmatching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/camera.c",
+    "pool": true
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/camera/fn_1_AA54.c",
     "symbols": [
       "fn_1_AA54"
@@ -48542,6 +48554,21 @@
     "source": "rel/main_rel/screen_effect/fn_1_7880C.c",
     "symbols": [
       "fn_1_7880C"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/screen_effect.c",
+    "pool": {
+      "...rodata.0": "lbl_1_rodata_3180",
+      "@9": "lbl_1_rodata_31A0"
+    }
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/screen_effect/fn_1_788B0.c",
+    "symbols": [
+      "fn_1_788B0"
     ],
     "status": "matching",
     "mw_version": "GC/1.3.2",

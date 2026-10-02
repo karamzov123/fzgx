@@ -2002,6 +2002,91 @@ void fn_1_7880C(void)
 }
 /* fzgx:end fn_1_7880C */
 
+/* fzgx:begin fn_1_788B0 noprologue */
+#include "dolphin/types.h"
+
+#pragma section code_type ".fzgxpool"
+static const u32 fzgx_pool_table1[8] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFF910000, 0xFF760044, 0x6600FF32, 0x94009494, 0xCB0005CF, 0x00FF0000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep1(void) { const u32 *volatile cp; cp = fzgx_pool_table1; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime2(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 0.0f;
+    s = 255.0f;
+    s = 40.0f;
+    s = 1.0f;
+    s = 0.5f;
+    s = 0.02500000037252903f;
+    s = 40.959999084472656f;
+    s = 409.6000061035156f;
+    s = 2.0f;
+    s = -2.0f;
+    s = 0.009999999776482582f;
+    s = 0.003000000026077032f;
+    s = 5.0f;
+    s = 15.0f;
+    d = 4503601774854144.0;
+    d = 4503599627370496.0;
+    s = 480.0f;
+    s = 0.949999988079071f;
+    s = 640.0f;
+    s = 30.0f;
+    s = 127.0f;
+    s = 0.20000000298023224f;
+    s = -128.0f;
+    s = 320.0f;
+    s = 0.25f;
+}
+static const u32 fzgx_pool_table3[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep3(void) { const u32 *volatile cp; cp = fzgx_pool_table3; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime4(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    d = 0.3;
+    d = -128.0;
+    d = 127.0;
+    s = 0.0009765625f;
+    s = 32.0f;
+    s = 1.4600000381469727f;
+    s = 639.0f;
+    s = 10.0f;
+    s = 0.1422991007566452f;
+}
+static const u32 fzgx_pool_table5[6] = {0x00000000, 0x00000000, 0x00000000, 0x41A00000, 0x41A00000, 0x41A00000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep5(void) { const u32 *volatile cp; cp = fzgx_pool_table5; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime6(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 20.0f;
+}
+#pragma section code_type ".text"
+
+typedef struct { f32 x, y, z; } Vec3;
+extern void fn_80072864(u32);
+extern u32 lbl_8006DCA4(void);
+extern void lbl_8006E0A4(void *);
+extern void lbl_8006E13C(void *);
+extern void fn_80072558(void);
+extern u32 fn_800384FC(u32, u32);
+
+#pragma peephole on
+void fn_1_788B0(u32 lab_unused0, u32 lab_unused1, u16 lab_unused2)
+{
+    Vec3 pos = { 0.0f, 0.0f, 0.0f };
+    Vec3 scale = { 20.0f, 20.0f, 20.0f };
+    pos.x = 0.0f;
+    pos.y = 0.0f;
+    pos.z = 0.0f;
+    scale.x = 20.0f;
+    scale.y = 20.0f;
+    scale.z = 20.0f;
+    fn_80072864(2);
+    lbl_8006DCA4();
+    lbl_8006E0A4(&pos);
+    lbl_8006E13C(&scale);
+    fn_80072558();
+    fn_800384FC(10, 10);
+}
+#pragma peephole reset
+/* fzgx:end fn_1_788B0 */
+
 /* fzgx:begin fn_1_78950 */
 // Reset the screen effect state and refresh its processing stages twice.
 void fn_1_78950(void) {

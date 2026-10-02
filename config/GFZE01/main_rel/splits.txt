@@ -6908,3 +6908,9 @@ rel/main_rel/screen_effect/fn_1_76A94.c:
 
 rel/main_rel/bg_cas/fn_1_FCFA4.c:
 	.text       start:0x000FCFA4 end:0x000FD1D4 align:4
+
+rel/main_rel/screen_effect/fn_1_788B0.c:
+	.text       start:0x000788B0 end:0x00078950 align:4
+
+rel/main_rel/camera/fn_1_A888.c:
+	.text       start:0x0000A888 end:0x0000AA54 align:4
