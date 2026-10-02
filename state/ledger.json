@@ -1,5 +1,5 @@
 {
- "generated": 1790900275,
+ "generated": 1790900286,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -120296,19 +120296,19 @@
   {
    "symbol": "story:_prolog",
    "module": "story",
-   "unit": null,
+   "unit": "rel/story/story_mode/_prolog.c",
    "addr": 0,
    "size": 580,
-   "status": "claimed",
-   "attempts": 3,
-   "best_percent": 99.55173,
-   "claimed_by": "fleet-v2-claude-1790900175023313912-claude-2",
-   "claimed_at": 1790900229,
-   "claim_ttl": 2100,
-   "matched_commit": null,
+   "status": "matched",
+   "attempts": 4,
+   "best_percent": 100.0,
+   "claimed_by": null,
+   "claimed_at": null,
+   "claim_ttl": null,
+   "matched_commit": "42a09add",
    "blocked_reason": null,
    "prev_status": null,
-   "link_state": null
+   "link_state": "verified"
   },
   {
    "symbol": "fn_7_244",
@@ -480903,20 +480903,20 @@
    "id": 18769,
    "symbol": "story:_prolog",
    "agent": "fleet-v2-claude-1790900175023313912-claude-2",
-   "harness": null,
-   "model": null,
+   "harness": "claude",
+   "model": "claude-opus-5-5",
    "started": 1790900229,
-   "ended": null,
-   "checks": 2,
-   "final_percent": 99.55173,
-   "tokens_in": 0,
-   "tokens_out": 0,
+   "ended": 1790900276,
+   "checks": 3,
+   "final_percent": 100.0,
+   "tokens_in": 62444,
+   "tokens_out": 22,
    "cost_usd": 0.0,
-   "outcome": null,
-   "notes": null,
+   "outcome": "matched",
+   "notes": "oracle match accepted automatically",
    "best_body_path": null,
-   "stale_checks": 1,
-   "best_in_attempt": 99.55173
+   "stale_checks": 0,
+   "best_in_attempt": 100.0
   }
  ],
  "names": [
