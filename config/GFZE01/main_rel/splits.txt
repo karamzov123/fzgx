@@ -6845,3 +6845,6 @@ rel/main_rel/bg_lig/fn_1_D7C44.c:
 
 rel/main_rel/rep_memcard/fn_1_155120.c:
 	.text       start:0x00155120 end:0x0015530C align:4
+
+rel/main_rel/effect/fn_1_60C88.c:
+	.text       start:0x00060C88 end:0x00060D54 align:4
