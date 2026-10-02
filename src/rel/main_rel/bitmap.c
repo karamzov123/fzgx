@@ -189,6 +189,104 @@ void fn_1_481E8(int arg0) {
 }
 /* fzgx:end fn_1_481E8 */
 
+/* fzgx:begin fn_1_48214 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/bitmap.h"
+
+extern s32 lbl_801A6410;
+extern void fn_8006FDEC(void);
+extern void fn_1_46B4(u32 arg0, u32 arg1, char *arg2, s32 arg3);
+extern void fn_1_484CC(s32);
+
+typedef struct {
+    s32 unk_0;
+    u32 unk_4;
+    u8 pad_8[0x18];
+    Obj_1_data_FCD4_At20 *unk_20;
+    u8 unk_24;
+    u8 pad_25[0x3];
+} TexRecord;
+
+typedef struct {
+    u32 unk_0;
+    u32 unk_4;
+    s32 unk_8;
+} BitmapEntry;
+
+// Iterates texture records in a range, tearing down bitmap references and
+// releasing dependent texture state.
+void fn_1_48214(s32 index, s32 enabled) {
+    int found;
+    s32 n;
+    s16 i;
+    s16 end;
+    TexRecord *record;
+
+    fn_8006FDEC();
+
+    if (index == 0xbc) {
+        i = 1;
+        end = 0xbc;
+    } else {
+        s32 low;
+        if (index >= 1) {
+            low = index;
+        } else {
+            low = 1;
+        }
+        i = (s16)low;
+        end = (s16)(index + 1);
+    }
+
+    record = (TexRecord *)((u8 *)&lbl_1_data_FCD4 + i * 0x28);
+
+    while (i < end) {
+        if (record->unk_0 != 0) {
+            if (record->unk_24 == 0) {
+                fn_1_46B4(lbl_801A6410, record->unk_20->unk_C,
+                          (char *)lbl_1_data_1A368, 0x21e);
+                fn_1_46B4(lbl_801A6410, (u32)record->unk_20,
+                          (char *)lbl_1_data_1A368, 0x21f);
+                record->unk_0 = 0;
+            } else {
+                BitmapEntry *bitmap =
+                    (BitmapEntry *)((u8 *)&lbl_1_data_6CA0 +
+                                    record->unk_24 * 12);
+
+                fn_1_46B4(bitmap->unk_0, record->unk_20->unk_C,
+                          (char *)lbl_1_data_1A368, 0x223);
+                fn_1_46B4(bitmap->unk_0, (u32)record->unk_20,
+                          (char *)lbl_1_data_1A368, 0x224);
+                record->unk_0 = 0;
+                if (enabled == 0) {
+                    found = 0;
+                    for (n = 0; n < 0xbc; n++) {
+                        TexRecord *scan;
+                        u8 sc;
+                        u8 rc;
+
+                        scan = (TexRecord *)((u8 *)&lbl_1_data_FCD4 + n * 0x28);
+                        if (scan->unk_0 != 0) {
+                            sc = scan->unk_24;
+                            rc = record->unk_24;
+                            if (sc == rc) {
+                                found = 1;
+                            }
+                        }
+                    }
+                    if (found == 0) {
+                        fn_1_484CC(record->unk_24);
+                    }
+                }
+            }
+        }
+        i++;
+        record = (TexRecord *)((u8 *)record + 0x28);
+    }
+}
+/* fzgx:end fn_1_48214 */
+
 /* fzgx:begin fn_1_48418 */
 typedef struct {
     s32 unk_0;

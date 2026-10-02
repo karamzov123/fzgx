@@ -31017,6 +31017,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/bitmap/fn_1_48214.c",
+    "symbols": [
+      "fn_1_48214"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/bitmap.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/bitmap/fn_1_48418.c",
     "symbols": [
       "fn_1_48418"
