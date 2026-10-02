@@ -5684,3 +5684,6 @@ dol/fn_8005BFB4.c:
 
 dol/fn_8006C190.c:
 	.text       start:0x8006C190 end:0x8006C570 align:4
+
+dol/fn_8006E7E4.c:
+	.text       start:0x8006E7E4 end:0x8006E8DC align:4
