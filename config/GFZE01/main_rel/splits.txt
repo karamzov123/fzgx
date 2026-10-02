@@ -6815,3 +6815,6 @@ rel/main_rel/effect/fn_1_64388.c:
 
 rel/main_rel/phys/fn_1_EB29C.c:
 	.text       start:0x000EB29C end:0x000EB330 align:4
+
+rel/main_rel/archive/fn_1_130C84.c:
+	.text       start:0x00130C84 end:0x00130EE8 align:4
