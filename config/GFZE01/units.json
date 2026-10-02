@@ -35958,6 +35958,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/effect/fn_1_58994.c",
+    "symbols": [
+      "fn_1_58994"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/effect.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/effect/fn_1_58C6C.c",
     "symbols": [
       "fn_1_58C6C"

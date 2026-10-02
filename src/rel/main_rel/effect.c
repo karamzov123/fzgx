@@ -150,6 +150,203 @@ extern const f32 lbl_1_rodata_29F0;
 extern u32 fn_1_58C4(void);
 extern const f64 lbl_1_rodata_2954;
 
+/* fzgx:begin fn_1_58994 noprologue */
+#include "types.h"
+#include "rel/main_rel/effect.h"
+
+typedef struct AvlineVec3 {
+    u32 unk_00;
+    u32 unk_04;
+    u32 unk_08;
+} AvlineVec3;
+
+typedef struct AvlineEntry {
+    s8 unk_00;
+    u8 pad01[0x07];
+    u32 unk_08;
+    s16 unk_0c;
+    u8 pad0e[0x02];
+    u32 unk_10;
+    u32 unk_14;
+    u8 pad18[0x02];
+    u16 unk_1a;
+    u8 pad1c[0x20];
+    AvlineVec3 unk_3c;
+    u8 pad48[0x18];
+    AvlineVec3 unk_60;
+    u8 pad6c[0x7c];
+} AvlineEntry;
+
+typedef void (*AvlineHandler)(AvlineEntry *);
+
+typedef struct AvlineTables {
+    u8 pad000[0xd68];
+    AvlineHandler unk_d68[0x45];
+    AvlineHandler unk_e7c[0x45];
+    u32 unk_f90;
+} AvlineTables;
+
+typedef struct AvlineState {
+    AvlineEntry *unk_00;
+    AvlineEntry *unk_04;
+    u32 unk_08;
+    u32 unk_0c;
+} AvlineState;
+
+typedef struct Effect_63518Vec {
+    u32 x;
+    u32 y;
+    u32 z;
+} Effect_63518Vec;
+
+typedef struct Effect_63518 {
+    u8 unk00[0x14];
+    u32 unk14;
+    u8 unk18[0x20];
+    Effect_63518Vec *unk38;
+    Effect_63518Vec unk3c;
+    u8 unk48[0x10];
+    u16 unk58;
+    u8 unk5a[0x06];
+    Effect_63518Vec unk60;
+    u8 unk6c[0x40];
+    u16 unkac;
+    u16 unkae;
+    u16 unkb0;
+} Effect_63518;
+
+extern void fn_1_3BDC(s32);
+extern s32 fn_1_3F164(void);
+extern void fn_1_9F8FC(void);
+extern void fn_1_5819C(void);
+extern u32 fn_1_58C4(void);
+extern u32 camera_forward_status(void);
+extern u32 fn_1_3C18(s32);
+extern void fn_1_63518(Effect_63518 *);
+
+static inline AvlineHandler *fn_1_58994_array_read(AvlineHandler *array) { return array; }
+#pragma opt_propagation off
+void fn_1_58994(void) {
+    AvlineTables *tables = (AvlineTables *)&lbl_1_data_1C698;
+    u16 active_2;
+    AvlineState *state = (AvlineState *)&lbl_1_bss_6C848;
+    u32 value;
+    struct { u32 value; } active;
+    AvlineHandler *tbl;
+    AvlineEntry *entry;
+    s32 count;
+    u32 mode;
+    u16 mask;
+    u32 best;
+
+    fn_1_3BDC(9);
+    if (fn_1_3F164() != 0) {
+        tables->unk_f90 = 1;
+    }
+    fn_1_9F8FC();
+    fn_1_5819C();
+    mode = fn_1_58C4();
+    if (mode >= 1 && mode <= 4) {
+        mask = 1 << (mode - 1);
+    } else {
+        mask = 0xffff;
+    }
+
+    entry = state->unk_00;
+    if ((camera_forward_status() & 0x80000000) == 0) {
+        active.value = mask;
+        tbl = tables->unk_d68;
+        count = 0xbe;
+        while (count > 0) {
+            if (entry->unk_00 != 0) {
+                if ((entry->unk_1a & active.value) != 0) {
+                    if ((entry->unk_08 & 0x80000000) == 0) {
+                        tbl[entry->unk_0c](entry);
+                    }
+                }
+            }
+            entry++;
+            count--;
+        }
+{
+    AvlineEntry * fzgx_loop_entry_2643;
+        fzgx_loop_entry_2643 = state->unk_04;
+        tbl = tables->unk_d68;
+        count = 0xc8;
+        while (count > 0) {
+            if (fzgx_loop_entry_2643->unk_00 != 0) {
+                if ((fzgx_loop_entry_2643->unk_1a & active.value) != 0) {
+                    if ((fzgx_loop_entry_2643->unk_08 & 0x80000000) == 0) {
+                        tbl[fzgx_loop_entry_2643->unk_0c](fzgx_loop_entry_2643);
+                    }
+                }
+            }
+            fzgx_loop_entry_2643++;
+            count--;
+        }
+    entry = fzgx_loop_entry_2643;
+}
+    } else {
+        active_2 = mask;
+        count = 0xbe;
+        while (count > 0) {
+            if (entry->unk_00 != 0) {
+                if ((entry->unk_1a & active_2) != 0) {
+                    if ((entry->unk_08 & 0x80000000) == 0) {
+                        if ((entry->unk_08 & 0x08000000) != 0) {
+                            fn_1_58994_array_read(tables->unk_e7c)[entry->unk_0c](entry);
+                            entry->unk_00 = 0;
+                        } else {
+                            if ((entry->unk_08 & 0x70000000) != 0) {
+                                entry->unk_60 = entry->unk_3c;
+                            }
+                            if (entry->unk_0c == 28) {
+                                fn_1_63518((Effect_63518 *)entry);
+                            }
+                            fn_1_58994_array_read(tables->unk_d68)[entry->unk_0c](entry);
+                        }
+                    }
+                }
+            }
+            entry++;
+            count--;
+        }
+        entry = state->unk_04;
+        count = 0xc8;
+        while (count > 0) {
+            if (entry->unk_00 != 0) {
+                if ((entry->unk_1a & active_2) != 0) {
+                    if ((entry->unk_08 & 0x80000000) == 0) {
+                        if ((entry->unk_08 & 0x08000000) != 0) {
+                            fn_1_58994_array_read(tables->unk_e7c)[entry->unk_0c](entry);
+                            entry->unk_00 = 0;
+                        } else {
+                            if ((entry->unk_08 & 0x70000000) != 0) {
+                                entry->unk_60 = entry->unk_3c;
+                            }
+                            if (entry->unk_0c == 28) {
+                                fn_1_63518((Effect_63518 *)entry);
+                            }
+                            fn_1_58994_array_read(tables->unk_d68)[entry->unk_0c](entry);
+                        }
+                    }
+                }
+            }
+            entry++;
+            count--;
+        }
+    }
+
+    value = fn_1_3C18(9);
+    best = state->unk_0c;
+    if (value > best) {
+        best = value;
+    }
+    state->unk_0c = best;
+}
+#pragma opt_propagation reset
+/* fzgx:end fn_1_58994 */
+
 /* fzgx:begin fn_1_58C6C */
 struct fn_1_58C6C_lbl_1_bss_6C848_T {
     u8 unk_0;
