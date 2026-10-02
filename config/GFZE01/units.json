@@ -30510,6 +30510,21 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/bg_lig/fn_1_D7C44.c",
+    "symbols": [
+      "fn_1_D7C44"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/bg_lig.c",
+    "pool": {
+      "...rodata.0": "lbl_1_rodata_6490",
+      "@53": "lbl_1_rodata_6524"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/bg_lig/fn_1_D8388.c",
     "symbols": [
       "fn_1_D8388"

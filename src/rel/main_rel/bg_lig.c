@@ -572,6 +572,169 @@ void fn_1_D7B7C(LigEntry *base) {
 }
 /* fzgx:end fn_1_D7B7C */
 
+/* fzgx:begin fn_1_D7C44 */
+#pragma section code_type ".fzgxpool"
+static const u32 fzgx_pool_table1[4] = {0x00000000, 0x0280012C, 0x00000000, 0x00000001};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep1(void) { const u32 *volatile cp; cp = fzgx_pool_table1; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime2(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 0.0f;
+    s = 100.0f;
+    s = 3.0f;
+}
+static const u32 fzgx_pool_table3[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep3(void) { const u32 *volatile cp; cp = fzgx_pool_table3; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime4(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    d = 0.7;
+    d = 0.3;
+    s = 32767.0f;
+    s = 235.0f;
+    s = 80.0f;
+    s = 30.0f;
+    d = 512.0;
+    d = 0.5;
+    d = 300.0;
+    d = 17.0;
+    s = 3276.800048828125f;
+}
+static const u32 fzgx_pool_table5[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep5(void) { const u32 *volatile cp; cp = fzgx_pool_table5; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime6(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    d = 4503601774854144.0;
+    d = 0.98;
+    s = 0.07999999821186066f;
+}
+static const u32 fzgx_pool_table7[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep7(void) { const u32 *volatile cp; cp = fzgx_pool_table7; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime8(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    d = 0.99;
+    d = 0.02;
+    s = 400.0f;
+    s = 0.7071067690849304f;
+    s = 1.0f;
+}
+static const u32 fzgx_pool_table9[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep9(void) { const u32 *volatile cp; cp = fzgx_pool_table9; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime10(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    d = 2.0;
+    d = 4503599627370496.0;
+}
+#pragma section code_type ".text"
+
+typedef struct {
+	f32 unk_0;
+	f32 unk_4;
+	u8 pad_8[0x30];
+	u32 unk_38;
+	u8 unk_3c;
+	u8 unk_3d;
+	u8 unk_3e;
+	u8 unk_3f;
+} LigObj;
+
+typedef struct {
+	u8 pad_0[0x18];
+	f32 unk_18;
+	f32 unk_1c;
+	f32 unk_20;
+	f32 unk_24;
+	s16 unk_28;
+} LigSrc;
+
+typedef struct {
+	u8 pad_0[8];
+	LigSrc *unk_8;
+} LigEvt;
+
+extern void *memset(void *dst, int value, u32 size);
+extern void lbl_8006DCA4(void);
+extern void lbl_8006E1B0(void *a, void *b);
+extern void lbl_8006D7DC(void *a);
+extern void lbl_8006DB74(void *a);
+extern void mathutil_mtxA_rotate_z(u32 a);
+extern void fn_1_9EDE8(LigObj *);
+extern void fn_80074788(u32);
+extern void fn_80072864(u32);
+extern void fn_80073778(void *, s32);
+extern void fn_800745A4(u32, s32, s32, u32, u32, u32);
+extern void fn_800734A8(u32, s32, s32, s32);
+extern void fn_80072AB0(s32, s32, s32);
+extern void fn_800735C8(s32, s32);
+extern void fn_80073620(s32, s32);
+extern void fn_80073C6C(s32);
+extern void fn_80072C24(s32, s32, s32, s32, s32);
+extern void fn_80072D64(s32, s32, s32, s32, u8, s32);
+extern void fn_80072CC4(s32, s32, s32, s32, s32);
+extern void fn_80072E20(s32, s32, s32, s32, u8, s32);
+extern void fn_80073678(u32);
+extern void fn_80074660(u32);
+extern void fn_80074918(u8, s32, u8);
+extern u32 fn_800720B0(u32);
+extern void fn_800728A8(s32, s32, s32, s32);
+extern void lbl_8006D758(void);
+
+/* Retail emits this conversion inline at each of its three call sites: fn_1_D7C44's
+   172 instructions contain no call to a scaling helper, and the symbol does not exist in
+   symbols.txt. A plain `static` would emit it out of line and add 28 bytes of .text,
+   which is what failed the 16-target link. Matches fn_1_D7C44_array_read below. */
+static inline u8 scale_to_byte(f32 value, f32 scale) {
+	return (u8)(value * scale);
+}
+
+static inline u32 fn_1_D7C44_array_read(s32 index, u32 *array) { return array[index]; }
+#pragma opt_lifetimes off
+void fn_1_D7C44(LigEvt *arg0) {
+	LigObj obj;
+	u32 stackbuf[3];
+	LigSrc *src;
+	u32 *unk;
+	u32 handle;
+
+	src = arg0->unk_8;
+	unk = *(u32 **)((u8 *)lbl_1_bss_38458->unk_8 + 0x170);
+	lbl_8006DCA4();
+	lbl_8006E1B0(src, stackbuf);
+	lbl_8006D7DC(stackbuf);
+	mathutil_mtxA_rotate_z(src->unk_28);
+	memset(&obj, 0, 0x40);
+	lbl_8006DB74((u8 *)&obj + 8);
+	obj.unk_0 = 0.70710677f * src->unk_24;
+	obj.unk_3c = scale_to_byte((f32)(u8)src->unk_18, 1.0f);
+	obj.unk_3d = scale_to_byte((f32)(u8)src->unk_1c, 1.0f);
+	obj.unk_3e = scale_to_byte((f32)(u8)src->unk_20, 1.0f);
+	obj.unk_3f = 0xFF;
+	obj.unk_38 |= 2;
+	obj.unk_4 = 2.0 * obj.unk_0;
+	handle = fn_1_D7C44_array_read(9, unk);
+	fn_80074788(0);
+	fn_80072864(1);
+	fn_80073778((void *)handle, 0);
+	fn_800745A4(0, 1, 4, 0x3c, 0, 0x7d);
+	fn_800734A8(0, 0, 0, 0xff);
+	fn_80072AB0(0, 0, 0);
+	fn_800735C8(0, 0xc);
+	fn_80073620(0, 0x1c);
+	fn_80073C6C(0);
+	fn_80072C24(0, 0xf, 0xe, 8, 0xf);
+	fn_80072D64(0, 0, 0, 0, 1, 0);
+	fn_80072CC4(0, 7, 6, 4, 7);
+	fn_80072E20(0, 0, 0, 0, 1, 0);
+	fn_80073678(1);
+	fn_80074660(1);
+	fn_80074918(1, 7, 0);
+	fn_800720B0(0);
+	fn_800728A8(1, 3, 1, 7);
+	fn_80074918(1, 3, 0);
+	lbl_8006D758();
+	fn_1_9EDE8(&obj);
+}
+#pragma opt_lifetimes reset
+/* fzgx:end fn_1_D7C44 */
+
 /* fzgx:begin fn_1_D8388 */
 extern u32 fn_1_58C4(void);
 

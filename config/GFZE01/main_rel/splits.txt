@@ -6839,3 +6839,6 @@ rel/main_rel/game/fn_1_41CB8.c:
 
 rel/main_rel/stcoli/fn_1_29968.c:
 	.text       start:0x00029968 end:0x00029A0C align:4
+
+rel/main_rel/bg_lig/fn_1_D7C44.c:
+	.text       start:0x000D7C44 end:0x000D7EF4 align:4
