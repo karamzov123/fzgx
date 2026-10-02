@@ -6743,3 +6743,6 @@ rel/main_rel/cloth/fn_1_106CAC.c:
 
 rel/main_rel/effect/fn_1_640A4.c:
 	.text       start:0x000640A4 end:0x000642E8 align:4
+
+rel/main_rel/font/fn_1_55210.c:
+	.text       start:0x00055210 end:0x000553C4 align:4

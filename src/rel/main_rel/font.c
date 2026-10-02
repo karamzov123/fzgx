@@ -3181,6 +3181,88 @@ void fn_1_550E0(void) {
 }
 /* fzgx:end fn_1_550E0 */
 
+/* fzgx:begin fn_1_55210 noprologue */
+#include "types.h"
+#include "rel/main_rel/font.h"
+
+extern const f32 lbl_1_rodata_28A8;
+extern void *lbl_801A66CC;
+
+extern void fn_1_556B8(void *value);
+extern void fn_1_563E4(Obj_1_bss_6C7A4 *settings);
+extern void fn_800780A4(void *value);
+extern void *fn_1_5448C(void *value);
+extern void *fn_1_548AC(s32 size);
+extern void fn_1_55EA0(void);
+extern void lbl_8006DB74(void *value);
+extern u16 fn_1_7BE94(void);
+extern void lbl_8006DD14(void *value, void *data);
+extern void fn_1_5489C(void *value, void *data);
+extern void fn_1_56530(void);
+extern void fn_1_557C4(void *value);
+
+typedef struct {
+    u8 pad_0[4];
+    void (*callback)(void);
+    void *context;
+    u8 pad_c[0x30];
+    u16 unk_3C;
+    u8 pad_3E[2];
+    Obj_1_bss_6C7A4 unk_40;
+    void *entry[4];
+} Fn1_55210_Object;
+
+static inline void * fn_1_55210_array_read(void * *array, s32 index) { return array[index]; }
+#pragma opt_common_subs off
+void fn_1_55210(void *value) {
+    s32 offset;
+    Fn1_55210_Object *obj;
+    void *result;
+    s32 ok;
+    s32 i;
+
+    if (lbl_1_rodata_28A8 == lbl_1_bss_6C7A4.unk_8) {
+        if (*(u16 *)((u8 *)value + 0x1c) == 0) {
+            fn_1_556B8(value);
+            return;
+        }
+        if ((0) != (*(u16 *)((u8 *)value + 0x1a))) {
+            fn_1_563E4(&lbl_1_bss_6C7A4);
+            fn_800780A4(value);
+        }
+        result = fn_1_5448C((u8 *)value + 8);
+        obj = fn_1_548AC(0x78);
+        if (obj != 0) {
+            obj->callback = fn_1_55EA0;
+            obj->context = value;
+            ok = 1;
+            lbl_8006DB74((u8 *)obj + 0xc);
+            obj->unk_3C = fn_1_7BE94();
+            obj->unk_40 = lbl_1_bss_6C7A4;
+            for (i = 0, offset = 0; i < 4; i++, offset += 0x30) {
+                if ((__rlwnm(lbl_1_bss_6C7CC.unk_0, ((i + 1) & 31), 31, 31) != 0)) {
+                    obj->entry[i] = fn_1_548AC(0x30);
+                    if (fn_1_55210_array_read(obj->entry, i) != 0) {
+                        lbl_8006DD14(((((((((u8 *)lbl_801A66CC))) + (((offset)))) + (((0xe0)))))), fn_1_55210_array_read(obj->entry, i));
+                    } else {
+                        ok = 0;
+                    }
+                } else {
+                    obj->entry[i] = 0;
+                }
+            }
+            if (ok != 0) {
+                fn_1_5489C(result, obj);
+            }
+        }
+        fn_1_56530();
+    } else {
+        fn_1_557C4(value);
+    }
+}
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_55210 */
+
 /* fzgx:begin fn_1_553C4 noprologue */
 #include "types.h"
 #include "rel/main_rel/font.h"
