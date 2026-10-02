@@ -53,6 +53,62 @@ u16 fn_1_7BE94(void) {
 }
 /* fzgx:end fn_1_7BE94 */
 
+/* fzgx:begin fn_1_7BEAC */
+typedef struct {
+    u16 unk_0;
+    u16 unk_2;
+    u16 unk_4;
+    u8 pad_6[2];
+    u32 unk_8;
+    u32 unk_C;
+    u32 unk_10;
+    u16 unk_14;
+    u16 unk_16;
+    u8 pad_18[4];
+    s32 unk_1C;
+    u32 unk_20;
+    u32 unk_24;
+    u16 states[8];
+    s32 unk_38;
+} LightStateView;
+
+extern u32 fn_800356B8(void *, u32);
+extern void fn_80074D28(void *);
+extern u32 fn_80074D08(u32);
+
+static inline void update_states(LightStateView *light, u8 *base, s32 *changed) {
+    u32 i = 0;
+    u8 *entry = base;
+    u16 *states = light->states;
+    for (; i < 8; i++, states++, entry += 2) {
+        u16 value = *(u16 *)(4 + entry);
+        if (value != *states) {
+            fn_800356B8((u8 *)light->unk_1C + ((u32)value << 6), 1 << i);
+            *changed = 1;
+            *states = *(u16 *)(entry + 4);
+        }
+    }
+}
+
+void fn_1_7BEAC(u16 index) {
+    LightStateView *light = (LightStateView *)&lbl_1_bss_6D7A8;
+    u8 *entry_base = (u8 *)light->unk_24 + (u32)index * 0x14;
+    s32 changed = 0;
+    update_states(light, entry_base, &changed);
+
+    if (light->unk_16 != *(u16 *)(entry_base + 2) &&
+        ((0) != (light->unk_16))) {
+        fn_80074D28((u8 *)light->unk_20 + (u32)*(u16 *)(entry_base + 2) * 0xc);
+        light->unk_16 = *(u16 *)(entry_base + 2);
+    }
+
+    if (light->unk_38 != *(u16 *)entry_base || changed != 0) {
+        fn_80074D08(*(u16 *)entry_base);
+        light->unk_38 = *(u16 *)entry_base;
+    }
+}
+/* fzgx:end fn_1_7BEAC */
+
 /* fzgx:begin fn_1_7BF9C */
 typedef struct {
     void *unk_0;
