@@ -791,7 +791,7 @@ s32 fn_4_4B74(u32 arg0, u32 arg1) {
 /* fzgx:begin fn_4_4CB8 noprologue */
 #include "types.h"
 
-struct fn_4_4CB8_obj {
+struct fn_4_4CB8_elt {
     u16 unk_0;
     u16 unk_2;
     u16 unk_4;
@@ -803,58 +803,58 @@ struct fn_4_4CB8_obj {
     u32 unk_18;
 };
 
-extern struct fn_4_4CB8_obj lbl_4_bss_C4[];
+extern struct fn_4_4CB8_elt lbl_4_bss_C4[];
 
-void fn_4_4CB8(s32 arg0, u32 arg1, s32 arg2) {
-    struct { u32 value; } idx;
-    u32 v;
+void fn_4_4CB8(s32 arg0, u32 arg1, u32 arg2) {
+    u32 v0;
+    struct { s32 value; } v1;
 
-    v = 1 << arg2;
+    v0 = 1 << arg2;
 
     switch (arg0) {
     case 0:
     case 4:
     default:
-        idx.value = 0;
+        v1.value = 0;
         break;
     case 1:
-        idx.value = 0;
+        v1.value = 0;
         break;
     case 2:
-        idx.value = 1;
+        v1.value = 1;
         break;
     case 3:
-        idx.value = 2;
+        v1.value = 2;
         break;
     }
 
     switch (arg1) {
     case 0:
-        lbl_4_bss_C4[idx.value].unk_0 = v;
+        (*((lbl_4_bss_C4) + (v1.value))).unk_0 = v0;
         break;
     case 1:
-        lbl_4_bss_C4[idx.value].unk_2 = v;
+        lbl_4_bss_C4[v1.value].unk_2 = v0;
         break;
     case 2:
-        lbl_4_bss_C4[idx.value].unk_4 = v;
+        lbl_4_bss_C4[v1.value].unk_4 = v0;
         break;
     case 3:
-        lbl_4_bss_C4[idx.value].unk_6 = v;
+        lbl_4_bss_C4[v1.value].unk_6 = v0;
         break;
     case 4:
-        lbl_4_bss_C4[idx.value].unk_8 = v;
+        (*((v1.value) + (lbl_4_bss_C4))).unk_8 = v0;
         break;
     case 5:
-        lbl_4_bss_C4[idx.value].unk_C = v;
+        lbl_4_bss_C4[v1.value].unk_C = v0;
         break;
     case 6:
-        lbl_4_bss_C4[idx.value].unk_10 = v;
+        lbl_4_bss_C4[v1.value].unk_10 = v0;
         break;
     case 7:
-        lbl_4_bss_C4[idx.value].unk_14 = v;
+        lbl_4_bss_C4[v1.value].unk_14 = v0;
         break;
     case 8:
-        lbl_4_bss_C4[idx.value].unk_18 = v;
+        lbl_4_bss_C4[v1.value].unk_18 = v0;
         break;
     }
 }

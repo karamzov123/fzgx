@@ -35307,6 +35307,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/custom_memcard/fn_1_1324C4.c",
+    "symbols": [
+      "fn_1_1324C4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/custom_memcard.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/custom_memcard/fn_1_132FB4.c",
     "symbols": [
       "fn_1_132FB4"
@@ -58709,6 +58720,20 @@
     "tu": "rel/option/_prolog.c",
     "pool": {
       "@22": "jumptable_4_data_2974"
+    }
+  },
+  {
+    "module": "option",
+    "source": "rel/option/_prolog/fn_4_4CB8.c",
+    "symbols": [
+      "fn_4_4CB8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/option/_prolog.c",
+    "pool": {
+      "@23": "jumptable_4_data_2998"
     }
   },
   {
