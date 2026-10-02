@@ -1,5 +1,5 @@
 {
- "generated": 1790960851,
+ "generated": 1790961244,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -31475,8 +31475,8 @@
    "addr": 2147848928,
    "size": 328,
    "status": "unmatched",
-   "attempts": 4,
-   "best_percent": 83.54878,
+   "attempts": 5,
+   "best_percent": 92.57317,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
@@ -69998,7 +69998,7 @@
    "size": 612,
    "status": "claimed",
    "attempts": 2,
-   "best_percent": 83.70588,
+   "best_percent": 85.8366,
    "claimed_by": "fleet-v2-oc4-1790960360855607163-opencode-2",
    "claimed_at": 1790960744,
    "claim_ttl": 2100,
@@ -91090,19 +91090,19 @@
   {
    "symbol": "fn_1_130C84",
    "module": "main_rel",
-   "unit": null,
+   "unit": "rel/main_rel/archive/fn_1_130C84.c",
    "addr": 1248388,
    "size": 612,
-   "status": "unmatched",
-   "attempts": 2,
-   "best_percent": 83.56863,
+   "status": "matched",
+   "attempts": 3,
+   "best_percent": 100.0,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
-   "matched_commit": null,
+   "matched_commit": "f67d6c64",
    "blocked_reason": null,
    "prev_status": null,
-   "link_state": null
+   "link_state": "verified"
   },
   {
    "symbol": "fn_1_130EE8",
@@ -94342,7 +94342,7 @@
    "size": 156,
    "status": "claimed",
    "attempts": 6,
-   "best_percent": 88.589745,
+   "best_percent": 94.871796,
    "claimed_by": "fleet-v2-oc3-1790958867996229833-opencode-2",
    "claimed_at": 1790960085,
    "claim_ttl": 2100,
@@ -499964,8 +499964,8 @@
    "model": null,
    "started": 1790960085,
    "ended": null,
-   "checks": 5,
-   "final_percent": 83.84615,
+   "checks": 11,
+   "final_percent": 94.871796,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -499973,7 +499973,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 1,
-   "best_in_attempt": 88.589745
+   "best_in_attempt": 94.871796
   },
   {
    "id": 19773,
@@ -499983,7 +499983,7 @@
    "model": null,
    "started": 1790960142,
    "ended": null,
-   "checks": 6,
+   "checks": 9,
    "final_percent": 73.5,
    "tokens_in": 0,
    "tokens_out": 0,
@@ -499991,7 +499991,7 @@
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 1,
+   "stale_checks": 3,
    "best_in_attempt": 73.5
   },
   {
@@ -500078,8 +500078,8 @@
    "model": null,
    "started": 1790960715,
    "ended": null,
-   "checks": 0,
-   "final_percent": null,
+   "checks": 2,
+   "final_percent": 75.64535,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -500087,7 +500087,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 0.0
+   "best_in_attempt": 75.64535
   },
   {
    "id": 19779,
@@ -500097,16 +500097,16 @@
    "model": null,
    "started": 1790960744,
    "ended": null,
-   "checks": 0,
-   "final_percent": null,
+   "checks": 6,
+   "final_percent": 80.86928,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
    "outcome": null,
    "notes": null,
    "best_body_path": null,
-   "stale_checks": 0,
-   "best_in_attempt": 0.0
+   "stale_checks": 2,
+   "best_in_attempt": 85.8366
   },
   {
    "id": 19780,
@@ -500126,6 +500126,44 @@
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 0.0
+  },
+  {
+   "id": 19781,
+   "symbol": "fn_1_130C84",
+   "agent": "fleet-v2-gpt-1790960856661080527-codex-1",
+   "harness": "codex",
+   "model": "gpt-6.1-sol",
+   "started": 1790960856,
+   "ended": 1790961013,
+   "checks": 12,
+   "final_percent": 100.0,
+   "tokens_in": 466178,
+   "tokens_out": 1977,
+   "cost_usd": 0.0,
+   "outcome": "matched",
+   "notes": "oracle match accepted automatically",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 100.0
+  },
+  {
+   "id": 19782,
+   "symbol": "fn_800592E0",
+   "agent": "fleet-v2-gpt-1790960856661080527-codex-2",
+   "harness": "codex",
+   "model": "gpt-6.1-sol",
+   "started": 1790961013,
+   "ended": 1790961243,
+   "checks": 16,
+   "final_percent": 92.57317,
+   "tokens_in": 547983,
+   "tokens_out": 4573,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "budget exhausted: 16 checks used",
+   "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_800592E0.1790961243.c",
+   "stale_checks": 2,
+   "best_in_attempt": 92.57317
   }
  ],
  "names": [
