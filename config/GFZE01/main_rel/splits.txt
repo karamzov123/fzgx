@@ -6794,3 +6794,6 @@ rel/main_rel/archive/fn_1_12CEA8.c:
 
 rel/main_rel/mdlload/fn_1_D3FDC.c:
 	.text       start:0x000D3FDC end:0x000D4174 align:4
+
+rel/main_rel/motasglist/fn_1_43264.c:
+	.text       start:0x00043264 end:0x000433A4 align:4

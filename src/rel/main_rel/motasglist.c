@@ -842,6 +842,57 @@ void fn_1_4322C(struct fn_1_4322C_Arg0 *arg0) {
 }
 /* fzgx:end fn_1_4322C */
 
+/* fzgx:begin fn_1_43264 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/motasglist.h"
+
+extern const f64 lbl_1_rodata_F58;
+struct Fn143264Object {
+    u16 flags;
+    u16 start;
+    u16 end;
+    u16 restart;
+    f32 speed;
+    f32 position;
+    f32 unk10;
+    u16 count;
+};
+void fn_1_43264(struct Fn143264Object *arg0, f32 arg1) {
+    f32 restart;
+    f32 start;
+    f32 end;
+    f32 step;
+    if (arg0->flags & 2) return;
+    step = arg1 * arg0->speed;
+    start = (f32)arg0->start;
+    end = (f32)arg0->end;
+    arg0->flags &= ~4;
+    if ((arg0->position += step) > end) {
+        if (arg0->flags & 1) {
+            arg0->position = end;
+            arg0->flags |= 2;
+        } else {
+            restart = (f32)arg0->restart;
+            arg0->start = (s32)restart;
+            arg0->position -= end + step - restart;
+            arg0->count++;
+            arg0->flags |= 4;
+        }
+    } else if (arg0->position < start) {
+        if (arg0->flags & 1) {
+            arg0->position = start;
+            arg0->flags |= 2;
+        } else {
+            arg0->position += end - step - start;
+            arg0->start = arg0->restart;
+            arg0->count++;
+            arg0->flags |= 4;
+        }
+    }
+}
+/* fzgx:end fn_1_43264 */
+
 /* fzgx:begin fn_1_433A4 */
 typedef struct Fn1433A4Object {
     u16 value0;
