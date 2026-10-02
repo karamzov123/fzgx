@@ -2000,6 +2000,93 @@ void fn_1_40BD4(void) {
 }
 /* fzgx:end fn_1_40BD4 */
 
+/* fzgx:begin fn_1_40BE4 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/game.h"
+
+extern const struct fn_1_40BE4_lbl_1_rodata_BD8_pool {
+    u8 pad_0[0x30];
+    f32 unk_30;
+    u8 pad_34[0xF8];
+    f32 unk_12C;
+    u8 pad_130[0x214];
+    u32 unk_344;
+    u32 unk_348;
+    u32 unk_34C;
+    u32 unk_350;
+    f32 unk_354;
+} lbl_1_rodata_BD8;
+
+extern void *fn_1_86254(s32);
+extern void *fn_1_868C0(s32);
+extern f32 fn_1_84038(void *, s16, u8, f32);
+extern u32 fn_1_76504(u32, void *, void *);
+extern void fn_1_7269C(u32, u32, u32);
+extern u32 lbl_801A63D0[];
+extern void fn_1_40D44(void);
+extern u32 fn_1_4030(u32);
+
+typedef struct {
+    u32 x;
+    u32 y;
+    u32 z;
+    u32 w;
+} Vec4u;
+
+
+
+
+
+
+void fn_1_40BE4(void) {
+    struct fn_1_40BE4_lbl_1_rodata_BD8_pool *pool_lbl_1_rodata_BD8 = (struct fn_1_40BE4_lbl_1_rodata_BD8_pool *)&lbl_1_rodata_BD8;
+    u8 ok = 1;
+    Vec4u v;
+    u32 n;
+    u32 name;
+    u8 sel;
+
+    if (*(s16 *)&lbl_1_bss_960 == 2) {
+        f32 r;
+
+        if (*(s16 *)((u8 *)fn_1_86254(0) + 6) > 0x29) {
+            r = fn_1_84038(fn_1_868C0(0), 0, 1, pool_lbl_1_rodata_BD8->unk_30);
+        } else {
+            r = fn_1_84038(fn_1_868C0(0), 0, 0, pool_lbl_1_rodata_BD8->unk_30);
+        }
+
+        if (r < pool_lbl_1_rodata_BD8->unk_12C || r > pool_lbl_1_rodata_BD8->unk_354) {
+            ok = 0;
+        }
+    }
+
+    if (lbl_1_bss_38210 == 0) {
+        return;
+    }
+
+    v.x = pool_lbl_1_rodata_BD8->unk_344;
+    v.y = pool_lbl_1_rodata_BD8->unk_348;
+    v.z = pool_lbl_1_rodata_BD8->unk_34C;
+    v.w = pool_lbl_1_rodata_BD8->unk_350;
+
+    sel = (u8)fn_1_76504(0x25, &v, 0);
+
+    if (lbl_1_bss_3C1C.unk_0 + 0x10000 == 0xFFFF) {
+        name = lbl_801A63D0[0];
+    } else {
+        name = lbl_1_bss_3C1C.unk_0;
+    }
+    fn_1_7269C(sel, 0, name);
+
+    n = lbl_1_bss_38210 - 1;
+    lbl_1_bss_38210 = n;
+    if ((n < lbl_1_bss_38214 && ok) || n == 0) {
+        fn_1_4030((u32)fn_1_40D44);
+    }
+}
+/* fzgx:end fn_1_40BE4 */
+
 /* fzgx:begin fn_1_40D44 */
 void fn_1_40D44(void) {
     u32 result;

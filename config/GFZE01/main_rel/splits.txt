@@ -6689,3 +6689,9 @@ rel/main_rel/driver/fn_1_A744C.c:
 
 rel/main_rel/archive/fn_1_12C524.c:
 	.text       start:0x0012C524 end:0x0012C5E4 align:4
+
+rel/main_rel/game/fn_1_40BE4.c:
+	.text       start:0x00040BE4 end:0x00040D44 align:4
+
+rel/main_rel/archive/fn_1_12C930.c:
+	.text       start:0x0012C930 end:0x0012CB04 align:4

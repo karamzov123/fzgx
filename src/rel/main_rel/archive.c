@@ -939,6 +939,69 @@ s16 fn_1_12C7B8(s16 arg) {
 }
 /* fzgx:end fn_1_12C7B8 */
 
+/* fzgx:begin fn_1_12C930 */
+typedef struct MappingTable {
+    s32 values[41];
+} MappingTable;
+typedef struct Record {
+    u8 pad0[5];
+    u8 id;
+    u8 pad6[0x819A];
+    u8 mapping;
+    u8 pad81A1[0x1F];
+} Record;
+extern MappingTable lbl_1_rodata_8180;
+extern void *fn_1_12F118(void);
+extern u8 *fn_1_36AD0(void);
+
+s16 fn_1_12C930(s16 arg0) {
+    MappingTable table = lbl_1_rodata_8180;
+    Record *records;
+    s16 index;
+    if (arg0 < 0)
+        return 1;
+    if (arg0 < 41) {
+        index = arg0;
+    } else {
+        records = fn_1_12F118();
+        if (!records) {
+            index = 6;
+            goto done; /* Common table lookup. */
+        }
+        if (records != (Record *)fn_1_36AD0()) {
+            s32 id = arg0;
+            for (index = 0; index < 9; index++) {
+                if (records[index].id == id) {
+                    index = records[index].mapping;
+                    goto done; /* Common table lookup. */
+                }
+            }
+        } else {
+            if (arg0 >= 50 && arg0 <= 53) {
+                index = records[arg0 - 50].mapping;
+                goto done; /* Common table lookup. */
+            }
+            if (arg0 >= 54 && arg0 <= 57) {
+                index = records[arg0 - 54].mapping;
+                goto done; /* Common table lookup. */
+            }
+            {
+                s16 j;
+                for (j = 0; j < 4; j++) {
+                    if (records[j].id == arg0) {
+                        index = records[j].mapping;
+                        goto done; /* Common table lookup. */
+                    }
+                }
+            }
+        }
+        index = 6;
+    }
+done:
+    return table.values[index];
+}
+/* fzgx:end fn_1_12C930 */
+
 /* fzgx:begin fn_1_12CB04 */
 typedef struct {
     u8 pad0[5];
