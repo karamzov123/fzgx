@@ -479,3 +479,6 @@ rel/customize/editor/fn_3_16FD0.c:
 
 rel/customize/toolkit/fn_3_23724.c:
 	.text       start:0x00023724 end:0x00023A1C align:4
+
+rel/customize/toolkit/fn_3_28378.c:
+	.text       start:0x00028378 end:0x000286BC align:4

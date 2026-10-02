@@ -1552,6 +1552,94 @@ void fn_3_268D0(fn_3_268D0_CustomizeObject *self) {
 }
 /* fzgx:end fn_3_268D0 */
 
+/* fzgx:begin fn_3_28378 */
+extern void fn_3_2406C(void);
+extern f32 lbl_3_rodata_8F0[28];
+
+typedef struct Packet {
+    u32 unk0;
+    f32 x;
+    f32 y;
+    f32 z;
+    u8 pad10[0x1c];
+    f32 unk2c;
+    u32 unk30;
+    u8 pad34[0x1c];
+    void *unk50;
+    u8 pad54[4];
+} Packet;
+
+extern const Packet lbl_1_rodata_26F8;
+extern int fn_1_4F734(Packet *);
+
+#pragma opt_strength_reduction off
+#pragma opt_dead_assignments off
+#pragma opt_loop_invariants off
+void fn_3_28378(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
+    u32 fzgx_value;
+    s16 c = arg2;
+    s32 d = arg3;
+    void *fnptr = (void *)&fn_3_2406C;
+    Packet packet;
+
+    packet = lbl_1_rodata_26F8;
+    packet.unk0 = d;
+    packet.x = (f32)(arg0 - 8);
+    packet.y = (f32)(arg1 - 1);
+    packet.z = (f32)c;
+    packet.unk30 = 0xf;
+    if (fn_3_2406C) {
+        packet.unk50 = fnptr;
+        packet.unk30 |= 0x4000000;
+    }
+    packet.unk2c = lbl_3_rodata_8F0[0];
+    fn_1_4F734(&packet);
+
+    packet = lbl_1_rodata_26F8;
+    packet.unk0 = d;
+    packet.x = (f32)(arg0 + 8);
+    packet.y = (f32)(arg1 - 1);
+    packet.z = (f32)c;
+    packet.unk30 = 0x8000d;
+    if (fnptr) {
+        packet.unk50 = fnptr;
+        packet.unk30 |= 0x4000000;
+    }
+    packet.unk2c = lbl_3_rodata_8F0[0];
+    fn_1_4F734(&packet);
+
+    packet = lbl_1_rodata_26F8;
+    packet.unk0 = d;
+    packet.x = (f32)(arg0 - 8);
+    packet.y = (f32)(arg1 + 1);
+    packet.z = (f32)c;
+    fzgx_value = 0x100007;
+    packet.unk30 = fzgx_value;
+    if (fnptr) {
+        packet.unk50 = fnptr;
+        packet.unk30 |= 0x4000000;
+    }
+    packet.unk2c = lbl_3_rodata_8F0[0];
+    fn_1_4F734(&packet);
+
+    packet = lbl_1_rodata_26F8;
+    packet.unk0 = d;
+    packet.x = (f32)(arg0 + 8);
+    packet.y = (f32)(arg1 + 1);
+    packet.z = (f32)c;
+    packet.unk30 = 0x180005;
+    if (fnptr) {
+        packet.unk50 = fnptr;
+        packet.unk30 |= 0x4000000;
+    }
+    packet.unk2c = lbl_3_rodata_8F0[0];
+    fn_1_4F734(&packet);
+}
+#pragma opt_loop_invariants reset
+#pragma opt_dead_assignments reset
+#pragma opt_strength_reduction reset
+/* fzgx:end fn_3_28378 */
+
 /* fzgx:begin fn_3_2A2F8 */
 #include "font.h"
 
