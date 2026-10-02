@@ -737,6 +737,48 @@ void fn_1_FD388(void) {
 }
 /* fzgx:end fn_1_FD388 */
 
+/* fzgx:begin fn_1_FDB40 */
+typedef struct {
+    u32 b0 : 5;
+    u32 b5 : 1;
+    u32 rest : 26;
+} FDB40Bits;
+
+static inline u32 rotl(u32 x, int n) { return (x >> n) & 1; }
+
+s32 fn_1_FDB40(void **arg0) {
+    u8 *p;
+    u8 *q;
+    if (arg0 == 0) {
+        return 0;
+    }
+    p = *arg0;
+    if (p == 0) {
+        return 0;
+    }
+    if (*(s16 *)(p + 800) >= 4) {
+        return 0;
+    }
+    if (*(u32 *)(p + 932) == 0) {
+        return 0;
+    }
+    if (*(s16 *)(p + 954) == 5) {
+        return 0;
+    }
+    if (__rlwnm(*(u32 *)(p + 912), 6, 31, 31) && *(u32 *)(p + 928) == 0) {
+        return 0;
+    }
+    if ((*(u32 *)(p + 912) & 0x200000) != 0) {
+        return 0;
+    }
+    q = *(u8 **)(p + 812);
+    if (q != 0 && (*(u32 *)(q + 1420) & 0x10) != 0) {
+        return 0;
+    }
+    return 1;
+}
+/* fzgx:end fn_1_FDB40 */
+
 /* fzgx:begin fn_1_FDFF4 */
 #include "rel/main_rel/bg_cas.h"
 
