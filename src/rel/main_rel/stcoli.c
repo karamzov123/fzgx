@@ -4085,6 +4085,54 @@ void fn_1_2D524(struct fn_1_2D524_Arg0 *arg0) {
 }
 /* fzgx:end fn_1_2D524 */
 
+/* fzgx:begin fn_1_2E268 noprologue */
+#include "rel/main_rel/stcoli.h"
+
+extern u32 fn_1_3F2A0(void);
+
+#pragma opt_lifetimes off
+static inline u8 fn_1_2E268_array_read(u8 *array, s32 index) { u8 *p = array + index; return *p; }
+#pragma opt_lifetimes reset
+
+#pragma opt_common_subs off
+void fn_1_2E268(void) {
+    Obj_1_bss_3C30 *state = &lbl_1_bss_3C30;
+    u8 *values;
+    int i;
+    int j;
+    for (i = 0; lbl_1_bss_3C30.unk_9 > i; i++) {
+        Obj_1_bss_3C30 *row = (Obj_1_bss_3C30 *)((u8 *)&lbl_1_bss_3C30 + i * 0xA0);
+        u8 *record = (u8 *)&row->unk_D4;
+        *(u16 *)(4 + record) = 0;
+        *(u32 *)(0x78 + record) = 0;
+        *(u16 *)(6 + record) = 0;
+        if (0 == lbl_1_bss_3C30.unk_5) {
+            *(u16 *)(4 + record) = (&lbl_1_bss_3C30.unk_1480)[i];
+            *(u16 *)(0x9E + record) = (&lbl_1_bss_3C30.unk_1478)[i];
+            record[0x83] = fn_1_2E268_array_read(record, 8);
+        } else {
+            for (j = 0; j < lbl_1_bss_3C30.unk_A7; j++) {
+                values = record + j;
+                *(u16 *)(4 + record) += values[9];
+                *(u16 *)(6 + record) += values[0x13];
+                *(u32 *)(0x78 + record) += ((u16 *)record)[j + 0x26];
+            }
+        }
+        record[lbl_1_bss_3C30.unk_A7 + 0xE] = 0xFF;
+    }
+    if (0 != state->unk_A7) {
+        fn_1_3F2A0();
+    } else {
+        for (i = 0; i < state->unk_9; i++) {
+            u8 id = ((u8 *)(&state->unk_2C)[i])[0x115];
+            (&lbl_1_bss_3C30.unk_1394)[id] = i;
+            ((Obj_1_bss_3C30 *)((u8 *)state + i * 0xA0))->unk_DC = id;
+        }
+    }
+}
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_2E268 */
+
 /* fzgx:begin fn_1_3FCD4 */
 void fn_1_3FCD4(u32 mask) {
     if (mask == 0) {
