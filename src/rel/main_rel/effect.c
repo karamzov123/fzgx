@@ -1060,6 +1060,139 @@ void fn_1_5A8D0(Fn1_5A8D0Data *data) {
 }
 /* fzgx:end fn_1_5A8D0 */
 
+/* fzgx:begin fn_1_5A8DC */
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 60.0f;
+    s = 0.10000000149011612f;
+    s = 32767.0f;
+    s = 0.05000000074505806f;
+    d = 0.07;
+    s = 20000.0f;
+}
+static const u32 fzgx_pool_table2[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep2(void) { const u32 *volatile cp; cp = fzgx_pool_table2; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime3(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    d = 4503599627370496.0;
+    s = 1.0f;
+    s = -0.029999999329447746f;
+    d = 15.0;
+    d = 4503601774854144.0;
+    d = 1.5;
+    d = 0.5;
+    s = 0.0f;
+    s = 0.5f;
+    s = 8.0f;
+    s = 255.0f;
+    s = 15.0f;
+    s = 0.20000000298023224f;
+    s = 0.07999999821186066f;
+    s = 0.25f;
+    s = 0.9800000190734863f;
+    s = 0.9900000095367432f;
+    s = 40.0f;
+    s = 20.0f;
+    s = 1.5f;
+    s = 0.44999998807907104f;
+    s = -2.0f;
+    s = 0.0833333358168602f;
+    s = 0.15000000596046448f;
+    s = 0.125f;
+    s = -0.4000000059604645f;
+    s = -0.30000001192092896f;
+    s = 2.0f;
+    s = 250.0f;
+    d = 0.6;
+    d = 0.4;
+    s = 0.30000001192092896f;
+    s = -0.004000000189989805f;
+}
+#pragma section code_type ".text"
+
+typedef struct { f32 x,y,z; } Vec3_5A8DC;
+typedef struct {
+ u8 pad_0[0x18]; s16 unk_18; u8 pad_1A[2];
+ Vec3_5A8DC unk_1C; u8 pad_28[0x14];
+ Vec3_5A8DC unk_3C; u8 pad_48[0x4C];
+ Vec3_5A8DC unk_94;
+} Arg_5A8DC;
+typedef struct {
+ s8 unk_0; u8 pad_1; s16 unk_2,unk_4; u8 pad_6[6];
+ s16 unk_C; u8 pad_E[0xA]; s16 unk_18; u16 unk_1A;
+ Vec3_5A8DC unk_1C; f32 unk_28,unk_2C; u8 pad_30[4];
+ u32 unk_34; u8 pad_38[4];
+ Vec3_5A8DC unk_3C,unk_48; s16 unk_54,unk_56;
+ u8 pad_58[0x3C]; Vec3_5A8DC unk_94; u8 pad_A0[0x48];
+} Effect_5A8DC;
+extern void *lbl_801A6D00;
+extern void fn_1_8645C(int, void *);
+extern void lbl_8006E1B0(void *, void *);
+extern void *lbl_8006E1F0(void *, f32, f32, f32);
+extern void fn_8006EF10(void *, s16 *, s16 *);
+extern u32 fn_1_3FC58(void);
+extern void *memset(void *, int, u32);
+extern void *memcpy(void *, const void *, u32);
+
+static inline s32 allocate_5A8DC(void) {
+ Effect_5A8DC *p = *(Effect_5A8DC **)&lbl_1_bss_6C848;
+ s32 i;
+ for (i=0; i<190; i++,p++) {
+  if(p->unk_0 == 0) { p->unk_0=1; return i; }
+ }
+ return -1;
+}
+void fn_1_5A8DC(Arg_5A8DC *arg0) {
+ Vec3_5A8DC loc_20;
+ Vec3_5A8DC old;
+ Vec3_5A8DC loc_8;
+ Effect_5A8DC loc_2C;
+ f32 dx,dy,dz;
+ s32 i;
+ Effect_5A8DC *p;
+ old = arg0->unk_3C;
+ fn_1_8645C(arg0->unk_18, lbl_801A6D00);
+ lbl_8006E1B0(&arg0->unk_94, &loc_20);
+ lbl_8006E1F0(&loc_8, 0.0f, 0.0f, 1.0f);
+ dx = loc_20.x-old.x;
+ dy = loc_20.y-old.y;
+ dz = loc_20.z-old.z;
+ arg0->unk_3C = loc_20;
+ memset(&loc_2C,0,sizeof(loc_2C));
+ loc_2C.unk_18 = arg0->unk_18;
+ loc_2C.unk_C = 9;
+ loc_2C.unk_1A = 65535;
+ loc_2C.unk_34 = *(u32 *)(lbl_1_bss_38458->unk_8+0x120);
+ loc_2C.unk_3C = loc_20;
+ loc_2C.unk_94 = arg0->unk_94;
+ loc_2C.unk_48.x = dx;
+ loc_2C.unk_48.y = dy;
+ loc_2C.unk_48.z = dz;
+ loc_2C.unk_3C.x -= dx;
+ loc_2C.unk_3C.y -= dy;
+ loc_2C.unk_3C.z -= dz;
+ fn_8006EF10(&loc_8,&loc_2C.unk_54,&loc_2C.unk_56);
+ loc_2C.unk_28 = 0.3f;
+ lbl_1_data_1D628 = lbl_1_data_1D628 * 0x41C64E6D + 12345;
+ loc_2C.unk_2C = 0.3f + (f32)(0.2f * ((f32)((lbl_1_data_1D628 >> 16)&0x7FFF) / 32767.0f));
+ loc_2C.unk_1C = arg0->unk_1C;
+ if ((s32)fn_1_3FC58() == 0) {
+  i = allocate_5A8DC();
+  if(i>=0) {
+   arg0 = (Arg_5A8DC *)&(*(Effect_5A8DC **)&lbl_1_bss_6C848)[i];
+   memcpy(arg0,&loc_2C,sizeof(loc_2C));
+   ((Effect_5A8DC *)arg0)->unk_0=1;
+   ((Effect_5A8DC *)arg0)->unk_2=i;
+   ((void (**)(Effect_5A8DC *))lbl_1_data_1D1D8)[((Effect_5A8DC *)arg0)->unk_C]((Effect_5A8DC *)arg0);
+   ((Effect_5A8DC *)arg0)->unk_4=lbl_1_bss_6C850.unk_0;
+   lbl_1_bss_6C850.unk_0++;
+   if(lbl_1_bss_6C850.unk_0<0) lbl_1_bss_6C850.unk_0=0;
+  }
+ }
+}
+/* fzgx:end fn_1_5A8DC */
+
 /* fzgx:begin fn_1_5ABC4 */
 // fn_1_5ABC4: empty in retail (single blr).
 void fn_1_5ABC4(void) {
