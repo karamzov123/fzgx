@@ -877,6 +877,91 @@ void fn_1_59B00(fn_1_59B00_Effect *effect) {
 }
 /* fzgx:end fn_1_59B00 */
 
+/* fzgx:begin fn_1_59B90 noprologue */
+#include "dolphin/types.h"
+#include "psvec.h"
+#include "rel/main_rel/effect.h"
+
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+} Vec3;
+
+typedef struct {
+    f32 m[12];
+} Mtx;
+
+typedef struct {
+    u8 pad_0[0x8];
+    Vec3 v8;
+    f32 f14;
+} NodeObj;
+
+typedef struct {
+    u8 pad_0[0x90];
+    NodeObj *unk_90;
+} MgrObj;
+
+typedef struct {
+    u8 pad_0[0x28];
+    f32 f28;
+    u8 pad_2C[0x10];
+    u32 unk_3C;
+    u8 pad_40[0x14];
+    s16 unk_54;
+    s16 unk_56;
+} SelfObj;
+
+extern const f32 lbl_1_rodata_2954[2];
+extern u32 lbl_801A6D00[2];
+extern void lbl_8006D9D8(void *, u32);
+extern void mathutil_mtxA_rotate_y(s16);
+extern void mathutil_mtxA_rotate_x(s16);
+extern void lbl_8006E14C(f32);
+extern s32 fn_1_54E34(Vec3 *, f32);
+extern void lbl_8006DB74(void *);
+extern f32 lbl_8006D0B4(f32);
+extern void lbl_8006D848(f32);
+extern void lbl_8006DFC4(void *);
+extern void fn_1_56000(u8, u8, u8);
+extern void u_gxutil_upload_some_mtx(u32, u32);
+extern void fn_1_556B8(void *);
+
+#pragma opt_common_subs off
+void fn_1_59B90(SelfObj *arg0) {
+    MgrObj *mgr;
+    NodeObj *r;
+    Mtx pos;
+    Vec3 dir;
+    f32 len;
+    f32 t;
+
+    mgr = (MgrObj *)(void *)lbl_1_bss_38458->unk_8;
+    r = mgr->unk_90;
+    lbl_8006D9D8(&arg0->unk_3C, (u32)mgr);
+    mathutil_mtxA_rotate_y(arg0->unk_56);
+    mathutil_mtxA_rotate_x(arg0->unk_54);
+    lbl_8006E14C(arg0->f28 / r->f14);
+    if (fn_1_54E34(&r->v8, arg0->f28) != 0) {
+        psvec_set(&dir, *(f32 *)(0xE0000000 + 0x2C), *(f32 *)(0xE0000000 + 0x1C), *(f32 *)(0xE0000000 + 0x0C));
+        lbl_8006DB74(&pos);
+        len = dir.x * dir.x;
+        len += dir.y * dir.y;
+        len += dir.z * dir.z;
+        len = lbl_8006D0B4(len);
+        t = (len - lbl_1_rodata_2954[0]) / len;
+        lbl_8006D848(t);
+        lbl_8006DFC4(&pos);
+        fn_1_56000(1, 3, 0);
+        u_gxutil_upload_some_mtx(*lbl_801A6D00, 0);
+        fn_1_556B8(r);
+        fn_1_56000(1, 3, 1);
+    }
+}
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_59B90 */
+
 /* fzgx:begin fn_1_59CC4 */
 // fn_1_59CC4: empty in retail (single blr).
 void fn_1_59CC4(void) {
