@@ -2225,6 +2225,18 @@
   },
   {
     "module": "interview",
+    "source": "rel/interview/interview/fn_17_3C5C.c",
+    "symbols": [
+      "fn_17_3C5C"
+    ],
+    "status": "nonmatching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/interview/interview.c",
+    "pool": true
+  },
+  {
+    "module": "interview",
     "source": "rel/interview/interview/fn_17_416C.c",
     "symbols": [
       "fn_17_416C"

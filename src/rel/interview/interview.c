@@ -551,6 +551,127 @@ void fn_17_38C4(void) {
 }
 /* fzgx:end fn_17_38C4 */
 
+/* fzgx:begin fn_17_3C5C pool */
+struct fn_17_3C5C_Obj {
+    u8 pad_0[5];
+    u8 unk_5;
+    u8 pad_6[8];
+    u8 unk_E;
+};
+
+struct fn_17_3C5C_Bss {
+    u8 pad_0[0x10];
+    struct fn_17_3C5C_Obj *unk_10;
+    u8 pad_14[0xC4];
+    u32 unk_D8[8];
+    u8 unk_F8;
+};
+
+extern s16 fn_1_12CCB0(s16, s16);
+extern s16 fn_1_12CB04(s16);
+extern void fn_17_3A28(s16, s16, s16);
+
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+u8 fzgx_obj_lbl_17_bss_0;
+u8 fzgx_obj_lbl_17_bss_1;
+u8 lbl_17_bss_2;
+u8 lbl_17_bss_3;
+u32 lbl_17_bss_3_fill_4[2];
+u32 lbl_17_bss_C;
+struct fn_17_3C5C_Obj *lbl_17_bss_10;
+u32 fzgx_obj_lbl_17_bss_14;
+u32 fzgx_obj_lbl_17_bss_18[2];
+u32 lbl_17_bss_20;
+u32 lbl_17_bss_24[4];
+u32 lbl_17_bss_34[8];
+u32 fzgx_obj_lbl_17_bss_54;
+u32 fzgx_obj_lbl_17_bss_58[2];
+u32 fzgx_obj_lbl_17_bss_60[29];
+u16 lbl_17_bss_60_fill_D4;
+u16 fzgx_obj_lbl_17_bss_D6;
+u32 fzgx_obj_lbl_17_bss_D8[8];
+u8 lbl_17_bss_D8_20;
+u8 lbl_17_bss_D8_fill_F9;
+
+#pragma section code_type ".fzgxpool"
+static void fzgx_bss_layout(void) {
+    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */
+    s = *(u8 *)&fzgx_obj_lbl_17_bss_0;
+    s = *(u8 *)&fzgx_obj_lbl_17_bss_1;
+    s = *(u8 *)&lbl_17_bss_2;
+    s = *(u8 *)&lbl_17_bss_3;
+    s = *(u8 *)&lbl_17_bss_3_fill_4;
+    s = *(u8 *)&lbl_17_bss_C;
+    s = *(u8 *)&lbl_17_bss_10;
+    s = *(u8 *)&fzgx_obj_lbl_17_bss_14;
+    s = *(u8 *)&fzgx_obj_lbl_17_bss_18;
+    s = *(u8 *)&lbl_17_bss_20;
+    s = *(u8 *)&lbl_17_bss_24;
+    s = *(u8 *)&lbl_17_bss_34;
+    s = *(u8 *)&fzgx_obj_lbl_17_bss_54;
+    s = *(u8 *)&fzgx_obj_lbl_17_bss_58;
+    s = *(u8 *)&fzgx_obj_lbl_17_bss_60;
+    s = *(u8 *)&lbl_17_bss_60_fill_D4;
+    s = *(u8 *)&fzgx_obj_lbl_17_bss_D6;
+    s = *(u8 *)&fzgx_obj_lbl_17_bss_D8;
+    s = *(u8 *)&lbl_17_bss_D8_20;
+    s = *(u8 *)&lbl_17_bss_D8_fill_F9;
+}
+#pragma section code_type ".text"
+
+void fn_17_3C5C(void) {
+    
+    s16 i;
+    struct fn_17_3C5C_Obj *obj;
+    s16 id;
+    s32 j;
+    u32 *ptr;
+
+    obj = lbl_17_bss_10;
+    ptr = fzgx_obj_lbl_17_bss_D8;
+    for (j = 0; j < 8; j++) {
+        *ptr++ = 0;
+    }
+
+    for (i = 0; i < 2; i++) {
+        if (i == 0) {
+            id = obj->unk_5;
+        } else {
+            switch (lbl_17_bss_D8_20) {
+            case 0:
+                obj->unk_E = 1;
+                break;
+            case 1:
+                obj->unk_E = 2;
+                break;
+            case 2:
+                obj->unk_E = 4;
+                break;
+            default:
+                obj->unk_E = 8;
+                break;
+            }
+            fn_17_3A28(0x2c, 1, 1);
+            return;
+        }
+        switch (fn_1_12CB04(id)) {
+        case 2:
+            fn_17_3A28(id, i, i);
+            fn_17_3A28(fn_1_12CCB0(id, 0), 2, i);
+            fn_17_3A28(fn_1_12CCB0(id, 1), 3, i);
+            break;
+        case 1:
+            fn_17_3A28(id, i, i);
+            fn_17_3A28(fn_1_12CCB0(id, 0), 2, i);
+            break;
+        case 0:
+            fn_17_3A28(id, i, i);
+            break;
+        }
+    }
+}
+/* fzgx:end fn_17_3C5C */
+
 /* fzgx:begin fn_17_416C */
 extern u32 lbl_17_bss_34[8];
 extern u32 lbl_17_bss_D8[8];
