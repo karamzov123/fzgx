@@ -1223,6 +1223,126 @@ void fn_1_10268(Camera_1_10268 *arg) {
 }
 /* fzgx:end fn_1_10268 */
 
+/* fzgx:begin fn_1_11544 */
+#pragma fp_contract off
+
+
+extern s32 fn_1_40BB4(void);
+extern void fn_1_862D4(s16, void *);
+extern void fn_1_8636C(s16, void *);
+extern void fn_1_862A8(s16, void *);
+extern const f64 lbl_1_rodata_540;
+extern const f32 lbl_1_rodata_604;
+extern void *fn_1_20A5C(void *, void *);
+extern void fn_1_15578(void *, void *, void *, void *, s32, void *, s32, s32, s32, s32);
+extern void lbl_8006DC6C(void *);
+extern void lbl_8006E1B0(void *, void *);
+extern void lbl_8006DAEC(void);
+extern void lbl_8006DB30(void);
+
+typedef struct {
+    f32 x, y, z;
+} Vec3f;
+
+typedef struct LiveCam {
+    u8 unk_0;
+    u8 pad_1[3];
+    s16 unk_4;
+    s16 unk_6;
+    u8 pad_8[0xC];
+    s16 unk_14;
+    u8 pad_16[6];
+    u8 unk_1c[0x30];
+    Vec3f unk_4c;
+    u8 pad_58[0x18];
+    Vec3f unk_70;
+} LiveCam;
+
+#pragma opt_propagation off
+#pragma opt_dead_assignments on
+#pragma opt_strength_reduction off
+void fn_1_11544(LiveCam *cam) {
+    f32 fzgx_live_;
+    f32 fzgx_live;
+    Vec3f sp_3c;
+    s16 *fzgx_value;
+    f32 sp_48[3][4];
+    Vec3f sp_30;
+    Vec3f sp_24;
+    Vec3f sp_18;
+    void *sp_14;
+    u32 sp_10;
+    f32 rate;
+    f32 factor;
+    f32 fzgx_y_;
+    f32 fzgx_y;
+    f32 fzgx_z_;
+    f32 fzgx_z;
+    f32 z;
+    f32 y;
+    f32 x;
+    f32 *const lc = (f32 *)0xE0000000; // fzgx-allow: A2 locked cache address
+
+    if (cam->unk_0 == 3 && fn_1_40BB4() == 0) {
+        if ((lbl_1_bss_9F8.unk_A >> 1) & 1) {
+            cam->unk_14++;
+        }
+        if (lbl_1_bss_9F8.unk_A & 1) {
+            cam->unk_14--;
+        }
+        if (cam->unk_14 > 5) {
+            cam->unk_14 = 0;
+        }
+        if (cam->unk_14 < 0) {
+            fzgx_value = &(cam->unk_14);
+            *fzgx_value = 5;
+        }
+    }
+
+    fn_1_862D4(cam->unk_6, &sp_3c);
+    fn_1_8636C(cam->unk_6, sp_48);
+    fn_1_862A8(cam->unk_6, &sp_30);
+    lbl_8006DC6C(sp_48);
+
+    x = sp_3c.x;
+    y = sp_3c.y;
+    z = sp_3c.z;
+    lc[3] = x;
+    lc[7] = y;
+    lc[11] = z;
+    lbl_8006E1B0((u8 *)&lbl_1_data_4754 + cam->unk_4 * 16, cam->unk_1c);
+
+    cam->unk_4c = sp_3c;
+
+
+    factor = lbl_1_data_4484.unk_0;
+    rate = (0.0500000007f);
+
+    fzgx_live_ = cam->unk_70.x;
+    fzgx_live = fzgx_live_;
+    cam->unk_70.x += ((((sp_30.x - fzgx_live)) * ((0.0500000007f))) * (factor));
+
+    fzgx_y_ = cam->unk_70.y;
+    fzgx_y = fzgx_y_;
+    cam->unk_70.y += ((sp_30.y - fzgx_y) * (0.0500000007f)) * factor;
+
+    fzgx_z_ = cam->unk_70.z;
+    fzgx_z = fzgx_z_;
+    cam->unk_70.z += ((sp_30.z - fzgx_z) * (0.0500000007f)) * factor;
+
+    lbl_8006DAEC();
+    sp_14 = fn_1_20A5C(cam->unk_1c, &sp_10);
+    sp_24 = cam->unk_4c;
+    fn_1_15578(cam->unk_1c, &sp_24, &sp_10, &sp_18, 0x40005, &sp_14, 1, 0, 0, 0);
+    lbl_8006DB30();
+}
+#pragma opt_strength_reduction reset
+
+#pragma opt_dead_assignments reset
+
+#pragma opt_propagation reset
+/* fzgx:end fn_1_11544 */
+
 /* fzgx:begin fn_1_11ABC */
 #include "dolphin/hw_regs.h"
 #include "types.h"

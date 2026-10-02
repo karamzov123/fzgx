@@ -42738,6 +42738,21 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/live_camera/fn_1_11544.c",
+    "symbols": [
+      "fn_1_11544"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/live_camera.c",
+    "pool": {
+      "@20": "lbl_1_rodata_540",
+      "@18": "lbl_1_rodata_604"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/live_camera/fn_1_11ABC.c",
     "symbols": [
       "fn_1_11ABC"
