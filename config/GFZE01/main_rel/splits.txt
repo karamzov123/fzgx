@@ -6800,3 +6800,6 @@ rel/main_rel/motasglist/fn_1_43264.c:
 
 rel/main_rel/effect/fn_1_59B90.c:
 	.text       start:0x00059B90 end:0x00059CC4 align:4
+
+rel/main_rel/effect_car/fn_1_6FD58.c:
+	.text       start:0x0006FD58 end:0x0006FFA0 align:4

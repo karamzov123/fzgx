@@ -37817,6 +37817,27 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/effect_car/fn_1_6FD58.c",
+    "symbols": [
+      "fn_1_6FD58"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/effect_car.c",
+    "pool": {
+      "...rodata.0": "lbl_1_rodata_2D70",
+      "@61": "lbl_1_rodata_2D70+0xC4",
+      "@5": "lbl_1_rodata_2D70",
+      "@20": "lbl_1_rodata_2D70+0x40",
+      "@14": "lbl_1_rodata_2D70+0x24",
+      "@71": "lbl_1_rodata_2D70+0xD0",
+      "@307": "lbl_1_rodata_2D70+0x338",
+      "@308": "lbl_1_rodata_2D70+0x340"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/effect_car/fn_1_71CA0.c",
     "symbols": [
       "fn_1_71CA0"
