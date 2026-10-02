@@ -703,6 +703,84 @@ void fn_1_156B18(fn_1_156B18_State *state) {
 }
 /* fzgx:end fn_1_156B18 */
 
+/* fzgx:begin fn_1_156F54 */
+typedef struct {
+    u32 flags;
+    u32 resource;
+    u8 _pad08[0xc];
+    u32 key;
+    u8 _pad18[0x34];
+    u8 status;
+} RankingState;
+
+typedef struct {
+    u8 kind;
+    u8 _pad01[3];
+    u32 size;
+    u32 value;
+    u8 limit;
+    u8 _pad0d;
+    u16 span;
+    u16 duration;
+    u16 _pad12;
+    u16 _pad14;
+    u32 count;
+    u32 rate;
+    u8 _pad20;
+    u8 _pad21;
+} Request;
+
+extern int fn_8006B55C(u32, u32 *, Request *);
+extern int fn_8006B628(u32, Request *);
+extern int fn_8006B6F8(u32);
+
+static inline int OpenRequest(RankingState *state, Request *request) {
+    int success = 0;
+    u32 key = state->key;
+    u32 resource = state->resource;
+
+    if (key + 0x10000 == 0xffff) {
+        if (fn_8006B55C(resource, &state->key, request) >= 0) {
+            success = 1;
+        }
+    } else {
+        if (fn_8006B628(key, request) >= 0) {
+            success = 1;
+        }
+    }
+    return success;
+}
+
+void fn_1_156F54(RankingState *state) {
+    Request request;
+
+    if (state->status & 8) {
+        request.kind = 4;
+        request.size = 0x17c;
+        request.value = 0;
+        request.limit = 0xa0;
+        request.span = 0x5a;
+        request.duration = 0x1e;
+        request._pad12 = 0;
+        request._pad14 = 0;
+        request.count = 5;
+        request.rate = 100;
+        request._pad20 = 0;
+        request._pad21 = 0;
+
+        if (!(state->flags & 8)) {
+            if (OpenRequest(state, &request) && !(state->flags & 8)) {
+                if (fn_8006B6F8(state->key) >= 0) {
+                    state->flags |= 8;
+                }
+            }
+        } else {
+            fn_8006B6F8(state->key);
+        }
+    }
+}
+/* fzgx:end fn_1_156F54 */
+
 /* fzgx:begin fn_1_157070 */
 extern f32 lbl_1_rodata_D8C8[18];
 extern s32 fn_8006B55C(u32, void *, void *);

@@ -6611,3 +6611,6 @@ rel/main_rel/bg_san/fn_1_DC084.c:
 
 rel/main_rel/bitmap/fn_1_47E54.c:
 	.text       start:0x00047E54 end:0x00047EE4 align:4
+
+rel/main_rel/ranking/fn_1_156F54.c:
+	.text       start:0x00156F54 end:0x00157070 align:4
