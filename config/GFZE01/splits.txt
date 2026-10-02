@@ -5594,3 +5594,6 @@ dol/TRKInitializeSerialHandler.c:
 
 dol/fn_80065D70.c:
 	.text       start:0x80065D70 end:0x80065F34 align:4
+
+dol/fn_8006EB4C.c:
+	.text       start:0x8006EB4C end:0x8006ED0C align:4
