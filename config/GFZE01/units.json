@@ -34667,6 +34667,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/car/fn_1_8E728.c",
+    "symbols": [
+      "fn_1_8E728"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/car.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/car/fn_1_8F45C.c",
     "symbols": [
       "fn_1_8F45C"

@@ -5444,6 +5444,52 @@ void fn_1_8E480(void) {
 }
 /* fzgx:end fn_1_8E480 */
 
+/* fzgx:begin fn_1_8E728 noprologue */
+#include "types.h"
+
+struct Sig_fn_800713E0_fn_800713E0_Entry {
+    u8 pad_0[0x18];
+    u16 count;
+};
+
+struct Sig_fn_800713E0_fn_800713E0_Arg0 {
+    s32 count;
+    u8 pad_4[0x4];
+    struct Sig_fn_800713E0_fn_800713E0_Entry **entries;
+};
+
+extern void fn_800713E0(struct Sig_fn_800713E0_fn_800713E0_Arg0 *, u32);
+
+struct Unk_1_8E728 {
+    u8 pad_0[0x98];
+    u8 field_98;
+    u8 pad_1[0x3];
+    s32 field_9c;
+    u8 pad_2[0x44];
+    u32 field_e4[5];
+    u32 field_f8[5][4];
+};
+
+void fn_1_8E728(struct Unk_1_8E728 *p, u8 arg1) {
+    s32 i;
+    u8 idx;
+
+    if (p != 0) {
+        idx = (u8)((u8)arg1 % 4);
+        if ((__rlwnm(p->field_9c, ((idx + 1) & 31), 31, 31) != 0)) {
+            for (i = 0; i < 5; i++) {
+                u32 v0 = p->field_e4[i];
+                u32 v1 = p->field_f8[i][idx];
+                if (v0 != 0 && v1 != 0) {
+                    fn_800713E0((struct Sig_fn_800713E0_fn_800713E0_Arg0 *)v0, v1);
+                }
+            }
+            p->field_98 = idx;
+        }
+    }
+}
+/* fzgx:end fn_1_8E728 */
+
 /* fzgx:begin fn_1_8F45C */
 void fn_1_8F45C(Fn1_8F45C_Object *obj) {
     obj->field_4 = -1;
