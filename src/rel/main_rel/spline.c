@@ -1695,6 +1695,112 @@ void fn_1_FA898(void) {
 }
 /* fzgx:end fn_1_FA898 */
 
+/* fzgx:begin fn_1_FA89C noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
+extern const f32 lbl_1_rodata_7490[];
+extern const f32 lbl_1_rodata_7494;
+extern const f64 lbl_1_rodata_7498;
+extern const f64 lbl_1_rodata_74A0;
+extern u32 __cvt_fp2unsigned(f64);
+extern void fn_1_5948(int);
+extern void fn_1_627C(int);
+extern int fn_1_58C4(void);
+extern void fn_1_A714C(f32 *, f32 *, f32 *, f32 *);
+extern void fn_80015CB0(f32 *, f32, f32, f32, f32, f32, f32);
+extern void fn_80038FD8(u32 *, u32 *, u32 *, u32 *);
+
+typedef struct SplineEntry {
+    u8 pad0[0x104];
+    u32 f104;
+    u8 pad1[0xC];
+    u32 f114;
+    u8 pad2[0xC];
+    u32 f124;
+    u8 pad3[0xC];
+    u32 f134;
+    u8 pad4[0xC];
+    u32 f144;
+    u8 pad5[0xC];
+    u32 f154;
+    u8 pad6[0xC];
+    f32 f164;
+} SplineEntry;
+
+typedef struct SplineMain {
+    u8 pad0[4];
+    u8 unk_4;
+    u8 pad5[0x163];
+    f32 unk_168;
+} SplineMain;
+
+#pragma opt_common_subs off
+void fn_1_FA89C(SplineMain *arg0) {
+    SplineEntry *v4;
+    u8 *v3;
+    f32 v1;
+    u32 v7;
+    u32 v5;
+    u32 v8;
+    f32 fzgx_live;
+    u32 v6;
+    s32 v2;
+    SplineEntry *v0;
+    s16 v9;
+    s16 v10;
+    f32 v11;
+    f32 v12;
+    f32 v13;
+    f32 v14;
+    f32 v15;
+    f32 v16;
+    f32 sp14;
+    f32 sp10;
+    f32 spC;
+    f32 sp8;
+    int t0;
+    u32 t3;
+    u32 t4;
+
+    t0 = fn_1_58C4();
+    v0 = (SplineEntry *)((u8 *)arg0 + 4);
+    v1 = lbl_1_rodata_7490[0];
+    arg0->unk_4 = 0;
+    arg0->unk_168 = v1;
+    v2 = 0;
+    v4 = v0;
+    v3 = (u8 *)v0;
+    while (v2 < t0) {
+        fn_1_5948(v2);
+        fn_80038FD8(&v4->f104, &v4->f114, &v4->f124, &v4->f134);
+        t3 = (u32)((f32)v4->f124 / v0->f164);
+        v4->f144 = t3;
+        t4 = (u32)((f32)v4->f134 / v0->f164);
+        v4->f154 = t4;
+        v5 = v4->f124;
+        v6 = v4->f134;
+        v7 = v4->f104;
+        v8 = v4->f114;
+        v9 = (s16)(v7 + (v5 >> 1));
+        v10 = (s16)(v8 + (v6 >> 1));
+        v11 = (f32)((f32)(s16)v7 / (f32)(s16)v9);
+        v12 = (f32)(s16)v8;
+        v13 = (f32)(v11 - v1);
+        v14 = (f32)((f32)(v12 / (f32)(s16)v10) - v1);
+        fn_1_A714C(&sp14, &sp10, &spC, &sp8);
+        v15 = (f32)((f32)((f32)((f32)(s16)(v8 + v6) / (f32)(s16)v10) - v1) - v14);
+        v16 = (f32)((f32)((f32)((f32)(s16)(v7 + v5) / (f32)(s16)v9) - v1) - v13);
+        fn_80015CB0((f32 *)(((0x44) + (v3))), sp14, sp10, (f32)(v1 / v16), (f32)(lbl_1_rodata_7494 / v15), (f32)((-v13) / v16), (f32)((-v14) / v15));
+        fn_1_627C(v2);
+        v4 = (SplineEntry *)((u8 *)v4 + 4);
+        v3 += 0x30;
+        v2++;
+    }
+}
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_FA89C */
+
 /* fzgx:begin fn_1_FB0A8 */
 Obj_1_bss_84428 *fn_1_FB0A8(void) {
     return &lbl_1_bss_84428;
