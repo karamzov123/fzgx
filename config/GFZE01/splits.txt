@@ -5600,3 +5600,6 @@ dol/fn_8006EB4C.c:
 
 dol/fn_8004AC58.c:
 	.text       start:0x8004AC58 end:0x8004AD84 align:4
+
+dol/fn_8004AEF0.c:
+	.text       start:0x8004AEF0 end:0x8004B0EC align:4
