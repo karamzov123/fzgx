@@ -37011,6 +37011,22 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/effect/fn_1_67F20.c",
+    "symbols": [
+      "fn_1_67F20"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/effect.c",
+    "pool": {
+      "...rodata.0": "lbl_1_rodata_2950",
+      "@16": "lbl_1_rodata_2988",
+      "@8": "lbl_1_rodata_295C"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/effect/fn_1_68054.c",
     "symbols": [
       "fn_1_68054"
