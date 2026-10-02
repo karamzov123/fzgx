@@ -6887,3 +6887,6 @@ rel/main_rel/spline/fn_1_F83F0.c:
 
 rel/main_rel/screen_effect/fn_1_7BB80.c:
 	.text       start:0x0007BB80 end:0x0007BCCC align:4
+
+rel/main_rel/driver/fn_1_A8270.c:
+	.text       start:0x000A8270 end:0x000A8528 align:4

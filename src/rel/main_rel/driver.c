@@ -545,6 +545,128 @@ void fn_1_A7F84(void *arg0, u32 arg1) {
 }
 /* fzgx:end fn_1_A7F84 */
 
+/* fzgx:begin fn_1_A8270 noprologue */
+#include "types.h"
+#include "rel/main_rel/driver.h"
+
+struct fn_1_A8270_Entry {
+	u32 unk_0;
+	u32 unk_4;
+	u32 unk_8;
+	u8 pad_C[0x18];
+};
+
+struct fn_1_A8270_Rec {
+	u8 pad_0[4];
+	u32 unk_4;
+	u8 pad_8[0x16];
+	u8 count;
+};
+
+struct fn_1_A8270_Arg0 {
+	u8 pad_0[0xE8];
+	u8 unk_E8;
+	u8 unk_E9;
+	s16 unk_EA;
+	s16 unk_EC;
+	s16 unk_EE;
+	void *unk_F0;
+	u8 pad_F4[8];
+	struct fn_1_A8270_Entry *unk_FC;
+	s32 unk_100;
+	u32 unk_104;
+	u8 pad_108[0x24];
+	u32 *unk_12C[12];
+};
+
+extern void _savegpr_23(void);
+extern void _restgpr_23(void);
+extern u32 fn_80077A18(void);
+extern void lbl_8006DAEC(void);
+extern struct fn_1_A8270_Rec *fn_80071268(u32, u32);
+extern void lbl_8006D9D8(void *);
+extern void mathutil_mtxA_rotate_z(s32);
+extern void mathutil_mtxA_rotate_y(s32);
+extern void mathutil_mtxA_rotate_x(s32);
+extern void lbl_8006E0A4(u32);
+extern void lbl_8006E14C(f32);
+extern void fn_80077A20(struct fn_1_A8270_Rec *, void *);
+extern void fn_1_55FC4(f32);
+extern void fn_80072558(void);
+extern void fn_1_556B8(struct fn_1_A8270_Rec *);
+extern void lbl_8006DB30(void);
+extern f32 lbl_1_rodata_4A34[25];
+
+static inline s8 tab_index(s8 c) {
+	const s8 *p = (const s8 *)&lbl_1_data_34348;
+	s32 k;
+	for (k = 0; k < 10; k++) {
+		if (c == *p) {
+			return k;
+		}
+		p++;
+	}
+	return 0;
+}
+
+static inline f32 *fn_1_A8270_array_read(f32 *array) { return array; }
+#pragma opt_loop_invariants off
+void fn_1_A8270(struct fn_1_A8270_Arg0 *self, s32 arg1) {
+	s32 i;
+	u32 *out;
+	u32 unk_104;
+	struct fn_1_A8270_Entry *ent;
+	struct fn_1_A8270_Rec *rec;
+	s32 ok;
+    s32 lab_t0;
+
+	unk_104 = self->unk_104;
+	out = (u32 *)fn_80077A18();
+	lbl_8006DAEC();
+	for (i = 0; i < self->unk_100; i++) {
+		ent = &self->unk_FC[i];
+		rec = fn_80071268(unk_104, ent->unk_4);
+		if (rec != 0) {
+			lbl_8006D9D8(&self->unk_F0);
+			mathutil_mtxA_rotate_z(self->unk_EE);
+			lab_t0 = self->unk_EA;
+			mathutil_mtxA_rotate_y(lab_t0);
+			mathutil_mtxA_rotate_x(self->unk_EC);
+			if (self->unk_E9 != 0) {
+				lbl_8006E0A4((u32)&lbl_1_data_35654[self->unk_E8 * 12]);
+			}
+			if (self->unk_E9 != 0) {
+				lbl_8006E14C(((const f32 *)lbl_1_data_355A4)[self->unk_E8]);
+			}
+			ok = 1;
+			if ((rec->unk_4 & 0xC) != 0 && ent->unk_8 != 0) {
+				s32 j;
+				for (j = 0; j < (s32)rec->count; j++) {
+					const s8 *str = (const s8 *)ent->unk_8;
+					u8 c = str[j];
+					s8 idx = tab_index(c);
+					out[j] = (u32)(void *)&self->unk_12C[idx * 12];
+				}
+			} else if ((rec->unk_4 & 0xC) != 0) {
+				fn_80077A20(rec, 0);
+			} else {
+				ok = 0;
+			}
+			if (ok != 0) {
+				if (arg1 != 0) {
+					lbl_8006E14C(fn_1_A8270_array_read(lbl_1_rodata_4A34)[0]);
+					fn_1_55FC4(fn_1_A8270_array_read(lbl_1_rodata_4A34)[0]);
+				}
+				fn_80072558();
+				fn_1_556B8(rec);
+			}
+		}
+	}
+	lbl_8006DB30();
+}
+#pragma opt_loop_invariants reset
+/* fzgx:end fn_1_A8270 */
+
 /* fzgx:begin fn_1_A8528 */
 typedef struct FnA8528Object {
     u8 pad_ea[0xea];
