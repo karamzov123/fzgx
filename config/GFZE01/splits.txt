@@ -5678,3 +5678,6 @@ dol/fn_8004A5F4.c:
 
 dol/fn_8003D698.c:
 	.text       start:0x8003D698 end:0x8003D918 align:4
+
+dol/fn_8005BFB4.c:
+	.text       start:0x8005BFB4 end:0x8005C120 align:4
