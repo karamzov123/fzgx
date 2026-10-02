@@ -239,3 +239,6 @@ rel/title/operation/fn_8_C9A8.c:
 
 rel/title/title/fn_8_663C.c:
 	.text       start:0x0000663C end:0x000067B0 align:4
+
+rel/title/title/fn_8_6C90.c:
+	.text       start:0x00006C90 end:0x00006F1C align:4
