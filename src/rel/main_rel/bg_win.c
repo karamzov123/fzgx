@@ -104,6 +104,88 @@ char *fn_1_15BA78(char *name) {
 #pragma opt_common_subs reset
 /* fzgx:end fn_1_15BA78 */
 
+/* fzgx:begin fn_1_15BB34 pool noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/bg_win.h"
+
+extern void fn_80008BEC(void *, int, u32);
+
+typedef struct {
+    u8 pad_000[0x480];
+    u32 unk_480;
+    u16 unk_484;
+    u16 unk_486;
+} WinInitState;
+
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+u8 fzgx_obj_lbl_1_bss_8F8E0;
+u8 lbl_1_bss_8F8E0_fill_8F8E1;
+u16 lbl_1_bss_8F8E0_fill_8F8E2;
+u32 lbl_1_bss_8F8E0_fill_8F8E4[7];
+u8 lbl_1_bss_8F8E0_20;
+u8 lbl_1_bss_8F8E0_fill_8F901;
+u16 lbl_1_bss_8F8E0_fill_8F902;
+u32 lbl_1_bss_8F8E0_fill_8F904[31];
+u8 lbl_1_bss_8F980;
+u8 lbl_1_bss_8F980_fill_8F981;
+u16 lbl_1_bss_8F980_fill_8F982;
+u32 lbl_1_bss_8F980_fill_8F984[7];
+u8 lbl_1_bss_8F9A0;
+u8 lbl_1_bss_8F9A0_fill_8F9A1;
+u16 lbl_1_bss_8F9A0_fill_8F9A2;
+u32 lbl_1_bss_8F9A0_fill_8F9A4[239];
+u32 lbl_1_bss_8FD60;
+u16 lbl_1_bss_8FD60_4;
+u16 lbl_1_bss_8FD60_6;
+u32 fzgx_obj_lbl_1_bss_8FD68[16];
+u32 fzgx_obj_lbl_1_bss_8FDA8[53];
+
+#pragma section code_type ".fzgxpool"
+static void fzgx_bss_layout(void) {
+    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_8F8E0;
+    s = *(u8 *)&lbl_1_bss_8F8E0_fill_8F8E1;
+    s = *(u8 *)&lbl_1_bss_8F8E0_fill_8F8E2;
+    s = *(u8 *)&lbl_1_bss_8F8E0_fill_8F8E4;
+    s = *(u8 *)&lbl_1_bss_8F8E0_20;
+    s = *(u8 *)&lbl_1_bss_8F8E0_fill_8F901;
+    s = *(u8 *)&lbl_1_bss_8F8E0_fill_8F902;
+    s = *(u8 *)&lbl_1_bss_8F8E0_fill_8F904;
+    s = *(u8 *)&lbl_1_bss_8F980;
+    s = *(u8 *)&lbl_1_bss_8F980_fill_8F981;
+    s = *(u8 *)&lbl_1_bss_8F980_fill_8F982;
+    s = *(u8 *)&lbl_1_bss_8F980_fill_8F984;
+    s = *(u8 *)&lbl_1_bss_8F9A0;
+    s = *(u8 *)&lbl_1_bss_8F9A0_fill_8F9A1;
+    s = *(u8 *)&lbl_1_bss_8F9A0_fill_8F9A2;
+    s = *(u8 *)&lbl_1_bss_8F9A0_fill_8F9A4;
+    s = *(u8 *)&lbl_1_bss_8FD60;
+    s = *(u8 *)&lbl_1_bss_8FD60_4;
+    s = *(u8 *)&lbl_1_bss_8FD60_6;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_8FD68;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_8FDA8;
+}
+#pragma section code_type ".text"
+
+void fn_1_15BB34(void *value) {
+    
+    u16 unk_484;
+    u16 unk_486;
+
+    fn_80008BEC((u8 *)&fzgx_obj_lbl_1_bss_8F8E0, 0, 0x20);
+    fn_80008BEC((u8 *)&lbl_1_bss_8F8E0_20, 0, 0x20);
+    fn_80008BEC((u8 *)&lbl_1_bss_8F980, 0, 0x20);
+    fn_80008BEC((u8 *)&lbl_1_bss_8F9A0, 0, 0x3c0);
+
+    unk_484 = 0xffff;
+    unk_486 = 0;
+    lbl_1_bss_8FD60 = (u32)value;
+    lbl_1_bss_8FD60_4 = unk_484;
+    lbl_1_bss_8FD60_6 = unk_486;
+}
+/* fzgx:end fn_1_15BB34 */
+
 /* fzgx:begin fn_1_15BE38 */
 typedef struct {
     u32 count;
