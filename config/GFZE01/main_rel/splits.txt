@@ -6824,3 +6824,6 @@ rel/main_rel/effect/fn_1_5AF28.c:
 
 rel/main_rel/motasglist/fn_1_449A8.c:
 	.text       start:0x000449A8 end:0x00044A74 align:4
+
+rel/main_rel/stcoli/fn_1_207DC.c:
+	.text       start:0x000207DC end:0x00020994 align:4

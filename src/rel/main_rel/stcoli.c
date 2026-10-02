@@ -1131,6 +1131,88 @@ f32 fn_1_20258(Fn_1_20258 *self, f32 *out_ratio) {
 #pragma opt_strength_reduction reset
 /* fzgx:end fn_1_20258 */
 
+/* fzgx:begin fn_1_207DC noprologue */
+#include "types.h"
+
+struct fn_1_207DC_obj {
+    u8 pad_0[0x30];
+    f32 unk_30;
+    f32 unk_34;
+    u8 pad_38[4];
+    f32 unk_3C;
+    u8 pad_40[0x28];
+    f32 unk_68;
+    f32 unk_6C;
+    u8 pad_70[0xC];
+    u32 unk_7C;
+};
+
+struct fn_1_207DC_pool {
+    u8 pad_0[8];
+    f32 zero;
+    f32 one;
+    u8 pad_10[0xB0];
+    f64 eps;
+    f32 pi;
+    u8 pad_CC[4];
+    f64 two;
+};
+
+extern struct fn_1_207DC_pool lbl_1_rodata_6C8;
+extern u8 lbl_1_data_5548[0x190];
+extern u32 fn_1_203E4(void *, u32, void *, f32, f32, f32);
+extern void OSReport(const char *, ...);
+extern void OSPanic(const char *, int, const char *, ...);
+
+static inline void set_f32(f32 *dst, f32 v) {
+    if (dst) {
+        *dst = v;
+    }
+}
+
+void fn_1_207DC(struct fn_1_207DC_obj *obj, void *out, f32 x) {
+    u8 *data = (u8 *)&lbl_1_data_5548;
+    struct fn_1_207DC_pool *pool = &lbl_1_rodata_6C8;
+    u32 flags = obj->unk_7C;
+    u32 flags2;
+    f32 t;
+    f32 val;
+    f32 prod;
+    f64 d2;
+    f32 arg6;
+
+    if (flags & 0x1C00000) {
+        t = obj->unk_34 / obj->unk_30;
+        if (t < pool->eps) {
+            t = pool->zero;
+        }
+    } else if (flags & 0x2200000) {
+        t = pool->one;
+    } else {
+        OSReport((const char *)(data + 0x108), flags);
+        OSPanic((const char *)(data + 0x12c), 0x1650, (const char *)(data + 0x134));
+    }
+
+    flags2 = obj->unk_7C;
+    if ((flags2 & 0x2200000) || pool->zero == t) {
+        val = obj->unk_68;
+    } else if (flags2 & 0x1800000) {
+        prod = pool->pi * t;
+        val = (pool->one + prod) * (obj->unk_6C * obj->unk_68);
+    } else if (flags2 & 0x400000) {
+        prod = pool->pi * t;
+        d2 = pool->two * obj->unk_3C;
+        val = d2 + (pool->one + prod) * (obj->unk_68 - obj->unk_3C);
+    } else {
+        OSReport((const char *)(data + 0x138), flags2);
+        OSPanic((const char *)(data + 0x12c), 0x1661, (const char *)(data + 0x15c));
+    }
+
+    set_f32(&arg6, t);
+    fn_1_203E4(obj, 1, out, x, val, arg6);
+}
+/* fzgx:end fn_1_207DC */
+
 /* fzgx:begin fn_1_20994 */
 typedef struct Fn_1_20994_Object {
     u32 unk_0;
