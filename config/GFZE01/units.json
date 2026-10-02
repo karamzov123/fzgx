@@ -1142,6 +1142,17 @@
   },
   {
     "module": "customize",
+    "source": "rel/customize/emb_memcard/fn_3_12FD4.c",
+    "symbols": [
+      "fn_3_12FD4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emb_memcard.c"
+  },
+  {
+    "module": "customize",
     "source": "rel/customize/emb_memcard/fn_3_C328.c",
     "symbols": [
       "fn_3_C328"

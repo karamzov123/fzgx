@@ -254,3 +254,44 @@ void fn_3_12E4C(Customize *self, u8 index, Vec3 *first, Vec3 *second) {
 
 #pragma opt_strength_reduction reset
 /* fzgx:end fn_3_12E4C */
+
+/* fzgx:begin fn_3_12FD4 */
+struct fn_3_12FD4_Arg3 {
+    f32 unk_0;
+};
+struct fn_3_12FD4_Arg4 {
+    f32 unk_0;
+};
+
+struct fn_3_12FD4_Record {
+    f32 x;
+    f32 y;
+    u8 pad[24];
+};
+
+void fn_3_12FD4(u32 arg0, u32 arg1, u32 arg2, struct fn_3_12FD4_Arg3 *arg3, struct fn_3_12FD4_Arg4 *arg4) {
+    u32 v1;
+    u32 v2;
+    u32 v3;
+    u32 v4;
+    if (__rlwnm(arg0, 6, 31, 31)) {
+        v1 = ((arg2 & 0xFF) << 5);
+        arg3->unk_0 = *(f32 *)((u8 *)&lbl_3_data_246C + v1);
+        arg4->unk_0 = *(f32 *)((u32)&lbl_3_data_246C + v1 + 4);
+        return;
+    }
+    v2 = (arg2 & 0xFF);
+    v3 = arg2;
+    if (v2 == 4) {
+        v3 = 43;
+    } else {
+        if (v2 == 40) {
+            v3 = ((arg1 + 40) & 0xFF);
+        }
+    }
+    v4 = ((v3 & 0xFF) << 5);
+    arg3->unk_0 = *(f32 *)((u8 *)&lbl_3_data_1EEC + v4);
+    arg4->unk_0 = *(f32 *)((u32)&lbl_3_data_1EEC + v4 + 4);
+    return;
+}
+/* fzgx:end fn_3_12FD4 */
