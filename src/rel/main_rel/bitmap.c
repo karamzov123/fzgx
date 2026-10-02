@@ -19,6 +19,31 @@ extern f32 lbl_1_bss_3E05C;
 
 extern void *fn_1_48730(u32 value);
 
+/* fzgx:begin fn_1_47E54 */
+typedef struct {
+    s32 unk_0;
+    s32 unk_4[9];
+} Fn147E54Entry;
+
+extern void OSPanic(const unsigned char *, ...);
+extern void fn_1_465D0(s32, s32);
+extern u32 lbl_801A66B4;
+
+void fn_1_47E54(s32 index) {
+    s32 valid;
+
+    if (index > 0xbb) {
+        valid = 0;
+    } else {
+        valid = index >= 0;
+    }
+    if (valid == 0) {
+        OSPanic(lbl_1_data_1A368, 0x18c, lbl_1_data_1A374);
+    }
+    fn_1_465D0(*(s32 *)((u8 *)&lbl_1_data_FCD4.unk_4 + index * 0x28 + lbl_801A66B4 * 4), 1);
+}
+/* fzgx:end fn_1_47E54 */
+
 /* fzgx:begin fn_1_47EE4 noprologue */
 #include "rel/main_rel/bitmap.h"
 
