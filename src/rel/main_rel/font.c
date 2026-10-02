@@ -226,6 +226,62 @@ extern const f64 lbl_1_rodata_2758;
 extern void lbl_8006D784(void *arg);
 extern void fn_1_55D6C(void);
 
+/* fzgx:begin fn_1_48C28 noprologue */
+#include "types.h"
+#include "rel/main_rel/font.h"
+
+extern u8 lbl_1_bss_3F60C[];
+extern u8 lbl_1_bss_3E060[];
+extern u32 lbl_801A6410;
+extern void fn_1_46B4(u32, u32, void *, int);
+
+#pragma opt_lifetimes off
+void fn_1_48C28(int index) {
+    u32 offset;
+    u16 *scan;
+    Obj_1_data_1AEA8 *entry;
+    int i;
+
+    entry = (Obj_1_data_1AEA8 *)((u8 *)&lbl_1_data_1AEA8 + index * 0x38);
+    if ((s32)entry->unk_0 != -1) {
+        return;
+    }
+
+    scan = (u16 *)entry->unk_2C;
+    offset = 0;
+    while (*scan) {
+        int found = 0;
+        int id = *(s16 *)((u8 *)entry->unk_30 + offset);
+        if (id != -1 && ((s32 *)lbl_1_bss_3F60C)[id] != -1) {
+            for (i = 1; i != 0x2c; i++) {
+                Obj_1_data_1AEA8 *other =
+                    (Obj_1_data_1AEA8 *)((u8 *)&lbl_1_data_1AEA8 + i * 0x38);
+                if (i == index) {
+                    continue;
+                }
+                if ((s32)other->unk_0 == -1 &&
+                    *(s16 *)((u8 *)offset + other->unk_30) != -1) {
+                    found = 1;
+                    break;
+                }
+            }
+            if (found != 0) {
+                *(s16 *)((u8 *)entry->unk_30 + offset) = -1;
+            } else {
+                fn_1_46B4(lbl_801A6410, ((s32 *)lbl_1_bss_3E060)[id],
+                          lbl_1_data_1BCC8, 0x217);
+                id = *(s16 *)((u8 *)entry->unk_30 + offset);
+                ((s32 *)lbl_1_bss_3E060)[id] = 0;
+                *(s16 *)((u8 *)entry->unk_30 + offset) = -1;
+            }
+        }
+        offset += 2;
+        scan = scan + 1;
+    }
+}
+#pragma opt_lifetimes reset
+/* fzgx:end fn_1_48C28 */
+
 /* fzgx:begin fn_1_49410 */
 struct fn_1_49410_lbl_1_rodata_FD0 {
     u8 pad_0[0xF0];
