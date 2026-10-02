@@ -5648,3 +5648,6 @@ dol/fn_800805C0.c:
 
 dol/fn_80007D58.c:
 	.text       start:0x80007D58 end:0x80007F70 align:4
+
+dol/fn_80041990.c:
+	.text       start:0x80041990 end:0x80041BF8 align:4
