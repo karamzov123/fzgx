@@ -1923,6 +1923,17 @@
   },
   {
     "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_1A488.c",
+    "symbols": [
+      "fn_3_1A488"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
     "source": "rel/customize/toolkit/fn_3_1AB34.c",
     "symbols": [
       "fn_3_1AB34"
@@ -32711,7 +32722,7 @@
       "fn_1_85688"
     ],
     "status": "nonmatching",
-    "mw_version": null,
+    "mw_version": "GC/1.3.2",
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c",
     "pool": true
