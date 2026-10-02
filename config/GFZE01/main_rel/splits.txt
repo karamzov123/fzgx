@@ -6674,3 +6674,6 @@ rel/main_rel/bitmap/fn_1_48214.c:
 
 rel/main_rel/effect/fn_1_5D500.c:
 	.text       start:0x0005D500 end:0x0005D718 align:4
+
+rel/main_rel/car/fn_1_85F90.c:
+	.text       start:0x00085F90 end:0x0008616C align:4

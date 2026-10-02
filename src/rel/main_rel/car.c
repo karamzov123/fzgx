@@ -1524,6 +1524,92 @@ void fn_1_85F70(void) {
 }
 /* fzgx:end fn_1_85F70 */
 
+/* fzgx:begin fn_1_85F90 noprologue */
+#include "types.h"
+#include "rel/main_rel/car.h"
+
+extern const f32 lbl_1_rodata_3508[4];
+extern int fn_1_20A5C(f32 *, f32 *);
+extern int fn_1_21644(f32 *, f32 *, int);
+extern void *fn_1_14F04(void);
+extern void fn_1_17920(int, int, f32);
+extern void lbl_8006D7F4(f32, f32, f32);
+extern void lbl_8006DBAC(void *);
+extern void lbl_8006E0A4(void *);
+extern void lbl_8006E0B4(f32, f32, f32);
+extern void fn_1_892FC(void *, f32 *, f32 *);
+extern void fn_1_23500(void *, f32);
+
+typedef struct {
+    u8 pad_0[0x118];
+    u32 unk_118;
+    u32 unk_11c;
+    u8 pad_120[0x20];
+    u32 unk_140;
+    f32 unk_144;
+    f32 unk_148;
+    f32 unk_14c;
+    f32 unk_150;
+} FzgxChild;
+
+static inline void fn_1_85F90_store(u32 *destination, u32 value) { *destination = value; }
+static inline const f32 *fn_1_85F90_array_read(const f32 *array) { return array; }
+#pragma opt_propagation off
+void fn_1_85F90(void *obj, f32 a, f32 b, f32 c, f32 d, int mode) {
+    f32 *fzgx_value;
+    int active;
+    int result;
+    f32 value;
+    f32 *base;
+    f32 dd;
+    u8 *p;
+    const f32 *table;
+    FzgxChild *child;
+
+    table = lbl_1_rodata_3508;
+    child = *(FzgxChild **)((u8 *)obj + 0x49c);
+    if (((0) == (lbl_1_bss_3BE0)) || ((0) == (child))) {
+        lbl_8006D7F4(((4)[table]), ((10)[table]), ((348)[table]));
+        active = 1;
+    } else {
+        fzgx_value = &(child->unk_148);
+        dd = d;
+        *fzgx_value = b;
+        fzgx_value[1] = c;
+        fzgx_value[2] = dd;
+        base = &child->unk_148;
+        if (mode < 0) {
+            result = fn_1_20A5C(base, &value);
+        } else {
+            result = fn_1_21644(base, &value, mode);
+        }
+        child->unk_140 = result;
+        child->unk_144 = value;
+        if (lbl_1_bss_3BE0->unk_7D != 0 && ((0) == (result)) && value < ((4)[table])) {
+            p = (u8 *)fn_1_14F04() + 0x400;
+            fn_1_17920(0, 0, ((4)[table]));
+            lbl_8006DBAC(p);
+            lbl_8006E0A4(p + 0x70);
+            lbl_8006E0B4(b, (*(s16 *)&lbl_1_bss_960 == 9 && !(*(u32 *)obj & (1 << 10))) ? ((346)[table]) : ((10)[table]), d);
+            active = 0;
+        } else {
+            fn_1_892FC(obj, &b, &d);
+            if (0 != lbl_1_bss_3BE0->unk_7D) {
+                active = 1;
+            } else {
+                active = 0;
+            }
+        }
+    }
+    fn_1_23500(obj, a);
+    if (child != 0 && active) {
+        fn_1_85F90_store(&(child->unk_11c), 0);
+        child->unk_118 = 0;
+    }
+}
+#pragma opt_propagation reset
+/* fzgx:end fn_1_85F90 */
+
 /* fzgx:begin fn_1_8616C */
 // Passes the default handling value to the car update routine.
 void fn_1_8616C(void) {
