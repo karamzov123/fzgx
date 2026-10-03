@@ -28149,6 +28149,24 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/alloc/fn_1_4E60.c",
+    "symbols": [
+      "fn_1_4E60"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/alloc.c",
+    "pool": {
+      "...rodata.0": "lbl_1_rodata_160",
+      "@9": "lbl_1_rodata_170",
+      "@5": "lbl_1_rodata_160",
+      "@6": "lbl_1_rodata_164",
+      "@8": "lbl_1_rodata_16C"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/alloc/fn_1_4FEC.c",
     "symbols": [
       "fn_1_4FEC"

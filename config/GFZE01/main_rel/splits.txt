@@ -6938,3 +6938,6 @@ rel/main_rel/screen_effect/fn_1_769FC.c:
 
 rel/main_rel/sound/fn_1_A5AA0.c:
 	.text       start:0x000A5AA0 end:0x000A5C98 align:4
+
+rel/main_rel/alloc/fn_1_4E60.c:
+	.text       start:0x00004E60 end:0x00004FEC align:4

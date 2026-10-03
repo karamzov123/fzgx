@@ -278,6 +278,74 @@ void fn_1_4DE0(Obj_1_data_2CDC *obj, u32 arg1) {
 #pragma opt_dead_assignments reset
 /* fzgx:end fn_1_4DE0 */
 
+/* fzgx:begin fn_1_4E60 */
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 65535.0f;
+    s = 1.0f;
+    s = -1.0f;
+    s = 0.0f;
+    d = 4503599627370496.0;
+}
+#pragma section code_type ".text"
+
+extern u32 lbl_1_data_2CD8;
+extern void fn_8006CDFC(u32 *);
+extern void fn_8006CE1C(f32);
+extern void fn_1_4060(void);
+
+#pragma opt_dead_assignments off
+void fn_1_4E60(Obj_1_data_2CDC *obj) {
+    f32 base;
+    u8 max;
+    u8 c1;
+    f32 ratio;
+    f32 value;
+    u32 unk8;
+    u32 src;
+    Obj_1_data_2CDC *dst;
+
+    base = (f32)(u32)obj->unk_4 / 65535.0f;
+    max = (obj->unk_0 == 0x3c) ? 0xf : obj->unk_0;
+    c1 = obj->unk_1;
+    if (c1 > max) {
+        ratio = 1.0f;
+    } else {
+        ratio = (f32)c1 / (f32)max;
+    }
+    if (obj->unk_3 & 2) {
+        value = base * (1.0f - ratio);
+    } else {
+{
+    f32 delta;
+        delta = 1.0f - base;
+        delta = delta * ratio;
+        value = base + delta;
+}
+    }
+    if (0.0f == value) {
+        fn_8006CE1C(0.0f);
+        dst = &lbl_1_data_2CDC;
+        dst->unk_8 = lbl_1_data_2CD8;
+    } else {
+        unk8 = obj->unk_8;
+        fn_8006CDFC(&unk8);
+        fn_8006CE1C(value);
+    }
+    obj->unk_1 = obj->unk_1 + obj->unk_2;
+    if (obj->unk_1 > obj->unk_0) {
+        obj->unk_3 &= 0xfe;
+    }
+    if ((obj->unk_3 & 1) == 0) {
+        obj->unk_6 = -1;
+        obj->unk_4 = (s16)(65535.0f * value);
+        fn_1_4060();
+    }
+}
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_1_4E60 */
+
 /* fzgx:begin fn_1_4FEC */
 void fn_1_4FEC(void) {
     lbl_1_bss_F58 = 0;
