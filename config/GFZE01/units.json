@@ -1570,6 +1570,17 @@
   },
   {
     "module": "customize",
+    "source": "rel/customize/emblem/fn_3_14778.c",
+    "symbols": [
+      "fn_3_14778"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emblem.c"
+  },
+  {
+    "module": "customize",
     "source": "rel/customize/emblem/fn_3_15240.c",
     "symbols": [
       "fn_3_15240"

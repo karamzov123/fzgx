@@ -494,3 +494,6 @@ rel/customize/emblem/fn_3_1338C.c:
 
 rel/customize/_prolog/fn_3_4C58.c:
 	.text       start:0x00004C58 end:0x00004F08 align:4
+
+rel/customize/emblem/fn_3_14778.c:
+	.text       start:0x00014778 end:0x00014794 align:4
