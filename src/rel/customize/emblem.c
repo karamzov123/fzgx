@@ -8,6 +8,108 @@ extern u8 lbl_3_data_3574[60];
 extern u32 lbl_801A6410;
 extern void fn_1_46B4(u32, u32, u8 *, s32);
 
+/* fzgx:begin fn_3_1338C pool noprologue */
+#include "types.h"
+
+extern void fn_1_426C(u32);
+extern void fn_1_435C(u32);
+extern void fn_1_46B4(u32, u32, u8 *, s32);
+extern void fn_1_48140(s32);
+extern void fn_3_142C4(void);
+extern void fn_3_1563C(void);
+extern void fn_3_19C50(void);
+
+extern u32 lbl_801A6410;
+
+typedef struct {
+    u8 pad00[4];
+    u32 *unk04;
+    u8 pad08[0xC];
+    u32 unk14;
+    u32 unk18;
+    u8 pad1C[4];
+    u32 unk20;
+    u32 unk24[5];
+    u32 unk38[11];
+    s16 unk64;
+} EmblemState;
+
+
+#pragma opt_propagation off
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+u32 fzgx_obj_lbl_3_bss_A1768;
+u32 *fzgx_obj_lbl_3_bss_A176C;
+u32 lbl_3_bss_A1770;
+u32 lbl_3_bss_A1774;
+u32 lbl_3_bss_A1778_fill_A1778;
+u32 lbl_3_bss_A1778_4;
+u32 lbl_3_bss_A1778_8;
+u32 lbl_3_bss_A1784_fill_A1784;
+u32 lbl_3_bss_A1784_4;
+u8 lbl_3_bss_A1784_8;
+u8 lbl_3_bss_A1784_fill_A178D;
+u16 lbl_3_bss_A1784_fill_A178E;
+u32 lbl_3_bss_A1784_fill_A1790[2];
+u32 lbl_3_bss_A1798;
+u32 fzgx_obj_lbl_3_bss_A179C;
+u32 fzgx_obj_lbl_3_bss_A17A0[11];
+s16 fzgx_obj_lbl_3_bss_A17CC;
+
+#pragma section code_type ".fzgxpool"
+static void fzgx_bss_layout(void) {
+    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */
+    s = *(u8 *)&fzgx_obj_lbl_3_bss_A1768;
+    s = *(u8 *)&fzgx_obj_lbl_3_bss_A176C;
+    s = *(u8 *)&lbl_3_bss_A1770;
+    s = *(u8 *)&lbl_3_bss_A1774;
+    s = *(u8 *)&lbl_3_bss_A1778_fill_A1778;
+    s = *(u8 *)&lbl_3_bss_A1778_4;
+    s = *(u8 *)&lbl_3_bss_A1778_8;
+    s = *(u8 *)&lbl_3_bss_A1784_fill_A1784;
+    s = *(u8 *)&lbl_3_bss_A1784_4;
+    s = *(u8 *)&lbl_3_bss_A1784_8;
+    s = *(u8 *)&lbl_3_bss_A1784_fill_A178D;
+    s = *(u8 *)&lbl_3_bss_A1784_fill_A178E;
+    s = *(u8 *)&lbl_3_bss_A1784_fill_A1790;
+    s = *(u8 *)&lbl_3_bss_A1798;
+    s = *(u8 *)&fzgx_obj_lbl_3_bss_A179C;
+    s = *(u8 *)&fzgx_obj_lbl_3_bss_A17A0;
+    s = *(u8 *)&fzgx_obj_lbl_3_bss_A17CC;
+}
+#pragma section code_type ".text"
+
+extern void OSReport(const char *, ...);
+#pragma section code_type ".fzgxpool"
+static void fzgx_string_layout(void) {
+    /* fzgx-allow: S2 layout primer: MWCC emits string literals in first-use order; the section is dropped at integration */
+    OSReport("emblem.c");
+}
+#pragma section code_type ".text"
+
+void fn_3_1338C(void) {
+    u8 i;
+    u32 v;
+
+    
+    fn_1_435C(lbl_3_bss_A1778_4);
+    fn_1_426C(lbl_3_bss_A1784_4);
+    fn_1_435C(lbl_3_bss_A1778_8);
+    fn_1_426C((*(u32 (*)[5])&lbl_3_bss_A1784_8)[1]);
+    fn_3_1563C();
+    fn_3_19C50();
+    fn_3_142C4();
+    fn_1_46B4(lbl_801A6410, fzgx_obj_lbl_3_bss_A17A0[8], (u8 *)"emblem.c", 0xd1);
+    for (i = 0; i < fzgx_obj_lbl_3_bss_A17CC; i++) {
+        v = fzgx_obj_lbl_3_bss_A176C[i];
+        if (v != 0) {
+            fn_1_46B4(lbl_801A6410, v, (u8 *)"emblem.c", 0xd6);
+        }
+    }
+    fn_1_46B4(lbl_801A6410, (u32)fzgx_obj_lbl_3_bss_A176C, (u8 *)"emblem.c", 0xd8);
+    fn_1_48140(0x86);
+}
+/* fzgx:end fn_3_1338C */
+
 /* fzgx:begin fn_3_1349C noprologue */
 #include "types.h"
 

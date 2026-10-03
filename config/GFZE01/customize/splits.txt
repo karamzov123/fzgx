@@ -488,3 +488,6 @@ rel/customize/_prolog/fn_3_7CF8.c:
 
 rel/customize/emb_paste_editor/fn_3_118BC.c:
 	.text       start:0x000118BC end:0x00011930 align:4
+
+rel/customize/emblem/fn_3_1338C.c:
+	.text       start:0x0001338C end:0x0001349C align:4

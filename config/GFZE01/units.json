@@ -1371,6 +1371,18 @@
   },
   {
     "module": "customize",
+    "source": "rel/customize/emblem/fn_3_1338C.c",
+    "symbols": [
+      "fn_3_1338C"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/emblem.c",
+    "pool": true
+  },
+  {
+    "module": "customize",
     "source": "rel/customize/emblem/fn_3_1349C.c",
     "symbols": [
       "fn_3_1349C"
