@@ -914,6 +914,139 @@ void fn_1_FD388(void) {
 }
 /* fzgx:end fn_1_FD388 */
 
+/* fzgx:begin fn_1_FD3A8 noprologue */
+#include "types.h"
+#include "rel/main_rel/bg_cas.h"
+
+typedef enum { TF5 = 5 } Sig_GXInitTexObj_GXTexFmt;
+typedef enum { WRAP0 = 0 } Sig_GXInitTexObj_GXTexWrapMode;
+typedef enum { FILTER1 = 1 } Sig_GXInitTexObjLOD_GXTexFilter;
+typedef enum { ANISO0 = 0 } Sig_GXInitTexObjLOD_GXAnisotropy;
+typedef u8 Sig_GXInitTexObjLOD_GXBool;
+typedef struct { u32 dummy[8]; } Sig_GXInitTexObj_GXTexObj;
+typedef struct { u32 texture_filter, texture_lod, texture_size, texture_address, user_data, texture_format, tlut_name; u16 texture_time_count; u8 texture_tile_type, texture_flags; } Sig_GXInitTexObjLOD_GXTexObj;
+extern void GXInitTexObj(Sig_GXInitTexObj_GXTexObj *, void *, u16, u16, Sig_GXInitTexObj_GXTexFmt, Sig_GXInitTexObj_GXTexWrapMode, Sig_GXInitTexObj_GXTexWrapMode, u8);
+extern void GXInitTexObjLOD(Sig_GXInitTexObjLOD_GXTexObj *, Sig_GXInitTexObjLOD_GXTexFilter, Sig_GXInitTexObjLOD_GXTexFilter, f32, f32, f32, Sig_GXInitTexObjLOD_GXBool, Sig_GXInitTexObjLOD_GXBool, Sig_GXInitTexObjLOD_GXAnisotropy);
+extern u32 GXLoadTexMtxImm(u32,u32,u32);
+struct fn_1_FD3A8_lbl_1_rodata_7600 {
+ u8 pad_0[0xC]; f32 unk_C; u8 pad_10[4]; f32 unk_14; u8 pad_18[4]; f32 unk_1C; u8 pad_20[0x28]; u32 unk_48; f32 unk_4C;
+};
+struct fn_1_FD3A8_lbl_801A6D00 { u32 unk_0; };
+extern struct fn_1_FD3A8_lbl_1_rodata_7600 lbl_1_rodata_7600;
+extern struct fn_1_FD3A8_lbl_801A6D00 lbl_801A6D00;
+extern u32 fn_800371F8(u32,void *);
+extern u32 lbl_8006DCA4(void);
+extern void fn_1_57720(u32,u32,u32,u32);
+extern void fn_80015C1C(void *,f32,f32,f32,f32,f32,f32,f32,f32,f32);
+extern void fn_8003462C(u32,u32,u32);
+extern void fn_800720B0(u32);
+extern void fn_8007245C(u32);
+extern void fn_800724C8(void);
+extern void fn_80072558(void);
+extern void fn_80072864(u32);
+extern void fn_800728A8(s32,s32,s32,s32);
+extern void fn_80072AB0(s32,s32,s32);
+extern void fn_80072C24(s32,s32,s32,s32,s32);
+extern void fn_80072CC4(s32,s32,s32,s32,s32);
+extern void fn_80072D64(s32,s32,s32,s32,u8,s32);
+extern void fn_80072E20(s32,s32,s32,s32,u8,s32);
+extern void fn_800734A8(u32,s32,s32,s32);
+extern void fn_80073678(u32);
+extern void fn_80073778(void *,s32);
+extern void fn_80073898(u32);
+extern void fn_80073C6C(s32);
+extern void fn_800745A4(u32,s32,s32,u32,u32,u32);
+extern void fn_80074660(u32);
+extern void fn_80074788(u32);
+extern void fn_800747D0(u32,u32,s32,s32,u32,s32,s32);
+extern void fn_80074918(u8,s32,u8);
+extern void lbl_8006DB74(void *);
+extern void lbl_8006DBAC(void *);
+extern void lbl_8006DD7C(void);
+extern void lbl_8006DFC4(void *);
+#pragma opt_lifetimes off
+void fn_1_FD3A8(void *arg0, f32 arg1) {
+    f32 r2;
+    f32 r1;
+ struct fn_1_FD3A8_lbl_1_rodata_7600 *p_pool;
+ f32 v9;
+ f32 v0;
+ f32 v1;
+ f32 v4;
+ f32 v3;
+ f32 v5;
+ f32 v6;
+ struct {u32 a[12];} loc_78,loc_48,loc_18;
+ u32 loc_10[2]; void *lab_t1;
+ v0=*(f32 *)((u8 *)arg0+64);
+ p_pool=(struct fn_1_FD3A8_lbl_1_rodata_7600 *)&lbl_1_rodata_7600;
+ v1=*(f32 *)((u8 *)arg0+68);
+ v3=v0*arg1; v4=(-v0)*arg1; v5=(-v1)*arg1; v6=v1*arg1;
+ fn_80072558();
+ lbl_8006DB74((void *)(lbl_801A6D00.unk_0+96));
+ lbl_8006DD7C(); lbl_8006DB74(&loc_78); lbl_8006DCA4(); lbl_8006DFC4(&loc_78);
+ fn_80072558(); fn_1_57720(1,1,1,0);
+ {f32 d=lbl_1_bss_850D8-lbl_1_bss_850D4; f32 m=p_pool->unk_C*d; v9=lbl_1_bss_850D4+m;}
+ lbl_8006DBAC(&loc_78);
+ {
+ f32 r0;
+ f32 t;
+
+
+ t=-v9;
+ r0=*(f32 *)((u8 *)0xE0000000+8); // fzgx-allow: A2 literal is a data constant in this table, not a pointer cast
+ r1=*(f32 *)((u8 *)0xE0000000+0x18); // fzgx-allow: A2 literal is a data constant in this table, not a pointer cast
+ r2=*(f32 *)((u8 *)0xE0000000+0x28); // fzgx-allow: A2 literal is a data constant in this table, not a pointer cast
+ r0=((((r0)) * ((t))))+*(f32 *)((u8 *)0xE0000000+0xc); // fzgx-allow: A2 literal is a data constant in this table, not a pointer cast
+ r1=r1*t+*(f32 *)((u8 *)0xE0000000+0x1c); // fzgx-allow: A2 literal is a data constant in this table, not a pointer cast
+ r2=((((r2)) * ((t))))+*(f32 *)((u8 *)0xE0000000+0x2c); // fzgx-allow: A2 literal is a data constant in this table, not a pointer cast
+ *(f32 *)((u8 *)0xE0000000+0xc)=r0; // fzgx-allow: A2 literal is a data constant in this table, not a pointer cast
+ *(f32 *)((u8 *)0xE0000000+0x1c)=r1; // fzgx-allow: A2 literal is a data constant in this table, not a pointer cast
+ *(f32 *)((u8 *)0xE0000000+0x2c)=r2; // fzgx-allow: A2 literal is a data constant in this table, not a pointer cast
+ }
+ lbl_8006DB74(&loc_48); lbl_8006DCA4(); lbl_8006DFC4(&loc_48); fn_80072558();
+ {f32 h=p_pool->unk_14; fn_80015C1C(&loc_18,v5,v6,v4,v3,lbl_1_bss_850D4,h,h,h,h);}
+ lbl_8006DBAC(&loc_18); lbl_8006DFC4((void *)(lbl_801A6D00.unk_0+96));
+ {
+ f32 r0;
+ f32 t;
+
+
+ t=p_pool->unk_4C-v9;
+ r0=*(f32 *)((u8 *)0xE0000000+8); // fzgx-allow: A2 literal is a data constant in this table, not a pointer cast
+ r1=*(f32 *)((u8 *)0xE0000000+0x18); // fzgx-allow: A2 literal is a data constant in this table, not a pointer cast
+ r2=*(f32 *)((u8 *)0xE0000000+0x28); // fzgx-allow: A2 literal is a data constant in this table, not a pointer cast
+ r0=((((r0)) * ((t))))+*(f32 *)((u8 *)0xE0000000+0xc); // fzgx-allow: A2 literal is a data constant in this table, not a pointer cast
+ r1=r1*t+*(f32 *)((u8 *)0xE0000000+0x1c); // fzgx-allow: A2 literal is a data constant in this table, not a pointer cast
+ r2=((((r2)) * ((t))))+*(f32 *)(((0x2c) + ((u8 *)0xE0000000))); // fzgx-allow: A2 literal is a data constant in this table, not a pointer cast
+ *(f32 *)((u8 *)0xE0000000+0xc)=r0; // fzgx-allow: A2 literal is a data constant in this table, not a pointer cast
+ *(f32 *)((u8 *)0xE0000000+0x1c)=r1; // fzgx-allow: A2 literal is a data constant in this table, not a pointer cast
+ *(f32 *)((u8 *)0xE0000000+0x2c)=r2; // fzgx-allow: A2 literal is a data constant in this table, not a pointer cast
+ }
+ GXInitTexObj((Sig_GXInitTexObj_GXTexObj *)((u8 *)lbl_1_data_3EFA8+0x20),(u8 *)arg0+0x60,64,64,5,0,0,0);
+ {f32 z=p_pool->unk_C; GXInitTexObjLOD((Sig_GXInitTexObjLOD_GXTexObj *)((u8 *)lbl_1_data_3EFA8+0x20),1,1,z,z,z,0,0,0);}
+ fn_800724C8(); fn_8007245C(0x2200); loc_10[0]=p_pool->unk_48;
+ fn_80074788(1); fn_800747D0(4,0,0,0,0,2,2); loc_10[1]=loc_10[0]; lab_t1=&loc_10[1]; fn_800371F8(1,lab_t1);
+ fn_80074918(1,7,0); fn_800728A8(1,4,5,0); fn_800720B0(0); fn_80072864(2);
+ fn_80073778((void *)((u8 *)lbl_1_data_3EFA8+0x20),0);
+ GXLoadTexMtxImm(lbl_801A6D00.unk_0,30,0);
+ fn_80074660(1); fn_800745A4(0,0,0,30,0,125); fn_80073678(1); fn_80073898(0); fn_80073C6C(0);
+ fn_80072AB0(0,0,0); fn_800734A8(0,0,0,4); fn_80072C24(0,2,8,3,15);
+ fn_80072D64(0,0,0,0,1,0); fn_80072CC4(0,7,4,1,7); fn_80072E20(0,0,0,0,1,0);
+ {f32 d=lbl_1_bss_850D8-lbl_1_bss_850D4; f32 m=v9*d; f32 n=lbl_1_bss_850D4+m; v9=n/lbl_1_bss_850D4;}
+ fn_8003462C(128,0,4);
+ {f32 a=v9*v4; f32 c=v9*v6; f32 d=v9*v3; f32 b=v9*v5;
+#define FIFO(x) *(volatile f32 *)((u8 *)0xCC010000-32768) = (x) // fzgx-allow: A2,S2 literal is a data constant in this table, not a pointer cast
+ FIFO(a); FIFO(b); FIFO(p_pool->unk_C); FIFO(p_pool->unk_C); FIFO(p_pool->unk_C);
+ FIFO(a); FIFO(c); FIFO(p_pool->unk_C); FIFO(p_pool->unk_C); FIFO(p_pool->unk_1C);
+ FIFO(d); FIFO(c); FIFO(p_pool->unk_C); FIFO(p_pool->unk_1C); FIFO(p_pool->unk_1C);
+ FIFO(d); FIFO(b); FIFO(p_pool->unk_C); FIFO(p_pool->unk_1C); FIFO(p_pool->unk_C);
+#undef FIFO
+ }
+}
+#pragma opt_lifetimes reset
+/* fzgx:end fn_1_FD3A8 */
+
 /* fzgx:begin fn_1_FDB40 */
 typedef struct {
     u32 b0 : 5;
