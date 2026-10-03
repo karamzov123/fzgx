@@ -7094,3 +7094,6 @@ rel/main_rel/bg_cas/fn_1_FD3A8.c:
 
 rel/main_rel/font/fn_1_5158C.c:
 	.text       start:0x0005158C end:0x00051678 align:4
+
+rel/main_rel/car/fn_1_87448.c:
+	.text       start:0x00087448 end:0x000875B4 align:4

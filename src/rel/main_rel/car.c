@@ -2406,6 +2406,114 @@ void fn_1_87238(struct fn_1_87238_Car *car, s8 index, f32 f1) {
 }
 /* fzgx:end fn_1_87238 */
 
+/* fzgx:begin fn_1_87448 noprologue */
+#include "types.h"
+
+typedef struct {
+    u8 pad_00[0x1C];
+    u16 unk_1C;
+} Sig_fn_1_55628_Fn1_55628Object;
+
+typedef struct {
+    u8 pad_00[2];
+    s8 unk_02;
+} Fn1_87448_Arg1;
+
+typedef struct {
+    u32 unk_00;
+    u8 *unk_04;
+} Fn1_87448_Ent;
+
+typedef struct {
+    s32 unk_00;
+    u32 pad_04;
+    Fn1_87448_Ent *unk_08;
+} Fn1_87448_Tab;
+
+typedef struct {
+    u8 **unk_00;
+    void *unk_04;
+    u32 pad_08;
+} Fn1_87448_Slot;
+
+typedef struct {
+    u8 pad_00[0x330];
+    u32 unk_330;
+    Fn1_87448_Slot unk_334[1];
+} Fn1_87448_Obj;
+
+extern f32 lbl_1_rodata_3518[6];
+extern f32 lbl_1_rodata_3530[22];
+extern u32 lbl_8006DBE4(void);
+extern u32 lbl_8006DFC4(u32);
+extern u8 *fn_80083970(u8 *, const u8 *);
+extern void fn_1_55628(Sig_fn_1_55628_Fn1_55628Object *);
+extern void fn_1_556B8(void *);
+extern void fn_1_55FF0(f32);
+extern void fn_80072558(void);
+
+#pragma opt_dead_assignments off
+extern void OSReport(const char *, ...);
+#pragma section code_type ".fzgxpool"
+static void fzgx_string_layout(void) {
+    /* fzgx-allow: S2 layout primer: MWCC emits string literals in first-use order; the section is dropped at integration */
+    OSReport("pos_");
+}
+#pragma section code_type ".text"
+
+static inline f32 fn_1_87448_array_read(s32 index, f32 *array) { return array[index]; }
+#pragma opt_lifetimes off
+void fn_1_87448(Fn1_87448_Obj *self, Fn1_87448_Arg1 *arg1, s8 arg2, int flag, f32 f) {
+    s32 k;
+    u8 **row;
+    s32 n;
+    Fn1_87448_Tab *tab;
+    s32 below;
+    void *p;
+    s16 lim;
+
+    lim = 0;
+    tab = (Fn1_87448_Tab *)self->unk_334[arg2].unk_04;
+    if (f <= fn_1_87448_array_read(0, lbl_1_rodata_3518)) {
+        return;
+    }
+    below = f < fn_1_87448_array_read(0, lbl_1_rodata_3530);
+    if (arg1 != 0) {
+        lim = arg1->unk_02;
+    }
+    k = 1;
+    n = 0;
+    for (; k < tab->unk_00; k++) {
+        if (n > (s32)lim - 1) {
+            break;
+        }
+        if (fn_80083970((*((k) + (tab->unk_08))).unk_04, (u8 *)"pos_") != tab->unk_08[k].unk_04) {
+            row = self->unk_334[arg2].unk_00;
+            p = row[k];
+            if (p == 0) {
+                n += 1;
+                continue;
+            }
+            if (below != 0) {
+                fn_1_55FF0(f);
+            }
+            lbl_8006DBE4();
+            lbl_8006DFC4(self->unk_330 + n * 0x30);
+            fn_80072558();
+            if (flag != 0) {
+                fn_1_556B8(p);
+            } else {
+                fn_1_55628((Sig_fn_1_55628_Fn1_55628Object *)p);
+            }
+            n += 1;
+        }
+    }
+}
+#pragma opt_lifetimes reset
+
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_1_87448 */
+
 /* fzgx:begin fn_1_875B4 */
 void fn_1_875B4(void *arg, int value_1, int value_2, f32 value) {
     fn_1_87448(arg, value_1, value_2, value >= 1.0f, value);
