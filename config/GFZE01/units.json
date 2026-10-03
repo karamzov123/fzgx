@@ -49407,6 +49407,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/screen_effect/fn_1_7BD6C.c",
+    "symbols": [
+      "fn_1_7BD6C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/screen_effect.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/sel_static_disp/fn_1_1332FC.c",
     "symbols": [
       "fn_1_1332FC"

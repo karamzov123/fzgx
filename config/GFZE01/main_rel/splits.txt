@@ -7031,3 +7031,6 @@ rel/main_rel/enemy_ctrl/fn_1_CFCA4.c:
 
 rel/main_rel/bg_cas/fn_1_FFC60.c:
 	.text       start:0x000FFC60 end:0x000FFE7C align:4
+
+rel/main_rel/screen_effect/fn_1_7BD6C.c:
+	.text       start:0x0007BD6C end:0x0007BE94 align:4
