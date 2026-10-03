@@ -26282,6 +26282,19 @@
   },
   {
     "module": "main",
+    "source": "dol/gdev_cc_read.c",
+    "symbols": [
+      "gdev_cc_read"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [
+      "-use_lmw_stmw",
+      "on"
+    ]
+  },
+  {
+    "module": "main",
     "source": "dol/gdev_cc_shutdown.c",
     "symbols": [
       "gdev_cc_shutdown"

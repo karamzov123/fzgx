@@ -5723,3 +5723,6 @@ dol/fn_8006A480.c:
 
 dol/fn_8006BC84.c:
 	.text       start:0x8006BC84 end:0x8006BCF8 align:4
+
+dol/gdev_cc_read.c:
+	.text       start:0x8008E518 end:0x8008E60C align:4
