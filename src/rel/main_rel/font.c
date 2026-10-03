@@ -3173,6 +3173,146 @@ s32 fn_1_548EC(void *arg0) {
 }
 /* fzgx:end fn_1_548EC */
 
+/* fzgx:begin fn_1_549F4 noprologue */
+#include "types.h"
+
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+} Vec3;
+
+typedef struct {
+    s16 x;
+    s16 y;
+    s16 z;
+} Angles;
+
+typedef struct {
+    f32 s;
+    f32 c;
+} Vec2;
+
+typedef struct {
+    u8 pad_0[0x50];
+    Vec3 v50;
+    Vec3 aim[4];
+    Vec3 dir[4];
+    Angles rot;
+    f32 f1;
+    f32 f2;
+    f32 f3;
+    f32 f4;
+} State;
+
+typedef struct {
+    f32 zero;
+    f32 deg;
+    f32 half;
+    f32 pad_c;
+    f64 one;
+    f64 degd;
+    f64 halfd;
+} K;
+
+extern State *lbl_801A66CC;
+extern K lbl_1_rodata_2880;
+extern f32 lbl_8006D21C(s32);
+extern s16 lbl_8006D2AC(f32);
+extern void lbl_8006D7DC(Vec3 *);
+extern u32 mathutil_mtxA_rotate_x(s32);
+extern u32 mathutil_mtxA_rotate_y(s32);
+extern u32 mathutil_mtxA_rotate_z(s32);
+extern void lbl_8006D1B8(s16, Vec2 *);
+extern void lbl_8006E1C0(Vec3 *, Vec3 *);
+
+#pragma opt_common_subs off
+#pragma opt_loop_invariants off
+#pragma opt_strength_reduction off
+void fn_1_549F4(Vec3 *arg0, Angles *arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5) {
+    f32 fzgx_live_;
+    f32 fzgx_live;
+    f32 h;
+    K *p = (K *)&lbl_1_rodata_2880;
+    s16 t1, t2;
+    Angles *a1 = arg1;
+    Vec3 *a0 = arg0;
+    s16 t3, t4;
+    Vec2 v;
+
+    lbl_801A66CC->v50 = *a0;
+    lbl_801A66CC->rot = *a1;
+    lbl_801A66CC->f1 = arg2;
+    lbl_801A66CC->f2 = arg3;
+    lbl_801A66CC->f3 = arg4;
+    lbl_801A66CC->f4 = arg5;
+
+    if ((0.0f) == arg5) {
+        s32 t = (s16)((182.044449f) * arg2);
+        t1 = -t / 2;
+        t2 = t / 2;
+    } else {
+        h = lbl_8006D21C((s32)((182.044449f) * ((0.5f) * arg2)));
+        t1 = -lbl_8006D2AC(h * ((1.0) - arg5));
+        t2 = lbl_8006D2AC(h * ((1.0) + arg5));
+    }
+
+    if ((0.0f) == arg4) {
+        s16 x = lbl_8006D2AC(arg3 * lbl_8006D21C((s32)((182.04444885253906) * ((0.5) * arg2))));
+        s32 t = (s16)(x * 2);
+        t3 = t / 2;
+        t4 = -t / 2;
+    } else {
+        f32 s;
+        if ((0.0f) == arg5) {
+            s = arg3 * lbl_8006D21C((s32)((182.044449f) * ((0.5f) * arg2)));
+        } else {
+            s = h * arg3;
+        }
+        t3 = lbl_8006D2AC(s * ((1.0) + arg4));
+        t4 = -lbl_8006D2AC(s * ((1.0) - arg4));
+    }
+
+    lbl_8006D7DC(a0);
+    mathutil_mtxA_rotate_y(a1->y);
+    mathutil_mtxA_rotate_x(a1->x);
+    mathutil_mtxA_rotate_z(a1->z);
+
+    lbl_8006D1B8((s16)(t3 - 0x4000), &v);
+    fzgx_live_ = v.s;
+    lbl_801A66CC->dir[0].x = -fzgx_live_;
+    lbl_801A66CC->dir[0].y = (0.0f);
+    lbl_801A66CC->dir[0].z = -v.c;
+    lbl_8006E1C0(&lbl_801A66CC->dir[0], &lbl_801A66CC->aim[0]);
+
+    lbl_8006D1B8((s16)(t4 + 0x4000), &v);
+    fzgx_live_ = v.s;
+    lbl_801A66CC->dir[1].x = -fzgx_live_;
+    lbl_801A66CC->dir[1].y = (0.0f);
+    lbl_801A66CC->dir[1].z = -v.c;
+    lbl_8006E1C0(&lbl_801A66CC->dir[1], &lbl_801A66CC->aim[1]);
+
+    lbl_8006D1B8((s16)(t1 + 0x4000), &v);
+    lbl_801A66CC->dir[2].x = (0.0f);
+    fzgx_live_ = v.s;
+    lbl_801A66CC->dir[2].y = -fzgx_live_;
+    lbl_801A66CC->dir[2].z = -v.c;
+    lbl_8006E1C0(&lbl_801A66CC->dir[2], &lbl_801A66CC->aim[2]);
+
+    lbl_8006D1B8((s16)(t2 - 0x4000), &v);
+    lbl_801A66CC->dir[3].x = (0.0f);
+    fzgx_live_ = v.s;
+    lbl_801A66CC->dir[3].y = -fzgx_live_;
+    lbl_801A66CC->dir[3].z = -v.c;
+    lbl_8006E1C0(&lbl_801A66CC->dir[3], &lbl_801A66CC->aim[3]);
+}
+#pragma opt_strength_reduction reset
+
+#pragma opt_loop_invariants reset
+
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_549F4 */
+
 /* fzgx:begin fn_1_54DCC */
 void fn_1_54DCC(u8 *data) {
     fn_800794F0(data, (u8 *)lbl_801A66CC + 0x50, 0x84);

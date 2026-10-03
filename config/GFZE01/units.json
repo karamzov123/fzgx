@@ -41129,6 +41129,26 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/font/fn_1_549F4.c",
+    "symbols": [
+      "fn_1_549F4"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/font.c",
+    "pool": {
+      "...rodata.0": "lbl_1_rodata_2880",
+      "@14": "lbl_1_rodata_2880",
+      "@15": "lbl_1_rodata_2880+0x4",
+      "@16": "lbl_1_rodata_2880+0x8",
+      "@17": "lbl_1_rodata_2880+0x10",
+      "@19": "lbl_1_rodata_2880+0x20",
+      "@18": "lbl_1_rodata_2880+0x18"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/font/fn_1_54DCC.c",
     "symbols": [
       "fn_1_54DCC"
