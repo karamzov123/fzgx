@@ -864,6 +864,81 @@ void fn_1_F0164(void) {
 }
 /* fzgx:end fn_1_F0164 */
 
+/* fzgx:begin fn_1_F1300 */
+extern const f32 lbl_1_rodata_6B60;
+
+extern void lbl_8006D758(void);
+extern void mathutil_mtxA_rotate_z(s16 value);
+extern void mathutil_mtxA_rotate_y(s16 value);
+extern void mathutil_mtxA_rotate_x(s16 value);
+extern void fn_8006E5FC(void *value);
+
+typedef struct GhostVec4 {
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+} GhostVec4;
+
+#pragma opt_strength_reduction off
+void fn_1_F1300(u32 count, GhostVec4 *records, const u8 *xbytes,
+                const s16 *values, const u8 *zbytes) {
+    f32 fzgx_live_;
+    f32 *fzgx_value;
+    f32 fzgx_live;
+    struct { u32 value; } k;
+    const u8 * bytes_b_local = zbytes;
+    const s16 * values_local = values;
+    s16 sample;
+    GhostVec4 *current;
+    GhostVec4 *next;
+    u32 i;
+
+    current = records;
+    next = records + 1;
+    i = 0;
+    while (i < count) {
+        lbl_8006D758();
+        sample = (s8)*bytes_b_local << 8;
+        mathutil_mtxA_rotate_z(sample);
+        mathutil_mtxA_rotate_y(*values_local);
+        sample = (s8)xbytes[i] << 8;
+        mathutil_mtxA_rotate_x(sample);
+        fn_8006E5FC(records);
+        values_local++;
+        i++;
+        bytes_b_local++;
+        records++;
+    }
+
+    for (k.value = 0; k.value < count - 1; k.value++) {
+        f32 a;
+        f32 b;
+        f32 c;
+        f32 d;
+        f32 dot;
+
+        a = current->x * next->x;
+        b = current->y * next->y;
+        fzgx_live_ = next->z;
+        c = current->z * fzgx_live_;
+        fzgx_live = current->w;
+        d = fzgx_live * next->w;
+        dot = a + b + c + d;
+        if (dot < lbl_1_rodata_6B60) {
+            fzgx_value = &(next->x);
+            *fzgx_value = -next->x;
+            next->y = -next->y;
+            next->z = -next->z;
+            next->w = -next->w;
+        }
+        current++;
+        next++;
+    }
+}
+#pragma opt_strength_reduction reset
+/* fzgx:end fn_1_F1300 */
+
 /* fzgx:begin fn_1_F143C */
 typedef struct {
     f32 x;
