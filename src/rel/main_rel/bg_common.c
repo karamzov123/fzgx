@@ -51,6 +51,146 @@ void fn_1_103AD4(void) {
 }
 /* fzgx:end fn_1_103AD4 */
 
+/* fzgx:begin fn_1_103D28 */
+#pragma section code_type ".fzgxpool"
+static const u32 fzgx_pool_table1[1] = {0x42700000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep1(void) { const u32 *volatile cp; cp = fzgx_pool_table1; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime2(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 182.04444885253906f;
+    d = 4503601774854144.0;
+    s = 1.0f;
+    s = 0.5f;
+    s = 0.0f;
+    s = 5.0f;
+    s = 0.20000000298023224f;
+    s = -1.0f;
+    s = 32768.0f;
+    s = 16384.0f;
+    s = 2.0f;
+    s = 98304.0f;
+    s = 0.25f;
+    s = 3.0f;
+    s = 0.4000000059604645f;
+    s = -0.10000000149011612f;
+    s = 0.6000000238418579f;
+    s = 2.5f;
+    s = 20.0f;
+    s = 0.8500000238418579f;
+    s = 6.666666507720947f;
+    s = 1.5f;
+    s = 30.0f;
+    s = 0.009999999776482582f;
+    d = 0.0;
+    d = 3.0;
+    s = 32767.0f;
+}
+static const u32 fzgx_pool_table3[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep3(void) { const u32 *volatile cp; cp = fzgx_pool_table3; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime4(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    d = 0.5;
+    d = 4503599627370496.0;
+    s = 4.0f;
+    s = 65536.0f;
+    s = 0.30000001192092896f;
+    s = 0.800000011920929f;
+}
+#pragma section code_type ".text"
+
+extern void *memset(void *dst, int c, u32 n);
+extern u32 __cvt_fp2unsigned(f32 x);
+extern void lbl_8006D91C(s32 arg0);
+extern void *lbl_8006E1F0(void *arg0, f32 arg1, f32 arg2, f32 arg3);
+
+typedef struct Fn1_103D28_Item {
+    s32 field0;
+    f32 field4;
+    f32 field8;
+} Fn1_103D28_Item;
+
+typedef struct Fn1_103D28_Group {
+    u8 pad0[4];
+    Fn1_103D28_Item item;
+    u8 pad1[0xe0];
+} Fn1_103D28_Group;
+
+typedef struct Fn1_103D28_Buf {
+    u8 pad0[0x50];
+} Fn1_103D28_Buf;
+
+typedef struct Fn1_103D28_Rec {
+    s32 count;
+    void *ptr;
+    s32 self;
+    u8 pad0[0xf0];
+} Fn1_103D28_Rec;
+
+typedef struct Fn1_103D28_S4 {
+    u8 pad0[0x14];
+    f32 value;
+} Fn1_103D28_S4;
+
+typedef struct Fn1_103D28_S3 {
+    u8 pad0[8];
+    Fn1_103D28_S4 *link;
+} Fn1_103D28_S3;
+
+typedef struct Fn1_103D28_S2 {
+    u8 pad0[8];
+    Fn1_103D28_S3 *link;
+} Fn1_103D28_S2;
+
+typedef struct Fn1_103D28_S1 {
+    u8 pad0[8];
+    Fn1_103D28_S2 *link;
+} Fn1_103D28_S1;
+
+typedef struct Fn1_103D28_S0 {
+    Fn1_103D28_S1 *link;
+} Fn1_103D28_S0;
+
+typedef struct Fn1_103D28_Obj {
+    Fn1_103D28_Group groups[4];
+    u8 pad0[4];
+    Fn1_103D28_Buf bufs[4];
+    f32 f[4];
+    f32 g[4];
+    u8 pad1[0x3c4];
+    Fn1_103D28_Rec recs[4];
+} Fn1_103D28_Obj;
+
+void fn_1_103D28(Fn1_103D28_Obj *arg0, f32 arg1, u32 arg2) {
+    s32 j;
+    Fn1_103D28_Item *entry;
+    u32 value;
+    u32 count;
+    Fn1_103D28_S4 *node;
+    s32 i;
+
+    if (*(u32 *)arg0 != 0) {
+        value = arg2 & 0xff;
+        for (i = 0; i < 4; i++) {
+            arg0->recs[i].count = (s32)arg0->g[i];
+            arg0->recs[i].ptr = &arg0->recs[i].self;
+            memset(&arg0->bufs[i], 0, __cvt_fp2unsigned(4.0f * arg0->g[i]));
+            arg0->f[i] = arg1;
+            count = (value < 0x14) ? value : 0x14;
+            arg0->g[i] = (f32)(s32)count;
+            entry = &arg0->groups[i].item;
+            node = ((Fn1_103D28_S3 *)((Fn1_103D28_S2 *)((Fn1_103D28_S1 *)((Fn1_103D28_S0 *)arg0)->link)->link)->link)->link;
+            j = (s32)arg0->g[i];
+            while (j > 0) {
+                lbl_8006D91C((s32)((4.0f * (f32)(s32)j) / arg0->g[i] * 65536.0f));
+                lbl_8006E1F0(entry, 0.3f * node->value * ((f32)(s32)j / arg0->g[i]), 0.0f, 0.0f);
+                j--;
+                entry++;
+            }
+        }
+    }
+}
+/* fzgx:end fn_1_103D28 */
+
 /* fzgx:begin fn_1_103F10 */
 void fn_1_103F10(void *arg) {
     int count;

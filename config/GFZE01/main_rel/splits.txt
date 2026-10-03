@@ -7127,3 +7127,6 @@ rel/main_rel/sel_static_disp/fn_1_1418EC.c:
 
 rel/main_rel/game/fn_1_3F2A0.c:
 	.text       start:0x0003F2A0 end:0x0003F440 align:4
+
+rel/main_rel/bg_common/fn_1_103D28.c:
+	.text       start:0x00103D28 end:0x00103F10 align:4
