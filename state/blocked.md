@@ -112,3 +112,20 @@ nor `large_closures_20260915` contains it, so there is no seed to hand-decomp
 from. 8 attempts across 4 model tiers all plateaued 54.7-60.6%, which is the
 measured stopping condition. Unblocking requires copying the rayan-host bodies
 into `state/repairs/` as a portable archive, or a fresh carve with a new seed.
+
+## Link-rejected object-perfect bodies (2026-10-03, see docs/findings/279)
+
+Six functions are object-perfect and link-rejected because their `.fzgxpool` layout
+primer is never stripped: `poolfix.apply` runs only under `matched_pool`, and a body
+with `pool_rows: 0` never reaches it. Five are at exactly 100.0%: `fn_3_17098`,
+`fn_1_7E8F4`, `fn_1_C6F8C`, `fn_1_FC760`, `fn_8_704`; plus `colchg_selmate_disp`
+at 99.61%. The recipe, validated end to end on `fn_3_17098` (object 100%, module
+byte-identical to retail, `16 files OK`): drop the `.fzgxpool` block but keep its
+file-scope declarations, include `types.h` plus the module headers, then delete
+exactly the globals the linker names `multiply-defined`. Corrected body archived at
+`.fzgx/attempts/fn_3_17098.PRIMERLESS-100.c`.
+
+Do not read "Section '.fzgxpool' is unknown" as the failure; every REL link prints it
+and still returns 0. And a `15 files OK / 1 FAILED` line under fleet load is usually a
+stale mid-write read: re-run `build/tools/dtk shasum -q -c config/GFZE01/build.sha1`
+by hand before believing a rejection.
