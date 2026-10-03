@@ -1426,6 +1426,22 @@ u8 *fn_1_4DDB0(void) {
 }
 /* fzgx:end fn_1_4DDB0 */
 
+/* fzgx:begin fn_1_4DDC0 noprologue */
+#include "types.h"
+#include "rel/main_rel/font.h"
+
+#pragma opt_unroll_loops off
+void fn_1_4DDC0(void) {
+    Obj_1_bss_4C688 *ptr;
+    int count;
+    ptr = &lbl_1_bss_4C688;
+    for (count = 0; count < 64; count++) {
+        ptr->unk_0 = 0;
+        ptr = (Obj_1_bss_4C688 *)((u8 *)ptr + 0x80);
+    }
+}
+/* fzgx:end fn_1_4DDC0 */
+
 /* fzgx:begin fn_1_4DE44 */
 // Dispatch callbacks for each active font entry.
 void fn_1_4DE44(void) {

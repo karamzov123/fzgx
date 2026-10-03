@@ -6971,3 +6971,6 @@ rel/main_rel/sel_static_disp/fn_1_14BC40.c:
 
 rel/main_rel/bg_common/fn_1_10780C.c:
 	.text       start:0x0010780C end:0x00107900 align:4
+
+rel/main_rel/font/fn_1_4DDC0.c:
+	.text       start:0x0004DDC0 end:0x0004DE04 align:4
