@@ -821,6 +821,122 @@ tail:
 #pragma opt_lifetimes reset
 /* fzgx:end fn_1_A2FC8 */
 
+/* fzgx:begin fn_1_A31E4 noprologue */
+#include "types.h"
+
+extern const struct fn_1_A31E4_lbl_1_rodata_4540_pool {
+    f32 unk_0;
+} lbl_1_rodata_4540;
+
+typedef struct {
+    u8 unk_0;
+    u8 unk_1;
+    u8 unk_2;
+    u8 unk_3[7];
+    u8 unk_A;
+    u8 unk_B[9];
+} SoundEntry;
+
+typedef struct {
+    u8 unk_0[0x1C];
+    u32 unk_1C;
+    s8 unk_20[0x720];
+    u8 unk_740;
+    u8 unk_741[3];
+    u32 unk_744;
+    u8 unk_748[4];
+    SoundEntry unk_74C[4];
+    u8 unk_79C[0xC];
+    s8 unk_7A8;
+    s8 unk_7A9;
+} SoundState;
+
+typedef struct {
+    u8 b0 : 4;
+    u8 b4 : 1;
+    u8 b5 : 3;
+    u8 pad[5];
+} BssA88;
+
+typedef struct {
+    u8 b0 : 4;
+    u8 b4 : 1;
+    u8 b5 : 3;
+} BssCC0;
+
+extern SoundState lbl_1_bss_6EA98;
+extern BssA88 lbl_1_bss_A88[4];
+extern BssCC0 lbl_1_bss_CC0[152];
+
+extern s32 fn_1_3F864(void);
+extern s32 fn_1_3F854(void);
+extern u32 fn_1_864E8(s32 arg0);
+extern u32 fn_1_86514(s32 arg0);
+extern f32 fn_1_8652C(s32 arg0);
+extern s16 fn_1_3F0C8(void);
+extern void fn_80067344(u32 arg0, u32 arg1, u32 arg2, u32 arg3);
+extern void fn_80067898(u32 arg0);
+
+static inline SoundEntry * fn_1_A31E4_read_pointer(SoundState * owner) { return owner->unk_74C; }
+#pragma opt_common_subs off
+void fn_1_A31E4(void) {
+    SoundState *state = &lbl_1_bss_6EA98;
+    SoundEntry *tbl;
+    s32 n;
+    s32 count = 0;
+    u8 count2;
+    s32 id;
+    u32 flags;
+    f32 f;
+    s32 i;
+    count2 = 0;
+
+    if (fn_1_3F864() != 0) {
+        n = fn_1_3F854();
+        tbl = fn_1_A31E4_read_pointer(state);
+        for (i = 0; i < n; i++) {
+            id = tbl[i].unk_1;
+            flags = fn_1_864E8(id);
+            if (id != 0xFF && !(flags & 0x280)) {
+                if ((fn_1_86514(id) >> 27) & 1) {
+                    if (!(state->unk_1C & 0x20)) {
+                        fn_80067344(1, 7, 0xB0070000, tbl[i].unk_A);
+                    }
+                    count++;
+                }
+                if (lbl_1_bss_A88[i].b4) {
+                    count2++;
+                }
+                f = fn_1_8652C(id);
+                if (lbl_1_bss_CC0[i].b4 && f > lbl_1_rodata_4540.unk_0 && fn_1_3F0C8() != 0x28) {
+                    fn_80067344(1, 0x10, 0xB0270000, tbl[i].unk_2);
+                    if (state->unk_740 == 0 && state->unk_744 <= 0x2D) {
+                        fn_80067898(0xA9091500);
+                    }
+                }
+            }
+        }
+        if (state->unk_7A8 < (u8)count) {
+            if (state->unk_740 == 0 && state->unk_744 <= 0x2D) {
+                fn_80067898(0xA9090C00);
+            }
+        } else if (state->unk_7A8 > (u8)count && (u8)count == 0) {
+            if (state->unk_740 == 0 && state->unk_744 <= 0x2D) {
+                fn_80067898(0xA9090D00);
+            }
+        }
+        if (state->unk_7A9 > count2 && count2 == 0) {
+            if (state->unk_740 == 0 && state->unk_744 <= 0x2D) {
+                fn_80067898(0xA9091600);
+            }
+        }
+        state->unk_7A8 = count;
+        state->unk_7A9 = count2;
+    }
+}
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_A31E4 */
+
 /* fzgx:begin fn_1_A358C */
 extern u32 lbl_1_bss_6EA98;
 extern s32 fn_1_3F864(void);
