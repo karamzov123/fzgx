@@ -40869,6 +40869,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/font/fn_1_5158C.c",
+    "symbols": [
+      "fn_1_5158C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/font.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/font/fn_1_51678.c",
     "symbols": [
       "fn_1_51678"

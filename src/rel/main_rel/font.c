@@ -2309,6 +2309,63 @@ void fn_1_51564(u16 first, u16 second, u16 third, u16 fourth, u16 fifth, u16 six
 }
 /* fzgx:end fn_1_51564 */
 
+/* fzgx:begin fn_1_5158C noprologue */
+#include "dolphin/types.h"
+#include "rel/main_rel/font.h"
+
+typedef struct FontDrawPacket FontDrawPacket;
+
+extern void fn_1_51678(FontDrawPacket *, u32, s16, s16, s16, s16);
+
+static inline int in_range(int value, int lower, int upper)
+{
+    if (value > upper) {
+        return 0;
+    }
+    return value >= lower;
+}
+
+static inline int clamp(int value, int lower, int upper)
+{
+    int result = value;
+    if (value < lower) {
+        result = lower;
+    } else if (result > upper) {
+        result = upper;
+    }
+    return result;
+}
+
+void fn_1_5158C(FontDrawPacket *packet, u32 color, s16 x, s16 y)
+{
+    s16 *state = (s16 *)((u8 *)&lbl_1_bss_4C678 + 0x20000);
+    int max_x = state[-0x7f9c / 2] - 1;
+    int max_y;
+    int coordinate = x;
+    if (!in_range(coordinate, 0, max_x)) {
+        if (x < 0) {
+            coordinate = 0;
+        } else if (coordinate > max_x) {
+            coordinate = max_x;
+        }
+        x = coordinate;
+    }
+    max_y = state[-0x7f9a / 2] - 1;
+    coordinate = y;
+    if (!in_range(coordinate, 0, max_y)) {
+        if (y < 0) {
+            coordinate = 0;
+        } else if (coordinate > max_y) {
+            coordinate = max_y;
+        }
+        y = coordinate;
+    }
+    fn_1_51678(packet, color, state[-0x7fa4 / 2] + x * state[-0x7fa0 / 2],
+        state[-0x7fa2 / 2] + y * state[-0x7f9e / 2],
+        state[-0x7fa0 / 2], state[-0x7f9e / 2]);
+}
+/* fzgx:end fn_1_5158C */
+
 /* fzgx:begin fn_1_51678 */
 void fn_1_51678(FontDrawPacket *p, u32 image, s16 x, s16 y, s16 width, s16 height) {
     f32 inv_height, inv_width;
