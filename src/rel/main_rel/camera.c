@@ -44,6 +44,178 @@ extern f64 lbl_1_rodata_478;
 extern f32 lbl_1_rodata_49C;
 extern f32 lbl_1_bss_10C0[6];
 
+/* fzgx:begin fn_1_5370 noprologue */
+#include "types.h"
+#include "rel/main_rel/camera.h"
+
+extern u16 fn_1_3F8C(u8 *, void (*)(void), void *, u32);
+extern void fn_1_426C(s16);
+extern u32 fn_1_435C(u32);
+extern u32 fn_1_434C(void);
+extern u8 fn_1_86624(void);
+extern void fn_1_8298(s8);
+extern void fn_1_847C(s8);
+extern void fn_1_857C(s8);
+extern void fn_1_90E0(void);
+extern void fn_1_EE44(void);
+extern f32 fn_1_A6FE8(void);
+extern const f64 lbl_1_rodata_178;
+extern const f64 lbl_1_rodata_180;
+extern void fn_1_8D08(void *, f32);
+extern void fn_1_EBE4(void *, s32, u32);
+extern u8 lbl_1_data_33CC[0xF];
+extern u8 lbl_1_data_33DC[0xF];
+
+typedef struct {
+    u8 pad_0[4];
+    s16 list0[15];
+    s16 num0;
+    u16 unk_24;
+    s16 list1[15];
+    s16 num1;
+    u16 unk_46;
+    s8 unk_48;
+    u8 unk_49;
+    u8 unk_4A;
+    u8 unk_4B;
+    u8 unk_4C;
+    u8 unk_4D;
+    u8 pad_4E[2];
+    u32 unk_50;
+    u32 unk_54;
+    f32 unk_58;
+    f32 unk_5C;
+} Target;
+
+typedef struct {
+    u16 unk_0;
+    u16 unk_2;
+    u8 pad_4[0x1F8];
+} Item;
+
+typedef struct {
+    Target *unk_0;
+    Item *unk_4;
+    Target *unk_8;
+} State;
+
+s8 fn_1_5370(s8 arg0, s32 arg1) {
+    State *state = (State *)&lbl_1_bss_F68;
+    u32 i;
+    s8 old;
+    u32 num = 0;
+    u32 flag = 0;
+    u32 t;
+    Item *item;
+    u32 kind;
+    f32 f;
+
+    if (state->unk_0 == 0) {
+        return -1;
+    }
+    t = fn_1_434C();
+    fn_1_86624();
+    old = state->unk_0->unk_4D;
+    state->unk_0->unk_4D = arg0;
+    fn_1_435C(state->unk_0->unk_50);
+
+    for (i = 0; i < state->unk_0->num0; i++) {
+        fn_1_426C(state->unk_0->list0[i]);
+    }
+    state->unk_0->num0 = 0;
+    fn_1_435C(state->unk_0->unk_54);
+
+    for (i = 0; i < state->unk_0->num1; i++) {
+        fn_1_426C(state->unk_0->list1[i]);
+    }
+    state->unk_0->num1 = 0;
+
+    switch (arg0) {
+    case 0:
+        fn_1_8298(arg0);
+        break;
+    case 1:
+    case 2:
+    case 4:
+        fn_1_847C(arg0);
+        break;
+    case 3:
+        fn_1_857C(arg0);
+        break;
+    }
+
+    switch ((s8)state->unk_0->unk_48) {
+    case 0:
+        num = 1;
+        break;
+    case 1:
+    case 2:
+        num = 2;
+        break;
+    case 3:
+    case 4:
+    case 5:
+    case 7:
+        num = 3;
+        break;
+    case 6:
+        num = 3;
+        flag = 1;
+        break;
+    case 8:
+        num = 4;
+        break;
+    case 9:
+        flag = 1;
+        break;
+    case 10:
+        num = 1;
+        flag = 1;
+        break;
+    case 11:
+        num = 0;
+        flag = 0;
+        break;
+    }
+    state->unk_0->unk_49 = num + flag;
+
+    for (i = 0, item = state->unk_4; i < num;
+         i++, item = (Item *)((u8 *)item + 0x1FC)) {
+        f = fn_1_A6FE8();
+        kind = (u8)(state->unk_0->unk_48);
+        if ((s8)kind == 1 || (i == 0 && (s8)kind == 3) ||
+            (i == 1 && (s8)kind == 4) || (i == 2 && (s8)kind == 5)) {
+            f = f * lbl_1_rodata_178;
+        }
+        if ((s8)kind == 2) {
+            f = f * lbl_1_rodata_180;
+        }
+        if ((s8)kind == 0) {
+            item->unk_2 = (u16)arg1;
+        }
+        fn_1_8D08(item, f);
+        fn_1_435C(state->unk_0->unk_50);
+        state->unk_0->list0[state->unk_0->num0++] =
+            fn_1_3F8C(lbl_1_data_33CC, fn_1_90E0, item, 0x14);
+    }
+
+    if (flag) {
+        fn_1_A6FE8();
+        if (arg0 == 4) {
+            fn_1_EBE4(state->unk_8, -1, 1);
+        } else {
+            fn_1_EBE4(state->unk_8, arg1, 0);
+        }
+        fn_1_435C(state->unk_0->unk_50);
+        state->unk_0->list0[state->unk_0->num0++] =
+            fn_1_3F8C(lbl_1_data_33DC, fn_1_EE44, state->unk_8, 0x14);
+    }
+
+    fn_1_435C(t);
+    return old;
+}
+/* fzgx:end fn_1_5370 */
+
 /* fzgx:begin fn_1_6400 */
 struct fn_1_6400_lbl_801A6410 {
     u32 unk_0;
