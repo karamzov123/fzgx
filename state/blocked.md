@@ -131,3 +131,37 @@ Do not read "Section '.fzgxpool' is unknown" as the failure; every REL link prin
 and still returns 0. And a `15 files OK / 1 FAILED` line under fleet load is usually a
 stale mid-write read: re-run `build/tools/dtk shasum -q -c config/GFZE01/build.sha1`
 by hand before believing a rejection.
+
+## Split-ownership gaps block a third class of object-perfect bodies (2026-10-03)
+
+Two more 100.0% bodies are blocked for a reason unrelated to the `.fzgxpool` primer
+(see docs/findings/279). Both fail at the REL resolve or at module size, not at link:
+
+- `fn_12_23410` (movie_module, 752 B): object 100.0%, but the module grows by 280 bytes.
+  The body declares a private `u8 lbl_12_bss_7250[2048]` scratch buffer. Retail does
+  have `lbl_12_bss_7250` (`movie_module/symbols.txt:1053`, `.bss:0x00007250`, size
+  0x800), but that symbol appears in **no** entry of `movie_module/splits.txt`, so
+  linking the unit adds storage the retail module does not have. Fix is a split (or a
+  reference to whichever unit ends up owning it), not a C edit.
+- `fn_8_704` (title, 80 B): `Failed to find symbol fn_1_14F118 in any module`.
+  `fn_1_14F118` is matched and defined in `src/rel/main_rel/sel_static_disp.c`, so the
+  REL resolve cannot see an existing definition. Baseline without the unit is
+  `16 files OK`, so this is not pre-existing breakage.
+
+Both are object-perfect and neither can be advanced by any amount of matcher effort.
+They need split ownership work, which is a different owner than the matcher.
+
+## Verify's hash read races with the fleet
+
+`verify` relinks and then runs `shasum -c` immediately. Under live fleet load that read
+can land mid-write and report `<module>.rel: FAILED / 15 files OK` for a module that is
+byte-identical to retail. Observed four times in this cohort; every one checked by hand
+came back `16 files OK` with zero differing bytes. Two of them were then re-submitted and
+verified normally. **Do not re-derive a body because of this line.** Confirm with:
+
+    build/tools/dtk shasum -q -c config/GFZE01/build.sha1
+
+and compare bytes against the retail file (`main_rel` is `files/enemy_line/main.rel`,
+the others are `files/fze.<module>.rel`). A real layout problem shows a *size* delta or
+non-zero differing bytes; `fn_12_23410` did, which is how it was told apart from the
+races.
