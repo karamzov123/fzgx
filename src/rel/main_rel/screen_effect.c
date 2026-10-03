@@ -1596,6 +1596,24 @@ void fn_1_76964(Fn1_76964Obj *obj) {
 }
 /* fzgx:end fn_1_76964 */
 
+/* fzgx:begin fn_1_769FC */
+extern u32 lbl_801A6410;
+extern s32 fn_1_45D0(u32, u32, void *, u32);
+extern u32 fn_80008E84(u32);
+
+void fn_1_769FC(u32 *arg0, u8 index)
+{
+    lbl_1_bss_6C8E8 = fn_80008E84(lbl_1_bss_6C8E4);
+
+    arg0[index + 0x28] =
+        fn_1_45D0(lbl_801A6410, arg0[index + 0x2D], lbl_1_data_1DAC0, 0x919);
+
+    arg0[index + 0x32] = 0;
+
+    fn_80008E84(lbl_1_bss_6C8E8);
+}
+/* fzgx:end fn_1_769FC */
+
 /* fzgx:begin fn_1_76A94 noprologue */
 #include "types.h"
 

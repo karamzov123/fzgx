@@ -6932,3 +6932,6 @@ rel/main_rel/bg_win/fn_1_15DD7C.c:
 
 rel/main_rel/sel_static_disp/fn_1_141360.c:
 	.text       start:0x00141360 end:0x00141614 align:4
+
+rel/main_rel/screen_effect/fn_1_769FC.c:
+	.text       start:0x000769FC end:0x00076A94 align:4
