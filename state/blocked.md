@@ -132,24 +132,26 @@ and still returns 0. And a `15 files OK / 1 FAILED` line under fleet load is usu
 stale mid-write read: re-run `build/tools/dtk shasum -q -c config/GFZE01/build.sha1`
 by hand before believing a rejection.
 
-## Split-ownership gaps block a third class of object-perfect bodies (2026-10-03)
+## Split gaps block a third class of object-perfect bodies (2026-10-03)
 
-Two more 100.0% bodies are blocked for a reason unrelated to the `.fzgxpool` primer
-(see docs/findings/279). Both fail at the REL resolve or at module size, not at link:
+A function with no `.text` split range cannot be linked, and `oracle.check` cannot see
+that: it diffs one object against the retail object and never builds the module. Carving a
+unit adds a *second* copy, so the module grows past retail or the REL step cannot resolve.
+`splits.txt` is ours (`dol split --no-update` never rewrites it), so adding the range is
+safe. Use `python3 tools/fzgx/splitgaps.py --only-unmatched` before submitting a body.
 
-- `fn_12_23410` (movie_module, 752 B): object 100.0%, but the module grows by 280 bytes.
-  The body declares a private `u8 lbl_12_bss_7250[2048]` scratch buffer. Retail does
-  have `lbl_12_bss_7250` (`movie_module/symbols.txt:1053`, `.bss:0x00007250`, size
-  0x800), but that symbol appears in **no** entry of `movie_module/splits.txt`, so
-  linking the unit adds storage the retail module does not have. Fix is a split (or a
-  reference to whichever unit ends up owning it), not a C edit.
-- `fn_8_704` (title, 80 B): `Failed to find symbol fn_1_14F118 in any module`.
-  `fn_1_14F118` is matched and defined in `src/rel/main_rel/sel_static_disp.c`, so the
-  REL resolve cannot see an existing definition. Baseline without the unit is
-  `16 files OK`, so this is not pre-existing breakage.
+- `fn_8_704` (title): split `0x704..0x754` added. The reported
+  `Failed to find symbol fn_1_14F118 in any module` was a red herring -- nothing in that
+  body references it. Now **matched** (commit 1476a20e).
+- `fn_12_23410` (movie_module): split `0x23410..0x23700` added. Module size delta went
+  from +280 bytes to 0, so the ownership problem is gone. It is no longer a 100% body
+  though: in its real split context it scores 97.2% (ins 4, op 2, regalloc 1), and
+  `static inline` on its helper changed nothing. Its earlier 100% was measured against the
+  auto object rather than the split's retail object.
 
-Both are object-perfect and neither can be advanced by any amount of matcher effort.
-They need split ownership work, which is a different owner than the matcher.
+1,422 unmatched functions have no split. That is the normal state, not a defect backlog --
+a split appears when a function links -- but every one of them needs its range added
+before its body can be accepted.
 
 ## Verify's hash read races with the fleet
 

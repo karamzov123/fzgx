@@ -45,6 +45,45 @@ against `orig/GFZE01/files/fze.customize.rel`.
 
 ## The recipe
 
+**A function with no split range cannot be linked, and the per-object oracle cannot see
+that.** Carving a unit for an uncovered function adds a *second* copy of it to the module —
+the module grows and the hash stops matching — or the REL step fails to resolve a symbol it
+expected. `oracle.check` still reports 100%, because it diffs one object against the retail
+object and never builds the module. This is why these bodies look object-perfect and
+link-rejected with no visible cause.
+
+`splits.txt` is ours: `dol split --no-update` never rewrites it, so a missing range is a
+real gap and is safe to add. Range = the symbol's own `start`/`size` from `symbols.txt`.
+
+`tools/fzgx/splitgaps.py` reports them:
+
+    python3 tools/fzgx/splitgaps.py [--module NAME] [--only-unmatched] [--json]
+
+Note what the count is *not*: 1,422 unmatched functions have no split, which is simply the
+normal state (a split appears when a function links), not a backlog of defects. The tool's
+value is prospective — **check for a gap before submitting any body**, or the match will be
+built, accepted at 100%, and then rejected for a reason the check never showed.
+
+Verified on two cases:
+
+| Symbol | Split added | Symptom before | After |
+| --- | --- | --- | --- |
+| `fn_8_704` (title) | `0x704..0x754` | `Failed to find symbol fn_1_14F118 in any module` | **matched**, committed `1476a20e` |
+| `fn_12_23410` (movie_module) | `0x23410..0x23700` | module grew **+280 bytes** | size delta **0**; object 97.2 % |
+
+`fn_8_704`'s `fn_1_14F118` error was a red herring: nothing in that body references it. The
+REL step simply cannot resolve symbols when the module it is resolving has a range that no
+split produces.
+
+`fn_12_23410` is no longer an ownership problem, but it is also no longer a 100 % body: once
+it compiled in its real split context it scored **97.2 %** (ins 4, op 2, regalloc 1).
+`static inline` on its `find_entry` helper changed nothing, so the helper was already being
+inlined. The earlier 100 % was measured against the auto object, not the split's retail
+object — worth remembering before trusting a candidate score for a function that has no
+split yet.
+
+## The recipe for the primer itself
+
 `tools/fzgx/primerless.py` implements this; it reproduces the hand-repaired
 `fn_3_17098` body byte-for-byte.
 
