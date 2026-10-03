@@ -1,5 +1,5 @@
 {
- "generated": 1791064151,
+ "generated": 1791064161,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -89989,7 +89989,7 @@
    "addr": 1221456,
    "size": 352,
    "status": "unmatched",
-   "attempts": 8,
+   "attempts": 9,
    "best_percent": 91.25,
    "claimed_by": null,
    "claimed_at": null,
@@ -566311,7 +566311,7 @@
    "notes": "harness incomplete (rc=0); saved best candidate automatically",
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_12A350.1791050183.c",
    "stale_checks": 3,
-   "best_in_attempt": 91.25,
+   "best_in_attempt": 92.443184,
    "cache_read_tokens": 0,
    "cache_write_tokens": 0
   },
@@ -571790,6 +571790,27 @@
    "cost_usd": 0.0,
    "outcome": "released",
    "notes": "harness incomplete (rc=0); saved best candidate automatically",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 0.0,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 21310,
+   "symbol": "fn_1_12A350",
+   "agent": "fleet-v2-cline-1791064156021792793-cline-1",
+   "harness": "cline",
+   "model": null,
+   "started": 1791064156,
+   "ended": 1791064160,
+   "checks": 0,
+   "final_percent": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "harness crash (rc=-15); saved best candidate automatically",
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 0.0,
