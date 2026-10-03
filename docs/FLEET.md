@@ -207,3 +207,25 @@ Initial constrained batches accepted fn_12_38340 (38c65f05), fn_12_2EE7C (7e11f3
 The four-provider policy/adapter scratch acceptance suite passes nine checks; the updated controller suite passes ten. Python compile and Node syntax checks pass. Real Ninja, DTK report `16 files OK`, and fzgx lint reports zero findings. No mock tests are added to the repository.
 
 Live restart shows Opus 5.5 High and GPT 6.1-Sol Medium making checked attempts; Space Bunny Alpha High emits genuine model usage through its SDK. AGY's real request is blocked by account quota and autonomously schedules retry using the returned reset duration. Do not report AGY as productive while quota-blocked. Read live status for current counts; these are not static guarantees.
+
+## Provider fallback: agy serves Opus on Gemini quota exhaustion (2026-10-03)
+
+A quota failure used to mean the family simply idled, wasting the slot. `agy` now has a
+declared fallback: it keeps its own transport (existing login, PreToolUse guard, six bound
+MCP tools — all verified) and swaps **only the model** to `claude-opus-5-5` at `high`, taking
+the `>=1 KB` band so it works the cold large functions like `gpt` does.
+
+- Normal: Gemini 3.8 Flash High, unchanged band behaviour.
+- On a measured **rate-limit**: switches to Opus 5.5 High, tile reads
+  `Opus 5.5 High (agy fallback)`, band `(1024, inf)`.
+- On the next clean batch, the fallback clears and Gemini resumes.
+
+This does not weaken the no-silent-fallback rule it sits next to. That rule exists so a quota
+failure is never quietly answered with a different model; this swap is declared in `FALLBACK`,
+operator-directed, shown in the tile, the runner banner and the log, and persisted in
+`runtime-v3.json` so a daemon restart cannot drop the family back onto a model just measured
+out of quota. An `error` — as opposed to a rate limit — does **not** trigger it: a transport
+or tool failure says nothing about quota, and swapping on it would hide the real fault.
+
+Only `agy` declares a fallback; `claude` and `gpt` are unaffected. Reverting is deleting the
+`FALLBACK` entry.

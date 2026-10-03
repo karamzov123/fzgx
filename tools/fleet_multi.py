@@ -42,6 +42,19 @@ SURGE_DELAY = 600      # cumulative seconds of paid unavailability before adding
 SURGE_RETIRE = 1800    # sustained paid recovery before giving capacity back
 UNAVAILABLE = ('rate-limited', 'error')
 FLEET_CAP = 18        # sessions across all families, surge included
+
+# Provider fallback (2026-10-03). A quota failure used to mean the family simply idled,
+# which wasted the slot. FLEET.md's "quota failure remains quota failure, not permission to
+# choose a different model" is a *no-silent-fallback* rule: the swap below is explicit,
+# operator-directed, reported in the tile, and reversible. While a family's own model is
+# healthy it runs unchanged; only a measured rate-limit switches it.
+FALLBACK = {
+    # agy authenticates to Gemini by default. On quota exhaustion it keeps the agy transport
+    # (its own login, guard, and six bound MCP tools are already correct and verified) and
+    # only swaps the model, so the fallback inherits everything that makes agy safe.
+    'agy': {'model': 'claude-opus-5-5', 'effort': 'high', 'display': 'Opus 5.5 High (agy fallback)',
+            'band': (1024, 1 << 30)},
+}
 for _n in SURGE:
     POLICY[_n] = {'harness':'opencode','model':'opencode/space-bunny-free','effort':'xhigh',
                   'display':f'Space Bunny Free xHigh #{_n[-1]}','managed':True}
@@ -56,6 +69,40 @@ def defaults():
     # Surge families start disabled: capacity is added by measured paid-provider
     # unavailability, never by being switched on and left running.
     return {family:{'enabled':family not in SURGE,'parallel':1} for family in POLICY}
+
+
+def in_fallback(family):
+    """True when `family` is currently serving its fallback model.
+
+    Dwell lives in runtime-v3.json, so a daemon restart cannot silently drop a family back
+    onto a model that was just measured out of quota -- that is the same reason the surge
+    timer is persisted.
+    """
+    if family not in FALLBACK:
+        return False
+    return bool(_fallback_state().get(family))
+
+
+def _fallback_state():
+    try:
+        return json.loads(RUNTIME.read_text()).get('fallback') or {}
+    except (OSError, ValueError):
+        return {}
+
+
+def effective(family):
+    """The policy actually used for this batch: base model, or the fallback when in quota."""
+    p = dict(POLICY[family])
+    if in_fallback(family):
+        p.update(FALLBACK[family])
+    return p
+
+
+def band_for(family):
+    """Size band for `family`, which the fallback may widen (agy takes the large band)."""
+    if in_fallback(family):
+        return FALLBACK[family].get('band')
+    return FAMILY_BANDS.get(family)
 
 def configuration():
     # Backfill families missing from an older control file, so adding a
@@ -83,7 +130,7 @@ def budget_limits(family, parallel, count):
                 log_bytes=64*1024*1024*parallel,guard_each=False,usage_wait=unlimited)
 
 def command(family, batch, symbols, parallel):
-    p = POLICY[family]
+    p = effective(family)
     return [str(ROOT / '.venv/bin/python'), str(ROOT / 'tools/orchestrate.py'),
         '--harness',p['harness'],'--model',p['model'],'--effort',p['effort'],
         '--parallel',str(parallel),'--tool-parallel','1','--timeout',str(SESSION_TIMEOUT),
@@ -288,7 +335,7 @@ def choose(rows, seen, context, count, reserved=(), retry=(), family=None):
     order=lambda r:(0 if r['symbol'] in virgin else 1,
                     -(r.get('best',r.get('best_percent',0)) or 0),
                     mine.get(r['symbol'],0),r['size'],r['symbol'])
-    band=FAMILY_BANDS.get(family) if family else None
+    band=band_for(family) if family else None
     eligible=sorted([r for r in base if band and band[0]<=(r['size'] or 0)<=band[1]],key=order)
     if len(eligible)<count:
         # The band's own slice cannot fill the request. Widen to the rest of the
@@ -474,7 +521,7 @@ def status():
         glyph=GLYPH.get(current,'!')
 
         # Fixed order, one fact per line: what it is, why, the numbers, what to do.
-        lines=[f'{name}  {glyph} {current.upper()}', POLICY[family]['display'], '', f'Why: {why}']
+        lines=[f'{name}  {glyph} {current.upper()}', effective(family)['display'], '', f'Why: {why}']
         checks=data.get('checks') or 0
         done=data.get('completed') or 0
         verified=data.get('verified') or 0
@@ -647,7 +694,7 @@ class Job:
         (CACHE/'logs').mkdir(parents=True,exist_ok=True)
         self.logpath=CACHE/'logs'/f'{family}.log'
         self.log=self.logpath.open('a');self.offset=self.log.tell()
-        self.log.write(f'\n--- {self.batch} {POLICY[family]["display"]}: {symbols} ---\n');self.log.flush()
+        self.log.write(f'\n--- {self.batch} {effective(family)["display"]}: {symbols} ---\n');self.log.flush()
         self.proc=subprocess.Popen(command(family,self.batch,symbols,parallel),cwd=ROOT,
             stdout=self.log,stderr=subprocess.STDOUT,stdin=subprocess.DEVNULL,
             env={**os.environ,'PYTHONUNBUFFERED':'1','FZGX_BOUND_TRANSPORT':'1',
@@ -668,11 +715,12 @@ def run():
     jobs={};seen=load(HISTORY,{})
     runtime=load(RUNTIME,{'families':{},'failed_gate':None})
     clock=dict(runtime.get('surge_clock') or {})
+    fb=dict(runtime.get('fallback') or {})
     statuses={family:runtime.get('families',{}).get(family,{'status':'starting','reason':'Preparing exact-model transport.'}) for family in POLICY}
     failures={family:statuses[family].get('failures',0) for family in POLICY}
     retries={family:statuses[family].get('retry_at',0) for family in POLICY}
     def persist():
-        atomic(RUNTIME,dict(families=statuses,failed_gate=runtime.get('failed_gate'),surge_clock=clock))
+        atomic(RUNTIME,dict(families=statuses,failed_gate=runtime.get('failed_gate'),surge_clock=clock,fallback=fb))
     try:
         while not STOP and active_runner_pids():
             publish({k:dict(status='blocked',reason='Waiting for previous host to drain.',active=0) for k in POLICY});time.sleep(3)
@@ -725,6 +773,14 @@ def run():
                         delay=3;state='idle';reason=stop_reason
                     elif rate or broken:
                         failures[family]+=1;delay=retry_delay(text,failures[family]);state='rate-limited' if rate else 'error'
+                        # A quota failure is the one condition that justifies serving the
+                        # declared fallback. An `error` is not: a transport or tool failure
+                        # says nothing about quota, and swapping the model on it would hide
+                        # the real fault behind a different name.
+                        if rate and family in FALLBACK and not fb.get(family):
+                            fb[family]={'since':time.time(),'from':POLICY[family]['display'],
+                                        'to':FALLBACK[family]['display']}
+                            print(f'{family}: quota exhausted, serving {FALLBACK[family]["display"]}',flush=True)
                         # Report the provider's own words, not the last line of
                         # the stream: that is usually a tool-timing event, which
                         # told the operator nothing about why the batch stopped.
@@ -735,9 +791,11 @@ def run():
                         reason = detail[:300]
                     elif t['verified']:
                         failures[family]=0;delay=3;state='idle';reason='Batch complete with link-verified matches; selecting fresh work.'
+                        fb.pop(family,None)
                     else:
                         # A clean batch without a match is not a provider failure.
                         failures[family]=0;delay=3;state='idle';reason='Batch saved best candidates without a match; selecting fresh work.'
+                        fb.pop(family,None)
                     retries[family]=time.time()+delay
                     statuses[family]=dict(t,status=state,reason=stop_reason or reason,active=0,claims=[],failures=failures[family],retry_at=retries[family],batch=job.batch)
                     del jobs[family];persist()
@@ -796,8 +854,8 @@ def run():
                 for symbol in symbols:seen[symbol]=context
                 atomic(HISTORY,seen)
                 job=Job(family,symbols,cfg['parallel'],gate_passed);jobs[family]=job
-                statuses[family]=dict(status='starting',reason=f'Preparing {len(symbols)} distinct assigned functions with {POLICY[family]["display"]}.',batch=job.batch,active=0,runner_pid=job.proc.pid)
-                print(f'{family}: {job.batch}, {symbols}, {POLICY[family]["display"]}',flush=True)
+                statuses[family]=dict(status='starting',reason=f'Preparing {len(symbols)} distinct assigned functions with {effective(family)["display"]}.',batch=job.batch,active=0,runner_pid=job.proc.pid)
+                print(f'{family}: {job.batch}, {symbols}, {effective(family)["display"]}',flush=True)
                 persist();publish(statuses)
             time.sleep(3)
     finally:
