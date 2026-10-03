@@ -128,6 +128,119 @@ void fn_5_320(void) {
 }
 /* fzgx:end fn_5_320 */
 
+/* fzgx:begin fn_5_37C noprologue */
+#include "types.h"
+
+struct fn_5_37C_in {
+    s8 unk_0;
+    u8 unk_1;
+    s8 unk_2;
+    s8 unk_3;
+    s16 unk_4;
+    s16 unk_6;
+    s16 unk_8;
+    s16 unk_A;
+    f32 unk_C;
+    f32 unk_10;
+    s8 unk_14;
+    u8 pad_15[1];
+    s8 unk_16;
+    s8 unk_17;
+    s16 unk_18;
+    u8 pad_1A[2];
+    u32 unk_1C;
+};
+
+struct fn_5_37C_out {
+    u8 pad_0[0x40];
+    u8 unk_40;
+    u8 unk_41;
+    u8 pad_42[2];
+    u32 unk_44;
+    u8 unk_48;
+    u8 pad_49[1];
+    s16 unk_4A;
+    s16 unk_4C;
+    s16 unk_4E;
+    s16 unk_50;
+    u8 pad_52[2];
+    f32 unk_54;
+    f32 unk_58;
+    s8 unk_5C;
+    s8 unk_5D;
+    u8 unk_5E;
+    u8 unk_5F;
+    s8 unk_60;
+    s8 unk_61;
+    s8 unk_62;
+    u8 pad_63[1];
+    s16 unk_64;
+    u8 unk_66;
+};
+
+extern struct fn_5_37C_in lbl_1_bss_58;
+extern struct fn_5_37C_out lbl_5_bss_0;
+extern u32 lbl_1_bss_970;
+extern void fn_1_47F74(s32);
+extern void fn_1_411A4(u32);
+extern u32 fn_1_FA638(void);
+extern u32 fn_5_169C(void);
+
+#pragma opt_common_subs off
+#pragma opt_lifetimes off
+void fn_5_37C(void) {
+    s32 tmp_call6;
+    struct fn_5_37C_in *in;
+    struct fn_5_37C_out *p;
+    s8 v;
+
+    in = &lbl_1_bss_58;
+    p = &lbl_5_bss_0;
+    p->unk_40 = 0;
+    p->unk_41 = 0;
+    p->unk_44 = 0;
+    p->unk_48 = 1;
+    p->unk_4A = in->unk_4;
+    p->unk_4C = in->unk_6;
+    p->unk_4E = in->unk_8;
+    p->unk_50 = in->unk_A;
+    p->unk_54 = in->unk_C;
+    p->unk_58 = in->unk_10;
+    p->unk_5C = in->unk_3;
+    p->unk_5D = in->unk_0;
+    p->unk_5E = in->unk_1;
+    p->unk_5F = in->unk_2;
+    p->unk_60 = in->unk_14;
+    p->unk_61 = in->unk_16;
+    p->unk_62 = in->unk_17;
+    p->unk_64 = in->unk_18;
+    if (in->unk_2) {
+        fn_1_47F74(0x9a);
+        fn_1_47F74(0x9b);
+        fn_1_47F74(0x93);
+        fn_1_411A4(1);
+    }
+    if (p->unk_61) {
+        fn_1_47F74(1);
+    }
+    if (!(p->unk_5D)) {
+        tmp_call6 = fn_1_FA638();
+        v = (s8)tmp_call6;
+    } else {
+        v = 1;
+    }
+    p->unk_66 = v;
+    lbl_1_bss_58.unk_1C = 0;
+    if (p->unk_5C == 2) {
+        lbl_1_bss_970 = 1;
+    }
+    fn_5_169C();
+}
+#pragma opt_lifetimes reset
+
+#pragma opt_common_subs reset
+/* fzgx:end fn_5_37C */
+
 /* fzgx:begin fn_5_684 */
 void fn_5_684(void) {
     if ((s8)lbl_5_bss_5F != 0) {
