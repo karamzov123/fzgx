@@ -24703,6 +24703,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_8007ADF0.c",
+    "symbols": [
+      "fn_8007ADF0"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8007B028.c",
     "symbols": [
       "fn_8007B028"
