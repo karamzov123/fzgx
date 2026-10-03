@@ -6947,3 +6947,6 @@ rel/main_rel/load/fn_1_46BFC.c:
 
 rel/main_rel/font/fn_1_55118.c:
 	.text       start:0x00055118 end:0x00055210 align:4
+
+rel/main_rel/custom_memcard/fn_1_13198C.c:
+	.text       start:0x0013198C end:0x00131B90 align:4

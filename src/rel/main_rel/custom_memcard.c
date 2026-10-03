@@ -350,6 +350,140 @@ s32 fn_1_1318D4(void) {
 }
 /* fzgx:end fn_1_1318D4 */
 
+/* fzgx:begin fn_1_13198C */
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+} Vec3;
+
+typedef struct {
+    u8 pad_0[0x98];
+    u8 unk_98;
+    u8 pad_99[0xF];
+    f32 unk_A8;
+    f32 unk_AC;
+    f32 unk_B0;
+    u8 pad_B4[0x4E0 - 0xB4];
+} EntryObj;
+
+extern void OSReport(const char *, ...);
+extern void fn_8006F038(Vec3 *, Vec3 *, s16);
+extern void lbl_8006DCDC(void);
+extern void fn_1_F7870(u32);
+extern u32 lbl_1_rodata_8610[3];
+extern const f32 lbl_1_rodata_861C;
+extern void lbl_8006D7DC(void *);
+extern u32 lbl_8006DB74(void *);
+extern u32 lbl_8006DFE8(void *);
+extern void fn_1_8E728(void *, u8);
+extern void fn_1_13C134(void);
+extern void fn_1_9250C(void *);
+extern void fn_1_13C16C(void);
+extern s32 fn_1_12CB04(s16);
+
+#pragma opt_common_subexpressions off
+#pragma opt_lifetimes off
+#pragma opt_loop_invariants on
+#pragma opt_dead_assignments off
+#pragma opt_common_subs off
+#pragma opt_propagation off
+void fn_1_13198C(s16 idx, void *a1, void *a2, EntryObj *a3, EntryObj *a4, s32 mode) {
+    f32 fzgx_value;
+    u8 buf[60];
+    u32 mask[3];
+    struct { s16 value; } id;
+    u32 off;
+    s16 e;
+    EntryObj *cur;
+    s16 v;
+    EntryObj *p;
+    s16 i;
+    Vec3 * lab_t0;
+
+    id.value = idx;
+    off = id.value * 0x20;
+    e = *(s16 *)(((u8 *)&lbl_1_bss_8B3A0) + off + 0xE);
+    if (lbl_1_bss_8B3A0.unk_94 & 0x80000000u) {
+        return;
+    }
+
+    if (e == -1) {
+        return;
+    }
+
+    cur = (EntryObj *)((u8 *)a3 + id.value * 0x4E0);
+    if (0 == cur) {
+        OSReport((const char *)&lbl_1_data_41928);
+        return;
+    }
+
+    lab_t0 = (Vec3 *)a1;
+    fn_8006F038(lab_t0, (Vec3 *)a2, 0);
+    lbl_8006DCDC();
+    fn_1_F7870((u32)&lbl_1_data_1E5C0);
+
+    mask[0] = (*((((lbl_1_rodata_8610)) + ((0)))));
+    mask[1] = (*((((lbl_1_rodata_8610)) + ((1)))));
+    mask[2] = (*((((lbl_1_rodata_8610)) + ((2)))));
+    lbl_8006D7DC(mask);
+    lbl_8006DB74(buf);
+
+    for (v = 0; v < 8; v++) {
+        if (*(u8 *)(((off) + ((0x14) + ((u8 *)&lbl_1_bss_8B3A0)))) & (1 << v)) {
+            break;
+        }
+    }
+    v = v % 4;
+
+    lbl_8006DFE8(buf);
+
+    cur->unk_A8 = lbl_1_rodata_861C;
+    fzgx_value = lbl_1_rodata_861C;
+    cur->unk_AC = fzgx_value;
+    cur->unk_B0 = lbl_1_rodata_861C;
+    fn_1_8E728(cur, (u8)v);
+    if (1 == mode) {
+        fn_1_13C134();
+    }
+    fn_1_9250C(cur);
+    if (1 == mode) {
+        fn_1_13C16C();
+    }
+
+    p = (EntryObj *)((u8 *)a4 + id.value * 0x9C0);
+    for (i = 0; i < (s16)fn_1_12CB04(e); i++) {
+        if (p != 0) {
+            p->unk_A8 = lbl_1_rodata_861C;
+            p->unk_AC = lbl_1_rodata_861C;
+            p->unk_B0 = lbl_1_rodata_861C;
+            if (p->unk_98 != v) {
+                fn_1_8E728(p, (u8)v);
+            }
+            if (1 == mode) {
+                fn_1_13C134();
+            }
+            fn_1_9250C(p);
+            if (1 == mode) {
+                fn_1_13C16C();
+            }
+        }
+        p = ((1) + (p));
+    }
+}
+#pragma opt_propagation reset
+
+#pragma opt_common_subs reset
+
+#pragma opt_dead_assignments reset
+
+#pragma opt_loop_invariants reset
+
+#pragma opt_lifetimes reset
+
+#pragma opt_common_subexpressions reset
+/* fzgx:end fn_1_13198C */
+
 /* fzgx:begin fn_1_131B90 */
 typedef struct Obj Obj;
 
