@@ -7037,3 +7037,6 @@ rel/main_rel/screen_effect/fn_1_7BD6C.c:
 
 rel/main_rel/font/fn_1_549F4.c:
 	.text       start:0x000549F4 end:0x00054DCC align:4
+
+rel/main_rel/background/fn_1_9EA94.c:
+	.text       start:0x0009EA94 end:0x0009EDE8 align:4

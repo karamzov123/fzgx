@@ -29520,6 +29520,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/background/fn_1_9EA94.c",
+    "symbols": [
+      "fn_1_9EA94"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/background.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/background/fn_1_9EDE8.c",
     "symbols": [
       "fn_1_9EDE8"
