@@ -6992,3 +6992,6 @@ rel/main_rel/driver/fn_1_A7294.c:
 
 rel/main_rel/effect/fn_1_5B188.c:
 	.text       start:0x0005B188 end:0x0005B30C align:4
+
+rel/main_rel/effect/fn_1_64760.c:
+	.text       start:0x00064760 end:0x000648D4 align:4
