@@ -361,3 +361,46 @@ functions to `oc4` accepting a low rate, or (b) widen `cline` past 512 bytes and
 compete for the same cold work -- it is *worse* per hour (0.42) than oc4, so that is not an
 improvement on its own. Neither move is free capacity, so this is a judgement call about
 where to grind, not a bug.
+
+## gpt pointed at the large functions, and the token limits are not the obstacle (2026-10-03)
+
+`FAMILY_BANDS['gpt']` moved from `(0, 256)` to `(1024, inf)` and the daemon restarted so the
+change took effect. First claims under the new band were `fn_1_12DAEC` (1484 B) and
+`fn_1_2D038` (1260 B), both previously outside gpt's band. Both reached **99.7%** within a
+few attempts -- the first evidence that the cold large band is not unreachable, it was just
+never being offered to the model that can handle it. This is an experiment; revert to
+`(0, 256)` to restore the yield-tuned assignment.
+
+**No token limit needs raising, and raising one would be harmful.**
+
+- `fleet_multi` passes `FZGX_MAX_MODEL_INPUT_TOKENS=0` and `FZGX_MAX_MODEL_OUTPUT_TOKENS=0`
+  to every fleet session -- both guards are disabled. FLEET.md records why: they were
+  removed on 2026-10-01 because cumulative input counts re-read cached context each turn,
+  so the guards killed productive sessions and triggered exponential backoff.
+- `build_context` bounds only *auxiliary* material: `limit = required_chars + budget_tokens*4`,
+  where `required_chars` is measured after the target assembly and its declarations are
+  appended, and the truncation comment says so explicitly ("Bound examples/history/idioms,
+  never the assembly or its declarations"). Verified on the largest unmatched function,
+  `fn_1_BC310` (9832 B, 2458 instructions): **2458 of 2458 assembly rows present**, with only
+  `## MWCC idioms`, `## Rules` and `## Matched code` dropped.
+- `tools/codex_models.json` lists only `deepseek-flash` with a 1 M context window. It is a
+  legacy file and governs nothing for `gpt-6.1-sol`, whose limits come from the Codex app
+  server. Do not read it as the model's real configuration.
+
+So a large function's assembly reaches the model in full. The limit on this work is effort
+per function, not context.
+
+## Sweep over the 119-function main_rel band: seed lifter, confirmed at scale
+
+    fzgx sweep --min-percent 90 --max-percent 99.5 --rounds 4  (117 functions)
+    round 0: 12801 candidates -> 15 improved
+    round 1: 12724 candidates ->  5 improved
+    round 2: 12715 candidates ->  2 improved
+    round 3: 12698 candidates ->  0 improved
+    matched 0, improved 6
+
+~51,000 candidates over 4 rounds closed **nothing** and left 6 bodies better. The decay
+15 -> 5 -> 2 -> 0 is the whole point: the sweep exhausts its cheap families quickly and then
+stops. Its value is the 6 better seeds it hands the fleet, not closure. Re-running it on the
+same band is spent effort -- the per-function improvements are saved as attempts, and the
+next pass should target whatever the fleet has moved since.

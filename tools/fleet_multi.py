@@ -112,7 +112,13 @@ ATTEMPT_CAP = 2
 # size_allowed() admits a large function only as a saved near-miss - so a band that
 # starts above 1024 starves, and the widening path in choose() has to cover it.
 FAMILY_BANDS = {
-    'gpt':    (0, 256),
+    # gpt is pointed at the cold large functions on purpose (2026-10-03). Its usual band is
+    # the smallest functions, which is where its 21.5% yield was measured, but those are
+    # nearly exhausted. The >=1 KB band is 76% of main_rel's unmatched bytes and 328 of its
+    # 374 functions score below 90%, so it is the only work left where a stronger model
+    # could change the outcome. This is an experiment, not a settled default: revert `gpt`
+    # to (0, 256) to restore the yield-tuned assignment.
+    'gpt':    (1024, 1 << 30),
     'cline':  (257, 512),
     'oc1':    (513, 1024),
     'oc4':    (257, 1 << 30),
