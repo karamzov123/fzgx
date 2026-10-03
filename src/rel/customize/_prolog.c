@@ -934,6 +934,74 @@ void fn_3_5E88(s16 arg0) {
 }
 /* fzgx:end fn_3_5E88 */
 
+/* fzgx:begin fn_3_5F28 */
+struct Entry {
+    u16 unk_0;
+    u8 pad_2[2];
+    u32 unk_4;
+    u8 unk_8;
+    u8 pad_9[0x17];
+};
+
+struct Data {
+    u8 pad_0[0x11D0];
+    s16 unk_11D0;
+    u8 pad_11D2[2];
+    u32 unk_11D4;
+};
+
+struct Base {
+    struct Slot *unk_0;
+};
+
+struct Slot {
+    u8 pad_0[0x324];
+    u32 unk_324;
+    u8 pad_328[0x118];
+};
+
+extern struct Entry lbl_3_bss_7DB60[41];
+extern struct Data lbl_3_data_0;
+extern struct Base lbl_3_bss_20854;
+
+extern void fn_1_80058(s8, u8 *);
+extern u32 fn_1_12A32C(void *);
+extern void fn_1_12A2B8(u32);
+extern void fn_1_80C18(u8 *, u8 *, s8);
+
+void fn_3_5F28(u32 arg0) {
+    s32 shift;
+    struct Data *p_data;
+    struct { struct Entry *value; } p_entry;
+    s16 i;
+
+    p_data = (struct Data *)&lbl_3_data_0;
+    p_entry.value = (struct Entry *)&lbl_3_bss_7DB60;
+    i = 0;
+    while ((s16)i < 41) {
+        fn_1_80058((s8)i, (u8 *)p_entry.value);
+        p_entry.value->unk_0 = i;
+        i++;
+        shift = (s16)(p_data->unk_11D0);
+        p_entry.value->unk_8 = 0;
+        p_entry.value->unk_8 |= 0x10;
+        p_entry.value->unk_4 = 1 << shift;
+        p_entry.value = (struct Entry *)((u8 *)p_entry.value + 0x20);
+    }
+
+    p_data->unk_11D4 = fn_1_12A32C((void *)((u8 *)p_data + 0x1164));
+    fn_1_12A2B8(1);
+    fn_1_80C18((u8 *)lbl_3_bss_20854.unk_0, (u8 *)lbl_3_bss_7DB60, 41);
+    fn_1_12A2B8(0);
+
+    i = 0;
+    while ((s16)i < 41) {
+        lbl_3_bss_20854.unk_0[i].unk_324 = p_data->unk_11D4;
+        i++;
+    }
+}
+/* fzgx:end fn_3_5F28 */
+
 /* fzgx:begin fn_3_60C8 */
 struct fn_3_60C8_lbl_3_data_11D4 {
     u32 unk_0;
