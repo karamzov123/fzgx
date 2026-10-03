@@ -9,6 +9,9 @@ Sections:
 rel/title/fn_8_6FC.c:
 	.text       start:0x000006FC end:0x00000704
 
+rel/title/fn_8_704.c:
+	.text       start:0x00000704 end:0x00000754 align:4
+
 rel/title/fn_8_BD8.c:
 	.text       start:0x00000BD8 end:0x00000BDC
 
