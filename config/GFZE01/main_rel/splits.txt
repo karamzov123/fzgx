@@ -7040,3 +7040,6 @@ rel/main_rel/font/fn_1_549F4.c:
 
 rel/main_rel/background/fn_1_9EA94.c:
 	.text       start:0x0009EA94 end:0x0009EDE8 align:4
+
+rel/main_rel/car_test/fn_1_7E8F4.c:
+	.text       start:0x0007E8F4 end:0x0007E9C4 align:4

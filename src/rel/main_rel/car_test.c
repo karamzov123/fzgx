@@ -145,6 +145,74 @@ void fn_1_7E7A4(Fn1_7E7A4Data *arg0) {
 }
 /* fzgx:end fn_1_7E7A4 */
 
+/* fzgx:begin fn_1_7E8F4 pool */
+extern const f32 lbl_1_rodata_3500;
+extern const f32 lbl_1_rodata_3504;
+
+typedef struct lbl_1_bss_6D620_t {
+    u8 unk_0;
+    u8 pad_1[0x3];
+    f32 unk_4;
+    f32 unk_8;
+    u8 unk_C;
+    u8 unk_D;
+    u8 unk_E;
+    u8 unk_F;
+    u32 unk_10;
+    u8 pad_14[0x124];
+} lbl_1_bss_6D620_t;
+
+typedef struct lbl_1_bss_6D7F4_t {
+    u8 unk_0;
+    u8 pad_1[0x3];
+    f32 unk_4;
+    f32 unk_8;
+    u8 unk_C;
+    u8 unk_D;
+    u8 unk_E;
+    s8 unk_F;
+    u8 pad_10[0x1c];
+} lbl_1_bss_6D7F4_t;
+
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+lbl_1_bss_6D620_t fzgx_obj_lbl_1_bss_6D620;
+u32 lbl_1_bss_6D758[6];
+u32 fzgx_obj_lbl_1_bss_6D770;
+u32 fzgx_obj_lbl_1_bss_6D774;
+u32 fzgx_obj_lbl_1_bss_6D778[12];
+u32 fzgx_obj_lbl_1_bss_6D7A8[6];
+lbl_1_bss_6D7F4_t fzgx_obj_lbl_1_bss_6D7F4;
+
+#pragma opt_propagation off
+void fn_1_7E8F4(void) {
+    f32 fzgx_live;
+    s32 sel = 0;
+    lbl_1_bss_6D7F0 = sel;
+    if (lbl_1_bss_3BE0 != 0) {
+        if ((s8)fzgx_obj_lbl_1_bss_6D620.unk_F != 0 || (s32)fzgx_obj_lbl_1_bss_6D620.unk_10 < 0x20) {
+            sel = 1;
+        }
+        fzgx_obj_lbl_1_bss_6D7F4.unk_F = sel != 0;
+        fzgx_obj_lbl_1_bss_6D7F4.unk_0 = fzgx_obj_lbl_1_bss_6D620.unk_0;
+        fzgx_live = fzgx_obj_lbl_1_bss_6D620.unk_4;
+        fzgx_obj_lbl_1_bss_6D7F4.unk_4 = fzgx_live;
+        fzgx_obj_lbl_1_bss_6D7F4.unk_8 = fzgx_obj_lbl_1_bss_6D620.unk_8;
+        fzgx_obj_lbl_1_bss_6D7F4.unk_C = fzgx_obj_lbl_1_bss_6D620.unk_C;
+        fzgx_obj_lbl_1_bss_6D7F4.unk_D = fzgx_obj_lbl_1_bss_6D620.unk_D;
+        fzgx_obj_lbl_1_bss_6D7F4.unk_E = fzgx_obj_lbl_1_bss_6D620.unk_E;
+    } else {
+        fzgx_obj_lbl_1_bss_6D7F4.unk_F = sel;
+        fzgx_obj_lbl_1_bss_6D7F4.unk_0 = 5;
+        fzgx_obj_lbl_1_bss_6D7F4.unk_4 = lbl_1_rodata_3500;
+        fzgx_obj_lbl_1_bss_6D7F4.unk_8 = lbl_1_rodata_3504;
+        fzgx_obj_lbl_1_bss_6D7F4.unk_C = sel;
+        fzgx_obj_lbl_1_bss_6D7F4.unk_D = sel;
+        fzgx_obj_lbl_1_bss_6D7F4.unk_E = sel;
+    }
+}
+#pragma opt_propagation reset
+/* fzgx:end fn_1_7E8F4 */
+
 /* fzgx:begin fn_1_7E9C4 noprologue */
 #include "types.h"
 #include "rel/main_rel/globals.h"
