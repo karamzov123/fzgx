@@ -172,6 +172,87 @@ void fn_1_108920(u32 accessory) {
 }
 /* fzgx:end fn_1_108920 */
 
+/* fzgx:begin fn_1_108A90 noprologue */
+#include "types.h"
+#include "psvec.h"
+
+extern void lbl_8006DBAC(void *);
+extern void lbl_8006E1B0(void *, void *);
+extern f32 lbl_8006D0E8(f32);
+
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+} fn_1_108A90_Vec3;
+
+typedef struct {
+    u8 unk_0;
+    u8 pad_1[0xf];
+    fn_1_108A90_Vec3 vec;
+    u8 pad_1c[0x28];
+} fn_1_108A90_Entry;
+
+typedef struct {
+    u8 pad_0[0x150];
+    u32 *unk_150;
+} fn_1_108A90_Mgr;
+
+typedef struct {
+    u8 pad_0[0xc];
+    fn_1_108A90_Mgr *unk_c;
+    u8 pad_10[8];
+    u32 count;
+    u8 pad_1c[8];
+    fn_1_108A90_Entry *entries;
+} fn_1_108A90_Self;
+
+#pragma opt_dead_assignments off
+void fn_1_108A90(fn_1_108A90_Self *self, s32 idx, f32 radius, f32 cx, f32 cy, f32 cz) {
+    fn_1_108A90_Self *s = self;
+    f32 r = radius;
+    f32 sq = r * r;
+    struct { u32 value; } i;
+    fn_1_108A90_Entry *e;
+    fn_1_108A90_Vec3 center;
+    fn_1_108A90_Vec3 d;
+
+    center.x = cx;
+    center.y = cy;
+    center.z = cz;
+    lbl_8006DBAC((void *)(((0x88) + (((*((s->unk_c->unk_150) + (2)))) + (idx * 0x18c)))));
+    lbl_8006E1B0(&center, &center);
+    i.value = 0;
+    e = s->entries;
+    while (i.value < s->count) {
+        f32 dz;
+        f32 dy;
+        f32 dx;
+        f32 d2;
+
+        /* retail keeps the skip flag test as a branch to the common increment tail */
+        if ((*e).unk_0 & 1) {
+            goto next; /* skip to the loop increment tail */
+        }
+        dx = (*e).vec.x - center.x;
+        dy = (*e).vec.y;
+        dy = dy - center.y;
+        dz = (*e).vec.z;
+        dz = dz - center.z;
+        d2 = (f32)(dx * dx);
+        d2 = d2 + dy * dy;
+        d2 = d2 + dz * dz;
+        if (d2 < sq) {
+            psvec_sub_scale_add(&e->vec, &center, r * lbl_8006D0E8(d2), &d, &e->vec);
+        }
+    next:
+        i.value = i.value + 1;
+        e = (fn_1_108A90_Entry *)((u8 *)e + 0x44);
+    }
+}
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_1_108A90 */
+
 /* fzgx:begin fn_1_109114 */
 #include "rel/main_rel/accessory.h"
 
