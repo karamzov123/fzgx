@@ -115,7 +115,9 @@ into `state/repairs/` as a portable archive, or a fresh carve with a new seed.
 
 ## Link-rejected object-perfect bodies (2026-10-03, see docs/findings/279)
 
-Six functions are object-perfect and link-rejected because their `.fzgxpool` layout
+Two of the six are now matched (see docs/findings/279 for the tool and the
+full result table). Six functions were object-perfect and link-rejected because their
+`.fzgxpool` layout
 primer is never stripped: `poolfix.apply` runs only under `matched_pool`, and a body
 with `pool_rows: 0` never reaches it. Five are at exactly 100.0%: `fn_3_17098`,
 `fn_1_7E8F4`, `fn_1_C6F8C`, `fn_1_FC760`, `fn_8_704`; plus `colchg_selmate_disp`

@@ -1,6 +1,7 @@
 # 279 — the `.fzgxpool` primer is unreachable when there is no pool mapping
 
-Date: 2026-10-03. Affected so far: 6 confirmed, 5 of them at 100%.
+Date: 2026-10-03. Tool: `tools/fzgx/primerless.py`. Fixed so far: 2 matched
+(`fn_1_7E8F4`, `fn_1_C6F8C`), 4 proven object-perfect.
 
 ## The bottleneck
 
@@ -44,25 +45,67 @@ against `orig/GFZE01/files/fze.customize.rel`.
 
 ## The recipe
 
-For a body that is object-perfect and link-rejected:
+`tools/fzgx/primerless.py` implements this; it reproduces the hand-repaired
+`fn_3_17098` body byte-for-byte.
 
-1. Read `.fzgx/attempts/<sym>.linkfail.*.c` and confirm `percent: 100.0`.
-2. Check `pool_rows`/ `pool_map` in the check store. **Zero means the primer will never
-   be dropped for you.**
-3. Delete the `.fzgxpool` block, keeping the file-scope declarations it guards; add
-   `types.h` and the module headers for any struct types they use.
-4. Link once and delete exactly the globals the linker names as `multiply-defined`.
-   Those are private copies of storage a split data object already owns.
-5. Re-check. If it is still 100%, the object survived the cleanup and the recipe holds.
+    python3 tools/fzgx/primerless.py <symbol> \
+        --header types.h --header rel/<module>/globals.h \
+        [--drop NAME ...] [--extern [TYPE:]NAME ...]
 
-Worked example archived at `.fzgx/attempts/fn_3_17098.PRIMERLESS-100.c`.
+1. Read `.fzgx/attempts/<sym>.linkfail.*.c` and confirm `percent: 100.0`. The tool
+   picks the newest body that **still has** a primer — once a primerless body is saved,
+   later saves inherit it, so "newest" is the wrong pick.
+2. Check `pool_rows` / `pool_map`. **Zero means the primer will never be dropped for you.**
+3. Delete the `.fzgxpool` block but **keep** the file-scope declarations it guards; add
+   `types.h` plus the module headers the compiler asks for by name. Do not guess them:
+   the body's struct types live in the module's per-unit header, not `<module>.h`.
+4. Link once and act on exactly the globals the linker names `multiply-defined`:
+   - not referenced by the body -> `--drop` (delete the definition)
+   - still referenced by the body -> `--extern` (declare it, do not define it).
+     The type is load-bearing: `extern s32` for a `u8` global turns a `stb` into a `stw`
+     and costs the match, so pass `u8:NAME` or let the tool recover it from the
+     definition before it is dropped.
+5. Re-check. If it is still 100%, the object survived the cleanup.
 
-## Cohort
+`--drop` and `--extern` are not interchangeable. `fn_8_704` needed `--extern u8
+lbl_8_bss_0` because the body *writes* that global; deleting it instead gives
+`undefined identifier`, and `extern s32` gives 97.0% instead of 100.0%.
 
-Six functions sit in this state (>=99.5% object, link-rejected, preserved body carries a
-`.fzgxpool` primer): `fn_3_17098`, `fn_1_7E8F4`, `fn_1_C6F8C`, `fn_1_FC760`, `fn_8_704`
-(all 100.0%), and `colchg_selmate_disp` (99.61%). The five at 100.0% are byte-complete
-reconstructions that no amount of matcher effort can advance.
+## Three traps, worth not confusing
+
+1. **`.fzgxpool` unknown-section warnings are harmless.** The linker prints
+   "Section '.fzgxpool' is unknown. Section ignored." on *every* REL link and still
+   returns 0. Reading those warnings as the failure wastes a bisect.
+2. **A stale hash read is not a mismatch.** `verify` relinks and immediately runs
+   `shasum -c`. Under fleet load the read can land mid-write and report
+   `customize.rel: FAILED / 15 files OK` while the file on disk is byte-identical to
+   retail. Confirm by comparing bytes against `orig/GFZE01/files/<retail file>`
+   (`main_rel` is `files/enemy_line/main.rel`), or re-run
+   `build/tools/dtk shasum -q -c config/GFZE01/build.sha1`. Every "failure" in this
+   cohort that was checked by hand turned out to be this.
+3. **Submit one candidate at a time.** Two individually-valid units submitted together
+   reported a `main_rel.rel` hash mismatch that neither produced alone. Both pass
+   `16 files OK` in isolation and byte-for-byte against retail.
+
+## Results
+
+| Symbol | Before | After |
+| --- | --- | --- |
+| `fn_1_7E8F4` | 100.0%, link-mismatch | **matched** (pool) |
+| `fn_1_C6F8C` | 100.0%, link-mismatch | **matched** (pool) |
+| `fn_1_FC760` | 100.0%, link-mismatch | object 100%, module byte-identical; re-submit sequentially |
+| `fn_3_17098` | 100.0%, link-mismatch | object 100%, module byte-identical; re-submit sequentially |
+| `fn_8_704` | 100.0%, link-mismatch | object 100%; blocked by a **separate** pre-existing split gap |
+
+`fn_8_704` is a different failure: with its primer removed the link stops complaining
+about the primer and instead reports
+
+    Failed to find symbol fn_1_14F118 in any module
+
+`fn_1_14F118` is matched and defined in `src/rel/main_rel/sel_static_disp.c`, but the
+REL resolve cannot see it. That is a split/ownership problem independent of the primer,
+and the baseline build without the unit is `16 files OK`, so it is not pre-existing
+ breakage. It needs `why-link`/split ownership work, not this recipe.
 
 ## Why this is a tooling bug, not a decompilation problem
 
@@ -71,8 +114,5 @@ Every consumer that selects saved work — the repair corpus, the next attempt's
 writes that row (finding 272), so these bodies are at least *visible*. But visibility is
 not enough: the corpus keeps re-offering a body whose only defect is tooling that will
 not strip its own primer, and the fleet re-derives the same object from a stub each time.
-The fix belongs where the primer is generated (`fixup_layout.py`) or where `poolfix` is
-gated (`oracle.py`), not in a matcher prompt.
-
-Result: unmatched functions at exactly 100.0% went 7 -> 7, with one (`fn_3_17098`)
-proven closable by the above recipe and its corrected body archived.
+The durable fix belongs where the primer is generated (`fixup_layout.py:601`) or where
+`poolfix` is gated (`oracle.py:223`), not in a matcher prompt.
