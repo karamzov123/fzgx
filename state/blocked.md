@@ -404,3 +404,33 @@ per function, not context.
 stops. Its value is the 6 better seeds it hands the fleet, not closure. Re-running it on the
 same band is spent effort -- the per-function improvements are saved as attempts, and the
 next pass should target whatever the fleet has moved since.
+
+## The two gpt large-band functions: why the projection path declined one (2026-10-03)
+
+Both are `pure`-classified and were treated with the right tool, not the same one:
+
+- **`fn_1_12DAEC` (main_rel, 1484 B) is `pure=regalloc`.** Targeted corpus
+  (`.fzgx/corpus_12daec`) classified it `regalloc`; capture succeeded (1 function, 0 errors,
+  5.5 s) and the captured object scored **100.0**. But the constraint stage returned
+  `needs-web-alignment` and produced **0 projections**:
+
+      conflicts: {'r3': ['r20','r21','r3'], 'r20': ['r20','r3'], 'r21': ['r21','r3']}
+
+  `r3` is reused across unrelated value webs, so no single physical mapping fits and the
+  guard refuses to guess. This is `mwconstraints` working as designed -- its docstring says a
+  physical map is only a fixed-graph hypothesis and conflicts require PCode/web alignment,
+  "not a broader permutation search". Closing this class needs web alignment, which does not
+  exist for this path yet. This is the concrete next engineering item, and it is what gates
+  the rest of the regalloc cohort, not just this one function.
+
+- **`fn_1_2D038` (main_rel, 1260 B) is `pure=imm`**, so the projection path was the wrong
+  tool. Its single differing row is a base+offset form choice: retail
+  `lbz r0, 0x5(r3)` against ours `lbz r0, 0x35(r31)` -- the same address, since r3 is
+  base+0x30. Three source variants: reading the properly typed field directly regressed to
+  98.9 %; keeping the `hdr*` cast and adding a distinct typed `phdr` local both stay at
+  99.5 %, with MWCC folding base+0x30+5 into base+0x35 either way. Reaching retail's form
+  needs the pointer to stay live in a register, which the current expression does not force.
+
+Note `object% 100.0` in the capture report is `oracle.function_score` on the captured
+object, **not** an oracle acceptance -- the unit check still reports 99.66 %. Do not read the
+capture's object score as a match, the same trap as the corpus's masked-word `score`.
