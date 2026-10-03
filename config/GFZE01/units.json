@@ -49233,6 +49233,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/screen_effect/fn_1_7BA08.c",
+    "symbols": [
+      "fn_1_7BA08"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/screen_effect.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/screen_effect/fn_1_7BAF8.c",
     "symbols": [
       "fn_1_7BAF8"

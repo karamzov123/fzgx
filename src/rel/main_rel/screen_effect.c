@@ -2647,6 +2647,19 @@ void fn_1_7B4C0(void) {
 }
 /* fzgx:end fn_1_7B4C0 */
 
+/* fzgx:begin fn_1_7BA08 */
+u32 fn_1_7BA08(u16 arg0, u16 arg1, u16 arg2) {
+    Obj_1_bss_6D7A8 *state = &lbl_1_bss_6D7A8;
+    state->unk_2 = arg1;
+    state->unk_0 = arg0;
+    state->unk_4 = arg2;
+    state->unk_8 = arg0 * 64;
+    state->unk_C = arg1 * 12;
+    state->unk_10 = arg2 * 20;
+    return state->unk_8 + state->unk_C + state->unk_10;
+}
+/* fzgx:end fn_1_7BA08 */
+
 /* fzgx:begin fn_1_7BAF8 pool noprologue */
 #include "types.h"
 
