@@ -16,14 +16,21 @@ if(!config?.apiKey) throw new Error('Existing Cline login is unavailable; no int
 const names=['write_unit','patch_unit','check','search','read_evidence','release'];
 // Effort and the per-response output cap were hardcoded here, so `fzgx --effort` was inert
 // for this harness: `reasoningEffort` sat at 'high' in three places regardless of the flag.
-// Both are env-configurable now so the knob actually exists. Defaults are unchanged.
+// Both are tunable now so the knob actually exists. Defaults are unchanged if nothing is set.
 //
-// Note when choosing a value: `maxTokens` and `reasoningEffort` spend the *same* per-response
-// budget. Raising effort with the cap fixed makes truncation worse, not better -- see
-// docs/FLEET.md, where high-effort reasoning at this cap truncated 32 of 209 turns before
-// any tool call. Raise the cap first; only then is more reasoning affordable.
-const reasoningEffort=process.env.FZGX_CLINE_EFFORT||'high';
-const maxTokens=Number(process.env.FZGX_MAX_MODEL_OUTPUT_TOKENS||32768);
+// Values come from FZGX_CLINE_EFFORT / FZGX_MAX_MODEL_OUTPUT_TOKENS when present, otherwise
+// from cline-tuner.json beside the other fleet state. The file is read per session, so a
+// change lands on the next batch without restarting the daemon (which would drain in-flight
+// work). Env wins, so a one-off override still works for a single batch.
+//
+// Note when choosing a value: on this endpoint `maxTokens` bounds the whole completion,
+// reasoning included, so raising it is what buys more room to think. Raising `effort` at an
+// unchanged cap does the opposite -- it spends the same budget faster. Raise the cap first;
+// effort only helps once there is headroom for it to use.
+import {readFileSync as __read} from 'node:fs';
+const __tuner=(()=>{try{return JSON.parse(__read(join(homedir(),'.cache/fzgx-agents/cline-tuner.json'),'utf8'));}catch{return {};}})();
+const reasoningEffort=process.env.FZGX_CLINE_EFFORT||__tuner.effort||'high';
+const maxTokens=Number(process.env.FZGX_MAX_MODEL_OUTPUT_TOKENS||__tuner.maxTokens||32768);
 const tokenLimits={input:Number(process.env.FZGX_MAX_MODEL_INPUT_TOKENS||0),output:Number(process.env.FZGX_MAX_MODEL_OUTPUT_TOKENS||0)};
 if(process.argv.includes('--describe')){
  console.log(JSON.stringify({harness:'cline-sdk',provider:config.providerId,model:config.modelId,effort:reasoningEffort,tools:names,nativeTools:[],modelTools:[],tokenLimits,maxTokens}));

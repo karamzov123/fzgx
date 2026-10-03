@@ -53,7 +53,35 @@ Sixteen checks, five stale checks (the matcher core's defaults), three attempts 
 
 A real Ninja and DTK hash gate runs before work. Bootstrap health records credit zero matches. Singleton ownership, orphan recovery, graceful signal draining, mixed systemd kill mode and bounded restarts prevent duplicate hosts and preserve candidate work. Existing old branches/worktrees are preserved.
 
-## Free-tier capacity (2026-10-03)
+## Cline effort and output cap (2026-10-03)
+
+`fleet_cline.mjs` hardcoded `reasoningEffort:'high'` in three places and `maxTokens:32768`
+beside it, so `fzgx --effort` never reached the SDK for this harness — the `POLICY` entry was
+decorative. Both are tunable now:
+
+    ~/.cache/fzgx-agents/cline-tuner.json   {"effort":"xhigh","maxTokens":65536}
+
+The file is read **per session**, so a change lands on the next batch without restarting the
+daemon (a restart drains in-flight work). `FZGX_CLINE_EFFORT` / `FZGX_MAX_MODEL_OUTPUT_TOKENS`
+still win when set, for a one-batch override. With no file and no env the harness keeps its
+old defaults (`high` / 32768). `node tools/fleet_cline.mjs --describe` reports what a session
+will actually use — check that before blaming a setting for not working.
+
+**Current: effort `xhigh`, maxTokens 65536.** The cap went 32768 → 65536 deliberately, not to
+128k: 65536 is the standard next step on an OpenAI-compatible endpoint (`api.cline.bot`),
+whereas a request above the model's real output ceiling comes back as a 400 and fails the
+whole session rather than slowing it. If a batch dies immediately after this change, that is
+the first thing to suspect — revert the file to `{"effort":"high","maxTokens":32768}`.
+
+**Order matters, and it is the opposite of what the flag names suggest.** On this endpoint
+`maxTokens` bounds the whole completion, reasoning included. So raising the cap is what buys
+room to think; raising `effort` at an unchanged cap spends the *same* budget faster and makes
+truncation worse. The measured symptom was 32 of 209 turns truncated before any tool call at
+32768. Both are raised here because the cap increase is what makes the effort increase
+affordable — had only the effort moved, the expected result was fewer, not more, usable turns.
+
+`xxhigh` is not a real value anywhere: `orchestrate.py --effort` stops at `xhigh`/`max`, and
+nothing downstream accepts it. `xhigh` is the ceiling that can actually be set.
 
 Cline (`stealth/space-bunny-alpha`) and the opencode surge families
 (`opencode/space-bunny-free`) are free with no usage limit for a few more days. That
