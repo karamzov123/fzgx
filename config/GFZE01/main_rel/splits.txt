@@ -7115,3 +7115,6 @@ rel/main_rel/effect/fn_1_67430.c:
 
 rel/main_rel/enemy_ctrl/fn_1_C7874.c:
 	.text       start:0x000C7874 end:0x000C7AA0 align:4
+
+rel/main_rel/memcard/fn_1_BFE20.c:
+	.text       start:0x000BFE20 end:0x000C00EC align:4
