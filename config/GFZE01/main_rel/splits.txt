@@ -6920,3 +6920,6 @@ rel/main_rel/sound/fn_1_A31E4.c:
 
 rel/main_rel/archive/fn_1_130B8C.c:
 	.text       start:0x00130B8C end:0x00130C84 align:4
+
+rel/main_rel/enemy_ctrl/fn_1_CD36C.c:
+	.text       start:0x000CD36C end:0x000CD51C align:4
