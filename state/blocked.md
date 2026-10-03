@@ -167,3 +167,27 @@ and compare bytes against the retail file (`main_rel` is `files/enemy_line/main.
 the others are `files/fze.<module>.rel`). A real layout problem shows a *size* delta or
 non-zero differing bytes; `fn_12_23410` did, which is how it was told apart from the
 races.
+
+## Lint gates an object-perfect body: use `fzgx-allow`, do not rewrite (2026-10-03)
+
+`fn_15_27D4` (winning, 784 B) checked at **100.0% adjusted (MATCH pool)** -- zero differing
+rows, only literal-pool relocations -- and was still refused by submit:
+
+    lint: 13x S2 "volatile without a justification comment", 1x A1 "hardcoded address
+    0x808080FF"
+
+Every S2 is a `.fzgxpool` layout-primer sink, and the A1 is a *colour constant* in a
+`static const u32` table that the 0x80000000 range check mistakes for an address. None of
+them is a defect. Per docs/findings/272 the fix is a justification comment, never a source
+rewrite: a rewrite changes codegen and costs the match (that is exactly what happened to
+`fn_1_58248`, dropping 100% to 91.07%).
+
+`lint.py` honours a line-scoped opt-out:
+
+    // fzgx-allow: S2 layout primer sink: MWCC emits the literal pool in first-access order
+    // fzgx-allow: A1 0x808080FF is an RGBA colour constant in this table, not an address
+
+Derive the comments from the real findings rather than guessing -- `fzgx.lint.lint_file()`
+returns `(rule, line, message)` triples. With them applied the body stayed at 100.0% and
+was link-verified (`92716aa4`). Note `0x808080FF` and friends will recur in any body holding
+an RGBA table; A1 on such a line is a false positive worth suppressing explicitly.
