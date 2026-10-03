@@ -5768,3 +5768,6 @@ dol/fn_8003D588.c:
 
 dol/TRKInitializeNub.c:
 	.text       start:0x800889B4 end:0x80088B00 align:4
+
+dol/fn_80025504.c:
+	.text       start:0x80025504 end:0x80025854 align:4
