@@ -22278,6 +22278,19 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_8006B188.c",
+    "symbols": [
+      "fn_8006B188"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [
+      "-use_lmw_stmw",
+      "on"
+    ]
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8006B294.c",
     "symbols": [
       "fn_8006B294"
