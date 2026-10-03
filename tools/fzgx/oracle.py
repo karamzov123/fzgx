@@ -134,6 +134,17 @@ def relink(project: Project, keep_going: bool = False) -> subprocess.CompletedPr
     return run(cmd, timeout=1800)
 
 
+def _has_primer(obj: Path) -> bool:
+    """True when `obj` carries a non-empty `.fzgxpool` layout-primer section."""
+    if not obj.exists():
+        return False
+    try:
+        sec = poolfix.Elf(obj.read_bytes()).section('.fzgxpool')
+    except (ValueError, IndexError, struct.error):
+        return False
+    return sec is not None and sec['size'] > 0
+
+
 def _base_object(project: Project, unit: str) -> Path:
     units = project.objdiff_units()
     if unit in units and "base_path" in units[unit]:
@@ -229,6 +240,21 @@ def check(project: Project, symbol: str, max_diff_lines: int = 80, source: Optio
                     res2.pool_map, res2.pool = mapping, res.pool
                     res2.mw_version, res2.extra_cflags = chosen; res2.uncarved = True
                     return res2
+        elif res.ok and res.matched and base_obj.exists() and _has_primer(base_obj):
+            # A primer-only object needs no literal retargeting, so `apply()` never runs on
+            # it and its `.fzgxpool` section survives into the module link, where mwld
+            # reports the primer's private BSS copies as multiply-defined. Drop the section
+            # here, where the match was just proven; it is a separate section holding primer
+            # code, so the matched text is unaffected. Restore it if the re-diff disagrees,
+            # so a failed experiment never leaves a mutilated object behind. See
+            # docs/findings/279.
+            backup = base_obj.read_bytes()
+            if poolfix.drop_primer(base_obj):
+                res2 = _diff(project, sym.module, symbol, "", max_diff_lines, target=target, base=base_obj)
+                if res2.ok and res2.matched:
+                    res2.mw_version, res2.extra_cflags = chosen; res2.uncarved = True
+                    return res2
+                base_obj.write_bytes(backup)
         res.uncarved = True
         if res.ok and res.matched_pool:
             # the pool retarget path returns res2 above; here keep the version on the plain result
@@ -263,6 +289,16 @@ def check(project: Project, symbol: str, max_diff_lines: int = 80, source: Optio
                         res2.pool_map, res2.pool = mapping, res.pool
                         res2.mw_version, res2.extra_cflags = chosen
                         return res2
+            elif res.ok and res.matched and _has_primer(scratch_obj):
+                # primer-only object: no literals to retarget, so drop the section here
+                # rather than at submit (docs/findings/279)
+                backup = scratch_obj.read_bytes()
+                if poolfix.drop_primer(scratch_obj):
+                    res2 = _diff(project, sym.module, symbol, unit, max_diff_lines, target=target, base=scratch_obj)
+                    if res2.ok and res2.matched:
+                        res2.mw_version, res2.extra_cflags = chosen
+                        return res2
+                    scratch_obj.write_bytes(backup)
             return res
 
     # the unit's own text: direct mwcc compile into this unit's own object, no ninja, no build lock
@@ -282,6 +318,17 @@ def check(project: Project, symbol: str, max_diff_lines: int = 80, source: Optio
                 res2.pool_map = mapping
                 res2.pool = res.pool
                 return res2
+    elif res.ok and res.matched and _has_primer(base_obj):
+        # This is the object that actually enters the module link, so the primer must go
+        # now: with no private literals to retarget, `apply()` never runs and mwld would
+        # reject the primer's private BSS copies as multiply-defined. See
+        # docs/findings/279.
+        backup = base_obj.read_bytes()
+        if poolfix.drop_primer(base_obj):
+            res2 = _diff(project, sym.module, symbol, unit, max_diff_lines)
+            if res2.ok and res2.matched:
+                return res2
+            base_obj.write_bytes(backup)
     return res
 
 

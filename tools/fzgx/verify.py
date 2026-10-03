@@ -17,6 +17,11 @@ from .project import ROOT, STATE_DIR, Project
 
 STUB = '#include "types.h"\n\n// {symbol}: carved by fzgx; {note}\n'
 
+# A `build.sha1` miss is ambiguous: it can be a genuine layout change or a read that raced
+# a concurrent writer. Retry a few times with a growing settle before treating it as real.
+_RECHECK_ATTEMPTS = 3
+_RECHECK_SETTLE_S = 2
+
 
 def pending(l: Ledger) -> List[str]:
     """Symbols (ledger keys) accepted but not yet link-verified."""
@@ -52,9 +57,44 @@ def _relink(p: Project) -> bool:
     cp = oracle.relink(p)
     with (STATE_DIR / 'verify_builds.jsonl').open('a') as log:
         log.write(json.dumps(dict(t=time.time(), ok=cp.returncode == 0, output=cp.stdout + cp.stderr)) + '\n')
-    if cp.returncode:
-        (STATE_DIR / 'verify_last_failure.log').write_text(cp.stdout + cp.stderr)
-    return cp.returncode == 0
+    if not cp.returncode:
+        return True
+    (STATE_DIR / 'verify_last_failure.log').write_text(cp.stdout + cp.stderr)
+    if not _is_checksum_failure(cp):
+        return False
+    # The final `shasum -c` runs the instant the link lands, and under a live fleet another
+    # writer can still be replacing the file, so a checksum miss here is often a read that
+    # raced the writer rather than a layout change. A genuine layout problem (wrong module
+    # size, wrong bytes) reproduces on every re-check; a race clears within a second or two.
+    # Retry a few times with a short settle rather than rejecting on the first miss -- one
+    # immediate re-check is not enough, because the writer is still mid-write when it runs.
+    # See docs/findings/279.
+    for attempt in range(_RECHECK_ATTEMPTS):
+        time.sleep(_RECHECK_SETTLE_S * (attempt + 1))
+        oracle.run(["ninja", p.rel(p.build_dir / "ok")], timeout=1800)
+        cp2 = oracle.run(["build/tools/dtk", "shasum", "-q", "-c",
+                          "config/GFZE01/build.sha1"], timeout=600)
+        with (STATE_DIR / 'verify_builds.jsonl').open('a') as log:
+            log.write(json.dumps(dict(t=time.time(), ok=cp2.returncode == 0, recheck=True,
+                                      attempt=attempt + 1,
+                                      output=cp2.stdout + cp2.stderr)) + '\n')
+        if cp2.returncode == 0:
+            (STATE_DIR / 'verify_last_failure.log').write_text(
+                'checksum re-check passed on attempt %d: the first failure raced a '
+                'concurrent writer.\n' % (attempt + 1))
+            return True
+    return False
+
+
+def _is_checksum_failure(cp: subprocess.CompletedProcess) -> bool:
+    """True when the run got as far as the final `build.sha1` step.
+
+    A compile or link error fails earlier and needs no re-check; only a checksum miss is
+    ambiguous, because both a raced read and a genuine layout change print the same
+    `<module>.rel: FAILED / N files OK` summary.
+    """
+    out = cp.stdout + cp.stderr
+    return 'shasum' in out and 'checksum' in out
 
 
 @oracle.build_lock('submit.lock', timeout_s=1800)

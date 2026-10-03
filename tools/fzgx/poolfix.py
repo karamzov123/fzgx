@@ -253,6 +253,30 @@ class Elf:
         return True
 
 
+def drop_primer(obj: Path) -> bool:
+    """Drop only the `.fzgxpool` layout primer from `obj`, in place.
+
+    The primer pins anonymous-section layout order so the *per-object* oracle can match,
+    but the module linker rejects it: mwld reports the primer's private copies of BSS as
+    `multiply-defined`. `apply()` drops it too, but only on the pool-retarget path, so a
+    body that matches with no private literals to retarget (`pool_rows: 0`) never reaches
+    it and reaches the link still carrying its primer. See docs/findings/279.
+
+    Dropping the section cannot change matched code: it is a separate section holding
+    primer code, and the linker ignored it anyway. Returns True when a section was
+    present and emptied.
+    """
+    if not obj.exists():
+        return False
+    elf = Elf(obj.read_bytes())
+    if elf.section('.fzgxpool') is None:
+        return False
+    dropped = elf.drop_section('.fzgxpool')
+    if dropped:
+        obj.write_bytes(bytes(elf.data))
+    return dropped
+
+
 def apply(obj: Path, mapping: Dict[str, str]) -> Dict[str, object]:
     """Rewrite `obj` in place. mapping: private literal symbol -> pooled retail symbol."""
     elf = Elf(obj.read_bytes())
