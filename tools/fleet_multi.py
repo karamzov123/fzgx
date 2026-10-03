@@ -27,7 +27,17 @@ POLICY = {
 # They are the same work with the same bounds as every other matcher: one
 # function per session, six bound tools, no shell, no filesystem.
 PAID = ('claude', 'gpt', 'agy')
-SURGE = tuple(f'oc{n}' for n in range(1, 5))
+# Surge capacity, not standing fleet. Held in reserve and enabled only while the
+# paid providers are down.
+#
+# Cut from four opencode instances to two (oc1 and oc4, the two best converters of
+# the four at 15.1% and 14.5%). Lifetime the four opencode families burned 84.4
+# worker-hours for 59 matches - 0.70 matches/hour, against 5.7/hour for codex and
+# 14.4/hour for claude - more effort than codex and cline combined for 40% of
+# codex's yield. oc1 and oc4 kept because they lead the group on match rate; oc2 and
+# oc3 dropped, and they were within noise of each other anyway. The paid providers
+# are unchanged, so the surge trigger still governs the whole group.
+SURGE = ('oc1', 'oc4')
 SURGE_DELAY = 600      # cumulative seconds of paid unavailability before adding
 SURGE_RETIRE = 1800    # sustained paid recovery before giving capacity back
 UNAVAILABLE = ('rate-limited', 'error')
@@ -50,7 +60,13 @@ def defaults():
 def configuration():
     # Backfill families missing from an older control file, so adding a
     # provider never breaks status, the bar, or a running daemon.
+    #
+    # Also drop retired surge instances. oc2 and oc3 left SURGE, but their entries
+    # are still in the committed control file and apply_surge only writes the
+    # families it manages, so an orphan would otherwise stay enabled forever and
+    # hold a session slot nothing reconciles.
     stored=load(CONTROL,{})
+    stored={k:v for k,v in stored.items() if k in POLICY}
     return {family:dict(stored.get(family) or defaults()[family]) for family in POLICY}
 
 SESSION_TIMEOUT = 1800   # hang bound only; 16 checks / 5 stale checks end real work
@@ -74,7 +90,38 @@ def command(family, batch, symbols, parallel):
         '--max-checks','16','--max-stale','5','--max-attempts','999',
         '--verify-interval','60','--no-trivial','--batch',batch,'--symbols',*symbols]
 
-ATTEMPT_CAP = 3
+# Conversion by attempt ordinal over the whole ledger: 32.5% on the first attempt,
+# 42.0% on the second, then 20.6% / 22.8% / 29.1% / 10.3% for the third through
+# sixth. The second pass is the productive one; everything past it is close to noise
+# and each one costs a full session. The saved-body search still gets its own path
+# (unsearched_near_misses), so a capped near-miss is not lost, only stopped from
+# consuming a model session for a third re-derivation.
+ATTEMPT_CAP = 2
+
+# Which slice of the backlog each family works. Every family used to sort one shared
+# list by -best_percent, so all of them reached for the same few highest near-misses:
+# 476 of 930 attempted symbols had been tried by two or more families and 13 by four
+# or five, while 1,116 unmatched functions had never been attempted by anyone. Bands
+# are size ranges in bytes; a family only sees targets inside its own band, so the
+# pools cannot collide. gpt takes the small high-yield end and the opencode surge
+# instances take the larger functions nobody was reaching.
+#
+# Measured against the real ledger at ATTEMPT_CAP=2, including the 1024B size gate:
+# <=256B has 139 eligible (93 virgin), 257-512B has 168 (123 virgin), 513-1024B has
+# 379 (322 virgin). Anything above 1024B has only 3 eligible functions, because
+# size_allowed() admits a large function only as a saved near-miss - so a band that
+# starts above 1024 starves, and the widening path in choose() has to cover it.
+FAMILY_BANDS = {
+    'gpt':    (0, 256),
+    'cline':  (257, 512),
+    'oc1':    (513, 1024),
+    'oc4':    (257, 1 << 30),
+}
+
+# A family will not re-attempt a symbol another family already has in hand, and will
+# not re-attempt its own either until the virgin pool is exhausted. Without this a
+# symbol that reached 99.8% keeps being reissued and re-derived identically.
+FAMILY_LOCKOUT = True
 
 _attempts_cache = {'at': 0.0, 'mine': {}}
 
@@ -182,16 +229,72 @@ def link_failed():
         _linkfail_cache['at'] = now
     return _linkfail_cache['symbols']
 
-def choose(rows, seen, context, count, reserved=(), retry=()):
+def virgin_symbols(rows, mine):
+    """Unmatched functions this fleet has never actually attempted.
+
+    1,116 of the 1,759 unmatched functions had no real attempt, and the shared
+    -best_percent sort never reached them: every one of them sorts below the saved
+    near-misses, so as long as a 97% target existed anywhere the fleet would keep
+    re-deriving that instead of touching fresh work. These are the cheapest wins
+    available and the pool was going to waste.
+    """
+    return {r['symbol'] for r in rows
+            if r['status']=='unmatched' and not mine.get(r['symbol'])}
+
+_family_seen_cache = {'at': 0.0, 'families': {}}
+
+def families_that_tried():
+    """symbol -> set of fleet families that already made a real attempt on it.
+
+    Same qualifying predicate as local_attempts, so a provider rejection that ran
+    no check and spent no token does not mark a function as somebody's.
+    """
+    now=time.time()
+    if now - _family_seen_cache['at'] > 3.0:
+        _family_seen_cache['families']={}
+        for r in db_rows("SELECT symbol,agent FROM attempts WHERE agent LIKE 'fleet-v2-%' "
+                         "AND ended IS NOT NULL AND (COALESCE(checks,0)>0 "
+                         "OR COALESCE(tokens_in,0)>0 OR outcome IN "
+                         "('matched','matched-pool','shadow-matched'))"):
+            agent=r['agent']
+            # fleet-v2-<family>-<ns>-<harness>-<n>
+            parts=agent.split('-')
+            family=parts[2] if len(parts)>2 else ''
+            if family not in POLICY:
+                continue
+            _family_seen_cache['families'].setdefault(r['symbol'],set()).add(family)
+        _family_seen_cache['at']=now
+    return _family_seen_cache['families']
+
+def choose(rows, seen, context, count, reserved=(), retry=(), family=None):
     claimed_units={(r['module'],r['unit']) for r in rows if r['status']=='claimed' and r.get('unit')}
     mine=local_attempts()
+    virgin=virgin_symbols(rows,mine)
     linkfail=link_failed()
-    eligible=[r for r in rows if r['status']=='unmatched' and (mine.get(r['symbol'],0)<ATTEMPT_CAP or r['symbol'] in retry)
-              and r['symbol'] not in linkfail
-              and size_allowed(r['size'], r.get('best',r.get('best_percent',0)))
-              and seen.get(r['symbol'])!=context and r['symbol'] not in reserved
-              and not (r.get('unit') and (r['module'],r['unit']) in claimed_units)]
-    eligible.sort(key=lambda r:(-(r.get('best',r.get('best_percent',0)) or 0),mine.get(r['symbol'],0),r['size'],r['symbol']))
+    tried=families_that_tried() if FAMILY_LOCKOUT else {}
+    base=[r for r in rows if r['status']=='unmatched' and (mine.get(r['symbol'],0)<ATTEMPT_CAP or r['symbol'] in retry)
+          and r['symbol'] not in linkfail
+          and size_allowed(r['size'], r.get('best',r.get('best_percent',0)))
+          and seen.get(r['symbol'])!=context and r['symbol'] not in reserved
+          and not (r.get('unit') and (r['module'],r['unit']) in claimed_units)]
+    # Fresh work first, then saved near-misses, then smallest. Sorting on
+    # -best_percent alone is what buried the virgin pool.
+    order=lambda r:(0 if r['symbol'] in virgin else 1,
+                    -(r.get('best',r.get('best_percent',0)) or 0),
+                    mine.get(r['symbol'],0),r['size'],r['symbol'])
+    band=FAMILY_BANDS.get(family) if family else None
+    eligible=sorted([r for r in base if band and band[0]<=(r['size'] or 0)<=band[1]],key=order)
+    if len(eligible)<count:
+        # The band's own slice cannot fill the request. Widen to the rest of the
+        # backlog rather than idle the slot: a starved family is worse than a band
+        # that overlaps another family's for one batch.
+        inband={r['symbol'] for r in eligible}
+        eligible+=sorted([r for r in base if r['symbol'] not in inband],key=order)
+    if family and FAMILY_LOCKOUT:
+        # Prefer symbols this family has not run. Only fall back to its own history
+        # if that leaves the request short, so a stuck family still makes progress.
+        fresh=[r for r in eligible if family not in tried.get(r['symbol'],())]
+        eligible=fresh+[r for r in eligible if r not in fresh] if len(fresh)<count else fresh
     used=set(claimed_units)
     selected=[]
     for row in eligible:
@@ -348,7 +451,10 @@ def status():
     now=time.time()
     fresh=now-state.get('heartbeat',0)<30 and pid_alive(state.get('supervisor_pid'))
     result={}
-    for family,(name,icon) in META.items():
+    for family in POLICY:
+        if family not in META:      # a provider added to POLICY before its tile
+            continue
+        name,icon = META[family]
         on=config[family]['enabled']
         data=state.get('families',{}).get(family,{})
         current=(data.get('status','starting') if fresh else 'error') if on else 'off'
@@ -678,7 +784,7 @@ def run():
                 reserved_units={(index[s]['module'],index[s]['unit']) for s in reserved if s in index and index[s].get('unit')}
                 for row in rows:
                     if row.get('unit') and (row['module'],row['unit']) in reserved_units:row['status']='claimed'
-                symbols=choose(rows,seen,context,cfg['parallel']*2,reserved,near_miss)
+                symbols=choose(rows,seen,context,cfg['parallel']*2,reserved,near_miss,family)
                 if not symbols:
                     statuses[family]=dict(status='idle',reason='No fresh eligible target below attempt cap; no blind retries.',active=0);retries[family]=time.time()+30;continue
                 for symbol in symbols:seen[symbol]=context
