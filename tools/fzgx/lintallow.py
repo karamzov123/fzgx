@@ -23,6 +23,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -41,13 +42,29 @@ REASONS = {
 MAX_PASSES = 8
 
 
-def newest_body(symbol: str) -> Path:
+def best_body(symbol: str) -> Path:
+    """The preserved body that actually scored best, not merely the most recent one.
+
+    Every attempt writes a `<body>.json` sidecar carrying its percent. Newest-wins is wrong:
+    a later attempt can be far worse than an earlier plateau (a saved fn_8006A768 body
+    measured 93.2% while an earlier one recorded 99.94), so picking by mtime silently hands
+    back a body that needs re-derivation. Rank by the recorded percent, fall back to mtime.
+    """
     key = symbol.replace(":", "__")
-    found = sorted((STATE_DIR / "attempts").glob(f"{key}.*.c"),
-                   key=lambda p: p.stat().st_mtime, reverse=True)
-    if not found:
+    cands = [p for p in (STATE_DIR / "attempts").glob(f"{key}.*.c")
+             if "linkfail" not in p.name and not p.name.startswith(".")]
+    if not cands:
         raise SystemExit(f"{symbol}: no preserved body under {STATE_DIR / 'attempts'}")
-    return found[0]
+
+    def score(p: Path) -> float:
+        for side in (p.parent / (p.name + ".json"), p.with_suffix(".json")):
+            try:
+                return float(json.loads(side.read_text()).get("percent") or 0)
+            except (ValueError, OSError):
+                continue
+        return -1.0
+
+    return max(cands, key=lambda p: (score(p), p.stat().st_mtime))
 
 
 def main() -> int:
@@ -58,7 +75,7 @@ def main() -> int:
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
 
-    src = a.body or newest_body(a.symbol)
+    src = a.body or best_body(a.symbol)
     lines = src.read_text().splitlines()
     print(f"{a.symbol}: {src}")
 

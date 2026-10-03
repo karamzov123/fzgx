@@ -207,3 +207,28 @@ Worked `fn_8006A554` (main, 532 B) from 99.89 to **99.9%**: the S1 allows cleare
 `p` is a `u8 *` parameter, so `len += p` does not compile and source-order swaps do not move
 the register. This needs the allocator's view of the two locals' live ranges. Corrected body
 at `.fzgx/attempts/fn_8006A554.LINTALLOW.c`.
+
+## Two 99.9% bodies blocked on register allocation (2026-10-03)
+
+Both are one or two rows from done and neither is a codegen-shape problem:
+
+- `fn_12_72F4` (movie_module, 172 B): 43 rows, **1** differs -- retail `mr r30, r25`
+  against ours `mr r30, r27`. Same value, different scratch register, for the pointer live
+  across the `fzgx_live()` call. Collapsing the redundant `fzgx_live_` temp changed nothing.
+  Moving `arg` to the first declaration produced **13** regalloc diffs (much worse), so the
+  declaration order is nearly right and wants a one-position nudge, not a rewrite.
+- `fn_8006A554` (main, 532 B): **2** differ. Retail `clrlwi r0, r4, 8` is `f & 0xFFFFFF00`,
+  a *mask*; the candidate emits `clrrwi`, a logical *shift*, for that same mask. Routing the
+  mask through an explicit local regresses the frame from -0x50 to -0x58 with 5 extra rows, so
+  MWCC folds the mask away when it is consumed by the pointer add. The remaining `add
+  r25,r28,r25` vs `add r25,r25,r28` is operand order, not register assignment.
+
+## `functions.best_percent` is trustworthy (checked, 2026-10-03)
+
+Ranked candidates by the ledger's `best_percent` and chased `fn_8006A768` at a reported
+99.94 that no attempt ever recorded -- every attempt maxed at 93.2. Checked the whole ledger
+rather than assuming: of 1698 unmatched functions exactly **1** (`fn_8006A8CC`) has a
+`best_percent` no attempt supports. The 231 other rows are matched functions imported without
+a matcher attempt, which is expected. So the column is sound; rank candidates from
+`max(attempts.best_in_attempt, attempts.final_percent)` anyway, since it is the figure the
+evidence supports.
