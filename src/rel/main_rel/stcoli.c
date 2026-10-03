@@ -1490,6 +1490,115 @@ void fn_1_21CA0(Fn_1_21CA0 *self, void *arg) {
 }
 /* fzgx:end fn_1_21CA0 */
 
+/* fzgx:begin fn_1_229EC noprologue */
+#include "dolphin/types.h"
+
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 52.0f;
+    s = 0.0625f;
+    s = 45.0f;
+    s = 0.0f;
+    s = 1.7000000476837158f;
+    s = 1.0f;
+    s = 0.10000000149011612f;
+    s = 0.5f;
+    d = 4503599627370496.0;
+    s = 40.0f;
+    s = 348.0f;
+    s = 36.0f;
+    s = 4.0f;
+    s = 0.6000000238418579f;
+    s = 5.0f;
+    s = 0.05000000074505806f;
+    s = 1000.0f;
+    s = 8.0f;
+}
+static const u32 fzgx_pool_table2[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep2(void) { const u32 *volatile cp; cp = fzgx_pool_table2; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime3(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    d = 216.0;
+    d = 2.0;
+}
+#pragma section code_type ".text"
+
+typedef struct {
+    f32 field_0;
+    f32 divisor;
+    f32 x;
+    f32 y;
+    u8  pad_10[0x30];
+    f32 limit;
+} fn_1_229EC_ctrl;
+
+static inline f32 fn_1_229EC_operand(f32 left, f32 right) { return left * right; }
+#pragma peephole on
+#pragma opt_dead_assignments off
+static inline f32 fn_1_229EC_operand_(f32 right, f32 left) { return ((((left)) * ((right)))); }
+#pragma opt_dead_assignments reset
+
+#pragma opt_lifetimes off
+static inline f32 fn_1_229EC_operand__(f32 left, f32 right) { left *= right; return left; }
+static inline f32 fn_1_229EC_operand___(f32 left, f32 right) { left *= right; return left; }
+#pragma opt_loop_invariants off
+void fn_1_229EC(fn_1_229EC_ctrl *ctrl, f32 *out_pos, f32 *out_mag)
+{
+    f32 fzgx_live;
+    f32 y;
+    f32 x;
+    f32 delta;
+    f32 mag;
+    f32 falloff;
+    f32 lab_t1;
+    fzgx_live = ctrl->x;
+    x = fzgx_live;
+    y = ctrl->y;
+    mag = *out_mag;
+{
+    f32 total;
+    total = 40.0f * x / 348.0f + *out_pos;
+    falloff = total / (36.0f + (f32)(40.0f * y));
+    delta = total - mag;
+
+    if (falloff < 0.0f) {
+        falloff = 0.0f;
+    }
+    falloff = falloff * (x * (0.6f + x) * 4.0f);
+    if (mag < 0.0f) {
+        falloff = fn_1_229EC_operand_((5.0f), (falloff));
+    }
+
+    *out_pos = total - (f32)(fn_1_229EC_operand__((delta), (falloff)));
+}
+    {
+        f32 lim;
+        if (*out_pos > (lim = ctrl->limit)) {
+            *out_pos = *out_pos - lim;
+        } else {
+            *out_pos = 0.0f;
+        }
+    }
+
+    if (mag < 0.0f) {
+        lab_t1 = (0.05f);
+        delta = fn_1_229EC_operand((delta), lab_t1);
+    }
+
+    *out_mag = *out_mag + (f32)(fn_1_229EC_operand___((1000.0f), (delta))) / ctrl->divisor;
+    *out_mag = *out_mag - (f32)((*out_mag * *out_mag) * 8.0f) / ctrl->divisor;
+    if (216.0 * *out_mag < 2.0) {
+        *out_mag = 0.0f;
+    }
+}
+#pragma opt_loop_invariants reset
+
+#pragma opt_lifetimes reset
+
+#pragma peephole reset
+/* fzgx:end fn_1_229EC */
+
 /* fzgx:begin fn_1_22E8C */
 typedef struct Fn_1_22E8CInput {
     unsigned char pad00[0x04];
