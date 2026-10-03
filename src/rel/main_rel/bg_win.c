@@ -428,6 +428,43 @@ s32 fn_1_15C35C(s32 a, s32 b, s32 c, s32 d) {
 }
 /* fzgx:end fn_1_15C35C */
 
+/* fzgx:begin fn_1_15C5A4 noprologue */
+#include "types.h"
+
+extern f32 lbl_1_rodata_DD58;
+extern f64 lbl_1_rodata_DD60;
+extern u32 __cvt_fp2unsigned(f32);
+extern u32 fn_80074188(u32, u32, u32, u32);
+extern u32 lbl_1_bss_8FD68;
+
+#pragma opt_common_subs off
+#pragma opt_dead_assignments off
+f32 fn_1_15C5A4(void * arg0, void * arg1) {
+    s32 v0;
+    u32 v1;
+    s32 v2;
+    f32 v3;
+    f32 v4;
+    f32 v5;
+    v0 = (s32)(f32)(*(f32 *)((u8 *)arg0 + 84) / lbl_1_rodata_DD58);
+    v1 = (v0 << 4);
+    fn_80074188(__cvt_fp2unsigned(*(f32 *)((u8 *)&lbl_1_bss_8FD68 + v1)),
+        __cvt_fp2unsigned(*(f32 *)((u8 *)&lbl_1_bss_8FD68 + v1 + 4)),
+        __cvt_fp2unsigned(*(f32 *)((u8 *)&lbl_1_bss_8FD68 + v1 + 8)),
+        __cvt_fp2unsigned(*(f32 *)((u8 *)&lbl_1_bss_8FD68 + v1 + 12)));
+    v2 = (v0 * (0xF0000 + 16960));
+    v3 = *(f32 *)((u8 *)arg0 + 84);
+    v4 = *(f32 *)((u8 *)arg1 + 0);
+    *(f32 *)((u8 *)arg1 + 0) = (f32)(v4 + (f32)(v3 - (f32)(s32)v2));
+    v5 = *(f32 *)((u8 *)arg1 + 12);
+    *(f32 *)((u8 *)arg1 + 12) = (f32)(v5 + (f32)(v3 - (f32)(s32)v2));
+    return v5;
+}
+#pragma opt_dead_assignments reset
+
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_15C5A4 */
+
 /* fzgx:begin fn_1_15DD7C */
 #include "font.h"
 

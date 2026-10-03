@@ -31485,6 +31485,20 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/bg_win/fn_1_15C5A4.c",
+    "symbols": [
+      "fn_1_15C5A4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/bg_win.c",
+    "pool": {
+      "@7": "lbl_1_rodata_DD60"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/bg_win/fn_1_15DD7C.c",
     "symbols": [
       "fn_1_15DD7C"
