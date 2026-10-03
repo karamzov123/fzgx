@@ -1531,6 +1531,25 @@ Slot *fn_1_4DF60(void) {
 }
 /* fzgx:end fn_1_4DF60 */
 
+/* fzgx:begin fn_1_4E060 noprologue */
+#include "types.h"
+#include "rel/main_rel/font.h"
+
+#pragma opt_unroll_loops off
+void fn_1_4E060(void) {
+    Obj_1_bss_4C688 *p;
+    u32 count;
+    u32 zero;
+
+    p = &lbl_1_bss_4C688;
+    zero = 0;
+    for (count = 0; count < 64; count++) {
+        p->unk_0 = zero;
+        p = (Obj_1_bss_4C688 *)((u8 *)p + 0x80);
+    }
+}
+/* fzgx:end fn_1_4E060 */
+
 /* fzgx:begin fn_1_4E0A4 */
 typedef struct FontMetric {
     f32 value;

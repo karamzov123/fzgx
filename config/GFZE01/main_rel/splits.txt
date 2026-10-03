@@ -6974,3 +6974,6 @@ rel/main_rel/bg_common/fn_1_10780C.c:
 
 rel/main_rel/font/fn_1_4DDC0.c:
 	.text       start:0x0004DDC0 end:0x0004DE04 align:4
+
+rel/main_rel/font/fn_1_4E060.c:
+	.text       start:0x0004E060 end:0x0004E0A4 align:4
