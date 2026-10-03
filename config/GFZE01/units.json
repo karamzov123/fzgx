@@ -38870,6 +38870,18 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/enemy_ctrl/fn_1_C6F8C.c",
+    "symbols": [
+      "fn_1_C6F8C"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/enemy_ctrl.c",
+    "pool": true
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/enemy_ctrl/fn_1_C7224.c",
     "symbols": [
       "fn_1_C7224"
