@@ -904,6 +904,36 @@ f32 fn_1_1289BC(const Point1024C4 *a, const Point1024C4 *b) {
 }
 /* fzgx:end fn_1_1289BC */
 
+/* fzgx:begin fn_1_1289F0 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/accessory.h"
+#include "psvec.h"
+
+#pragma fp_contract on
+extern f32 lbl_1_rodata_7B58[40];
+extern f32 lbl_8006D6FC(void *, void *);
+extern f32 lbl_8006D0B4(f32);
+
+typedef struct Vec1289F0 { f32 x, y, z; } Vec1289F0;
+#pragma opt_common_subs off
+f32 fn_1_1289F0(Vec1289F0 *a, Vec1289F0 *b, Vec1289F0 *c) {
+    Vec1289F0 ac;
+    Vec1289F0 ab;
+    f32 cosine;
+    f32 length;
+    psvec_sub(c, a, &ac);
+    psvec_sub(b, a, &ab);
+    ab.x = lbl_8006D6FC(&ac, &ab);
+    cosine = ac.x * ac.x;
+    cosine = ac.y * ac.y + cosine;
+    cosine = ac.z * ac.z + cosine;
+    length = lbl_8006D0B4(cosine);
+    return length * lbl_8006D0B4((*((lbl_1_rodata_7B58) + (0))) - (f32)(ab.x * ab.x));
+}
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_1289F0 */
+
 /* fzgx:begin fn_1_128AAC */
 f32 fn_1_128AAC(s32 exponent, f32 value) {
     s32 sign;

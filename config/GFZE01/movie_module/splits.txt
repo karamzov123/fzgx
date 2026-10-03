@@ -1874,3 +1874,6 @@ rel/movie_module/fn_12_32714.c:
 
 rel/movie_module/fn_12_324E4.c:
 	.text       start:0x000324E4 end:0x0003256C align:4
+
+rel/movie_module/fn_12_3245C.c:
+	.text       start:0x0003245C end:0x000324E4 align:4
