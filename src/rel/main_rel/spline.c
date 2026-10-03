@@ -878,6 +878,21 @@ s32 fn_1_F8158(s32 value) {
 }
 /* fzgx:end fn_1_F8158 */
 
+/* fzgx:begin fn_1_F8214 */
+void fn_1_F8214(s16 value) {
+    u64 mask;
+    if (value > 63) {
+        mask = 1ULL << (s16)(value - 64);
+        *(u64 *)&lbl_1_bss_7F0C0.unk_10 |= mask;
+        *(u64 *)&lbl_1_bss_7F0C0.unk_58 &= ~mask;
+    } else {
+        mask = 1ULL << value;
+        *(u64 *)&lbl_1_bss_7F0C0.unk_8 |= mask;
+        *(u64 *)&lbl_1_bss_7F0C0.unk_50 &= ~mask;
+    }
+}
+/* fzgx:end fn_1_F8214 */
+
 /* fzgx:begin fn_1_F82E0 */
 void fn_1_F82E0(void) {
     s16 i;
