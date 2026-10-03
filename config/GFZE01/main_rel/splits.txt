@@ -6923,3 +6923,6 @@ rel/main_rel/archive/fn_1_130B8C.c:
 
 rel/main_rel/enemy_ctrl/fn_1_CD36C.c:
 	.text       start:0x000CD36C end:0x000CD51C align:4
+
+rel/main_rel/effect/fn_1_5962C.c:
+	.text       start:0x0005962C end:0x00059770 align:4

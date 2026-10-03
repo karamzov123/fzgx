@@ -769,6 +769,105 @@ void fn_1_59514(void *obj) {
 }
 /* fzgx:end fn_1_59514 */
 
+/* fzgx:begin fn_1_5962C noprologue */
+#include "dolphin/types.h"
+
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 60.0f;
+    s = 0.10000000149011612f;
+    s = 32767.0f;
+    s = 0.05000000074505806f;
+    d = 0.07;
+    s = 20000.0f;
+    s = 0.0f;
+    d = 4503599627370496.0;
+    s = 1.0f;
+    s = -0.029999999329447746f;
+    d = 15.0;
+    d = 4503601774854144.0;
+}
+#pragma section code_type ".text"
+
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+} Vec3f;
+
+typedef struct {
+    s32 x;
+    s32 y;
+    s32 z;
+} Vec3i;
+
+typedef struct {
+    s32 field_00[4];
+    s32 timer;
+    s32 field_14;
+    s32 field_18;
+    f32 field_1c;
+    f32 field_20;
+    f32 field_24;
+    f32 field_28;
+    f32 field_2c;
+    s32 field_30;
+    s32 field_34;
+    s32 field_38;
+    union {
+        Vec3f pos;
+        Vec3i bits;
+    } field_3c;
+    f32 field_48;
+    f32 field_4c;
+    f32 field_50;
+    s32 field_54;
+    s32 field_58;
+    s32 field_5c;
+    Vec3i prev;
+    s32 field_6c[10];
+    f32 field_94;
+    f32 field_98;
+} Fn_1_5962C_State;
+
+static inline f32 fn_1_5962C_operand(f32 right, f32 left) { return left * right; }
+#pragma opt_dead_assignments off
+#pragma opt_strength_reduction off
+void fn_1_5962C(Fn_1_5962C_State *self) {
+    f32 fzgx_live;
+    f32 scale;
+    f32 rate;
+
+    self->prev = self->field_3c.bits;
+
+    scale = 1.0f - self->field_94;
+
+    self->field_4c += -0.03f;
+    self->field_48 = self->field_48 * scale;
+    self->field_4c = self->field_4c * scale;
+    self->field_50 = self->field_50 * scale;
+
+    self->field_3c.pos.x = self->field_3c.pos.x + self->field_48;
+    fzgx_live = self->field_3c.pos.y;
+    self->field_3c.pos.y = fzgx_live + self->field_4c;
+    self->field_3c.pos.z = self->field_3c.pos.z + self->field_50;
+
+    self->field_94 = self->field_94 + (f32)(0.05f * (self->field_98 - self->field_94));
+    self->field_28 = self->field_28 + (f32)(0.1f * (self->field_2c - self->field_28));
+
+    if ((f64)(s32)self->timer < 15.0) {
+        rate = 1.0f - 1.0f / (f32)(self->timer + 1);
+        self->field_1c = fn_1_5962C_operand((rate), (self->field_1c));
+        self->field_20 = self->field_20 * rate;
+        self->field_24 = self->field_24 * rate;
+    }
+}
+#pragma opt_strength_reduction reset
+
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_1_5962C */
+
 /* fzgx:begin fn_1_59A70 */
 // fn_1_59A70: empty in retail (single blr).
 void fn_1_59A70(void) {
