@@ -1392,6 +1392,98 @@ u8 fn_1_3F264(u32 index) {
 }
 /* fzgx:end fn_1_3F264 */
 
+/* fzgx:begin fn_1_3F2A0 noprologue */
+#include "types.h"
+
+typedef struct {
+    u32 unk_0;
+    u16 unk_4;
+    u8 pad_6[2];
+    u8 unk_8;
+    u8 pad_9[0x7A];
+    u8 unk_83;
+    u8 pad_84[0x1A];
+    u16 unk_9E;
+} fn_1_3F2A0_rec;
+
+typedef struct {
+    u8 pad_0[5];
+    u8 unk_5;
+    u8 pad_6[2];
+    u8 unk_8;
+    u8 unk_9;
+    u8 pad_A[4];
+    u8 ids[0x99];
+    u8 unk_A7;
+    u8 pad_A8[0x2C];
+    fn_1_3F2A0_rec rec[30];
+    u8 ord[0x20];
+    u8 pad_13B4[0xC4];
+    u16 pair[4];
+    u32 score[0xC];
+} fn_1_3F2A0_obj;
+
+extern fn_1_3F2A0_obj lbl_1_bss_3C30;
+
+void fn_1_3F2A0(void)
+{
+    s32 lim = !lbl_1_bss_3C30.unk_5 ? (s32)lbl_1_bss_3C30.unk_8 : (s32)lbl_1_bss_3C30.unk_9;
+    u8 mode;
+    s32 kid;
+    s32 j;
+    s32 i = 0;
+    s32 k;
+    s32 id;
+    s32 cnt;
+    s32 score;
+    s32 other;
+    fn_1_3F2A0_rec *p;
+
+    for (j = 0; j < lim; i++, j++) {
+        if (!lbl_1_bss_3C30.unk_5) {
+            while (lbl_1_bss_3C30.ids[i] >= lim) {
+                i++;
+            }
+        }
+        id = lbl_1_bss_3C30.ids[i];
+        cnt = 0;
+        p = &lbl_1_bss_3C30.rec[id];
+        if (!lbl_1_bss_3C30.unk_5) {
+            score = lbl_1_bss_3C30.score[id];
+            p->unk_4 = score;
+            p->unk_9E = lbl_1_bss_3C30.pair[id];
+        } else {
+            score = p->unk_4;
+        }
+        mode = lbl_1_bss_3C30.unk_5;
+        for (k = 0; k < lbl_1_bss_3C30.unk_9; k++) {
+            if (i == k) {
+                continue;
+            }
+            kid = lbl_1_bss_3C30.ids[k];
+            if (!mode) {
+                if (kid >= lim) {
+                    continue;
+                }
+                other = lbl_1_bss_3C30.score[kid];
+            } else {
+                other = lbl_1_bss_3C30.rec[kid].unk_4;
+            }
+            if (score < other) {
+                cnt++;
+            } else if (score == other && i > k) {
+                cnt++;
+            }
+        }
+        lbl_1_bss_3C30.ord[cnt] = id;
+        p->unk_8 = cnt;
+        if (!lbl_1_bss_3C30.unk_A7 && lbl_1_bss_3C30.unk_5) {
+            p->unk_83 = cnt;
+        }
+    }
+}
+/* fzgx:end fn_1_3F2A0 */
+
 /* fzgx:begin fn_1_3F440 */
 // Reports an out-of-range index and returns the corresponding limit when valid.
 s32 fn_1_3F440(u8 index) {

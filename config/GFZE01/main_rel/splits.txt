@@ -7124,3 +7124,6 @@ rel/main_rel/replay/fn_1_F2F84.c:
 
 rel/main_rel/sel_static_disp/fn_1_1418EC.c:
 	.text       start:0x001418EC end:0x00141A80 align:4
+
+rel/main_rel/game/fn_1_3F2A0.c:
+	.text       start:0x0003F2A0 end:0x0003F440 align:4
