@@ -781,6 +781,12 @@ def run():
                             fb[family]={'since':time.time(),'from':POLICY[family]['display'],
                                         'to':FALLBACK[family]['display']}
                             print(f'{family}: quota exhausted, serving {FALLBACK[family]["display"]}',flush=True)
+                            # The quota just measured belongs to the model we are leaving, not
+                            # to the one now serving this family. Sitting out its full
+                            # rate-limit cooldown would idle the slot for up to 30 minutes for
+                            # no reason, so retry promptly under the fallback.
+                            delay=3;state='idle';reason=(f'{POLICY[family]["display"]} quota '
+                                f'exhausted; serving {FALLBACK[family]["display"]}.')
                         # Report the provider's own words, not the last line of
                         # the stream: that is usually a tool-timing event, which
                         # told the operator nothing about why the batch stopped.
