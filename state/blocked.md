@@ -191,3 +191,19 @@ Derive the comments from the real findings rather than guessing -- `fzgx.lint.li
 returns `(rule, line, message)` triples. With them applied the body stayed at 100.0% and
 was link-verified (`92716aa4`). Note `0x808080FF` and friends will recur in any body holding
 an RGBA table; A1 on such a line is a false positive worth suppressing explicitly.
+
+## Lint-fixable near-miss sweep (2026-10-03)
+
+59 unmatched functions at >=97% have a preserved body whose lint findings are *entirely*
+comment-fixable (S1/S2/A1/A2/A3): `.fzgxpool` primer volatiles, and colour constants like
+0x808080FF that the address-range check misreads. `python3 tools/fzgx/lintallow.py <symbol>`
+derives `fzgx-allow` comments from the real findings and re-lints until clean. Do not rewrite
+the source to satisfy lint -- comments are free, a rewrite changes codegen.
+
+Worked `fn_8006A554` (main, 532 B) from 99.89 to **99.9%**: the S1 allows cleared and the
+`(f >> 8) & 0xFFFFFF` -> `(f & 0xFFFFFF00) >> 8` rewrite turned `srwi` into retail's
+`clrlwi`. One row remains and it is **register assignment, not statement order**: retail
+`add r25,r28,r25` puts `p` in the destination register, ours puts `len`. `len` is `s32` and
+`p` is a `u8 *` parameter, so `len += p` does not compile and source-order swaps do not move
+the register. This needs the allocator's view of the two locals' live ranges. Corrected body
+at `.fzgx/attempts/fn_8006A554.LINTALLOW.c`.
