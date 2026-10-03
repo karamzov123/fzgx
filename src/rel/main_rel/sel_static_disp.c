@@ -2811,6 +2811,76 @@ void fn_1_141754(s32 arg0, s32 arg1) {
 }
 /* fzgx:end fn_1_141754 */
 
+/* fzgx:begin fn_1_1418EC noprologue */
+#include "types.h"
+#include "font.h"
+
+struct S16 {
+	u32 a;
+	u32 b;
+	u32 c;
+	u16 d;
+};
+
+struct Pkt {
+	u32 index;
+	f32 x;
+	f32 y;
+	f32 z;
+	u8 pad[32];
+	u32 flags;
+	u8 tail[36];
+};
+
+extern struct S16 lbl_1_rodata_922C;
+extern u32 lbl_1_rodata_923C[3];
+extern struct Pkt lbl_1_rodata_26F8;
+extern const f64 lbl_1_rodata_8600;
+extern const f32 lbl_1_rodata_8E9C;
+extern u16 fn_1_486C4(u32);
+extern void fn_1_51678(FontDrawPacket *, u32, s16, s16, s16, s16);
+extern int fn_1_4F734(FontDrawPacket *);
+
+static inline u32 fn_1_1418EC_array_read(u32 *array, s32 index) { return array[index]; }
+#pragma opt_loop_invariants off
+void fn_1_1418EC(u32 arg0, u32 arg1) {
+	struct S16 wid;
+	u32 ln[3];
+	struct Pkt pkt;
+	u32 xoff = 0;
+	s32 aoff = 0;
+	u32 i;
+	u32 a0 = arg0;
+	u32 id = 0xA10F;
+	s16 w;
+
+	wid.a = lbl_1_rodata_922C.a;
+	wid.b = lbl_1_rodata_922C.b;
+	wid.c = lbl_1_rodata_922C.c;
+	wid.d = lbl_1_rodata_922C.d;
+
+	ln[0] = fn_1_1418EC_array_read(lbl_1_rodata_923C, 0);
+	ln[1] = fn_1_1418EC_array_read(lbl_1_rodata_923C, 1);
+	ln[2] = fn_1_1418EC_array_read(lbl_1_rodata_923C, 2);
+
+	for (i = 0; i < 7; i++) {
+		pkt = lbl_1_rodata_26F8;
+		pkt.index = id;
+		w = fn_1_486C4(pkt.index);
+		fn_1_51678((FontDrawPacket *)&pkt, pkt.index, (s16)aoff, 0,
+			(s16)((u16 *)&wid)[i], w);
+		pkt.x = (f32)(s32)((((a0) + (0x16)) + (xoff)));
+		pkt.y = (f32)(s32)(arg1 + 0x12);
+		pkt.z = lbl_1_rodata_8E9C;
+		pkt.flags = 10;
+		fn_1_4F734((FontDrawPacket *)&pkt);
+		xoff += ((u16 *)ln)[i];
+		aoff += ((u16 *)&wid)[i];
+	}
+}
+#pragma opt_loop_invariants reset
+/* fzgx:end fn_1_1418EC */
+
 /* fzgx:begin fn_1_141F94 */
 typedef struct fn_1_141F94_Entry {
     u8 pad[0x0E];

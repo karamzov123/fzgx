@@ -7121,3 +7121,6 @@ rel/main_rel/memcard/fn_1_BFE20.c:
 
 rel/main_rel/replay/fn_1_F2F84.c:
 	.text       start:0x000F2F84 end:0x000F326C align:4
+
+rel/main_rel/sel_static_disp/fn_1_1418EC.c:
+	.text       start:0x001418EC end:0x00141A80 align:4
