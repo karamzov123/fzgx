@@ -316,3 +316,48 @@ run the layout/pool priming on the result -- rather than run separately.
 
 Reproduce the capture with the command above; the snapshots live under `.fzgx/captures`
 (gitignored, ~26 s to rebuild).
+
+## Where main_rel actually stands: large functions are cold, not near (2026-10-03)
+
+Unmatched `main_rel` by size, scored from `max(best_in_attempt, final_percent)`:
+
+| bucket | fns | bytes | below 90 % | 90-99 % | 100 % |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| >=2 KB | 122 | 413,260 | **110** | 10 | 0 |
+| 1-2 KB | 252 | 355,104 | **218** | 33 | 0 |
+| 512 B-1 KB | 264 | 195,908 | 139 | **122** | 2 |
+| 257-511 B | 144 | 55,424 | 44 | **100** | 0 |
+| <=256 B | 77 | 12,948 | 24 | **52** | 1 |
+
+**The premise that the large functions are the near-miss work is wrong.** The >=2 KB and
+1-2 KB bands are 768 KB -- 74 % of main_rel's unmatched bytes -- and 328 of their 374
+functions score **below 90 %**. They are cold: no saved reconstruction, nothing to climb
+from. A repair sweep over them has nothing to work with.
+
+The near-miss mass is one band down: **512 B-1 KB holds 122 functions at 90-99 %** plus 2 at
+100 %, and 257-511 B holds 100 at 90-99 %. Those are what `fzgx sweep` is for.
+
+Measured, 10 main_rel functions from the 512 B-1 KB band, 2 rounds:
+
+    round 0: 10 functions, 1128 candidates -> 2 improved
+    round 1: 10 functions, 1111 candidates -> 1 improved
+    fn_1_F6A8  95.81 -> 96.36  ['signed: sz: u32 -> s32']
+
+So `sweep` is a **seed lifter, not a closer**: it improves a minority of bodies by a
+fraction of a percent, which is exactly what the historical note predicted (686 bodies at
+90 %+, 4 rounds: 5 matches, 167 improved). Each improvement is a better starting point for
+the fleet, but expect ~0-5 % closure per pass, not a haul.
+
+## Fleet allocation mismatch: the cold functions land on the weakest family
+
+`FAMILY_BANDS` sends **all 122 functions >=2 KB to `oc4`**, whose band is the catch-all
+`(257, inf)` and whose measured yield is 0.63 matches/hour -- second-worst of the free
+families, and an order of magnitude below gpt's 4.76. So 413 KB of the hardest work is
+queued at the family best suited to easy material.
+
+GPT is quota-capped and banded to `(0, 256)`, so it cannot absorb them either. Given the
+free tier is the only scalable capacity, the honest options are (a) leave the large
+functions to `oc4` accepting a low rate, or (b) widen `cline` past 512 bytes and let it
+compete for the same cold work -- it is *worse* per hour (0.42) than oc4, so that is not an
+improvement on its own. Neither move is free capacity, so this is a judgement call about
+where to grind, not a bug.
