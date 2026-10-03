@@ -7112,3 +7112,6 @@ rel/main_rel/stcoli/fn_1_229EC.c:
 
 rel/main_rel/effect/fn_1_67430.c:
 	.text       start:0x00067430 end:0x0006755C align:4
+
+rel/main_rel/enemy_ctrl/fn_1_C7874.c:
+	.text       start:0x000C7874 end:0x000C7AA0 align:4

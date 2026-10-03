@@ -524,6 +524,65 @@ void fn_1_C771C(void) {
 }
 /* fzgx:end fn_1_C771C */
 
+/* fzgx:begin fn_1_C7874 noprologue */
+#include "types.h"
+#include "font.h"
+
+struct fn_1_C7874_Copy88 { u32 a[22]; };
+struct fn_1_C7874_lbl_1_rodata_5C08 {
+    u32 unk_0;
+    u32 unk_4;
+    u32 unk_8;
+    u32 unk_C;
+    u32 unk_10;
+    u32 unk_14;
+    u32 unk_18;
+    u32 unk_1C;
+    u32 unk_20;
+    u32 unk_24;
+    u32 unk_28;
+    u32 unk_2C;
+};
+extern struct fn_1_C7874_lbl_1_rodata_5C08 lbl_1_rodata_5C08;
+extern u32 lbl_1_rodata_26F8;
+extern const f32 lbl_1_rodata_5C38;
+extern const f32 lbl_1_rodata_5C3C;
+extern const f32 lbl_1_rodata_5C40;
+extern const f32 lbl_1_rodata_5C44;
+extern const f32 lbl_1_rodata_5C48;
+extern const f64 lbl_1_rodata_5C00;
+extern void fn_1_51678(FontDrawPacket *, u32, s16, s16, s16, s16);
+extern int fn_1_4F734(FontDrawPacket *);
+
+void fn_1_C7874(void) {
+    FontDrawPacket packet;
+    struct fn_1_C7874_lbl_1_rodata_5C08 positions;
+    u32 i;
+    positions = lbl_1_rodata_5C08;
+    packet = *(const FontDrawPacket *)&lbl_1_rodata_26F8;
+    packet.image = 0x9457;
+    fn_1_51678(&packet, 0x9457, 0, 0, 4, 8);
+    *(f32 *)((u8 *)&packet + 0x10) *= lbl_1_rodata_5C38;
+    packet.x = lbl_1_rodata_5C3C;
+    packet.y = lbl_1_rodata_5C40;
+    *(f32 *)((u8 *)&packet + 0xC) = lbl_1_rodata_5C44;
+    *(u16 *)((u8 *)&packet + 0x28) = 0x4000;
+    *(u32 *)((u8 *)&packet + 0x30) = 10;
+    fn_1_4F734(&packet);
+    for (i = 0; i < 12; i++) {
+        packet = *(const FontDrawPacket *)&lbl_1_rodata_26F8;
+        packet.image = 0x9457;
+        fn_1_51678(&packet, packet.image, 4, 0, 4, 8);
+        packet.x = lbl_1_rodata_5C3C;
+        packet.y = (f32)((s32 *)&positions)[i];
+        *(f32 *)((u8 *)&packet + 0xC) = lbl_1_rodata_5C48;
+        *(u16 *)((u8 *)&packet + 0x28) = 0x4000;
+        *(u32 *)((u8 *)&packet + 0x30) = 10;
+        fn_1_4F734(&packet);
+    }
+}
+/* fzgx:end fn_1_C7874 */
+
 /* fzgx:begin fn_1_C7AA0 noprologue */
 #include "types.h"
 #include "font.h"
