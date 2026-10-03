@@ -24813,6 +24813,19 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_8007F13C.c",
+    "symbols": [
+      "fn_8007F13C"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [
+      "-use_lmw_stmw",
+      "on"
+    ]
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8007F48C.c",
     "symbols": [
       "fn_8007F48C"
