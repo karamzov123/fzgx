@@ -7049,3 +7049,6 @@ rel/main_rel/camera/fn_1_5370.c:
 
 rel/main_rel/enemy_ctrl/fn_1_C6F8C.c:
 	.text       start:0x000C6F8C end:0x000C7224 align:4
+
+rel/main_rel/ghost/fn_1_EB4BC.c:
+	.text       start:0x000EB4BC end:0x000EB85C align:4
