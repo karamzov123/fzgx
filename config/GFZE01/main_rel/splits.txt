@@ -6950,3 +6950,6 @@ rel/main_rel/font/fn_1_55118.c:
 
 rel/main_rel/custom_memcard/fn_1_13198C.c:
 	.text       start:0x0013198C end:0x00131B90 align:4
+
+rel/main_rel/enemy_ctrl/fn_1_C7AA0.c:
+	.text       start:0x000C7AA0 end:0x000C7CBC align:4
