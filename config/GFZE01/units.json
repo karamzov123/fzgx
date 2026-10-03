@@ -43452,6 +43452,18 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/load/fn_1_46BFC.c",
+    "symbols": [
+      "fn_1_46BFC"
+    ],
+    "status": "nonmatching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/load.c",
+    "pool": true
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/load/fn_1_46C60.c",
     "symbols": [
       "fn_1_46C60"
