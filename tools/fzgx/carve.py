@@ -180,6 +180,21 @@ def carve(project: Project, symbol: str, dry_run: bool = False) -> CarveResult:
         f.write(f"\n{source}:\n")
         for section, start, end, align in res.ranges:
             f.write(f"\t{section:<11} start:0x{start:08X} end:0x{end:08X} align:{align}\n")
+    # The split must actually cover the function's .text range. A body for an uncovered
+    # range still checks at 100% (the per-object oracle never builds the module) but cannot
+    # link: the unit adds a second copy of the function, so the module grows past retail or
+    # the REL step cannot resolve. Observed on fn_8_704, whose range went missing between
+    # carve and verify. Re-assert the range here so the guarantee holds whatever touched the
+    # file in between. See docs/findings/279 and tools/fzgx/splitgaps.py.
+    project.__dict__.get("_splits_cache", {}).pop(module, None)
+    if not any(sp.section == sym.section and sp.start <= sym.addr and sym.end <= sp.end
+               for sp in project.splits(module)):
+        align = _align_for(sym.addr, _section_default_align(project, module, sym.section))
+        with splits_path.open("a") as f:
+            f.write(f"{source}:\n\t{sym.section:<11} start:0x{sym.addr:08X} "
+                    f"end:0x{sym.end:08X} align:{align}\n")
+        res.notes.append(f"{sym.section}: 0x{sym.addr:X}-0x{sym.end:X} was uncovered after carve; "
+                         "range re-asserted")
     if module == "main" and not project.callers(sym.name, limit=1):
         # inside its auto object a callerless function survives the link with its neighbours;
         # alone in its own object mwld drops it and the DOL comes out short. dtk lists a
