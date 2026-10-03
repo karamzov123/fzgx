@@ -7097,3 +7097,6 @@ rel/main_rel/font/fn_1_5158C.c:
 
 rel/main_rel/car/fn_1_87448.c:
 	.text       start:0x00087448 end:0x000875B4 align:4
+
+rel/main_rel/sel_static_disp/fn_1_13A460.c:
+	.text       start:0x0013A460 end:0x0013A654 align:4

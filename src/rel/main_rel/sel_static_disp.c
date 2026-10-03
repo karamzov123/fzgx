@@ -1719,6 +1719,208 @@ void fn_1_13A038(Car *car)
 #pragma opt_loop_invariants reset
 /* fzgx:end fn_1_13A038 */
 
+/* fzgx:begin fn_1_13A460 noprologue */
+#include "types.h"
+#include "rel/main_rel/sel_static_disp.h"
+
+struct fn_1_13A460_Arg0 {
+    u16 unk_0;
+    u8 pad_2[0x22];
+    u32 unk_24;
+    u8 pad_28[0x10];
+    f32 unk_38;
+    f32 unk_3C;
+    f32 unk_40;
+    f32 unk_44;
+    f32 unk_48;
+    f32 unk_4C;
+};
+
+struct fn_1_13A460_Loc {
+    u32 a0[1];
+    f32 f_04;
+    f32 f_08;
+    f32 f_0C;
+    f32 f_10;
+    f32 f_14;
+    u8 pad_18[0x18];
+    u32 n_30;
+    u8 pad_34[0x24];
+};
+
+struct fn_1_13A460_Ent {
+    u8 pad_0[0xE];
+    s16 unk_E;
+    u8 pad_10[0x10];
+};
+
+extern const struct fn_1_13A460_Loc lbl_1_rodata_26F8;
+extern const f32 lbl_1_rodata_87B8;
+extern const f32 lbl_1_rodata_85F0;
+extern const f32 lbl_1_rodata_8BF0;
+extern const f32 lbl_1_rodata_8BF4;
+extern const f32 lbl_1_rodata_8664;
+extern const f32 lbl_1_rodata_861C;
+extern const f32 lbl_1_rodata_8638;
+extern const f32 lbl_1_rodata_8BF8;
+extern const f32 lbl_1_rodata_880C;
+extern const f32 lbl_1_rodata_8BFC;
+extern const f32 lbl_1_rodata_8B28;
+extern const f32 lbl_1_rodata_87D0;
+extern const f64 lbl_1_rodata_8600;
+
+typedef struct {
+    f32 unk_00;
+    f32 unk_04;
+    f32 unk_08;
+    f32 unk_0C;
+    f32 unk_10;
+    f32 unk_14;
+    f32 unk_18;
+    f32 unk_1C;
+    f32 unk_20;
+    f32 unk_24;
+    u16 unk_28;
+    u16 unk_2A;
+    u16 unk_2C;
+    u16 unk_2E;
+    u16 unk_30;
+    u16 unk_32;
+    u32 unk_34;
+    u8 unk_38;
+    u8 unk_39;
+    u8 unk_3A;
+    u8 unk_3B;
+    u32 unk_3C;
+    u8 unk_40;
+    u8 unk_41[3];
+    f32 unk_44;
+    f32 unk_48;
+    f32 unk_4C;
+    f32 unk_50;
+    u16 unk_54;
+    u16 unk_56;
+    u32 unk_58;
+    u8 unk_5C[4];
+} Sig_fn_1_8CED0_Fn1_8CED0State;
+extern void fn_1_8CED0(Sig_fn_1_8CED0_Fn1_8CED0State *, u16, u16);
+
+typedef struct Sig_fn_1_131B90_Obj Sig_fn_1_131B90_Obj;
+struct Sig_fn_1_131B90_Obj {
+    s16 index;
+    u8 pad_2[2];
+    u32 field_4;
+    u32 field_8;
+    u8 pad_c[0x2c];
+    u32 field_38;
+    u32 field_3c;
+    u32 field_40;
+    u32 field_44;
+    u32 field_48;
+    u32 field_4c;
+    u32 field_50[1];
+};
+extern s32 fn_1_131B90(Sig_fn_1_131B90_Obj *);
+
+typedef struct Sig_fn_1_8D3F8_Fn1_8D3F8Car {
+    f32 field_00;
+    f32 field_04;
+    f32 field_08;
+    f32 field_0c;
+    f32 field_10;
+    f32 field_14;
+    f32 field_18;
+    f32 field_1c;
+    f32 field_20;
+    f32 field_24;
+    u16 field_28;
+    u16 field_2a;
+    u16 field_2c;
+    u16 field_2e;
+    u16 field_30;
+    u16 field_32;
+    u32 field_34;
+    u8 field_38;
+    u8 field_39;
+    u8 field_3a;
+    u8 pad_3b;
+    u32 field_3c;
+    u8 field_40[4];
+    f32 field_44;
+    f32 field_48;
+    f32 field_4c;
+    f32 field_50;
+    s16 field_54;
+    u8 pad_56[2];
+    s32 field_58;
+    u8 field_5c[4];
+    u32 field_60;
+} Sig_fn_1_8D3F8_Fn1_8D3F8Car;
+extern u32 fn_1_8D3F8(Sig_fn_1_8D3F8_Fn1_8D3F8Car *, void *, u32 (*)(u32), u32);
+
+extern void _savegpr_27(void);
+extern void _restgpr_27(void);
+
+#pragma opt_loop_invariants off
+static inline f32 fn_1_13A460_read_pointer(struct fn_1_13A460_Loc * owner) { return owner->f_10; }
+#pragma opt_lifetimes off
+void fn_1_13A460(struct fn_1_13A460_Arg0 *arg0) {
+    f32 *fzgx_value_;
+    struct fn_1_13A460_Loc loc;
+    s32 stepC9;
+    s32 step64;
+    s32 i = 0;
+    f32 fzgx_live;
+    f32 fzgx_live_;
+    f32 fzgx_value;
+
+    stepC9 = 0x9C;
+    step64 = 0;
+
+    arg0->unk_38 = lbl_1_rodata_87B8;
+    arg0->unk_3C = lbl_1_rodata_85F0;
+    arg0->unk_40 = lbl_1_rodata_8BF0;
+    fzgx_value_ = &(arg0->unk_44);
+    *fzgx_value_ = lbl_1_rodata_8BF4;
+    arg0->unk_48 = lbl_1_rodata_8664;
+    arg0->unk_4C = lbl_1_rodata_861C;
+
+    for (; i < 4; i++) {
+        s32 v = (s16)(((struct fn_1_13A460_Ent *)&lbl_1_bss_8B3A0)[i].unk_E);
+        if (v != -1) {
+            arg0->unk_0 = i;
+            loc = lbl_1_rodata_26F8;
+            loc.f_04 = lbl_1_rodata_8BF8;
+            loc.f_08 = (f32)stepC9;
+            loc.f_0C = lbl_1_rodata_880C;
+            loc.n_30 = 10;
+            if (lbl_1_bss_8CA28.unk_0 != 0) {
+                fzgx_live = fn_1_13A460_read_pointer(&loc);
+                fzgx_value = fzgx_live * lbl_1_rodata_8638;
+                (void) fzgx_value;  /* fzgx: keeps the web at its definition */
+                loc.f_10 = fzgx_value;
+                loc.f_14 = loc.f_14 * lbl_1_rodata_8638;
+            }
+            fzgx_live = fn_1_13A460_read_pointer(&loc);
+            loc.f_10 = fzgx_live * lbl_1_rodata_8BFC;
+            fzgx_live_ = loc.f_14;
+            loc.f_14 = fzgx_live_ * lbl_1_rodata_8BFC;
+            if (v == 0x21) {
+                loc.f_08 = loc.f_08 - lbl_1_rodata_8B28;
+            }
+            fn_1_8CED0((Sig_fn_1_8CED0_Fn1_8CED0State *)((u8 *)arg0->unk_24 + step64), 0x1A0, 0xC0);
+            *(f32 *)((u8 *)arg0->unk_24 + step64 + 0x44) = lbl_1_rodata_87D0;
+            fn_1_8D3F8((Sig_fn_1_8D3F8_Fn1_8D3F8Car *)((u8 *)arg0->unk_24 + step64), &loc, (u32 (*)(u32))fn_1_131B90, (u32)arg0);
+            stepC9 += 0xC9;
+            step64 += 0x64;
+        }
+    }
+}
+#pragma opt_lifetimes reset
+
+#pragma opt_loop_invariants reset
+/* fzgx:end fn_1_13A460 */
+
 /* fzgx:begin fn_1_13A848 */
 void fn_1_13A848(s16 arg0, s16 arg1, void* arg2, void* arg3, int arg4, f32 arg5, f32 arg6) {
     fn_1_49410();
