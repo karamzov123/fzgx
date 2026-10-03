@@ -1351,6 +1351,62 @@ void fn_1_E5AD8(void *base, f32 value) {
 }
 /* fzgx:end fn_1_E5AD8 */
 
+/* fzgx:begin fn_1_E5AE0 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/phys.h"
+
+extern u32 lbl_1_rodata_6A98[50];
+extern void fn_1_57714(u8 arg);
+extern f32 lbl_1_rodata_67B4[19];
+extern const f64 lbl_1_rodata_6800;
+typedef struct { f32 x; f32 y; f32 z; } E5AE0Vec;
+extern void fn_1_5773C(E5AE0Vec *a, E5AE0Vec *b, u8 *c);
+extern void fn_80008BEC(void *dst, int value, u32 size);
+
+static inline u32 fn_1_E5AE0_array_read(u32 *array, s32 index) { return array[index]; }
+#pragma opt_common_subs off
+void fn_1_E5AE0(s16 a, s16 b, f32 w, f32 h) {
+    u32 flag = fn_1_E5AE0_array_read(lbl_1_rodata_6A98, 0);
+    E5AE0Vec o1;
+    E5AE0Vec o2;
+    s16 i;
+    f32 xpos;
+    f32 zpos;
+    f32 stepx;
+    f32 stepz;
+    f32 cur;
+
+    fn_1_57714(6);
+    stepx = w / (f32)a;
+    stepz = h / (f32)b;
+    xpos = lbl_1_rodata_67B4[0] * -w;
+    zpos = lbl_1_rodata_67B4[0] * -h;
+    cur = xpos;
+    for (i = 0; i < a + 1; i++) {
+        fn_80008BEC(&o1, 0, 0xC);
+        fn_80008BEC(&o2, 0, 0xC);
+        o2.x = cur;
+        o1.x = cur;
+        o1.z = zpos;
+        o2.z = -zpos;
+        fn_1_5773C(&o1, &o2, (u8 *)&flag);
+        cur += stepx;
+    }
+    for (i = 0; i < b + 1; i++) {
+        fn_80008BEC(&o1, 0, 0xC);
+        fn_80008BEC(&o2, 0, 0xC);
+        o2.z = zpos;
+        o1.z = zpos;
+        o1.x = xpos;
+        o2.x = -xpos;
+        fn_1_5773C(&o1, &o2, (u8 *)&flag);
+        zpos += stepz;
+    }
+}
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_E5AE0 */
+
 /* fzgx:begin fn_1_E7E00 noprologue */
 #include "types.h"
 
