@@ -39038,6 +39038,27 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/face/fn_1_D1848.c",
+    "symbols": [
+      "fn_1_D1848"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/face.c",
+    "pool": {
+      "@9": "lbl_1_data_3DA2C",
+      "...bss.0": "lbl_1_bss_7ACD8",
+      "fzgx_obj_lbl_1_bss_7ACD8": "lbl_1_bss_7ACD8",
+      "lbl_1_bss_7ACDC": "lbl_1_bss_7ACDC",
+      "lbl_1_bss_7ACE0": "lbl_1_bss_7ACE0",
+      "lbl_1_bss_7ACE0__fzgx_offset_4": "lbl_1_bss_7ACE0+0x4",
+      "fzgx_obj_lbl_1_bss_7ACE5": "lbl_1_bss_7ACE5",
+      "fzgx_obj_lbl_1_bss_7ACE8": "lbl_1_bss_7ACE8"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/face/fn_1_D1C94.c",
     "symbols": [
       "fn_1_D1C94"

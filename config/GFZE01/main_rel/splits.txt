@@ -6962,3 +6962,6 @@ rel/main_rel/spline/fn_1_F8214.c:
 
 rel/main_rel/accessory/fn_1_108A90.c:
 	.text       start:0x00108A90 end:0x00108BD0 align:4
+
+rel/main_rel/face/fn_1_D1848.c:
+	.text       start:0x000D1848 end:0x000D19B8 align:4

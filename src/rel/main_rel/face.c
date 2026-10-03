@@ -47,6 +47,103 @@ void fn_1_D17E8(void) {
 }
 /* fzgx:end fn_1_D17E8 */
 
+/* fzgx:begin fn_1_D1848 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/face.h"
+
+extern u32 lbl_801A6410;
+extern u32 lbl_1_rodata_60A0[46];
+extern u32 fn_1_4630(u32, u32, u8 *, u32);
+extern u8 fn_1_86624(void);
+extern u32 fn_1_45D0(u32, u32, void *, u32);
+extern void fn_1_D2F50(void);
+extern void fn_1_D2F84(void);
+extern void *memset(void *, int, u32);
+typedef u8 Sig_GXGetTexBufferSize_GXBool;
+typedef union {
+    u32 w;
+    struct { u32 lo : 2; u32 rest : 30; } f;
+} FlagU;
+extern u32 GXGetTexBufferSize(u16, u16, u32, Sig_GXGetTexBufferSize_GXBool, u8);
+
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+u32 fzgx_obj_lbl_1_bss_7ACD8;
+u32 lbl_1_bss_7ACDC;
+u32 lbl_1_bss_7ACE0;
+u8 lbl_1_bss_7ACE0__fzgx_offset_4;
+u8 fzgx_obj_lbl_1_bss_7ACE5;
+u16 fzgx_pool_lbl_1_bss_7ACD8_gap_7ACE6;
+u32 fzgx_obj_lbl_1_bss_7ACE8;
+
+#pragma section code_type ".fzgxpool"
+static void fzgx_bss_layout(void) {
+    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_7ACD8;
+    s = *(u8 *)&lbl_1_bss_7ACDC;
+    s = *(u8 *)&lbl_1_bss_7ACE0;
+    s = *(u8 *)&lbl_1_bss_7ACE0__fzgx_offset_4;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_7ACE5;
+    s = *(u8 *)&fzgx_pool_lbl_1_bss_7ACD8_gap_7ACE6;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_7ACE8;
+}
+#pragma section code_type ".text"
+
+extern void OSReport(const char *, ...);
+#pragma section code_type ".fzgxpool"
+static void fzgx_string_layout(void) {
+    /* fzgx-allow: S2 layout primer: MWCC emits string literals in first-use order; the section is dropped at integration */
+    OSReport("face.c");
+}
+#pragma section code_type ".text"
+
+#pragma peephole off
+static inline u32 fn_1_D1848_array_read(s32 index, u32 *array) { return array[index]; }
+#pragma peephole reset
+
+#pragma opt_loop_invariants off
+#pragma opt_propagation off
+void fn_1_D1848(void) {
+    u32 texsize;
+    s32 i;
+    Obj_1_bss_7ACD8_Target *obj;
+    u32 c0;
+    u32 c1;
+    u8 idx;
+
+    
+    fn_1_D2F50();
+    fzgx_obj_lbl_1_bss_7ACD8 = fn_1_4630(lbl_801A6410, 0x258, (u8 *)"face.c", 0x15F);
+    fzgx_obj_lbl_1_bss_7ACE8 = 0;
+    idx = fn_1_86624();
+    *(u8 *)((u8 *)&lbl_1_bss_7ACE0__fzgx_offset_4) = idx;
+    lbl_1_bss_7ACDC = fn_1_4630(lbl_801A6410, idx << 2, (u8 *)"face.c", 0x173);
+    lbl_1_bss_7ACE0 = fn_1_4630(lbl_801A6410, *(u8 *)((u8 *)&lbl_1_bss_7ACE0__fzgx_offset_4) << 2, (u8 *)"face.c", 0x174);
+    texsize = GXGetTexBufferSize(0x40, 0x40, 5, 0, 0);
+    obj = (Obj_1_bss_7ACD8_Target *)fzgx_obj_lbl_1_bss_7ACD8;
+    for (i = 0; i < 6; i++) {
+        u32 c1;
+        u32 c0;
+        c0 = fn_1_D1848_array_read(0, lbl_1_rodata_60A0);
+        c1 = fn_1_D1848_array_read(1, lbl_1_rodata_60A0);
+        obj->unk_2C = c0;
+        obj->unk_30 = c1;
+        obj->unk_34 = fn_1_D1848_array_read(2, lbl_1_rodata_60A0);
+        obj->unk_1C = 0;
+        obj->unk_4 = 0xFF;
+        obj->unk_0 &= 0x7FFFFFFFu;
+        obj->unk_0 = __rlwinm(obj->unk_0, 0, 2, 0);
+        obj->unk_60 = fn_1_45D0(lbl_801A6410, texsize, (u8 *)"face.c", 0x18A);
+        memset((void *)obj->unk_60, 0, 4);
+        obj = (Obj_1_bss_7ACD8_Target *)((u8 *)obj + 0x64);
+    }
+    fn_1_D2F84();
+}
+#pragma opt_propagation reset
+
+#pragma opt_loop_invariants reset
+/* fzgx:end fn_1_D1848 */
+
 /* fzgx:begin fn_1_D1C94 noprologue */
 #include "types.h"
 
