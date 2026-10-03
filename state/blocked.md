@@ -473,3 +473,34 @@ and the fix is to split a local, not to align anything.
 anything else is None, which is the conservative direction. It is unit-tested for the
 collision and conflict cases, and the sets-not-lists bug it had on first run against real
 captures is fixed.
+
+## Scope of the projection path, measured honestly (2026-10-03)
+
+Of the 361 functions captured, the projection pipeline's stages are a funnel:
+
+| stage | functions |
+| --- | ---: |
+| captured | 361 |
+| `fixed-graph-hypothesis` (reaches the witness stage) | 26 |
+| of those, `>= 99.5 %` on the real oracle | 7 |
+| emit an actual `*.projection-N.c` | ~4 |
+
+So **web alignment plus `declaration_projection` is a small lever, not the big one.** It is
+the right tool for the 67 `commutative-only` functions, but `declaration_projection`'s own
+safety checks -- no initializers, at least two movable locals, the reverse-creation-order
+stratum verified before projecting, frontend parameter positions immovable -- reject most of
+the 26. Those rejections are correct and should not be loosened.
+
+The 7 that are both closest and reachable:
+`fn_1_128B60` (632 B) and `fn_12_23410` (752 B) at 100.0 %, then `fn_1_82EDC` 99.90,
+`fn_1_131194` 99.89, `fn_1_1024F8` 99.87, `fn_1_F7F48` 99.66, `fn_1_4068C` 99.64.
+
+Caveat that bit twice while writing this up: the 100.0 % figures come from
+`max(best_in_attempt, final_percent)` computed **in Python**. Doing the same maximum in SQL
+(`max(COALESCE(best_in_attempt,0), ...)`) returns garbage -- `attempts.best_in_attempt` is
+declared REAL but stores text on some rows, so SQLite compares strings and `max` returns 0 or
+a lexically-larger string. The same query made `fn_1_15EC40` read 82.51 % when it is 99.15 %.
+Compute these maxima outside SQL.
+
+`functions.best_percent` is a separate trap, already recorded above: only 1 of 1698
+unmatched functions has one no attempt supports, but it is still not the figure to rank on.
