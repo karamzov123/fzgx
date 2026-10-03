@@ -14,10 +14,19 @@ let config=manager.getProviderConfig('cline');
 if(config && process.env.FZGX_MODEL) config.modelId=process.env.FZGX_MODEL;
 if(!config?.apiKey) throw new Error('Existing Cline login is unavailable; no interactive auth attempted');
 const names=['write_unit','patch_unit','check','search','read_evidence','release'];
-// 0 disables a guard, as in codex_server.
+// Effort and the per-response output cap were hardcoded here, so `fzgx --effort` was inert
+// for this harness: `reasoningEffort` sat at 'high' in three places regardless of the flag.
+// Both are env-configurable now so the knob actually exists. Defaults are unchanged.
+//
+// Note when choosing a value: `maxTokens` and `reasoningEffort` spend the *same* per-response
+// budget. Raising effort with the cap fixed makes truncation worse, not better -- see
+// docs/FLEET.md, where high-effort reasoning at this cap truncated 32 of 209 turns before
+// any tool call. Raise the cap first; only then is more reasoning affordable.
+const reasoningEffort=process.env.FZGX_CLINE_EFFORT||'high';
+const maxTokens=Number(process.env.FZGX_MAX_MODEL_OUTPUT_TOKENS||32768);
 const tokenLimits={input:Number(process.env.FZGX_MAX_MODEL_INPUT_TOKENS||0),output:Number(process.env.FZGX_MAX_MODEL_OUTPUT_TOKENS||0)};
 if(process.argv.includes('--describe')){
- console.log(JSON.stringify({harness:'cline-sdk',provider:config.providerId,model:config.modelId,effort:'high',tools:names,nativeTools:[],modelTools:[],tokenLimits}));
+ console.log(JSON.stringify({harness:'cline-sdk',provider:config.providerId,model:config.modelId,effort:reasoningEffort,tools:names,nativeTools:[],modelTools:[],tokenLimits,maxTokens}));
  process.exit(0);
 }
 const settings=manager.getProviderSettings(config.providerId);
@@ -73,8 +82,8 @@ const tools=names.map(name=>createTool({name,description:descriptions[name],inpu
  }finally{const fs=await import('node:fs');for(const p of paths) fs.unlinkSync(p);}
 }}));
 agent=new Agent({providerId:config.providerId,modelId:config.modelId,apiKey:config.apiKey,baseUrl:config.baseUrl,
- options:{...config,reasoningEffort:'high'},systemPrompt:readFileSync(join(root,'tools/codex_matcher.md'),'utf8'),tools,modelTools:[],
- maxIterations:40,toolExecution:'sequential',modelOptions:{maxTokens:32768,reasoningEffort:'high'},
+ options:{...config,reasoningEffort},systemPrompt:readFileSync(join(root,'tools/codex_matcher.md'),'utf8'),tools,modelTools:[],
+ maxIterations:40,toolExecution:'sequential',modelOptions:{maxTokens,reasoningEffort},
  requestToolApproval:request=>({approved:names.includes(request.toolName)}),
 });
 let usage={inputTokens:0,outputTokens:0,cacheReadTokens:0,cacheWriteTokens:0,totalCost:0};
