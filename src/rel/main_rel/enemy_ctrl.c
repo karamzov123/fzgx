@@ -650,6 +650,77 @@ void fn_1_CA2A4(void *self) {
 }
 /* fzgx:end fn_1_CA2A4 */
 
+/* fzgx:begin fn_1_CA440 noprologue */
+#include "types.h"
+#include "font.h"
+
+struct fn_1_CA440_lbl_1_data_3D544 {
+    u32 unk_0[1];
+};
+struct fn_1_CA440_5D70 {
+    u32 a[4];
+};
+
+extern struct fn_1_CA440_lbl_1_data_3D544 lbl_1_data_3D544;
+extern u32 lbl_1_data_3D570;
+extern struct fn_1_CA440_5D70 lbl_1_rodata_5D70;
+extern u32 lbl_1_rodata_26F8;
+extern const f32 lbl_1_rodata_5D80;
+extern const f32 lbl_1_rodata_5D84;
+extern const f64 lbl_1_rodata_5C00;
+extern u32 fn_1_5910(void);
+extern u8 fn_1_86810(void *);
+extern void fn_1_49410(void);
+extern void fn_1_494DC(s16);
+extern void fn_1_4955C(f32, f32);
+extern void fn_1_496FC(f32, f32);
+extern void fn_1_4AE0C(const char *, ...);
+extern int fn_1_4F734(FontDrawPacket *);
+
+void fn_1_CA440(void *arg0, s32 arg1, s32 arg2) {
+    struct fn_1_CA440_5D70 tbl;
+    FontDrawPacket pkt;
+    s32 t;
+    s32 g;
+    s32 f;
+    s32 m;
+    s32 n;
+
+    if (((*(u32 *)&((&lbl_1_data_3D544)[fn_1_5910()]) >> 29) & 1) != 0) {
+        t = (s32)((u8)fn_1_86810(arg0)) + 1;
+        tbl = *(const struct fn_1_CA440_5D70 *)&lbl_1_rodata_5D70;
+        fn_1_49410();
+        fn_1_494DC(12);
+        fn_1_4955C(lbl_1_rodata_5D80, lbl_1_rodata_5D84);
+        fn_1_496FC((f32)arg1, (f32)arg2);
+        fn_1_4AE0C((const char *)&lbl_1_data_3D570, t);
+        pkt = *(const FontDrawPacket *)&lbl_1_rodata_26F8;
+        f = 0;
+        m = t % 100;
+        if (m >= 10 && t % 100 <= 20) {
+            f = 1;
+        }
+        if (f != 0) {
+            n = 3;
+        } else {
+            g = 0;
+            if (m % 10 >= 4 || m % 10 == 0) {
+                g = 1;
+            }
+            if (g != 0) {
+                n = 3;
+            } else {
+                n = m % 10 - 1;
+            }
+        }
+        pkt.image = tbl.a[n];
+        pkt.x = (f32)(arg1 + 34);
+        pkt.y = (f32)(arg2 + 29);
+        fn_1_4F734(&pkt);
+    }
+}
+/* fzgx:end fn_1_CA440 */
+
 /* fzgx:begin fn_1_CA690 */
 extern u32 fn_1_5910(void *);
 extern u8 fn_1_86810(void *);
