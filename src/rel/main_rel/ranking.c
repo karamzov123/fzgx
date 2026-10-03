@@ -901,6 +901,142 @@ void fn_1_156B18(fn_1_156B18_State *state) {
 }
 /* fzgx:end fn_1_156B18 */
 
+/* fzgx:begin fn_1_156D9C noprologue */
+#include "dolphin/types.h"
+#include "rel/main_rel/ranking.h"
+
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 0.0f;
+    s = -1.899999976158142f;
+    s = 25.0f;
+    s = -25.0f;
+    s = 30.0f;
+    s = 1.5f;
+    s = 170.0f;
+    s = 0.5f;
+    s = 248.0f;
+    s = 10.0f;
+    s = 60.0f;
+    s = 1.0f;
+    s = 1000.0f;
+    s = 0.10000000149011612f;
+}
+#pragma section code_type ".text"
+
+typedef struct {
+    s32 unk_00;
+    u32 unk_04;
+    u8 _pad_08[0x10];
+    s32 unk_18;
+    u8 _pad_1c[0x24];
+    f32 unk_40;
+    f32 unk_44;
+    u8 _pad_48[4];
+    u8 unk_4c;
+    u8 unk_4d;
+} RankSlot;
+
+typedef struct {
+    s8 unk_00;
+    u8 _pad_01[3];
+    u32 unk_04;
+    u32 unk_08;
+    u8 unk_0c;
+    u8 _pad_0d;
+    u16 unk_0e;
+    s16 unk_10;
+    s16 unk_12;
+    u16 unk_14;
+    s32 unk_18;
+    s32 unk_1c;
+    s8 unk_20;
+    s8 unk_21;
+} RankEntry;
+
+extern s32 fn_8006B55C(u32, void *, void *);
+extern s32 fn_8006B628(u32, void *);
+extern s32 fn_8006B6F8(u32);
+
+#pragma opt_dead_assignments off
+#pragma opt_loop_invariants off
+#pragma opt_strength_reduction off
+#pragma opt_common_subs off
+#pragma opt_propagation off
+void fn_1_156D9C(RankSlot *slot)
+{
+    u32 digit;
+    s32 idx;
+    RankEntry entry;
+    s32 ok = 0;
+    u32 id;
+    u32 data;
+
+    if (slot->unk_4c & 1) {
+        f32 v = 10.0f * slot->unk_44;
+        if (v > 60.0f) {
+            v = 60.0f;
+        }
+        idx = ((s32)v + 10) & 0xff;
+    } else {
+        f32 c = 1.0f - (slot->unk_40 / 1000.0f);
+        f32 v;
+        if (c < 0.1f) {
+            c = 0.1f;
+        }
+        if ((v = 10.0f * slot->unk_44) > 60.0f) {
+            v = 60.0f;
+        }
+        idx = (s32)((10.0f + v) * c);
+    }
+
+    digit = (u8)(*(u8 *)((u8 *)&lbl_1_data_49B20 + slot->unk_4d % 5));
+
+    ok = 0;
+
+    entry.unk_04 = -1;
+    entry.unk_0e = 0x5a;
+    entry.unk_08 = 0;
+    entry.unk_0c = idx;
+    entry.unk_10 = 0x3c;
+    entry.unk_00 = digit;
+    entry.unk_12 = 0;
+    entry.unk_14 = 0;
+    entry.unk_18 = 0;
+    entry.unk_1c = 0;
+    entry.unk_20 = 0;
+    entry.unk_21 = 0;
+
+    id = slot->unk_18;
+    data = slot->unk_04;
+    if (id + 0x10000 == 0xffff) {
+        if (fn_8006B55C(data, &slot->unk_18, &entry) >= 0) {
+            ok = 1;
+        }
+    } else {
+        if (fn_8006B628(id, &entry) >= 0) {
+            ok = 1;
+        }
+    }
+
+    if (ok && !(slot->unk_00 & 0x10)) {
+        if (fn_8006B6F8(slot->unk_18) >= 0) {
+            slot->unk_00 |= 0x10;
+        }
+    }
+}
+#pragma opt_propagation reset
+
+#pragma opt_common_subs reset
+
+#pragma opt_strength_reduction reset
+
+#pragma opt_loop_invariants reset
+
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_1_156D9C */
+
 /* fzgx:begin fn_1_156F54 */
 typedef struct {
     u32 flags;
