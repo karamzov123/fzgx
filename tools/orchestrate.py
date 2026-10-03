@@ -518,6 +518,16 @@ def main(argv: Optional[List[str]] = None) -> int:
     a = ap.parse_args(argv)
     if a.parallel < 1 or a.tool_parallel < 1 or a.timeout < 1:
         ap.error('parallel, tool-parallel and timeout must be positive')
+    # Each compile attempt costs two inodes, so a batch launched on a full
+    # filesystem dies with ENOSPC instead of matching anything. Collect the
+    # session scratch first rather than failing 48 agents into the same wall.
+    if not a.dry_run:
+        from fzgx import fixup_gc
+        free = os.statvfs(STATE_DIR).f_favail
+        if free < 100_000:
+            print(f"pre-flight: {free:,} free inodes; collecting fixup scratch", flush=True)
+            if fixup_gc.main([]) != 0 or os.statvfs(STATE_DIR).f_favail < 10_000:
+                ap.error(f'only {os.statvfs(STATE_DIR).f_favail:,} free inodes on {STATE_DIR}; refusing to start')
     if a.verify_interval < 0:
         ap.error('--verify-interval must be nonnegative')
     if len(a.symbols) != len(set(a.symbols)):
