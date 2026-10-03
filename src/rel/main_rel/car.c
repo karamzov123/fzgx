@@ -2049,6 +2049,97 @@ void *fn_1_868C0(s8 index) {
 }
 /* fzgx:end fn_1_868C0 */
 
+/* fzgx:begin fn_1_86900 pool noprologue */
+#include "types.h"
+#include "rel/main_rel/car.h"
+
+typedef struct {
+    u8 pad_0[0x1C];
+    u8 *unk_1C;
+    u8 pad_20[0xA];
+    s8 unk_2A;
+    u8 pad_2B[0x1D];
+    u16 unk_48[1];
+} Manager_1_86900;
+
+#pragma opt_loop_invariants on
+#pragma opt_lifetimes off
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+u32 fzgx_obj_lbl_1_bss_6D820;
+u32 fzgx_obj_lbl_1_bss_6D824;
+u32 lbl_1_bss_6D828;
+u32 fzgx_obj_lbl_1_bss_6D82C[3];
+u32 fzgx_obj_lbl_1_bss_6D838;
+u8 *fzgx_obj_lbl_1_bss_6D83C;
+u32 lbl_1_bss_6D83C__fzgx_offset_4[2];
+u16 lbl_1_bss_6D83C__fzgx_offset_C;
+s8 fzgx_obj_lbl_1_bss_6D84A;
+u8 lbl_1_bss_6D84A__fzgx_offset_1;
+u32 lbl_1_bss_6D84A__fzgx_offset_2;
+u32 lbl_1_bss_6D850;
+u32 lbl_1_bss_6D854[4];
+u32 fzgx_obj_lbl_1_bss_6D864;
+u32 fzgx_obj_lbl_1_bss_6D868;
+u8 lbl_1_bss_6D86C__fzgx_offset_0;
+u16 lbl_1_bss_6D86C__fzgx_offset_2;
+
+#pragma section code_type ".fzgxpool"
+static void fzgx_bss_layout(void) {
+    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6D820;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6D824;
+    s = *(u8 *)&lbl_1_bss_6D828;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6D82C;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6D838;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6D83C;
+    s = *(u8 *)&lbl_1_bss_6D83C__fzgx_offset_4;
+    s = *(u8 *)&lbl_1_bss_6D83C__fzgx_offset_C;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6D84A;
+    s = *(u8 *)&lbl_1_bss_6D84A__fzgx_offset_1;
+    s = *(u8 *)&lbl_1_bss_6D84A__fzgx_offset_2;
+    s = *(u8 *)&lbl_1_bss_6D850;
+    s = *(u8 *)&lbl_1_bss_6D854;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6D864;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6D868;
+    s = *(u8 *)&lbl_1_bss_6D86C__fzgx_offset_0;
+    s = *(u8 *)&lbl_1_bss_6D86C__fzgx_offset_2;
+}
+#pragma section code_type ".text"
+
+#pragma opt_common_subs off
+void *fn_1_86900(s32 arg0) {
+    
+    s8 i;
+    u8 *base = fzgx_obj_lbl_1_bss_6D83C;
+    s16 count = fzgx_obj_lbl_1_bss_6D84A;
+    {
+        s16 fzgx_loop_i_348;
+        for (fzgx_loop_i_348 = 0; fzgx_loop_i_348 < count; fzgx_loop_i_348++) {
+            if ((s8)arg0 == (s8)*(u8 *)((u8 *)*(u32 *)(base + 0x32C + fzgx_loop_i_348 * 0x440) + 0x474)) {
+                return base + fzgx_loop_i_348 * 0x440;
+            }
+        }
+        i = fzgx_loop_i_348;
+    }
+    {
+        s32 id;
+        s16 fzgx_loop_i_498;
+        id = (s8)((s8)arg0);
+        for (fzgx_loop_i_498 = 0; fzgx_loop_i_498 < count; fzgx_loop_i_498++) {
+            if (((*(u8 (*)[1])&fzgx_obj_lbl_1_bss_6D868))[id] == *(s16 *)((u8 *)*(u32 *)((((base) + (fzgx_loop_i_498 * 0x440)) + (0x32C))) + 4)) {
+                return base + fzgx_loop_i_498 * 0x440;
+            }
+        }
+        i = fzgx_loop_i_498;
+    }
+    return 0;
+}
+#pragma opt_common_subs reset
+
+#pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
+/* fzgx:end fn_1_86900 */
+
 /* fzgx:begin fn_1_869B0 noprologue */
 #include "types.h"
 

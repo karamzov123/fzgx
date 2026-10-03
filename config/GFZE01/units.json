@@ -34054,6 +34054,18 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/car/fn_1_86900.c",
+    "symbols": [
+      "fn_1_86900"
+    ],
+    "status": "nonmatching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/car.c",
+    "pool": true
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/car/fn_1_869B0.c",
     "symbols": [
       "fn_1_869B0"
