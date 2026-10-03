@@ -49,6 +49,95 @@ extern void fn_1_A8528(void *arg0, void *arg1);
 extern u32 fn_1_A7024(f32, f32, f32, f32);
 extern u32 fn_80074918(u32, u32, u32);
 
+/* fzgx:begin fn_1_A7294 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/prog.h"
+#include "rel/main_rel/driver.h"
+#include "psvec.h"
+
+extern s16 fn_1_12C930(s16);
+extern s16 fn_1_12CCB0(s16, s16);
+extern void *fn_1_14DD68(u32);
+extern u32 fn_1_4630(u32, u32, u8 *, u32);
+extern void fn_1_A7E60(s8, s8, u32, u32, void *);
+extern u32 lbl_801A6410;
+
+typedef struct {
+    f32 x, y, z;
+} Vec3;
+
+typedef struct {
+    u8 pad_0[0x324];
+    u32 unk_324;
+    s8 unk_328;
+    u8 pad_329[0x67];
+    u32 unk_390;
+    void *unk_394[3];
+    u32 unk_3a0;
+    u8 pad_3a4[0x9C];
+} A7294Elem;
+
+void fn_1_A7294(A7294Elem *arg0, u32 count) {
+    A7294Elem *e;
+    u32 i;
+    s32 t;
+    s32 j;
+    s8 c;
+    s8 v;
+    void *vec;
+
+    for (i = 0; i < count; i++) {
+        e = arg0 + i;
+        for (t = 0; t < 3; t++) {
+            e->unk_394[t] = 0;
+        }
+    }
+
+    e = arg0;
+    for (i = 0; i < count; i++, e++) {
+        c = e->unk_328;
+        if (c < 0) {
+            continue;
+        }
+        if (c == 0x22 || c == 0x27) {
+            continue;
+        }
+        if (e->unk_390 & 0x100000) {
+            continue;
+        }
+        for (j = 0; j < 3; j++) {
+            if (j == 0) {
+                v = (s8)fn_1_12C930(c);
+            } else {
+                v = (s8)fn_1_12CCB0(c, (s16)(j - 1));
+            }
+            if (v >= 0) {
+                if (!(c >= 0x29 && e->unk_3a0 != 0)) {
+                    vec = 0;
+                } else {
+                    s16 k = *(s16 *)(e->unk_3a0 + 0x360);
+                    if (k >= 0x19 && k <= 0x31) {
+                        vec = &lbl_1_data_35864[(k - 0x19) * 0xC];
+                    } else {
+                        vec = 0;
+                    }
+                }
+                if (vec) {
+                    Vec3 tmp;
+                    psvec_add(vec, fn_1_14DD68(e->unk_3a0), &tmp);
+                    vec = &tmp;
+                }
+                e->unk_394[j] = (void *)fn_1_4630(*(u32 *)&lbl_801A6410, 0x30c, lbl_1_data_34354, 0x9e);
+                if (e->unk_394[j] != 0) {
+                    fn_1_A7E60(c, v, (u32)e->unk_394[j], e->unk_324, vec);
+                }
+            }
+        }
+    }
+}
+/* fzgx:end fn_1_A7294 */
+
 /* fzgx:begin fn_1_A744C noprologue */
 #include "types.h"
 #include "rel/main_rel/driver.h"
