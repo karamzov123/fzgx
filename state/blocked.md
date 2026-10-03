@@ -434,3 +434,42 @@ Both are `pure`-classified and were treated with the right tool, not the same on
 Note `object% 100.0` in the capture report is `oracle.function_score` on the captured
 object, **not** an oracle acceptance -- the unit check still reports 99.66 %. Do not read the
 capture's object score as a match, the same trap as the corpus's masked-word `score`.
+
+## Web alignment is worth building -- for 67 of 189, not all of them (2026-10-03)
+
+`target_mapping` returned one undifferentiated `needs-web-alignment` for every register-map
+failure, but that single label covers two problems needing opposite responses. Bindings are
+now split into **hard** (order-fixed, non-commutative operand positions) and commutative
+(operand order on `add`/`and`/`xor`/... which is deferred anyway), and the failure reports
+which kind it is:
+
+- **`commutative-only`** every hard binding agrees and is injective, so the two objects *are*
+  related by a register permutation and the disagreement is only commutative operand order.
+  Web alignment is the right tool.
+- **`structural`** the hard bindings themselves disagree, so no register permutation relates
+  the two objects. Instruction shapes already match, so the difference is in the values: a
+  value live across a span retail splits, or the reverse. The conflict is **evidence of a
+  source defect to fix first** -- aligning the webs would mean aligning two different
+  programs.
+
+Measured over 361 captured functions:
+
+| constraint status | functions |
+| --- | ---: |
+| `fixed-graph-hypothesis` | 26 |
+| `needs-web-alignment` | 189 |
+| `unsupported-instruction` | 61 |
+| `instruction-shape` | 85 |
+
+and of the 189: **`commutative-only` 67, `structural` 122**.
+
+So building web alignment addresses **67**, and the other **122 need source repairs**. Without
+this split, the natural reading of "189 need alignment" would have sent the whole effort at
+the wrong half. `fn_1_12DAEC` is `structural`: its hard conflicts are
+`{r3: [r20,r21,r3], r20: [r20,r3], r21: [r21,r3]}`, so no permutation relates it to retail
+and the fix is to split a local, not to align anything.
+
+`_consistent_hard_map` returns a map only when it satisfies every hard row and is injective;
+anything else is None, which is the conservative direction. It is unit-tested for the
+collision and conflict cases, and the sets-not-lists bug it had on first run against real
+captures is fixed.

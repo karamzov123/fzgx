@@ -15,6 +15,29 @@ COMMUTE = {'add', 'add.', 'and', 'and.', 'or', 'or.', 'xor', 'xor.',
            'mullw', 'mullw.', 'fadd', 'fadds', 'fmul', 'fmuls'}
 
 
+def _consistent_hard_map(hard):
+    """Injective name map satisfying every *hard* (non-commutative) binding, or None.
+
+    `hard` maps one of our register names to the retail names it was bound to at a
+    non-commutative operand position. Such a binding is order-fixed, so a solution must
+    satisfy all of them at once: exactly one retail name per our-name, used at most once.
+    Solved as bipartite matching, deterministically (candidates visited in sorted order).
+
+    None means the two objects are not related by any register permutation: our register
+    naming genuinely does not correspond to retail's. Given instruction shapes already match,
+    that is not a naming artefact to be aligned away -- it means the two objects assign
+    registers differently because the *values* differ (one value live across a span retail
+    splits into several, or the reverse). None is the conservative answer; claiming a map
+    that no row actually satisfies would send someone to align two different programs.
+    """
+    if any(len(v) != 1 for v in hard.values()):
+        return None
+    forced = {k: next(iter(v)) for k, v in hard.items()}
+    if len(set(forced.values())) != len(forced):
+        return None
+    return forced
+
+
 def target_mapping(target, ours):
     md = Cs(CS_ARCH_PPC, CS_MODE_32 | CS_MODE_BIG_ENDIAN)
     md.skipdata = True
@@ -25,10 +48,12 @@ def target_mapping(target, ours):
     t, o = decode(target), decode(ours)
     if len(t) != len(target) or len(o) != len(ours):
         return {'status': 'unsupported-instruction'}
-    domains, alternatives, incompatible = {}, [], []
-    def bind(left, right):
+    domains, alternatives, incompatible, hard = {}, [], [], {}
+    def bind(left, right, commutative=False):
         for a, b in zip(left, right):
             domains.setdefault(a, set()).add(b)
+            if not commutative:
+                hard.setdefault(a, set()).add(b)
     for row, (a, b) in enumerate(zip(t, o)):
         # Capstone lacks Gekko paired-single save/restore instructions. Decode
         # their opcode and base register directly; other unknowns stay unknown.
@@ -51,8 +76,28 @@ def target_mapping(target, ours):
         else:
             bind(left, right)
     conflicts = {r: sorted(v) for r, v in domains.items() if len(v) != 1}
-    if incompatible or conflicts:
-        return {'status': 'needs-web-alignment', 'rows': incompatible, 'conflicts': conflicts}
+    if conflicts or incompatible:
+        # A flat register-name map cannot express register *reuse*: one name in our object can
+        # cover several distinct value webs in retail. Say which of the two very different
+        # problems this is, because they need opposite responses:
+        #
+        #   commutative-only  every hard (order-fixed) binding agrees and is injective; the
+        #                     only disagreement is operand order on commutative instructions.
+        #                     The objects are then related by a register permutation and
+        #                     building web alignment would be worth doing.
+        #   structural        the hard bindings themselves disagree, so no register permutation
+        #                     relates the two objects. Instruction shapes already match, so the
+        #                     difference is in the *values*: a value live across a span retail
+        #                     splits, or the reverse. The conflict is evidence of a source defect
+        #                     to fix first -- aligning the webs would mean aligning two different
+        #                     programs.
+        #
+        # Neither is guessed: the label is earned only by a map that satisfies every hard row.
+        rename = _consistent_hard_map(hard)
+        return {'status': 'needs-web-alignment', 'rows': incompatible, 'conflicts': conflicts,
+                'subkind': 'commutative-only' if rename else 'structural',
+                'hard_conflicts': {k: sorted(v) for k, v in hard.items() if len(v) != 1},
+                'consistent_rename': rename}
     mapping = {r: next(iter(v)) for r, v in domains.items()}
     pending = alternatives[:]
     swaps = []
