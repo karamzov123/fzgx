@@ -7061,3 +7061,6 @@ rel/main_rel/effect/fn_1_65CDC.c:
 
 rel/main_rel/live_camera/fn_1_1350C.c:
 	.text       start:0x0001350C end:0x0001361C align:4
+
+rel/main_rel/game/fn_1_384E8.c:
+	.text       start:0x000384E8 end:0x000385A4 align:4

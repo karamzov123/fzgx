@@ -770,6 +770,60 @@ void fn_1_36ADC(void) {
 }
 /* fzgx:end fn_1_36ADC */
 
+/* fzgx:begin fn_1_384E8 pool noprologue */
+#include "rel/main_rel/game.h"
+
+extern void fn_1_12F308(void);
+extern int fn_1_4C10(void);
+extern u32 fn_1_12F358(u32);
+extern int fn_1_467F4(void);
+extern void fn_1_4A00(u32, u32, void *);
+extern int fn_1_402D4(void);
+extern void fn_1_A2D84(u32);
+
+typedef struct {
+    u8 pad[6];
+    u8 unk_06;
+    u8 rest[0x14B1];
+} Sub30;
+
+u8 lbl_1_bss_3C00;
+static u8 lbl_1_bss_3C00__fzgx_offset_4[0x2C];
+static Sub30 lbl_1_bss_3C00__fzgx_offset_30;
+static s16 lbl_1_bss_3C00__fzgx_offset_14E8;
+static u8 lbl_1_bss_3C00__fzgx_offset_14EA[0x12];
+static void *lbl_1_bss_3C00__fzgx_offset_1500;
+
+static void primer(void)
+{
+    lbl_1_bss_3C00 = 0;
+    lbl_1_bss_3C00__fzgx_offset_4[0] = 0;
+    lbl_1_bss_3C00__fzgx_offset_30.unk_06 = 0;
+    lbl_1_bss_3C00__fzgx_offset_14E8 = 0;
+    lbl_1_bss_3C00__fzgx_offset_14EA[0] = 0;
+    lbl_1_bss_3C00__fzgx_offset_1500 = 0;
+}
+
+void fn_1_384E8(void)
+{
+    fn_1_12F308();
+    if (fn_1_4C10() == 0) {
+        fn_1_12F358(lbl_1_bss_3C00__fzgx_offset_30.unk_06);
+        if ((s32)lbl_1_bss_26C28 == 2) {
+            if (fn_1_467F4() == 0) {
+                fn_1_4A00(0, 0x1E, lbl_1_bss_3C00__fzgx_offset_1500);
+                lbl_1_bss_26C28 = 1;
+            }
+        } else if ((s32)lbl_1_bss_26C28 != 0) {
+            lbl_1_bss_3C00__fzgx_offset_14E8 = 0x26;
+        } else if (fn_1_402D4() != 0) {
+            fn_1_A2D84(0xA9010100);
+            lbl_1_bss_26C28 = 2;
+        }
+    }
+}
+/* fzgx:end fn_1_384E8 */
+
 /* fzgx:begin fn_1_3908C noprologue */
 #include "types.h"
 
