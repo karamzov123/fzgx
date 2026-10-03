@@ -504,3 +504,23 @@ Compute these maxima outside SQL.
 
 `functions.best_percent` is a separate trap, already recorded above: only 1 of 1698
 unmatched functions has one no attempt supports, but it is still not the figure to rank on.
+
+## The lint-blocked-at-100% class is exhausted (2026-10-03)
+
+305 unmatched functions sit at >=97% and are not link-rejected, so they are the
+population that `lintallow.py` can convert. Running the full loop on the top of it
+(`lintallow` -> `claim` -> `write-unit` -> `check` -> `submit`, submitting only on a
+literal MATCH) converted **1 in 7**: `fn_1_FD3A8` (1180 B) was a pure-lint-blocked
+100.0 % and submitted clean. The other six all check at 99.9 % and are genuine
+source work, not gate rejections.
+
+So the bottleneck that produced `fn_15_27D4` is a one-function bottleneck, not a
+class. Only one such case remained and it is now matched. Ranking future repair
+effort on ">=97% and not link-rejected" will overstate it: 304 of those 305 need
+real source changes, which is the model's job, not a mechanical pass. The
+mechanical passes that remain are `primerless` and `splitgaps`, on the link-rejected
+population only.
+
+Batch driver lives at `/tmp/lintbatch.sh` (lintallow -> claim -> check ->
+submit-on-MATCH). It deliberately uses a distinct `--agent lint-batch` claim so it
+can run alongside the fleet without stealing claims.
