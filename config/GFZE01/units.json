@@ -46123,6 +46123,20 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/phys/fn_1_E5164.c",
+    "symbols": [
+      "fn_1_E5164"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/phys.c",
+    "pool": {
+      "@23": "lbl_1_rodata_6800"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/phys/fn_1_E52F8.c",
     "symbols": [
       "fn_1_E52F8"

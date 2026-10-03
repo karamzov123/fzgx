@@ -831,6 +831,63 @@ void fn_1_E50F0(void *base, void *arg) {
 }
 /* fzgx:end fn_1_E50F0 */
 
+/* fzgx:begin fn_1_E5164 */
+typedef struct {
+    f32 v0;
+    f32 v1;
+    f32 v2;
+} Out;
+
+typedef struct {
+    u32 v[47];
+} Tab;
+
+typedef struct {
+    u8 pad[0x138];
+    u64 flags;
+} Obj;
+
+extern void lbl_8006DCA4(void *base, void *arg);
+extern void fn_1_A71AC(void);
+extern void fn_8006F828(void *base, f32 *out);
+extern u8 lbl_1_rodata_69D0[188];
+extern void fn_1_4AE0C(const char *, ...);
+extern const f64 lbl_1_rodata_6800;
+extern void fn_1_496FC(f32, f32);
+extern const f32 lbl_1_rodata_69CC;
+extern void fn_1_4955C(f32, f32);
+extern void fn_1_A8DD4(const char *, ...);
+extern void fn_1_A8EF8(s32, s32);
+
+void fn_1_E5164(void *arg0, void *arg1) {
+    Out out;
+    struct { s16 value; } i;
+    Tab tab;
+    s32 v1;
+    s32 v0;
+
+    lbl_8006DCA4(arg0, arg1);
+    fn_1_A71AC();
+    fn_8006F828((u8 *)arg0 + 0x54, &out.v0);
+    v1 = (s32)out.v1;
+    v0 = (s32)out.v0;
+    tab = *(Tab *)&lbl_1_rodata_69D0;
+
+    if (arg1 == (void *)fn_1_4AE0C) {
+        fn_1_496FC((f32)(s16)v0, (f32)(s16)v1);
+        fn_1_4955C(lbl_1_rodata_69CC, lbl_1_rodata_69CC);
+    } else if (arg1 == (void *)fn_1_A8DD4) {
+        fn_1_A8EF8(v0, v1);
+    }
+
+    for (i.value = 0; i.value < 0x40; i.value++) {
+        if (((Obj *)arg0)->flags & (1 << i.value)) {
+            ((void (*)(void *, u32, ...))arg1)(&lbl_1_data_3E150, tab.v[i.value]);
+        }
+    }
+}
+/* fzgx:end fn_1_E5164 */
+
 /* fzgx:begin fn_1_E52F8 noprologue */
 #include "types.h"
 #include "rel/main_rel/phys.h"

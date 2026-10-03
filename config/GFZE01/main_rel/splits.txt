@@ -7019,3 +7019,6 @@ rel/main_rel/screen_effect/fn_1_7BA08.c:
 
 rel/main_rel/car/fn_1_86900.c:
 	.text       start:0x00086900 end:0x000869B0 align:4
+
+rel/main_rel/phys/fn_1_E5164.c:
+	.text       start:0x000E5164 end:0x000E52F8 align:4
