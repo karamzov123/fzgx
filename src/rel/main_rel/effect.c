@@ -7107,6 +7107,107 @@ void fn_1_662D4(void) {
 }
 /* fzgx:end fn_1_662D4 */
 
+/* fzgx:begin fn_1_67294 noprologue */
+#include "dolphin/types.h"
+#include "psvec.h"
+#include "rel/main_rel/effect.h"
+
+extern const f32 lbl_1_rodata_2950[];
+
+extern void lbl_8006D9D8(void *);
+extern void lbl_8006D7B0(void);
+extern f32 lbl_8006D0B4(f32);
+extern void lbl_8006DB74(void *);
+extern void lbl_8006D848(f32);
+extern void lbl_8006DFC4(void *);
+extern void *memset(void *, int, u32);
+extern int fn_1_9F914(const void *, const void *);
+
+typedef struct {
+	f32 e[0x60];
+} Pool;
+
+typedef struct {
+	u8 pad_0[0x168];
+	u32 unk_168;
+} Ctx;
+
+typedef struct {
+	f32 x, y, z;
+} Vec3;
+
+typedef struct {
+	u8 pad_0[0x30];
+} VecObj;
+
+typedef struct {
+	u8 pad_0[0x34];
+} Inner;
+
+typedef struct {
+	f32 unk_0;
+	f32 unk_4;
+	Inner unk_8;
+	u8 unk_3C;
+	u8 unk_3D;
+	u8 unk_3E;
+	u8 unk_3F;
+} Buf;
+
+typedef struct {
+	u8 pad_0[0x1C];
+	f32 unk_1C;
+	f32 unk_20;
+	f32 unk_24;
+	f32 unk_28;
+	u8 pad_2C[0x10];
+	u8 unk_3C;
+} Obj;
+
+void fn_1_67294(Obj *arg0)
+{
+    f32 fzgx_live_;
+    f32 fzgx_live;
+	Vec3 v;
+	Buf buf;
+	VecObj o;
+	const Pool *pool = (const Pool *)&lbl_1_rodata_2950;
+	Ctx *ctx;
+	f32 a;
+	f32 d;
+	f32 s;
+	u32 g;
+	Obj *t = arg0;
+
+	ctx = *(Ctx **)&lbl_1_bss_38458->unk_8;
+	g = ctx->unk_168;
+	a = t->unk_28;
+	lbl_8006D9D8(&t->unk_3C);
+	lbl_8006D7B0();
+	psvec_set(&v, *(f32 *)(0xE0000000 + 0x2C), *(f32 *)(0xE0000000 + 0x1C), *(f32 *)(0xE0000000 + 0x0C));
+	d = (f32)(v.x * v.x);
+	fzgx_live = v.y;
+	d = fzgx_live * fzgx_live + d;
+	fzgx_live_ = v.z;
+	d = lbl_8006D0B4(fzgx_live_ * fzgx_live_ + d);
+	if (d > pool->e[1] + a) {
+		lbl_8006DB74(&o);
+		lbl_8006D848((d - a) / d);
+		lbl_8006DFC4(&o);
+	}
+	memset(&buf, 0, 0x40);
+	lbl_8006DB74(&buf.unk_8);
+	s = pool->e[0x54] * t->unk_28;
+	buf.unk_0 = s;
+	buf.unk_3C = (u8)(pool->e[0x17] * t->unk_1C);
+	buf.unk_3D = (u8)(pool->e[0x17] * t->unk_20);
+	buf.unk_3E = (u8)(pool->e[0x17] * t->unk_24);
+	buf.unk_3F = 0xFF;
+	buf.unk_4 = s;
+	fn_1_9F914(&buf, (const void *)g);
+}
+/* fzgx:end fn_1_67294 */
+
 /* fzgx:begin fn_1_67414 */
 struct fn_1_67414_Arg0 {
     u8 pad_0[0x10];

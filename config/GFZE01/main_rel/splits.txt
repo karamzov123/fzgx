@@ -6995,3 +6995,6 @@ rel/main_rel/effect/fn_1_5B188.c:
 
 rel/main_rel/effect/fn_1_64760.c:
 	.text       start:0x00064760 end:0x000648D4 align:4
+
+rel/main_rel/effect/fn_1_67294.c:
+	.text       start:0x00067294 end:0x00067414 align:4
