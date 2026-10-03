@@ -283,3 +283,36 @@ capture() now fails with that explanation instead of `FileNotFoundError: 'xcrun'
 a bare `lldb` where one exists. Until a host with LLDB captures, `mwconstraints.constrain()`
 has no snapshots and the 90 regalloc functions stay blocked -- the classification in
 `results.json` is now correct and will be used as soon as a capture is possible.
+
+## Allocator capture now runs on this host (LLDB installed 2026-10-03)
+
+`sudo pacman -S lldb` put LLDB 23.1.1 on PATH and the capture path runs end to end for
+the first time:
+
+    uv run tools/fzgx.py fixup --capture --corpus .fzgx/fixup/corpus --output .fzgx/captures
+    -> {"functions": 375, "capture_seconds": 26.1, "errors": 0, "unsupported_simplify": 0}
+
+545 allocator graphs (376 GPR, 169 FPR) with **named** virtual registers
+(`fzgx_loop_temp_f30_4213`, `temp_f31`, ...), so `declaration_projection` can address
+locals by name. All 89 `regalloc` corpus functions have a capture; 26 pass the
+`simplify(before) == before['simplify_order']` precondition with zero failures.
+
+The capture wrote **6 source projections** (`*.projection-N.c`) -- declaration reorders
+predicted from allocator witnesses. That machinery had never produced anything before the
+`results.json` classification fix.
+
+**Result so far: no match, but the lever demonstrably moves bodies.**
+- `fn_1_15EC40` (main_rel, 940 B): **99.15% -> 99.5%**, and now reports **0 rows that are
+  the matcher's to fix**. The repair labelled it `regalloc: scope loc_8`. What remains are
+  2 literal-pool base `L` rows, which need the pool retarget, not a source edit. The corpus
+  reports `score 100.0` on masked words while the oracle still refuses at 99.5% -- do not
+  read that score as a match.
+- `fn_1_4068C` (132 B): 99.6% with 2 `frame` rows against a 99.64% baseline; the reorder
+  does not pay there.
+
+**Next step for this cohort:** the projection fixes the regalloc rows but the survivor is
+always a pool-base `L` row. The two repairs need to be composed -- apply the projection, then
+run the layout/pool priming on the result -- rather than run separately.
+
+Reproduce the capture with the command above; the snapshots live under `.fzgx/captures`
+(gitignored, ~26 s to rebuild).
