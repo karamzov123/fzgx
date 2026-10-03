@@ -68,6 +68,82 @@ void fn_10_25BC8(void) {
 }
 /* fzgx:end fn_10_25BC8 */
 
+/* fzgx:begin fn_10_25CB0 */
+typedef struct fn_10_25CB0_Entry {
+    u8 unk_0;
+    u8 unk_1;
+    u8 unk_2;
+    u8 unk_3;
+    u16 unk_4;
+    u16 unk_6;
+    u16 unk_8;
+    u16 unk_A;
+    u8 unk_C;
+} fn_10_25CB0_Entry;
+
+typedef struct fn_10_25CB0_Pair {
+    u8 unk_0;
+    u8 unk_1;
+} fn_10_25CB0_Pair;
+
+extern u8 lbl_10_data_68E0[];
+extern u32 lbl_10_rodata_1D64;
+extern s32 lbl_801A66B4;
+extern u32 lbl_801A6410;
+extern char * fn_80083DB0(char *, const char *);
+extern void fn_1_435C(u32 value);
+extern u32 fn_10_2325C(void);
+extern fn_10_25CB0_Entry * fn_1_45D0(u32, u32, const char *, u32);
+extern s32 fn_1_3F8C(void *, u32, void *, u32);
+
+#pragma opt_loop_invariants off
+#pragma opt_propagation on
+void fn_10_25CB0(u32 arg0) {
+    u8 *ptr;
+    fn_10_25CB0_Entry *e;
+    u8 *data;
+    struct { u8 value; } c;
+    struct { u32 value; } i;
+    fn_10_25CB0_Pair *p;
+    u32 v;
+    const char * lab_t1;
+
+    data = lbl_10_data_68E0;
+    ptr = &lbl_10_bss_55CD8->unk_28;
+    if (*ptr == 0) {
+        if (lbl_801A66B4 == 5) {
+            fn_80083DB0((char *)ptr, (const char *)data + 0x114);
+        } else {
+            lab_t1 = (const char *)data + 0x120;
+            fn_80083DB0((char *)ptr, lab_t1);
+        }
+        *(u32 *)&v = lbl_10_rodata_1D64;
+        fn_1_435C(lbl_10_bss_55CD8->unk_8);
+        i.value = 0;
+        while ((p = (fn_10_25CB0_Pair *)((u8 *)lbl_10_bss_55CD8 + 0x28 + i.value * 2))->unk_0 != 0) {
+            c.value = (u8)i.value;
+            e = fn_1_45D0(lbl_801A6410, 0x12, (const char *)data + 0xA0, 0xD4);
+            e->unk_8 = c.value * 0x38 + 0x7E;
+            e->unk_A = 0x17A;
+            e->unk_0 = 2;
+            e->unk_1 = 0;
+            e->unk_4 = e->unk_8;
+            e->unk_6 = e->unk_A;
+            e->unk_2 = p->unk_0;
+            e->unk_3 = p->unk_1;
+            *(u32 *)((u8 *)e + 0xD) = v;
+            e->unk_C = c.value;
+            fn_1_3F8C(data + 0xC8, (u32)fn_10_2325C, e, 0xB);
+            i.value++;
+        }
+        lbl_10_bss_55CD8->unk_E = (u8)i.value;
+    }
+    lbl_10_bss_55CD8->unk_0 |= 0x10000000;
+}
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
+/* fzgx:end fn_10_25CB0 */
+
 /* fzgx:begin fn_10_25E1C */
 #include "types.h"
 
