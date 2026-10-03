@@ -428,6 +428,130 @@ s32 fn_1_15C35C(s32 a, s32 b, s32 c, s32 d) {
 }
 /* fzgx:end fn_1_15C35C */
 
+/* fzgx:begin fn_1_15DD7C */
+#include "font.h"
+
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 1000000.0f;
+    s = 0.0f;
+    d = 4503601774854144.0;
+}
+static const u32 fzgx_pool_table2[1] = {0xFFFFFF00};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep2(void) { const u32 *volatile cp; cp = fzgx_pool_table2; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime3(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 320.0f;
+    s = 240.0f;
+    s = 1.0f;
+    s = 0.800000011920929f;
+    s = 464.0f;
+    s = 5.0f;
+    s = 0.699999988079071f;
+    s = 255.0f;
+    s = 3.299999952316284f;
+    s = 20.0f;
+    s = 0.5f;
+}
+static const u32 fzgx_pool_table4[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep4(void) { const u32 *volatile cp; cp = fzgx_pool_table4; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime5(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 800.0f;
+    s = 42.0f;
+    s = 30.0f;
+    s = 16384.0f;
+    s = 32768.0f;
+    s = 0.0010000000474974513f;
+    s = 3.0f;
+    s = 8.0f;
+}
+static const u32 fzgx_pool_table6[24] = {0x00000000, 0x00000000, 0x0000004B, 0x00000064, 0x0000004C, 0x00000000, 0x00000023, 0x00000064, 0x00000098, 0x00000000, 0x0000004B, 0x00000064, 0x0000004C, 0x00000000, 0x00000023, 0x00000064, 0x000000E4, 0x00000000, 0x0000004B, 0x00000064, 0x00000130, 0x00000000, 0x0000004B, 0x00000064};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep6(void) { const u32 *volatile cp; cp = fzgx_pool_table6; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime7(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 120.0f;
+    s = 10.0f;
+    s = 2.0f;
+    s = -10.0f;
+    s = 0.25f;
+    s = 100.0f;
+    s = 60.0f;
+}
+#pragma section code_type ".text"
+
+typedef struct {
+    u32 unk_0;
+    f32 unk_4;
+    f32 unk_8;
+    f32 unk_C;
+    f32 unk_10;
+    f32 unk_14;
+    f32 unk_18;
+    f32 unk_1C;
+    f32 unk_20;
+    f32 unk_24;
+    f32 unk_28;
+    f32 unk_2C;
+    u32 unk_30;
+    u32 unk_34[9];
+} WinPacket;
+
+extern WinPacket lbl_1_rodata_26F8;
+extern u32 fn_1_58C4(void);
+extern f32 fn_1_519FC(f32);
+extern f32 fn_1_51AC0(f32);
+
+void fn_1_15DD7C(int arg0) {
+    WinPacket s;
+
+    s = lbl_1_rodata_26F8;
+
+    if (lbl_1_bss_3C30.unk_0 & 0x8000) {
+        return;
+    }
+
+    s.unk_4 = 320.0f;
+    s.unk_8 = 240.0f;
+    s.unk_0 = 37931;
+    s.unk_30 = 10;
+
+    if (fn_1_58C4() > 1 || lbl_1_bss_3C30.unk_13F6 == 0) {
+        if (240.0f < (f32)arg0) {
+            s.unk_2C = ((f32)arg0 - 240.0f) / 60.0f * 2.0f;
+            if (s.unk_2C > 1.0f) {
+                s.unk_2C = 1.0f;
+            }
+            s.unk_2C = 1.0f - s.unk_2C;
+        } else {
+            s.unk_2C = 1.0f;
+        }
+    } else {
+        if (240.0f < (f32)arg0) {
+            f32 u = ((f32)arg0 - 240.0f) / 60.0f;
+            if (u > 1.0f) {
+                u = 1.0f;
+            }
+            s.unk_2C = 1.0f - u;
+        } else if ((f32)arg0 < 60.0f) {
+            s.unk_2C = (f32)arg0 / 60.0f;
+        } else {
+            s.unk_2C = 1.0f;
+        }
+    }
+
+    s.unk_14 = 1.0f;
+    s.unk_10 = 1.0f;
+    s.unk_4 = fn_1_519FC(s.unk_4);
+    s.unk_8 = fn_1_51AC0(s.unk_8);
+    s.unk_C = 2.0f;
+    s.unk_10 = s.unk_10 * (fn_1_58C4() == 1 ? 1.0f : 0.8f);
+    s.unk_14 = s.unk_14 * (fn_1_58C4() == 1 ? 1.0f : 0.8f);
+    fn_1_4F734((FontDrawPacket *)&s);
+}
+/* fzgx:end fn_1_15DD7C */
+
 /* fzgx:begin fn_1_15DFD4 noprologue */
 #include "types.h"
 
