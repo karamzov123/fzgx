@@ -6,6 +6,7 @@ This module also runs in Apple's LLDB Python 3.9.
 """
 from __future__ import annotations
 
+import shutil
 import struct
 import hashlib
 import gzip
@@ -359,8 +360,21 @@ def capture(project, args, locked=False):
         config.write_text(json.dumps(expected))
         start = time.perf_counter()
         script = root / 'tools/fzgx/mwgraph_lldb.py'
+        # The allocator graph only exists inside the running compiler, so it has to be read
+        # under LLDB. `xcrun lldb` is the macOS launcher; a bare `lldb` is used elsewhere.
+        # Neither is present on every host, and a bare FileNotFoundError on 'xcrun' reads like
+        # a broken checkout rather than a missing toolchain component.
+        launcher = shutil.which('xcrun') and ['xcrun', 'lldb'] or (
+            ['lldb'] if shutil.which('lldb') else None)
+        if launcher is None:
+            raise RuntimeError(
+                'allocator capture needs LLDB to read the compiler\'s register graph, and '
+                'neither `xcrun lldb` nor `lldb` is on PATH. This host cannot capture, so '
+                'mwconstraints.constrain() has no snapshots to work from and regalloc '
+                'functions stay blocked; the corpus classification in results.json is still '
+                'written and will be used as soon as a host with LLDB captures.')
         with (nullcontext() if locked else oracle.build_lock()), (output / 'lldb.log').open('w') as log:
-            command = ['xcrun', 'lldb', '-b', '-o', f'command script import "{script}"',
+            command = [*launcher, '-b', '-o', f'command script import "{script}"',
                        '-o', f'script mwgraph_lldb.run(lldb.debugger, {str(config)!r})',
                        '-o', 'quit']
             process = subprocess.Popen(command, cwd=root, stdout=log, stderr=subprocess.STDOUT,

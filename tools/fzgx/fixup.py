@@ -206,7 +206,15 @@ class Engine:
                     self.words[row['id']] = oracle.words(Path(row['object']), self.project.resolve(row['symbol']).name)
                 continue
             sym = self.project.resolve(row['symbol'])
-            groups[sym.module, row['mw'], row['flags']].append(row)
+            # `flags` reaches here as a list from some saved-candidate records and as a
+            # string from others. A list made this group key unhashable and crashed the whole
+            # corpus build; a tuple then reached the shell layer, which shlex-splits it.
+            # Join to the string form the rest of the engine already expects, so records
+            # spelled either way group and compile identically.
+            flags = row['flags']
+            if not isinstance(flags, str):
+                flags = ' '.join(str(f) for f in (flags or []))
+            groups[sym.module, row['mw'], flags].append(row)
         tick = time.monotonic()
         progress = time.monotonic()
         # every (module, compiler, flags) group used to be one serial mwcc process over a
@@ -990,6 +998,22 @@ def replay_archive(path):
     print(json.dumps(result));return result
 
 
+def _stuck_modes() -> Dict[str, str]:
+    """symbol -> row-level failure mode, from the last `fzgx stuck` run.
+
+    The corpus records one `pure` mode per body so capture can select a failure class.
+    stuck.json is written only by an explicit `fzgx stuck` run, so an absent or stale file
+    simply yields no modes and capture keeps skipping -- the behaviour before this existed,
+    never a wrong classification.
+    """
+    try:
+        data = json.loads((STATE_DIR / 'stuck.json').read_text())
+    except (OSError, ValueError):
+        return {}
+    return {r['symbol']: r['pure'] for r in data.get('results', [])
+            if isinstance(r, dict) and r.get('symbol') and r.get('pure')}
+
+
 def load_records(engine,args):
     from .ledger import Ledger
     from seeds.recovered import SavedCandidates
@@ -1181,7 +1205,17 @@ def command(p,args):
         (output/'inputs.json').write_text(json.dumps(best))
         seeds={r['id']:r for r in [*best.values(),*(r for group in report['frontier'].values() for r in group)]}
         (output/'prepared.json').write_text(json.dumps({'records':list(seeds.values())}))
-        (output/'results.json').write_text(json.dumps({s:{'baseline':{'object':r['object'],'pure':'unclassified'}} for s,r in best.items()}))
+        # `pure` is the row-level failure mode, and mwgraph.capture() only captures
+        # functions classified `regalloc` (mwgraph.py:317). Writing the literal
+        # 'unclassified' meant capture skipped the entire corpus, so the allocator-constraint
+        # machinery (mwgraph.selection_order -> mwconstraints.declaration_projection) could
+        # never fire on anything. stuck.analyse() already computes the mode per body and
+        # writes it to stuck.json; read that instead. Absent or unknown symbols stay
+        # 'unclassified', which is what capture already skips.
+        modes = _stuck_modes()
+        (output/'results.json').write_text(json.dumps(
+            {s: {'baseline': {'object': r['object'], 'pure': modes.get(s, 'unclassified')}}
+             for s, r in best.items()}))
     if report.get('clones'):
         archive_sources(report,output/'sources.json.gz')
     if args.apply:

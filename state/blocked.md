@@ -254,3 +254,32 @@ deterministic engine confirmed the class is not reachable by mechanical means: o
 `fn_12_72F4` it tried **3,681 candidates** (declaration order, type/sign flips, pragmas,
 pool priming) and none beat 99.9%, concluding a structural change is required. Chasing
 these one at a time by hand is a poor use of budget; they need a different kind of attempt.
+
+## The allocator-constraint lever exists but cannot run on this host (2026-10-03)
+
+The regalloc residue is **90 functions classified `pure == 'regalloc'`** (plus 6 mixed), and
+the repo already contains the structural lever for it: `mwgraph.py` models MWCC's allocator
+(replay / simplify / `selection_order`), `mwconstraints.target_mapping` derives the desired
+physical mapping from target-vs-ours, and `declaration_projection` predicts a declaration
+reorder that realises it, with strict no-rewrite safety checks. This is exactly the "pin this
+value to r30" capability the residue needs, and it does not rely on permutation search.
+
+**Two real breaks stopped it from ever firing, both now fixed:**
+
+1. `fixup.py` wrote `results.json` with a hardcoded `pure: 'unclassified'` for every entry,
+   while `mwgraph.capture()` skips anything not `regalloc` (mwgraph.py:317). So capture
+   rejected the entire corpus and the constraint machinery never ran on anything.
+   `fixup._stuck_modes()` now reads the modes `stuck.analyse()` already computes.
+   The corpus now carries 376 functions, **89 of them `regalloc`**.
+2. `Engine.evaluate()` used `row['flags']` directly in a dict key. Some saved-candidate
+   records spell it as a list, which is unhashable and crashed the entire corpus build with
+   `TypeError: unhashable type: 'list'`. A tuple fix then reached the shell layer, which
+   shlex-splits it, so list flags are now joined to the string form the engine expects.
+
+**The remaining blocker is environmental, not a code bug.** The allocator graph only exists
+inside the running compiler, so it must be read under LLDB, and capture launches
+`xcrun lldb`. This host has neither `xcrun` nor `lldb`, and no package index to install one.
+capture() now fails with that explanation instead of `FileNotFoundError: 'xcrun'`, and accepts
+a bare `lldb` where one exists. Until a host with LLDB captures, `mwconstraints.constrain()`
+has no snapshots and the 90 regalloc functions stay blocked -- the classification in
+`results.json` is now correct and will be used as soon as a capture is possible.
