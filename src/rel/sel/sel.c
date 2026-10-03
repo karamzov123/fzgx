@@ -1402,6 +1402,118 @@ void fn_10_5780(struct Fn105780 *obj) {
 }
 /* fzgx:end fn_10_5780 */
 
+/* fzgx:begin fn_10_73AC */
+struct S8B3A0 {
+    u8 pad0[0x94];
+    u32 unk_94;
+    u32 unk_98;
+    u8 pad_9C[2];
+    u8 unk_9E;
+    u8 pad_9F[0xA1];
+    u32 unk_140;
+};
+struct S9C8 {
+    u8 pad0[0xA];
+    s8 fA;
+    u8 pad1[0xC - 0xB];
+};
+struct S9F8 {
+    u8 pad0[8];
+    u16 f8;
+    u8 pad1[0x14 - 0xA];
+};
+
+extern s32 lbl_10_bss_14;
+extern s16 lbl_10_bss_4938C;
+extern u32 lbl_10_bss_49388;
+extern u32 lbl_10_bss_51744;
+extern u16 lbl_1_bss_96A;
+extern struct S8B3A0 lbl_1_bss_8B3A0;
+extern struct S9C8 lbl_1_bss_9C8[];
+extern struct S9F8 lbl_1_bss_9F8[];
+
+extern s32 fn_1_4C10(void);
+extern void fn_10_CF30(u32);
+extern void fn_1_12F150(s16, u32, u32);
+extern s32 fn_1_12F228(void);
+extern void fn_1_4A00(s32, u8, u32);
+
+extern int __rlwnm(int, int, int, int);
+
+void fn_10_73AC(void) {
+    struct { struct S9C8 *p; } rows;
+    /* volatile: the manager fields are re-read after each call in the loop */
+    volatile struct S8B3A0 *base;
+    s16 count = 0;
+    s16 i;
+    s32 *sp;
+    s32 value;
+
+    if (lbl_10_bss_14 == -1) {
+        fn_1_4C10();
+    }
+
+    {
+        u32 flags = lbl_1_bss_8B3A0.unk_140;
+        s32 ready;
+
+        if ((flags & 0x80000000) != 0 &&
+            (flags & 0x40000000) == 0 &&
+            (lbl_1_bss_8B3A0.unk_94 & 8) == 0) {
+            ready = 1;
+        } else {
+            if (fn_1_4C10() != 0) {
+                ready = 1;
+            } else {
+                ready = 0;
+            }
+        }
+
+        if (ready != 0) {
+            return;
+        }
+    }
+
+    sp = &lbl_10_bss_14;
+    if (*sp != -1) {
+        value = *sp;
+        *sp = -1;
+        lbl_1_bss_96A = (u16)value;
+        return;
+    }
+
+    rows.p = &lbl_1_bss_9C8[0];
+    base = &lbl_1_bss_8B3A0;
+    for (i = 0; i < 4;
+         rows.p = (struct S9C8 *)((u8 *)rows.p + 0xC), i++) {
+        if (rows.p->fA == -1) {
+            continue;
+        }
+
+        if (__rlwnm(base->unk_98, (i + 1) & 31, 31, 31) == 0) {
+            continue;
+        }
+
+        if (((lbl_1_bss_9F8[base->unk_9E].f8 >> 12) & 1) != 0) {
+            count++;
+        }
+
+        if (((lbl_1_bss_9F8[base->unk_9E].f8 >> 12) & 1) != 0) {
+            fn_1_12F150(i, 2, 1);
+        }
+    }
+
+    if (count == 0 && fn_1_12F228() == 0) {
+        return;
+    }
+
+    fn_10_CF30(0);
+    lbl_10_bss_14 = 27;
+    fn_1_4A00(0, (u8)lbl_10_bss_4938C, lbl_10_bss_49388);
+    lbl_10_bss_51744 = 0;
+}
+/* fzgx:end fn_10_73AC */
+
 /* fzgx:begin fn_10_757C */
 // Volatile preserves the retail's repeated reads of the shared sentinel.
 extern volatile s32 lbl_10_bss_51740;

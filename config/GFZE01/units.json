@@ -64434,6 +64434,17 @@
   },
   {
     "module": "sel",
+    "source": "rel/sel/sel/fn_10_73AC.c",
+    "symbols": [
+      "fn_10_73AC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/sel/sel.c"
+  },
+  {
+    "module": "sel",
     "source": "rel/sel/sel/fn_10_757C.c",
     "symbols": [
       "fn_10_757C"
