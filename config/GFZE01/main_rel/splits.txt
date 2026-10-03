@@ -7064,3 +7064,6 @@ rel/main_rel/live_camera/fn_1_1350C.c:
 
 rel/main_rel/game/fn_1_384E8.c:
 	.text       start:0x000384E8 end:0x000385A4 align:4
+
+rel/main_rel/accessory/fn_1_12999C.c:
+	.text       start:0x0012999C end:0x00129D9C align:4

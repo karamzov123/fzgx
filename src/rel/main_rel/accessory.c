@@ -1201,6 +1201,136 @@ void fn_1_128F54(void) {
 }
 /* fzgx:end fn_1_128F54 */
 
+/* fzgx:begin fn_1_12999C noprologue */
+#include "types.h"
+
+extern s16 lbl_1_bss_960;
+typedef struct { u8 pad_0[8]; u32 unk_8; } Obj_1_bss_38458_Target;
+extern Obj_1_bss_38458_Target *lbl_1_bss_38458;
+extern u32 lbl_1_data_405EC;
+struct Vec3 { f32 x; f32 y; f32 z; };
+struct Obj_t {
+ u32 unk_0; u8 pad_4[0x148]; u8 unk_14C[4]; u8 pad_150[0x325];
+ s8 unk_475; u8 pad_476[0x26]; u32 unk_49C;
+};
+struct Ref { u8 pad_0[0x10]; u8 unk_10; u8 pad_11[7]; };
+struct E30 { u8 pad[0x30]; };
+struct Pool {
+ f32 f0; u8 pad_4[0xC]; f32 f10; u8 pad_14[0x64];
+ u32 v78; u32 v7C; u32 v80; u32 v84; u32 v88; u32 v8C; s32 v90; u32 v94;
+};
+extern struct Pool lbl_1_rodata_8068;
+extern struct E30 lbl_1_bss_7CA58[168];
+extern s8 lbl_1_bss_9C[8];
+extern u8 lbl_1_bss_89780[32];
+extern s32 lbl_801A66B4;
+extern s16 fn_1_3F0C8(void);
+extern s32 fn_1_F2F34(void);
+extern void fn_1_3EF14(void *);
+extern f32 fn_1_A71AC(void);
+extern s32 fn_1_40B20(void);
+extern void *fn_1_86254(s32);
+extern u32 fn_1_5910(void);
+extern s32 fn_1_12A24C(s8);
+extern void fn_1_862A8(s32, struct Vec3 *);
+extern u8 fn_1_D66BC(void *, void *);
+extern void fn_1_129D9C(void *, void *, void *, void *, s32, s32, s32, f32);
+extern s32 fn_1_F1D60(void);
+extern s32 fn_1_4C10(void);
+extern u8 *fn_1_F1C54(u32);
+extern u32 fn_1_EB0B0(void);
+extern u8 *fn_80083970(u8 *, const u8 *);
+void fn_1_12999C(void) {
+ s32 i;
+ u32 t3C[3];
+ u32 t2C[4];
+ struct Vec3 v20;
+ struct Vec3 v14;
+ struct Vec3 v8;
+ struct Ref o48;
+ u8 buf[5296];
+ struct Pool *p = (struct Pool *)&lbl_1_rodata_8068;
+ u8 *sub;
+ s32 n;
+ s32 mode = 1;
+ struct Obj_t *o;
+ f32 val;
+ s8 idx;
+ u8 self;
+ u32 j;
+ u8 *q;
+ f32 lab_t7;
+ t3C[0]=p->v78; t3C[1]=p->v7C; t3C[2]=p->v80;
+ t2C[0]=p->v84; t2C[1]=p->v88; t2C[2]=p->v8C; t2C[3]=p->v90;
+ if (lbl_1_bss_960 != 2 && lbl_1_bss_960 != 9) return;
+ if (fn_1_3F0C8() != 41) {
+ switch (fn_1_3F0C8()) {
+ case 40: break;
+ /* Unsupported machine: branch to the shared function exit. */
+ default: goto end;
+ }
+ }
+ {
+ if (fn_1_F2F34() != 0) return;
+ fn_1_3EF14(buf);
+ val=fn_1_A71AC();
+ n=fn_1_40B20();
+ if (lbl_1_bss_960 == 9) mode=lbl_1_bss_9C[7];
+ for(i=0;i<(s32)buf[9];i++) {
+ o=(struct Obj_t *)fn_1_86254(i);
+ if(o->unk_0 & 0x8000880) continue;
+ sub=(u8 *)o->unk_49C;
+ if(o->unk_475 != -1 && fn_1_5910() == (u32)o->unk_475) continue;
+ idx=fn_1_12A24C((s8)i);
+ self=(i==n);
+ if(mode==0 || sub[0x115]>=3) {
+ if(idx==-1 && !self) continue;
+ }
+ if(o->unk_0 & 0x10000) continue;
+ fn_1_862A8(i,&v20);
+ if(idx!=-1) {
+ if(((0)[lbl_1_bss_89780]) != 0) {
+ if(fn_1_D66BC((void *)(u32)(u8)idx,&o48)!=0) {
+ fn_1_129D9C(o->unk_14C,&v20,&o48,0,0,self,0,val);
+ continue;
+ }
+ }
+ fn_1_129D9C(o->unk_14C,&v20,0,*(void **)(lbl_1_bss_38458->unk_8+t2C[idx]*8),0,self,0,val);
+ continue;
+ }
+ if(mode!=0) {
+ u8 lvl=sub[0x115];
+ if(lvl<3) {
+ fn_1_129D9C(o->unk_14C,&v20,0,*(void **)(lbl_1_bss_38458->unk_8+t3C[lvl]*8),0,self,0,val);
+ continue;
+ }
+ }
+ if(!self) continue;
+ fn_1_129D9C(o->unk_14C,&v20,0,0,0,self,0,val);
+ }
+ if(fn_1_F1D60()!=0) {
+ if(lbl_1_bss_960==9 && lbl_1_bss_9C[6]==-2) {
+ v14.x=p->f0; v14.y=p->f10; v14.z=p->f0;
+ fn_1_129D9C(lbl_1_bss_7CA58,&v14,0,0,1,1,0,val);
+ return;
+ }
+ }
+ if(fn_1_F1D60()!=0) {
+ v8.x=p->f0; v8.y=p->f10; v8.z=p->f0;
+ if(fn_1_4C10()==0) {
+ for(j=0;j<fn_1_EB0B0();j++) {
+ q=fn_1_F1C54(j);
+ if(lbl_801A66B4!=5 && fn_80083970(q,(const u8 *)&lbl_1_data_405EC)!=0) q=(u8 *)&p->v94;
+ fn_1_129D9C(&lbl_1_bss_7CA58[j],&v8,q,0,1,0,0,val);
+ }
+ }
+ }
+ }
+end:
+ return;
+}
+/* fzgx:end fn_1_12999C */
+
 /* fzgx:begin fn_1_129D9C */
 #include "types.h"
 #include "rel/main_rel/accessory.h"

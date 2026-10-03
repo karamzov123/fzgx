@@ -28240,6 +28240,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/accessory/fn_1_12999C.c",
+    "symbols": [
+      "fn_1_12999C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/accessory.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/accessory/fn_1_129D9C.c",
     "symbols": [
       "fn_1_129D9C"
