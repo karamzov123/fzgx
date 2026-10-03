@@ -3375,6 +3375,68 @@ void fn_1_14BFB8(void) {
 }
 /* fzgx:end fn_1_14BFB8 */
 
+/* fzgx:begin fn_1_14C6F8 noprologue */
+#include "rel/main_rel/game.h"
+
+extern s32 fn_1_155F8C(void);
+extern void fn_1_14CAC8(void);
+extern u32 lbl_1_bss_3C04;
+
+/* Offsets recovered from the retail accesses in fn_1_14C6F8. */
+typedef struct {
+	u32 unk_0;
+	u8 unk_4;
+	u8 unk_5;
+	u8 pad_6[0x12];
+	f32 unk_18;
+	u32 unk_1C;
+	s32 unk_20;
+	u32 unk_24;
+	s32 unk_28;
+	u32 unk_2C;
+	u8 unk_30;
+	u8 pad_31[0x43];
+	s32 unk_74;
+} Obj_1_bss_8E518;
+
+extern Obj_1_bss_8E518 lbl_1_bss_8E518;
+
+void fn_1_14C6F8(void)
+{
+	Obj_1_bss_8E518 *state = (Obj_1_bss_8E518 *)&lbl_1_bss_8E518;
+	s32 value;
+	s32 left;
+	f32 scale;
+
+	if ((s32)lbl_1_bss_25BA0.unk_0 != 0) {
+		return;
+	}
+	if (state->unk_74 != 0) {
+		fn_1_14CAC8();
+		return;
+	}
+	state->unk_5 = 5;
+	value = fn_1_155F8C() - 2;
+	if (value < 0) {
+		value = 0;
+	} else {
+		if (fn_1_155F8C() - 2 > 10 - state->unk_30) {
+			value = 10 - state->unk_30;
+		} else {
+			value = fn_1_155F8C() - 2;
+		}
+	}
+	state->unk_20 = value;
+	if (state->unk_28 != 0) {
+		scale = value;
+	} else {
+		scale = 10 - state->unk_30;
+	}
+	state->unk_18 = scale;
+	lbl_1_bss_3C04 = 0x294;
+}
+/* fzgx:end fn_1_14C6F8 */
+
 /* fzgx:begin fn_1_14C7F4 */
 // fn_1_14C7F4: empty in retail (single blr).
 void fn_1_14C7F4(void) {

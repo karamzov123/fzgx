@@ -6953,3 +6953,6 @@ rel/main_rel/custom_memcard/fn_1_13198C.c:
 
 rel/main_rel/enemy_ctrl/fn_1_C7AA0.c:
 	.text       start:0x000C7AA0 end:0x000C7CBC align:4
+
+rel/main_rel/sel_static_disp/fn_1_14C6F8.c:
+	.text       start:0x0014C6F8 end:0x0014C7F4 align:4
