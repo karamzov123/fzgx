@@ -1646,6 +1646,121 @@ void fn_1_5B078(struct fx_5b078_out *out)
 }
 /* fzgx:end fn_1_5B078 */
 
+/* fzgx:begin fn_1_5B188 noprologue */
+#include "dolphin/types.h"
+
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 60.0f;
+    s = 0.10000000149011612f;
+    s = 32767.0f;
+    s = 0.05000000074505806f;
+    d = 0.07;
+    s = 20000.0f;
+    s = 0.0f;
+    d = 4503599627370496.0;
+    s = 1.0f;
+    s = -0.029999999329447746f;
+    d = 15.0;
+    d = 4503601774854144.0;
+    d = 1.5;
+    d = 0.5;
+}
+static const u32 fzgx_pool_table2[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep2(void) { const u32 *volatile cp; cp = fzgx_pool_table2; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime3(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 0.5f;
+    s = 8.0f;
+    s = 255.0f;
+    s = 15.0f;
+    s = 0.20000000298023224f;
+    s = 0.07999999821186066f;
+    s = 0.25f;
+    s = 0.9800000190734863f;
+    s = 0.9900000095367432f;
+    s = 40.0f;
+    s = 20.0f;
+    s = 1.5f;
+    s = 0.44999998807907104f;
+    s = -2.0f;
+    s = 0.0833333358168602f;
+    s = 0.15000000596046448f;
+    s = 0.125f;
+    s = -0.4000000059604645f;
+    s = -0.30000001192092896f;
+    s = 2.0f;
+    s = 250.0f;
+    d = 0.6;
+    d = 0.4;
+    s = 0.30000001192092896f;
+    s = -0.004000000189989805f;
+    s = 0.01666666753590107f;
+    s = 65536.0f;
+    s = 4096.0f;
+    s = 0.9599999785423279f;
+    s = 0.4000000059604645f;
+    s = 0.05050000175833702f;
+    s = 0.050999999046325684f;
+    s = 0.949999988079071f;
+}
+#pragma section code_type ".text"
+
+#pragma section code_type ".text"
+
+struct fx_5b188 {
+    u8 pad_00[0x10];
+    s32 field_10;
+    u8 pad_14[0x8];
+    f32 field_1C;
+    f32 field_20;
+    f32 field_24;
+    u8 pad_28[0x4];
+    f32 field_2C;
+    u8 pad_30[0xC];
+    f32 field_3C;
+    f32 field_40;
+    f32 field_44;
+    f32 field_48;
+    f32 field_4C;
+    f32 field_50;
+    u8 pad_54[0x4];
+    s16 field_58;
+    u8 pad_5A[0x4];
+    s16 field_5E;
+    u8 pad_60[0x54];
+    f32 field_B4;
+};
+
+static inline f32 fn_1_5B188_operand(f32 right, f32 left) { return left * right; }
+#pragma opt_common_subs off
+void fn_1_5B188(struct fx_5b188 *p)
+{
+    f32 d;
+
+    d = 1.0f / (f32)(s32)(p->field_10 + 1);
+    p->field_48 = fn_1_5B188_operand((0.96f), (p->field_48));
+    p->field_4C = fn_1_5B188_operand((0.96f), (p->field_4C));
+    p->field_50 = fn_1_5B188_operand((0.96f), (p->field_50));
+    p->field_3C = p->field_3C + p->field_48;
+    p->field_40 = p->field_40 + p->field_4C;
+    p->field_44 = p->field_44 + p->field_50;
+    p->field_5E = (s16)(fn_1_5B188_operand(((f32)p->field_5E), (0.99f)));
+    p->field_58 = p->field_58 + p->field_5E;
+    p->field_1C = p->field_1C + (f32)(fn_1_5B188_operand(((0.4f - p->field_1C)), (0.05f)));
+    p->field_20 = p->field_20 + (f32)(fn_1_5B188_operand(((0.4f - p->field_20)), (0.0505f)));
+    p->field_24 = p->field_24 + (f32)(fn_1_5B188_operand(((0.4f - p->field_24)), (0.051f)));
+    if ((f32)(s32)p->field_10 < 15.0f) {
+        p->field_B4 = fn_1_5B188_operand(((1.0f - d)), (p->field_B4));
+        p->field_2C = fn_1_5B188_operand((0.95f), (p->field_2C));
+    } else {
+        p->field_B4 = p->field_B4 + (f32)(fn_1_5B188_operand(((1.0f - p->field_B4)), (0.2f)));
+    }
+}
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_5B188 */
+
 /* fzgx:begin fn_1_5B30C */
 struct fn_1_5B30C_Arg0 {
     u8 pad_0[0x34];
