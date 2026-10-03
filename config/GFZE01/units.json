@@ -37819,6 +37819,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/effect/fn_1_5D718.c",
+    "symbols": [
+      "fn_1_5D718"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/effect.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/effect/fn_1_5D88C.c",
     "symbols": [
       "fn_1_5D88C"

@@ -7082,3 +7082,6 @@ rel/main_rel/sel_static_disp/fn_1_14A028.c:
 
 rel/main_rel/ghost/fn_1_F1300.c:
 	.text       start:0x000F1300 end:0x000F143C align:4
+
+rel/main_rel/effect/fn_1_5D718.c:
+	.text       start:0x0005D718 end:0x0005D88C align:4
