@@ -7028,3 +7028,6 @@ rel/main_rel/sel_static_disp/fn_1_1498B8.c:
 
 rel/main_rel/enemy_ctrl/fn_1_CFCA4.c:
 	.text       start:0x000CFCA4 end:0x000CFF94 align:4
+
+rel/main_rel/bg_cas/fn_1_FFC60.c:
+	.text       start:0x000FFC60 end:0x000FFE7C align:4
