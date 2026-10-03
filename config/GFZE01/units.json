@@ -40805,6 +40805,26 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/font/fn_1_55118.c",
+    "symbols": [
+      "fn_1_55118"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/font.c",
+    "pool": {
+      "...bss.0": "lbl_1_bss_6C798",
+      "lbl_1_bss_6C798": "lbl_1_bss_6C798",
+      "lbl_1_bss_6C79C": "lbl_1_bss_6C79C",
+      "fzgx_obj_lbl_1_bss_6C7A0": "lbl_1_bss_6C7A0",
+      "fzgx_obj_lbl_1_bss_6C7A4": "lbl_1_bss_6C7A4",
+      "fzgx_obj_lbl_1_bss_6C7CC": "lbl_1_bss_6C7CC",
+      "lbl_1_bss_6C7DC": "lbl_1_bss_6C7DC"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/font/fn_1_55210.c",
     "symbols": [
       "fn_1_55210"

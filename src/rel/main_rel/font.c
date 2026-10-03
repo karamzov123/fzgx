@@ -3265,6 +3265,100 @@ void fn_1_550E0(void) {
 }
 /* fzgx:end fn_1_550E0 */
 
+/* fzgx:begin fn_1_55118 noprologue */
+#include "types.h"
+#include "rel/main_rel/font.h"
+
+extern u32 lbl_801A6410;
+extern const f32 lbl_1_rodata_28A8;
+extern void fn_800777D4(void);
+extern void fn_1_565F8(void);
+extern void fn_80072808(void);
+extern void fn_1_56664(void *);
+extern void fn_1_566A0(void *);
+extern u32 fn_80070DE0(u32);
+extern u32 fn_80070DF0(u32);
+extern void *memset(void *, int, u32);
+extern void fn_1_566EC(int, int);
+extern void fn_800749B0(s32, void *);
+
+typedef struct {
+    u8 color[4];
+    u8 shadow[4];
+    f32 scale;
+    u8 flags[6];
+    u8 pad[0x16];
+} InitSettings;
+typedef struct {
+    u32 initial;
+    u32 count;
+    f32 scale;
+    InitSettings settings;
+    u32 last;
+} InitState;
+
+static inline void init_settings(InitSettings *settings) {
+    memset(settings, 0, 0x28);
+    settings->color[0] = 255;
+    settings->color[1] = 255;
+    settings->color[2] = 255;
+    settings->color[3] = 255;
+    settings->shadow[0] = 0;
+    settings->shadow[1] = 0;
+    settings->shadow[2] = 0;
+    settings->shadow[3] = 0;
+    settings->scale = lbl_1_rodata_28A8;
+    settings->flags[0] = 1;
+    settings->flags[1] = 3;
+    settings->flags[2] = 1;
+    settings->flags[3] = 0;
+    settings->flags[4] = 0;
+    settings->flags[5] = 0;
+}
+
+typedef struct lbl_1_bss_6C7CC_t {
+    u32 last;
+    u8 pad_4[0xc];
+} lbl_1_bss_6C7CC_t;
+
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+u32 lbl_1_bss_6C798;
+u32 lbl_1_bss_6C79C;
+f32 fzgx_obj_lbl_1_bss_6C7A0;
+InitSettings fzgx_obj_lbl_1_bss_6C7A4;
+lbl_1_bss_6C7CC_t fzgx_obj_lbl_1_bss_6C7CC;
+u32 lbl_1_bss_6C7DC[25];
+
+#pragma section code_type ".fzgxpool"
+static void fzgx_bss_layout(void) {
+    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */
+    s = *(u8 *)&lbl_1_bss_6C798;
+    s = *(u8 *)&lbl_1_bss_6C79C;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6C7A0;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6C7A4;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6C7CC;
+    s = *(u8 *)&lbl_1_bss_6C7DC;
+}
+#pragma section code_type ".text"
+
+void fn_1_55118(void) {
+    
+    InitSettings *settings;
+    lbl_1_bss_6C798 = lbl_801A6410;
+    fn_800777D4();
+    fn_1_565F8();
+    fn_80072808();
+    fn_80070DE0((u32)fn_1_56664);
+    fn_80070DF0((u32)fn_1_566A0);
+    lbl_1_bss_6C79C = 0x60;
+    fzgx_obj_lbl_1_bss_6C7A0 = lbl_1_rodata_28A8;
+    init_settings(&fzgx_obj_lbl_1_bss_6C7A4);
+    fn_1_566EC(0, 0);
+    fn_800749B0(0, 0);
+    fzgx_obj_lbl_1_bss_6C7CC.last = 0;
+}
+/* fzgx:end fn_1_55118 */
+
 /* fzgx:begin fn_1_55210 noprologue */
 #include "types.h"
 #include "rel/main_rel/font.h"
