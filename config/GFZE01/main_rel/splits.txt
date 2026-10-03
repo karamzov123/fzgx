@@ -7058,3 +7058,6 @@ rel/main_rel/sel_static_disp/fn_1_150D3C.c:
 
 rel/main_rel/effect/fn_1_65CDC.c:
 	.text       start:0x00065CDC end:0x00065E58 align:4
+
+rel/main_rel/live_camera/fn_1_1350C.c:
+	.text       start:0x0001350C end:0x0001361C align:4

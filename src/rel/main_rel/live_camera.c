@@ -1534,3 +1534,36 @@ u32 fn_1_13018(void) {
     return OSIsThreadTerminated(lbl_1_bss_1810) == 0;
 }
 /* fzgx:end fn_1_13018 */
+
+/* fzgx:begin fn_1_1350C */
+extern s32 fn_1_45B2C(void *arg0);
+extern void fn_1_458A0(void *arg0, void *arg1, u32 arg2, u32 arg3);
+
+#pragma opt_propagation off
+u8 fn_1_1350C(void *arg0, u8 *arg1) {
+    s32 size;
+    u8 result;
+    if (lbl_1_bss_3B28 == 0) {
+        size = lbl_1_data_5180;
+        /* volatile: the shared streaming state is read in program order, not CSEd or hoisted */
+        if (*(volatile u32 *)&lbl_1_bss_3B2C + *(volatile u32 *)&lbl_1_data_5180 > (u32)fn_1_45B2C(arg0)) {
+            size = (fn_1_45B2C(arg0) - lbl_1_bss_3B2C + 0x1F) & ~0x1F;
+        }
+        if (size > 0) {
+            fn_1_458A0(arg0, arg1, size, lbl_1_bss_3B2C);
+        }
+        /* volatile: the two global words are accumulated in the order retail loads them */
+        *(volatile u32 *)&lbl_1_bss_3B2C += *(volatile u32 *)&lbl_1_data_5180;
+    }
+    /* volatile: the index counter is a live shared object, read and advanced as written */
+    result = arg1[*(volatile u32 *)&lbl_1_bss_3B28];
+    /* volatile: the index counter is a live shared object, read and advanced as written */
+    (*(volatile u32 *)&lbl_1_bss_3B28)++;
+    /* volatile: the index counter is a live shared object, read and advanced as written */
+    if (*(volatile u32 *)&lbl_1_bss_3B28 >= *(volatile u32 *)&lbl_1_data_5180) {
+        lbl_1_bss_3B28 = 0;
+    }
+    return result;
+}
+#pragma opt_propagation reset
+/* fzgx:end fn_1_1350C */
