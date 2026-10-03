@@ -7073,3 +7073,6 @@ rel/main_rel/font/fn_1_4FD64.c:
 
 rel/main_rel/bg_for/fn_1_DE9C4.c:
 	.text       start:0x000DE9C4 end:0x000DEDC4 align:4
+
+rel/main_rel/car/fn_1_8D988.c:
+	.text       start:0x0008D988 end:0x0008DAB4 align:4

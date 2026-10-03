@@ -5448,6 +5448,74 @@ void fn_1_8D894(Obj_1_bss_6D838_Target *car) {
 }
 /* fzgx:end fn_1_8D894 */
 
+/* fzgx:begin fn_1_8D988 noprologue */
+#include "types.h"
+
+typedef struct CarObject { u8 pad_0[0x40]; void *unk_40; } CarObject;
+typedef struct Car {
+    u32 unk_0; s16 unk_4; u8 pad_6[0x46e]; s8 unk_474; u8 pad_475[0xf];
+    CarObject *unk_484; u8 pad_488[0x86]; u8 unk_50e; u8 pad_50f[0x111];
+} Car;
+typedef struct CarManager {
+    u8 pad_0[0x18]; Car *cars; u8 pad_1c[0xe]; s8 count; u8 pad_2b[0x1d];
+    s8 values[4]; CarObject *objects[16];
+} CarManager;
+extern CarManager lbl_1_bss_6D820;
+extern u8 lbl_1_data_1FFF0[12];
+extern void *lbl_801A6410;
+extern char lbl_1_data_20700[17];
+extern CarObject *fn_1_45D0(void *, u32, void *, u32);
+extern void fn_1_C487C();
+extern void fn_1_43E8(u32);
+extern void fn_1_C4ABC(void);
+extern CarObject *fn_1_3F8C(void *, void (*)(void), Car *, u32);
+extern void fn_1_43F4(void);
+
+#pragma opt_propagation off
+static inline CarObject * fn_1_8D988_read_pointer(Car * owner) { return owner->unk_484; }
+static inline s8 * fn_1_8D988_values(CarManager * m) { return m->values; }
+void fn_1_8D988(void) {
+    struct { CarManager *m; } mgr;
+    u32 i;
+    Car *car;
+    u32 lab_t1;
+    CarObject * tmp_call1;
+    s16 val;
+
+    mgr.m = &lbl_1_bss_6D820;
+    car = mgr.m->cars;
+    i = 0;
+    for (; i < mgr.m->count; i++, car++) {
+        if (car->unk_0 & 0x04000000) continue;
+        car->unk_0 |= 0x04000000;
+        tmp_call1 = fn_1_45D0(lbl_801A6410, 0x88, lbl_1_data_1FFF0, 0x1cb0);
+        car->unk_484 = tmp_call1;
+        if (fn_1_8D988_read_pointer(car) == 0) {
+            car->unk_0 &= ~0x04000000;
+            continue;
+        }
+        fn_1_8D988_read_pointer(car)->unk_40 = lbl_801A6410;
+        car->unk_50e = 1;
+        fn_1_C487C(car);
+        fn_1_43E8(1);
+        {
+            CarObject *obj = fn_1_3F8C(lbl_1_data_20700, fn_1_C4ABC, car, 3);
+            CarObject **objs = mgr.m->objects;
+            objs[car->unk_474] = obj;
+        }
+        fn_1_43F4();
+        {
+            s8 *vals = fn_1_8D988_values(mgr.m);
+            lab_t1 = car->unk_474;
+            val = car->unk_4;
+            vals[lab_t1] = val;
+        }
+        car->unk_474 = -1;
+    }
+}
+#pragma opt_propagation reset
+/* fzgx:end fn_1_8D988 */
+
 /* fzgx:begin fn_1_8DAB4 */
 typedef struct {
     u8 pad0[0x18];
