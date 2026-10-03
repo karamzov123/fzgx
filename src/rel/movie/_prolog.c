@@ -447,6 +447,87 @@ void fn_5_1404(u8 *arg0) {
 }
 /* fzgx:end fn_5_1404 */
 
+/* fzgx:begin fn_5_2C54 */
+static inline u8 fn_5_2C54_array_read(u8 *array, s32 index) { return array[index]; }
+#pragma opt_propagation off
+#pragma opt_lifetimes off
+#pragma opt_common_subs off
+s16 fn_5_2C54(u8 *arg0, s32 arg1, s32 arg2) {
+    s16 v0 = 0;
+    s32 v3_1;
+    s32 v3_2;
+    s32 v3_3;
+    s32 v3_4;
+    s32 v3_5;
+    s32 v3_6;
+    s32 v3_7;
+    u8 *v1;
+    u8 *v1_2;
+    u8 *v2;
+    s32 v3;
+    s32 v3_t;
+    s32 v4;
+    s8 v5 = 0;
+
+    if ((s8)arg2 > 0) {
+        v4 = arg2 - 8;
+        if ((s8)arg2 > 8) {
+            v2 = arg0 + (s8)arg1;
+            v1 = v2;
+            while ((s8)v5 < (s8)v4) {
+                v0 = (s16)(v0 * 10);
+                v3 = *v1 + v0;
+                v0 = (s16)(v3 - 0x30);
+                v0 = (s16)(v0 * 10);
+                v3_1 = fn_5_2C54_array_read(v2, (s8)(v5 + 1));
+                v3_1 = v3_1 + v0;
+                v0 = (s16)(v3_1 - 0x30);
+                v0 = (s16)(v0 * 10);
+                v3_2 = fn_5_2C54_array_read(v2, (s8)(v5 + 2));
+                v3_2 = v3_2 + v0;
+                v0 = (s16)(v3_2 - 0x30);
+                v0 = (s16)(v0 * 10);
+                v3_3 = v2[(s8)(v5 + 3)];
+                v3_3 = v3_3 + v0;
+                v0 = (s16)(v3_3 - 0x30);
+                v0 = (s16)(v0 * 10);
+                v3_4 = v2[(s8)(v5 + 4)];
+                v3_4 = v3_4 + v0;
+                v0 = (s16)(v3_4 - 0x30);
+                v0 = (s16)(v0 * 10);
+                v3_5 = fn_5_2C54_array_read(v2, (s8)(v5 + 5));
+                v3_5 = v3_5 + v0;
+                v0 = (s16)(v3_5 - 0x30);
+                v0 = (s16)(v0 * 10);
+                v3_6 = fn_5_2C54_array_read(v2, (s8)(v5 + 6));
+                v3_6 = v3_6 + v0;
+                v0 = (s16)(v3_6 - 0x30);
+                v0 = (s16)(v0 * 10);
+                v3_7 = fn_5_2C54_array_read(v2, (s8)(v5 + 7));
+                v3_7 = v3_7 + v0;
+                v0 = (s16)(v3_7 - 0x30);
+                v1 += 8;
+                v5 += 8;
+            }
+        }
+        v1_2 = arg0 + (s8)arg1 + v5;
+        while ((s8)v5 < (s8)arg2) {
+            v0 = (s16)(v0 * 10);
+            v3_t = *v1_2 + v0;
+            v0 = (s16)(v3_t - 0x30);
+            v1_2++;
+            v5++;
+        }
+    }
+    return v0;
+}
+#pragma opt_common_subs reset
+
+#pragma opt_lifetimes reset
+
+#pragma opt_propagation reset
+/* fzgx:end fn_5_2C54 */
+
 /* fzgx:begin fn_5_3BF8 */
 typedef u32 (*fn_5_3BF8_Fn0)(u32);
 struct fn_5_3BF8_lbl_5_bss_0 {
