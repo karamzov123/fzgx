@@ -38773,6 +38773,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/effect/fn_1_67430.c",
+    "symbols": [
+      "fn_1_67430"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/effect.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/effect/fn_1_6755C.c",
     "symbols": [
       "fn_1_6755C"

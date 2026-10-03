@@ -7441,6 +7441,91 @@ void fn_1_6742C(void) {
 }
 /* fzgx:end fn_1_6742C */
 
+/* fzgx:begin fn_1_67430 noprologue */
+#include "dolphin/types.h"
+#include "psvec.h"
+
+extern const f32 lbl_1_rodata_2950[];
+extern u32 fn_1_86514(int);
+extern void fn_1_862D4(int, void *);
+extern void fn_1_8636C(int, void *);
+extern void lbl_8006DC6C(void *);
+extern void lbl_8006E1B0(void *, void *);
+
+typedef struct {
+    f32 x, y, z;
+} Vec3f;
+
+typedef struct {
+    f32 x, y, z;
+    u8  pad[40];
+} Vec3fBig;
+
+typedef struct {
+    u8    pad00[0x10];
+    u32   unk10;
+    u8    pad14[4];
+    s16   unk18;
+    u8    pad1a[0x0E];
+    f32   f28;
+    f32   f2c;
+    u8    pad30[0x0C];
+    Vec3f v3c;
+    Vec3f v48;
+    u8    pad54[0x40];
+    Vec3f v94;
+    u8    padA0[0x14];
+    f32   fb4;
+} Obj67430;
+
+static inline f32 fn_1_67430_read_pointer(Vec3f * owner) { return owner->z; }
+#pragma opt_dead_assignments off
+#pragma opt_propagation off
+#pragma opt_loop_invariants off
+void fn_1_67430(Obj67430 *p)
+{
+    Vec3fBig   v1;
+    Vec3f      v0;
+    f32 fzgx_live_;
+    const f64 *pool = (const f64 *)&lbl_1_rodata_2950;
+    f32 fzgx_live;
+    f32        a, b, c;
+    f32        old;
+    f64        t;
+
+    if (((fn_1_86514(p->unk18) >> 29) & 1) == 0) {
+        p->unk10 = 1;
+    }
+    fn_1_862D4(p->unk18, &v0);
+    fn_1_8636C(p->unk18, &v1);
+    p->v48.x = p->v48.x * pool[104];
+    p->v48.y = p->v48.y * pool[104];
+    fzgx_live_ = p->v48.z;
+    p->v48.z = fzgx_live_ * (*((pool) + (104)));
+    psvec_add(&p->v94, &p->v48, &p->v94);
+    lbl_8006DC6C(&v1);
+    a = v0.x;
+    fzgx_live = v0.y;
+    b = fzgx_live;
+    c = fn_1_67430_read_pointer(&v0);
+    /* fzgx-allow: A1 current-warp matrix lives in the locked hardware cache */
+    *(f32 *)(0xE0000000 + 0x0C) = a;
+    *(f32 *)(0xE0000000 + 0x1C) = b;
+    *(f32 *)(0xE0000000 + 0x2C) = c;
+    lbl_8006E1B0(&p->v94, &p->v3c);
+    old = p->f28;
+    t = pool[76] * (p->f2c - old);
+    p->f28 = old + t;
+    t = pool[129] * (pool[82] - p->fb4);
+    p->fb4 = p->fb4 + t;
+}
+#pragma opt_loop_invariants reset
+
+#pragma opt_propagation reset
+
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_1_67430 */
+
 /* fzgx:begin fn_1_6755C */
 typedef struct {
     u8 pad_0[0x18];
