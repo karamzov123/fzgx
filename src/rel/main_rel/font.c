@@ -1174,6 +1174,87 @@ void fn_1_4B8DC(void)
 }
 /* fzgx:end fn_1_4B8DC */
 
+/* fzgx:begin fn_1_4BA24 noprologue */
+#include "rel/main_rel/font.h"
+
+extern u8 lbl_1_bss_4BA80[0xB0];
+extern void fn_1_4B8CC(void);
+extern void OSReport(const char *, ...);
+extern void OSPanic(const char *, int, const char *, ...);
+extern u32 fn_8002071C(void);
+extern u32 fn_800206FC(u32);
+extern u32 ARGetDMAStatus(void);
+extern void DCInvalidateRange(void *, u32);
+
+typedef void (*ARQCallback)(u32);
+
+typedef struct {
+    void *next;
+    u32 owner;
+    u32 type;
+    u32 priority;
+    u32 source;
+    u32 dest;
+    u32 length;
+    ARQCallback callback;
+} ARQRequest;
+
+extern void ARQPostRequest(ARQRequest *, u32, u32, u32, void *, void *, u32, ARQCallback);
+
+typedef struct {
+    u8 pad_0[0x28];
+    u16 unk_28;
+    u8 pad_2A[0xE];
+} Entry;
+
+#pragma opt_cse off
+
+#pragma opt_common_subs off
+#pragma opt_dead_assignments off
+static inline Entry *fn_1_4BA24_array_read(Entry *array) { return array; }
+#pragma opt_strength_reduction off
+void fn_1_4BA24(u32 arg0, s32 arg1, void *arg2)
+{
+    u32 saved;
+    u8 *base = (u8 *)&lbl_1_data_1A3B8;
+    Entry *tbl;
+    u32 dest;
+    u16 len;
+
+    if ((arg0 & 0xFF) >= 0x2C) {
+        OSReport((const char *)base + 0x204C, arg0 & 0xFF, 0x2C);
+        OSPanic((const char *)base + 0x1910, 0xAB4, (const char *)base + 0x2060);
+    }
+
+    tbl = (Entry *)(base + 0xAF0);
+    len = fn_1_4BA24_array_read(tbl)[arg0 & 0xFF].unk_28;
+    dest = ((u32 *)&lbl_1_bss_4BA80)[arg0 & 0xFF] + 0xF96000 + len * arg1;
+
+    saved = fn_8002071C();
+    fn_800206FC(0x20);
+
+    lbl_1_bss_4BA5C = 1;
+
+    while (ARGetDMAStatus() != 0) {
+    }
+
+    DCInvalidateRange(arg2, len);
+    ARQPostRequest((ARQRequest *)&lbl_1_bss_4BA60[0], 1, 1, 1, (void *)dest, arg2,
+        len, (ARQCallback)fn_1_4B8CC);
+
+    /* the AR completion flag is polled in place; the load must not be hoisted */
+    while (*(volatile s32 *)&lbl_1_bss_4BA5C != 0) {
+    }
+
+    fn_800206FC(saved);
+}
+#pragma opt_strength_reduction reset
+
+#pragma opt_dead_assignments reset
+
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_4BA24 */
+
 /* fzgx:begin fn_1_4BD48 */
 // fn_1_4BD48: empty in retail (single blr).
 void fn_1_4BD48(void) {
