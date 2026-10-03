@@ -48982,6 +48982,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/replay/fn_1_F2F84.c",
+    "symbols": [
+      "fn_1_F2F84"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/replay.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/replay/fn_1_F37F4.c",
     "symbols": [
       "fn_1_F37F4"

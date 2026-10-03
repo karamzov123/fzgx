@@ -348,6 +348,96 @@ u32 fn_1_F2F58(void) {
 }
 /* fzgx:end fn_1_F2F58 */
 
+/* fzgx:begin fn_1_F2F84 */
+extern u32 fn_1_C39FC(void);
+extern u32 lbl_801A63C0;
+extern u8 fn_1_3F23C(u8);
+extern u8 fn_1_3F250(u8);
+extern u8 fn_1_3F264(u8);
+extern s8 fn_1_86624(void);
+extern u32 fn_1_86810(s32);
+extern void fn_1_3EF14(u32 *);
+extern void fn_80008BEC(u8 *, int, u32);
+
+#pragma opt_dead_assignments off
+void fn_1_F2F84(void) {
+    Obj_1_bss_7EFD8 *p_lbl_1_bss_7EFD8;
+    u8 *v1;
+    s32 v3;
+    s32 v4;
+    s32 v5;
+    u8 *v6;
+    s32 v16;
+    struct { s32 value; } v17;
+    u8 *v18;
+    s32 bit;
+    struct { u8 a[0x14ac]; } loc_8;
+
+    p_lbl_1_bss_7EFD8 = (Obj_1_bss_7EFD8 *)&lbl_1_bss_7EFD8;
+    v1 = (u8 *)p_lbl_1_bss_7EFD8->unk_40 + 164;
+    fn_1_3EF14((u32 *)&loc_8);
+    *(u16 *)((u8 *)p_lbl_1_bss_7EFD8->unk_40 + 0xfef0) = 0;
+    v3 = 0;
+    while (v3 < fn_1_86624()) {
+        u32 result;
+        *((u8 *)p_lbl_1_bss_7EFD8->unk_40 + v3 * 5 + 4) = loc_8.a[v3 + 14];
+        result = fn_1_86810(v3);
+        {
+            u32 v10 = (u32)p_lbl_1_bss_7EFD8->unk_40;
+            u32 v11 = (v3 + 0x10000) - 270;
+            *(u8 *)(v10 + v11) = result;
+        }
+        *(u16 *)((u8 *)p_lbl_1_bss_7EFD8->unk_40 + v3 * 2 + 0xff10) = 0xffff;
+        v3++;
+    }
+    lbl_1_bss_7EFD8.unk_18 = loc_8.a[8];
+    lbl_1_bss_7EFD8.unk_10 = 9300;
+    lbl_1_bss_7EFD8.unk_14 = 0xd9f8;
+    fn_80008BEC(v1, 0, 0xd9f8);
+    lbl_1_bss_7F01C = 0;
+    p_lbl_1_bss_7EFD8->unk_40->unk_A0 = 0;
+    lbl_1_bss_7EFD8.unk_8 = 0;
+    lbl_1_bss_7EFD8.unk_4 = 0;
+    lbl_1_bss_7EFD8.unk_19 = 0;
+    lbl_1_bss_7EFD8.unk_1A = 1;
+    lbl_1_bss_7EFD8.unk_1C = 0;
+    lbl_1_bss_7EFD8.unk_20 = 0;
+    lbl_1_bss_7EFD8.unk_24 = 0;
+    lbl_1_bss_7EFD8.unk_1D = 0;
+    lbl_1_bss_7EFD8.unk_21 = 0;
+    lbl_1_bss_7EFD8.unk_25 = 0;
+    lbl_1_bss_7EFD8.unk_1E = 0;
+    lbl_1_bss_7EFD8.unk_22 = 0;
+    lbl_1_bss_7EFD8.unk_26 = 0;
+    lbl_1_bss_7EFD8.unk_1F = 0;
+    lbl_1_bss_7EFD8.unk_23 = 0;
+    lbl_1_bss_7EFD8.unk_27 = 0;
+    p_lbl_1_bss_7EFD8->unk_40->unk_98 = fn_1_C39FC();
+    p_lbl_1_bss_7EFD8->unk_40->unk_9C = lbl_801A63C0;
+    v17.value = 0;
+    while (v17.value < loc_8.a[9]) {
+        v18 = (u8 *)p_lbl_1_bss_7EFD8->unk_40 + v17.value * 5;
+        if (v17.value < loc_8.a[8]) v18[0] = 1;
+        else v18[0] = 0;
+        v18[1] = fn_1_3F23C((u8)v17.value);
+        if (v18[0] != 0) {
+            v18[2] = fn_1_3F250((u8)v17.value);
+            for (bit = 0; bit < 8; bit++) {
+                if ((u8)(1 << bit) == v18[2]) {
+                    v18[2] = bit;
+                    break;
+                }
+            }
+            v18[3] = fn_1_3F264((u8)v17.value);
+        } else v18[3] = 50;
+        v16 += 5;
+        v17.value++;
+    }
+    lbl_1_bss_7EFD8.unk_1B = 0;
+}
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_1_F2F84 */
+
 /* fzgx:begin fn_1_F37F4 */
 #include "types.h"
 

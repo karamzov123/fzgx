@@ -7118,3 +7118,6 @@ rel/main_rel/enemy_ctrl/fn_1_C7874.c:
 
 rel/main_rel/memcard/fn_1_BFE20.c:
 	.text       start:0x000BFE20 end:0x000C00EC align:4
+
+rel/main_rel/replay/fn_1_F2F84.c:
+	.text       start:0x000F2F84 end:0x000F326C align:4
