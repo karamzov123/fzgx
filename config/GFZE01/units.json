@@ -60729,6 +60729,19 @@
   },
   {
     "module": "movie_module",
+    "source": "rel/movie_module/fn_12_975C.c",
+    "symbols": [
+      "fn_12_975C"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [
+      "-use_lmw_stmw",
+      "on"
+    ]
+  },
+  {
+    "module": "movie_module",
     "source": "rel/movie_module/fn_12_A0D8.c",
     "symbols": [
       "fn_12_A0D8"

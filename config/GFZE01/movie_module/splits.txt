@@ -1895,3 +1895,6 @@ rel/movie_module/fn_12_8E4.c:
 
 rel/movie_module/fn_12_23F5C.c:
 	.text       start:0x00023F5C end:0x00024570 align:4
+
+rel/movie_module/fn_12_975C.c:
+	.text       start:0x0000975C end:0x00009D08 align:4
