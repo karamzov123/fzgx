@@ -7067,3 +7067,6 @@ rel/main_rel/game/fn_1_384E8.c:
 
 rel/main_rel/accessory/fn_1_12999C.c:
 	.text       start:0x0012999C end:0x00129D9C align:4
+
+rel/main_rel/font/fn_1_4FD64.c:
+	.text       start:0x0004FD64 end:0x00050164 align:4

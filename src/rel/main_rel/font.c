@@ -2027,6 +2027,134 @@ s32 fn_1_4FC50(InputObject *obj, u32 arg1, u16 arg2, u16 arg3, u32 arg4) {
 }
 /* fzgx:end fn_1_4FC50 */
 
+/* fzgx:begin fn_1_4FD64 noprologue */
+#include "types.h"
+#include "rel/main_rel/font.h"
+
+typedef void FontDrawPacket;
+extern u8 *lbl_801A66CC;
+extern u8 *lbl_801A6D00;
+extern const f64 lbl_1_rodata_2758;
+extern f32 lbl_1_rodata_2750;
+extern f32 fn_1_519AC(u32);
+extern int fn_1_4E0A4(u16 *, u16 *);
+extern u32 __cvt_fp2unsigned(f32);
+extern u32 fn_800720B0(u32);
+extern void DCFlushRange(void *, u32);
+extern void GXInitTexObj(void *, void *, u16, u16, int, int, int, u8);
+extern void GXInitTexObjLOD(void *, int, int, f32, f32, f32, u8, u8, int);
+extern void fn_80073778(void *, s32);
+extern void fn_1_4EDAC(FontDrawPacket *, f32, f32);
+extern int fn_1_159588(int);
+extern void fn_1_48D80(u32);
+extern void fn_1_A71CC(void);
+extern void fn_1_A722C(void);
+extern void fn_8007245C(u32);
+extern void fn_800724C8(void);
+extern void fn_80072558(void);
+extern void fn_80072864(u32);
+extern void fn_800728A8(s32, s32, s32, s32);
+extern void fn_80072AB0(s32, s32, s32);
+extern void fn_80072C24(s32, s32, s32, s32, s32);
+extern void fn_80072CC4(s32, s32, s32, s32, s32);
+extern void fn_80072D64(s32, s32, s32, s32, u8, s32);
+extern void fn_80072E20(s32, s32, s32, s32, u8, s32);
+extern void fn_800734A8(u32, s32, s32, s32);
+extern void fn_80073678(u32);
+extern void fn_80073898(u32);
+extern void fn_80073C6C(s32);
+extern void fn_800745A4(u32, s32, s32, u32, u32, u32);
+extern void fn_80074660(u32);
+extern void fn_80074788(u32);
+extern void fn_80074918(u8, s32, u8);
+extern void lbl_8006D758(void);
+extern void qsort(void *, size_t, size_t, int (*)(const void *, const void *));
+static inline void fn_1_4FD64_call_GXInitTexObj(u8 a7, int a6, int a5, int a4, u16 a3, s16 a2, void *a1, void *a0) {
+    GXInitTexObj(a0, a1, a2, a3, a4, a5, a6, a7);
+}
+void fn_1_4FD64(f32 arg0) {
+    u16 *a;
+    s32 i;
+    u32 lab_t4;
+    u32 lab_t0;
+    a = (u16 *)(lbl_801A66CC + 0x8B8);
+    for (i = 0; i < lbl_1_bss_646D2.unk_0; i++) {
+        a[i] = i;
+    }
+    qsort(a, lbl_1_bss_646D2.unk_0, 2, (int (*)(const void *, const void *))fn_1_4E0A4);
+    fn_1_A71CC();
+    fn_800724C8();
+    fn_8007245C(0x2200);
+    fn_80074788(0);
+    fn_80074660(1);
+    fn_80073678(1);
+    fn_80073898(0);
+    fn_80073C6C(0);
+    fn_800745A4(0, 1, 4, 0x3C, 0, 0x7D);
+    lab_t0 = 0;
+    fn_800734A8(lab_t0, 0, 0, 0xFF);
+    fn_80072AB0(0, 0, 0);
+    fn_80072C24(0, 0xF, 2, 8, 4);
+    fn_80072D64(0, 0, 0, 0, 1, 0);
+    fn_80072CC4(0, 7, 1, 4, 2);
+    fn_80072E20(0, 0, 0, 0, 1, 0);
+    fn_80074918(1, 7, 0);
+    fn_800728A8(1, 4, 5, 0);
+    fn_800720B0(0);
+    fn_80072864(2);
+    lbl_8006D758();
+    fn_80072558();
+    lbl_801A6D00[0x197] = 0xFF;
+    for (i = 0; i < lbl_1_bss_646D2.unk_0; i++) {
+        Obj_1_data_1C504_Target *e = (Obj_1_data_1C504_Target *)((u8 *)lbl_1_data_1C504 + a[i] * 0x58);
+        u32 fl = *(volatile u32 *)&e->unk_30; // volatile: retail reads packet flags anew in each drawing path.
+        if (fl & 0x2000000) continue;
+        if (fl & 0x400000) {
+            fn_1_48D80((u32)e);
+        } else if (fl & 0x800000) {
+            if (*(volatile u32 *)&e->unk_30 & 0x2000000) continue; // volatile: preserve retail's second flags load.
+            {
+                f32 sc = fn_1_519AC(e->unk_40);
+                sc = (f32)e->unk_44 * sc;
+                sc = (f32)e->unk_46 * sc;
+                DCFlushRange((void *)e->unk_48, __cvt_fp2unsigned(sc));
+                lab_t4 = e->unk_46;
+                fn_1_4FD64_call_GXInitTexObj(0, 0, 0, e->unk_40, lab_t4, e->unk_44, (void *)e->unk_48, lbl_1_bss_4E6B0);
+                GXInitTexObjLOD(lbl_1_bss_4E6B0, 0, 0, 0.0f, 0.0f, 0.0f, 0, 0, 0);
+                fn_80073778(lbl_1_bss_4E6B0, 0);
+                fn_1_4EDAC((FontDrawPacket *)e, (f32)e->unk_44, (f32)e->unk_46);
+            }
+        } else {
+            if (*(volatile u32 *)&e->unk_30 & 0x2000000) continue; // volatile: preserve retail's second flags load.
+            {
+                u32 pk;
+                Obj_1_data_FCD4_At20 *q;
+                u8 *p1;
+                u8 *p2;
+                f32 fh;
+                f32 fw;
+                Obj_1_data_FCD4 *o;
+                fn_1_159588(e->unk_0);
+                pk = e->unk_0;
+                o = (Obj_1_data_FCD4 *)((u8 *)&lbl_1_data_FCD4 + (u16)(pk >> 8) * 0x28);
+                if ((s32)o->unk_0 != 0) {
+                    q = o->unk_20;
+                    p1 = (u8 *)q->unk_4 + ((pk & 0xFF) << 4);
+                    p2 = (u8 *)q->unk_C + ((pk & 0xFF) << 5);
+                    fw = (f32)*(u16 *)(p1 + 8);
+                    fh = (f32)*(u16 *)(p1 + 0xA);
+                    fn_80073778(p2, 0);
+                    fn_1_4EDAC((FontDrawPacket *)e, fw, fh);
+                }
+            }
+        }
+    }
+    fn_1_A722C();
+    fn_80074918(1, 3, 1);
+    lbl_1_bss_646D2.unk_0 = 0;
+}
+/* fzgx:end fn_1_4FD64 */
+
 /* fzgx:begin fn_1_50164 */
 void fn_1_50164(f32 a, f32 b, f32 c, f32 d) {
     fn_1_50190(a, b, c, c, d, d);
