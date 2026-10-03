@@ -53,7 +53,47 @@ Sixteen checks, five stale checks (the matcher core's defaults), three attempts 
 
 A real Ninja and DTK hash gate runs before work. Bootstrap health records credit zero matches. Singleton ownership, orphan recovery, graceful signal draining, mixed systemd kill mode and bounded restarts prevent duplicate hosts and preserve candidate work. Existing old branches/worktrees are preserved.
 
-## Git index ownership (2026-10-01)
+## Free-tier capacity (2026-10-03)
+
+Cline (`stealth/space-bunny-alpha`) and the opencode surge families
+(`opencode/space-bunny-free`) are free with no usage limit for a few more days. That
+changes the allocation rule, and it is worth stating plainly because the obvious
+efficiency ranking points the other way.
+
+Measured over the overnight window (2026-10-02 18:00 onward), per family:
+
+| family | attempts | matches | rate | worker-hours | matches/hour | cost |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| `gpt` | 269 | 51 | 19.0 % | 10.72 | **4.76** | quota |
+| `oc2` | 31 | 5 | 16.1 % | 4.96 | 1.01 | free |
+| `oc1` | 60 | 8 | 13.3 % | 11.08 | 0.72 | free |
+| `oc4` | 70 | 8 | 11.4 % | 12.70 | 0.63 | free |
+| `cline` | 379 | 31 | 8.2 % | **73.34** | **0.42** | free |
+
+On efficiency alone this says cut Cline: 0.42 matches/hour against GPT's 4.76, an 11x gap,
+and Cline alone consumed 62 % of all fleet hours for 30 % of the matches. **That reasoning
+is wrong while Cline is free.** Efficiency per hour only decides allocation when hours are
+the scarce input. Cline's hours cost nothing and are unlimited, so its low conversion rate
+costs nothing either — it is spare capacity that happens to be slow. Cutting it would buy
+back wall-clock time that can then be spent on... nothing, because GPT cannot absorb it:
+its throughput is quota-capped, not slot-capped.
+
+So the rule while the free tier lasts: **push work onto the free families and leave the
+quota families at whatever their quota allows.** GPT stays at `parallel 2` (its cap);
+Cline was raised 6 -> 8. Surge capacity is deliberately not operator-scalable — it comes
+and goes with paid-provider availability — so the standing free family is the only lever.
+
+Two things bound this, and both are real:
+
+- **Shared build lock.** Every check serialises on it. Cline sessions are long (about 700 s
+  each, against GPT's 143 s), so raising Cline's parallelism can delay a GPT submit. GPT is
+  the highest-yield family, so it must not be starved. Watch GPT throughput; if it drops,
+  back Cline off. `active` slots stay within `FLEET_CAP` 18.
+- **This is a time box.** When the free tier ends, this rule inverts and the efficiency
+  table above becomes the right basis. Re-measure then; do not leave Cline at 8 by default.
+
+Worth noting at the time of writing: GPT was `rate-limited`, i.e. the paid providers were
+down and the free families were the only capacity actually running.
 
 The fleet stopped committing for 70 minutes: four provider batches each ended with an unlocked `snapshot` + `git add state/ledger.json`, and `snapshot` truncated the 13 MB file in place. A rewrite under another batch's `git add` kills git with SIGBUS (reproduced: 32 of 60 adds), git does not remove `.git/index.lock` on that signal, and every later `git add` exits 128, so each verifier failed, every family was held and backed off, and one pool match stayed uncommitted. Now `Ledger.snapshot` replaces the file atomically, the batch-end snapshot commit holds `submit.lock` like the verifier, and both call `oracle.clear_stale_index_lock()` first (lock older than 30 s and no git process in the repository). Symptom to recognise: all families `error` with `Hash verification failed; saving and holding producers.` while `gate.log` says `16 files OK`; read the batch's `verify.stderr.log`.
 
