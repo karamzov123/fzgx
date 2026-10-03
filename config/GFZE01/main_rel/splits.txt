@@ -7055,3 +7055,6 @@ rel/main_rel/ghost/fn_1_EB4BC.c:
 
 rel/main_rel/sel_static_disp/fn_1_150D3C.c:
 	.text       start:0x00150D3C end:0x00150ED0 align:4
+
+rel/main_rel/effect/fn_1_65CDC.c:
+	.text       start:0x00065CDC end:0x00065E58 align:4

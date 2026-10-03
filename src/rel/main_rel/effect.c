@@ -6567,6 +6567,115 @@ void fn_1_65B58(void) {
 }
 /* fzgx:end fn_1_65B58 */
 
+/* fzgx:begin fn_1_65CDC noprologue */
+#include "dolphin/hw_regs.h"
+#include "psvec.h"
+
+typedef signed char s8;
+typedef signed short s16;
+typedef signed long s32;
+typedef unsigned char u8;
+typedef unsigned long u32;
+typedef float f32;
+typedef double f64;
+
+extern const f32 lbl_1_rodata_2950[];
+extern void lbl_8006D9D8(void *);
+extern void lbl_8006D7B0(void);
+extern u32 mathutil_mtxA_rotate_z(s32);
+extern f32 lbl_8006D0B4(f32);
+extern void lbl_8006DB74(void *);
+extern void lbl_8006D848(f32);
+extern void lbl_8006DFC4(void *);
+extern void fn_1_9F914(void *, u32);
+extern void *memset(void *, int, u32);
+
+struct Fn1_65CDC {
+	u8 _pad00[0x1c];
+	f32 value1c;
+	f32 value20;
+	f32 value24;
+	f32 value28;
+	u8 _pad2c[0x08];
+	u32 object34;
+	u8 _pad38[0x04];
+	f32 value3c;
+	u8 _pad40[0x18];
+	s16 value58;
+};
+
+struct Fn1_65CDCTmp {
+	u8 data[0x30];
+};
+
+struct Fn1_65CDCSub {
+	u8 data[0x34];
+};
+
+struct Fn1_65CDCWork {
+	f32 alpha;
+	f32 alpha2;
+	struct Fn1_65CDCSub sub;
+	u8 red;
+	u8 green;
+	u8 blue;
+	u8 alphaByte;
+};
+
+#pragma opt_propagation off
+#pragma opt_common_subs off
+static inline f32 fn_1_65CDC_array_read(f32 *array, s32 index) { return array[index]; }
+#pragma opt_dead_assignments off
+void fn_1_65CDC(struct Fn1_65CDC *self) {
+	struct Fn1_65CDCWork work;
+	struct Fn1_65CDCTmp tmp;
+	u32 object;
+	f32 radius;
+	f32 distance;
+	f32 alpha;
+	const f32 *pool;
+	f32 v[3];
+	f32 x;
+	f32 y;
+	f32 z;
+	f32 sum;
+	f32 *m;
+	object = self->object34;
+	pool = lbl_1_rodata_2950;
+	radius = self->value28;
+	lbl_8006D9D8(&self->value3c);
+	lbl_8006D7B0();
+	mathutil_mtxA_rotate_z(self->value58);
+	m = (f32 *)(LC_BASE + 0x0);
+	x = fn_1_65CDC_array_read(m, 3);
+	y = fn_1_65CDC_array_read(m, 7);
+	z = fn_1_65CDC_array_read(m, 11);
+	psvec_set(v, z, y, x);
+	sum = (f32) (fn_1_65CDC_array_read(v, 0) * fn_1_65CDC_array_read(v, 0));
+	sum = sum + fn_1_65CDC_array_read(v, 1) * fn_1_65CDC_array_read(v, 1);
+	sum = sum + z * z;
+	distance = lbl_8006D0B4(sum);
+	if (distance > pool[1] + radius) {
+		lbl_8006DB74(&tmp);
+		lbl_8006D848((distance - radius) / distance);
+		lbl_8006DFC4(&tmp);
+	}
+	memset(&work, 0, 0x40);
+	lbl_8006DB74(&work.sub);
+	alpha = pool[0x150 / 4] * self->value28;
+	work.alpha = alpha;
+	work.red = (u8) (pool[0x5c / 4] * self->value1c);
+	work.green = (u8) (pool[0x5c / 4] * self->value20);
+	work.blue = (u8) (pool[0x5c / 4] * self->value24);
+	work.alphaByte = 0xff;
+	work.alpha2 = alpha;
+	fn_1_9F914(&work, object);
+}
+#pragma opt_dead_assignments reset
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
+/* fzgx:end fn_1_65CDC */
+
 /* fzgx:begin fn_1_65E58 */
 typedef struct fn_1_65E58_Effect {
     u8 _pad_00[0x10];
