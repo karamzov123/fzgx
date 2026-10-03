@@ -232,3 +232,25 @@ rather than assuming: of 1698 unmatched functions exactly **1** (`fn_8006A8CC`) 
 a matcher attempt, which is expected. So the column is sound; rank candidates from
 `max(attempts.best_in_attempt, attempts.final_percent)` anyway, since it is the figure the
 evidence supports.
+
+## Two measurement traps in the check store (2026-10-03)
+
+Both were nearly reported as findings and both are wrong:
+
+- **`rows: 0` in `state/checks/<sym>/index.jsonl` does not mean "no differing rows".**
+  It is the pool-adjusted count, so a body whose only differences are literal-pool
+  relocations records 0 even while its object differs. 118 unmatched functions at >=99%
+  store `rows: 0`; re-checking `fn_10_A90C` by hand showed **2** real differing rows.
+  Use `matched: true` in the same record, or re-check, never `rows`.
+- **`own_kinds` is not recorded in the check store** at all, only in live check output. Any
+  query that buckets the >=99% cohort by differing-row kind from `index.jsonl` silently
+  returns nothing, which reads as "no functions have regalloc rows" rather than "the field
+  is absent". The regalloc residue is real and visible in live output.
+
+Also settled: the >=99% unmatched cohort is **register allocation, not codegen shape** --
+`fn_12_72F4` (`mr r30,r25` vs `r27`), `fn_10_A90C` (`extsh r29` vs `r31`),
+`fn_8006A554` (`clrlwi` mask vs `clrrwi` shift plus one `add` operand order). The
+deterministic engine confirmed the class is not reachable by mechanical means: on
+`fn_12_72F4` it tried **3,681 candidates** (declaration order, type/sign flips, pragmas,
+pool priming) and none beat 99.9%, concluding a structural change is required. Chasing
+these one at a time by hand is a poor use of budget; they need a different kind of attempt.
