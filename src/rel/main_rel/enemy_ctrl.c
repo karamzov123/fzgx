@@ -1271,6 +1271,118 @@ void fn_1_CFA4C(u32 arg0, u32 arg1) {
 }
 /* fzgx:end fn_1_CFA4C */
 
+/* fzgx:begin fn_1_CFCA4 noprologue */
+#include "types.h"
+
+struct fn_1_CFCA4_lbl_1_rodata_5FD8 { f32 unk_0; };
+struct fn_1_CFCA4_lbl_1_rodata_603C { f32 unk_0; };
+struct fn_1_CFCA4_lbl_1_rodata_5C88 { f32 unk_0; };
+struct fn_1_CFCA4_lbl_1_rodata_602C { u32 unk_0; };
+struct fn_1_CFCA4_lbl_1_rodata_6030 { u32 unk_0; };
+struct fn_1_CFCA4_lbl_1_rodata_6050 { f32 unk_0; };
+struct fn_1_CFCA4_lbl_1_rodata_5CD4 { f32 unk_0; };
+struct fn_1_CFCA4_lbl_1_rodata_6038 { u32 unk_0; };
+struct fn_1_CFCA4_Copy88 { u32 a[22]; };
+extern f32 lbl_1_rodata_5D90;
+extern f32 lbl_1_rodata_5DCC;
+extern f32 lbl_1_rodata_6040;
+extern f32 lbl_1_rodata_6044;
+extern f32 lbl_1_rodata_6048;
+extern f32 lbl_1_rodata_604C;
+extern f32 lbl_1_rodata_6054;
+extern f32 lbl_1_rodata_5CFC;
+extern struct fn_1_CFCA4_lbl_1_rodata_5C88 lbl_1_rodata_5C88;
+extern struct fn_1_CFCA4_lbl_1_rodata_5CD4 lbl_1_rodata_5CD4;
+extern struct fn_1_CFCA4_lbl_1_rodata_5FD8 lbl_1_rodata_5FD8;
+extern struct fn_1_CFCA4_lbl_1_rodata_602C lbl_1_rodata_602C;
+extern struct fn_1_CFCA4_lbl_1_rodata_6030 lbl_1_rodata_6030;
+extern struct fn_1_CFCA4_lbl_1_rodata_6038 lbl_1_rodata_6038;
+extern struct fn_1_CFCA4_lbl_1_rodata_603C lbl_1_rodata_603C;
+extern struct fn_1_CFCA4_lbl_1_rodata_6050 lbl_1_rodata_6050;
+extern u32 fn_1_52968(u32, u32, const char *, f32, ...);
+extern f32 lbl_1_rodata_26F8[22];
+extern u32 lbl_1_rodata_6034;
+extern u32 lbl_801A66B4;
+extern void fn_1_49410(void);
+extern void fn_1_49514(u32 *);
+extern void fn_1_4955C(f32, f32);
+extern void fn_1_495A0(f32);
+extern void fn_1_495B0(u32);
+extern void fn_1_495C8(u8);
+extern void fn_1_4966C(f32, f32);
+extern void fn_1_49748(f32);
+extern void fn_1_51914(const struct fn_1_CFCA4_Copy88 *);
+extern void fn_1_496FC(f32, f32);
+extern void fn_1_527B4(void);
+extern void fn_1_49738(void (*)(void));
+extern void fn_1_4954C(f32);
+extern void fn_1_4AE0C(const char *, ...);
+
+void fn_1_CFCA4(const char *arg0, f32 arg1, f32 arg2, f32 arg3) {
+    f32 v0;
+    f32 v1;
+    f32 v9;
+    s32 v4;
+    s32 v5;
+    struct fn_1_CFCA4_Copy88 packet;
+    struct fn_1_CFCA4_lbl_1_rodata_602C color0;
+    struct fn_1_CFCA4_lbl_1_rodata_6030 color1;
+    struct fn_1_CFCA4_lbl_1_rodata_602C color2;
+    struct fn_1_CFCA4_lbl_1_rodata_6038 color3;
+    u32 loc_14;
+    u32 loc_10;
+    u32 loc_C;
+    u32 loc_8;
+    v0 = lbl_1_rodata_5FD8.unk_0 * arg3;
+    color0 = lbl_1_rodata_602C;
+    v1 = lbl_1_rodata_603C.unk_0 * arg3;
+    color1 = lbl_1_rodata_6030;
+    v9 = lbl_1_rodata_5C88.unk_0 * arg3;
+    color2 = *(struct fn_1_CFCA4_lbl_1_rodata_602C *)&lbl_1_rodata_6034;
+    fn_1_49410();
+    fn_1_495C8(1);
+    fn_1_495B0(0x10000);
+    fn_1_4955C(lbl_1_rodata_6040, lbl_1_rodata_6040);
+    if ((s32)lbl_801A66B4 == 5) {
+        fn_1_4966C(lbl_1_rodata_6044, lbl_1_rodata_5D90);
+    } else {
+        fn_1_495B0(0x80000000);
+    }
+    loc_14 = color0.unk_0;
+    fn_1_49514(&loc_14);
+    fn_1_49748(lbl_1_rodata_6048);
+    fn_1_495A0(v0);
+    v4 = (s32)arg1;
+    v5 = (s32)arg2;
+    fn_1_52968(v4, v5, arg0, lbl_1_rodata_5DCC);
+    loc_10 = color1.unk_0;
+    fn_1_49514(&loc_10);
+    fn_1_49748(lbl_1_rodata_604C);
+    fn_1_495A0(v1);
+    fn_1_52968(v4, v5, arg0, lbl_1_rodata_6050.unk_0);
+    loc_C = color2.unk_0;
+    fn_1_49514(&loc_C);
+    fn_1_49748(lbl_1_rodata_6054);
+    fn_1_495A0(v9);
+    fn_1_52968(v4, v5, arg0, lbl_1_rodata_5CD4.unk_0);
+    color3 = lbl_1_rodata_6038;
+    packet = *(struct fn_1_CFCA4_Copy88 *)lbl_1_rodata_26F8;
+    packet.a[0] = 5;
+    *(s16 *)&packet.a[10] = -0x4000;
+    *(f32 *)&packet.a[2] = lbl_1_rodata_5CFC;
+    fn_1_51914(&packet);
+    loc_8 = color3.unk_0;
+    fn_1_49514(&loc_8);
+    fn_1_49748(lbl_1_rodata_5D90);
+    fn_1_495A0(arg3);
+    fn_1_495B0(0x80000000);
+    fn_1_496FC(arg1, arg2);
+    fn_1_49738(fn_1_527B4);
+    fn_1_4954C(lbl_1_rodata_5CFC);
+    fn_1_4AE0C(arg0);
+}
+/* fzgx:end fn_1_CFCA4 */
+
 /* fzgx:begin fn_1_CFF94 noprologue */
 #include "types.h"
 #include "font.h"

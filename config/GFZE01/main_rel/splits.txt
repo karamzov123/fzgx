@@ -7025,3 +7025,6 @@ rel/main_rel/phys/fn_1_E5164.c:
 
 rel/main_rel/sel_static_disp/fn_1_1498B8.c:
 	.text       start:0x001498B8 end:0x00149B24 align:4
+
+rel/main_rel/enemy_ctrl/fn_1_CFCA4.c:
+	.text       start:0x000CFCA4 end:0x000CFF94 align:4
