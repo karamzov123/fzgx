@@ -3252,6 +3252,46 @@ void fn_1_14BC3C(void) {
 }
 /* fzgx:end fn_1_14BC3C */
 
+/* fzgx:begin fn_1_14BC40 noprologue */
+#include "types.h"
+
+typedef struct {
+    u8 pad_0[0x10];
+    u32 unk_10;
+    u8 pad_14[4];
+    f32 unk_18;
+    f32 unk_1c;
+    s32 unk_20;
+    u8 pad_24[0xc];
+    u8 unk_30;
+} fn_1_14BC40_Obj;
+extern fn_1_14BC40_Obj lbl_1_bss_8E518;
+extern u32 lbl_801A66A4;
+extern const f32 lbl_1_rodata_99A4;
+extern u32 fn_1_14BE30(void);
+
+static inline s32 clamp_value(s32 value, s32 minimum, s32 maximum) {
+    if (value < minimum) return minimum;
+    if (value > maximum) value = maximum;
+    return value;
+}
+
+void fn_1_14BC40(void) {
+    fn_1_14BC40_Obj *p = &lbl_1_bss_8E518;
+    s32 value;
+    s32 maximum;
+    s32 result = 0;
+    u32 lab_v;
+    p->unk_20 = 0;
+    lab_v = p->unk_30;
+    p->unk_20 = -((s32)(((u32)lab_v >> 1) & 0x7f) - 1);
+    p->unk_20 = clamp_value(p->unk_20, 0, 10 - lab_v);
+    p->unk_18 = lbl_1_rodata_99A4;
+    p->unk_10 = lbl_801A66A4;
+    fn_1_14BE30();
+}
+/* fzgx:end fn_1_14BC40 */
+
 /* fzgx:begin fn_1_14BCBC noprologue */
 #include "types.h"
 
