@@ -680,6 +680,106 @@ void fn_3_4BEC(u32 arg0) {
 }
 /* fzgx:end fn_3_4BEC */
 
+/* fzgx:begin fn_3_4C58 */
+#include "rel/customize/globals.h"
+
+typedef struct {
+    u8 pad_0[0x390];
+    u32 unk_390;
+    u8 pad_394[0x3a0 - 0x394];
+    void *unk_3a0;
+    u32 unk_3a4;
+    u8 pad_3a8[0x3ba - 0x3a8];
+    u16 unk_3ba;
+    u8 pad_3bc[0x440 - 0x3bc];
+} Entry;
+
+typedef struct {
+    u32 unk_0;
+    u8 unk_4;
+    u8 pad_5[7];
+    u32 unk_c;
+    u8 pad_10[0x10420 - 0x10];
+    u32 unk_420;
+    u32 unk_424;
+    u32 unk_428;
+    u32 unk_42c;
+    u8 pad_430[0x10440 - 0x10430];
+} Dst;
+
+typedef struct { u32 w[41]; } Copy164;
+extern void fn_3_5D84(s32);
+extern void fn_80008BEC(void *, int, u32);
+extern void fn_1_47F74(s32);
+extern void *fn_1_7F254(void *, void *);
+extern void fn_1_FD844(void *, void *);
+extern s32 fn_1_FD324(void *);
+extern void fn_1_FD27C(void *, void *);
+extern void fn_1_FDC00(void *, void *, f32);
+extern s32 lbl_3_bss_2C70C[45];
+extern Copy164 lbl_3_rodata_F8;
+extern Entry lbl_3_bss_20860[4];
+extern u8 lbl_3_bss_21960[4 * 0xa20];
+extern Dst lbl_3_bss_2C7C0[4];
+
+void fn_3_4C58(void) {
+    s32 i;
+    s32 j;
+    for (i = 0; (s16)i < 4; i++) fn_3_5D84(i);
+    fn_80008BEC(lbl_3_bss_2C70C, 0, 0xa4);
+
+    for (j = 0; (s16)j < 4; j++) {
+        volatile Copy164 loc = lbl_3_rodata_F8; /* Complete the table copy before selecting an entry. */
+        Obj_3_bss_140 *m = (Obj_3_bss_140 *)((u8 *)&lbl_3_bss_140 + ((0x81c0) * (j)));
+        u32 flags = *(volatile u32 *)&m->unk_0; /* Read after the initialization copy. */
+        if ((flags & 0x80000000) != 0 && (flags & 0x40000000) == 0) {
+            if (lbl_3_bss_2C70C[m->pad_9[0x81a0 - 9]] == 0) {
+                fn_1_47F74(loc.w[m->pad_9[0x81a0 - 9]]);
+                lbl_3_bss_2C70C[m->pad_9[0x81a0 - 9]] = 1;
+            }
+        }
+    }
+
+    fn_80008BEC(lbl_3_bss_2C7C0, 0, 0x41100);
+    for (i = 0; (s16)i < 4; i++) {
+        Obj_3_bss_140 *m = (Obj_3_bss_140 *)((u8 *)&lbl_3_bss_140 + i * 0x81c0);
+        Dst *dst = &lbl_3_bss_2C7C0[i];
+        Entry *entry = &lbl_3_bss_20860[i];
+        u8 *src = &lbl_3_bss_21960[i * 0xa20];
+        u8 v5 = m->unk_5;
+        dst->unk_c = 0x80000000;
+        if (m->unk_7 == 0) continue;
+        if ((m->unk_0 & 0x80000000) == 0) continue;
+        if ((m->unk_0 & 0x40000000) != 0) {
+            m->unk_8 = 3;
+            entry->unk_390 = 0x04000000;
+            entry->unk_3a0 = src;
+        } else {
+            m->unk_5 = *((u8 *)m + 0x81a0);
+            if (m->unk_5 == 40) m->unk_8 = 3;
+            else if (m->unk_5 == 4) m->unk_8 = 2;
+            else m->unk_8 = 1;
+        }
+        if (m->unk_7 != 0 && m->unk_7 <= 4) {
+            if (entry->unk_3a4 == 0) entry->unk_3a4 = (u32)fn_1_7F254(m, (void *)2);
+            entry->unk_3ba = 1;
+            dst->unk_4 = 4;
+            dst->unk_0 = (u32)entry;
+            *(volatile u32 *)&dst->unk_428 = (u32)fn_1_FDC00; /* Ordered callback setup. */
+            *(volatile u32 *)&dst->unk_42c = (u32)fn_1_FD27C; /* Ordered callback setup. */
+            *(volatile u32 *)&dst->unk_424 = (u32)fn_1_FD324; /* Ordered callback setup. */
+            *(volatile u32 *)&dst->unk_420 = 0; /* Ordered callback setup. */
+            dst->unk_c = 0x20000000;
+            fn_1_FD844(m, dst);
+            if ((m->unk_0 & 0x40000000) != 0) {
+                entry->unk_390 &= ~0x04000000;
+                entry->unk_3a0 = 0;
+            } else m->unk_5 = v5;
+        }
+    }
+}
+/* fzgx:end fn_3_4C58 */
+
 /* fzgx:begin fn_3_5A50 */
 extern void fn_3_5E88(s16);
 extern void fn_1_48140(s32);
