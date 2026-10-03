@@ -2383,6 +2383,30 @@ void fn_1_25870(Fn_1_25870 *self) {
 }
 /* fzgx:end fn_1_25870 */
 
+/* fzgx:begin fn_1_27DE4 noprologue */
+#include "dolphin/types.h"
+#include "psvec.h"
+
+typedef struct { f32 x; f32 y; f32 z; } Vec3;
+typedef struct {
+    u32 flags;
+    u8 pad_4[0x78];
+    Vec3 position;
+    Vec3 previous;
+    u8 pad_94[0x140];
+    Vec3 displacement;
+} CollisionObject;
+
+void fn_1_27DE4(CollisionObject *obj)
+{
+    Vec3 delta;
+    if (!(obj->flags & 0x8000)) {
+        psvec_sub(&obj->position, &obj->previous, &delta);
+        psvec_add(&obj->displacement, &delta, &obj->displacement);
+    }
+}
+/* fzgx:end fn_1_27DE4 */
+
 /* fzgx:begin fn_1_28660 */
 typedef struct Fn_1_28660 {
     int field00;
