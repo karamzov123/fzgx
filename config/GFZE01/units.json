@@ -9014,6 +9014,19 @@
   },
   {
     "module": "main",
+    "source": "dol/TRKInitializeNub.c",
+    "symbols": [
+      "TRKInitializeNub"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "pool": {
+      "@39": "@154"
+    }
+  },
+  {
+    "module": "main",
     "source": "dol/TRKInitializeSerialHandler.c",
     "symbols": [
       "TRKInitializeSerialHandler"
