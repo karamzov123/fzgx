@@ -5102,6 +5102,117 @@ void fn_1_150CEC(fn_1_150CEC_Object *obj) {
 }
 /* fzgx:end fn_1_150CEC */
 
+/* fzgx:begin fn_1_150D3C noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+
+#pragma section code_type ".fzgxpool"
+static const u32 fzgx_pool_table1[3] = {0x00000000, 0xBF800000, 0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep1(void) { const u32 *volatile cp; cp = fzgx_pool_table1; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime2(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 20.0f;
+    s = 10.0f;
+    s = 32767.0f;
+    d = 4503601774854144.0;
+    s = -1.1920928955078125e-07f;
+    s = 2400.0f;
+    s = 50.0f;
+    s = 0.5f;
+    s = 60.0f;
+    s = 0.20000000298023224f;
+    s = 0.800000011920929f;
+    s = 0.699999988079071f;
+    s = 0.30000001192092896f;
+    s = 7.0f;
+    d = 0.5;
+    s = 255.0f;
+    s = 1.0f;
+    s = 102.0f;
+    s = 0.0f;
+    s = 0.0005000000237487257f;
+    s = 0.003000000026077032f;
+    s = 0.6499999761581421f;
+    s = 0.75f;
+    s = 182.04444885253906f;
+}
+static const u32 fzgx_pool_table3[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep3(void) { const u32 *volatile cp; cp = fzgx_pool_table3; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime4(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    d = 2.0;
+    d = 4503599627370496.0;
+}
+#pragma section code_type ".text"
+
+extern void fn_1_1030D4(void *entry, void *arg);
+extern f64 lbl_8006D188(s32 value);
+extern u32 lbl_801A66A0;
+
+typedef struct Pool {
+    u8 pad_00[0x48];
+    f64 c48;
+    u8 pad_50[4];
+    f32 c54;
+    u8 pad_58[4];
+    f32 c5c;
+    u8 pad_60[8];
+    f32 c68;
+    f32 c6c;
+    f32 c70;
+    u8 pad_74[4];
+    f64 c78;
+    f64 c80;
+} Pool;
+
+extern const Pool lbl_1_rodata_CF40;
+
+typedef struct Entry {
+    u8 pad_08[8];
+    u32 flags;
+    u8 pad_0c[0x20];
+    f32 x;
+    f32 y;
+    f32 z;
+    u8 tail[0x74];
+} Entry;
+
+typedef struct Object {
+    u8 pad_84[0x84];
+    s32 count;
+    Entry entries[1];
+} Object;
+
+void fn_1_150D3C(Object *obj, void *arg) {
+    s32 count;
+    Entry *entry;
+
+    count = obj->count;
+    entry = obj->entries;
+    while (count > 0) {
+        if (((entry->flags >> 28) & 1) != 0) {
+            entry->x = (0.649999976f);
+            entry->y = (0.75f);
+            entry->z = (1.0f);
+        } else if (((entry->flags >> 29) & 1) != 0) {
+            entry->x = (1.0f);
+            entry->y = (0.0f);
+            entry->z = (0.0f);
+        } else {
+            entry->x = (f32)__fabs(
+                lbl_8006D188((s32)((182.044449f) * (f32)lbl_801A66A0)));
+            entry->y = (f32)__fabs(
+                lbl_8006D188((s32)((182.044449f) * (f32)lbl_801A66A0 * (0.5))));
+            entry->z = (f32)__fabs(
+                lbl_8006D188((s32)((182.044449f) * (f32)lbl_801A66A0 * (2.0))));
+        }
+        fn_1_1030D4(entry, arg);
+        count -= 1;
+        entry += 1;
+    }
+}
+/* fzgx:end fn_1_150D3C */
+
 /* fzgx:begin fn_1_150ED0 */
 typedef struct fn_1_150ED0_Entry {
     u8 data[0xac];
