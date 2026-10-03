@@ -2446,6 +2446,85 @@ void fn_1_141338(u32 arg0, u32 arg1, u32 arg2, u32 arg3, f32 arg4) {
 }
 /* fzgx:end fn_1_141338 */
 
+/* fzgx:begin fn_1_141360 noprologue */
+#include "types.h"
+
+typedef struct { u8 a, b, c, d; } Ent;
+typedef struct { Ent e[5]; } Tbl;
+typedef struct {
+    u32 f00;
+    f32 f04;
+    f32 f08;
+    f32 f0C;
+    f32 f10;
+    f32 f14;
+    u8  f18[0x18];
+    u32 f30;
+    u32 f34;
+    u8  f38;
+    u8  f39;
+    u8  f3A;
+    u8  f3B[0x15];
+    u32 f50;
+    u32 f54;
+} Pkt;
+
+extern Tbl lbl_1_rodata_91F4;
+extern Pkt lbl_1_rodata_26F8;
+extern u32 lbl_801A66A0[1];
+extern f32 lbl_8006D188(u32);
+extern const f32 lbl_1_rodata_8B2C;
+extern const f64 lbl_1_rodata_8608;
+extern const f64 lbl_1_rodata_8600;
+extern const f32 lbl_1_rodata_87E8;
+extern const f32 lbl_1_rodata_863C;
+extern const f32 lbl_1_rodata_87AC;
+extern const f32 lbl_1_rodata_85F0;
+extern const f32 lbl_1_rodata_8A24;
+extern int fn_1_4F734(Pkt *);
+extern void fn_1_52718(void);
+
+#pragma opt_propagation off
+static inline f32 fn_1_141360_operand(f32 right, f32 left) { return left * right; }
+void fn_1_141360(u32 arg0, s32 arg1, s32 arg2, s32 arg3, f32 arg4, f32 arg5)
+{
+    Tbl tbl;
+    Pkt pkt;
+    s32 idx;
+    s32 j;
+    f32 t, u, v;
+
+    tbl = lbl_1_rodata_91F4;
+    j = (s32)(arg0 & 0xFF) - 1;
+    if (j < 0) {
+        idx = 0;
+    } else {
+        idx = 4;
+        if ((u32)j <= 4) {
+            idx = j;
+        }
+    }
+    t = (*(const f32 volatile *)&lbl_1_rodata_87AC) /* Retail reloads this object. */ * (lbl_1_rodata_863C + (lbl_8006D188((s32)(fn_1_141360_operand((lbl_1_rodata_87E8), (lbl_1_rodata_8B2C * (f32)(u32)(lbl_801A66A0[0] & 3)))))));
+    u = t * lbl_1_rodata_85F0;
+    v = lbl_1_rodata_8A24 + u;
+    v = arg5 * v;
+    pkt = lbl_1_rodata_26F8;
+    pkt.f00 = 0x10000 - 0x5EEE;
+    pkt.f04 = (f32)arg1;
+    pkt.f08 = (f32)arg2;
+    pkt.f0C = (f32)arg3;
+    pkt.f10 = pkt.f10 * arg4;
+    pkt.f14 = pkt.f14 * arg4;
+    pkt.f38 = (u8)(s32)(v * (f32)(u32)tbl.e[(u8)idx].a);
+    pkt.f39 = (u8)(s32)(v * (f32)(u32)tbl.e[(u8)idx].b);
+    pkt.f3A = (u8)(s32)(v * (f32)(u32)tbl.e[(u8)idx].c);
+    pkt.f30 = 0x4000000 + 0xA;
+    pkt.f50 = (u32)&fn_1_52718;
+    fn_1_4F734(&pkt);
+}
+#pragma opt_propagation reset
+/* fzgx:end fn_1_141360 */
+
 /* fzgx:begin fn_1_141614 */
 void fn_1_141614(s16 arg0) {
     fn_1_49410();
