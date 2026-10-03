@@ -76,3 +76,39 @@ Unblocking any of these needs triage judgement, not another blind attempt: the
 four near-misses (`fn_5_6E8` 94.85, `fn_5_37C` 93.34, `fn_5_4C8` 92.93,
 `fn_5_3C44` 94.81) should be re-derived from the saved diff corpora rather than
 resubmitted.
+
+## car_colchg hand triage (2026-10-03 status report follow-up)
+
+`colchg_selmate_disp` is **code-complete at 99.6%**. All 8 remaining rows are
+`L` rows and the oracle reports zero rows owned by the matcher. The eight loads
+(160.0, 50.0, 255.0, 0.5, 480.0 and one f64) belong to the module's *shared*
+literal pool `lbl_9_rodata_0` at offsets 0x14/0x18/0x3c/0x40/0x44/0x48, but a
+standalone carved unit compiles them into its own anonymous `.rodata.0`, so
+only the base symbol differs. Rewriting the loads as field reads through the
+shared `PoolRow` symbol *regresses* to 96.7%: it adds a `lis @27@ha`, reorders
+`lis lbl_9_bss_14` / `lis lbl_1_rodata_26F8`, and swaps the `fmuls` operand
+order. The release path already prints the needed binding as
+`pool_map {"...rodata.0": "lbl_9_rodata_0", "@15": "lbl_9_rodata_14",
+"@16": "lbl_9_rodata_18"}`. This needs the layout/pool priming path
+(`fzgx fixup` with a seeded corpus, or `fzgx data-import` pool_objects), not
+more matcher attempts. Best body:
+`.fzgx/attempts/colchg_selmate_disp.1790882668.c`.
+
+`colchg_menu_disp` stays at 94.7% (best body 90.1% locally). Two hand
+variants both regressed and are recorded so they are not retried: the
+inline ternary argument form gives 87.9%, and hoisting the format string into
+its own local spills r28 and gives 81.7%. The 8 differing rows are the
+`fn_1_496FC` argument materialisation order (retail schedules
+`lfs f2 lbl_9_rodata_18[0]` before `stw r30`; the candidate schedules it after)
+plus the switch guard register: retail keeps the sign-extended induction
+variable in **r5** for both `cmpwi r5, 0x73` and `cmpw r0, r5`, while the
+candidate reuses r3/r4. A fresh candidate should aim to keep the loop
+induction in r5 and to let the second float load hoist with the first.
+
+`fn_3_15A0` (customize, 7680 B) is **blocked as unrecoverable locally**. All 8
+attempts' best bodies (peak 60.6%) live only under
+`/Users/rayan/fzgx/.fzgx/attempts/`; neither `state/repairs/large_near_frontier_20260914`
+nor `large_closures_20260915` contains it, so there is no seed to hand-decomp
+from. 8 attempts across 4 model tiers all plateaued 54.7-60.6%, which is the
+measured stopping condition. Unblocking requires copying the rayan-host bodies
+into `state/repairs/` as a portable archive, or a fresh carve with a new seed.
