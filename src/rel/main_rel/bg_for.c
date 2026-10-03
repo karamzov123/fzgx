@@ -205,6 +205,165 @@ void fn_1_DCF54(fn_1_DCF54_Vec3 *a, fn_1_DCF54_Vec3 *b, fn_1_DCF54_Vec3 *c) {
 }
 /* fzgx:end fn_1_DCF54 */
 
+/* fzgx:begin fn_1_DE9C4 noprologue */
+#include "types.h"
+#include "rel/main_rel/bg_for.h"
+#include "psvec.h"
+
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = -1.0f;
+    s = 0.9999998807907104f;
+    s = 1.0000001192092896f;
+    s = -1.0000001192092896f;
+    s = -0.9999998807907104f;
+}
+static const u32 fzgx_pool_table2[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep2(void) { const u32 *volatile cp; cp = fzgx_pool_table2; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime3(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    d = 1.1920928955078125e-07;
+    s = 0.0f;
+    s = 5.0f;
+    s = 1.0f;
+}
+static const u32 fzgx_pool_table4[1] = {0x00FF00FF};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep4(void) { const u32 *volatile cp; cp = fzgx_pool_table4; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime5(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 0.10000000149011612f;
+    s = 0.5f;
+    s = 10.0f;
+    s = 182.04444885253906f;
+    d = 4503599627370496.0;
+    s = -0.0027222223579883575f;
+}
+static const u32 fzgx_pool_table6[9] = {0x00000000, 0x3F800000, 0x00000000, 0x00000000, 0x3F800000, 0x00000000, 0x3F800000, 0x00000000, 0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep6(void) { const u32 *volatile cp; cp = fzgx_pool_table6; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime7(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 9.58738019107841e-05f;
+    s = 1.5f;
+    s = -1.1920928955078125e-07f;
+    s = 1.1920928955078125e-07f;
+    d = 4503601774854144.0;
+    s = 60.0f;
+    s = 1000000.0f;
+    s = 250000.0f;
+    s = 20.0f;
+}
+#pragma section code_type ".text"
+typedef struct Sig_fn_8006F6A8_Fn8006F6A8 {
+    s16 angle_y;
+    s16 angle_x;
+    s16 angle_z;
+} Sig_fn_8006F6A8_Fn8006F6A8;
+struct fn_1_DE9C4_Arg0 {
+    u8 pad_0[10];
+    s16 unk_A;
+    u8 pad_C[0x48];
+    f32 unk_54;
+    f32 unk_58;
+    f32 unk_5C;
+    u8 pad_60[0x18];
+    f32 unk_78;
+    f32 unk_7C;
+    f32 unk_80;
+    u8 pad_84[0x70];
+    f32 unk_F4;
+    u8 pad_F8[0x40];
+    u64 unk_138;
+    u8 pad_140[0x1C];
+    s32 unk_15C;
+    u32 *unk_160;
+    u32 unk_164;
+    f32 *unk_168;
+    u32 unk_16C;
+};
+extern f32 fn_1_9E14C(u32, void *, f32);
+extern f32 fn_1_9E194(u32, void *, f32);
+extern u32 fn_1_A5594(u32, void *);
+extern u32 lbl_8006D7DC(u32);
+extern u32 mathutil_mtxA_rotate_x(u32);
+extern u32 mathutil_mtxA_rotate_y(u32);
+extern u32 mathutil_mtxA_rotate_z(u32);
+extern void *fn_1_86254(int);
+extern void fn_8006F6A8(Sig_fn_8006F6A8_Fn8006F6A8 *);
+extern void lbl_8006DAEC(void);
+extern void lbl_8006DB30(void);
+extern void lbl_8006E0B4(f32, f32, f32);
+
+#pragma opt_strength_reduction off
+void fn_1_DE9C4(struct fn_1_DE9C4_Arg0 *arg0) {
+    f32 fzgx_live;
+    u32 *v2 = arg0->unk_160;
+    f32 v12;
+    f32 t5;
+    f32 t6;
+    f32 t7;
+    f32 t9;
+    f32 t11;
+    f32 t13;
+    f32 v16;
+    f32 v17;
+    f32 v19;
+    f32 v4 = (f32)arg0->unk_15C / 60.0f;
+    f32 dx;
+    f32 dz;
+    f32 next;
+    void *t19;
+    Sig_fn_8006F6A8_Fn8006F6A8 loc_8;
+    if (arg0->unk_15C < 0) v4 = 0.0f;
+    lbl_8006DAEC();
+    lbl_8006D7DC(arg0->unk_16C);
+    mathutil_mtxA_rotate_z((s32)(182.04444885253906f * arg0->unk_168[2]));
+    mathutil_mtxA_rotate_y((s32)(182.04444885253906f * arg0->unk_168[1]));
+    mathutil_mtxA_rotate_x((s32)(182.04444885253906f * arg0->unk_168[0]));
+    lbl_8006E0B4(fn_1_9E14C(v2[6], (void *)v2[7], v4), fn_1_9E14C(v2[8], (void *)v2[9], v4), fn_1_9E14C(v2[10], (void *)v2[11], v4));
+    mathutil_mtxA_rotate_z((s32)(182.04444885253906f * fn_1_9E14C(v2[4], (void *)v2[5], v4)));
+    mathutil_mtxA_rotate_y((s32)(182.04444885253906f * fn_1_9E14C(v2[2], (void *)v2[3], v4)));
+    mathutil_mtxA_rotate_x((s32)(182.04444885253906f * fn_1_9E14C(v2[0], (void *)v2[1], v4)));
+    psvec_set(&arg0->unk_54, *(f32 *)(0xE0000000 + 0x2C), *(f32 *)(0xE0000000 + 0x1C), *(f32 *)(0xE0000000 + 0x0C));
+    fn_8006F6A8(&loc_8);
+    arg0->unk_78 = 9.58738019107841e-05f * (f32)loc_8.angle_y;
+    arg0->unk_7C = 9.58738019107841e-05f * (f32)loc_8.angle_x;
+    arg0->unk_80 = 9.58738019107841e-05f * (f32)loc_8.angle_z;
+    lbl_8006DB30();
+    if ((arg0->unk_138 & 8192) == 0) arg0->unk_15C++;
+    if (*(s16 *)&lbl_1_bss_960 == 9 && arg0->unk_A == 2) {
+        next = (f32)arg0->unk_15C / 60.0f;
+        v16 = fn_1_9E194(v2[8], (void *)v2[9], v4);
+        v17 = fn_1_9E194(v2[8], (void *)v2[9], next);
+        if (v16 < v17) {
+            t19 = fn_1_86254(0);
+            dx = *(f32 *)((u8 *)t19 + 124);
+            dx -= arg0->unk_54;
+{
+    f32 v18;
+            v18 = *(f32 *)((u8 *)t19 + 128) - arg0->unk_58;
+            dz = *(f32 *)((u8 *)t19 + 132) - arg0->unk_5C;
+            dx = dx * dx;
+            dx = dx + v18 * v18;
+            dx = dx + dz * dz;
+            v19 = dx;
+}
+            if (v19 < 1000000.0f) {
+                v12 = v17-v16;
+                if (v12 > 5.0f && v19 < 250000.0f) {
+                    if (arg0->unk_F4 > 20.0f) fn_1_A5594(0xA90A0300, &arg0->unk_54);
+                    else fn_1_A5594(0xA90A0100, &arg0->unk_54);
+                } else {
+                    if (v12 > 5.0f && arg0->unk_F4 > 20.0f) fn_1_A5594(0xA90A0200, &arg0->unk_54);
+                    else fn_1_A5594(0xA90A0000, &arg0->unk_54);
+                }
+            }
+        }
+    }
+}
+#pragma opt_strength_reduction reset
+/* fzgx:end fn_1_DE9C4 */
+
 /* fzgx:begin fn_1_E1934 */
 typedef struct {
     u8 pad0[0x8];

@@ -30766,6 +30766,24 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/bg_for/fn_1_DE9C4.c",
+    "symbols": [
+      "fn_1_DE9C4"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/bg_for.c",
+    "pool": {
+      "...rodata.0": "lbl_1_rodata_6780",
+      "@66": "lbl_1_rodata_6800",
+      "@67": "lbl_1_rodata_6808",
+      "@37": "lbl_1_rodata_6780+0x20",
+      "@38": "lbl_1_rodata_6780+0x24"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/bg_for/fn_1_E1934.c",
     "symbols": [
       "fn_1_E1934"

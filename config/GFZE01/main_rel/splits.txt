@@ -7070,3 +7070,6 @@ rel/main_rel/accessory/fn_1_12999C.c:
 
 rel/main_rel/font/fn_1_4FD64.c:
 	.text       start:0x0004FD64 end:0x00050164 align:4
+
+rel/main_rel/bg_for/fn_1_DE9C4.c:
+	.text       start:0x000DE9C4 end:0x000DEDC4 align:4
