@@ -1441,3 +1441,97 @@ void fn_1_A59AC(void) {
     }
 }
 /* fzgx:end fn_1_A59AC */
+
+/* fzgx:begin fn_1_A5AA0 noprologue */
+#include "types.h"
+#include "rel/main_rel/sound.h"
+
+extern u32 lbl_1_bss_6F5C0;
+extern u8 lbl_1_bss_6F5C4[44];
+extern u8 *lbl_801A6410;
+
+extern s32 fn_1_45D0(void *, u32, const char *, u32);
+extern s32 fn_80006B70(const char *, void *);
+extern void *fn_80006DE8(void *);
+extern u32 fn_80006D1C(void *, u32, s32, u32);
+extern void fn_80006CE4(void *);
+extern s32 fn_80009CD4(void *, u32, const char *, u32);
+extern void OSReport(const char *, ...);
+extern void OSPanic(const char *, int, const char *, ...);
+extern void OSLink(void *, void *);
+extern void OSLinkFixed(void *, void *);
+
+typedef struct Fn1A5AA0Section {
+    u8 pad_0[0x20];
+    u32 unk20;
+    u8 pad_24[0x10];
+    void (*unk34)(void);
+    u8 pad_38[0x10];
+    u32 unk48;
+} Fn1A5AA0Section;
+
+typedef struct Fn1A5AA0Object {
+    void *unk0;
+    void *unk4;
+} Fn1A5AA0Object;
+
+void fn_1_A5AA0(const char *arg0, Fn1A5AA0Object *arg1) {
+    u8 *p = (u8 *)&lbl_1_data_33FF0;
+    u32 buf[18];
+    u32 count;
+    s32 flag;
+    u32 avail;
+    u32 link;
+    Fn1A5AA0Section *s;
+    u32 sz;
+    void *b;
+
+    if ((s32)lbl_1_bss_6F5C0 >= 10) {
+        OSReport((const char *)(p + 0x148), arg0);
+        OSPanic((const char *)(p + 0x150), 0x3b, (const char *)(p + 0x160));
+    }
+
+    count = lbl_1_bss_6F5C0;
+    lbl_1_bss_6F5C0 = count + 1;
+    *(u32 *)((u8 *)&lbl_1_bss_6F5C4 + (count << 2)) = (u32)arg1;
+    arg1->unk0 = 0;
+    arg1->unk4 = 0;
+
+    if (fn_80006B70(arg0, buf) != 0) {
+        avail = ((u32)fn_80006DE8(buf) + 0x1f) & ~0x1f;
+        flag = (s32)avail;
+        arg1->unk0 = (void *)fn_1_45D0(lbl_801A6410, avail, (const char *)(p + 0x150), 0x48);
+        flag = fn_80006D1C(buf, (u32)arg1->unk0, flag, 0);
+        fn_80006CE4(buf);
+
+        if (flag != 0) {
+            s = (Fn1A5AA0Section *)arg1->unk0;
+            link = ((((0x1f) + ((u32)s)) + (s->unk48))) & ~0x1f;
+            sz = (link + s->unk20) - (u32)s;
+
+            if (sz > avail) {
+                flag = fn_80009CD4(s, sz, (const char *)(p + 0x150), 0x55);
+                if (flag == 0) {
+                    b = (void *)fn_1_45D0(lbl_801A6410, ((Fn1A5AA0Section *)arg1->unk0)->unk20, (const char *)(p + 0x150), 0x58);
+                    arg1->unk4 = b;
+                    link = (u32)b;
+                }
+            }
+
+            if (flag != 0) {
+                OSLinkFixed(arg1->unk0, (void *)link);
+            } else {
+                OSLink(arg1->unk0, (void *)link);
+            }
+
+            ((Fn1A5AA0Section *)arg1->unk0)->unk34();
+        } else {
+            OSReport((const char *)(p + 0x148), arg0);
+            OSPanic((const char *)(p + 0x150), 0x64, (const char *)(p + 0x17c));
+        }
+    } else {
+        OSReport((const char *)(p + 0x148), arg0);
+        OSPanic((const char *)(p + 0x150), 0x69, (const char *)(p + 0x190));
+    }
+}
+/* fzgx:end fn_1_A5AA0 */

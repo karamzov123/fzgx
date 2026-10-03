@@ -6935,3 +6935,6 @@ rel/main_rel/sel_static_disp/fn_1_141360.c:
 
 rel/main_rel/screen_effect/fn_1_769FC.c:
 	.text       start:0x000769FC end:0x00076A94 align:4
+
+rel/main_rel/sound/fn_1_A5AA0.c:
+	.text       start:0x000A5AA0 end:0x000A5C98 align:4
