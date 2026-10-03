@@ -7076,3 +7076,6 @@ rel/main_rel/bg_for/fn_1_DE9C4.c:
 
 rel/main_rel/car/fn_1_8D988.c:
 	.text       start:0x0008D988 end:0x0008DAB4 align:4
+
+rel/main_rel/sel_static_disp/fn_1_14A028.c:
+	.text       start:0x0014A028 end:0x0014A17C align:4

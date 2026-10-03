@@ -3326,6 +3326,103 @@ void fn_1_14A00C(void) {
 }
 /* fzgx:end fn_1_14A00C */
 
+/* fzgx:begin fn_1_14A028 noprologue */
+#include "types.h"
+
+extern u8 lbl_1_bss_38200;
+extern u16 lbl_1_bss_50EC[10];
+extern u32 lbl_801A66A4;
+
+typedef struct {
+    void (*unk_0)(void *, u32);
+    void (*unk_4)(void);
+    void (*unk_8)(void);
+    u32 unk_C;
+} Ent;
+
+extern Ent lbl_1_data_42B94[];
+
+typedef struct {
+    u32 unk_0;
+    u8 pad_4[4];
+    u8 unk_8;
+} Obj3C30;
+extern Obj3C30 lbl_1_bss_3C30;
+
+typedef struct {
+    u32 unk_0;
+    u8 unk_4;
+    u8 unk_5;
+    u8 pad_6[6];
+    u8 unk_C;
+    u8 pad_D[3];
+    u32 unk_10;
+    u8 unk_14;
+} Obj518;
+extern Obj518 lbl_1_bss_8E518;
+
+typedef struct {
+    u8 pad_0[8];
+    u16 unk_8;
+} Obj9F8;
+extern Obj9F8 lbl_1_bss_9F8;
+
+extern void fn_1_14A1AC(u8);
+
+#pragma opt_dead_assignments off
+#pragma opt_common_subs off
+void fn_1_14A028(void) {
+    u32 fzgx_value;
+    Obj518 *s = &lbl_1_bss_8E518;
+    int flag = 1;
+    u8 tmp_ra2;
+
+    if ((lbl_1_bss_3C30.unk_0 & 0x8) == 0 && (((((0x1000 & lbl_1_bss_3C30.unk_0))) != ((0))))) {
+        if (((((lbl_1_bss_38200)) != ((0))))) {
+            flag = 0;
+        } else {
+            int n = lbl_1_bss_3C30.unk_8;
+            int i = 0;
+
+            while (n > 0) {
+                if (lbl_1_bss_50EC[i] != 0) {
+                    flag = 0;
+                    break;
+                }
+                i++;
+                n--;
+            }
+        }
+
+        tmp_ra2 = s->unk_C;
+
+        if (((((tmp_ra2)) != ((s->unk_5))))) {
+            if (((((tmp_ra2)) != ((0xFF))))) {
+                lbl_1_data_42B94[tmp_ra2].unk_8();
+            }
+
+            tmp_ra2 = s->unk_5;
+            fzgx_value = lbl_801A66A4;
+            s->unk_C = tmp_ra2;
+            s->unk_10 = fzgx_value;
+            lbl_1_data_42B94[tmp_ra2].unk_0(lbl_1_data_42B94, lbl_801A66A4);
+        }
+
+        fn_1_14A1AC(s->unk_5);
+
+        if (((((flag)) != ((0))))) {
+            lbl_1_data_42B94[s->unk_5].unk_4();
+            if (((0) != (((lbl_1_bss_9F8.unk_8 >> 4) & 1)))) {
+                s->unk_14 ^= 1;
+            }
+        }
+    }
+}
+#pragma opt_common_subs reset
+
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_1_14A028 */
+
 /* fzgx:begin fn_1_14A17C noprologue */
 #include "types.h"
 
