@@ -49,6 +49,14 @@ CODEX_DISABLE = ["plugins", "recommended_plugins", "plugin_sharing", "remote_plu
                  "shell_snapshot", "shell_snapshot_v2"]
 
 
+def _pct(value) -> str:
+    return "-" if value is None else f"{value:.5g}"
+
+
+def _num(value) -> str:
+    return "-" if value is None else str(value)
+
+
 def _refusal(out: str) -> Optional[str]:
     """'rate-limited' when the harness output shows the provider refused the request.
 
@@ -638,17 +646,27 @@ def main(argv: Optional[List[str]] = None) -> int:
                "released": len(released), "interrupted": len(interrupted), "unstarted": len(symbols) - len(results),
                "failed": len(other), "cost_usd": round(spent, 3),
                "wall_s": round(time.time() - t0, 1), "finish": finish_result, "results": results}
+    # only the codex app-server reports a turn count; the CLIs cap turns but never report
+    # what they used, so name that in the report instead of leaving the column empty
+    summary["turns_reported"] = sum(1 for r in results if r.get("turns") is not None)
+    summary["turns_note"] = (f"reported for {summary['turns_reported']}/{len(results)} sessions"
+                             if summary["turns_reported"] else
+                             f"not reported by the {a.harness} harness (capped at 40 per session)")
     # report + snapshot
     rep = STATE_DIR / "reports" / f"{a.batch}{'-shadow' if a.shadow else ''}{'-revise' if a.revise else ''}{'-' + a.effort if a.effort else ''}.md"
     lines = [f"# Batch {a.batch}{' (shadow A/B trial)' if a.shadow else ''} — {a.harness}/{model}, {a.parallel} parallel",
              "", f"{len(results)} functions: {len(matched)} matched, {len(released)} released, "
              f"{len(interrupted)} interrupted, {len(symbols) - len(results)} unstarted, {len(other)} failed; "
              f"${spent:.2f}; {summary['wall_s']} s wall.", "",
-             f"Provider: {a.provider}. Cost basis: {summary['cost_basis']}.", "",
-             "| Function | Outcome | % | Checks | Turns | $ | s |", "|---|---|---|---|---|---|---|"]
+             f"Provider: {a.provider}. Cost basis: {summary['cost_basis']}.",
+             f"Turns: {summary['turns_note']}.", "",
+             "| Function | Outcome | % | Checks | Turns | $ | s |",
+             "|---|---|---|---|---|---|---|"]
     for r in sorted(results, key=lambda r: r["symbol"]):
-        lines.append(f"| {r['symbol']} | {r['outcome']} | {'' if r['percent'] is None else r['percent']} | "
-                     f"{r['checks'] if r['checks'] is not None else ''} | {r['turns'] or ''} | {r['cost']:.3f} | {r['secs']} |")
+        # every cell gets an explicit placeholder: an empty cell reads as a rendering
+        # glitch rather than as "not reported", which is what a blank column looks like
+        lines.append(f"| {r['symbol']} | {r['outcome']} | {_pct(r['percent'])} | "
+                     f"{_num(r['checks'])} | {_num(r['turns'])} | {r['cost']:.3f} | {r['secs']} |")
     rep.parent.mkdir(parents=True, exist_ok=True)
     rep.write_text("\n".join(lines) + "\n")
     # Four provider batches end independently; the index has one writer at a time.

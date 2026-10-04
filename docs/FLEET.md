@@ -310,3 +310,27 @@ Two smaller consumers, both outside this repo and both deliberate build outputs:
 and `~/projects/fzero-gx-native` ~5 GB of extracted retail data. Neither is
 scratch; both are reproducible from source, so they are the next place to look if
 the volume needs more room.
+
+## Report tables: no cell renders empty (2026-10-04)
+
+669 of the 960 batch reports had a completely empty **Turns** column, which reads as
+a broken render rather than as a measurement that was never taken. The cause is
+structural, not cosmetic: `turns` is parsed from the Codex app-server's `num_turns`
+(`orchestrate.parse_claude`), and no other harness reports it. `claude_command` passes
+`--max-turns 40`, but a cap is not a count. So the column was dead for every provider
+in use — cline 154, oc4 139, oc1 137, oc3 60, oc2 59, claude 59, agy 58, gpt 2 — and
+zero reports carried a value.
+
+Every cell now gets an explicit `-` when the harness did not report it
+(`_pct`/`_num`), and each report states which case it is in:
+
+    Turns: not reported by the cline harness (capped at 40 per session).
+
+That distinguishes "not measured" from "not measured here", which is the difference
+between a readable table and one that looks broken. If turn counts are actually
+wanted, the fix is in the harnesses — have each emit its turn count in the result
+record — not in the report.
+
+Unrelated: `docs/dtk/` is vendored upstream DTK documentation and has 11
+lists split by blank lines. Left alone deliberately; it is not this project's prose
+and rewriting it would diverge from upstream.
