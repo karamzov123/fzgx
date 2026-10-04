@@ -144,6 +144,14 @@ def cmd_read_evidence(a, p):
     return 0 if r['ok'] else 2
 
 
+def cmd_levelscan(a, p):
+    from . import levelscan
+    r = levelscan.run(p, a.limit, Path(a.out) if a.out else levelscan._OUT,
+                      not a.fresh, log=lambda m: print(m, flush=True))
+    print(levelscan.format_report(r))
+    return 0 if r['ok'] else 2
+
+
 def cmd_structmap(a, p):
     from . import structmap
     if a.body:
@@ -504,6 +512,8 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser('read-evidence', help='read a cached diff or decoded retail data without compiling'); s.set_defaults(fn=cmd_read_evidence)
     s.add_argument('symbol'); s.add_argument('--section', choices=('diff', 'data'), default='diff')
     s.add_argument('--cursor', type=int, default=0)
+    s = sub.add_parser('levelscan', help='probe every function with a local body for a better -O level (reports only)'); s.set_defaults(fn=cmd_levelscan)
+    s.add_argument('--limit', type=int, default=0); s.add_argument('--out', default=None); s.add_argument('--fresh', action='store_true', help='ignore any existing scan and start over')
     s = sub.add_parser('structmap', help='retail struct fingerprint: which field offsets each base register touches'); s.set_defaults(fn=cmd_structmap)
     s.add_argument('symbol'); s.add_argument('--body', help='compare retail offsets against this candidate body instead of printing the retail fingerprint'); s.add_argument('--mw-version', default=None)
     s.add_argument('--skeleton', action='store_true', help='infer a struct layout for one base register from the widths retail touches (provisional)'); s.add_argument('--base', default=None, help='base register for --skeleton (default: the most-accessed)')
