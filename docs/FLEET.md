@@ -267,3 +267,41 @@ supervisor preserving best bodies and releasing claims, not a hang.
 
 Claims are recovered on startup regardless (`run()` releases anything still marked
 `fleet-v2-*` before dispatching), so a hard kill costs a batch, not the ledger.
+
+## Scratch growth in `.fzgx/fixup/sessions` (2026-10-04)
+
+`.fzgx/fixup/sessions/<symbol>/` reached **192 GB** and was the single largest
+consumer on the volume (84% full, inodes 88%). It is not evidence and nothing in it
+is tracked: `git ls-files .fzgx/` is empty and `.gitignore:46` excludes the whole
+tree.
+
+Per session, `Engine` writes four things (`fixup.py:98`, `:232`):
+
+| Entry | Nature |
+| --- | --- |
+| `report.json`, `cache.json` | durable result and compile cache — **keep** |
+| `declarations/` | small declaration scratch — keep |
+| `sources/<identity[:24]>.c` | every candidate body ever tried, content-addressed |
+| `objects/<group>/<sha>.o` | every candidate's compiled object |
+
+`sources/` and `objects/` are pure regenerable scratch: `record()` rewrites a source
+only when absent and raises on a hash mismatch, and `compile_chunk` overwrites the
+object group per compile. Worst observed was `customize___epilog` at 721 objects /
+116 MB and `colchg_menu_disp` at 7537 sources / 31 MB — a single function's search
+history. Nothing prunes them, so the directory only grows.
+
+Safe cleanup, while the fleet is idle (no `fzgx.py fixup` running):
+
+    cd .fzgx/fixup/sessions
+    for d in */; do rm -rf "$d/sources" "$d/objects"; done
+
+That reclaimed ~40 GB and took the volume from 84% to 77%. It costs nothing:
+re-running a session regenerates both, and `report.json`/`cache.json` still make
+the rerun cheap. **Do not delete `report.json` or `cache.json`** — the cache is
+what makes a repeat run skip compiles.
+
+Two smaller consumers, both outside this repo and both deliberate build outputs:
+`~/projects/fzero-gx-online/build` holds ~7 GB of built ISOs (five 1.4 GB images)
+and `~/projects/fzero-gx-native` ~5 GB of extracted retail data. Neither is
+scratch; both are reproducible from source, so they are the next place to look if
+the volume needs more room.

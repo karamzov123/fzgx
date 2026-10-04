@@ -505,11 +505,8 @@ number — `mwgraph.py` built `desired` from `after['nodes']`, the colouring of 
 *own* SelectColors pass, so the question was whether an order reproduces what the
 compiler just did. That circularity is real.
 
-But the replacement claim overcorrected. It asserted that
-`mwconstraints.target_mapping` returns `instruction-shape` "317 times out of 317:
-none qualify", making register repair unable to fire on this corpus at all.
-
-Measured directly — retail words vs our own compiled objects in `.fzgx/work/`
+The follow-on "none qualify" claim did not survive measurement. Measured
+directly — retail words vs our own compiled objects in `.fzgx/work/`
 (2542 objects), restricted to `status != 'matched'`:
 
 | Outcome | Count |
@@ -531,10 +528,27 @@ the ledger still reads `unmatched`:
     colchg_selmate_disp   fn_1_128B60   fn_1_3F4B8
     fn_1_611EC            fn_1_FC760    fn_3_17098
 
-Their attempt rows carry `outcome='link-mismatch'` ("object matched but link
-differed"). **These are not register-repair candidates.** The code is already
-byte-identical; they are blocked on link/pool. Anyone reading the withdrawal as
-"the plateau is uniformly pre-instruction-identity" will misread these six.
+These are `link-mismatch` bodies quarantined by `verify.py:160-162`: the object
+matched, the batch relink did not, so the unit was uncarved and the body parked in
+`.fzgx/attempts/<sym>.linkfail.<ts>.c` with `percent=100, link_fail=true`.
+
+**`fn_1_128B60` is now `matched` / `link_state=verified`** (commit `a48591fa`).
+Its preserved body declared `static s32 next_rand(void)` — the non-inline helper
+shape of finding 273. `fixup_source.inline_helpers` already had the fix but never
+ran: it is gated on `row['score'] == 100` (fixup.py:432), and the quarantined
+body was invisible to the corpus. The standalone body also needed
+`#include "types.h"`, which the recarve path supplies and a work copy does not.
+
+The other five are **not** this shape and remain open:
+
+- `fn_1_3F4B8`, `fn_1_611EC`, `colchg_selmate_disp` — `inline_helpers` yields
+  proposals, but these bodies are `.fzgxpool` layout primers declaring `fzgx_obj_*`
+  external data objects. A different failure; the transform does not apply.
+- `fn_1_FC760`, `fn_3_17098` — zero inline proposals. Cause still unidentified.
+
+So do not read this census as "the plateau is uniformly pre-instruction-identity":
+six functions were already byte-identical and were waiting on a link repair that
+existed but was gated off.
 
 The has-initializers guard is still moot for the reason given: it raises the
 candidate count of a path gated earlier. That part of the withdrawal stands.
