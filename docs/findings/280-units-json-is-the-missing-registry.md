@@ -96,6 +96,26 @@ function whose callees are all still in auto units positioned after it. Until th
 exists, treat "no split range" as a *candidate* reason, not a guaranteed fix, and
 validate every batch of additions with a build.
 
+### What landed, and the adjacency that predicts the cycle
+
+Landing the survivors took a second pruning pass over the same batch, and it produced the
+predictor: **the cyclic cases are functions whose range ends exactly where the next split
+unit begins, and that call into it.**
+
+    fn_12_3A64  0x3A64..0x3DB8      fn_12_3DB8 starts at 0x3DB8
+    fn_1_8CA70 -> fn_1_8CAF4 -> fn_1_8CB78 -> auto_... -> fn_1_8CED0
+
+Two of the 24 second-pass drops were two units of one cycle, which is the signature of
+mutual reference rather than a one-way ordering problem. The cheap structural test is
+therefore: a candidate is cyclic when its range is contiguous with another split unit and
+either side calls the other. That is computable from `symbols.txt` plus the call graph
+`mwgraph.py` already replays, and it is the fix to build.
+
+Final tally across both passes, all validated by rebuild: **32 ranges landed, 64 symbols
+confirmed cyclic.** The confirmed set lives in `config/GFZE01/cyclic_splits.json` and
+`splitgaps.py` now reports those symbols as `CYCLIC` rather than offering them as an
+addable gap, so the class is not rediscovered by the next agent.
+
 ## What it takes to land one object-100% function
 
 `fn_3_17098` (customize, 72 B) was at 100% object / link-rejected with 31 attempts.

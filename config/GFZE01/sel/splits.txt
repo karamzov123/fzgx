@@ -52,6 +52,9 @@ rel/sel/sel/fn_10_8AAC.c:
 	.text       start:0x00008AAC end:0x00008B0C
 
 rel/sel/sel/fn_10_8D90.c:
+rel/sel/fn_10_8BB8.c:
+	.text       start:0x00008BB8 end:0x00008D90 align:4
+
 	.text       start:0x00008D90 end:0x00008DFC
 
 rel/sel/sel/fn_10_9154.c:
@@ -109,6 +112,9 @@ rel/sel/sel/fn_10_C694.c:
 	.text       start:0x0000C694 end:0x0000C6A4
 
 rel/sel/sel/fn_10_C8A8.c:
+rel/sel/fn_10_C6A4.c:
+	.text       start:0x0000C6A4 end:0x0000C8A8 align:4
+
 	.text       start:0x0000C8A8 end:0x0000C8E4
 
 rel/sel/sel/fn_10_C8E4.c:
@@ -157,6 +163,9 @@ rel/sel/sel/fn_10_19290.c:
 	.text       start:0x00019290 end:0x00019308
 
 rel/sel/fn_10_1B658.c:
+rel/sel/fn_10_1B2F4.c:
+	.text       start:0x0001B2F4 end:0x0001B658 align:4
+
 	.text       start:0x0001B658 end:0x0001B65C
 
 rel/sel/fn_10_1B65C.c:

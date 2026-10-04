@@ -26,6 +26,13 @@ the check path consults it. The three registries fail differently:
 another attempt is spent on it. A green build is not evidence about code that was never
 compiled, so treat a missing registry as the explanation until proven otherwise.
 
+**Not every gap should be closed.** Giving a function its own split makes it its own link
+unit; if the functions it calls are still in auto units the linker places after it, the
+module fails to resolve with a cyclic-dependency error. `config/GFZE01/cyclic_splits.json`
+holds the functions measured to do this, each confirmed by rebuilding, and they are
+reported as `CYCLIC` rather than offered as an addable gap. They need a call-graph-aware
+split. See docs/findings/280.
+
 Usage:
     python3 tools/fzgx/splitgaps.py [--module NAME] [--only-unmatched] [--registries] [--json]
 """
@@ -46,6 +53,25 @@ from fzgx.project import ROOT  # noqa: E402
 CONFIG = ROOT / "config" / "GFZE01"
 RANGE_RE = re.compile(r"start:(0x[0-9A-Fa-f]+)\s+end:(0x[0-9A-Fa-f]+)")
 FILE_RE = re.compile(r"^([\w/.\-]+\.c):\s*$")
+CYCLIC_PATH = CONFIG / "cyclic_splits.json"
+_CYCLIC: Optional[set] = None
+
+
+def cyclic_symbols() -> set:
+    """Functions measured to create a link-order cycle when given their own split.
+
+    A new split makes a function its own link unit. If the functions it calls are still
+    supplied by auto units the linker must place after it, resolution is circular and the
+    module does not link (docs/findings/280). These were each confirmed by rebuilding, so
+    do not propose a split for them: they need a call-graph-aware split, not a range.
+    """
+    global _CYCLIC
+    if _CYCLIC is None:
+        try:
+            _CYCLIC = set(json.loads(CYCLIC_PATH.read_text()).get("symbols") or ())
+        except (OSError, ValueError):
+            _CYCLIC = set()
+    return _CYCLIC
 
 
 def known_functions(module: str):
@@ -160,7 +186,13 @@ def main() -> int:
                 continue
             if a.registries:
                 report.append(registry_state(module, sym, addr, size, cov))
-            elif not any(s <= addr and addr + size <= e for s, e in cov):
+            elif any(s <= addr and addr + size <= e for s, e in cov):
+                continue
+            elif sym in cyclic_symbols():
+                # measured to fail the link; a range is not the fix
+                report.append(dict(module=module, symbol=sym, addr=addr, size=size,
+                                   end=addr + size, status=status.get(sym), cyclic=True))
+            else:
                 report.append(dict(module=module, symbol=sym, addr=addr, size=size,
                                    end=addr + size, status=status.get(sym)))
 
@@ -185,6 +217,8 @@ def main() -> int:
                 verdict = "split only (object comes from retail)"
             elif r["registered"] and not r["compiled"]:
                 verdict = "body present, not regenerated"
+            if r["symbol"] in cyclic_symbols():
+                verdict = (verdict + "; " if verdict else "") + "CYCLIC: a split here fails the link"
             print("%-13s %-22s %6s %-28s %6s %s"
                   % (r["module"], r["symbol"], "yes" if r["split"] else "NO",
                      (r["unit"] or "-")[:28], "yes" if r["compiled"] else "NO", verdict))
