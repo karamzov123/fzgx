@@ -245,5 +245,36 @@ The largest single guard is `has-initializers` at 33.7%. It is deliberately cons
 "moving them can change program behaviour" -- so relaxing it is a real decision and not a
 free win, but it is where the next ~150 candidates are.
 
+## Compiling the projected candidates: what it actually buys
+
+The 120 candidates above are not a promise, so they were compiled through the real oracle.
+A body file on disk is invisible to the fleet, so each improvement was also registered in
+the `attempts` table -- `preflight_repair` picks its body with
+`ORDER BY MAX(COALESCE(final_percent,0), COALESCE(best_in_attempt,0)) DESC`, and a file with
+no row is never selected, which would leave the retry re-deriving the old plateau.
+
+Result over the full projected set: **25 bodies improved, 0 matched.**
+
+    fn_10_1A458   81.85 -> 97.17     fn_1_CD7BC   92.23 -> 98.62
+    fn_1_FF420    96.99 -> 99.52     fn_1_FE644   97.47 -> 99.30
+    fn_80067DE4   98.97 -> 99.84     fn_1_DDF80   93.79 -> 97.73
+
+Two guards against reading too much into this:
+
+1. **Most projections are allocation-neutral.** Of 24 spot-checked, 18 compiled to exactly
+   the baseline percent, 3 were better and 3 worse. The sources genuinely differ -- a pure
+   declaration permutation of identical length, verified -- so this is MWCC's allocator
+   ignoring that particular reorder, not a no-op edit. The witness proves *an* order exists;
+   reordering declarations is one narrow way to induce it and usually does not.
+
+2. **Zero matched.** The reorder reaches the allocator but does not close the gap on its own.
+
+So the accurate statement is narrower than "unbuilt work waiting to be built". The witnesses
+are real and the projection is cheap and deterministic, but declaration reordering is not
+sufficient. It is a real improvement generator for ~25 of every ~110 projected functions,
+which is worth having and worth keeping, and the remaining distance needs edits the current
+projection class does not model. Relaxing the `has-initializers` guard would raise the
+*candidate* count, not the match rate, and should be judged on that basis.
+
 Treating this class as "more agents, more attempts" has already cost roughly $369 and is
 the single largest line item in the ledger.
