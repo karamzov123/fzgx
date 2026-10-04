@@ -884,6 +884,111 @@ for (fzgx_loop_i_1785 = 0; fzgx_loop_i_1785 < 2; fzgx_loop_i_1785++) {
 }
 /* fzgx:end colchg_selcar_disp */
 
+/* fzgx:begin colchg_selmate_disp */
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 0.0f;
+    s = 0.25f;
+}
+static const u32 fzgx_pool_table2[3] = {0x00000000, 0x00000000, 0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep2(void) { const u32 *volatile cp; cp = fzgx_pool_table2; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime3(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 160.0f;
+    s = 50.0f;
+    s = -10.0f;
+    s = 182.04444885253906f;
+    s = 2.0f;
+    s = 1.0f;
+}
+static const u32 fzgx_pool_table4[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep4(void) { const u32 *volatile cp; cp = fzgx_pool_table4; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime5(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    d = 4503599627370496.0;
+    s = 250.0f;
+    s = 255.0f;
+    s = 0.5f;
+    s = 480.0f;
+    d = 4503601774854144.0;
+}
+#pragma section code_type ".text"
+
+typedef struct {
+    u8 pad_00[0x14];
+    f32 unk_14;
+    u8 pad_1c[0x20];
+    f32 unk_18;
+    f32 unk_3c;
+    f32 unk_40;
+    f32 unk_44;
+    f64 unk_48;
+} PoolRow;
+extern const PoolRow lbl_9_rodata_0;
+
+typedef struct {
+    u8 pad_00[8];
+    f32 unk_08;
+    f32 unk_0c;
+    u8 pad_10[0x48];
+} SelmateBlk;
+extern const SelmateBlk lbl_1_rodata_26F8;
+
+extern u8 lbl_9_data_150[0x28];
+extern u8 lbl_9_bss_14[0xC8];
+extern struct Entry *lbl_1_data_1FB6C[];
+
+void fn_9_120C(void);
+void fn_9_1310(void);
+void fn_1_496FC(void *, f32, f32);
+void fn_1_4AE0C(const char *, ...);
+void fn_1_8D3F8(void *, void *, void (*)(void), void *);
+
+typedef struct Entry Entry;
+
+void colchg_selmate_disp(u8 *car) {
+    u8 *widget;
+    f32 f30;
+    f32 f29;
+    f32 f28;
+    SelmateBlk local;
+    struct { s16 value; } i;
+    struct Entry *entry;
+    const PoolRow *pool;
+    s16 index;
+    f32 lab_t1;
+
+    pool = &lbl_9_rodata_0;
+    index = lbl_9_bss_8->unk_0;
+    lab_t1 = (160.0f);
+    fn_1_496FC(lbl_9_bss_8, lab_t1, (50.0f));
+    entry = lbl_1_data_1FB6C[lbl_9_bss_8->unk_0];
+    i.value = 0;
+    while (*(s16 *)entry != -1) {
+        entry = (struct Entry *)((u8 *)entry + 12);
+        i.value++;
+    }
+    fn_1_4AE0C((const char *)lbl_9_data_150, lbl_9_bss_8->unk_2, lbl_9_bss_8->unk_4, i.value - 1);
+    f28 = (255.0f);
+    f29 = (0.5f);
+    f30 = (480.0f);
+    for (i.value = 0; i.value < 2; i.value++) {
+        local = lbl_1_rodata_26F8;
+        local.unk_0c = f28;
+        local.unk_08 = (((((f30)) * (((f32)(i.value % 2)))) * ((f29))));
+        switch (i.value) {
+        case 0:
+            fn_1_8D3F8(&lbl_9_bss_14[i.value * 0x64], &local, fn_9_120C, car + index * 0x440);
+            break;
+        case 1:
+            fn_1_8D3F8(&lbl_9_bss_14[i.value * 0x64], &local, fn_9_1310, car + index * 0x440);
+            break;
+        }
+    }
+}
+/* fzgx:end colchg_selmate_disp */
+
 /* fzgx:begin colchg_chgcol_disp */
 extern u8 lbl_9_data_178[20];
 extern u8 lbl_9_bss_14[200];

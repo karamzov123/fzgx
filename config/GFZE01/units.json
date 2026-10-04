@@ -154,6 +154,22 @@
   },
   {
     "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/colchg_selmate_disp.c",
+    "symbols": [
+      "colchg_selmate_disp"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c",
+    "pool": {
+      "...rodata.0": "lbl_9_rodata_0",
+      "@15": "lbl_9_rodata_14",
+      "@16": "lbl_9_rodata_18"
+    }
+  },
+  {
+    "module": "car_colchg",
     "source": "rel/car_colchg/car_colchg/colchg_selmate_init.c",
     "symbols": [
       "colchg_selmate_init"
