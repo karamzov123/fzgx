@@ -2147,3 +2147,81 @@ void fn_1_131154(void) {
     }
 }
 /* fzgx:end fn_1_131154 */
+
+/* fzgx:begin fn_1_131194 noprologue */
+#include "types.h"
+#include "dolphin/os/OSTime.h"
+
+typedef struct {
+    s32 unk_00;
+    s32 unk_04;
+    s32 unk_08;
+    u32 unk_0C;
+    u8 pad_10[8];
+    u32 unk_18;
+    u8 pad_1C[0x18];
+    char unk_34[0x1C];
+} MemcardState;
+
+typedef struct {
+    u8 unk_0;
+    u8 pad_1[3];
+    u32 unk_4;
+    u32 unk_8;
+    u32 unk_C;
+    u8 pad_10[0x14];
+} MemcardRequest;
+
+typedef struct {
+    s32 unk_00;
+    s32 unk_04;
+    s32 unk_08;
+    s32 unk_0C;
+    s32 unk_10;
+    s32 unk_14;
+    s32 unk_18;
+    s32 unk_1C;
+    s32 unk_20;
+} CalTime;
+
+extern MemcardState lbl_1_bss_8CA40;
+extern u8 lbl_1_data_40D50[0x20];
+extern u32 lbl_801A6410;
+
+extern void OSPanic(const char *arg0, s32 arg1, const char *arg2, ...);
+extern u32 fn_1_4630(u32 arg0, u32 arg1, u8 *arg2, u32 arg3);
+extern void fn_80008BA8(u32 arg0, u32 arg1, u32 arg2);
+extern void fn_80008BEC(void *dst, s32 value, u32 size);
+extern void fn_1_AA6D8(s32 arg0, u8 arg1, void *arg2);
+extern int sprintf(char *dst, const char *fmt, ...);
+
+void fn_1_131194(void) {
+    u8 *data = (u8 *)&lbl_1_data_40D50;
+    MemcardState *state = (MemcardState *)&lbl_1_bss_8CA40;
+    CalTime cal;
+    MemcardRequest request;
+    u32 buf;
+
+    if (state->unk_0C == 0) {
+        state->unk_00 = -1;
+        state->unk_08 = -1;
+        state->unk_0C = 0;
+        OSPanic((const char *)(data + 0x154), 0xF5, (const char *)(data + 0x168));
+    } else if (state->unk_08 == -1) {
+        state->unk_00 = -1;
+    } else {
+        buf = (u32)fn_1_4630(lbl_801A6410, 0x20700, data + 0x154, 0xFF);
+        state->unk_18 = buf;
+        fn_80008BA8(buf, state->unk_0C, 0x20700);
+        OSTicksToCalendarTime(OSGetTime(), (OSCalendarTime *)&cal);
+        fn_80008BEC(&request, 0, 0x24);
+        request.unk_4 = 0;
+        request.unk_0 = 3;
+        request.unk_C = state->unk_18;
+        request.unk_8 = (u32)&state->unk_34[0];
+        sprintf(&state->unk_34[0], (const char *)(data + 0x18C), cal.unk_14 % 100, cal.unk_10 + 1, cal.unk_0C, cal.unk_08, cal.unk_04);
+        fn_1_AA6D8(0, (u8)state->unk_08, &request);
+        state->unk_04 = 3;
+    }
+}
+/* fzgx:end fn_1_131194 */
