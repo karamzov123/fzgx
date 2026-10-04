@@ -96,6 +96,51 @@ function whose callees are all still in auto units positioned after it. Until th
 exists, treat "no split range" as a *candidate* reason, not a guaranteed fix, and
 validate every batch of additions with a build.
 
+## A split on an unmatched function *lowers* the headline number
+
+Landing the 32 surviving ranges built and hashed clean (`ninja` exit 0, `16 files OK`)
+and still cost 32 functions:
+
+    matched_functions  5656 -> 5624      complete_units  5697 -> 5665
+
+Nothing had regressed. The 32 were never decompiled — the ledger has every one of them as
+`unmatched`. They were being counted only because they sat inside a **retail auto object**,
+whose bytes match by construction. Giving a function its own split moves it out of that
+auto unit into a unit with no source, and objdiff stops crediting it.
+
+So `matched_functions` and `complete_units` include functions that were never written in
+C, and the correct move toward a body for such a function *decreases* both. A split alone
+is not neutral: without a body in the same change it is a metric regression.
+
+This is the sharpest edge of finding 280, and it means the obvious metric to watch while
+working this class is actively misleading. The 32 ranges were reverted for this reason;
+the `cyclic_splits.json` set and the `--registries` output are kept, since they are pure
+diagnosis and cost nothing.
+
+The correct unit of work for one of these functions is all four steps in one change --
+split range, `units.json` entry, `tufile.regenerate`, and a body -- and the metric only
+moves when the last one lands.
+
+### What the cycle class looked like
+
+Of 92 candidates, 52 linked and 64 symbols were confirmed cyclic across two passes (the
+second pass re-tested the first pass's survivors against a moved baseline). The confirmed
+set lives in `config/GFZE01/cyclic_splits.json`, and `splitgaps.py` reports those symbols
+as `CYCLIC` rather than offering them as an addable gap, so the class is not
+rediscovered. That matters because the default output prints an "add this range" line
+taken from the first row, which would otherwise keep proposing a range that breaks the
+link.
+
+The second pass also produced the predictor: **the cyclic cases are functions whose range
+is contiguous with the next split unit and that call into it.**
+
+    fn_12_3A64  0x3A64..0x3DB8      fn_12_3DB8 starts at 0x3DB8
+    fn_1_8CA70 -> fn_1_8CAF4 -> fn_1_8CB78 -> auto_... -> fn_1_8CED0
+
+Two of the drops were two units of a single cycle, which is mutual reference rather than a
+one-way ordering problem. The cheap structural test -- contiguous ranges plus a call edge,
+over the call graph `mwgraph.py` already replays -- is the fix to build.
+
 ## What it takes to land one object-100% function
 
 `fn_3_17098` (customize, 72 B) was at 100% object / link-rejected with 31 attempts.
