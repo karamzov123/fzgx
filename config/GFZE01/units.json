@@ -52509,6 +52509,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/sound/fn_1_A33F0.c",
+    "symbols": [
+      "fn_1_A33F0"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/sound.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/sound/fn_1_A358C.c",
     "symbols": [
       "fn_1_A358C"

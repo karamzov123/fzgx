@@ -937,6 +937,89 @@ void fn_1_A31E4(void) {
 #pragma opt_common_subs reset
 /* fzgx:end fn_1_A31E4 */
 
+/* fzgx:begin fn_1_A33F0 noprologue */
+#include "types.h"
+
+typedef struct {
+    u8 unk_0;
+    u8 unk_1;
+} CounterEntry;
+
+typedef struct {
+    u8 unk_0[0x740];
+    u8 unk_740;
+    u8 unk_741[3];
+    u32 unk_744;
+    u8 unk_748[4];
+    u8 unk_74C[0xA4];
+    CounterEntry unk_7F0[0x800];
+} SoundState;
+
+extern SoundState lbl_1_bss_6EA98;
+extern s32 fn_1_3F864(void);
+extern void fn_80067344(u32 arg0, u32 arg1, u32 arg2, u32 arg3);
+extern void fn_80067898(u32 arg0);
+extern const f32 lbl_1_rodata_4544;
+extern const f32 lbl_1_rodata_4548;
+
+#pragma opt_propagation off
+void fn_1_A33F0(s32 arg0, f32 arg1) {
+    SoundState *st = (SoundState *)&lbl_1_bss_6EA98;
+    u8 *row;
+    u8 *entry;
+    u8 *counter_entry;
+    s32 off;
+    s8 i;
+    s8 count;
+
+    count = 0;
+    if (fn_1_3F864() == 0) {
+        return;
+    }
+
+    off = arg0 * 2;
+    counter_entry = (u8 *)&st->unk_7F0[0];
+    counter_entry += off;
+    row = &st->unk_74C[0];
+    entry = counter_entry + 1;
+    i = 0;
+    while (i < *(s8 *)((u8 *)st + 0x82C)) {
+        if (arg0 == ((1)[row])) {
+            if (count > 2) {
+                return;
+            }
+            if (((2)[row]) != 0) {
+                if ((s8)((0)[counter_entry]) == 0) {
+                    fn_80067344(1, 0x10, 0xB0270000, ((2)[row]));
+                    if (arg1 <= lbl_1_rodata_4544) {
+                        if (st->unk_740 == 0 && st->unk_744 <= 0x2D) {
+                            fn_80067898(0xA9090200);
+                        }
+                    } else if (arg1 <= lbl_1_rodata_4548) {
+                        if (st->unk_740 == 0 && st->unk_744 <= 0x2D) {
+                            fn_80067898(0xA9090200);
+                        }
+                    } else {
+                        if (st->unk_740 == 0 && st->unk_744 <= 0x2D) {
+                            fn_80067898(0xA9090600);
+                        }
+                    }
+                    count++;
+                }
+            }
+            counter_entry[0]++;
+            entry[0] = 0;
+            if ((s8)((0)[counter_entry]) > 6) {
+                counter_entry[0] = 0;
+            }
+        }
+        row += 0x14;
+        i++;
+    }
+}
+#pragma opt_propagation reset
+/* fzgx:end fn_1_A33F0 */
+
 /* fzgx:begin fn_1_A358C */
 extern u32 lbl_1_bss_6EA98;
 extern s32 fn_1_3F864(void);
