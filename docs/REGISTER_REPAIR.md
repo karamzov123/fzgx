@@ -830,6 +830,37 @@ two cells compiled identically" while the word counts were 315 and 344. Enabling
 `skipdata` (undecodable words become `.byte` rows) makes the comparison span both
 objects in full and reports the 312 rows that actually differ.
 
+### `fn_1_2D038`: one hoisted address computation, characterised
+
+The pooling result above says a `pool_rows` near-miss is source-shaped, so I took the
+archetypal one — 315 words, 99.683% — and diffed our object against retail directly.
+Exactly one row differs:
+
+    65   RETAIL  lbz r0, 5(r3)      |  OURS  lbz r0, 0x35(r31)
+
+This is **not** a semantic error. `unk_30.unk_5` sits at `0x30 + 5 = 0x35`, so both
+sides read the same byte; retail holds the `&unk_30` base in `r3` with displacement 5,
+while we fold the whole `0x35` into the displacement off `r31`. The remaining 314 words
+agree, including the register allocation everywhere else.
+
+Rewriting the access drops the redundant cast chain on the source line that computes it
+(`((struct fn_1_2D038_hdr *)p_rod)->unk_5`) and the compiler then emits retail's exact
+`addi r3, r31, 0x30` — but places it one row *later* than retail:
+
+    64   RETAIL  addi r3, r31, 0x30   |  OURS  lbz r0, 0x35(r31)
+    65   RETAIL  lbz r0, 5(r3)        |  OURS  addi r3, r31, 0x30
+
+So the materialised form is reachable from source and the residue is a pure one-slot
+scheduling difference: retail hoists the address computation above the load, we sink it
+to its use. Moving the assignment earlier in program order does not hoist it, and
+neither do `opt_propagation`, `scheduling`, `peephole` or `opt_common_subs`, all of
+which leave the result byte-identical to as-is in both the cast and non-cast forms.
+
+That is a tighter statement than "99.68% and stuck": the function needs its address
+computation hoisted by one instruction, and that hoist is not reachable from program
+order or from any pragma cell. Worth recording as the next concrete thing to attack on
+this function rather than re-deriving.
+
 Note `mwconstraints.py` has since gained a `subkind` split (`cfebd280`), which is what
 separates rows 1 and 2 above; this census imports the live module.
 
