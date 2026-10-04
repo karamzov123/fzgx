@@ -17801,6 +17801,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_8003A4E8.c",
+    "symbols": [
+      "fn_8003A4E8"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.2.5n",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8003A760.c",
     "symbols": [
       "fn_8003A760"
