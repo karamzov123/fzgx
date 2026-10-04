@@ -705,6 +705,51 @@ Three conclusions, each earned:
    read the clone concentration as an opening. The remaining frontier is the `mixed`
    band (250 of the 95-99% functions), which is ordinary matcher work.
 
+### Why the floor exists: band width
+
+`MWCC_IDIOMS.md` says register allocation follows *declaration order of locals*. That
+governs the **callee-saved** webs only. Measuring how many saved registers each target
+actually uses (r13-r31):
+
+| Function | Saved registers in retail | Band width |
+| --- | --- | ---: |
+| `fn_12_321E8` | **none** (`r5` is volatile) | 0 |
+| `fn_10_22760` | r30, r31 | 2 |
+| `fn_1_10161C` | r30, r31 | 2 |
+
+So `fn_12_321E8`'s tie-break is in a *volatile scratch* register, which declaration
+order does not reach at all — the 492-permutation sweep was flat because there was no
+saved band to permute. That is the mechanism behind the floor in 5, not a search that
+gave up. The two width-2 functions were re-swept properly (713 candidates on
+`fn_1_10161C`) and also held at 16 word errors, so the band width does not rescue them
+either.
+
+### External survey: what other GameCube decompilations do
+
+Checked `zcanann/mwcc-rs` and `zcanann/SFA-Decomp` (Star Fox Adventures, the closest
+MWCC precedent — a byte-exact reimplementation plus a measured catalogue),
+`ACreTeam/ac-decomp` (Animal Crossing, the largest GC corpus), and the usual
+`doldecomp` projects. Corrections to commonly-assumed names: **there is no `smb-decomp`/
+`smbc` MWCC repo** (those names are N64/IDO), and **Melee is CodeWarrior 2.6/2.7, not
+`mwcceppc`**, with no published codegen material. `SFA-Decomp` targets GC/1.3, not
+1.3.2, and its authors warn the lever catalogue may not transfer.
+
+Techniques worth carrying over, and what happened when tried here:
+
+| Technique | Source | Result here |
+| --- | --- | --- |
+| `-pool off` / AC rodata-patched compiler | `mwcc-rs` README (GC/1.3.2r "disabled `.rodata` pooling"); `ac-decomp` | **Refuted by measurement.** `GC/1.3.2r` is installed here and scores −12, −21, −33, −94, −89 against stock on six pool-heavy functions. F-Zero GX retail uses *stock* pooling, which validates the 439-unit `mwcc_pool` machinery rather than undermining it. |
+| `#pragma scheduling off` | 24 functions in this tree; findings/110 | **Added as a transform.** `optimizer_pragmas` proposed seven options and omitted `scheduling`, the only one that changes instruction *order*. Now emitted as an 8th proposal; did not close a function in testing, but it was previously unreachable. |
+| `#pragma push`/`#pragma pop` around top-level `asm` | findings/110 | Already in the tree. |
+| `-O3` to disable scheduling entirely | `mwcc-rs` flags | Not tried; `-O3` changes far more than order. |
+| Per-TU flag-cell probe: compile under two profiles, **diff your two objects against each other**, name the transform, then reproduce it in source | `SFA-Decomp` `source_shape_levers.md` step 1b | **Not implemented.** This is the cheapest untried item: the infrastructure to build candidate objects already exists; what is missing is object-vs-object diffing. |
+| Declaration-band model, reliable only below width 4 | `SFA-Decomp` | Explains our floor (see above); their widths ≥5 are "provably flat". |
+
+Not adopted: anything SFA warns may not transfer across compiler generations, and
+their conclusions share one author with `mwcc-rs`, so they are not independent
+corroboration. `ac-decomp`'s pooling usage is the independent signal, and it pointed
+the wrong way for this title.
+
 Note `mwconstraints.py` has since gained a `subkind` split (`cfebd280`), which is what
 separates rows 1 and 2 above; this census imports the live module.
 

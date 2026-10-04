@@ -253,8 +253,12 @@ def optimizer_pragmas(body: str, name: str) -> List[Tuple[str, str]]:
     start = body.rfind('\n', 0, span[0]) + 1
     out = []
     # opt_pointer_analysis never improved a candidate over twelve corpus reports (0 of 1,205)
+    # `scheduling` was missing from this list while 24 functions in this tree already carry
+    # `#pragma scheduling off` in their matched source, and findings/110 shows the -O4,p
+    # scheduler hoisting independent argument setup out of source order. Proposing it lets the
+    # engine try the one optimizer that changes *instruction order* rather than values.
     for option in ('peephole', 'opt_propagation', 'opt_common_subs', 'opt_lifetimes', 'opt_dead_assignments',
-                   'opt_strength_reduction', 'opt_loop_invariants'):
+                   'opt_strength_reduction', 'opt_loop_invariants', 'scheduling'):
         stack = []
         for pragma in re.finditer(rf'(?m)^[ \t]*#pragma\s+{option}\s+(on|off|reset)\b',code[:span[0]]):
             if pragma[1] == 'reset':
