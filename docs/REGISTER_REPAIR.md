@@ -1039,3 +1039,28 @@ mismatched builds. Measured properly it is 2.804% either way, and a corrected sw
 13 functions found no improvement. The flag is inert here. The lesson is the boring one:
 a surprising result that large is a bug until proven otherwise, and re-measuring against
 the resolved module took seconds.
+
+### `fzgx structmap`: naming the layout retail requires
+
+The large-function profile above says the dominant problem is struct layouts, so the
+tooling now says which layout. `fzgx structmap SYMBOL` reads the retail object only (no
+candidate body, so it is fast) and prints, per base register, every field offset that
+register actually touches, split by load/store and width:
+
+    STRUCTMAP fn_8005DCEC (main)  retail 1980 words
+      base r3: 44 distinct offsets (0x0..0x151c)
+         lbz  load  15: 0x45b 0x461 0x462 0x589 ... 0x1408 0x140b
+         stb  store 10: 0x1408 0x1409 0x140a 0x140b ... 0x1498 0x1499
+         stw  store 15: 0x46c 0x141c 0x1420 0x1424 ... 0x151c
+      base r9: 8 distinct offsets (0x0..0xe)
+         sth  store   8: 0x0 0x2 0x4 0x6 0x8 0xa 0xc 0xe
+
+Every offset listed is a field the struct definition has to account for. `r9`'s eight
+even `sth` offsets are a packed `s16[8]`; the dense `0x1408`-`0x14f0` store region on
+`r3` is almost certainly an embedded struct we have flattened or mis-sized. Comparing
+that against the candidate makes the failure legible: on `fn_8005DCEC` (1980 words,
+1.04%) retail performs 15 distinct `stw` offsets and our object manages one, with zero
+`sth` anywhere — the layout is wrong, not the codegen, and no compiler setting touches it.
+
+Useful on its own, and a cheap first move on any badly-scoring large function: read the
+offsets the layout must have before touching the body.
