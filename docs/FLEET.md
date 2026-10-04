@@ -219,6 +219,8 @@ the `>=1 KB` band so it works the cold large functions like `gpt` does.
 - On a measured **rate-limit**: switches to Opus 5.5 High, tile reads
   `Opus 5.5 High (agy fallback)`, band `(1024, inf)`.
 - On the next clean batch, the fallback clears and Gemini resumes.
+- If no batch finishes cleanly, the dwell now expires after `FALLBACK_TTL` (30 min) and the
+  primary is re-probed. See "Running unattended" below: the unbounded dwell was real.
 
 This does not weaken the no-silent-fallback rule it sits next to. That rule exists so a quota
 failure is never quietly answered with a different model; this swap is declared in `FALLBACK`,
@@ -229,3 +231,39 @@ or tool failure says nothing about quota, and swapping on it would hide the real
 
 Only `agy` declares a fallback; `claude` and `gpt` are unaffected. Reverting is deleting the
 `FALLBACK` entry.
+
+## Running unattended
+
+The supervisor runs as a systemd **user** service (linger is enabled, so it survives logout):
+
+    systemctl --user status  fzgx-fleet.service
+    systemctl --user start   fzgx-fleet.service
+    systemctl --user stop    fzgx-fleet.service     # deliberate stop stays stopped
+    journalctl --user -u fzgx-fleet.service -f
+
+The unit lives at `~/.config/systemd/user/fzgx-fleet.service`, outside this repository, so
+it is not versioned with it. Re-create it from this section if the checkout moves.
+
+Three properties it depends on, each of which was a real defect:
+
+- **`Restart=always`, not `on-failure`.** The supervisor's SIGTERM drain exits 0, so
+  `on-failure` read a normal stop as a completed run. The unit ran 14h44m and then sat
+  `inactive (dead)` with nothing to bring it back. With `always`, a duplicate launch is
+  harmless anyway: the `flock` in `run()` makes the second supervisor exit immediately with
+  a one-line message.
+- **`StartLimitBurst=20`, not 3.** A drain plus a manual restart costs several restarts
+  inside 30 minutes, and at Burst=3 the unit reached `failed` and stayed dead. A limit that
+  trips on normal operation defeats the point of the unit.
+- **`TimeoutStopSec=300`, not 90.** The drain waits on bound tools, and with four families
+  mid-batch it outlasts the default; stopping early strands claims.
+
+To verify recovery rather than assume it:
+
+    kill -9 $(systemctl --user show fzgx-fleet.service -p MainPID --value)
+    sleep 40 && systemctl --user show fzgx-fleet.service -p NRestarts --value   # expect >= 1
+
+A clean SIGTERM can take minutes by design, because the drain is doing work. That is the
+supervisor preserving best bodies and releasing claims, not a hang.
+
+Claims are recovered on startup regardless (`run()` releases anything still marked
+`fleet-v2-*` before dispatching), so a hard kill costs a batch, not the ledger.
