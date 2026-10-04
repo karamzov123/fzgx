@@ -44,7 +44,9 @@ def _accesses(texts: List[str]) -> Dict[int, Dict[str, set]]:
         if not m:
             continue
         op, off, base = m.group(1), int(m.group(2), 0), int(m.group(3))
-        if base in _SKIP_BASES:
+        if base in _SKIP_BASES or op not in _WIDTH:
+            # `lmw`/`stmw`/`ld`/`std` also match the mnemonic shape but describe a register
+            # range rather than a single field, so they carry no layout information.
             continue
         out.setdefault(base, {}).setdefault(op, set()).add(off)
     return out
@@ -84,7 +86,7 @@ def _offset_sets(texts: List[str]) -> Dict[str, set]:
         if not m:
             continue
         op, off, base = m.group(1), int(m.group(2), 0), int(m.group(3))
-        if base in _SKIP_BASES:
+        if base in _SKIP_BASES or op not in _WIDTH:
             continue
         out.setdefault(op, set()).add(off)
     return out
@@ -117,6 +119,120 @@ def compare(p, symbol: str, body: str, mw_version: Optional[str] = None) -> Dict
                      'missing': sorted(r - o), 'extra': sorted(o - r)})
     return {'ok': True, 'symbol': symbol, 'module': sym.module, 'words': len(words),
             'percent': oracle.word_score(words, ours)[0], 'ops': rows}
+
+
+_WIDTH = {'lbz': 1, 'lhz': 2, 'lha': 2, 'lwz': 4, 'stb': 1, 'sth': 2, 'stw': 4}
+_SIGNED = frozenset({'lha', 'lhz'})
+# Signedness comes only from a signed load. A field retail merely stores gives no
+# evidence, and saying `u32` there would be a confident wrong answer, so it says so.
+_UNKNOWN = '%s /* signedness unknown */'
+
+
+def skeleton(p, symbol: str, base: Optional[str] = None) -> Dict[str, object]:
+    """Suggest a struct layout for one base register from the widths retail touches.
+
+    Every field here is INFERRED from access width alone, and is a starting point for a
+    human, not a header to paste blind: a `sth` gives s16 and nothing more, so a field
+    retail only ever writes is indistinguishable from one it also reads, and signedness
+    comes from the load mnemonic rather than from any evidence about the value. Where the
+    evidence is ambiguous it says so instead of guessing.
+    """
+    sym = p.resolve(symbol)
+    words = oracle.words(Path(p.target_object_for(sym)), sym.name)
+    acc = _accesses(_decode(words))
+    if not acc:
+        return {'ok': False, 'symbol': symbol, 'error': 'no struct-relative memory access'}
+    if base:
+        key = int(base.lstrip('rRr'))
+        if key not in acc:
+            return {'ok': False, 'symbol': symbol, 'error': 'no accesses through %s' % base}
+    else:
+        key = max(acc, key=lambda b: sum(len(v) for v in acc[b].values()))
+    touched: Dict[int, set] = {}
+    hits: Dict[int, List[tuple]] = {}
+    for op, offs in acc[key].items():
+        for o in offs:
+            hits.setdefault(o, []).append((o, op))
+            for k in range(o, o + _WIDTH[op]):
+                touched.setdefault(k, set()).add(op)
+    if not touched:
+        return {'ok': False, 'symbol': symbol, 'error': 'nothing resolved'}
+    # Contiguous runs of touched bytes. A gap closes the current run and does NOT seed
+    # the next one -- seeding it with the gap byte would put an untouched offset in a run.
+    lo, hi = min(touched), max(touched)
+    runs, cur = [], []
+    for k in range(lo, hi + 1):
+        if k in touched:
+            cur.append(k)
+        elif cur:
+            runs.append(cur)
+            cur = []
+    if cur:
+        runs.append(cur)
+    fields, off = [], 0
+    for run in runs:
+        if run[0] > off:
+            fields.append({'offset': off, 'size': run[0] - off, 'kind': 'pad'})
+        start, size = run[0], len(run)
+        run_hits = [h for o, v in hits.items() if o in run for h in v]
+        ops = set().union(*(touched[k] for k in run))
+        widths = {_WIDTH[o] for o in ops}
+        starts = {h[0] for h in run_hits}
+        # one access exactly filling the run -> a scalar field
+        scalar = len(run_hits) == 1 and size in widths
+        # otherwise a uniform width at aligned starts -> an array of that width
+        aligned = (len(widths) == 1 and size % next(iter(widths)) == 0
+                   and all(s % next(iter(widths)) == 0 for s in starts))
+        w = next(iter(widths)) if len(widths) == 1 else None
+        op = next(iter(ops)) if len(ops) == 1 else None
+        # Signedness is only knowable from a signed LOAD. A field retail merely stores
+        # gives no evidence at all, so say so rather than implying unsignedness.
+        if ops & _SIGNED:
+            signed = True
+        elif not any(h[1][0] in _LOAD for h in run_hits):
+            signed = None  # store-only: unknown
+        else:
+            signed = False
+        if scalar:
+            ty = {1: 'u8', 2: None if signed is None else ('s16' if signed else 'u16'),
+                  4: None if signed is None else ('s32' if signed else 'u32')}[size]
+            kind, count = 'field', 1
+        elif aligned:
+            ty = {1: 'u8', 2: None if signed is None else ('s16' if signed else 'u16'),
+                  4: None if signed is None else ('s32' if signed else 'u32')}[w]
+            kind, count = 'array', size // w
+        else:
+            ty, kind, count = None, 'ambiguous', size
+        fields.append({'offset': start, 'size': size, 'kind': kind, 'type': ty,
+                       'count': count, 'elem': size if kind == 'field' else (w or 0),
+                       'ops': sorted(ops), 'unknown_sign': signed is None})
+        off = start + size
+    return {'ok': True, 'symbol': symbol, 'module': sym.module, 'words': len(words),
+            'base': 'r%d' % key, 'span': [lo, hi], 'fields': fields}
+
+
+def format_skeleton(r: Dict[str, object]) -> str:
+    if not r.get('ok'):
+        return 'STRUCTMAP FAILED: %s' % r.get('error')
+    out = ['STRUCTMAP SKELETON %s (%s)  base %s  offsets %s..%s  (INFERRED, review before use)'
+           % (r['symbol'], r['module'], r['base'], _hex(r['span'][0]), _hex(r['span'][1]))]
+    for f in r['fields']:
+        at, size = f['offset'], f['size']
+        if f['kind'] == 'pad':
+            out.append('  u8 pad_%X[%d];' % (at, size))
+        elif f['kind'] == 'array':
+            out.append('  %s unk_%X[%d];   // %d aligned %s accesses%s'
+                       % (f['type'] or (_UNKNOWN % {1: 'u8', 2: 'u16', 4: 'u32'}[f['elem']]),
+                          at, f['count'], f['count'], ','.join(f['ops']),
+                          ', store-only' if f.get('unknown_sign') else ''))
+        elif f['kind'] == 'ambiguous':
+            out.append('  /* ??? */ unk_%X[%d];   // overlapping widths %s'
+                       % (at, size, ','.join(f['ops'])))
+        else:
+            out.append('  %s unk_%X;   // %s%s'
+                       % (f['type'] or (_UNKNOWN % {1: 'u8', 2: 'u16', 4: 'u32'}[f['elem']]), at,
+                          ','.join(f['ops']), ', store-only' if f.get('unknown_sign') else ''))
+    return '\n'.join(out)
 
 
 def format_compare(r: Dict[str, object]) -> str:

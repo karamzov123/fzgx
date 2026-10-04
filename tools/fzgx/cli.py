@@ -149,10 +149,18 @@ def cmd_structmap(a, p):
     if a.body:
         body = Path(a.body).read_text()
         r = structmap.compare(p, a.symbol, body, a.mw_version)
+    elif a.skeleton:
+        r = structmap.skeleton(p, a.symbol, a.base)
     else:
         r = structmap.fingerprint(p, a.symbol)
-    print(json.dumps(r, indent=2) if a.json else (structmap.format_compare(r) if a.body
-                                                 else structmap.format_fingerprint(r)))
+    if a.json:
+        print(json.dumps(r, indent=2))
+    elif a.body:
+        print(structmap.format_compare(r))
+    elif a.skeleton:
+        print(structmap.format_skeleton(r))
+    else:
+        print(structmap.format_fingerprint(r))
     return 0 if r['ok'] else 2
 
 
@@ -498,6 +506,7 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument('--cursor', type=int, default=0)
     s = sub.add_parser('structmap', help='retail struct fingerprint: which field offsets each base register touches'); s.set_defaults(fn=cmd_structmap)
     s.add_argument('symbol'); s.add_argument('--body', help='compare retail offsets against this candidate body instead of printing the retail fingerprint'); s.add_argument('--mw-version', default=None)
+    s.add_argument('--skeleton', action='store_true', help='infer a struct layout for one base register from the widths retail touches (provisional)'); s.add_argument('--base', default=None, help='base register for --skeleton (default: the most-accessed)')
     s = sub.add_parser('flagcell', help='name what a compiler setting did, by diffing our own two objects'); s.set_defaults(fn=cmd_flagcell)
     s.add_argument('symbol')
     s.add_argument('--body', help='source to probe (default: the saved body)')

@@ -1094,3 +1094,38 @@ offset present and still score low if its control flow is wrong — `fn_9_1310` 
 reports which offsets are absent, not the field *types* or names, so it narrows the
 search without solving it. The fingerprint half needs no candidate body and so works on
 functions whose history is entirely missing.
+
+#### `--skeleton`: a provisional layout from access widths
+
+`--skeleton` infers a struct for one base register from the widths retail touches,
+grouping contiguous touched bytes into runs and classifying each as a scalar, an aligned
+array, padding, or ambiguous. `--base rN` picks the register; the default is the
+most-accessed one.
+
+    fzgx structmap fn_8005DCEC --skeleton --base r9
+      STRUCTMAP SKELETON fn_8005DCEC (main)  base r9  offsets 0x0..0xf  (INFERRED, review before use)
+        u16 /* signedness unknown */ unk_0[8];   // 8 aligned sth accesses, store-only
+
+    fzgx structmap fn_8005DCEC --skeleton     # base r3, the dense region
+        u32 /* signedness unknown */ unk_141C;   // stw, store-only
+        u8  pad_1420[4];
+        u32 /* signedness unknown */ unk_1424;   // stw, store-only
+        ...
+
+This is a starting point for a human, not a header to paste, and three limits are
+enforced in the output rather than buried here:
+
+- **Signedness is only knowable from a signed load.** A field retail merely stores gives
+  no evidence, so it prints `/* signedness unknown */` rather than a confident `u32`.
+  That is most of the `0x141c`-`0x151c` region, which retail only ever writes.
+- **Ambiguity is reported, not guessed.** Where runs have overlapping widths the field
+  prints `/* ??? */` with the widths involved.
+- **Store-only versus read-back is invisible.** A field written once and a field written
+  in a loop are indistinguishable here.
+
+Two bugs found by testing this on a 60-function sample rather than on the one function
+that motivated it. `lmw`/`stmw` match the mnemonic shape but describe a register range,
+not a field, and crashed the width lookup; they are now skipped. And the run builder
+seeded each new run with the *gap* byte, which put an untouched offset inside a run and
+raised `KeyError` on any struct with a hole. Both were invisible on `fn_8005DCEC`, whose
+r9 accesses happen to be contiguous.
