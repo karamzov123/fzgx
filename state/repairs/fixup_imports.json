@@ -10438,5 +10438,22 @@
       }
     ],
     "link": "pending"
+  },
+  "fn_1_3F4B8": {
+    "seed_symbol": "fn_1_3F4B8",
+    "generator": "fzgx fixup",
+    "transform": "saved-body",
+    "seed": "#include \"types.h\"\n#include \"rel/main_rel/globals.h\"\n#include \"rel/main_rel/game.h\"\n\nextern u32 lbl_1_bss_26C5C;\n\ntypedef struct lbl_1_bss_3C30_t {\n    u8 pad_0[0x13f8];\n    u16 unk_13F8;\n    u16 unk_13FA;\n    u16 unk_13FC;\n    u16 unk_13FE;\n    u16 unk_1400;\n    u8 unk_1402;\n    u8 pad_1403[0xb9];\n} lbl_1_bss_3C30_t;\n\n/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */\nlbl_1_bss_3C30_t fzgx_obj_lbl_1_bss_3C30;\nu32 fzgx_obj_lbl_1_bss_50EC[5];\nu32 fzgx_obj_lbl_1_bss_5100;\nu32 fzgx_obj_lbl_1_bss_5104[13];\nu32 fzgx_obj_lbl_1_bss_5138[65];\nu32 lbl_1_bss_523C[8];\n\n#pragma section code_type \".fzgxpool\"\nstatic void fzgx_bss_layout(void) {\n    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */\n    s = *(u8 *)&fzgx_obj_lbl_1_bss_3C30;\n    s = *(u8 *)&fzgx_obj_lbl_1_bss_50EC;\n    s = *(u8 *)&fzgx_obj_lbl_1_bss_5100;\n    s = *(u8 *)&fzgx_obj_lbl_1_bss_5104;\n    s = *(u8 *)&fzgx_obj_lbl_1_bss_5138;\n    s = *(u8 *)&lbl_1_bss_523C;\n}\n#pragma section code_type \".text\"\n\nvoid fn_1_3F4B8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5)\n{\n    fzgx_obj_lbl_1_bss_3C30.unk_13F8 = arg0 * 60;\n    fzgx_obj_lbl_1_bss_3C30.unk_1402 = arg5;\n    fzgx_obj_lbl_1_bss_3C30.unk_13FA = arg1 * 60;\n    fzgx_obj_lbl_1_bss_3C30.unk_13FC = arg2 * 60;\n    fzgx_obj_lbl_1_bss_3C30.unk_13FE = arg3 * 60;\n    fzgx_obj_lbl_1_bss_3C30.unk_1400 = arg4 * 60;\n    lbl_1_bss_26C5C = 1;\n}\n",
+    "seed_sha256": "0a71f478fec79b8fc3694585b78fdb148f258e3eb312796ec2fbffbdcadb3f04",
+    "generated_sha256": "0a71f478fec79b8fc3694585b78fdb148f258e3eb312796ec2fbffbdcadb3f04",
+    "generated_source": "#include \"types.h\"\n#include \"rel/main_rel/globals.h\"\n#include \"rel/main_rel/game.h\"\n\nextern u32 lbl_1_bss_26C5C;\n\ntypedef struct lbl_1_bss_3C30_t {\n    u8 pad_0[0x13f8];\n    u16 unk_13F8;\n    u16 unk_13FA;\n    u16 unk_13FC;\n    u16 unk_13FE;\n    u16 unk_1400;\n    u8 unk_1402;\n    u8 pad_1403[0xb9];\n} lbl_1_bss_3C30_t;\n\n/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */\nlbl_1_bss_3C30_t fzgx_obj_lbl_1_bss_3C30;\nu32 fzgx_obj_lbl_1_bss_50EC[5];\nu32 fzgx_obj_lbl_1_bss_5100;\nu32 fzgx_obj_lbl_1_bss_5104[13];\nu32 fzgx_obj_lbl_1_bss_5138[65];\nu32 lbl_1_bss_523C[8];\n\n#pragma section code_type \".fzgxpool\"\nstatic void fzgx_bss_layout(void) {\n    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */\n    s = *(u8 *)&fzgx_obj_lbl_1_bss_3C30;\n    s = *(u8 *)&fzgx_obj_lbl_1_bss_50EC;\n    s = *(u8 *)&fzgx_obj_lbl_1_bss_5100;\n    s = *(u8 *)&fzgx_obj_lbl_1_bss_5104;\n    s = *(u8 *)&fzgx_obj_lbl_1_bss_5138;\n    s = *(u8 *)&lbl_1_bss_523C;\n}\n#pragma section code_type \".text\"\n\nvoid fn_1_3F4B8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5)\n{\n    fzgx_obj_lbl_1_bss_3C30.unk_13F8 = arg0 * 60;\n    fzgx_obj_lbl_1_bss_3C30.unk_1402 = arg5;\n    fzgx_obj_lbl_1_bss_3C30.unk_13FA = arg1 * 60;\n    fzgx_obj_lbl_1_bss_3C30.unk_13FC = arg2 * 60;\n    fzgx_obj_lbl_1_bss_3C30.unk_13FE = arg3 * 60;\n    fzgx_obj_lbl_1_bss_3C30.unk_1400 = arg4 * 60;\n    lbl_1_bss_26C5C = 1;\n}\n",
+    "compiler": "GC/1.3.2",
+    "flags": "",
+    "source": "rel/main_rel/game/fn_1_3F4B8.c",
+    "bytes": 68,
+    "headers_sha256": "2bdc463c33cdbf02a5a4d23ab260091fa309821d912a230e3e6690fbc471ea3a",
+    "oracle_sha256": "590a23b92f0f853804f9c6d8ea8632d65289d2fbc51a0cff2b49b7713ad0ccc1",
+    "recipe": [],
+    "link": "pending"
   }
 }
