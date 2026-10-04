@@ -73,20 +73,22 @@ def _hex(v: int) -> str:
     return hex(v) if v >= 0 else '-0x%x' % -v
 
 
-def _offset_sets(texts: List[str]) -> Dict[str, set]:
-    """opcode -> displacements, pooled across base registers.
+def _offset_sets(texts: List[str], base: Optional[int] = None) -> Dict[str, set]:
+    """opcode -> displacements, optionally restricted to one base register.
 
-    Pooled rather than per-base on purpose: retail and our object need not pick the same
-    register for a given struct, so a per-base diff reports spurious differences. The
-    field *offsets* are what the layout has to contain, and those are comparable.
+    Pooled across bases by default because retail and our object need not pick the same
+    register for a given struct, and a per-base diff then reports spurious differences.
+    Callers that know both sides use a single base pass it, which is exact.
     """
     out: Dict[str, set] = {}
     for t in texts:
         m = _MEM.match(t)
         if not m:
             continue
-        op, off, base = m.group(1), int(m.group(2), 0), int(m.group(3))
-        if base in _SKIP_BASES or op not in _WIDTH:
+        op, off, b = m.group(1), int(m.group(2), 0), int(m.group(3))
+        if b in _SKIP_BASES or op not in _WIDTH:
+            continue
+        if base is not None and b != base:
             continue
         out.setdefault(op, set()).add(off)
     return out
@@ -109,16 +111,52 @@ def compare(p, symbol: str, body: str, mw_version: Optional[str] = None) -> Dict
             return {'ok': False, 'symbol': symbol,
                     'error': (cp.stdout + cp.stderr).strip().splitlines()[-1][:120]}
         ours = oracle.words(obj, sym.name)
-    R, O = _offset_sets(_decode(words)), _offset_sets(_decode(ours))
+    R, O = _decode(words), _decode(ours)
+    # Offsets only mean the same field when both sides reach it through the same base.
+    # Pooling across bases hides real layout gaps but invents them too: on fn_1_9A508
+    # retail's r4 offsets (0x0, 0x48, 0x54) match ours exactly, while a pooled diff
+    # reports 'MISSING 0x20' from r6 -- a different object entirely. So compare per base
+    # whenever the two sides use the same registers, and pool only as a last resort.
+    rb, ob_ = _bases(R), _bases(O)
+    per_base = sorted(rb) == sorted(ob_)
+    scope = sorted(rb) if per_base else None
     rows = []
-    for op in sorted(set(R) | set(O)):
-        r, o = R.get(op, set()), O.get(op, set())
-        if not r - o and not o - r:
-            continue
-        rows.append({'op': op, 'retail': len(r), 'ours': len(o),
-                     'missing': sorted(r - o), 'extra': sorted(o - r)})
+    R2 = _offset_sets(R, scope[0]) if (per_base and len(scope) == 1) else None
+    if per_base and len(scope) == 1:
+        Rs, Os = _offset_sets(R, scope[0]), _offset_sets(O, scope[0])
+        for op in sorted(set(Rs) | set(Os)):
+            r, o = Rs.get(op, set()), Os.get(op, set())
+            if not r - o and not o - r:
+                continue
+            rows.append({'base': 'r%d' % scope[0], 'op': op, 'retail': len(r), 'ours': len(o),
+                         'missing': sorted(r - o), 'extra': sorted(o - r)})
+    else:
+        Rs, Os = _offset_sets(R), _offset_sets(O)
+        for op in sorted(set(Rs) | set(Os)):
+            r, o = Rs.get(op, set()), Os.get(op, set())
+            if not r - o and not o - r:
+                continue
+            rows.append({'base': None, 'op': op, 'retail': len(r), 'ours': len(o),
+                         'missing': sorted(r - o), 'extra': sorted(o - r)})
     return {'ok': True, 'symbol': symbol, 'module': sym.module, 'words': len(words),
-            'percent': oracle.word_score(words, ours)[0], 'ops': rows}
+            'percent': oracle.word_score(words, ours)[0], 'ops': rows,
+            'mode': 'per-base' if (per_base and len(scope or []) == 1) else 'pooled',
+            'bases': ['r%d' % b for b in (scope if (per_base and len(scope or []) == 1)
+                                           else sorted(set(rb) | set(ob_)))]}
+
+
+def _bases(texts: List[str]) -> Dict[int, int]:
+    """base register -> number of accesses through it."""
+    out: Dict[int, int] = {}
+    for t in texts:
+        m = _MEM.match(t)
+        if not m:
+            continue
+        op, base = m.group(1), int(m.group(3), 0)
+        if base in _SKIP_BASES or op not in _WIDTH:
+            continue
+        out[base] = out.get(base, 0) + 1
+    return out
 
 
 _WIDTH = {'lbz': 1, 'lhz': 2, 'lha': 2, 'lwz': 4, 'stb': 1, 'sth': 2, 'stw': 4}
@@ -240,6 +278,13 @@ def format_compare(r: Dict[str, object]) -> str:
         return 'STRUCTMAP FAILED: %s' % r.get('error')
     out = ['STRUCTMAP COMPARE %s (%s)  retail %d words, ours %.3f%%'
            % (r['symbol'], r['module'], r['words'], r['percent'])]
+    if r.get('mode') == 'per-base':
+        out.append('  both sides use the same base(s) %s, so offsets compare exactly'
+                   % ','.join(r['bases']))
+    else:
+        out.append('  base registers differ (%s): offsets pooled, so a missing/extra pair '
+                   'may be one field reached through a differently-based pointer'
+                   % ','.join(r['bases']))
     if not r['ops']:
         out.append('  every field offset retail uses is present in ours')
         return '\n'.join(out)
@@ -248,9 +293,9 @@ def format_compare(r: Dict[str, object]) -> str:
         more = ' +%d more' % (len(row['missing']) - 12) if len(row['missing']) > 12 else ''
         extra = ' '.join(_hex(o) for o in row['extra'][:8])
         emore = ' +%d more' % (len(row['extra']) - 8) if len(row['extra']) > 8 else ''
-        out.append('  %-4s retail=%-3d ours=%-3d  MISSING: %s%s%s'
-                   % (row['op'], row['retail'], row['ours'], miss, more,
-                      ('  EXTRA: ' + extra + emore) if extra else ''))
+        out.append('  %-5s %-4s retail=%-3d ours=%-3d  MISSING: %s%s%s'
+                   % (row.get('base') or '', row['op'], row['retail'], row['ours'],
+                      miss, more, ('  EXTRA: ' + extra + emore) if extra else ''))
     return '\n'.join(out)
 
 

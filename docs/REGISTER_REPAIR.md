@@ -1129,3 +1129,45 @@ not a field, and crashed the width lookup; they are now skipped. And the run bui
 seeded each new run with the *gap* byte, which put an untouched offset inside a run and
 raised `KeyError` on any struct with a hole. Both were invisible on `fn_8005DCEC`, whose
 r9 accesses happen to be contiguous.
+
+### Testing the struct-layout thesis, and narrowing it
+
+The tool is built; the question is whether acting on it actually helps. Two functions with
+the cheapest possible fix -- one missing offset -- say the answer is *sometimes*, and the
+earlier framing was too broad.
+
+**Where it is a real layout failure.** `fn_8005DCEC` (1980 words, 1.04%) keeps its verdict
+even after the base-register fix below: 15 distinct `stw` offsets against 1, 11 `stb`
+against 1, and 10 `sth` against 0 — a packed `s16[8]` that is simply absent from our layout.
+That is a genuine, large, actionable gap.
+
+**Where it is not.** On `fn_1_9A508` (28 words, 39.29%) the first diff said
+`MISSING: 0x20  EXTRA: 0xb0c 0xfbc`, which reads like three layout errors. It is none of
+them. Retail's offsets through r4 are `0x0, 0x48, 0x54` and ours are *identical* — the r4
+layout is already correct. `0x20` comes from r6 and the extras from other bases; they are
+different objects, not wrong fields. Its 39% is something else entirely.
+
+**Where it is not even a struct.** `fn_8008F8B0` stores to `r5+0x3000`; we materialise the
+absolute address. That is the `0xCC00xxxx` hardware register window, not a field. Any
+non-stack base looks like a struct pointer in the instruction stream, so memory-mapped I/O
+and struct layout are indistinguishable here.
+
+So the thesis narrows to: **wrong struct layouts are a major cause on the very large
+functions, and largely not a cause on small and mid-sized ones.** Of the 639 functions at
+1000+ words that are 40% of the remaining work, the evidence supports it; across the rest
+of the population it should not be assumed.
+
+#### A false-positive mode in `--body`, and the guard
+
+Comparing offsets pooled across base registers hides real gaps and invents them. It
+invented the `fn_1_9A508` result above: pooling throws away which register produced an
+offset, so two bases pointing at different places in one object look like one field
+missing and another spurious. `compare` now uses the base directly when both sides use the
+same register set, and otherwise says so in its own output:
+
+    base registers differ (r3,r4,r6,r31): offsets pooled, so a missing/extra pair
+    may be one field reached through a differently-based pointer
+
+On a 22-function sample the modes split 3 per-base / 19 pooled with no crashes, which is
+itself the useful finding: for most functions a pooled offset diff **cannot** be trusted,
+and the tool now declines to imply that it can.
