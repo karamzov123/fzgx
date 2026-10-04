@@ -203,6 +203,150 @@ void fn_1_E1C10(void) {
 #pragma opt_common_subs reset
 /* fzgx:end fn_1_E1C10 */
 
+/* fzgx:begin fn_1_E2AE8 noprologue */
+#include "types.h"
+#include "psvec.h"
+
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+} Vec3;
+
+typedef struct {
+    u8 pad_00[0x54];
+    Vec3 v_54;
+    Vec3 v_60;
+    u8 pad_6c[0x18];
+    f32 f_84;
+    u8 pad_88[0x18];
+    Vec3 v_a0;
+    u32 u_ac;
+    u32 u_b0;
+    u32 u_b4;
+    u32 u_b8;
+    u8 pad_bc[0x44];
+    s32 s_100;
+    s32 s_104;
+    s32 s_108;
+    s32 s_10c;
+    u8 pad_110[0xC];
+    Vec3 v_11c;
+    Vec3 v_128;
+    u8 pad_134[4];
+    u64 flags;
+    u32 u_140;
+    u8 pad_144[0x64];
+} Obj;
+
+typedef struct {
+    s16 a[80];
+} Arr80;
+
+typedef struct {
+    f32 f0;
+    u8 pad_04[0x30];
+    f32 f34;
+    u8 pad_38[0x108];
+    Vec3 pv;
+    Arr80 pa;
+} PoolType;
+
+extern PoolType lbl_1_rodata_6780;
+extern s16 fn_1_E5430(s16);
+extern Obj *fn_1_E54A8(s16, s16);
+extern u8 *fn_1_14F04(void);
+extern u32 fn_1_20A5C(void *, void *);
+extern void fn_1_17920(u32, u32, f32);
+extern s16 fn_1_7B054(void);
+extern void fn_80008BA8(void *, void *, u32);
+extern f32 lbl_8006D668(void *);
+
+static inline f32 fn_1_E2AE8_read_pointer(PoolType * owner) { return owner->f0; }
+#pragma opt_dead_assignments off
+static inline void fn_1_E2AE8_call_fn_1_17920(u32 a0, u32 a1, f32 a2) { fn_1_17920(a0, a1, a2); }
+void fn_1_E2AE8(void) {
+    PoolType *pool;
+    s16 n;
+    Obj *obj;
+    Arr80 arr;
+    s16 j;
+    u8 *str;
+    Obj *list;
+    s16 i;
+    Vec3 lv;
+    s16 *p;
+    s16 k;
+    Vec3 vtmp;
+    f32 ftmp;
+    s32 a;
+    s32 b;
+    s32 c;
+
+    pool = (PoolType *)&lbl_1_rodata_6780;
+    for (i = 0; i < 6; i++) {
+        n = fn_1_E5430(i);
+        list = (Obj *)fn_1_E54A8(i, 0);
+        str = (u8 *)fn_1_14F04() + 0x45c;
+        obj = list;
+        for (j = 0; j < n; ) {
+            a = fn_1_20A5C(&obj->v_54.x, &ftmp);
+            obj->s_100 = a;
+            obj->u_ac = a;
+            b = obj->u_ac;
+            obj->u_b8 = b;
+            obj->u_b4 = b;
+            obj->u_b0 = b;
+            c = obj->s_100;
+            obj->s_10c = c;
+            obj->s_108 = c;
+            obj->s_104 = c;
+            if ((obj->flags & 0x10000ULL) != 0) {
+                fn_1_E2AE8_call_fn_1_17920(obj->s_100, 0, ftmp);
+                fn_80008BA8(&obj->v_128.x, str, 12);
+                lbl_8006D668(&obj->v_128.x);
+                fn_80008BA8(&obj->v_a0.x, &obj->v_128.x, 12);
+            }
+            j++;
+            obj = (Obj *)((u8 *)obj + 0x1a8);
+        }
+        if (i == 0 && fn_1_7B054() == 6) {
+            lv = pool->pv;
+            arr = pool->pa;
+            obj = list;
+            p = arr.a;
+            for (k = 0; k < n; k++) {
+                obj->s_100 = *p;
+                c = obj->s_100;
+                obj->s_10c = c;
+                obj->s_108 = c;
+                obj->s_104 = c;
+                if (obj->s_100 > 0x50 && obj->s_100 < 0xc8) {
+                    psvec_scale(&lv.x, fn_1_E2AE8_read_pointer(pool), &obj->v_128.x);
+                    obj->u_140 = 1;
+                } else {
+                    fn_80008BA8(&obj->v_128.x, &lv.x, 12);
+                    obj->u_140 = 2;
+                }
+                obj = (Obj *)((u8 *)obj + 0x1a8);
+                p++;
+            }
+        }
+        obj = list;
+        for (j = 0; j < n; j++) {
+            if ((obj->flags & 8ULL) == 0) {
+                psvec_scale(&obj->v_128.x, pool->f34 * obj->f_84, &vtmp.x);
+                psvec_add(&obj->v_54.x, &vtmp.x, &obj->v_54.x);
+                psvec_add(&obj->v_60.x, &vtmp.x, &obj->v_60.x);
+            }
+            fn_80008BA8(&obj->v_11c.x, &obj->v_128.x, 12);
+            obj = (Obj *)((u8 *)obj + 0x1a8);
+        }
+    }
+}
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_1_E2AE8 */
+
 /* fzgx:begin fn_1_E35F0 noprologue */
 #include "types.h"
 
