@@ -534,6 +534,167 @@ void fn_1_153D48(void *background) {
 }
 /* fzgx:end fn_1_153D48 */
 
+/* fzgx:begin fn_1_153D74 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/bg_aur.h"
+#include "psvec.h"
+
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+} V3;
+
+typedef struct {
+    u32 unk_0;
+    u32 unk_4;
+    u32 flag;
+    u8 pad_0xc[0x80];
+    V3 pos;
+    u8 pad_0x98[0x24];
+    V3 ang;
+    u8 pad_0xc8[0x24];
+    V3 view;
+    u8 pad_0xf8[0xe4];
+    V3 screen;
+    u8 pad_0x1e8[0x24];
+    V3 target;
+} Aurora;
+
+typedef struct {
+    u32 unk_0[7];
+    f32 zero;
+    u32 unk_1[2];
+    V3 def[5];
+    f32 k1;
+    f32 k2;
+    f32 k3;
+    f32 k4;
+} AuroraDef;
+
+typedef struct {
+    f32 m[12];
+} AuroraCam;
+
+extern int fn_1_58C4(void);
+extern void fn_1_5948(int);
+extern s16 camera_get_mode(void);
+extern void lbl_8006D784(void *mat);
+extern u32 lbl_8006DAEC(void);
+extern u32 lbl_8006DB74(void *mat);
+extern void lbl_8006DD7C(void);
+extern void lbl_8006DB30(void);
+extern f32 lbl_8006D0B4(f32 x);
+extern void fn_1_862D4(s16 mode, void *out);
+extern void fn_1_8636C(s16 mode, AuroraCam *cam);
+extern void fn_1_869B0(s16 mode, void *out);
+extern void fn_8006F1F0(V3 *a, V3 *b, V3 *out);
+
+extern AuroraDef lbl_1_rodata_D508;
+extern AuroraCam *lbl_801A6D00;
+
+static inline f32 fn_1_153D74_read_pointer(V3 * owner) { return owner->y; }
+static inline f32 fn_1_153D74_operand(f32 right, f32 left) { left *= right; return left; }
+#pragma opt_lifetimes off
+#pragma opt_strength_reduction off
+void fn_1_153D74(void *arg0) {
+    f32 fzgx_live;
+    u8 *base = (u8 *)arg0 + 0x1108;
+    int count;
+    const AuroraDef *cfg = &lbl_1_rodata_D508;
+    Aurora *p;
+    u8 *q;
+    int i;
+    s32 mode;
+    V3 v;
+    V3 d;
+    f32 k3;
+    f32 k2;
+    f32 k1;
+    f32 k4;
+    f32 len;
+    f32 s;
+    f32 z;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+
+    if (*(u32 *)(base + 8) == 0) {
+        return;
+    }
+    count = fn_1_58C4();
+    k1 = cfg->k1;
+    k2 = cfg->k2;
+    k3 = cfg->k3;
+    k4 = cfg->k4;
+    p = (Aurora *)base;
+    q = base;
+    for (i = 0; i < count; i++) {
+        fn_1_5948(i);
+        mode = camera_get_mode();
+        if (mode == -1) {
+            v = cfg->def[0];
+            p->ang = cfg->def[1];
+            p->view = cfg->def[2];
+            p->target = cfg->def[3];
+            p->screen = cfg->def[4];
+            lbl_8006D784(q + 0x11c);
+            lbl_8006D784(q + 0x23c);
+        } else {
+            lbl_8006DAEC();
+            fn_1_862D4(mode, &v);
+            fn_1_8636C(mode, lbl_801A6D00);
+            z = cfg->zero;
+            *(f32 *)(0xE0000000 + 0x0c) = z;
+            *(f32 *)(0xE0000000 + 0x1c) = z;
+            *(f32 *)(0xE0000000 + 0x2c) = z;
+            p->ang.x = -lbl_801A6D00->m[2];
+            p->ang.y = -lbl_801A6D00->m[6];
+            p->ang.z = -lbl_801A6D00->m[10];
+            p->view.x = lbl_801A6D00->m[1];
+            p->view.y = lbl_801A6D00->m[5];
+            p->view.z = lbl_801A6D00->m[9];
+            lbl_8006DB74(q + 0x11c);
+            fn_1_869B0(mode, &p->target);
+            fn_8006F1F0(&v, &p->view, &p->pos);
+            z = cfg->zero;
+            *(f32 *)(0xE0000000 + 0x0c) = z;
+            *(f32 *)(0xE0000000 + 0x1c) = z;
+            *(f32 *)(0xE0000000 + 0x2c) = z;
+            lbl_8006DD7C();
+            lbl_8006DB74(q + 0x23c);
+            lbl_8006DB30();
+        }
+        p->screen.x = v.x + (f32)(p->target.x * k1) + (f32)(p->view.x * k2);
+        p->screen.y = v.y + (f32)(p->target.y * k1) + (f32)(p->view.y * k2);
+        p->screen.z = v.z + (f32)(p->target.z * k1) + (f32)(p->view.z * k2);
+        dx = (p->screen.x - p->pos.x) * k3;
+        d.x = dx;
+        dy = (p->screen.y - p->pos.y) * k3;
+        d.y = dy;
+        fzgx_live = p->screen.z;
+        dz = (fzgx_live - p->pos.z) * k3;
+        d.z = dz;
+        len = fn_1_153D74_operand((dx), (dx)) + (dy * dy);
+        len = len + dz * dz;
+        len = lbl_8006D0B4(len);
+        if (len > k4) {
+            s = k4 / len;
+            d.x = d.x * s;
+            d.y = d.y * s;
+            d.z = d.z * s;
+        }
+        psvec_add(&p->pos.x, &d.x, &p->pos.x);
+        p = (Aurora *)((u8 *)p + 0xc);
+        q = q + 0x30;
+    }
+}
+#pragma opt_strength_reduction reset
+
+#pragma opt_lifetimes reset
+/* fzgx:end fn_1_153D74 */
+
 /* fzgx:begin fn_1_1540B0 noprologue */
 #include "types.h"
 
