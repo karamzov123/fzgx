@@ -4235,6 +4235,120 @@ void fn_1_617A4(struct Fn1_617A4Object *object) {
 }
 /* fzgx:end fn_1_617A4 */
 
+/* fzgx:begin fn_1_618B8 noprologue */
+#include "dolphin/types.h"
+
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 60.0f;
+    s = 0.10000000149011612f;
+    s = 32767.0f;
+    s = 0.05000000074505806f;
+    d = 0.07;
+    s = 20000.0f;
+    s = 0.0f;
+    d = 4503599627370496.0;
+    s = 1.0f;
+    s = -0.029999999329447746f;
+    d = 15.0;
+    d = 4503601774854144.0;
+    d = 1.5;
+    d = 0.5;
+}
+static const u32 fzgx_pool_table2[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep2(void) { const u32 *volatile cp; cp = fzgx_pool_table2; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime3(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 0.5f;
+    s = 8.0f;
+    s = 255.0f;
+    s = 15.0f;
+    s = 0.20000000298023224f;
+    s = 0.07999999821186066f;
+    s = 0.25f;
+    s = 0.9800000190734863f;
+    s = 0.9900000095367432f;
+    s = 40.0f;
+    s = 20.0f;
+    s = 1.5f;
+    s = 0.44999998807907104f;
+    s = -2.0f;
+    s = 0.0833333358168602f;
+    s = 0.15000000596046448f;
+    s = 0.125f;
+    s = -0.4000000059604645f;
+    s = -0.30000001192092896f;
+    s = 2.0f;
+    s = 250.0f;
+    d = 0.6;
+    d = 0.4;
+    s = 0.30000001192092896f;
+    s = -0.004000000189989805f;
+}
+#pragma section code_type ".text"
+
+struct obj_state {
+	u8 pad00[0x10];
+	s32 timer;
+	u8 pad14[8];
+	f32 f1c;
+	f32 f20;
+	f32 f24;
+	f32 f28;
+	f32 f2c;
+	u8 pad30[0xc];
+	f32 f3c;
+	f32 f40;
+	f32 f44;
+	f32 f48;
+	f32 f4c;
+	f32 f50;
+	u8 pad54[0x40];
+	f32 f94;
+	f32 f98;
+};
+
+#pragma peephole on
+#pragma opt_dead_assignments off
+#pragma opt_propagation off
+void fn_1_618B8(struct obj_state *p)
+{
+    f32 fzgx_live__;
+	f32 fzgx_live_;
+	f32 fzgx_live;
+	f32 s;
+	s32 t;
+
+	s = 1.0f - p->f94;
+	p->f4c += -0.004f;
+	p->f48 = p->f48 * s;
+	p->f4c = p->f4c * s;
+	p->f50 = p->f50 * s;
+	p->f3c = p->f3c + p->f48;
+	p->f40 = p->f40 + p->f4c;
+	p->f44 = p->f44 + p->f50;
+	p->f94 = (f32)(0.05f * (p->f98 - p->f94)) + p->f94;
+	p->f28 = (f32)(0.2f * (p->f2c - p->f28)) + p->f28;
+	t = p->timer;
+	if ((f64)t < 15.0) {
+		f32 k = 1.0f - 1.0f / (f32)(t + 1);
+
+		fzgx_live_ = p->f1c;
+		fzgx_live = fzgx_live_;
+		p->f1c = fzgx_live * k;
+		p->f20 = p->f20 * k;
+		fzgx_live__ = p->f24;
+		p->f24 = fzgx_live__ * k;
+	}
+}
+#pragma opt_propagation reset
+
+#pragma opt_dead_assignments reset
+
+#pragma peephole reset
+/* fzgx:end fn_1_618B8 */
+
 /* fzgx:begin fn_1_61C84 */
 // fn_1_61C84: empty in retail (single blr).
 void fn_1_61C84(void) {
