@@ -10388,5 +10388,22 @@
     "recipe": [],
     "link": "verified",
     "commit": "a48591fa"
+  },
+  "fn_3_17098": {
+    "seed_symbol": "fn_3_17098",
+    "generator": "fzgx fixup",
+    "transform": "saved-body",
+    "seed": "#include \"types.h\"\n#include \"rel/customize/editor.h\"\n#pragma opt_propagation off\n/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */\nu32 lbl_3_bss_A2410_fill_A2410;\nu8 lbl_3_bss_A2410_4;\nu8 lbl_3_bss_A2410_fill_A2415;\nu16 lbl_3_bss_A2410_fill_A2416;\nu32 lbl_3_bss_A2410_8;\nu8 lbl_3_bss_A2410_C;\nu8 lbl_3_bss_A2410_fill_A241D;\nu16 lbl_3_bss_A2410_fill_A241E;\nu16 lbl_3_bss_A2410_10;\nu16 lbl_3_bss_A2410_12;\nu16 lbl_3_bss_A2410_14;\ns16 lbl_3_bss_A2410_16;\nu32 lbl_3_bss_A2410_fill_A2428[2];\ns16 lbl_3_bss_A2410_20;\nu16 lbl_3_bss_A2410_fill_A2432;\nu32 lbl_3_bss_A2410_fill_A2434;\nu32 fzgx_obj_lbl_3_bss_A2438[7];\nu32 fzgx_obj_lbl_3_bss_A2454;\nu32 fzgx_obj_lbl_3_bss_A2460[2];\nu32 fzgx_obj_lbl_3_bss_A2468[9];\n\n#pragma opt_common_subs off\n#pragma peephole off\nvoid fn_3_17098(void) {\n    u32 *b = (u32 *)&lbl_3_bss_A2410;\n    s32 c = 0x40000000;\n    b[2] = c;\n{\n    s8 i = 0;\n    ((u8 *)b)[0xC] = i;\n    b[1] = *(u32 *)((u8 *)&lbl_3_data_35C0 + (i * 4));\n    ((u16 *)b)[8] = i;\n    ((u16 *)b)[9] = i;\n    ((u16 *)b)[10] = i;\n    ((u16 *)b)[11] = 0xFF;\n    ((u16 *)b)[16] = i;\n}\n}\n#pragma peephole reset\n\n#pragma opt_common_subs reset\n",
+    "seed_sha256": "920ebba06e8614e521594ef39d64eb34405a1dcec376d6d1507ec25d099021e3",
+    "generated_sha256": "920ebba06e8614e521594ef39d64eb34405a1dcec376d6d1507ec25d099021e3",
+    "generated_source": "#include \"types.h\"\n#include \"rel/customize/editor.h\"\n#pragma opt_propagation off\n/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */\nu32 lbl_3_bss_A2410_fill_A2410;\nu8 lbl_3_bss_A2410_4;\nu8 lbl_3_bss_A2410_fill_A2415;\nu16 lbl_3_bss_A2410_fill_A2416;\nu32 lbl_3_bss_A2410_8;\nu8 lbl_3_bss_A2410_C;\nu8 lbl_3_bss_A2410_fill_A241D;\nu16 lbl_3_bss_A2410_fill_A241E;\nu16 lbl_3_bss_A2410_10;\nu16 lbl_3_bss_A2410_12;\nu16 lbl_3_bss_A2410_14;\ns16 lbl_3_bss_A2410_16;\nu32 lbl_3_bss_A2410_fill_A2428[2];\ns16 lbl_3_bss_A2410_20;\nu16 lbl_3_bss_A2410_fill_A2432;\nu32 lbl_3_bss_A2410_fill_A2434;\nu32 fzgx_obj_lbl_3_bss_A2438[7];\nu32 fzgx_obj_lbl_3_bss_A2454;\nu32 fzgx_obj_lbl_3_bss_A2460[2];\nu32 fzgx_obj_lbl_3_bss_A2468[9];\n\n#pragma opt_common_subs off\n#pragma peephole off\nvoid fn_3_17098(void) {\n    u32 *b = (u32 *)&lbl_3_bss_A2410;\n    s32 c = 0x40000000;\n    b[2] = c;\n{\n    s8 i = 0;\n    ((u8 *)b)[0xC] = i;\n    b[1] = *(u32 *)((u8 *)&lbl_3_data_35C0 + (i * 4));\n    ((u16 *)b)[8] = i;\n    ((u16 *)b)[9] = i;\n    ((u16 *)b)[10] = i;\n    ((u16 *)b)[11] = 0xFF;\n    ((u16 *)b)[16] = i;\n}\n}\n#pragma peephole reset\n\n#pragma opt_common_subs reset\n",
+    "compiler": "GC/1.3.2",
+    "flags": "",
+    "source": "rel/customize/editor/fn_3_17098.c",
+    "bytes": 72,
+    "headers_sha256": "2bdc463c33cdbf02a5a4d23ab260091fa309821d912a230e3e6690fbc471ea3a",
+    "oracle_sha256": "590a23b92f0f853804f9c6d8ea8632d65289d2fbc51a0cff2b49b7713ad0ccc1",
+    "recipe": [],
+    "link": "pending"
   }
 }
