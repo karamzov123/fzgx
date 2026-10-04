@@ -1342,3 +1342,42 @@ means the fleet can afford far more per-function probing than the cost model ass
 The scan only reports. Applying a level means `_set_unit_opts` plus `_reconfigure_and_split`,
 which mutates the build, so those 233 are a work list for whoever owns the build rather than
 something to apply in bulk from here.
+
+### Bottleneck 3 resolved: there is no global unroll discrepancy
+
+The open question from `fn_1_4DE04` was whether MW unrolls where retail did not — which,
+if global, would be a class. It is not global. Of 14 sampled **matched** functions, **12
+contain a rolled loop in retail** (`mtctr`/`bdnz`), and MW reproduces all of them exactly:
+
+    fn_1_9AF80  793w  mtctr=5  bdnz=5      fn_1_CC8E4   674w  mtctr=8  bdnz=8
+    fn_1_134EE4 620w  mtctr=13 bdnz=13     fn_1_E4A38   430w  mtctr=48 bdnz=0
+    fn_1_15578  913w  mtctr=1  bdnz=1      fn_1_CC280   409w  mtctr=2  bdnz=2
+
+Since 5,701 functions match word for word, MW's unrolling already agrees with retail
+everywhere it has been made to. So there was never a flag or build difference to find — the
+residue is a per-function register-allocation tie-break.
+
+And it is a small one. At `-O4` the function compiles to retail's exact loop structure —
+`li r0,8; mtctr;` the same eight stores at `0x0`..`0x380`; `addi +0x400`; `bdnz` — at 17
+words against retail's 16. The entire difference:
+
+    RETAIL                          OURS (-O4)
+    lis r3, 0                      lis r3, 0
+    li r0, 8                       li r0, 8
+    addi r3, r3, 0                 addi r3, r3, 0
+    li r4, 0                       mr r4, r3        <- the only extra instruction
+    mtctr r0                       li r3, 0         <- zero lands in r3, not r4
+    stw r4, 0(r3) ...              stw r3, 0(r4) ...
+
+Retail keeps the loop-carried pointer in `r3` and the invariant zero in `r4`. We do the
+opposite, which forces the copy. Source shapes tried and all byte-identical at `-O4`:
+making the zero an explicit local, a separate `zero = 0` statement, `u32` versus `s32`
+types, a pointer-`++` induction over an array. None moves the allocation.
+
+One result worth flagging as **not** a fix: advancing the pointer at the top of the body
+gives exactly 16 words, but then strides by `0x800` instead of `0x400` and writes to the
+wrong addresses. It matches the length and scores 31.25% while being semantically wrong, so
+it must not be mistaken for progress toward a match.
+
+Net: `fn_1_4DE04` is one register-role swap from matching, and the "MW unrolls" mystery —
+the last open candidate for a class-level lever — is closed.
