@@ -10385,5 +10385,22 @@
     "recipe": [],
     "link": "verified",
     "commit": "5607407a"
+  },
+  "fn_1_17A9C": {
+    "seed_symbol": "fn_1_17A9C",
+    "generator": "fzgx fixup",
+    "transform": "saved-body",
+    "seed": "#include \"dolphin/types.h\"\n\ntypedef struct {\n    f32 x;\n    f32 y;\n    f32 z;\n} Vec3;\n\nstruct FnObj {\n    u8 pad_1cc[0x1cc];\n    s32 count;\n    u8 pad_674[0x674 - 0x1d0];\n    Vec3 first;\n    u8 pad_6f4[0x6f4 - 0x680];\n    Vec3 second;\n};\n\nextern struct FnObj *lbl_801A66CC;\n\nstatic inline f32 vec_dist(const volatile f32 *a, const f32 *b) /* volatile: locks the load order of the three components */\n{\n    f32 dx = a[0];\n    f32 dy;\n    f32 dz;\n    dx -= b[0];\n    dy = a[1];\n    dy -= b[1];\n    dz = a[2];\n    dz -= b[2];\n    dx = dx * dx;\n    dx = dx + dy * dy;\n    dx = dx + dz * dz;\n    return dx;\n}\n\n#pragma opt_common_subs off\ns32 fn_1_17A9C(const f32 *arg0)\n{\n    s32 n;\n    struct FnObj *obj = lbl_801A66CC;\n    u8 *cur;\n    s32 best;\n    f32 bd, d;\n    s32 i;\n\n    n = obj->count;\n    if (n <= 1) {\n        best = 0;\n    } else {\n        bd = vec_dist(arg0, (const f32 *)((u8 *)obj + 0x674));\n        best = 1;\n        (void) best;  /* fzgx: keeps the web at its definition */\n        cur = (u8 *)obj + 0x2b0;\n        for (i = 2; i < n; i++) {\n            d = vec_dist(arg0, (const f32 *)(cur + 0x444));\n            if (bd > d) {\n                best = i;\n                bd = d;\n            }\n            cur += 0x80;\n        }\n    }\n    return best;\n}\n#pragma opt_common_subs reset\n",
+    "seed_sha256": "d13147ec7476ca7f16a569ffb2cb020394bdb36619e5b503f98315e7f83201af",
+    "generated_sha256": "d13147ec7476ca7f16a569ffb2cb020394bdb36619e5b503f98315e7f83201af",
+    "generated_source": "#include \"dolphin/types.h\"\n\ntypedef struct {\n    f32 x;\n    f32 y;\n    f32 z;\n} Vec3;\n\nstruct FnObj {\n    u8 pad_1cc[0x1cc];\n    s32 count;\n    u8 pad_674[0x674 - 0x1d0];\n    Vec3 first;\n    u8 pad_6f4[0x6f4 - 0x680];\n    Vec3 second;\n};\n\nextern struct FnObj *lbl_801A66CC;\n\nstatic inline f32 vec_dist(const volatile f32 *a, const f32 *b) /* volatile: locks the load order of the three components */\n{\n    f32 dx = a[0];\n    f32 dy;\n    f32 dz;\n    dx -= b[0];\n    dy = a[1];\n    dy -= b[1];\n    dz = a[2];\n    dz -= b[2];\n    dx = dx * dx;\n    dx = dx + dy * dy;\n    dx = dx + dz * dz;\n    return dx;\n}\n\n#pragma opt_common_subs off\ns32 fn_1_17A9C(const f32 *arg0)\n{\n    s32 n;\n    struct FnObj *obj = lbl_801A66CC;\n    u8 *cur;\n    s32 best;\n    f32 bd, d;\n    s32 i;\n\n    n = obj->count;\n    if (n <= 1) {\n        best = 0;\n    } else {\n        bd = vec_dist(arg0, (const f32 *)((u8 *)obj + 0x674));\n        best = 1;\n        (void) best;  /* fzgx: keeps the web at its definition */\n        cur = (u8 *)obj + 0x2b0;\n        for (i = 2; i < n; i++) {\n            d = vec_dist(arg0, (const f32 *)(cur + 0x444));\n            if (bd > d) {\n                best = i;\n                bd = d;\n            }\n            cur += 0x80;\n        }\n    }\n    return best;\n}\n#pragma opt_common_subs reset\n",
+    "compiler": "GC/1.3.2",
+    "flags": "",
+    "source": "rel/main_rel/stcoli/fn_1_17A9C.c",
+    "bytes": 192,
+    "headers_sha256": "2bdc463c33cdbf02a5a4d23ab260091fa309821d912a230e3e6690fbc471ea3a",
+    "oracle_sha256": "590a23b92f0f853804f9c6d8ea8632d65289d2fbc51a0cff2b49b7713ad0ccc1",
+    "recipe": [],
+    "link": "pending"
   }
 }
