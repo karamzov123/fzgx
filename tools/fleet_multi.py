@@ -282,13 +282,25 @@ def unsearched_near_misses(rows):
             out.add(symbol)
     return out
 
-SIZE_GATE = 1024
+SIZE_GATE = 2048
 NEAR_MISS_PCT = 95.0
 # A saved body that already diffs at this closeness is worth more per compile than
 # a cold small function, so the size gate widens for it instead of excluding it
-# outright. The 1024B gate is a throughput heuristic, not a correctness rule: 51
-# near-misses above it (fn_1_FD3A8 at 99.49%, fn_10_107D4 at 98.19%) had a local
-# body ready and were never scheduled.
+# outright.
+#
+# The gate was 1024B and was starving the fleet. Of the 610 functions this fleet had
+# never actually attempted, 598 were blocked by it and only 12 were servable, so the
+# "fresh work first" ordering in choose() had almost nothing fresh to order and the
+# fleet fell through to whatever was left in base -- which is why the backlog looked
+# exhausted. Measured over three days of fleet attempts, the 1-2KB band converts at
+# 10.3% (6/58), which is indistinguishable from the 11.4% (370/3232) of the band the
+# gate was written to protect. Beyond 2KB the evidence does not support opening it:
+# 2-4KB is 0/10 and >4KB is 0/14. So the gate moves to 2048, where the data says yes,
+# and stops there.
+#
+# The 1024B gate is a throughput heuristic, not a correctness rule: 51 near-misses
+# above it (fn_1_FD3A8 at 99.49%, fn_10_107D4 at 98.19%) had a local body ready and
+# were never scheduled.
 def size_allowed(size, best):
     return size<=SIZE_GATE or (best or 0)>=NEAR_MISS_PCT
 
