@@ -33999,6 +33999,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/car/fn_1_82EDC.c",
+    "symbols": [
+      "fn_1_82EDC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/car.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/car/fn_1_835E0.c",
     "symbols": [
       "fn_1_835E0"
