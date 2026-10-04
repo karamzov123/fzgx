@@ -2114,6 +2114,127 @@ void fn_10_8D90(void) {
 }
 /* fzgx:end fn_10_8D90 */
 
+/* fzgx:begin fn_10_8F0C */
+#include "rel/sel/sel.h"
+
+typedef struct { u16 unk_0; } U16Box;
+typedef struct {
+    u8 pad_0[0x16];
+    u8 unk_16;
+    u8 unk_17;
+    u8 pad_18[8];
+    u16 unk_20;
+} SelSub;
+typedef struct {
+    u8 pad_0[0x94];
+    u32 unk_94;
+    u32 unk_98;
+    u8 pad_9C[2];
+    u8 unk_9E;
+    u8 pad_9F[5];
+    SelSub *unk_A4;
+    u8 pad_A8[0x98];
+    u32 unk_140;
+} SelState;
+typedef struct {
+    u8 pad_0[0xA];
+    s8 unk_A;
+    u8 pad_B;
+} SelSlot;
+typedef struct {
+    u8 pad_0[8];
+    u16 unk_8;
+    u8 pad_A[0xA];
+} Sel9F8;
+extern U16Box lbl_1_bss_96A;
+extern SelState lbl_1_bss_8B3A0;
+extern SelSlot lbl_1_bss_9C8[];
+extern Sel9F8 lbl_1_bss_9F8[];
+
+extern void fn_1_A2D84(u32 value);
+extern s32 fn_1_4C10(void);
+extern void fn_1_12F150(s16 value, u32 arg1, u32 arg2);
+extern s32 fn_1_12F228(void);
+extern void fn_1_12F1E8(s32 value);
+extern void fn_1_4A00(s32 arg0, u8 arg1, void *arg2);
+static inline SelSub * fn_10_8F0C_read_pointer(SelState * owner) { return owner->unk_A4; }
+#pragma opt_dead_assignments off
+#pragma opt_lifetimes off
+#pragma opt_common_subs off
+void fn_10_8F0C(void) {
+    u32 fzgx_condition_1630;
+    SelState *st;
+    SelSlot *slot;
+    SelState *g;
+    SelState *h;
+    u16 *val;
+    s32 ready;
+    s16 count = 0;
+    s16 i;
+    u8 flag;
+
+    *(u16 *)&lbl_1_bss_96A = 14;
+    st = &lbl_1_bss_8B3A0;
+    if (fn_10_8F0C_read_pointer(st)->unk_20 != 0) {
+        val = &st->unk_A4->unk_20;
+        *val = fn_10_8F0C_read_pointer(st)->unk_20 - 1;
+        if (fn_10_8F0C_read_pointer(st)->unk_20 == 0) {
+            fn_1_A2D84(0xA9121E00);
+        }
+    }
+    if ((s32)lbl_10_bss_14 == -1) {
+        fn_1_4C10();
+    }
+    if (((fzgx_condition_1630 = lbl_1_bss_8B3A0.unk_140) & 0x80000000) != 0 &&
+        (fzgx_condition_1630 & 0x40000000) == 0 &&
+        (lbl_1_bss_8B3A0.unk_94 & 0x8) == 0) {
+        ready = 1;
+    } else if (fn_1_4C10() != 0) {
+        ready = 1;
+    } else {
+        ready = 0;
+    }
+    if (ready == 0) {
+        if ((s32)lbl_10_bss_14 != -1) {
+            s32 value = lbl_10_bss_14;
+            lbl_10_bss_14 = -1;
+            lbl_1_bss_96A.unk_0 = (u16)value;
+        } else {
+            slot = lbl_1_bss_9C8;
+            g = &lbl_1_bss_8B3A0;
+            h = &lbl_1_bss_8B3A0;
+            for (i = 0; i < 4; i++) {
+                if (((i)[slot]).unk_A != -1) {
+                    if (__rlwnm(g->unk_98, (((u32)i + 1) & 31), 31, 31) != 0) {
+                        if (((((g->unk_9E)[lbl_1_bss_9F8]).unk_8 >> 12) & 1) != 0) {
+                            count++;
+                        }
+                        if (((((h->unk_9E)[lbl_1_bss_9F8]).unk_8 >> 12) & 1) != 0) {
+                            fn_1_12F150(i, 0, 1);
+                        }
+                    }
+                }
+            }
+            if (count != 0 || fn_1_12F228() != 0) {
+                fn_10_8F0C_read_pointer(st)->unk_16 = 1;
+                fn_1_12F1E8(0);
+            }
+            if (count != 0 || fn_1_12F228() != 0) {
+                fn_1_12F1E8(0);
+                flag = fn_10_8F0C_read_pointer(st)->unk_17;
+                lbl_10_bss_14 = 0x19 + ((-(s32)flag | flag) >> 31);
+                fn_1_4A00(0, lbl_10_bss_4938C, (void *)lbl_10_bss_49388);
+                lbl_10_bss_51744 = 0;
+            }
+        }
+    }
+}
+#pragma opt_common_subs reset
+
+#pragma opt_lifetimes reset
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_10_8F0C */
+
 /* fzgx:begin fn_10_9154 */
 extern s32 lbl_10_bss_51740;
 extern s32 lbl_10_bss_49388;
