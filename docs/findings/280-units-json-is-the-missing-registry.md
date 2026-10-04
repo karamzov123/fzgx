@@ -150,10 +150,39 @@ Two further per-object lessons from the same function:
 Result: 22.8% -> **91.4%**, module displacement gone, remaining diff 10 regalloc rows
 and 1 instruction row. Not yet linked as a match.
 
-## The regalloc residue
+## The regalloc class is mostly *not* an evidence problem
 
-What is left is a register-numbering tie-break with the instruction sequence already
-correct: retail holds the data base in `r3` and the loaded word in `r3` after
-`lwzx r3, r3, r0`, ours uses `r4` for both and needs an extra `li`. This is the same
-class `lintallow` and the allocator-capture work are aimed at, and it is a real
-one-function bottleneck, not a backlog.
+The plateau is large and expensive: 238 functions sit at >=98% (126 KB), 139 of them at
+>=99%. These release with notes like "99.9%, 2 rows, both regalloc" and, in the worst
+case, `fn_10_3B44` after **3217 search variants**:
+
+    Only 9 regalloc rows remain ... every source permutation of the resulting
+    two-pointer pair (declaration order, initialiser order, copy chains, deriving the
+    state pointer from the slots pointer, raising the base's use count to 5 vs 3,
+    type/sign flips, pragmas, 3217 search variants) leaves the address node holding
+    the first callee-saved claim, so the swap is an allocator tie-break not
+    reachable from C.
+
+The obvious hypothesis is missing allocator evidence. It is wrong. `.fzgx/captures`
+holds **379** validated interference-graph captures, and **121 of the 139** >=99%
+plateau functions (87%) already have one. The graph is being read, replayed and still
+not landing.
+
+`docs/REGISTER_REPAIR.md` is explicit about what that means:
+
+> Failure to construct an order is inconclusive; a witness is not proof that a C edit
+> can realize it.
+
+So this class is not under-instrumented and not under-searched; the captured colours are
+routinely **not expressible** in the C the tools generate. The productive questions are:
+
+1. Does the *source projection* stage still project onto constructs MWCC would accept?
+   `Target constraints and declaration projection` measures 0.415 ms per function, so
+   running it broadly over the 139 is cheap and is the obvious next experiment.
+2. Is the tie-break uniform enough to fix once in the projection rather than per
+   function? `fn_3_17098` and `fn_10_3B44` both want the *address node* to lose the
+   first callee-saved claim, which suggests one systematic bias, not 139 independent
+   problems.
+
+Treating this as "more agents, more attempts" has already cost roughly $369 and is the
+single largest line item in the ledger.
