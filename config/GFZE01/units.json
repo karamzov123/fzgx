@@ -31914,6 +31914,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/bg_win/fn_1_15C36C.c",
+    "symbols": [
+      "fn_1_15C36C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/bg_win.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/bg_win/fn_1_15C5A4.c",
     "symbols": [
       "fn_1_15C5A4"

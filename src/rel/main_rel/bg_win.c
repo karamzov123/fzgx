@@ -428,6 +428,83 @@ s32 fn_1_15C35C(s32 a, s32 b, s32 c, s32 d) {
 }
 /* fzgx:end fn_1_15C35C */
 
+/* fzgx:begin fn_1_15C36C */
+extern s32 fn_1_5910(void);
+extern void fn_80038F10(f32 *values);
+extern void fn_1_15EFEC(s32 index);
+extern void fn_1_15DFD4(s32 index, u32 mask);
+extern s32 fn_1_485A8(s32 value);
+extern void fn_1_49410(void);
+extern void fn_1_49728(s32 value);
+extern void fn_1_1420A4(void);
+
+#pragma opt_dead_assignments off
+void fn_1_15C36C(void) {
+    s32 index;
+    u8 mask;
+    u8 flags;
+    s32 hit;
+    s32 off;
+    f32 values[4];
+    f32 *output;
+
+    index = fn_1_5910();
+    mask = 1 << index;
+    if ((lbl_1_bss_3C30.unk_0 & 0x00000800) != 0) {
+        return;
+    }
+
+    fn_80038F10(values);
+    *((f32 *)&lbl_1_bss_8FD68 + ((4) * (index))) = (*((0) + (values)));
+    output = (f32 *)&lbl_1_bss_8FD68;
+    *(output + ((4) * (index)) + 1) = (*((1) + (values)));
+    *(output + ((4) * (index)) + 2) = (*((2) + (values)));
+    *(output + ((4) * (index)) + 3) = (*((3) + (values)));
+
+    flags = lbl_1_bss_26B1E.unk_0 |
+            lbl_1_bss_26B19 |
+            lbl_1_bss_26B1A |
+            lbl_1_bss_26B18;
+    hit = flags & mask;
+
+    if (hit != 0) {
+        ((u32 *)&lbl_1_data_3D544)[index] &= 0x3c2;
+    }
+
+    if (hit == 0) {
+        Obj_1_bss_8FDA8 *state = (Obj_1_bss_8FDA8 *)((u8 *)&lbl_1_bss_8FDA8 + index * 0x34);
+
+        if ((state->unk_0 & 0x4) == 0) {
+            fn_1_15EFEC(index);
+        }
+    }
+
+    if ((lbl_1_bss_3C30.unk_0 & 0x8) != 0) {
+        return;
+    }
+
+    if (hit != 0) {
+        fn_1_15DFD4(index, mask);
+    }
+
+    if ((lbl_1_bss_3C30.unk_0 & 0x1000) == 0) {
+        return;
+    }
+    if (fn_1_485A8(0x97) == 0) {
+        return;
+    }
+    if (((u16 *)&lbl_1_bss_50EC)[index] != 0) {
+        return;
+    }
+
+    fn_1_49410();
+    fn_1_49728(1);
+    fn_1_1420A4();
+    fn_1_49728(0);
+}
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_1_15C36C */
+
 /* fzgx:begin fn_1_15C5A4 noprologue */
 #include "types.h"
 

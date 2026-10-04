@@ -7166,3 +7166,6 @@ rel/main_rel/car_test/fn_1_7EB8C.c:
 
 rel/main_rel/sound/fn_1_A33F0.c:
 	.text       start:0x000A33F0 end:0x000A358C align:4
+
+rel/main_rel/bg_win/fn_1_15C36C.c:
+	.text       start:0x0015C36C end:0x0015C4EC align:4
