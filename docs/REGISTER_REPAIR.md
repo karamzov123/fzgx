@@ -1302,3 +1302,43 @@ The correct selection is simply **functions with a local body**, which after the
 fallback is 974 of them. For those, `flagcell` against `-O2`, `-O3` and `-O4` is cheap, never
 regresses, and wins on roughly a quarter to a third — with the largest gains concentrated
 exactly where the earlier samples said they would be.
+
+### Level scan result: 233 of 972 functions have a better level
+
+`fzgx levelscan` over every unmatched function with a local body:
+
+    checked 972   wins 233 (24%)   zero regressions by construction
+
+| gain | functions |
+| --- | ---: |
+| > 20 points | 29 |
+| 5–20 | 71 |
+| 1–5 | 92 |
+| < 1 | 41 |
+
+By winning flag: `-O2` 104, `-O4` 67, `-O3` 62. The largest:
+
+| function | as-is | best | flag | gain |
+| --- | ---: | ---: | --- | ---: |
+| `fn_8003D42C` | 7.89 | **89.19** | `-O2` | **+81.3** |
+| `fn_12_2E7C8` | 1.45 | 61.54 | `-O2` | +60.1 |
+| `fn_12_316A8` | 24.55 | 80.00 | `-O4` | +55.5 |
+| `fn_1_A24CC` | 29.81 | 82.69 | `-O4` | +52.9 |
+| `fn_8008983C` | 0.00 | 47.62 | `-O4` | +47.6 |
+| `fn_80078360` | 2.54 | 49.15 | `-O2` | +46.6 |
+| `fn_8006B224` | 0.00 | 42.86 | `-O3` | +42.9 |
+| `fn_10_8DFC` | 10.14 | 51.47 | `-O4` | +41.3 |
+
+`fn_8003D42C` was independently recompiled to confirm the scan rather than trust it:
+7.895% as-is against 89.189% with `-O2`, reproducing the recorded figures exactly.
+
+Two things this changes. The 24% hit rate on a population chosen for having a body is close
+to the 28% seen in the 25-function sample, so the sample was not misleading. And the scan
+finished in minutes, not the hour budgeted for it, because a compile of these small bodies
+takes about **0.03 s** — far cheaper than this work has been treating it. Scepticism about the
+run time was reasonable and wrong; the compiler is simply very fast on small functions, which
+means the fleet can afford far more per-function probing than the cost model assumed.
+
+The scan only reports. Applying a level means `_set_unit_opts` plus `_reconfigure_and_split`,
+which mutates the build, so those 233 are a work list for whoever owns the build rather than
+something to apply in bulk from here.
