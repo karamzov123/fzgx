@@ -712,6 +712,22 @@ s16 fn_1_F7B80(void) {
 }
 /* fzgx:end fn_1_F7B80 */
 
+/* fzgx:begin fn_1_F7BE4 */
+s32 fn_1_F7BE4(s16 arg0) {
+    u64 t0;
+    u64 flags;
+    s32 v1;
+    t0 = 1ULL << arg0;
+    flags = ((u64)lbl_1_bss_7F0C0.unk_0 << 32) | lbl_1_bss_7F0C0.unk_4;
+    if ((flags & t0) != 0) {
+        v1 = 1;
+    } else {
+        v1 = 0;
+    }
+    return v1;
+}
+/* fzgx:end fn_1_F7BE4 */
+
 /* fzgx:begin fn_1_F7C48 */
 extern u64 __shl2i(u32, u32, s32);
 
