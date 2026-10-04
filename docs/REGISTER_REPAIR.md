@@ -1381,3 +1381,43 @@ it must not be mistaken for progress toward a match.
 
 Net: `fn_1_4DE04` is one register-role swap from matching, and the "MW unrolls" mystery —
 the last open candidate for a class-level lever — is closed.
+
+### Sizing the near-miss classes: the scheduler class is small
+
+`fn_8003D42C` is the closest the level scan gets — 89.19% under `-O2`, and only **4 of 37
+rows differ**, in two adjacent pairs:
+
+    4  RETAIL li r0, 0x1a      | OURS lbz r5, 0(r4)
+    5  RETAIL lbz r5, 0(r4)    | OURS li r0, 0x1a
+    19 RETAIL addi r4, r4, 3   | OURS cmplwi r5, 0xff
+    20 RETAIL cmplwi r5, 0xff  | OURS addi r4, r4, 3
+
+Every register and every other instruction agrees. It is the same root cause as
+`fn_1_2D038` (one hoisted address computation) and `fn_1_4DE04` (one register-role swap):
+**retail hoists an independent instruction, MW sinks it to its use.** All the levers fail
+here too — reordering the two independent statements in the source, hoisting the constant to
+a function-scope `const`, rewriting `v1 += 3` as `v1 = v1 + 3`, and all five pragma cells at
+`-O2` are byte-identical to as-is.
+
+So the class is characterised but not reachable. The useful question is therefore its size.
+Across all 978 unmatched functions that have a local body, each compiled at its recorded
+level and compared row by row:
+
+| class | count | share |
+| --- | ---: | ---: |
+| word-identical to retail | 11 | 1% |
+| **adjacent-instruction swaps only** | **30** | **3%** |
+| structural differences | 930 | 95% |
+| no body / no target | 8 | 1% |
+
+**The hoist/sink class is 30 functions, not a population.** Even perfect handling of it caps
+out at 30, and each is 2–8 rows from a match — the hardest kind of work to automate. The
+other 95% differ structurally, which is ordinary decompilation and belongs to the fleet.
+
+Two corrections to claims made while measuring this. `oracle.check`'s `source` argument is a
+`Path`, not the source text; passing a string hands the text to the compiler as a filename
+and returns a usage error, which is what made the 11 look like they had failed a real diff.
+With correct usage objdiff scores **higher** than raw word matching, because it treats
+accepted relocation equivalences as equal — `fn_1_4068C` reads 99.64% against a word score
+of 93.94%, and `fn_1_150654` 99.51%. None of the 11 is a match (`unit_fully_matches` is
+False for all), so they are near-misses rather than submissions waiting to happen.
