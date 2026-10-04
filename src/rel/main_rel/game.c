@@ -337,6 +337,141 @@ extern u8 lbl_1_A9011300;
 extern u8 lbl_1_A9011100;
 extern u8 lbl_1_A9011000;
 
+/* fzgx:begin fn_1_32600 pool noprologue */
+#include "types.h"
+#include "rel/main_rel/game.h"
+
+typedef struct {
+    s32 unk_0;
+    u8 pad_4[0x178];
+    f32 unk_17c;
+    u8 pad_180[0x94];
+    u16 unk_214;
+    u8 pad_216[0x25F];
+    s8 unk_475;
+    u8 pad_476[0x116];
+    u32 unk_58c;
+} FnObj_1_32600;
+
+extern const f32 lbl_1_rodata_BD8[];
+extern void fn_1_15E260(s32 arg0);
+extern u16 lbl_1_bss_25B80;
+extern u8 lbl_1_bss_26B1D;
+
+#pragma optpointer_analysis off
+#pragma opt_strength_reduction off
+static inline const f32 fn_1_32600_array_read(const f32 *array, s32 index) { return array[index]; }
+#pragma opt_strength_reduction reset
+
+#pragma opt_loop_invariants off
+typedef struct lbl_1_bss_3C30_t {
+    u32 unk_0;
+    u8 pad_4[0x1];
+    u8 unk_5;
+    u8 pad_6[0x9e];
+    u16 unk_A4;
+    u8 pad_A6[0x1416];
+} lbl_1_bss_3C30_t;
+
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+lbl_1_bss_3C30_t fzgx_obj_lbl_1_bss_3C30;
+u32 fzgx_obj_lbl_1_bss_50EC[5];
+u32 fzgx_obj_lbl_1_bss_5100;
+u32 fzgx_obj_lbl_1_bss_5104[13];
+u32 fzgx_obj_lbl_1_bss_5138[65];
+u32 fzgx_obj_lbl_1_bss_523C[8];
+
+#pragma section code_type ".fzgxpool"
+static inline void fzgx_bss_layout(void) {
+    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_3C30;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_50EC;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_5100;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_5104;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_5138;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_523C;
+}
+#pragma section code_type ".text"
+
+int fn_1_32600(FnObj_1_32600* obj) {
+    f32 fzgx_live;
+    s32 cond;
+    const f32* rodata;
+    f32 lim;
+    f32 fv;
+    u32 count;
+    s32 tmp_ra3;
+    u32 lab_t0;
+
+    rodata = lbl_1_rodata_BD8;
+    if (!(fzgx_obj_lbl_1_bss_3C30.unk_0 & 0x00008000)) {
+        if (obj->unk_0 & 0x08000000) {
+            return 1;
+        }
+        if (obj->unk_58c & 0x00000010) {
+            return 1;
+        }
+        tmp_ra3 = obj->unk_0;
+        if (tmp_ra3 & 0x00000800) {
+            if (obj->unk_475 != -1) {
+                lab_t0 = obj->unk_475;
+                fn_1_15E260(lab_t0);
+            }
+            return 1;
+        }
+        if (obj->unk_0 & 0x00000080) {
+            if (obj->unk_475 != -1) {
+                lab_t0 = obj->unk_475;
+                fn_1_15E260(lab_t0);
+            }
+            if (fzgx_obj_lbl_1_bss_3C30.unk_5 != 5) {
+                if ((obj->unk_0 & 0x00000200) || obj->unk_17c < fn_1_32600_array_read(rodata, 3)) {
+                    return 1;
+                }
+            } else {
+                return 1;
+            }
+        }
+    }
+
+    if ((fzgx_obj_lbl_1_bss_3C30.unk_0 & 0x00040000) && fzgx_obj_lbl_1_bss_3C30.unk_A4 == 0) {
+        fzgx_live = obj->unk_17c;
+        fv = fzgx_live;
+        if (lbl_1_bss_25B80 < 0x12c) {
+            lim = fn_1_32600_array_read(rodata, 3);
+        } else if (lbl_1_bss_25B80 < 0x258) {
+            lim = ((4)[rodata]);
+        } else {
+            lim = fn_1_32600_array_read(rodata, 121);
+            fv = fn_1_32600_array_read(rodata, 1);
+        }
+        cond = (fv < lim);
+        cond |= (obj->unk_214 != 0);
+        if (obj->unk_0 & 0x00000800) {
+            cond = 1;
+        }
+        lbl_1_bss_26B1D++;
+        if (cond) {
+            if (lbl_1_bss_26B1D > 0x1e) {
+                obj->unk_0 |= 0x10000000;
+                return 1;
+            }
+        }
+    }
+
+    if (((0x00080000) & (fzgx_obj_lbl_1_bss_3C30.unk_0))) {
+        obj->unk_0 |= 0x10000000;
+        return 1;
+    }
+    if (!(obj->unk_0 & 0x00010200) && lbl_1_bss_25B98 > 0x1a4) {
+        return 1;
+    }
+    return 0;
+}
+#pragma opt_loop_invariants reset
+#pragma opt_pointer_analysis reset
+/* fzgx:end fn_1_32600 */
+
 /* fzgx:begin fn_1_327F8 */
 struct fn_1_327F8_Arg0 {
     u32 unk_0;

@@ -7199,3 +7199,6 @@ rel/main_rel/live_camera/fn_1_FCB0.c:
 
 rel/main_rel/sel_static_disp/fn_1_13DDB8.c:
 	.text       start:0x0013DDB8 end:0x0013E054 align:4
+
+rel/main_rel/game/fn_1_32600.c:
+	.text       start:0x00032600 end:0x000327F8 align:4
