@@ -36281,6 +36281,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/car_test/fn_1_7EB8C.c",
+    "symbols": [
+      "fn_1_7EB8C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/car_test.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/car_test/fn_1_7F1E8.c",
     "symbols": [
       "fn_1_7F1E8"

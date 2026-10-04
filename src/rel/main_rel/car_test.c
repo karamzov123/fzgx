@@ -330,6 +330,105 @@ void fn_1_7EB0C(void) {
 }
 /* fzgx:end fn_1_7EB0C */
 
+/* fzgx:begin fn_1_7EB8C noprologue */
+#include "types.h"
+#include "psvec.h"
+
+extern const f32 lbl_1_rodata_3508[4];
+extern void *lbl_801A6D00;
+extern void fn_1_556B8(void *arg0);
+extern u32 lbl_8006DB74(u32 arg0);
+extern void lbl_8006D848(f32 arg0);
+extern u32 lbl_8006DFC4(u32 arg0);
+extern void fn_80072558(void);
+
+#define HW_F32(off) (*(f32 *)(0xE0000000 + (off)))
+
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+} Vec3;
+
+typedef struct {
+    void *f_0;
+    void *f_4;
+} ListEntry;
+
+typedef struct {
+    u32 f_0;
+    u32 f_4;
+    void *f_8;
+} MidEntry;
+
+typedef struct {
+    u32 f_0;
+    u32 f_4;
+    u32 f_8;
+} SubEntry;
+
+static inline f32 fz_fabs(f32 v) {
+    f32 r;
+    __asm__ ("fabs %0, %1" : "=f"(r) : "f"(v));
+    return r;
+}
+
+typedef struct {
+    u8 pad_0[0x328];
+    s8 unk_328;
+    u8 pad_329[0x67];
+    u32 unk_390;
+    u8 pad_394[0x10];
+    ListEntry *unk_3A4;
+    u8 pad_3A8[0x12];
+    s16 unk_3BA;
+} Object;
+
+void fn_1_7EB8C(Object *arg0) {
+    const u8 *pool;
+    ListEntry *table;
+    s8 index;
+    u32 value;
+    f32 abs_z;
+    f32 arg_f;
+    Vec3 vec;
+
+    pool = (const u8 *)lbl_1_rodata_3508;
+    table = arg0->unk_3A4;
+    index = (s8)arg0->unk_3BA;
+
+    if (table == 0) {
+        return;
+    }
+
+    if (arg0->unk_390 & 0x04000000) {
+        value = ((SubEntry *)((MidEntry *)table[index].f_0)->f_8)->f_0;
+    } else if (arg0->unk_328 == 4) {
+        value = ((SubEntry *)((MidEntry *)table[index].f_0)->f_8)->f_8;
+    } else {
+        value = ((SubEntry *)((MidEntry *)table[index].f_0)->f_8)->f_0;
+    }
+
+    abs_z = fz_fabs(HW_F32(0x2C));
+
+    psvec_set(&vec, HW_F32(0x2C), HW_F32(0x1C), HW_F32(0xC));
+
+    arg_f = *(const f32 *)(pool + 0x10);
+
+    if (abs_z < *(const f64 *)(pool + 0x18)) {
+        arg_f = arg_f;
+    } else if (HW_F32(0x2C) < *(const f64 *)(pool + 0x30)) {
+        arg_f = *(const f32 *)(pool + 0x28) + *(const f32 *)(pool + 0x38) / HW_F32(0x2C);
+    }
+
+    lbl_8006DB74((u32)((u8 *)lbl_801A6D00 + 0x60));
+    lbl_8006D848(arg_f);
+    lbl_8006DFC4((u32)((u8 *)lbl_801A6D00 + 0x60));
+    fn_80072558();
+    fn_1_556B8((void *)value);
+}
+/* fzgx:end fn_1_7EB8C */
+
 /* fzgx:begin fn_1_7F1E8 */
 void fn_1_7F1E8(u32 arg0, u32 arg1) {
     fn_1_7ECB8(arg0, arg1, 0x80000000); // fzgx-allow: A1 retail sentinel
