@@ -7190,3 +7190,6 @@ rel/main_rel/effect/fn_1_60B80.c:
 
 rel/main_rel/font/fn_1_4E220.c:
 	.text       start:0x0004E220 end:0x0004E500 align:4
+
+rel/main_rel/stcoli/fn_1_2E1B8.c:
+	.text       start:0x0002E1B8 end:0x0002E268 align:4
