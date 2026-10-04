@@ -60557,6 +60557,22 @@
   },
   {
     "module": "movie_module",
+    "source": "rel/movie_module/fn_12_4A38.c",
+    "symbols": [
+      "fn_12_4A38"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [
+      "-use_lmw_stmw",
+      "on"
+    ],
+    "pool": {
+      "@57": "lbl_12_rodata_590"
+    }
+  },
+  {
+    "module": "movie_module",
     "source": "rel/movie_module/fn_12_4CEC.c",
     "symbols": [
       "fn_12_4CEC"
