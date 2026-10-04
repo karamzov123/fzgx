@@ -334,3 +334,31 @@ record — not in the report.
 Unrelated: `docs/dtk/` is vendored upstream DTK documentation and has 11
 lists split by blank lines. Left alone deliberately; it is not this project's prose
 and rewriting it would diverge from upstream.
+
+## Target availability census (2026-10-04, corrects an earlier claim)
+
+It was reported here that the fleet was "out of fresh work" because only 4 virgin
+targets remained. **That was wrong**, and it conflated *virgin* with *eligible*.
+`virgin_symbols` is an **ordering priority** (`order()` sorts virgin first), not an
+availability filter — it does not exclude anything. Availability is `ATTEMPT_CAP`
+(2 attempts by this fleet), `link_failed()`, and `size_allowed()`.
+
+Measured through the fleet's own functions against the live ledger:
+
+| Stage | Count |
+| --- | ---: |
+| unmatched | 1617 |
+| under `ATTEMPT_CAP=2` | 966 |
+| excluded by `link_failed()` | 0 |
+| excluded by the size gate | 206 |
+| **fully eligible** | **760** |
+
+So batches returning 0/N is a **conversion-rate** result, not starvation. The gate
+is also correctly placed: all 206 size-blocked functions are over 2 KB (117 at 2-3 KB,
+54 at 3-4 KB) and sit at 65-85%, which is exactly the band the gate's own evidence
+measured at 0/10. Opening it further would contradict the measurement.
+
+The ordering is already right too: with 4 virgin symbols the `-best_percent` sort
+takes over and serves the 95-100% band first, which is where the difficulty is. The
+lever is conversion at that band, not more targets — so do not widen the gate to
+"fix" a 0/N batch.

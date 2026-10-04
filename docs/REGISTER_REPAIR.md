@@ -648,13 +648,33 @@ knowing before reading a `matched` count as progress on linking from C.
 
 **`fn_12_23410` needs re-deriving, not repairing.** Its parked body only reaches
 96.84%; the 100% in the ledger came from an earlier body that is no longer on disk.
-The parked body models the search as a `static int find_entry(...)` called from a
-loop, but retail has no such helper — it inlines the `memcpy`/`fn_12_215F4` loop
-**twice**, holds `r31` for the out-pointer, seeds `r27` with `li r27, 0x800`, counts
-down (`subi r27, r27, 4; cmpwi r27, 0`) instead of testing `n > 0`, and brackets
-itself with `stmw r27, 0x1c(r1)` / `lmw r27` + `bl _restgpr_27`. Inlining the helper
-mechanically regressed it to 96.8%. Closing it means writing the body from that
-assembly, which is matcher work rather than a transform.
+Attempted, and the structure is now known exactly — retail unrolls **four** search
+passes over the same 0x800-byte staging buffer, at source offsets **0, 2, 1, 3** in
+that order, each with its own 4-byte argument slot (`r1+0x14`, `+0x10`, `+0xc`,
+`+0x8`), each computing `n = min(size - k, 0x800)` with a *signed* compare, and each
+storing on a hit:
+
+    st->unk_0c = lbl_12_rodata_A18; st->unk_28 = p[7];
+    st->unk_2c = (p[8]<<24)|(p[9]<<16)|(p[10]<<8)|p[11];
+
+It is **not** a called helper: the parked body's `static int find_entry(...)` models
+something retail does not have. The assembled replacement reproduces the row count
+exactly (192 target / 192 ours) and its field stores match, so the control flow is
+right — but it scores **54%** on words against the parked body's **96.8%**.
+
+The blocker is register allocation, not structure. Retail brackets the frame with
+`stwu r1, -0x30(r1)` + `stmw r27, 0x1c(r1)` — five saved registers — and keeps the
+hit flag in volatile `r6`, assigned only on the two loop exits. Every C spelling
+tried instead allocates `hit` or `n`/`p` to callee-saved registers and emits
+`bl _savegpr_23`/`_26` over a `-0x40` frame: scoping `n`/`p` inside each pass block
+made it *worse* (9 saved registers), hoisting `n`/`p` with a per-block `hit` cost four
+extra 4-byte slots, and a single hoisted `hit` with early returns still lands on 15
+instruction-shape differences. Closing this needs the source spelling MWCC's
+allocator actually chose, which the assembly alone does not pin down.
+
+**The parked body is therefore left in place** — it is the better C, and replacing it
+with a structurally more faithful but word-worse derivation would be a regression. A
+machine doing this should iterate compile→diff→reshape, not apply one edit.
 
 That empties the re-drivable pool: of 141 symbols with a `link-mismatch` history only
 18 ever had a body parked on disk, and all 18 have now been driven.
