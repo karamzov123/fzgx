@@ -2722,6 +2722,17 @@
   },
   {
     "module": "interview",
+    "source": "rel/interview/interview/fn_17_72C0.c",
+    "symbols": [
+      "fn_17_72C0"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/interview/interview.c"
+  },
+  {
+    "module": "interview",
     "source": "rel/interview/interview/fn_17_74C0.c",
     "symbols": [
       "fn_17_74C0"

@@ -1655,6 +1655,85 @@ void fn_17_72BC(void) {
 }
 /* fzgx:end fn_17_72BC */
 
+/* fzgx:begin fn_17_72C0 */
+#include "rel/interview/interview.h"
+
+typedef struct {
+    u8 pad[0x5C];
+} File_72C0;
+
+typedef struct {
+    u8 pad[0x134];
+    u32 unk_134;
+} Entry_72C0;
+
+extern int sprintf(char *, const char *, ...);
+extern void fn_80006E10(char *);
+extern int fn_1_12C930(s16);
+extern int fn_1_45730(char *, File_72C0 *);
+extern u32 fn_1_45B2C(File_72C0 *);
+extern u32 fn_1_4630(u32, u32, char *, int);
+extern void fn_1_458A0(File_72C0 *, u32, u32, u32);
+extern void fn_1_45850(File_72C0 *);
+extern u32 lbl_1_data_20D1C[];
+extern u32 lbl_801A6410;
+
+u32 fn_17_72C0(u32 arg0) {
+    u8 *base = (u8 *)&lbl_17_data_0 + 0x60000;
+    char buf[128];
+    Entry_72C0 *q;
+    Entry_72C0 *p;
+    File_72C0 file;
+    u32 name;
+    int i;
+    char * lab_t0;
+
+    fn_80006E10((char *)(base + 0x4464));
+    name = lbl_1_data_20D1C[(s16)fn_1_12C930((s16)arg0)];
+    switch (lbl_17_bss_54) {
+    case 5:
+        lab_t0 = buf;
+        sprintf(lab_t0, (char *)(base + 0x4468), name);
+        break;
+    case 0:
+        lab_t0 = buf;
+        sprintf(lab_t0, (char *)(base + 0x4474), name);
+        break;
+    case 1:
+        lab_t0 = buf;
+        sprintf(lab_t0, (char *)(base + 0x4484), name);
+        break;
+    case 2:
+        lab_t0 = buf;
+        sprintf(lab_t0, (char *)(base + 0x4494), name);
+        break;
+    case 3:
+        lab_t0 = buf;
+        sprintf(lab_t0, (char *)(base + 0x44a4), name);
+        break;
+    case 4:
+        lab_t0 = buf;
+        sprintf(lab_t0, (char *)(base + 0x44b4), name);
+        break;
+    }
+    if (fn_1_45730(buf, &file) == 0) {
+        fn_1_45730((char *)(base + 0x44c4), &file);
+    }
+    {
+        const u32 size = (fn_1_45B2C(&file) + 0x1f) & ~0x1f;
+        p = (Entry_72C0 *)fn_1_4630(lbl_801A6410, size, (char *)(base + 0x3e50), 0x118f);
+        fn_1_458A0(&file, (u32)p, size, 0);
+    }
+    fn_1_45850(&file);
+    q = p;
+    for (i = 0; i < 16; i++, q++) {
+        q->unk_134 += (u32)p;
+    }
+    fn_80006E10((char *)(base + 0x4108));
+    return (u32)p;
+}
+/* fzgx:end fn_17_72C0 */
+
 /* fzgx:begin fn_17_74C0 */
 extern u8 lbl_17_bss_D8[34];
 extern void fn_17_7728(void *);
