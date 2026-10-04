@@ -629,12 +629,32 @@ is exactly the population register repair is for, so it was measured properly:
 
 Three conclusions, each earned:
 
-1. **75% of the band is a source defect, not a register problem.**
-   `structural` means no consistent renaming exists, and the module's own docstring is
-   explicit that this is *"evidence of a source defect to fix first — aligning the webs
-   would mean aligning two different programs."* One value is live across a span retail
-   splits, or the reverse. Web alignment is the **wrong tool** here; that corrects the
-   earlier suggestion that PCode/web alignment was the prerequisite.
+1. **The `structural` label does not mean what it says here — corrected.** Reading the
+   verdict alone, `structural` is documented as *"evidence of a source defect to fix
+   first — aligning the webs would mean aligning two different programs."* Measured,
+   **39 of the 40 have zero incompatible rows**: every instruction shape matches
+   everywhere, and the verdict comes only from `hard_conflicts`. The distribution is
+   15 functions with exactly **one** conflicting register, 15 with two, and one with
+   incompatible rows at all.
+
+   The cleanest case, `fn_12_321E8`, is a **five-row diff from one load**:
+
+       30  lwz r6, 0xc0(r5)   |  lwz r5, 0xc0(r5)
+       32  rlwinm r0, r6, ... |  rlwinm r0, r5, ...
+       33  rlwimi r0, r6, ... |  rlwimi r0, r5, ...
+       34  rlwimi r0, r6, ... |  rlwimi r0, r5, ...
+       35  rlwimi r0, r6, ... |  rlwimi r0, r5, ...
+
+   `r5` holds `movie_addr`, which dies at that statement, so MWCC coalesces the load
+   destination onto it; retail kept a separate `r6`. One our-register is therefore bound
+   to two retail registers and no consistent bijection exists — a register-allocator
+   tie-break, **not** two different programs. So web alignment is still the wrong tool,
+   but the reason is sharper than "source defect", and neither is source spelling:
+   removing the `v0` temporary, re-spelling the load through a typed pointer, and
+   `#pragma opt_lifetimes off` (which 15 matched functions in that module use) all
+   left the count at exactly five differing rows. The coalescing is the allocator's
+   choice and survives all three, so this is a genuine dead end at the source level —
+   recorded so the three variants are not re-tried.
 
 2. **Where a map does exist, nothing applies it.** `target_mapping` returns a
    register map for the two `fixed-graph-hypothesis` functions, but no transform
@@ -643,10 +663,26 @@ Three conclusions, each earned:
    `fn_1_10161C` is the live case — 99.40% with **0 shape errors** and 16 word errors,
    a map in hand, and three rounds of `fixup` proposals that cannot move it.
 
-3. **So the population does not justify the machinery.** Two applicable functions
-   (one of which, `fn_1_131194`, is already matched) do not justify building a
-   register-mapping applier, and the 40 structural ones need value-flow repair at the
-   source, which is ordinary matcher work rather than a register pass.
+3. **The population does not justify a register-mapping applier.** Two functions reach
+   `fixed-graph-hypothesis` (one, `fn_1_131194`, is already matched), so at most one
+   would benefit. The 40 are *not* value-flow repairs either — see 1; they are allocator
+   tie-breaks that source spelling does not reach.
+
+4. **The band is concentrated in clone families, which is the one place it pays.** The
+   40 span nine modules, but the small ones are retail clones of each other:
+
+       fn_12_321E8  152 B / 38 words   } 37 of 38 words identical to
+       fn_12_32280  152 B / 38 words   } each other (the difference is a
+       fn_12_32318  152 B / 38 words   } relocation addend)
+       fn_12_3267C  152 B / 38 words   }
+       fn_12_32834  152 B / 38 words   }
+       fn_12_323B0  172 B / 43 words   } a second family
+       fn_12_72F4   172 B / 43 words   }
+
+   So closing `fn_12_321E8` alone is worth five functions through `fzgx fixup
+   --clones`, which pools saved C across exact retail instruction families and repairs
+   one representative. That is the only route here with a return, and it still needs the
+   tie-break solved once.
 
 Note `mwconstraints.py` has since gained a `subkind` split (`cfebd280`), which is what
 separates rows 1 and 2 above; this census imports the live module.
