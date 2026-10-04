@@ -497,3 +497,50 @@ An explicit union-conversion experiment also regressed and was removed. Scalar
 array spellings for interior references changed code generation and were replaced
 by the proven relocation-binding path. Register allocation is not universally
 solved, and the remaining high similarity scores must not be reported as closure.
+
+## The 2026-10-04 gate census: "none qualify" does not reproduce
+
+The withdrawn claim (git 59ba2e44) correctly retired the 496/0 reachability
+number — `mwgraph.py` built `desired` from `after['nodes']`, the colouring of our
+*own* SelectColors pass, so the question was whether an order reproduces what the
+compiler just did. That circularity is real.
+
+But the replacement claim overcorrected. It asserted that
+`mwconstraints.target_mapping` returns `instruction-shape` "317 times out of 317:
+none qualify", making register repair unable to fire on this corpus at all.
+
+Measured directly — retail words vs our own compiled objects in `.fzgx/work/`
+(2542 objects), restricted to `status != 'matched'`:
+
+| Outcome | Count |
+| --- | ---: |
+| compared | 842 |
+| equal length (clears the `mwconstraints.py:23` gate) | 661 |
+| &nbsp;&nbsp;`fixed-graph-hypothesis` | 40 (34 distinct functions) |
+| &nbsp;&nbsp;`needs-web-alignment` | 517 |
+| &nbsp;&nbsp;`unsupported-instruction` | 104 |
+| length mismatch | 1103 |
+
+The gate fires on the plateau. `needs-web-alignment` at 517 is the actual wall,
+not the length precondition — and that is the module's own documented position
+("Conflicts require PCode/web alignment, not a broader permutation search").
+
+Of the 34 reaching `fixed-graph-hypothesis`, six objdiff at exactly 100.0% while
+the ledger still reads `unmatched`:
+
+    colchg_selmate_disp   fn_1_128B60   fn_1_3F4B8
+    fn_1_611EC            fn_1_FC760    fn_3_17098
+
+Their attempt rows carry `outcome='link-mismatch'` ("object matched but link
+differed"). **These are not register-repair candidates.** The code is already
+byte-identical; they are blocked on link/pool. Anyone reading the withdrawal as
+"the plateau is uniformly pre-instruction-identity" will misread these six.
+
+The has-initializers guard is still moot for the reason given: it raises the
+candidate count of a path gated earlier. That part of the withdrawal stands.
+
+Caveat: `.fzgx/work/*.o` holds only what was last compiled locally, so this
+census is a lower bound on the plateau, not the full fleet corpus. The
+"317 captures with a saved body" set is not reconstructible from this tree, so
+the original 317 figure could not be re-derived directly — only contradicted on
+a comparable population.
