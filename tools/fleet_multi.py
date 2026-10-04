@@ -55,6 +55,13 @@ FALLBACK = {
     'agy': {'model': 'claude-opus-5-5', 'effort': 'high', 'display': 'Opus 5.5 High (agy fallback)',
             'band': (1024, 1 << 30)},
 }
+
+# A fallback is a response to a measured quota wall, not a permanent reassignment. The dwell
+# is bounded so a family cannot stay on a substitute model forever just because every batch
+# it ran while substituted failed to finish cleanly. Half an hour is long enough to cover a
+# real quota window and short enough that a recovered provider is back on its own model
+# within one batch of the recovery.
+FALLBACK_TTL = 1800
 for _n in SURGE:
     POLICY[_n] = {'harness':'opencode','model':'opencode/space-bunny-free','effort':'xhigh',
                   'display':f'Space Bunny Free xHigh #{_n[-1]}','managed':True}
@@ -77,10 +84,24 @@ def in_fallback(family):
     Dwell lives in runtime-v3.json, so a daemon restart cannot silently drop a family back
     onto a model that was just measured out of quota -- that is the same reason the surge
     timer is persisted.
+
+    The dwell is still bounded. `fb` is only popped when a batch finishes cleanly, so a
+    family whose every batch rate-limits or crashes while serving the fallback never clears
+    it: agy sat pinned to `claude-opus-5-5` for 11.8h across ~30 failed batches, serving a
+    model it was never asked to use, long after Gemini recovered. Unattended, that is
+    indistinguishable from being switched off. So the primary is re-probed once the dwell
+    passes `FALLBACK_TTL`; if the quota is genuinely still gone the normal rate-limit path
+    re-arms the fallback and the cycle continues.
     """
     if family not in FALLBACK:
         return False
-    return bool(_fallback_state().get(family))
+    entry = _fallback_state().get(family)
+    if not entry:
+        return False
+    since = entry.get('since') or 0
+    if since and time.time() - since > FALLBACK_TTL:
+        return False
+    return True
 
 
 def _fallback_state():
@@ -707,7 +728,16 @@ class Job:
 def run():
     global STOP
     CACHE.mkdir(parents=True,exist_ok=True)
-    lock=(CACHE/'supervisor-v2.lock').open('w');fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+    # One supervisor only. A second launch used to die with an unhandled
+    # BlockingIOError traceback, which reads like a crash in whatever restarts this and
+    # makes a healthy fleet look broken. Refuse cleanly instead, and say why.
+    lock=(CACHE/'supervisor-v2.lock').open('w')
+    try:
+        fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+    except OSError:
+        print('A fleet supervisor already holds supervisor-v2.lock; not starting a second.',
+              flush=True)
+        return False
     signal.signal(signal.SIGTERM,lambda *_:set_stop());signal.signal(signal.SIGINT,lambda *_:set_stop())
     if not CONTROL.exists():atomic(CONTROL,defaults())
     from fzgx import api,oracle
@@ -807,6 +837,21 @@ def run():
                     del jobs[family];persist()
                 else:statuses[family]=data
             publish(statuses)
+            # An expired fallback is dropped here, not merely ignored by `in_fallback`: the
+            # rate-limit path re-arms with `not fb.get(family)`, so a stale-but-present
+            # record would suppress the re-arm and leave the family probing the primary
+            # while still reporting the substitute model. One re-probe per TTL, by design.
+            for _fb_family in list(fb):
+                _entry = fb[_fb_family] or {}
+                _since = _entry.get('since') or 0
+                if _since and time.time() - _since > FALLBACK_TTL:
+                    del fb[_fb_family]
+                    statuses[_fb_family] = dict(
+                        statuses.get(_fb_family, {}),
+                        reason=f'Fallback dwell expired; re-probing {POLICY[_fb_family]["display"]}.')
+                    print(f'{_fb_family}: fallback dwell expired, re-probing '
+                          f'{POLICY[_fb_family]["display"]}', flush=True)
+                    persist()
             # Surge capacity is decided from measured paid-provider state, after
             # this tick's telemetry and before anything is launched.
             note = apply_surge(statuses, config, clock)
