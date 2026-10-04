@@ -7175,3 +7175,6 @@ rel/main_rel/bg_aur/fn_1_153D74.c:
 
 rel/main_rel/effect/fn_1_618B8.c:
 	.text       start:0x000618B8 end:0x000619E4 align:4
+
+rel/main_rel/enemy_ctrl/fn_1_CB424.c:
+	.text       start:0x000CB424 end:0x000CB6D8 align:4

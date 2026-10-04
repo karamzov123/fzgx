@@ -1000,6 +1000,104 @@ void fn_1_CB404(u8 value) {
 }
 /* fzgx:end fn_1_CB404 */
 
+/* fzgx:begin fn_1_CB424 noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/enemy_ctrl.h"
+
+extern u32 fn_1_5910(void);
+extern f32 lbl_1_rodata_26F8[22];
+extern void fn_1_51E60(void *);
+extern u32 fn_1_CB6D8(void *);
+extern u32 lbl_1_rodata_5E14;
+extern u32 lbl_1_rodata_5E18;
+extern const f64 lbl_1_rodata_5C00;
+extern const f64 lbl_1_rodata_5CE8;
+extern const f32 lbl_1_rodata_5CFC;
+extern const f32 lbl_1_rodata_5CD4;
+extern const f32 lbl_1_rodata_5CD8;
+extern const f32 lbl_1_rodata_5E08;
+extern const f32 lbl_1_rodata_5E0C;
+extern const f32 lbl_1_rodata_5E1C;
+extern const f32 lbl_1_rodata_5E20;
+extern const f32 lbl_1_rodata_5E24;
+
+struct Cb424_msg {
+	s32 unk_0;
+	f32 unk_4;
+	f32 unk_8;
+	u32 unk_C[19];
+};
+
+union Cb424_col {
+	u32 w;
+	struct {
+		u8 r;
+		u8 g;
+		u8 b;
+		u8 a;
+	} c;
+};
+
+struct Cb424_out {
+	f32 unk_0;
+	f32 unk_4;
+	f32 unk_8;
+	f32 unk_C;
+	f32 unk_10;
+	u32 unk_14;
+	s32 unk_18;
+	union Cb424_col unk_1C;
+	union Cb424_col unk_20;
+};
+
+#pragma opt_common_subs off
+void fn_1_CB424(u32 arg0, u32 arg1, u32 arg2, f32 arg3) {
+	Obj_1_bss_7ACA0 *p = (Obj_1_bss_7ACA0 *)((u8 *)&lbl_1_bss_7ACA0 + arg2 * 12);
+	struct Cb424_out out;
+	struct Cb424_msg msg;
+
+	if (((*((u32 *)&lbl_1_data_3D544 + fn_1_5910()) >> 24) & 1) != 0) {
+		msg = *(struct Cb424_msg *)&lbl_1_rodata_26F8;
+		msg.unk_0 = 0x9402;
+		msg.unk_4 = lbl_1_rodata_5E1C;
+		msg.unk_8 = (f32)(s32)arg1;
+		fn_1_51E60(&msg);
+		msg = *(struct Cb424_msg *)&lbl_1_rodata_26F8;
+		msg.unk_0 = 0x940A;
+		msg.unk_4 = lbl_1_rodata_5E20;
+		msg.unk_8 = (f32)(s32)arg1;
+		fn_1_51E60(&msg);
+
+		out.unk_0 = (f32)(s32)arg0;
+		out.unk_4 = (f32)(s32)(arg1 + 14);
+		out.unk_8 = lbl_1_rodata_5E08;
+		out.unk_C = lbl_1_rodata_5E0C;
+		out.unk_10 = lbl_1_rodata_5CFC;
+		out.unk_18 = -1;
+		out.unk_1C.w = lbl_1_rodata_5E14;
+		out.unk_20.w = lbl_1_rodata_5E18;
+		out.unk_14 = p->unk_0;
+		if (p->unk_4 != 0) {
+			if ((p->unk_0 & 0xFFFFF000) == 0) {
+				f32 t = (f32)(p->unk_0 & 0xFFF) / lbl_1_rodata_5E24;
+				f32 x = lbl_1_rodata_5CD4 * t;
+
+				out.unk_1C.c.r = (u8)(lbl_1_rodata_5CD8 * (lbl_1_rodata_5CFC - t));
+				out.unk_1C.c.g = (u8)(lbl_1_rodata_5CD8 * (lbl_1_rodata_5CFC - t));
+				out.unk_1C.c.b = (u8)(lbl_1_rodata_5CD8 * (lbl_1_rodata_5CFC - t));
+				if (x > lbl_1_rodata_5CFC) {
+					x = lbl_1_rodata_5CFC;
+				}
+				out.unk_20.c.a = (u8)(lbl_1_rodata_5CD8 * (lbl_1_rodata_5CFC - x));
+			}
+		}
+		fn_1_CB6D8(&out);
+	}
+}
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_CB424 */
+
 /* fzgx:begin fn_1_CC27C */
 // fn_1_CC27C: empty in retail (single blr).
 void fn_1_CC27C(void) {
