@@ -97,9 +97,6 @@ rel/customize/customize/fn_3_BEF0.c:
 	.text       start:0x0000BEF0 end:0x0000BF1C
 
 rel/customize/customize/fn_3_C128.c:
-rel/customize/fn_3_BF1C.c:
-	.text       start:0x0000BF1C end:0x0000C128 align:4
-
 	.text       start:0x0000C128 end:0x0000C188
 
 rel/customize/customize/fn_3_C188.c:

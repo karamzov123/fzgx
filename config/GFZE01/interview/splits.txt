@@ -58,9 +58,6 @@ rel/interview/fn_17_72BC.c:
 	.text       start:0x000072BC end:0x000072C0
 
 rel/interview/interview/fn_17_74C0.c:
-rel/interview/fn_17_72C0.c:
-	.text       start:0x000072C0 end:0x000074C0 align:4
-
 	.text       start:0x000074C0 end:0x0000750C
 
 rel/interview/interview/fn_17_87C0.c:
