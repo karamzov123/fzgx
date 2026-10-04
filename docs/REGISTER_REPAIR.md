@@ -612,6 +612,45 @@ that motivated it: a body defining `lbl_3_bss_A2410` does not pull in
 The header list is derived from `rec['tu']`, so a standalone unit (no TU) is left
 alone rather than guessed at.
 
+### Register repair is not a viable lever at this population size (2026-10-04)
+
+This closes the line opened by the withdrawn reachability claim. Measured over the
+`fzgx stuck` census (816 functions analysed), the 99-100% band is **44% pure
+`regalloc`** — 75 functions where register assignment is the *only* difference. That
+is exactly the population register repair is for, so it was measured properly:
+
+| `mwconstraints.target_mapping` verdict | Count |
+| --- | ---: |
+| `needs-web-alignment` / **structural** | **40** |
+| `unsupported-instruction` | 6 |
+| `needs-web-alignment` / commutative-only | 2 |
+| `fixed-graph-hypothesis` | 2 |
+| (length mismatch / no object) | 25 |
+
+Three conclusions, each earned:
+
+1. **75% of the band is a source defect, not a register problem.**
+   `structural` means no consistent renaming exists, and the module's own docstring is
+   explicit that this is *"evidence of a source defect to fix first — aligning the webs
+   would mean aligning two different programs."* One value is live across a span retail
+   splits, or the reverse. Web alignment is the **wrong tool** here; that corrects the
+   earlier suggestion that PCode/web alignment was the prerequisite.
+
+2. **Where a map does exist, nothing applies it.** `target_mapping` returns a
+   register map for the two `fixed-graph-hypothesis` functions, but no transform
+   consumes it: `declaration_projection` only accepts a reorder that preserves our own
+   colours, which is what made the original reachability number vacuous.
+   `fn_1_10161C` is the live case — 99.40% with **0 shape errors** and 16 word errors,
+   a map in hand, and three rounds of `fixup` proposals that cannot move it.
+
+3. **So the population does not justify the machinery.** Two applicable functions
+   (one of which, `fn_1_131194`, is already matched) do not justify building a
+   register-mapping applier, and the 40 structural ones need value-flow repair at the
+   source, which is ordinary matcher work rather than a register pass.
+
+Note `mwconstraints.py` has since gained a `subkind` split (`cfebd280`), which is what
+separates rows 1 and 2 above; this census imports the live module.
+
 ### Two more link-mismatch recoveries, and one that needs re-derivation
 
 `fn_1_17A9C` -> `matched`/`verified` (`b37ca544`) and `fn_1_32600` -> `matched`
