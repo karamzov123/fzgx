@@ -1202,3 +1202,42 @@ Third distinct cause found for "the offsets do not match": after a genuinely wro
 (`fn_8005DCEC`) and a base-register artefact (`fn_8005DCEC` pooled, `fn_1_9A508`), this is
 an induction-variable difference — same layout, different loop form. Reading `stw` counts
 alone cannot tell them apart.
+
+### The optimisation level is per-function, and my "as-is is the global optimum" was wrong
+
+`fn_1_4DE04` turned out not to be a dead end. Sweeping levels on it:
+
+| level | words | `mtctr`/`bdnz` | score |
+| --- | ---: | :---: | ---: |
+| as-is | 41 | yes | 4.878 |
+| `-O0` / `-Os` | 31 | no | 0.000 |
+| `-O1` | 26 | no | 3.846 |
+| `-O2` | 19 | no | 5.263 |
+| `-O3` | 17 | yes | 5.882 |
+| **`-O4`** | **17** | **yes** | **17.647** |
+
+Retail is 16 words. `-O4` produces retail's `mtctr`/`bdnz` form at 17 words. This overturns
+the claim above that the configuration space is mapped and the project's configuration is
+its global optimum. That claim was measured on `fn_1_2D038` and `fn_1_4068C`, which happen
+not to be loop-sensitive; the correct statement is narrower.
+
+Two samples of unmatched functions with a body, testing whether a level beats as-is:
+
+- 13 functions, any of `-O2`/`-O3`/`-O4`: **6 of 13** improved by some level.
+- 21 functions, `-O4` alone: **4 better, 9 worse, 8 equal.**
+
+So no level is a global win — `-O4` loses more often than it wins. But it is
+high-variance, and the wins are large where they happen: `fn_10_8DFC` 10.14% -> 51.47%
+(**+41.3**), `fn_10_19924` 18.47% -> 45.45% (**+27.0**), and `fn_1_4DE04` above. Both
+functions that gained the most were near-hopeless, which is where a stuck agent has
+nothing to lose.
+
+The actionable form is therefore narrow and specific: **sweep levels per function, do not
+switch the project globally.** A level that helps one function wrecks another, and the
+default is best on average, so this is a last-resort probe on a function that is otherwise
+stuck — not a new build configuration. `flagcell --b=-O4` does exactly this in one command
+and prints both scores.
+
+Note also that `-inline on`, `-inline off` and `-nodefaults` are all byte-identical to
+as-is on `fn_1_4DE04`, consistent with the pragma census: the configuration axis is mostly
+inert, and the one part of it that is live (optimisation level) is per-function.
