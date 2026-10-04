@@ -131,15 +131,34 @@ rediscovered. That matters because the default output prints an "add this range"
 taken from the first row, which would otherwise keep proposing a range that breaks the
 link.
 
-The second pass also produced the predictor: **the cyclic cases are functions whose range
-is contiguous with the next split unit and that call into it.**
+The second pass produced a *candidate* predictor: the cyclic cases looked like functions
+whose range is contiguous with the next split unit and that call into it.
 
     fn_12_3A64  0x3A64..0x3DB8      fn_12_3DB8 starts at 0x3DB8
     fn_1_8CA70 -> fn_1_8CAF4 -> fn_1_8CB78 -> auto_... -> fn_1_8CED0
 
-Two of the drops were two units of a single cycle, which is mutual reference rather than a
-one-way ordering problem. The cheap structural test -- contiguous ranges plus a call edge,
-over the call graph `mwgraph.py` already replays -- is the fix to build.
+**That predictor does not work, and it is worth recording so nobody rebuilds it.** Scoring
+two versions of it against the 64 measured symbols, over all 1,377 no-split candidates:
+
+| model | TP | FP | FN | precision | recall |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| contiguity with a **split** range + call edge | 0 | 67 | 64 | 0% | 0% |
+| contiguity with an **auto** unit + call edge | 0 | 0 | 64 | n/a | 0% |
+
+The first model is not merely imprecise, it is anti-correlated: it flags 67 symbols and
+none of them are in the measured set. The reason is structural. The cycle partner is an
+**auto unit** — a maximal uncovered `.text` span that `dtk rel` turns into
+`auto_NN_<addr>_text` — not a split range, so a contiguity test against `splits.txt` is
+looking at the wrong objects. Modelling auto units does not rescue it either: a typical
+candidate sits in the *interior* of one large auto span, so it has no adjacent span at
+all, and every one of the 64 reports "no adjacent auto unit".
+
+Splitting a candidate out of a large auto unit leaves **two** remainders, and the cycle is
+a property of the call graph *across the new boundary inside that span*, not of adjacency
+at its edges. The real test is whether F calls something in the remainder that
+transitively reaches F: a graph query over the split remainder, not a structural one. Two
+structural heuristics were tried and both scored zero; do not spend more time on
+neighbour-based proxies.
 
 ## What it takes to land one object-100% function
 
