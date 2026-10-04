@@ -65704,6 +65704,17 @@
   },
   {
     "module": "sel",
+    "source": "rel/sel/sel/fn_10_8BB8.c",
+    "symbols": [
+      "fn_10_8BB8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/sel/sel.c"
+  },
+  {
+    "module": "sel",
     "source": "rel/sel/sel/fn_10_8D90.c",
     "symbols": [
       "fn_10_8D90"

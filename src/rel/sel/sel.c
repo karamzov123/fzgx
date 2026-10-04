@@ -2090,6 +2090,99 @@ void fn_10_8AAC(void) {
 }
 /* fzgx:end fn_10_8AAC */
 
+/* fzgx:begin fn_10_8BB8 */
+struct S14 {
+    u32 f;
+};
+extern struct S14 lbl_10_bss_14;
+extern s16 lbl_10_bss_4938C;
+extern u32 lbl_10_bss_49388;
+extern u32 lbl_10_bss_51744;
+
+struct fn_10_8BB8_lbl_1_bss_8B3A0 {
+    u8 pad_0[0x94];
+    u32 unk_94;
+    u32 unk_98;
+    u8 pad_9C[2];
+    u8 unk_9E;
+    u8 pad_9F[0xA1];
+    u32 unk_140;
+};
+struct S9F8 {
+    u8 pad0[8];
+    u16 f8;
+    u8 pad1[0xA];
+};
+extern struct fn_10_8BB8_lbl_1_bss_8B3A0 lbl_1_bss_8B3A0;
+extern struct S9F8 lbl_1_bss_9F8[];
+extern u8 lbl_1_bss_9C8[];
+extern u16 lbl_1_bss_96A;
+extern int fn_1_4C10(void);
+extern s32 fn_1_12F258(void);
+extern u32 fn_1_12F228(void);
+extern void fn_1_12F150(s16, u32, u32);
+extern void fn_1_12F1E8(s32);
+extern void fn_1_4A00(s32, u8, void *);
+
+#pragma opt_common_subs off
+static inline struct S9F8 *fn_10_8BB8_array_read(struct S9F8 *array) { return array; }
+#pragma opt_dead_assignments off
+void fn_10_8BB8(void) {
+    struct { struct fn_10_8BB8_lbl_1_bss_8B3A0 *value; } p_lbl_1_bss_8B3A0;
+    struct { u8 *value; } p_lbl_1_bss_9C8;
+    u32 v0;
+    int v1;
+    u32 v2;
+    s16 v3;
+    s16 v4 = 0;
+    struct S14 *p14;
+
+    if ((s32)lbl_10_bss_14.f == -1) {
+        fn_1_4C10();
+    }
+    v0 = lbl_1_bss_8B3A0.unk_140;
+    if ((v0 & 0x80000000) != 0 && (v0 & 0x40000000) == 0 &&
+        (lbl_1_bss_8B3A0.unk_94 & 8) == 0) {
+        v1 = 1;
+    } else {
+        if (fn_1_4C10() != 0) v1 = 1;
+        else v1 = 0;
+    }
+    if (v1 != 0) return;
+    p14 = &lbl_10_bss_14;
+    if ((s32)p14->f != -1) {
+        lbl_1_bss_96A = (u16)p14->f;
+        p14->f = -1;
+        return;
+    }
+    {
+    s16 fzgx_loop_v3_1334;
+    p_lbl_1_bss_9C8.value = (u8 *)&lbl_1_bss_9C8;
+    p_lbl_1_bss_8B3A0.value = &lbl_1_bss_8B3A0;
+    fzgx_loop_v3_1334 = 0;
+    while ((s16)fzgx_loop_v3_1334 < 4) {
+        if ((s8)p_lbl_1_bss_9C8.value[fzgx_loop_v3_1334 * 12 + 10] != -1 &&
+            __rlwnm(p_lbl_1_bss_8B3A0.value->unk_98, ((s16)fzgx_loop_v3_1334 + 1) & 31, 31, 31) != 0) {
+            if (((fn_10_8BB8_array_read(lbl_1_bss_9F8)[p_lbl_1_bss_8B3A0.value->unk_9E].f8 >> 8) & 1) != 0)
+                v4 = (s16)(v4 + 1);
+                (void) v4;  /* fzgx: keeps the web at its definition */
+            if (((fn_10_8BB8_array_read(lbl_1_bss_9F8)[p_lbl_1_bss_8B3A0.value->unk_9E].f8 >> 8) & 1) != 0)
+                fn_1_12F150(fzgx_loop_v3_1334, 2, 1);
+        }
+        fzgx_loop_v3_1334++;
+    }
+    v3 = fzgx_loop_v3_1334;
+    }
+    if (((s16)v4 != 0 && (u32)fn_1_12F258() < 300) || (s32)fn_1_12F228() != 0) {
+        fn_1_12F1E8(0);
+        fn_1_4A00(0, (u8)lbl_10_bss_4938C, (void *)lbl_10_bss_49388);
+        lbl_10_bss_51744 = 0;
+        lbl_10_bss_14.f = 31;
+    }
+}
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_10_8BB8 */
+
 /* fzgx:begin fn_10_8D90 */
 extern s32 lbl_10_bss_51740;
 extern u32 lbl_10_bss_49388;
