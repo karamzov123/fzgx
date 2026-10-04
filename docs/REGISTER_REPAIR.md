@@ -861,6 +861,42 @@ computation hoisted by one instruction, and that hoist is not reachable from pro
 order or from any pragma cell. Worth recording as the next concrete thing to attack on
 this function rather than re-deriving.
 
+#### The residue is an allocator fixed point, not a source-shape problem
+
+Reading the surrounding rows settles the mechanism. The `addi r3, r31, 0x30` exists in
+*both* objects — it is the argument to the `bl` two rows later:
+
+    row  RETAIL                       drop-cast ours
+     64  addi r3, r31, 0x30           lbz r0, 0x35(r31)
+     65  lbz r0, 5(r3)                addi r3, r31, 0x30
+     66  cmplwi r0, 2                 cmplwi r0, 2
+
+Retail puts the address computation *before* the load, which is the only reason the load
+can read `5(r3)`; we sink it to its use at the `bl`, which leaves the load free to fold
+to `r31+0x35`. Each arrangement is a valid fixed point of the same optimiser and each
+justifies the other, so no source rewrite that leaves both the load and the call reading
+the same pointer can move between them.
+
+Every lever aimed at breaking the tie was measured:
+
+- Hoisting the assignment earlier in program order: no effect.
+- `opt_propagation` / `scheduling` / `peephole` / `opt_common_subs` around the
+  statement: byte-identical to as-is in both cast forms.
+- Calling the file's own `fn_1_2D038_hdr_chk` helper instead of hand-inlining the check
+  (it is defined, semantically identical, and wrapped in `opt_propagation off`, so it
+  should have forced opacity): **22.7%**, 317 words — the pragma region disrupts far more
+  than this one load.
+- Forcing materialisation with a `volatile` pointer variable (16.4%) or a `volatile`
+  load (20.3%): both collapse the function, because volatile forces a stack round-trip.
+- Feeding the load and the call from one pointer variable: reverts to the fold (99.683%).
+
+So the honest conclusion is narrower than "needs one hoist". The materialised form *is*
+reachable from source, but every route that makes the compiler commit to it costs far
+more than the two instructions it would save. `fn_1_2D038` stays at 99.683%, and as-is
+remains the best body — the drop-cast variant scores *worse* (99.365%) despite emitting
+retail's exact instruction pair. Reaching this would take a new transform, not a source
+rewrite.
+
 Note `mwconstraints.py` has since gained a `subkind` split (`cfebd280`), which is what
 separates rows 1 and 2 above; this census imports the live module.
 
