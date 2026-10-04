@@ -528,6 +528,108 @@ u32 fn_3_3E58(u32 arg0, u32 arg1, u32 arg2, u32 arg3) {
 }
 /* fzgx:end fn_3_3E58 */
 
+/* fzgx:begin fn_3_3F20 */
+#include "rel/customize/globals.h"
+
+struct fn_3_3F20_entry {
+    u8 pad_0[0x8];
+    u16 unk_8;
+    u8 pad_A[0x6];
+    u16 unk_10;
+    u16 unk_12;
+};
+extern s32 lbl_3_bss_120;
+extern u16 lbl_1_bss_96A;
+extern struct fn_3_3F20_entry lbl_1_bss_9F8[1];
+extern u32 lbl_3_bss_243A8[6];
+extern u32 lbl_801A66A8;
+extern s32 fn_1_4C10(void);
+extern void fn_1_4A00(s32, s32, u32);
+extern void fn_1_A2D84(u32);
+
+void fn_3_3F20(void) {
+    u32 flags;
+    s32 ready;
+    struct { s16 value; } err;
+    struct { s16 value; } errCount;
+    s16 idx;
+    s32 val;
+    Obj_3_bss_F0 *pObj;
+    /* retail re-reads unk_8 through a pointer (lhzu then lhz), so it is volatile */
+    volatile u16 *buttons;
+
+    if (lbl_3_bss_120 == -1) {
+        fn_1_4C10();
+    }
+    flags = lbl_3_bss_F0.unk_24;
+    if ((flags & (~((u32)-1 >> 1))) != 0 &&
+        (flags & 1) == 0 &&
+        (*(u32 *)&lbl_3_bss_F0 & 2) == 0) {
+        ready = 1;
+    } else if (fn_1_4C10() != 0) {
+        ready = 1;
+    } else {
+        ready = 0;
+    }
+    if (!ready) {
+        if (lbl_3_bss_120 != -1) {
+            s32 value = lbl_3_bss_120;
+            lbl_3_bss_120 = -1;
+            lbl_1_bss_96A = (u16)value;
+        } else {
+            err.value = 0;
+            errCount.value = 0;
+            idx = lbl_3_bss_F0.unk_6;
+            if ((lbl_1_bss_9F8[idx].unk_10 & 1) != 0 ||
+                (lbl_1_bss_9F8[idx].unk_12 & 1) != 0) {
+                errCount.value--;
+                fn_1_A2D84(0xA9010000);
+                lbl_801A66A8 = 0;
+            }
+            if (((lbl_1_bss_9F8[idx].unk_10 >> 1) & 1) != 0 ||
+                ((lbl_1_bss_9F8[idx].unk_12 >> 1) & 1) != 0) {
+                errCount.value++;
+                fn_1_A2D84(0xA9010000);
+                lbl_801A66A8 = 0;
+            }
+            pObj = &lbl_3_bss_F0;
+            val = pObj->unk_4 + errCount.value;
+            pObj->unk_4 = val > 2 ? 0 : val < 0 ? 2 : val;
+            buttons = &lbl_1_bss_9F8[idx].unk_8;
+            if (((*buttons >> 8) & 1) != 0) {
+                err.value = 1;
+                fn_1_A2D84(0xA9010100);
+            } else if (((*buttons >> 9) & 1) != 0) {
+                fn_1_A2D84(0xA9010200);
+                err.value = -1;
+            }
+            if (err.value) {
+                fn_1_4A00(0, 15, lbl_3_bss_20850);
+                lbl_3_bss_243A8[0] = 0;
+            }
+            if (err.value == -1) {
+                lbl_3_bss_120 = 0x5e;
+            } else if (err.value == 1) {
+                switch (pObj->unk_4) {
+                case 0:
+                    lbl_3_bss_120 = 0x5e;
+                    break;
+                case 1:
+                    lbl_3_bss_120 = 0x64;
+                    break;
+                case 2:
+                    lbl_3_bss_120 = 0x6e;
+                    break;
+                default:
+                    lbl_3_bss_120 = 0x5e;
+                    break;
+                }
+            }
+        }
+    }
+}
+/* fzgx:end fn_3_3F20 */
+
 /* fzgx:begin fn_3_41B0 */
 extern s32 lbl_3_data_B8;
 extern s32 lbl_3_bss_20850;
