@@ -21,7 +21,12 @@ from typing import Dict, Optional
 
 from . import api, oracle
 
-LEVELS = ('-O2', '-O3', '-O4')
+# All six optimisation levels the compiler accepts (-O5 and -Ot are rejected as unknown).
+# The first three were the original set; -O0/-O1/-Os are included because the optimum is
+# per-function and a level that looks catastrophic on one function is not evidence about
+# another. -lmw and -use_lmw_stwm are deliberately excluded: they change prologue and
+# epilogue register-save style, which is an ABI concern rather than a tuning knob.
+LEVELS = ('-O0', '-O1', '-O2', '-O3', '-O4', '-Os')
 _OUT = (Path(os.environ.get('FZGX_STATE', Path(__file__).resolve().parents[2] / '.fzgx'))
          / 'levelscan.json')
 
