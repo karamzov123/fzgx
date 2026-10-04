@@ -194,87 +194,47 @@ Two further per-object lessons from the same function:
 Result: 22.8% -> **91.4%**, module displacement gone, remaining diff 10 regalloc rows
 and 1 instruction row. Not yet linked as a match.
 
-## The regalloc class is *reachable*; my earlier reading of it was wrong
+## The regalloc projection: my measurement was circular
 
-The plateau is large: 238 functions sit at >=98% (126 KB), 139 at >=99%. They release with
-notes like "99.9%, 2 rows, both regalloc" and, in the worst case, `fn_10_3B44` after
-**3217 search variants** concluding the swap "is an allocator tie-break not reachable from C".
+An earlier revision of this file claimed the plateau was reachable: "496 reachable, 0
+unreachable", 540 witnesses genuinely reordering the simplify order, 120 projecting to C.
+**All of that was circular and is withdrawn.** The reason is in `mwgraph.py`:
 
-I took that at face value and wrote into this file that the class was over-instrumented and
-its captured colours "routinely not expressible in the C the tools generate". **That was an
-inference I had not tested, and it is wrong.** Measured directly:
+    desired = {n['virtual_register']: n['physical_register'] for n in after['nodes'] ...}
+    witnesses += selection_order(before, desired) is not None
 
-**1. A witness exists for every capture.** Running `mwgraph.selection_order` on all 379
-captures, against the captured (retail) colours:
+`after` is the snapshot *after* SelectColors on **our own** compilation. So `desired` is the
+colouring the compiler already produced, and `selection_order` was being asked "is there an
+order that reproduces what the compiler just did?" The compiler's own order always is. That is
+why the result was a suspiciously perfect 496/0, why the control showed 540 "non-trivial"
+witnesses, and why a later probe of the same captures reported **0 registers differing**
+under the compiler's own order -- the giveaway.
 
-    reachable 496      unreachable 0      skipped 1
+The 25 bodies it produced were compiled and are real improvements (up to +15 points), but
+they came from a vacuous target: `declaration_projection` only accepts a reorder that
+*preserves* our own colours, so it was selecting allocation-neutral edits and a few of them
+happened to help. They are kept because they measurably improve, not because they were
+targeted.
 
-**2. The witnesses are not trivial.** A witness equal to the compiler's own simplify order
-would prove nothing, since that is the order it already used:
+### The real gate: instruction shape
 
-    non-trivial (reorders the compiler)  540
-    trivial                               8
-    positions moved: min 2, median 40, max 213
+Deriving the wanted colours from retail needs `mwconstraints.target_mapping(target, ours)`,
+which returns `'instruction-shape'` unless the two objects have the same length and
+disassemble to the same instruction count (`mwconstraints.py:46`). Run over every capture
+with a saved body:
 
-A median of 40 reordered positions is a substantial rewrite of the selection order, and it
-is achievable in every measured case.
+    instruction-shape   317    (100%)
 
-**3. A quarter of them project onto real C.** `mwconstraints.declaration_projection` turns a
-witness into an edited function body. Instrumenting every guard in it, over 463
-capture/body pairs:
+**Not one** of them qualifies. The projection machinery cannot fire on this corpus at all,
+which is the real reason `.fzgx/fixup/replay` does not exist, and it makes the
+`has-initializers` guard irrelevant: loosening it raises the candidate count of a path that
+is gated far earlier.
 
-| guard | count | share |
-| --- | ---: | ---: |
-| **produces a candidate** | **120** | **25.9%** |
-| has initializers (conservative guard) | 156 | 33.7% |
-| fewer than 2 movable locals | 105 | 22.7% |
-| movable absent from witness | 28 | 6.0% |
-| not the reverse-declaration stratum | 24 | 5.2% |
-| no locals in body | 18 | 3.9% |
-| colours still differ after projection | 12 | 2.6% |
-
-So 120 byte-level C candidates exist in effect, each reproducing the retail register
-colours by construction, and **the projection stage had never been run at scale** --
-`.fzgx/fixup/replay` did not exist.
-
-The bottleneck was never "can the allocator get there". It is that nobody runs
-`fzgx fixup --capture` / `--replay` over the corpus and compiles the results. Treat the
-plateau as unbuilt work, not as a frontier.
-
-The largest single guard is `has-initializers` at 33.7%. It is deliberately conservative --
-"moving them can change program behaviour" -- so relaxing it is a real decision and not a
-free win, but it is where the next ~150 candidates are.
-
-## Compiling the projected candidates: what it actually buys
-
-The 120 candidates above are not a promise, so they were compiled through the real oracle.
-A body file on disk is invisible to the fleet, so each improvement was also registered in
-the `attempts` table -- `preflight_repair` picks its body with
-`ORDER BY MAX(COALESCE(final_percent,0), COALESCE(best_in_attempt,0)) DESC`, and a file with
-no row is never selected, which would leave the retry re-deriving the old plateau.
-
-Result over the full projected set: **25 bodies improved, 0 matched.**
-
-    fn_10_1A458   81.85 -> 97.17     fn_1_CD7BC   92.23 -> 98.62
-    fn_1_FF420    96.99 -> 99.52     fn_1_FE644   97.47 -> 99.30
-    fn_80067DE4   98.97 -> 99.84     fn_1_DDF80   93.79 -> 97.73
-
-Two guards against reading too much into this:
-
-1. **Most projections are allocation-neutral.** Of 24 spot-checked, 18 compiled to exactly
-   the baseline percent, 3 were better and 3 worse. The sources genuinely differ -- a pure
-   declaration permutation of identical length, verified -- so this is MWCC's allocator
-   ignoring that particular reorder, not a no-op edit. The witness proves *an* order exists;
-   reordering declarations is one narrow way to induce it and usually does not.
-
-2. **Zero matched.** The reorder reaches the allocator but does not close the gap on its own.
-
-So the accurate statement is narrower than "unbuilt work waiting to be built". The witnesses
-are real and the projection is cheap and deterministic, but declaration reordering is not
-sufficient. It is a real improvement generator for ~25 of every ~110 projected functions,
-which is worth having and worth keeping, and the remaining distance needs edits the current
-projection class does not model. Relaxing the `has-initializers` guard would raise the
-*candidate* count, not the match rate, and should be judged on that basis.
+So the plateau is not "unbuilt work waiting to be built". Register repair only applies once
+codegen is instruction-identical to retail and *only the register assignment differs*. Until
+a body reaches that state, no allocator work can help, and the honest next step is to move
+functions toward instruction-identity first. The 25 projection bodies should be re-derived
+against real retail colours before being trusted as targeted repairs.
 
 Treating this class as "more agents, more attempts" has already cost roughly $369 and is
 the single largest line item in the ledger.
