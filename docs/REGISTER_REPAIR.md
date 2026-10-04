@@ -668,8 +668,8 @@ Three conclusions, each earned:
    would benefit. The 40 are *not* value-flow repairs either — see 1; they are allocator
    tie-breaks that source spelling does not reach.
 
-4. **The band is concentrated in clone families, which is the one place it pays.** The
-   40 span nine modules, but the small ones are retail clones of each other:
+4. **The band is concentrated in clone families — but that no longer helps.** The 40
+   span nine modules, and the small ones are retail clones of each other:
 
        fn_12_321E8  152 B / 38 words   } 37 of 38 words identical to
        fn_12_32280  152 B / 38 words   } each other (the difference is a
@@ -679,10 +679,31 @@ Three conclusions, each earned:
        fn_12_323B0  172 B / 43 words   } a second family
        fn_12_72F4   172 B / 43 words   }
 
-   So closing `fn_12_321E8` alone is worth five functions through `fzgx fixup
-   --clones`, which pools saved C across exact retail instruction families and repairs
-   one representative. That is the only route here with a return, and it still needs the
-   tie-break solved once.
+   Closing `fn_12_321E8` once would have been worth five functions through
+   `fzgx fixup --clones`. **It is not reachable**, so that leverage is only
+   theoretical — see 5.
+
+5. **The tie-break is a deterministic floor, not a search problem.** Five independent
+   approaches on `fn_12_321E8` all converge on *exactly* five differing words:
+
+   | Approach | Candidates | Best word errors |
+   | --- | ---: | ---: |
+   | declaration-order permutation | 492 (8 distinct scores) | 5 |
+   | remove the `v0` temporary | 1 | 5 |
+   | typed-pointer re-spelling | 1 | 5 |
+   | `#pragma opt_lifetimes off` | 1 | 5 |
+   | parameter-copy idiom + `#pragma opt_propagation off` | 321 | 5 |
+
+   The permutation search does move registers — 492 candidates produced eight distinct
+   scores from 5 to 12 word errors — so it is genuinely exploring; 5 is simply its
+   floor, and the baseline already sits there. This matches `MWCC_IDIOMS.md`: *"a
+   longer lifetime or more temporaries in its range; declaration order and the struct
+   wrapper cannot change it."* Every way of supplying that extra lifetime or temporary
+   adds an instruction, so it cannot be had for free.
+
+   **Conclusion: this band is closed.** Do not re-run these five approaches, and do not
+   read the clone concentration as an opening. The remaining frontier is the `mixed`
+   band (250 of the 95-99% functions), which is ordinary matcher work.
 
 Note `mwconstraints.py` has since gained a `subkind` split (`cfebd280`), which is what
 separates rows 1 and 2 above; this census imports the live module.
