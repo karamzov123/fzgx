@@ -62,6 +62,11 @@ FALLBACK = {
 # real quota window and short enough that a recovered provider is back on its own model
 # within one batch of the recovery.
 FALLBACK_TTL = 1800
+
+# Upper bound on any provider-reported retry delay. The longest genuine message observed is
+# "Resets in 2h44m22s"; three hours covers it with margin while making it impossible for a
+# single mis-parse to park a lane for days.
+RETRY_MAX = 3 * 3600
 for _n in SURGE:
     POLICY[_n] = {'harness':'opencode','model':'opencode/space-bunny-free','effort':'xhigh',
                   'display':f'Space Bunny Free xHigh #{_n[-1]}','managed':True}
@@ -428,7 +433,17 @@ def retry_delay(text, failures):
     a wall clock ("resets 1am") or a relative one ("Resets in 1h 5m"). Guessing a
     flat half hour for the absolute forms meant retrying into a wall that had not
     lifted yet, which is how a usage limit turned into a crash loop.
+
+    Whatever the provider says, the result is bounded by `RETRY_MAX`. A single lane
+    parked for days is worse than one that retries early and fails: agy was observed
+    holding a 147.3h backoff while every message in its own logs said the quota reset
+    within 2h44m, so the parse was not the thing producing the number. A cap makes the
+    damage bounded whatever the cause, and it is what a six-hour unattended run needs.
     """
+    return min(RETRY_MAX, _retry_delay_uncapped(text, failures))
+
+
+def _retry_delay_uncapped(text, failures):
     match = RESET_IN.search(text)
     if match and any(match.groups()):
         hours, minutes, seconds = (int(x or 0) for x in match.groups())
