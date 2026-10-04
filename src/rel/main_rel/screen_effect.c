@@ -2136,6 +2136,107 @@ void fn_1_789AC(void) {
 }
 /* fzgx:end fn_1_789AC */
 
+/* fzgx:begin fn_1_78EBC noprologue */
+#include "types.h"
+#include "rel/main_rel/screen_effect.h"
+
+typedef struct { u32 flags; s32 count; void *nodes; } Sig_fn_1_79C88_EffectManager;
+typedef struct { u8 unk_00[8]; u32 unk_08,unk_0C,unk_10; f32 unk_14; } Sig_fn_1_556F8_Fn1_556F8Object;
+typedef Sig_fn_1_556F8_Fn1_556F8Object Sig_fn_1_5575C_Fn1_5575CObject;
+typedef struct { u8 pad[0xD4]; u32 count; u8 pad2[0x4b0-0xD8]; } Rec_D4;
+extern f32 lbl_1_rodata_32E0;
+extern s32 fn_1_79C88(Sig_fn_1_79C88_EffectManager *, u32 *, s32, f32);
+extern u32 fn_1_56018(s32);
+extern u32 fn_1_7A648(Sig_fn_1_79C88_EffectManager *);
+extern u32 lbl_8006DAEC(void);
+extern u32 lbl_8006DBE4(void);
+extern u32 lbl_8006DCA4(void);
+extern u32 mathutil_mtxA_rotate_x(u32);
+extern u32 mathutil_mtxA_rotate_y(u32);
+extern void fn_1_556F8(Sig_fn_1_556F8_Fn1_556F8Object *);
+extern void fn_1_5575C(Sig_fn_1_5575C_Fn1_5575CObject *);
+extern void fn_1_55FC4(f32);
+extern void fn_1_5616C(s32,f32,f32);
+extern void fn_80072558(void);
+extern void lbl_8006DC20(void);
+extern void lbl_8006DFE8(u32);
+extern void lbl_8006E0A4(u32);
+extern void lbl_8006E13C(void *);
+extern u32 mathutil_mtxA_rotate_z(u32);
+void fn_1_78EBC(void) {
+    Obj_1_bss_3BE0_Target **v0;
+    u8 *v13;
+    u32 v4;
+    u32 v3;
+    u8 *v1;
+    u32 v11;
+    u32 *v10;
+    u8 *v18;
+    Obj_1_data_2A7E0 *v2;
+    u32 v14;
+    struct { u32 value; } v19;
+    f32 v6,v16,v20;
+    if(lbl_1_data_1DFA4.unk_8 != -1) {
+        v0=&lbl_1_bss_3BE0;
+        if(*v0) {
+            v1=(u8 *)(*v0)->unk_1C;
+            v3=*(u32 *)&lbl_1_bss_3BE4;
+            v2=&lbl_1_data_2A7E0;
+            v4=0;
+            while(v4 < (*v0)->unk_18) {
+                if(v4==0) lbl_8006DCA4();
+                else lbl_8006DFE8(v3+44);
+                fn_80072558();
+                v10=*(u32 **)(v1+224);
+                v11=0;
+                while(v11 < *(u32 *)(v1+220)) {
+                    v14=fn_1_7A648((Sig_fn_1_79C88_EffectManager *)*v10);
+                    if(v14) {
+                        if(*(u32 *)(v1+272) || *(u32 *)(v1+276) || *(u32 *)(v1+280) || *(u32 *)(v1+284)) {
+                            v20=lbl_1_rodata_32E0;
+{
+    s32 v12;
+                            v13=v1; v12=0;
+                            do {
+                                f32 *v15=*(f32 **)(v13+272);
+                                if(v15) {
+                                    v16=v20*v2->unk_1C;
+                                    fn_1_5616C(v12,v15[0]*v16,v15[1]*v16);
+                                }
+                                v12++; v13+=4;
+                            }while(v12<4);
+}
+                            fn_1_556F8((Sig_fn_1_556F8_Fn1_556F8Object *)v14);
+                            fn_1_56018(0);
+                        } else fn_1_556F8((Sig_fn_1_556F8_Fn1_556F8Object *)v14);
+                    }
+                    v11++; v10++;
+                }
+                v18=*(u8 **)(((u8 *)(*v0)->unk_1C + 216) + v4*1200);
+                lbl_8006DAEC();
+                v19.value=0;
+                while(v19.value < ((Rec_D4 *)(*v0)->unk_1C)[v4].count) {
+                    lbl_8006DBE4();
+                    lbl_8006E0A4((u32)(v18+4));
+                    mathutil_mtxA_rotate_z(*(s16 *)(v18+20));
+                    mathutil_mtxA_rotate_y(*(s16 *)(v18+18));
+                    mathutil_mtxA_rotate_x(*(s16 *)(v18+16));
+                    lbl_8006E13C(v18+24);
+                    v6=*(f32 *)(v18+24)>*(f32 *)(v18+28)?*(f32 *)(v18+24):*(f32 *)(v18+28);
+                    v20=*(f32 *)(v18+32)>v6?*(f32 *)(v18+32):v6;
+                    fn_1_55FC4(v20);
+                    {u32 v8=fn_1_79C88(*(Sig_fn_1_79C88_EffectManager **)v18,0,0,v20);
+                    if(v8) fn_1_5575C((Sig_fn_1_5575C_Fn1_5575CObject *)v8);}
+                    v19.value++; v18+=36;
+                }
+                lbl_8006DC20();
+                v4++; v3+=160; v1+=1200;
+            }
+        }
+    }
+}
+/* fzgx:end fn_1_78EBC */
+
 /* fzgx:begin fn_1_79100 */
 // Release the active screen-effect resources and reset the effect state.
 void fn_1_79100(void) {

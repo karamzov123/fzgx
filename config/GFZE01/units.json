@@ -49883,6 +49883,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/screen_effect/fn_1_78EBC.c",
+    "symbols": [
+      "fn_1_78EBC"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/screen_effect.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/screen_effect/fn_1_79100.c",
     "symbols": [
       "fn_1_79100"

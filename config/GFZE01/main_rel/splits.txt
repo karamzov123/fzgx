@@ -7181,3 +7181,6 @@ rel/main_rel/enemy_ctrl/fn_1_CB424.c:
 
 rel/main_rel/phys/fn_1_E2AE8.c:
 	.text       start:0x000E2AE8 end:0x000E2DCC align:4
+
+rel/main_rel/screen_effect/fn_1_78EBC.c:
+	.text       start:0x00078EBC end:0x00079100 align:4
