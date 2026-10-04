@@ -612,6 +612,53 @@ that motivated it: a body defining `lbl_3_bss_A2410` does not pull in
 The header list is derived from `rec['tu']`, so a standalone unit (no TU) is left
 alone rather than guessed at.
 
+### Two more link-mismatch recoveries, and one that needs re-derivation
+
+`fn_1_17A9C` -> `matched`/`verified` (`b37ca544`) and `fn_1_32600` -> `matched`
+(`82ef5b7a`). Both were parked at exactly 100% with the object already perfect.
+
+**`fn_1_17A9C`: the helper carried a comment.** Its parked body declares
+`static f32 vec_dist(...) /* locks the load order of the three components */ {`,
+and `inline_helpers` required `{` immediately after the parameter list, so it never
+matched — the shape most likely to need inlining (a hand-named reconstruction a
+matcher wrote down and explained) was the one it never saw. `fn_1_32600`'s primer had
+the same shape (`static void fzgx_bss_layout(void)`) and did match.
+
+**`fn_1_32600`: one file-scope object violated the body's own convention.** A `.bss`
+layout primer reconstructs the retail TU's file-scope objects in address order, and
+each gets a private `fzgx_obj_` copy so it cannot collide with whatever unit really
+owns it. Five of its six did:
+
+    u32 fzgx_obj_lbl_1_bss_50EC[5];
+    u32 fzgx_obj_lbl_1_bss_5100;
+    u32 fzgx_obj_lbl_1_bss_5104[13];
+    u32 fzgx_obj_lbl_1_bss_5138[65];
+    u32 lbl_1_bss_523C[8];          <- real retail name, no prefix
+
+`lbl_1_bss_523C` is a global 0x20-byte object referenced by `fn_1_3F250`, a different
+function. Defining it here is a duplicate definition of another unit's symbol, which
+the `extra_data` guard correctly refused. Adding the prefix its five siblings already
+use fixed it, and the six objects then land in `.bss` at retail's exact sizes
+(3C30=5308=0x14B0, 523C=32=0x20, 5138=260=0x104, 5104=52, 5100=4, 50EC=20).
+
+It landed as `link_state=pool`, not `verified`: the private `.bss` copies cannot be
+emptied, so the retail object is still linked. That is the documented pool-match
+terminal state, and it counts as matched but does **not** advance linked-files — worth
+knowing before reading a `matched` count as progress on linking from C.
+
+**`fn_12_23410` needs re-deriving, not repairing.** Its parked body only reaches
+96.84%; the 100% in the ledger came from an earlier body that is no longer on disk.
+The parked body models the search as a `static int find_entry(...)` called from a
+loop, but retail has no such helper — it inlines the `memcpy`/`fn_12_215F4` loop
+**twice**, holds `r31` for the out-pointer, seeds `r27` with `li r27, 0x800`, counts
+down (`subi r27, r27, 4; cmpwi r27, 0`) instead of testing `n > 0`, and brackets
+itself with `stmw r27, 0x1c(r1)` / `lmw r27` + `bl _restgpr_27`. Inlining the helper
+mechanically regressed it to 96.8%. Closing it means writing the body from that
+assembly, which is matcher work rather than a transform.
+
+That empties the re-drivable pool: of 141 symbols with a `link-mismatch` history only
+18 ever had a body parked on disk, and all 18 have now been driven.
+
 The has-initializers guard is still moot for the reason given: it raises the
 candidate count of a path gated earlier. That part of the withdrawal stands.
 
