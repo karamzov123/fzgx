@@ -975,3 +975,67 @@ census is a lower bound on the plateau, not the full fleet corpus. The
 "317 captures with a saved body" set is not reconstructible from this tree, so
 the original 317 figure could not be re-derived directly — only contradicted on
 a comparable population.
+
+### The compiler-configuration dimension is now fully exhausted
+
+Sweeping every cflag the compiler *accepts* (28 of them, found by probing which flags are
+rejected as unknown) against both a pool-heavy and a schedule-shaped function. Nothing
+beats as-is on either:
+
+| | `fn_1_2D038` (pool) | `fn_1_4068C` (schedule) |
+| --- | ---: | ---: |
+| as-is | **99.683** | **93.939** |
+| `-O0` / `-O1` / `-Os` | 2.5 / 6.0 / 2.5 | 1.5 / 5.4 / 1.5 |
+| `-O2` / `-O3` / `-O4` | 9.8 / 9.5 / 7.3 | 66.7 / 66.7 / 93.9 |
+| `-sdatathreshold 0` | 99.683 | 93.939 |
+| `-sdatathreshold 4..1024` | 41.905 | 93.939 (1024: 18.2) |
+| `-pool off` | 9.302 | 93.939 |
+| `use_lmw_stmw` / `lmw` / `char unsigned` / `nodefaults` / `longlong` | 99.683 | 93.939 |
+
+The configuration space is not merely unexplored — it is fully mapped, and the project's
+existing configuration is the global optimum of it. Together with the eight pragma cells
+and the two compiler versions already refuted, there is no remaining compiler-side
+lever. Anything that improves from here has to come from the source.
+
+### Where the remaining work actually is
+
+Profiling the 1613 unmatched by size against best score shows the mass is not where it
+looks:
+
+| size (bytes) | <50 | 50-79 | 80-94 | 95-98 | 99+ | total |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 64-159 | 11 | 13 | 31 | 26 | 11 | 92 |
+| 160-400 | 5 | 29 | 106 | 88 | 41 | 269 |
+| 400-1000 | 20 | 111 | 233 | 167 | 73 | 604 |
+| **1000+** | **108** | **331** | 160 | 28 | 12 | **639** |
+
+639 functions are 1000+ words, and 69% of them are below 80%. They are 40% of the
+unmatched population and the worst-performing segment by a wide margin. A 4000-byte
+function must match every word, so 80% there is ~800 wrong instructions — a different
+problem from the one-instruction residues chased above. Fixing these is a
+decompilation-quality problem (struct layouts, control-flow reconstruction, float/int
+typing), not a codegen problem, and no compiler setting touches it.
+
+### 842 functions have attempt records whose bodies are not on this machine
+
+1606 unmatched functions have `attempts > 0`, but only 764 have a retrievable body. The
+rest record a `best_body_path` under `/Users/rayan/fzgx/.fzgx/attempts/` — another
+machine. The ledger was seeded from that setup, so the attempt counts and percentages
+arrived but the `.c` files did not.
+
+This is not a blocker: nothing in the accept path compares against `best_percent`, so a
+100% body still submits regardless, and `claim` seeds the work copy from
+`state/donor_seeds/` or the existing `src/` body. But those recorded percentages are not
+locally reproducible and the prior work cannot be recovered — an agent picking one up
+starts from the donor seed with none of the earlier exploration available.
+
+Recorded because it changes what a low `best_percent` on those symbols means: it is a
+leftover, not a measurement anyone can reproduce here.
+
+**A correction worth keeping.** An earlier `-use_lmw_stwm` sweep appeared to show
+`fn_800478C0` jumping from 2.94% to 94.00% — a single-flag unlock. It was a bug in my
+sweep, which hardcoded `main_rel` while the function is module `main`, comparing
+mismatched builds. Measured properly it is 2.804% either way, and a corrected sweep over
+13 functions found no improvement. The flag is inert here. The lesson is the boring one:
+a surprising result that large is a bug until proven otherwise, and re-measuring against
+the resolved module took seconds.
