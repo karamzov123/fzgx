@@ -22199,6 +22199,19 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80064FDC.c",
+    "symbols": [
+      "fn_80064FDC"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [
+      "-use_lmw_stmw",
+      "on"
+    ]
+  },
+  {
+    "module": "main",
     "source": "dol/fn_800657F4.c",
     "symbols": [
       "fn_800657F4"
