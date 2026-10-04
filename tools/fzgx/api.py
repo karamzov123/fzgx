@@ -188,7 +188,21 @@ def _seed_record(key: str) -> dict:
 
 
 def _compiler_options(p: Project, key: str) -> dict:
-    options = _seed_record(key)
+    options = dict(_seed_record(key))
+    # `fzgx levelscan` records a per-symbol level in state/compiler_options.json. It is a
+    # default, not an override: an explicit extra_cflags or a seed's own flags still win,
+    # and a symbol already carrying flags keeps them. The level was measured against the
+    # attempt body rather than the build, since these functions have no unit until they
+    # are carved at submit time -- so it is recorded here and picked up by that carve.
+    opts = ROOT / "state" / "compiler_options.json"
+    if opts.exists():
+        try:
+            saved = json.loads(opts.read_text()).get(key) or {}
+            for field in ('mw', 'flags'):
+                if field not in options and field in saved:
+                    options[field] = saved[field]
+        except Exception:
+            pass
     path = p.work_path(key).with_suffix('.compiler.json')
     attempt = Ledger().current_attempt(key)
     if path.exists() and attempt:

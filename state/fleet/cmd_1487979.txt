@@ -1,0 +1,1 @@
+/home/armandofm/projects/fzgx/.venv/bin/python /home/armandofm/projects/fzgx/tools/orchestrate.py --harness opencode --model opencode/space-bunny-free --effort xhigh --parallel 1 --tool-parallel 1 --timeout 1800 --max-checks 16 --max-stale 5 --max-attempts 999 --verify-interval 60 --no-trivial --batch fleet-v2-oc4-1791150406989459623 --symbols fn_1_E2DCC fn_1_2EE3C
