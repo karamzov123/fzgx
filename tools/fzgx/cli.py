@@ -144,6 +144,20 @@ def cmd_read_evidence(a, p):
     return 0 if r['ok'] else 2
 
 
+def cmd_flagcell(a, p):
+    from . import flagcell, api as _api
+    body = Path(a.body).read_text() if a.body else _api._attempt_text(p, a.symbol)
+    if body is None:
+        print('FLAGCELL FAILED: no saved C for %s' % a.symbol)
+        return 2
+    r = flagcell.probe(p, a.symbol, body, a.a, a.b, a.mw_version, a.max_rows)
+    if a.json:
+        print(json.dumps(r, indent=2))
+    else:
+        print(flagcell.format_probe(r))
+    return 0 if r['ok'] else 2
+
+
 def cmd_submit(a, p):
     names = json.loads(Path(a.names).read_text()) if a.names else None
     r = api.submit(p, a.symbol, a.agent, a.message or "", a.harness, a.model, a.mw_version, a.extra_cflags,
@@ -470,6 +484,13 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser('read-evidence', help='read a cached diff or decoded retail data without compiling'); s.set_defaults(fn=cmd_read_evidence)
     s.add_argument('symbol'); s.add_argument('--section', choices=('diff', 'data'), default='diff')
     s.add_argument('--cursor', type=int, default=0)
+    s = sub.add_parser('flagcell', help='name what a compiler setting did, by diffing our own two objects'); s.set_defaults(fn=cmd_flagcell)
+    s.add_argument('symbol')
+    s.add_argument('--body', help='source to probe (default: the saved body)')
+    s.add_argument('--a', default='as-is', help='baseline setting: a pragma name, "pragma value", or a cflag')
+    s.add_argument('--b', default='scheduling off', help='setting to compare against --a')
+    s.add_argument('--mw-version', dest='mw_version', help='compiler version for both cells')
+    s.add_argument('--max-rows', dest='max_rows', type=int, default=40)
     s = sub.add_parser("write-unit", help="replace a claimed unit's source from a file"); s.set_defaults(fn=cmd_write_unit)
     s.add_argument("symbol"); s.add_argument("--agent", default=os.environ.get("FZGX_AGENT_ID", "agent")); s.add_argument("--file", required=True)
     s = sub.add_parser("patch-unit", help="replace one unique span of a claimed unit's work copy, then check"); s.set_defaults(fn=cmd_patch_unit)

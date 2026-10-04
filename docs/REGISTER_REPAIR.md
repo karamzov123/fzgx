@@ -750,6 +750,50 @@ their conclusions share one author with `mwcc-rs`, so they are not independent
 corroboration. `ac-decomp`'s pooling usage is the independent signal, and it pointed
 the wrong way for this title.
 
+### `fzgx flagcell`: the flag-cell probe, and what the pragma cell actually holds
+
+`SFA-Decomp`'s cheapest technique is to compile one body under two settings and diff
+**our two objects against each other**, which names the transformation the setting
+performed instead of only reporting that the score moved. That is now a tool:
+
+    fzgx flagcell SYMBOL [--a as-is] [--b "scheduling off" | -O3 | pragma ...]
+
+`tools/fzgx/flagcell.py` compiles both cells, reports each cell's word score, and lists
+the instruction rows that differ between them plus named effects (constant
+materialised, callee-saved store/copy in the prologue, branch moved). It flags
+`LENGTH CHANGED` when a setting adds or removes instructions rather than reordering,
+which separates a real codegen change from a no-op.
+
+Applied to `fn_1_466B0` it shows what `scheduling off` actually does: it hoists the
+loop's `li r3, 0` out of the body and reorders the prologue's `mr r31, r4` /
+`stw r30, 8(r1)` pair — 21 rows, no length change. Without the A/B diff that reads as
+"the pragma made it worse for no visible reason".
+
+**`-O3` is refuted by measurement**, like `GC/1.3.2r`: on `fn_1_466B0` it drops
+97.53% -> 11.11% *and* changes length (81 -> 57 words); on `fn_1_4068C`,
+93.94% -> 66.67%. It disables far more than scheduling.
+
+**The pragma cell is exhausted for this shape.** Sweeping all eight cells on both
+pure-schedule functions:
+
+| Cell | `fn_1_4068C` | `fn_1_466B0` |
+| --- | ---: | ---: |
+| as-is | **93.939** | **97.531** |
+| `peephole off` | 55.882 | 23.810 |
+| `opt_propagation off` | 93.939 | 14.458 |
+| `opt_common_subs off` | 93.939 | 97.531 |
+| `opt_lifetimes off` | 93.939 | 97.531 |
+| `opt_dead_assignments off` | 93.939 | 97.531 |
+| `opt_strength_reduction off` | 93.939 | 12.644 |
+| `opt_loop_invariants off` | 93.939 | 97.531 |
+| `scheduling off` | 66.667 | 71.605 |
+
+Nothing beats as-is. Four to six cells per function are exact no-ops (identical score),
+and every cell that acts makes it worse. So these functions are **not** waiting on a
+flag or pragma: the compiler is already in the right configuration and the residue is
+not reachable from the pragma cell at all. That is a stronger claim than "the search
+found nothing", and it is exactly what the A/B diff exists to establish.
+
 Note `mwconstraints.py` has since gained a `subkind` split (`cfebd280`), which is what
 separates rows 1 and 2 above; this census imports the live module.
 
