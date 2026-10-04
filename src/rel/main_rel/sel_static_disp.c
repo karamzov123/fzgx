@@ -2359,6 +2359,84 @@ void fn_1_13DC54(void) {
 }
 /* fzgx:end fn_1_13DC54 */
 
+/* fzgx:begin fn_1_13DDB8 */
+typedef struct {
+	u32 image;
+	f32 x;
+	f32 y;
+	f32 z;
+	u8 pad0[0x1C];
+	f32 field_2C;
+	u32 flags;
+	u8 pad1[4];
+	u32 unk_38;
+	u8 color_add[3];
+	u8 pad2[0x19];
+} Packet;
+
+extern f32 lbl_1_rodata_26F8[22];
+extern const f64 lbl_1_rodata_8608;
+extern const f32 lbl_1_rodata_8B2C;
+extern const f32 lbl_1_rodata_8838;
+extern const f32 lbl_1_rodata_8DF0;
+extern const f32 lbl_1_rodata_8684;
+extern const f32 lbl_1_rodata_86D0;
+extern u32 lbl_1_rodata_8DE8;
+extern const f32 lbl_1_rodata_87B4;
+extern const f32 lbl_1_rodata_863C;
+extern const f32 lbl_1_rodata_880C;
+extern const f32 lbl_1_rodata_85F0;
+extern const f32 lbl_1_rodata_8DF4;
+extern u32 lbl_1_rodata_8DEC;
+extern u32 lbl_801A66A0;
+extern f32 lbl_8006D188(u32);
+extern int fn_1_4F734(FontDrawPacket *);
+extern int fn_1_B7E98(int);
+
+static inline f32 fn_1_13DDB8_operand(f32 left, f32 right) { return left * right; }
+#pragma opt_propagation off
+void fn_1_13DDB8(void) {
+	f32 f;
+	Packet p;
+	f32 s;
+	f32 t;
+	f32 f_2;
+	f32 s_2;
+
+	p = *(Packet *)lbl_1_rodata_26F8;
+	p.image = 0x10000 - 25055;
+	p.x = lbl_1_rodata_8DF0;
+	p.y = lbl_1_rodata_8684;
+	p.z = lbl_1_rodata_86D0;
+	p.field_2C = lbl_1_rodata_87B4;
+	p.flags = 10;
+	p.unk_38 = lbl_1_rodata_8DE8;
+	f = lbl_8006D188((s32)(lbl_1_rodata_8B2C * (lbl_801A66A0 % 120) / lbl_1_rodata_8838));
+	s = lbl_1_rodata_863C + f;
+	t = lbl_1_rodata_880C * s;
+	p.color_add[0] = p.color_add[1] = p.color_add[2] = (u8)(s32)(fn_1_13DDB8_operand((t), (lbl_1_rodata_85F0)));
+	p.field_2C = lbl_1_rodata_87B4;
+	fn_1_4F734((FontDrawPacket *)&p);
+
+	if (fn_1_B7E98(1)) {
+		p = *(Packet *)lbl_1_rodata_26F8;
+		p.image = 0x10000 - 25055;
+		p.x = lbl_1_rodata_8DF4;
+		p.y = lbl_1_rodata_8684;
+		p.z = lbl_1_rodata_86D0;
+		p.flags = 0x8000A;
+		p.unk_38 = lbl_1_rodata_8DEC;
+		f_2 = lbl_8006D188((s32)(lbl_1_rodata_8B2C * (lbl_801A66A0 % 120) / lbl_1_rodata_8838));
+		s_2 = lbl_1_rodata_863C + f_2;
+		t = lbl_1_rodata_86D0 * s_2;
+		p.color_add[0] = p.color_add[1] = p.color_add[2] = (u8)(s32)(fn_1_13DDB8_operand((t), (lbl_1_rodata_85F0)));
+		p.field_2C = lbl_1_rodata_87B4;
+		fn_1_4F734((FontDrawPacket *)&p);
+	}
+}
+#pragma opt_propagation reset
+/* fzgx:end fn_1_13DDB8 */
+
 /* fzgx:begin fn_1_13E054 */
 void fn_1_13E054(void* arg0, void* arg1, void* arg2, int arg3) {
     u8* fixed = (u8*)0;

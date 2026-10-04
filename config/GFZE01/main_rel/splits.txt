@@ -7196,3 +7196,6 @@ rel/main_rel/stcoli/fn_1_2E1B8.c:
 
 rel/main_rel/live_camera/fn_1_FCB0.c:
 	.text       start:0x0000FCB0 end:0x00010138 align:4
+
+rel/main_rel/sel_static_disp/fn_1_13DDB8.c:
+	.text       start:0x0013DDB8 end:0x0013E054 align:4
