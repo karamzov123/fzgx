@@ -22392,6 +22392,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_8006A554.c",
+    "symbols": [
+      "fn_8006A554"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.2.5n",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8006A998.c",
     "symbols": [
       "fn_8006A998"
