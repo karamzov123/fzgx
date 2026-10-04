@@ -1275,3 +1275,30 @@ function, no build change beyond that one unit's own flags.
 This also sets a ceiling on the whole effort. A perfect level probe addresses the 625
 functions that already have bodies; the 632 bodies that never migrated cap what any of this
 tooling can reach without recovering rayan's tree.
+
+### The right target set is "has a local body", not the 90–100% band
+
+Testing the proposal before spending an hour on it turned up two things. First, taking the
+best of `-O2`/`-O3`/`-O4` against as-is over 25 functions from the 90–100% band:
+
+    some level better: 7 of 25 (28%)     worse: 0     equal: 18
+
+    fn_10_8DFC   10.14% ->  51.47% via -O4  (+41.3)
+    fn_1_3F5F8   41.57% ->  76.40% via -O4  (+34.8)
+    fn_8005B264  17.97% ->  24.22% via -O3  (+ 6.2)
+
+**Zero regressions**, against 9 losses out of 21 for `-O4` alone earlier. The difference is
+that this takes the best level per function instead of committing to one, and a level that
+hurts a function simply loses to as-is. So the probe is safe to run broadly, which the
+`-O4`-alone result would not have suggested.
+
+Second, and this corrects the target set: `fn_10_8DFC` was selected by the query
+`best_percent >= 90` and yet compiles at **10.14%** here. The ledger says 90%+ because that
+figure was recorded on another machine; the body on this tree is nowhere near. So the
+"90–100% band" is not a band at all for the migrated functions — it is a set of stale
+percentages. Selecting on ledger score picks the wrong functions.
+
+The correct selection is simply **functions with a local body**, which after the `_attempt_text`
+fallback is 974 of them. For those, `flagcell` against `-O2`, `-O3` and `-O4` is cheap, never
+regresses, and wins on roughly a quarter to a third — with the largest gains concentrated
+exactly where the earlier samples said they would be.
