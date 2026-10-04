@@ -99,7 +99,11 @@ def in_fallback(family):
     if not entry:
         return False
     since = entry.get('since') or 0
-    if since and time.time() - since > FALLBACK_TTL:
+    retry_at = entry.get('retry_at') or 0
+    # A provider that names its own reset time decides when we come back; the TTL is only
+    # the bound for a provider that gave none.
+    horizon = retry_at or (since + FALLBACK_TTL)
+    if horizon and time.time() > horizon:
         return False
     return True
 
@@ -809,7 +813,15 @@ def run():
                         # the real fault behind a different name.
                         if rate and family in FALLBACK and not fb.get(family):
                             fb[family]={'since':time.time(),'from':POLICY[family]['display'],
-                                        'to':FALLBACK[family]['display']}
+                                        'to':FALLBACK[family]['display'],
+                                        # When the provider names its own reset time, that is the
+                                        # honest expiry for this fallback, not FALLBACK_TTL. A fixed
+                                        # short TTL re-probes into a quota wall that is still up:
+                                        # agy said "Resets in 2h37m38s", was re-probed after 30
+                                        # minutes, hit the same wall, and the second rate limit
+                                        # extended the backoff again. Re-probe when the provider
+                                        # says the quota is back.
+                                        'retry_at':time.time()+retry_delay(text,failures[family])}
                             print(f'{family}: quota exhausted, serving {FALLBACK[family]["display"]}',flush=True)
                             # The quota just measured belongs to the model we are leaving, not
                             # to the one now serving this family. Sitting out its full
@@ -844,7 +856,8 @@ def run():
             for _fb_family in list(fb):
                 _entry = fb[_fb_family] or {}
                 _since = _entry.get('since') or 0
-                if _since and time.time() - _since > FALLBACK_TTL:
+                _horizon = _entry.get('retry_at') or (_since + FALLBACK_TTL)
+                if _since and time.time() > _horizon:
                     del fb[_fb_family]
                     statuses[_fb_family] = dict(
                         statuses.get(_fb_family, {}),
