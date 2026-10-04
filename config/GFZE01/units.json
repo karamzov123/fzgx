@@ -63135,6 +63135,24 @@
   },
   {
     "module": "profile",
+    "source": "rel/profile/fn_16_61D4.c",
+    "symbols": [
+      "fn_16_61D4"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "pool": {
+      "...rodata.0": "lbl_16_rodata_58",
+      "@33": "lbl_16_rodata_58+0x48",
+      "@19": "lbl_16_rodata_58+0x2C",
+      "@42": "lbl_16_rodata_AC",
+      "@16": "lbl_16_rodata_58+0x20",
+      "@12": "lbl_16_rodata_58+0x10"
+    }
+  },
+  {
+    "module": "profile",
     "source": "rel/profile/fn_16_6834.c",
     "symbols": [
       "fn_16_6834"
