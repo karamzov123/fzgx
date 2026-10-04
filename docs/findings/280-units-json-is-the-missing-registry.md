@@ -65,6 +65,37 @@ files, and `configure.py` does not call it. After editing either, run it explici
     python3 -c "import sys; sys.path.insert(0,'tools'); from fzgx import tufile; \
         from fzgx.project import Project; tufile.regenerate(Project())"
 
+## A fourth gate: a new split can create a link-order cycle
+
+Closing a split gap is not always safe, and the failure is a fourth one, found by trying
+to bulk-close all 92 gaps in the >=99% no-split class at once:
+
+    Cyclic dependency encountered while resolving link order:
+    rel/main_rel/fn_1_5C83C.c -> auto_00_0005CA00_text
+
+Giving a function its own split turns it into its own link unit. If the functions it
+*calls* are still supplied by auto units that the linker must place **after** it, the
+order is circular and the whole module fails to resolve. This is a real ownership
+question, not a missing range: the callee's storage is owned by an unmatched auto unit
+that sits later in the module.
+
+Of 92 candidates, **52 linked cleanly and 40 were cyclic**. Every removal was validated
+by rebuilding, so the 52 are known-good. Examples of the cyclic class:
+
+    colchg_selmate_disp (car_colchg)  fn_16_E20 (profile)      fn_15_5460 (winning)
+    fn_17_3F0 fn_17_3E08 fn_17_6C30 fn_17_7728 (interview)    fn_8_5C54 fn_8_FC5C (title)
+    fn_10_3B44 fn_10_7130 fn_10_A90C fn_10_22760 (sel)         fn_3_104C4 fn_3_1AE40 fn_3_1AEE4
+
+Note the shape of the trap: the cyclic ones are **cross-referencing functions** — the
+kind that call each other or sit inside a matched unit's dependency cone. They need a
+call-graph-aware split, not a range. `splitgaps.py` cannot tell them apart today, so the
+pruning loop is the honest way to separate the two classes.
+
+The right durable fix is for `splitgaps.py` to consult the call graph and exclude a
+function whose callees are all still in auto units positioned after it. Until that
+exists, treat "no split range" as a *candidate* reason, not a guaranteed fix, and
+validate every batch of additions with a build.
+
 ## What it takes to land one object-100% function
 
 `fn_3_17098` (customize, 72 B) was at 100% object / link-rejected with 31 attempts.
