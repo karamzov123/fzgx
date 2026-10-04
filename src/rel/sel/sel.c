@@ -2441,6 +2441,84 @@ void fn_10_96F8(void *first, void *second) {
 }
 /* fzgx:end fn_10_96F8 */
 
+/* fzgx:begin fn_10_A0E8 */
+struct SelState98 {
+    u8 pad_0[0x98];
+    u32 unk_98;
+};
+
+typedef struct {
+    u8 pad_0[0xa];
+    s8 unk_a;
+    u8 pad_1[1];
+} SelSlot9C8;
+
+typedef struct {
+    u8 pad_0[0x10];
+    u16 unk_10;
+    u16 unk_12;
+} SelSlot9F8;
+
+extern s16 lbl_10_bss_55608;
+extern struct SelState98 lbl_1_bss_8B3A0;
+extern SelSlot9C8 lbl_1_bss_9C8[];
+extern SelSlot9F8 lbl_1_bss_9F8[];
+extern u32 lbl_801A66A8;
+extern void fn_1_12F128(s16);
+extern void fn_1_A2D84(u32);
+
+#pragma opt_common_subs off
+
+s16 fn_10_A0E8(void) {
+    s32 res;
+    s32 sum;
+    s16 old;
+    s16 counter;
+    s16 i;
+
+    old = lbl_10_bss_55608;
+    counter = 0;
+    for (i = 0; i < 4; i++) {
+        if (lbl_1_bss_9C8[i].unk_a == -1) {
+            continue;
+        }
+        if (__rlwnm((&lbl_1_bss_8B3A0)->unk_98, ((u32)(i + 1) & 31), 31, 31) != 0) {
+            if (((lbl_1_bss_9F8[i].unk_10 >> 3) & 1) ||
+                ((lbl_1_bss_9F8[i].unk_12 >> 3) & 1)) {
+                counter--;
+            }
+            if (((lbl_1_bss_9F8[i].unk_10 >> 2) & 1) ||
+                ((lbl_1_bss_9F8[i].unk_12 >> 2) & 1)) {
+                counter++;
+            }
+            if (((lbl_1_bss_9F8[i].unk_10 >> 2) & 1) ||
+                ((lbl_1_bss_9F8[i].unk_12 >> 2) & 1)) {
+                fn_1_12F128(i);
+            } else if (((lbl_1_bss_9F8[i].unk_10 >> 3) & 1) ||
+                       ((lbl_1_bss_9F8[i].unk_12 >> 3) & 1)) {
+                fn_1_12F128(i);
+            }
+        }
+    }
+
+    sum = lbl_10_bss_55608 + counter;
+    if (sum < 0) {
+        res = 0;
+    } else {
+        res = 1;
+        if (sum <= 1) {
+            res = sum;
+        }
+    }
+    lbl_10_bss_55608 = res;
+    if ((s16)res != old) {
+        fn_1_A2D84(0xA9010000);
+        lbl_801A66A8 = 0;
+    }
+    return lbl_10_bss_55608;
+}
+/* fzgx:end fn_10_A0E8 */
+
 /* fzgx:begin fn_10_A7DC */
 extern int fn_1_FA070(void);
 extern int fn_1_FA0BC(int);
