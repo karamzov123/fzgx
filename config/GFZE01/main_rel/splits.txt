@@ -7187,3 +7187,6 @@ rel/main_rel/screen_effect/fn_1_78EBC.c:
 
 rel/main_rel/effect/fn_1_60B80.c:
 	.text       start:0x00060B80 end:0x00060C70 align:4
+
+rel/main_rel/font/fn_1_4E220.c:
+	.text       start:0x0004E220 end:0x0004E500 align:4

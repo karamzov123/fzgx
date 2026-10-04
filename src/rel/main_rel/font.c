@@ -1683,6 +1683,188 @@ void fn_1_4E0F4(void) {
 }
 /* fzgx:end fn_1_4E0F4 */
 
+/* fzgx:begin fn_1_4E220 noprologue */
+#include "types.h"
+#include "rel/main_rel/font.h"
+
+typedef enum {
+    GX_TF_I4 = 0x0,
+    GX_TF_I8 = 0x1,
+    GX_TF_IA4 = 0x2,
+    GX_TF_IA8 = 0x3,
+    GX_TF_RGB565 = 0x4,
+    GX_TF_RGB5A3 = 0x5,
+    GX_TF_RGBA8 = 0x6,
+    GX_TF_CMPR = 0xE,
+    GX_CTF_R4 = 0x0 | 0x20,
+    GX_CTF_RA4 = 0x2 | 0x20,
+    GX_CTF_RA8 = 0x3 | 0x20,
+    GX_CTF_YUVA8 = 0x6 | 0x20,
+    GX_CTF_A8 = 0x7 | 0x20,
+    GX_CTF_R8 = 0x8 | 0x20,
+    GX_CTF_G8 = 0x9 | 0x20,
+    GX_CTF_B8 = 0xA | 0x20,
+    GX_CTF_RG8 = 0xB | 0x20,
+    GX_CTF_GB8 = 0xC | 0x20,
+    GX_TF_Z8 = 0x1 | 0x10,
+    GX_TF_Z16 = 0x3 | 0x10,
+    GX_TF_Z24X8 = 0x6 | 0x10,
+    GX_CTF_Z4 = 0x0 | 0x10 | 0x20,
+    GX_CTF_Z8M = 0x9 | 0x10 | 0x20,
+    GX_CTF_Z8L = 0xA | 0x10 | 0x20,
+    GX_CTF_Z16L = 0xC | 0x10 | 0x20,
+    GX_TF_A8 = GX_CTF_A8,
+} GXTexFmt;
+
+typedef struct {
+    u32 dummy[8];
+} GXTexObj;
+
+typedef enum {
+    GX_CLAMP,
+    GX_REPEAT,
+    GX_MIRROR,
+    GX_MAX_TEXWRAPMODE,
+} GXTexWrapMode;
+
+typedef struct {
+    f32 m[12];
+} Mtx;
+
+struct Arg0 {
+    u32 unk_0;
+    f32 unk_4;
+    f32 unk_8;
+    f32 unk_C;
+    f32 unk_10;
+    f32 unk_14;
+    u32 unk_18;
+    u32 unk_1C;
+    u32 unk_20;
+    u32 unk_24;
+    s16 unk_28;
+    u8 pad_2A[0x6];
+    u32 unk_30;
+    u32 unk_34;
+    u32 unk_38;
+    u32 unk_3C;
+    s32 unk_40;
+    u16 unk_44;
+    u16 unk_46;
+    u32 unk_48;
+};
+
+extern const f32 lbl_1_rodata_2750;
+extern const f32 lbl_1_rodata_2754;
+extern const f64 lbl_1_rodata_2758;
+extern f32 fn_1_519AC(u32);
+extern void lbl_8006D7F4(f32, f32, f32);
+extern void lbl_8006E15C(f32, f32, f32);
+extern void lbl_8006DD7C(void);
+extern void lbl_8006DB74(Mtx *);
+extern void mathutil_mtxA_rotate_z(u32);
+extern void fn_800745A4(u32, s32, s32, u32, u32, u32);
+extern u16 GXLoadTexMtxImm(Mtx *, u32, u32);
+extern u32 __cvt_fp2unsigned(f32);
+extern void DCFlushRange(void *, u32);
+extern void GXInitTexObj(GXTexObj *, void *, u16, u16, GXTexFmt, GXTexWrapMode, GXTexWrapMode, u8);
+extern void fn_800729B0(s32, s32, s32, s32, s32);
+extern void fn_80072AB0(s32, s32, s32);
+extern void fn_80072C24(s32, s32, s32, s32, s32);
+extern void fn_80072CC4(s32, s32, s32, s32, s32);
+extern void fn_80072D64(s32, s32, s32, s32, u8, s32);
+extern void fn_80072E20(s32, s32, s32, s32, u8, s32);
+extern void fn_800734A8(u32, s32, s32, s32);
+extern void fn_80073778(void *, s32);
+extern void fn_80073C6C(s32);
+extern GXTexObj lbl_1_bss_4E688;
+
+static inline f32 fn_1_4E220_operand(f32 left, f32 right) { left *= right; return left; }
+#pragma opt_common_subs on
+#pragma opt_lifetimes off
+#pragma opt_strength_reduction off
+static inline void fn_1_4E220_call_GXInitTexObj(GXTexObj * a0, void * a1, u16 a2, u16 a3, GXTexFmt a4, GXTexWrapMode a5, GXTexWrapMode a6, u8 a7) { GXInitTexObj(a0, a1, a2, a3, a4, a5, a6, a7); }
+static inline f32 fn_1_4E220_operand_(f32 right, f32 left) { return left * right; }
+void fn_1_4E220(struct Arg0 *arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4) {
+    f32 fzgx_live;
+    Mtx loc_8;
+    u32 v1;
+    s32 v2;
+    u32 v5;
+    Obj_1_data_FCD4_At20 *v6;
+    u32 v7;
+    f32 scale;
+    f32 f44;
+    f32 f46;
+    struct { f32 v; } prod;
+    struct { f32 v; } total;
+    s32 lab_t1;
+    u32 lab_t2;
+    Mtx * lab_t0;
+    s32 lab_t3;
+    u32 lab_t3_;
+
+    lbl_8006D7F4(arg0->unk_4, arg0->unk_8, lbl_1_rodata_2750);
+    fzgx_live = arg0->unk_14;
+    lbl_8006E15C(arg0->unk_10, fzgx_live, lbl_1_rodata_2754);
+    if (arg0->unk_28 != 0) {
+        mathutil_mtxA_rotate_z(arg0->unk_28);
+    }
+    lbl_8006DD7C();
+    lbl_8006DB74(&loc_8);
+    v1 = arg2 & 0xFF;
+    v2 = arg4 & 0xFF;
+    fn_800745A4(v1, 1, 4, v2, 0, 125);
+    lab_t2 = 1;
+    lab_t0 = &loc_8;
+    GXLoadTexMtxImm(lab_t0, v2, lab_t2);
+    if (arg0->unk_30 & 0x800000) {
+        scale = fn_1_519AC(arg0->unk_40);
+        f44 = (f32)arg0->unk_44;
+        f46 = (f32)arg0->unk_46;
+        scale = f44 * scale;
+        scale = f46 * scale;
+        DCFlushRange((void *)arg0->unk_48, __cvt_fp2unsigned(scale));
+        lab_t3_ = arg0->unk_46;
+        fn_1_4E220_call_GXInitTexObj(&lbl_1_bss_4E688, (void *)arg0->unk_48, ((u16)(arg0->unk_44)), lab_t3_, (GXTexFmt)arg0->unk_40, GX_CLAMP, GX_CLAMP, 0);
+        lab_t1 = arg3 & 0xFF;
+        fn_80073778(&lbl_1_bss_4E688, lab_t1);
+    } else {
+        lab_t2 = arg0->unk_0;
+        v5 = lab_t2;
+        v6 = *(Obj_1_data_FCD4_At20 **)((((u32)&lbl_1_data_FCD4) + 0x20) + (((v5 >> 8) & 0xFFFF) * 0x28));
+        if (!(lbl_1_rodata_2750 != arg0->unk_10 && lbl_1_rodata_2750 != arg0->unk_14 && v6 != 0)) {
+            return;
+        } else {
+            fn_80073778((void *)(v6->unk_C + ((v5 & 0xFF) << 5)), arg3 & 0xFF);
+        }
+    }
+    v7 = arg1 & 0xFF;
+    fn_80073C6C(v7);
+    fn_800734A8(v7, v1, arg3 & 0xFF, 255);
+    if (((0) == (arg0->unk_40)) || ((((arg0->unk_40)) == ((1))))) {
+        fn_80072C24(v7, 15, 15, 15, 0);
+        fn_80072D64(v7, 0, 0, 0, 1, 0);
+        fn_80072CC4(v7, 7, 0, 4, 7);
+        lab_t3 = 0;
+        fn_80072E20(v7, 0, 0, lab_t3, 1, 0);
+    } else {
+        fn_800729B0(2, 0, 0, 0, 0);
+        fn_80072AB0(v7, 0, 2);
+        fn_80072C24(v7, 8, 15, 0, 15);
+        fn_80072D64(v7, 8, 0, 0, 1, 0);
+        fn_80072CC4(v7, 4, 7, 0, 7);
+        lab_t3 = 0;
+        fn_80072E20(v7, 14, 0, lab_t3, 1, 0);
+    }
+}
+#pragma opt_strength_reduction reset
+
+#pragma opt_lifetimes reset
+
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_4E220 */
+
 /* fzgx:begin fn_1_4E500 */
 void fn_1_4E500(void) {
     fn_1_A71CC();
