@@ -295,10 +295,15 @@ Safe cleanup, while the fleet is idle (no `fzgx.py fixup` running):
     cd .fzgx/fixup/sessions
     for d in */; do rm -rf "$d/sources" "$d/objects"; done
 
-That reclaimed ~40 GB and took the volume from 84% to 77%. It costs nothing:
-re-running a session regenerates both, and `report.json`/`cache.json` still make
-the rerun cheap. **Do not delete `report.json` or `cache.json`** — the cache is
-what makes a repeat run skip compiles.
+That reclaimed **~175 GB** and took the volume from 84% full to 54%. It costs
+nothing: re-running a session regenerates both, and `report.json`/`cache.json`
+still make the rerun cheap — verified by re-running a session afterwards and
+getting an identical compile. **Do not delete `report.json` or `cache.json`** —
+the cache is what makes a repeat run skip compiles.
+
+Without this, a long fixup campaign fills the volume: growth is proportional to
+candidates tried, and the largest sessions were `customize___epilog` (721 objects,
+116 MB) and `colchg_menu_disp` (7537 sources, 31 MB) for single functions.
 
 Two smaller consumers, both outside this repo and both deliberate build outputs:
 `~/projects/fzero-gx-online/build` holds ~7 GB of built ISOs (five 1.4 GB images)

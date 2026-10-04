@@ -532,23 +532,40 @@ These are `link-mismatch` bodies quarantined by `verify.py:160-162`: the object
 matched, the batch relink did not, so the unit was uncarved and the body parked in
 `.fzgx/attempts/<sym>.linkfail.<ts>.c` with `percent=100, link_fail=true`.
 
-**`fn_1_128B60` is now `matched` / `link_state=verified`** (commit `a48591fa`).
-Its preserved body declared `static s32 next_rand(void)` — the non-inline helper
-shape of finding 273. `fixup_source.inline_helpers` already had the fix but never
-ran: it is gated on `row['score'] == 100` (fixup.py:432), and the quarantined
-body was invisible to the corpus. The standalone body also needed
-`#include "types.h"`, which the recarve path supplies and a work copy does not.
+**Five of the six are now `matched` / `link_state=verified`.** Two distinct
+repairs, both of which the engine already had:
 
-The other five are **not** this shape and remain open:
+**1. Missing TU context (four functions).** `fn_3_17098` (`6695b5e3`),
+`fn_1_3F4B8` (`ca986079`), `fn_1_611EC` (`924f2754`), `fn_1_FC760` (`5607407a`).
+The parked bodies are standalone copies, and a standalone body does not get the
+TU's headers — the recarve path supplies them and the quarantine path does not.
+Each failed to compile on its own evidence alone:
 
-- `fn_1_3F4B8`, `fn_1_611EC`, `colchg_selmate_disp` — `inline_helpers` yields
-  proposals, but these bodies are `.fzgxpool` layout primers declaring `fzgx_obj_*`
-  external data objects. A different failure; the transform does not apply.
-- `fn_1_FC760`, `fn_3_17098` — zero inline proposals. Cause still unidentified.
+    ';' expected                              (fn_1_3F4B8, no types.h)
+    undefined identifier 'lbl_9_bss_8'         (colchg_selmate_disp)
+
+Prepending the owning TU header fixed all four with no source edit beyond the
+include. `fn_3_17098` needed `rel/customize/editor.h` specifically because its
+body *defines* 16 `lbl_3_bss_A2410*` fragment globals while that header already
+declares `extern Obj_3_bss_A2410 lbl_3_bss_A2410` — without the header the
+fragments collide; with it they are the layout primer they are meant to be.
+
+**2. Non-inline static helper (`fn_1_128B60`, `a48591fa`).** Its body declared
+`static s32 next_rand(void)` — the shape of finding 273. `inline_helpers` already
+had the fix but never ran: it is gated on `row['score'] == 100` (fixup.py:432) and
+the quarantined body was invisible to the corpus. It also needed `#include
+"types.h"`.
+
+**`colchg_selmate_disp` is a genuine link failure and stays open.** It reaches
+100% at the object with the header added, but `verify` rejects it again on relink.
+Its own last agent note is the diagnosis: *"All 8 remaining rows are L-rows
+(private literal pool base only)"*. That is a pool-layout problem, not a register
+and not a missing header.
 
 So do not read this census as "the plateau is uniformly pre-instruction-identity":
-six functions were already byte-identical and were waiting on a link repair that
-existed but was gated off.
+five functions were already byte-identical and were waiting on a repair that
+existed but was gated off, and the sixth is waiting on a pool fix that does not
+exist yet.
 
 The has-initializers guard is still moot for the reason given: it raises the
 candidate count of a path gated earlier. That part of the withdrawal stands.
