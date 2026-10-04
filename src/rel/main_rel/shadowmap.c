@@ -122,6 +122,233 @@ void fn_1_568EC(ShadowMap *map, u32 value0, u32 value1) {
 }
 /* fzgx:end fn_1_568EC */
 
+/* fzgx:begin fn_1_568F8 noprologue */
+#include "types.h"
+#include "psvec.h"
+
+typedef struct Vec3f {
+    f32 x;
+    f32 y;
+    f32 z;
+} Vec3f;
+
+struct fn_1_568F8_lbl_1_rodata_28B0 {
+    u32 unk_0;
+    f32 unk_4;
+    Vec3f v1;
+    Vec3f v2;
+    Vec3f v3;
+    Vec3f v4;
+    u32 unk_38;
+    u32 unk_3C;
+    f32 unk_40;
+    f32 unk_44;
+    f32 unk_48;
+    f32 unk_4C;
+    f32 unk_50;
+    f32 unk_54;
+};
+extern struct fn_1_568F8_lbl_1_rodata_28B0 lbl_1_rodata_28B0;
+
+typedef struct Unk48 {
+    u8 pad[0x14C];
+    u8 unk_14C[0x70];
+    Vec3f pos;
+} Unk48;
+
+typedef struct Unk44 {
+    u8 pad[0x38C];
+    u8 field_38C;
+    u8 pad38D[0x3B8 - 0x38D];
+    s16 field_3B8;
+} Unk44;
+
+typedef struct LocC {
+    u32 unk_0;
+    u32 unk_4;
+} LocC;
+
+typedef struct ShadowMap {
+    u32 unk_0;
+    u32 unk_4;
+    u8 pad8[0x38];
+    void *unk_40;
+    Unk44 *unk_44;
+    Unk48 *unk_48;
+} ShadowMap;
+
+extern f64 __fabs(f64);
+extern void fn_80038F10(void *);
+extern void fn_80038FD8(u32 *, u32 *, u32 *, u32 *);
+extern void fn_80038BFC(void *);
+extern void fn_8006F1F0(void *, void *, void *);
+extern void lbl_8006DB74(void *);
+extern void lbl_8006D89C(f32, f32);
+extern void lbl_8006E0D8(f32, f32, f32);
+extern void fn_80015EE8(void *, f32, f32, f32, f32, f32, f32);
+extern void fn_800737E4(void *, s32);
+extern void fn_80038EEC(f32, f32, f32, f32, f32, f32);
+extern void fn_80074188(u32, u32, u32, u32);
+extern void fn_80074300(u32, u32, u32, u32);
+extern void fn_80074438(u32, u32, u32, u32);
+extern void fn_800744F8(void *, u32);
+extern void fn_8003526C(void *, s32);
+extern void fn_80007C2C(void);
+extern void lbl_8006DC6C(void *);
+extern void lbl_8006DFD8(void *);
+extern void lbl_8006DBAC(void *);
+extern void fn_80072558(void);
+extern void fn_80074788(u32);
+extern void fn_80074660(u32);
+extern void fn_80073678(u32);
+extern void fn_80073898(u32);
+extern void fn_800725DC(void *);
+extern void fn_80072614(void *);
+extern void fn_800747D0(u32, u32, u32, u32, u32, u32, u32);
+extern void fn_80073C6C(u32);
+extern void fn_800734A8(u32, u32, u32, u32);
+extern void fn_80072EDC(u32, u32);
+extern void fn_800728A8(u32, u32, u32, u32);
+extern void fn_80074918(u32, u32, u32);
+extern int fn_1_56724(void);
+extern void fn_80077BAC(void *);
+extern void fn_1_870BC(void *, s32, void *, s32, s32, f32);
+extern void GXInvalidateTexAll(void);
+extern void fn_80072270(void *);
+
+void fn_1_568F8(ShadowMap *map) {
+    struct fn_1_568F8_lbl_1_rodata_28B0 *p_rodata;
+    Unk48 *unk_48;
+    Unk44 *unk_44;
+    s32 flag;
+    f32 scale;
+    s32 i;
+    Vec3f *vec;
+    f32 ax, ay, az;
+    f32 loc_C8[16];
+    f32 loc_98[12];
+    f32 loc_80[6];
+    f32 loc_64[7];
+    Vec3f loc_58;
+    Vec3f loc_4C;
+    Vec3f loc_40;
+    Vec3f loc_34;
+    Vec3f loc_28;
+    u32 loc_24;
+    u32 loc_20;
+    u32 loc_1C;
+    u32 loc_18;
+    u32 loc_14;
+    volatile u32 loc_10; /* volatile: preserves stack spill slot across calls to match retail */
+    u32 loc_C;
+    u32 loc_8;
+
+    p_rodata = (struct fn_1_568F8_lbl_1_rodata_28B0 *)&lbl_1_rodata_28B0;
+    unk_48 = map->unk_48;
+    flag = (map->unk_0 >> 1) & 1;
+
+    if (flag != 0 || (flag == 0 && (map->unk_4 & 1) == 0)) {
+        goto do_work; /* goto: matches retail branch layout and early return */
+    }
+    return;
+
+do_work:
+    map->unk_4 &= ~3;
+    if (flag) {
+        map->unk_4 |= 2;
+    } else {
+        map->unk_4 |= 1;
+    }
+
+    fn_80038F10(loc_80);
+    fn_80038FD8(&loc_24, &loc_20, &loc_1C, &loc_18);
+    fn_80038BFC(loc_64);
+
+    if (flag) {
+        ax = __fabs(unk_48->pos.x);
+        ay = __fabs(unk_48->pos.y);
+        az = __fabs(unk_48->pos.z);
+        if (ax <= ay && ax <= az) {
+            loc_4C = p_rodata->v1;
+            vec = &loc_4C;
+        } else if (ay <= az && ay <= ax) {
+            loc_40 = p_rodata->v2;
+            vec = &loc_40;
+        } else {
+            loc_34 = p_rodata->v3;
+            vec = &loc_34;
+        }
+        scale = p_rodata->unk_40;
+        vec->x = -vec->x;
+        vec->y = -vec->y;
+        vec->z = -vec->z;
+        psvec_scale(&unk_48->pos, scale, &loc_58);
+        loc_28 = p_rodata->v4;
+        fn_8006F1F0(&loc_58, vec, &loc_28);
+        lbl_8006DB74(loc_98);
+    } else {
+        lbl_8006D89C(p_rodata->unk_44, p_rodata->unk_4);
+        lbl_8006E0D8(p_rodata->unk_4, p_rodata->unk_48, p_rodata->unk_4);
+        lbl_8006DB74(loc_98);
+    }
+
+    {
+        f32 v3 = p_rodata->unk_4C;
+        f32 v13 = p_rodata->unk_40;
+        fn_80015EE8(loc_C8, v3, v13, v13, v3, p_rodata->unk_4, p_rodata->unk_50);
+    }
+    fn_800737E4(loc_C8, 1);
+    fn_80038EEC(p_rodata->unk_4, p_rodata->unk_4, p_rodata->unk_54, p_rodata->unk_54, p_rodata->unk_4, p_rodata->unk_44);
+    fn_80074188(0, 0, 128, 128);
+    fn_80074300(0, 0, 128, 128);
+    fn_80074438(64, 64, 0, 1);
+    loc_14 = p_rodata->unk_38;
+    fn_800744F8(&loc_14, 0x00FFFFFF);
+    fn_8003526C(map->unk_40, 1);
+    fn_80007C2C();
+
+    if (flag) {
+        lbl_8006DC6C((u8 *)unk_48 + 0x14C);
+        lbl_8006DFD8(loc_98);
+    } else {
+        lbl_8006DBAC(loc_98);
+    }
+
+    fn_80072558();
+    loc_10 = p_rodata->unk_3C;
+    fn_80074788(1);
+    fn_80074660(0);
+    fn_80073678(1);
+    fn_80073898(0);
+    loc_8 = loc_10;
+    fn_800725DC(&loc_8);
+    loc_C = p_rodata->unk_0;
+    fn_80072614(&loc_C);
+    fn_800747D0(4, 0, 0, 0, 1, 2, 1);
+    fn_80073C6C(0);
+    fn_800734A8(0, 255, 255, 4);
+    fn_80072EDC(0, 4);
+    fn_800728A8(1, 1, 0, 0);
+    fn_80074918(1, 3, 1);
+    fn_80077BAC((void *)fn_1_56724);
+
+    unk_44 = map->unk_44;
+    for (i = 0; i < 6; i++) {
+        if (i != 5 && (unk_44->field_38C & (1 << i))) {
+            fn_1_870BC(unk_44, (s8)i, unk_44, 0, unk_44->field_3B8 & 0xFF, p_rodata->unk_44);
+            break;
+        }
+    }
+
+    fn_80077BAC(0);
+    fn_8003526C(map->unk_40, 1);
+    GXInvalidateTexAll();
+    fn_80038EEC(loc_80[0], loc_80[1], loc_80[2], loc_80[3], loc_80[4], loc_80[5]);
+    fn_80074188(loc_24, loc_20, loc_1C, loc_18);
+    fn_80072270(loc_64);
+}
+/* fzgx:end fn_1_568F8 */
+
 /* fzgx:begin fn_1_571E8 */
 #include "types.h"
 
