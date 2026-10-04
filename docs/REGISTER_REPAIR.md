@@ -1241,3 +1241,37 @@ and prints both scores.
 Note also that `-inline on`, `-inline off` and `-nodefaults` are all byte-identical to
 as-is on `fn_1_4DE04`, consistent with the pragma census: the configuration axis is mostly
 inert, and the one part of it that is live (optimisation level) is per-function.
+
+### Where the level probe can actually be applied
+
+Per-unit `extra_cflags` are supported end to end — `_set_unit_opts` writes
+`u["extra_cflags"]` into the unit and `_reconfigure_and_split` regenerates the build — so
+`-O4` is applicable to a single function without touching the project configuration. On
+`fn_10_8DFC` it takes the function from 10.14% to 51.47%, with the object the same length as
+retail (68 against 67 words) and a differing prologue and call order. That is a far better
+starting point, but closing it is real decompilation work rather than a probe.
+
+The limiting factor is which functions can be probed at all, and it runs the opposite way to
+intuition. Body availability by best score, among unmatched functions with `attempts > 0`:
+
+| best_percent | functions | body available |
+| --- | ---: | ---: |
+| 0–35 | 51 | 6 (11%) |
+| 35–60 | 177 | 30 (16%) |
+| 60–90 | 735 | 315 (42%) |
+| **90–100** | **641** | **625 (97%)** |
+
+The worse a function scores, the less likely its body is on this machine — the opposite of
+what is wanted. The functions a level probe would help most are the ones whose source is
+missing, because those are the ones that were worked hardest elsewhere. A sweep of the 0–35%
+band tested exactly one function in a minute and found nothing, because 89% of that band has
+no body to sweep.
+
+So the actionable population is the **90–100% band: 625 functions that both have a body and
+are close enough that a different level could plausibly finish them.** That is where a
+per-function level probe belongs, and it is cheap there — one `flagcell --b=-O4` per
+function, no build change beyond that one unit's own flags.
+
+This also sets a ceiling on the whole effort. A perfect level probe addresses the 625
+functions that already have bodies; the 632 bodies that never migrated cap what any of this
+tooling can reach without recovering rayan's tree.
