@@ -794,6 +794,42 @@ flag or pragma: the compiler is already in the right configuration and the resid
 not reachable from the pragma cell at all. That is a stronger claim than "the search
 found nothing", and it is exactly what the A/B diff exists to establish.
 
+### The stock compiler takes `-pool off` / `-pool on`, and pooling must be on
+
+`ac-decomp` used `-pool off`, which I had read as tied to their `GC/1.3.2r` patch
+rather than a flag. It is a flag: the **stock `GC/1.3.2`** accepts `-pool off` and
+`-pool on` cleanly (`-nopool` is rejected as unknown). That makes pooling directly
+probeable, and it is reachable through `flagcell --b='-pool off'`.
+
+On `fn_1_2D038`, the archetypal 99.68% pool-row near-miss:
+
+| Cell | Words | Score |
+| --- | ---: | ---: |
+| as-is | 315 | **99.683** |
+| `-pool on` | 315 | 99.683 (byte-identical no-op) |
+| `-pool off` | 344 | 9.302 |
+
+So the default already compiles with pooling **on**, and turning it off is
+catastrophic: it adds 29 instructions and pushes the whole prologue out of alignment.
+That finally accounts for the `GC/1.3.2r` failure I could previously only record as
+"fails catastrophically" — that compiler version disables pooling, which is precisely
+the wrong configuration for this title. It also explains why pooling is the *dominant*
+axis in the gate census (pool-load identity ranks far above band width as a predictor)
+while being the one axis that must not be touched.
+
+The practical consequence: for a `pool_rows` near-miss, the flag dimension is already
+at its optimum, so the remaining work is source-shaped. Matching a pool load means
+getting the pool's *sizes and order* right — which is why `colchg_selmate_disp`
+needed a two-pool retarget rather than a flag change, and why `fn_1_2D038`'s residue
+is a pool-layout question and not a compiler-setting one.
+
+A defect worth recording, since it is exactly the failure mode an A/B tool exists to
+avoid: the first `_disasm` omitted capstone's `skipdata`, so disassembly stopped at the
+first undecodable word and compared only the common prefix. `-pool off` reported "the
+two cells compiled identically" while the word counts were 315 and 344. Enabling
+`skipdata` (undecodable words become `.byte` rows) makes the comparison span both
+objects in full and reports the 312 rows that actually differ.
+
 Note `mwconstraints.py` has since gained a `subkind` split (`cfebd280`), which is what
 separates rows 1 and 2 above; this census imports the live module.
 

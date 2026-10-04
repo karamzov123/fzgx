@@ -39,9 +39,17 @@ EFFECTS = (
 
 
 def _disasm(words: Optional[List[int]]) -> List[str]:
+    """Every word of the function, decoded.
+
+    `skipdata` matters here: without it capstone stops at the first undecodable word and
+    silently returns only the common prefix of two objects, which made a 315-word cell and
+    a 344-word cell report as identical. Undecodable words become `.byte` rows so the
+    comparison always spans both objects in full.
+    """
     if not words:
         return []
     md = Cs(CS_ARCH_PPC, CS_MODE_32 | CS_MODE_BIG_ENDIAN)
+    md.skipdata = True
     return [f'{i.mnemonic} {i.op_str}'.strip() for i in
             md.disasm(b''.join(w.to_bytes(4, 'big') for w in words), 0)]
 
@@ -145,7 +153,14 @@ def format_probe(r: Dict[str, object]) -> str:
     if r['length_changed']:
         out.append('  LENGTH CHANGED: this setting added or removed instructions, not just reordered')
     if not r['differing_rows']:
-        out.append('  the two cells compiled identically: this setting had no effect here')
+        # A truncated decode can make two genuinely different cells look identical, so this
+        # verdict is only safe when the word counts agree too. They did not once, before
+        # `_disasm` gained `skipdata`: 315 words against 344 reported as identical.
+        if r['length_changed']:
+            out.append('  NOTE: word counts differ but no differing rows decoded; the cells '
+                       'differ in length only, or a word failed to decode')
+        else:
+            out.append('  the two cells compiled identically: this setting had no effect here')
         return '\n'.join(out)
     if r['named_effects']:
         out.append('  named effects: ' + ', '.join(r['named_effects']))
