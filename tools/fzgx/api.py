@@ -1131,16 +1131,15 @@ def _attempt_text(p: Project, key: str) -> Optional[str]:
             path = STATE_DIR / "attempts" / path.name
         if path.exists():
             return path.read_text()
-        # The recorded best body came from another machine and never travelled with the
-        # ledger, but this tree often holds a different local attempt under the same
-        # symbol with its own timestamp. Without this, those functions present as having
-        # no history at all. Recoverable that way: 210 of the 842 that have attempts>0
-        # but no reachable body; the remaining 632 are genuinely absent.
-        local = sorted((q for q in (STATE_DIR / "attempts").glob(f"{key}.*.c")
-                        if ".shadow." not in q.name),
-                       key=lambda q: _attempt_rank(q))
-        if local:
-            return local[-1].read_text()
+    # Unconditional, and deliberately not gated on a recorded path: the best_body_path for
+    # many functions was recorded on another machine and has since been cleared, so this
+    # cannot live inside the branch above. This tree often holds a different local attempt
+    # under the same symbol with its own timestamp, which is worth far more than nothing.
+    local = sorted((q for q in (STATE_DIR / "attempts").glob(f"{key}.*.c")
+                    if ".shadow." not in q.name),
+                   key=lambda q: _attempt_rank(q))
+    if local:
+        return local[-1].read_text()
     return None
 
 
