@@ -6,6 +6,7 @@ import subprocess
 import time
 import json
 import os
+import re
 import signal
 import hashlib
 from typing import Dict, List, Optional
@@ -97,6 +98,95 @@ def _is_checksum_failure(cp: subprocess.CompletedProcess) -> bool:
     return 'shasum' in out and 'checksum' in out
 
 
+def _tu_headers(body: str) -> List[str]:
+    """The `#include` lines a body already carries, in order."""
+    return [line.strip() for line in body.splitlines() if line.strip().startswith('#include')]
+
+
+def _tu_includes(p: Project, rec: Optional[dict]) -> List[str]:
+    """The `#include` lines the unit's own translation unit is compiled with.
+
+    Read from the TU file rather than guessed from the unit path: the TU is what
+    supplied this body's declarations when it compiled and linked, so its include
+    block is the exact context to restore. Returns [] for a standalone unit.
+    """
+    tu = (rec or {}).get('tu')
+    if not tu:
+        return []
+    path = tufile.tu_path(p, tu)
+    try:
+        text = path.read_text()
+    except OSError:
+        return []
+    out = []
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped.startswith('#include'):
+            out.append(stripped)
+        elif out:
+            break  # the include block is contiguous at the top of the TU
+    return out
+
+
+def _with_tu_context(body: str, rec: Optional[dict], p: Project) -> str:
+    """Prepend the TU's headers to a body that is about to leave its unit.
+
+    A quarantined body is a standalone copy: the recarve path supplies the TU's
+    headers and the quarantine path does not, so bodies parked here routinely fail to
+    compile on their own evidence -- "';' expected" on an undeclared u32, or an
+    undefined bss label. Four of the six 100% link-mismatch functions needed nothing
+    beyond this.
+
+    Each include is added only when the body does not already carry it. A body may
+    legitimately define something its TU header also declares (a reconstructed
+    struct, or the `lbl_*` fragment globals a layout primer needs), and adding that
+    header then makes the compiler reject the file, so a header is skipped when the
+    body defines any name it declares.
+    """
+    if not (rec or {}).get('tu'):
+        return body
+    carried = _tu_headers(body)
+    missing = [inc for inc in _tu_includes(p, rec)
+               if not any(_same_include(inc, have) for have in carried)]
+    if not missing:
+        return body
+    keep = [inc for inc in missing if _include_is_safe(inc, body, p)]
+    if not keep:
+        return body
+    lines = body.splitlines(keepends=True)
+    at = 0
+    while at < len(lines) and (lines[at].lstrip().startswith('#include')
+                               or not lines[at].strip()):
+        at += 1
+    prologue = ''.join(inc if inc.endswith('\n') else inc + '\n' for inc in keep)
+    return prologue + ''.join(lines[at:])
+
+
+def _same_include(a: str, b: str) -> bool:
+    return a.split()[-1] == b.split()[-1]
+
+
+def _include_is_safe(include: str, body: str, p: Project) -> bool:
+    """False when the header declares a name the body also defines.
+
+    Conservative in the safe direction: a false positive only costs the include, and
+    the body still compiles if the header was not needed. A false negative makes the
+    compiler reject a header that redeclares what the body defines.
+    """
+    name = include.split()[-1].strip('"<>')
+    path = ROOT / 'include' / name
+    if not path.exists():
+        return True
+    try:
+        text = path.read_text(errors='replace')
+    except OSError:
+        return True
+    declared = set(re.findall(r'\b(\w+)\s*(?:\[[^\]]*\])?\s*(?:;|=|\{)', text))
+    defined = set(re.findall(r'(?m)^\s*(?:static\s+|const\s+|extern\s+)*[A-Za-z_][\w \t*]*?\b(\w+)\s*(?:\[[^\]]*\])?\s*(?:=|;|\{)', body))
+    defined |= set(re.findall(r'(?m)^\s*typedef\b.*?\b(\w+)\s*;', body))
+    return not (declared & defined)
+
+
 @oracle.build_lock('submit.lock', timeout_s=1800)
 def verify(p: Project, message: Optional[str] = None) -> Dict[str, object]:
     """Relink with every pending unit Matching; commit on success; bisect on failure."""
@@ -151,9 +241,19 @@ def verify(p: Project, message: Optional[str] = None) -> Dict[str, object]:
                 # select saved bodies through best_body_path, and a NULL row hid a 100%
                 # body from all three, so the function was re-derived from scratch forever.
                 if keep.exists() and keep.read_text().strip():
+                    body = _with_tu_context(keep.read_text(), rec, p)
+                    if body != keep.read_text():
+                        # A quarantined body is a standalone copy: the recarve path supplies the
+                        # TU's headers and the quarantine path does not, so bodies parked here
+                        # routinely fail to compile on their own evidence ("';' expected" on an
+                        # undeclared u32, or an undefined bss label). Prepend the TU header the
+                        # unit was compiled under. Four of the six 100% link-mismatch functions
+                        # needed nothing else. Recompute the digest over what is actually stored.
+                        keep.write_text(body)
                     keep.with_suffix('.json').write_text(json.dumps(dict(
                         sha256=hashlib.sha256(keep.read_bytes()).hexdigest(),
                         mw=(rec or {}).get('mw_version'), flags=(rec or {}).get('extra_cflags'),
+                        headers=_tu_headers(body),
                         percent=100.0, link_fail=True)) + '\n')
                     l.db.execute("UPDATE attempts SET best_body_path=? WHERE id="
                                  "(SELECT id FROM attempts WHERE symbol=? ORDER BY id DESC LIMIT 1)", (str(keep), k))

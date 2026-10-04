@@ -402,20 +402,27 @@ def add_pool_rules() -> None:
     n = 0
     for source, mapping in pool.items():
         stem = source.rsplit(".", 1)[0]
-        # the edge is `...o: mwcc $` (inputs on the next line, generated units) or
-        # `...o: mwcc src/... $` (a standalone unit): both become mwcc_pool
-        pat = re.compile(rf"^(build build/{re.escape(config.version)}/src/{re.escape(stem)}\.o: )mwcc( |\$)", re.M)
+        # Ninja writes the rule inline (`...o: mwcc $`) when it fits the line, and on a
+        # continuation line (`...o: $\n    mwcc ... $`) when the output path is long
+        # enough. Both forms occur in the same file, so accept either or the pool
+        # retargeting is silently skipped for exactly the longest-named units.
+        pat = re.compile(
+            rf"^(build build/{re.escape(config.version)}/src/{re.escape(stem)}\.o:[ \t]*(?:\$[ \t]*\n[ \t]+)?)"
+            rf"mwcc(?=[ \t]|\$)", re.M)
         m = pat.search(text)
         if m:
             poolmap = ",".join(f"{k}={v}" for k, v in sorted(mapping.items()))
             # MWCC local-static symbols contain '$': preserve it through both
             # Ninja expansion and the platform shell.
             poolmap = (subprocess.list2cmdline([poolmap]) if is_windows() else shlex.quote(poolmap)).replace('$', '$$')
-            text = text[:m.start()] + m.group(1) + "mwcc_pool" + m.group(2) + text[m.end():]
-            i = m.start()
-            j = text.index("  mw_version = ", i)
-            text = text[:j] + f"  poolmap = {poolmap}\n" + text[j:]
-            n += 1
+            text = text[:m.start()] + m.group(1) + "mwcc_pool" + text[m.end():]
+            # the variable block starts on the first indented line after the edge
+            vm = re.compile(r"^  \w+ = ", re.M).search(text, m.start())
+            if not vm:
+                continue
+            if not re.search(rf"^  poolmap = .*{re.escape(stem)}", text, re.M):
+                text = text[:vm.start()] + f"  poolmap = {poolmap}\n" + text[vm.start():]
+                n += 1
     ninja_path.write_text(text)
     if n:
         print(f"build.ninja: {n} units compile through mwcc_pool (literal-pool retargeting)")

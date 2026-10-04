@@ -16,7 +16,7 @@ import shlex
 import struct
 import time
 
-from . import fixup_evidence as evidence, fixup_layout as layout, fixup_source as source, mwgraph, oracle, reuse
+from . import fixup_evidence as evidence, fixup_layout as layout, fixup_source as source, mwgraph, oracle, poolfix, reuse
 from .project import ROOT, STATE_DIR, Project
 
 
@@ -255,6 +255,17 @@ class Engine:
                 row['aligned_word_percent'] = row['score']
                 row['response_sha256'] = self.response_hash(obj, words) if words else None
                 if row['score'] == 100:
+                    # A word-identical candidate is not yet a match. Its private literal
+                    # pool still binds to our own anonymous rodata, so objdiff reports the
+                    # relocation rows as differing and the module linker then sees the
+                    # primer's private BSS copies as multiply-defined. oracle.check
+                    # retargets those literals (`poolfix.apply`) and drops the `.fzgxpool`
+                    # primer on all three of its paths; this scoring path calls
+                    # `oracle._diff` directly and so did neither, which is how a body
+                    # reading 100% here reaches the link and comes back link-mismatch.
+                    # Do the same repair here, and keep it only if the re-diff still
+                    # matches, so a failed experiment never leaves a mutilated object.
+                    self.retarget_pool(row)
                     check = self.check(row)
                     row['matched'] = bool(check.matched or check.matched_pool)
                     row['binding_score'] = check.percent_adjusted
@@ -315,6 +326,62 @@ class Engine:
                     and failed.get('headers_sha256') == self.headers
                     and failed.get('oracle_sha256') == digest(Path(oracle.__file__).read_bytes())):
                 row.update(matched=False, link_rejected=True)
+
+    def retarget_pool(self, row):
+        """Bind a winning candidate's private literals to retail's, in place.
+
+        A word-identical body can still differ on every row that reads a literal: ours
+        binds to our own anonymous rodata, retail's to a pooled symbol. `poolfix.apply`
+        rewrites those relocations and drops the `.fzgxpool` primer (whose private BSS
+        copies the module linker rejects as multiply-defined). Returns True when the
+        object now diffs clean.
+
+        The object is restored when the repair does not produce a match, so a failed
+        experiment never leaves a mutilated object behind, and the memo keyed on the
+        compiler response is cleared either way -- the response hash covers code and
+        data, not relocations, so a memoised verdict from before the rewrite would be
+        stale.
+        """
+        obj = row.get('object')
+        if not obj:
+            return False
+        check = self.check(row)
+        if check.matched or not check.ok:
+            return False
+        pairs = getattr(check, '_pool_pairs', None)
+        if not pairs:
+            return self._drop_primer_only(row)
+        backup = Path(obj).read_bytes()
+        result = poolfix.apply(Path(obj), {private: pooled for private, pooled, _ in pairs})
+        self._forget(row)
+        if result['skipped'] or not result['rodata_emptied'] or not self.check(row).matched:
+            Path(obj).write_bytes(backup)
+            self._forget(row)
+            return False
+        row['pool_map'] = {private: pooled for private, pooled, _ in pairs}
+        return True
+
+    def _drop_primer_only(self, row):
+        """Drop a primer with no literals to retarget; oracle.check:243's case."""
+        obj = row.get('object')
+        if not obj or not oracle._has_primer(Path(obj)):
+            return False
+        backup = Path(obj).read_bytes()
+        if not poolfix.drop_primer(Path(obj)):
+            return False
+        self._forget(row)
+        if self.check(row).matched:
+            return True
+        Path(obj).write_bytes(backup)
+        self._forget(row)
+        return False
+
+    def _forget(self, row):
+        """Drop the memoised objdiff verdicts for one row and its symbol."""
+        self.checks.pop(row['id'], None)
+        memo = self.__dict__.setdefault('_response_checks', {})
+        for key in [k for k in memo if k[0] == row['symbol']]:
+            del memo[key]
 
     def check(self, row):
         if row['id'] not in self.checks:

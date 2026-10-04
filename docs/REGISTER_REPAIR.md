@@ -556,16 +556,61 @@ had the fix but never ran: it is gated on `row['score'] == 100` (fixup.py:432) a
 the quarantined body was invisible to the corpus. It also needed `#include
 "types.h"`.
 
-**`colchg_selmate_disp` is a genuine link failure and stays open.** It reaches
-100% at the object with the header added, but `verify` rejects it again on relink.
-Its own last agent note is the diagnosis: *"All 8 remaining rows are L-rows
-(private literal pool base only)"*. That is a pool-layout problem, not a register
-and not a missing header.
+**`colchg_selmate_disp` needed a real repair, and finding it exposed two tooling
+gaps** (both fixed, both silent). It reaches 100% at the object but
+`verify` rejected it on relink; its last agent note was *"All 8 remaining rows are
+L-rows (private literal pool base only)"*, which was accurate.
 
-So do not read this census as "the plateau is uniformly pre-instruction-identity":
-five functions were already byte-identical and were waiting on a repair that
-existed but was gated off, and the sixth is waiting on a pool fix that does not
-exist yet.
+Its literals bind to our own anonymous rodata while retail's bind to the module's
+pooled `lbl_9_rodata_*`. Sibling units in the same TU carry exactly that mapping in
+`units.json` and compile through the `mwcc_pool` rule, which retargets the literals
+on every build. Three things had to line up, and each was broken in a different
+place:
+
+1. **`Engine` never retargeted the pool.** `oracle.check` retargets and drops the
+   primer on all three of its paths, but the fixup scoring path calls
+   `oracle._diff` directly, so a word-identical candidate was recorded as
+   `matched` with its private literals still in place. `fixup.Engine.retarget_pool`
+   now does the same repair, and restores the object if the re-diff disagrees.
+2. **`api.submit` records the mapping**, so `units.json` gets the `pool` dict and
+   the unit is accepted as `link: pending` rather than the terminal `pool: True`
+   ("retail object still linked", `link_state=pool`, 35 functions today).
+3. **`configure.add_pool_rules` silently skipped this unit.** Its regex required
+   `mwcc` on the `build` line, but Ninja wraps the rule onto a continuation line
+   when the output path is long:
+
+       build .../colchg_selmate_disp.o: $
+           mwcc build/.../colchg_selmate_disp.c | $      <- not matched
+
+   Both spellings occur in one file, so the retargeting was skipped for exactly the
+   longest-named units, with no error. The regex now accepts either form and is
+   idempotent (439 units, 439 poolmap lines, no duplicates on re-run).
+
+So: five functions were byte-identical and waiting on a repair that existed but was
+gated off, and the sixth was waiting on two silent tooling gaps. All six are now
+`matched` / `link_state=verified`; `matched` went 5682 -> 5689 and linked files
+5704 -> 5706.
+
+### The parked body now keeps its TU context
+
+`verify` quarantines a link-mismatched body by copying it out of its unit
+(`verify.py`, the `bad` loop). That copy is standalone, and the recarve path that
+would normally supply the TU's headers does not apply to it — so the parked body
+routinely cannot be recompiled on its own evidence, and the function gets
+re-derived from scratch. Four of the six here needed nothing but the includes.
+
+`_with_tu_context` now prepends the TU's own `#include` block, read from the TU file
+rather than guessed from the unit path. A header is added only when the body does not
+already carry it, and skipped when the body defines a name the header also declares
+(`_include_is_safe`) — a parked body legitimately reconstructs a struct or defines
+the `lbl_*` fragment globals a layout primer needs, and including that header would
+then make the compiler reject the file. The guard was checked against the exact case
+that motivated it: a body defining `lbl_3_bss_A2410` does not pull in
+`rel/customize/editor.h`, which declares it. The rewrite is idempotent, and the sidecar
+`.json` records the headers alongside the digest.
+
+The header list is derived from `rec['tu']`, so a standalone unit (no TU) is left
+alone rather than guessed at.
 
 The has-initializers guard is still moot for the reason given: it raises the
 candidate count of a path gated earlier. That part of the withdrawal stands.
