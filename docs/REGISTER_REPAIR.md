@@ -1171,3 +1171,34 @@ same register set, and otherwise says so in its own output:
 On a 22-function sample the modes split 3 per-base / 19 pooled with no crashes, which is
 itself the useful finding: for most functions a pooled offset diff **cannot** be trusted,
 and the tool now declines to imply that it can.
+
+### `fn_1_4DE04`: MW unrolls, retail did not — and unknown pragmas are silently ignored
+
+The cheapest end-to-end test of the layout thesis: `fn_1_4DE04` (16 words) reported one
+missing field. It is not a layout problem at all. Our layout is exactly right — offsets
+`0x0, 0x80, 0x100, 0x180, 0x200, 0x280, 0x300, 0x380` at stride `0x400`, precisely what
+retail stores to. Retail is an 8-iteration CTR loop:
+
+    li r0, 8 ; mtctr r0 ; stw r4, 0(r3) .. stw r4, 0x380(r3) ; addi r3, r3, 0x400 ; bdnz
+
+We emit **63 distinct offsets**, because MW unrolls the loop. Rewriting the induction as a
+strided pointer takes it from 67 words to 41 and from 0.000% to 4.878% — the unroll drops
+from fully flattened to 4×. Every loop shape tried (countdown, post-decrement `i--`,
+`while`, `volatile` pointer, `do/while`) lands at 39–41 words. Retail is 16.
+
+**The finding that matters more than this function: MW does not reject unknown pragmas.**
+Nine plausible names — `unroll off`, `nounroll`, `no_unroll`, `opt_unroll off`,
+`opt_loop_unroll off`, `unroll 1`, `unroll 2`, `opt_unrolling off`, `ipa unroll off` —
+all compiled cleanly and produced **byte-identical** objects. Not one took effect.
+
+So a pragma experiment that only checks the exit code proves nothing here. An agent can
+"apply" a pragma, see it accepted, and conclude it was honoured when it was discarded. Any
+pragma result must be verified against the compiled object — which is exactly what
+`flagcell A/B` does, and why the pragma-cell census in this document was run by comparing
+objects rather than by trusting that a pragma compiled. The eight pragma cells are inert
+for this function, which is consistent with them being inert generally.
+
+Third distinct cause found for "the offsets do not match": after a genuinely wrong layout
+(`fn_8005DCEC`) and a base-register artefact (`fn_8005DCEC` pooled, `fn_1_9A508`), this is
+an induction-variable difference — same layout, different loop form. Reading `stw` counts
+alone cannot tell them apart.
