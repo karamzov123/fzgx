@@ -7136,3 +7136,6 @@ rel/main_rel/background/fn_1_9F164.c:
 
 rel/main_rel/cloth/fn_1_1024F8.c:
 	.text       start:0x001024F8 end:0x00102750 align:4
+
+rel/main_rel/camera/fn_1_6A0C.c:
+	.text       start:0x00006A0C end:0x00006A80 align:4

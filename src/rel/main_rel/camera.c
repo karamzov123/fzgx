@@ -649,6 +649,56 @@ void fn_1_6990(u32 index, u32 *output) {
 #pragma peephole reset
 /* fzgx:end fn_1_6990 */
 
+/* fzgx:begin fn_1_6A0C */
+typedef struct {
+    Obj_1_bss_F68_Target *state;
+    u8 *table;
+    u8 *result;
+} Globals;
+
+extern u32 lbl_8006DD14(u32, void *);
+
+#pragma peephole on
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+Obj_1_bss_F68_Target *fzgx_obj_lbl_1_bss_F68;
+u8 *fzgx_obj_game_camera_entries;
+u8 *fzgx_obj_live_camera;
+u8 lbl_1_bss_F74;
+u8 lbl_1_bss_F75;
+u8 lbl_1_bss_F76;
+
+#pragma section code_type ".fzgxpool"
+static void fzgx_bss_layout(void) {
+    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_F68;
+    s = *(u8 *)&fzgx_obj_game_camera_entries;
+    s = *(u8 *)&fzgx_obj_live_camera;
+    s = *(u8 *)&lbl_1_bss_F74;
+    s = *(u8 *)&lbl_1_bss_F75;
+    s = *(u8 *)&lbl_1_bss_F76;
+}
+#pragma section code_type ".text"
+
+void fn_1_6A0C(u32 value, void *output) {
+    
+    u8 *ptr;
+
+    if (fzgx_obj_lbl_1_bss_F68 != 0) {
+        switch ((s8)fzgx_obj_lbl_1_bss_F68->unk_48) {
+        case 9:
+        case 10:
+            ptr = fzgx_obj_live_camera + 0x7c;
+            lbl_8006DD14((u32)ptr, output);
+            break;
+        default:
+            ptr = fzgx_obj_game_camera_entries + (value & 0xff) * 0x1fc + 0x34;
+            lbl_8006DD14((u32)ptr, output);
+            break;
+        }
+    }
+}
+/* fzgx:end fn_1_6A0C */
+
 /* fzgx:begin camera_get_mode */
 // Return the normalized camera status, treating inactive states as zero.
 s16 camera_get_mode(void) {
