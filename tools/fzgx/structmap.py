@@ -71,6 +71,73 @@ def _hex(v: int) -> str:
     return hex(v) if v >= 0 else '-0x%x' % -v
 
 
+def _offset_sets(texts: List[str]) -> Dict[str, set]:
+    """opcode -> displacements, pooled across base registers.
+
+    Pooled rather than per-base on purpose: retail and our object need not pick the same
+    register for a given struct, so a per-base diff reports spurious differences. The
+    field *offsets* are what the layout has to contain, and those are comparable.
+    """
+    out: Dict[str, set] = {}
+    for t in texts:
+        m = _MEM.match(t)
+        if not m:
+            continue
+        op, off, base = m.group(1), int(m.group(2), 0), int(m.group(3))
+        if base in _SKIP_BASES:
+            continue
+        out.setdefault(op, set()).add(off)
+    return out
+
+
+def compare(p, symbol: str, body: str, mw_version: Optional[str] = None) -> Dict[str, object]:
+    """Retail's field offsets against ours, to show which fields the layout is missing.
+
+    Requires a candidate body because it compiles it; `fingerprint` above does not, which
+    is why this is opt-in.
+    """
+    import tempfile
+    sym = p.resolve(symbol)
+    words = oracle.words(Path(p.target_object_for(sym)), sym.name)
+    with tempfile.TemporaryDirectory() as td:
+        src, obj = Path(td) / 'b.c', Path(td) / 'b.o'
+        src.write_text(body)
+        cp = oracle.compile_source(p, sym.module, src, obj, mw_version, None)
+        if cp.returncode:
+            return {'ok': False, 'symbol': symbol,
+                    'error': (cp.stdout + cp.stderr).strip().splitlines()[-1][:120]}
+        ours = oracle.words(obj, sym.name)
+    R, O = _offset_sets(_decode(words)), _offset_sets(_decode(ours))
+    rows = []
+    for op in sorted(set(R) | set(O)):
+        r, o = R.get(op, set()), O.get(op, set())
+        if not r - o and not o - r:
+            continue
+        rows.append({'op': op, 'retail': len(r), 'ours': len(o),
+                     'missing': sorted(r - o), 'extra': sorted(o - r)})
+    return {'ok': True, 'symbol': symbol, 'module': sym.module, 'words': len(words),
+            'percent': oracle.word_score(words, ours)[0], 'ops': rows}
+
+
+def format_compare(r: Dict[str, object]) -> str:
+    if not r.get('ok'):
+        return 'STRUCTMAP FAILED: %s' % r.get('error')
+    out = ['STRUCTMAP COMPARE %s (%s)  retail %d words, ours %.3f%%'
+           % (r['symbol'], r['module'], r['words'], r['percent'])]
+    if not r['ops']:
+        out.append('  every field offset retail uses is present in ours')
+        return '\n'.join(out)
+    for row in r['ops']:
+        miss = ' '.join(_hex(o) for o in row['missing'][:12])
+        more = ' +%d more' % (len(row['missing']) - 12) if len(row['missing']) > 12 else ''
+        extra = ' '.join(_hex(o) for o in row['extra'][:8])
+        emore = ' +%d more' % (len(row['extra']) - 8) if len(row['extra']) > 8 else ''
+        out.append('  %-4s retail=%-3d ours=%-3d  MISSING: %s%s%s'
+                   % (row['op'], row['retail'], row['ours'], miss, more,
+                      ('  EXTRA: ' + extra + emore) if extra else ''))
+    return '\n'.join(out)
+
+
 def format_fingerprint(r: Dict[str, object]) -> str:
     if not r.get('ok'):
         return 'STRUCTMAP FAILED: %s' % r.get('error')

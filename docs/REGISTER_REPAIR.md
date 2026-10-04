@@ -1064,3 +1064,33 @@ that against the candidate makes the failure legible: on `fn_8005DCEC` (1980 wor
 
 Useful on its own, and a cheap first move on any badly-scoring large function: read the
 offsets the layout must have before touching the body.
+
+#### `--body`: which fields the layout is missing
+
+Passing a candidate body turns the fingerprint into a diff against it. Offsets are pooled
+across base registers rather than compared per register, because retail and our object
+need not pick the same register for a given struct and a per-base diff reports spurious
+differences; the field *offsets* are what the layout must contain, and those do compare.
+
+    fzgx structmap SYMBOL [--body PATH] [--mw-version V]
+
+On `fn_8005DCEC` (1980 words, 1.04%) it reads as a work list rather than a mystery:
+
+    STRUCTMAP COMPARE fn_8005DCEC (main)  retail 1980 words, ours 1.042%
+      lbz  retail=49  ours=42   MISSING: 0x58e 0x590 0x591 0x594 0x59a 0x59b 0x1408 0x140b  EXTRA: 0x40 0x60
+      lhz  retail=12  ours=25   MISSING:   EXTRA: 0xc 0xe 0x10 0x12 0x14 0x16 0x18 0x1a +5 more
+      stb  retail=11  ours=1    MISSING: 0x1408 0x1409 0x140a 0x140b ... 0x1498 0x1499  EXTRA: 0x0
+      sth  retail=10  ours=0    MISSING: 0x0 0x2 0x4 0x6 0x8 0xa 0xc 0xe 0x1414 0x1416
+      stw  retail=15  ours=1    MISSING: 0x141c 0x1420 0x1424 0x1428 0x1434 0x1480 ... +2 more
+
+`sth` 10 against 0 is the loudest line: the packed `s16[8]` at offsets `0x0`-`0xe` is
+absent from our layout entirely, and the dense `0x141c`-`0x14f0` `stw` region has one
+field against fifteen. Those are two concrete edits to a struct definition, which is a
+very different next action from "the function scores 1% and I have no idea why".
+
+Two limits worth stating. This compares offsets, not semantics: a function can have every
+offset present and still score low if its control flow is wrong — `fn_9_1310` reports
+"every field offset retail uses is present" on a candidate that scores 24.6%. And it
+reports which offsets are absent, not the field *types* or names, so it narrows the
+search without solving it. The fingerprint half needs no candidate body and so works on
+functions whose history is entirely missing.

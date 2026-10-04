@@ -146,8 +146,13 @@ def cmd_read_evidence(a, p):
 
 def cmd_structmap(a, p):
     from . import structmap
-    r = structmap.fingerprint(p, a.symbol)
-    print(json.dumps(r, indent=2) if a.json else structmap.format_fingerprint(r))
+    if a.body:
+        body = Path(a.body).read_text()
+        r = structmap.compare(p, a.symbol, body, a.mw_version)
+    else:
+        r = structmap.fingerprint(p, a.symbol)
+    print(json.dumps(r, indent=2) if a.json else (structmap.format_compare(r) if a.body
+                                                 else structmap.format_fingerprint(r)))
     return 0 if r['ok'] else 2
 
 
@@ -492,7 +497,7 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument('symbol'); s.add_argument('--section', choices=('diff', 'data'), default='diff')
     s.add_argument('--cursor', type=int, default=0)
     s = sub.add_parser('structmap', help='retail struct fingerprint: which field offsets each base register touches'); s.set_defaults(fn=cmd_structmap)
-    s.add_argument('symbol')
+    s.add_argument('symbol'); s.add_argument('--body', help='compare retail offsets against this candidate body instead of printing the retail fingerprint'); s.add_argument('--mw-version', default=None)
     s = sub.add_parser('flagcell', help='name what a compiler setting did, by diffing our own two objects'); s.set_defaults(fn=cmd_flagcell)
     s.add_argument('symbol')
     s.add_argument('--body', help='source to probe (default: the saved body)')
