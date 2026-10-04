@@ -3120,8 +3120,15 @@ def inline_helpers(body, name):
 
     A REL retains these copies even when the target function inlined every call.
     They shift its text and every dependent relocation despite an exact function diff.
+
+    A comment may sit between the parameter list and the brace (`static f32 vec_dist(...)
+    /* locks the load order */ {`), which the original pattern did not allow through, so
+    the one helper most likely to need inlining -- a hand-named reconstruction carrying a
+    rationale -- was the one this never matched. `fn_1_17A9C` was parked as link-mismatch
+    with `vec_dist` still out-of-line for exactly that reason.
     """
-    pattern = re.compile(r'\bstatic\s+(?!inline\b)(?:'+TYPE+r')\s+(\w+)\s*\([^;{}]*\)\s*\{')
+    pattern = re.compile(r'\bstatic\s+(?!inline\b)(?:'+TYPE+r')\s+(\w+)\s*\([^;{}]*\)\s*'
+                         r'(?:(?://[^\n]*|/\*(?:[^*]|\*(?!/))*\*/)\s*)*\{')
     sites = [m.start()+len('static ') for m in pattern.finditer(body) if m[1] != name]
     if len(sites)>1:
         text=body
