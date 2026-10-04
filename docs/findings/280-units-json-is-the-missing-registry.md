@@ -194,39 +194,56 @@ Two further per-object lessons from the same function:
 Result: 22.8% -> **91.4%**, module displacement gone, remaining diff 10 regalloc rows
 and 1 instruction row. Not yet linked as a match.
 
-## The regalloc class is mostly *not* an evidence problem
+## The regalloc class is *reachable*; my earlier reading of it was wrong
 
-The plateau is large and expensive: 238 functions sit at >=98% (126 KB), 139 of them at
->=99%. These release with notes like "99.9%, 2 rows, both regalloc" and, in the worst
-case, `fn_10_3B44` after **3217 search variants**:
+The plateau is large: 238 functions sit at >=98% (126 KB), 139 at >=99%. They release with
+notes like "99.9%, 2 rows, both regalloc" and, in the worst case, `fn_10_3B44` after
+**3217 search variants** concluding the swap "is an allocator tie-break not reachable from C".
 
-    Only 9 regalloc rows remain ... every source permutation of the resulting
-    two-pointer pair (declaration order, initialiser order, copy chains, deriving the
-    state pointer from the slots pointer, raising the base's use count to 5 vs 3,
-    type/sign flips, pragmas, 3217 search variants) leaves the address node holding
-    the first callee-saved claim, so the swap is an allocator tie-break not
-    reachable from C.
+I took that at face value and wrote into this file that the class was over-instrumented and
+its captured colours "routinely not expressible in the C the tools generate". **That was an
+inference I had not tested, and it is wrong.** Measured directly:
 
-The obvious hypothesis is missing allocator evidence. It is wrong. `.fzgx/captures`
-holds **379** validated interference-graph captures, and **121 of the 139** >=99%
-plateau functions (87%) already have one. The graph is being read, replayed and still
-not landing.
+**1. A witness exists for every capture.** Running `mwgraph.selection_order` on all 379
+captures, against the captured (retail) colours:
 
-`docs/REGISTER_REPAIR.md` is explicit about what that means:
+    reachable 496      unreachable 0      skipped 1
 
-> Failure to construct an order is inconclusive; a witness is not proof that a C edit
-> can realize it.
+**2. The witnesses are not trivial.** A witness equal to the compiler's own simplify order
+would prove nothing, since that is the order it already used:
 
-So this class is not under-instrumented and not under-searched; the captured colours are
-routinely **not expressible** in the C the tools generate. The productive questions are:
+    non-trivial (reorders the compiler)  540
+    trivial                               8
+    positions moved: min 2, median 40, max 213
 
-1. Does the *source projection* stage still project onto constructs MWCC would accept?
-   `Target constraints and declaration projection` measures 0.415 ms per function, so
-   running it broadly over the 139 is cheap and is the obvious next experiment.
-2. Is the tie-break uniform enough to fix once in the projection rather than per
-   function? `fn_3_17098` and `fn_10_3B44` both want the *address node* to lose the
-   first callee-saved claim, which suggests one systematic bias, not 139 independent
-   problems.
+A median of 40 reordered positions is a substantial rewrite of the selection order, and it
+is achievable in every measured case.
 
-Treating this as "more agents, more attempts" has already cost roughly $369 and is the
-single largest line item in the ledger.
+**3. A quarter of them project onto real C.** `mwconstraints.declaration_projection` turns a
+witness into an edited function body. Instrumenting every guard in it, over 463
+capture/body pairs:
+
+| guard | count | share |
+| --- | ---: | ---: |
+| **produces a candidate** | **120** | **25.9%** |
+| has initializers (conservative guard) | 156 | 33.7% |
+| fewer than 2 movable locals | 105 | 22.7% |
+| movable absent from witness | 28 | 6.0% |
+| not the reverse-declaration stratum | 24 | 5.2% |
+| no locals in body | 18 | 3.9% |
+| colours still differ after projection | 12 | 2.6% |
+
+So 120 byte-level C candidates exist in effect, each reproducing the retail register
+colours by construction, and **the projection stage had never been run at scale** --
+`.fzgx/fixup/replay` did not exist.
+
+The bottleneck was never "can the allocator get there". It is that nobody runs
+`fzgx fixup --capture` / `--replay` over the corpus and compiles the results. Treat the
+plateau as unbuilt work, not as a frontier.
+
+The largest single guard is `has-initializers` at 33.7%. It is deliberately conservative --
+"moving them can change program behaviour" -- so relaxing it is a real decision and not a
+free win, but it is where the next ~150 candidates are.
+
+Treating this class as "more agents, more attempts" has already cost roughly $369 and is
+the single largest line item in the ledger.
