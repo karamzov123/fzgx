@@ -12,8 +12,22 @@ cause; see docs/findings/279.
 can be closed by adding an entry. Verified on fn_8_704 (title) and fn_12_23410
 (movie_module), both of which stopped failing to link once their ranges existed.
 
+**A split range is necessary but not sufficient** (docs/findings/280). A second registry,
+`config/GFZE01/units.json`, decides whether the range is built from C at all, and nothing in
+the check path consults it. The three registries fail differently:
+
+  no split range          `check` reports 100%, submit fails at link (finding 279)
+  units.json but no body  link fails: `Failed to find symbol <sym> in any module`
+  body but no units.json  `configure.py` prints `Missing configuration for <unit>`, skips
+                          the unit, `gen/<unit>.c` is never written, and the build stays
+                          green while the body is absent from the link
+
+`--registries` reports all three per function, so an object-100% body can be triaged before
+another attempt is spent on it. A green build is not evidence about code that was never
+compiled, so treat a missing registry as the explanation until proven otherwise.
+
 Usage:
-    python3 tools/fzgx/splitgaps.py [--module NAME] [--only-unmatched] [--json]
+    python3 tools/fzgx/splitgaps.py [--module NAME] [--only-unmatched] [--registries] [--json]
 """
 
 from __future__ import annotations
@@ -23,6 +37,7 @@ import json
 import re
 import sys
 from pathlib import Path
+from typing import Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
@@ -62,11 +77,67 @@ def covered_ranges(module: str):
     return out
 
 
+_UNITS_CACHE: Optional[dict] = None
+
+
+def _units_index():
+    """symbol -> units.json record, for the module-registry half of the diagnosis.
+
+    Cached: the index is consulted once per known function, and re-parsing the 5.7k-entry
+    file each time turns a full run into minutes.
+    """
+    global _UNITS_CACHE
+    if _UNITS_CACHE is not None:
+        return _UNITS_CACHE
+    path = CONFIG / "units.json"
+    out: dict = {}
+    if path.exists():
+        for u in json.loads(path.read_text()):
+            for sym in u.get("symbols") or ():
+                out.setdefault(sym, u)
+    _UNITS_CACHE = out
+    return out
+
+
+def _gen_built(record: Optional[dict]) -> bool:
+    """True when `build/<V>/gen/<unit>.c` exists, i.e. the unit really is compiled.
+
+    A body in the TU file with no units.json entry leaves this missing, and the build stays
+    green while nothing of ours reaches the link (docs/findings/280). The unit's `source`
+    is the path *relative to rel/*, and `gen/` mirrors it, so the check follows `source`
+    rather than guessing from the symbol name.
+    """
+    if not record:
+        return False
+    src = record.get("source") or ""
+    rel = src.split("/", 1)[1] if src.startswith("rel/") else src
+    return (ROOT / "build" / "GFZE01" / "gen" / "rel" / rel).exists()
+
+
+def registry_state(module: str, sym: str, addr: int, size: int, cov) -> dict:
+    """The three registries, so a link failure can be attributed before another attempt."""
+    rec = _units_index().get(sym)
+    has_split = any(s <= addr and addr + size <= e for s, e in cov)
+    return {
+        "module": module,
+        "symbol": sym,
+        "addr": addr,
+        "size": size,
+        "end": addr + size,
+        "split": has_split,
+        "unit": rec.get("source") if rec else None,
+        "registered": rec is not None,
+        "compiled": _gen_built(rec),
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--module")
     ap.add_argument("--only-unmatched", action="store_true",
                     help="restrict to functions the ledger does not consider matched")
+    ap.add_argument("--registries", action="store_true",
+                    help="report split/units.json/gen state per function, not just split gaps")
     ap.add_argument("--json", action="store_true")
     a = ap.parse_args()
 
@@ -85,16 +156,38 @@ def main() -> int:
         for sym, (addr, size) in sorted(known_functions(module).items(), key=lambda kv: kv[1][0]):
             if a.only_unmatched and status.get(sym) == "matched":
                 continue
-            if size == 0 or any(s <= addr and addr + size <= e for s, e in cov):
+            if size == 0:
                 continue
-            report.append(dict(module=module, symbol=sym, addr=addr, size=size,
-                               end=addr + size, status=status.get(sym)))
+            if a.registries:
+                report.append(registry_state(module, sym, addr, size, cov))
+            elif not any(s <= addr and addr + size <= e for s, e in cov):
+                report.append(dict(module=module, symbol=sym, addr=addr, size=size,
+                                   end=addr + size, status=status.get(sym)))
 
     if a.json:
         print(json.dumps(report, indent=1))
         return 0
     if not report:
-        print("no .text split gaps")
+        print("no .text split gaps" if not a.registries else "no functions to report")
+        return 0
+    if a.registries:
+        print("%-13s %-22s %6s %-28s %6s %s"
+              % ("module", "symbol", "split", "unit", "gen", "verdict"))
+        for r in report:
+            verdict = ""
+            if not r["split"] and not r["registered"]:
+                verdict = "no split, no units.json entry"
+            elif not r["split"] and r["registered"] and not r["compiled"]:
+                verdict = "registered, no gen unit"
+            elif not r["split"] and r["registered"]:
+                verdict = "registered but no split range"
+            elif r["split"] and not r["registered"]:
+                verdict = "split only (object comes from retail)"
+            elif r["registered"] and not r["compiled"]:
+                verdict = "body present, not regenerated"
+            print("%-13s %-22s %6s %-28s %6s %s"
+                  % (r["module"], r["symbol"], "yes" if r["split"] else "NO",
+                     (r["unit"] or "-")[:28], "yes" if r["compiled"] else "NO", verdict))
         return 0
     print("%-13s %-22s %-10s %8s" % ("module", "symbol", "start", "size"))
     for r in report:

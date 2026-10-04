@@ -456,6 +456,9 @@ rel/main_rel/game/fn_1_3F264.c:
 rel/main_rel/game/fn_1_3F440.c:
 	.text       start:0x0003F440 end:0x0003F4B8
 
+rel/main_rel/game/fn_1_3F4B8.c:
+	.text       start:0x0003F4B8 end:0x0003F4FC align:4
+
 rel/main_rel/game/fn_1_3F75C.c:
 	.text       start:0x0003F75C end:0x0003F7A0
 
@@ -3720,6 +3723,9 @@ rel/main_rel/accessory/fn_1_1166EC.c:
 rel/main_rel/accessory/fn_1_128B00.c:
 	.text       start:0x00128B00 end:0x00128B60
 
+rel/main_rel/accessory/fn_1_128B60.c:
+	.text       start:0x00128B60 end:0x00128DD8 align:4
+
 rel/main_rel/accessory/fn_1_128DD8.c:
 	.text       start:0x00128DD8 end:0x00128E10
 
@@ -5817,6 +5823,9 @@ rel/main_rel/rep_memcard/fn_1_15530C.c:
 rel/main_rel/memcard/fn_1_B8170.c:
 	.text       start:0x000B8170 end:0x000B8338 align:4
 
+rel/main_rel/stcoli/fn_1_17A9C.c:
+	.text       start:0x00017A9C end:0x00017B5C align:4
+
 rel/main_rel/stcoli/fn_1_17B5C.c:
 	.text       start:0x00017B5C end:0x00017C6C align:4
 
@@ -5825,6 +5834,9 @@ rel/main_rel/bg_win/fn_1_15E688.c:
 
 rel/main_rel/bg_cas/fn_1_FC60C.c:
 	.text       start:0x000FC60C end:0x000FC760 align:4
+
+rel/main_rel/bg_cas/fn_1_FC760.c:
+	.text       start:0x000FC760 end:0x000FCA10 align:4
 
 rel/main_rel/mdlload/fn_1_D35D4.c:
 	.text       start:0x000D35D4 end:0x000D3768 align:4
@@ -6809,6 +6821,9 @@ rel/main_rel/screen_effect/fn_1_727BC.c:
 
 rel/main_rel/effect/fn_1_61070.c:
 	.text       start:0x00061070 end:0x000611EC align:4
+
+rel/main_rel/effect/fn_1_611EC.c:
+	.text       start:0x000611EC end:0x00061370 align:4
 
 rel/main_rel/effect/fn_1_64388.c:
 	.text       start:0x00064388 end:0x000645C8 align:4
