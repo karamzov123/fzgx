@@ -7211,3 +7211,6 @@ rel/main_rel/car/fn_1_82EDC.c:
 
 rel/main_rel/shadowmap/fn_1_568F8.c:
 	.text       start:0x000568F8 end:0x00056D4C align:4
+
+rel/main_rel/effect/fn_1_5D378.c:
+	.text       start:0x0005D378 end:0x0005D4FC align:4

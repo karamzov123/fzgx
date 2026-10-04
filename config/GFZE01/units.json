@@ -38088,6 +38088,18 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/effect/fn_1_5D378.c",
+    "symbols": [
+      "fn_1_5D378"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/effect.c",
+    "pool": true
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/effect/fn_1_5D4FC.c",
     "symbols": [
       "fn_1_5D4FC"
