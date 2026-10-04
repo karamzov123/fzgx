@@ -1084,6 +1084,166 @@ void fn_1_FB50(LiveCamera *camera) {
 }
 /* fzgx:end fn_1_FB50 */
 
+/* fzgx:begin fn_1_FCB0 noprologue */
+#include "types.h"
+
+typedef struct {
+    u8 pad_0[0x6];
+    s16 unk_6;
+    u8 pad_8[0x8];
+    u16 unk_10;
+    s16 unk_12;
+    s16 unk_14;
+    u8 pad_16[0x2];
+    u32 unk_18;
+    u8 pad_1C[0x48];
+    u16 unk_64;
+} Sig_fn_1_101D0_Fn_1_101D0_State;
+
+extern const f64 lbl_1_rodata_558[5];
+extern s32 camera_get_state(void);
+extern const f64 lbl_1_rodata_548[2];
+extern u32 lbl_801A63C0;
+extern u32 fn_1_107B8(Sig_fn_1_101D0_Fn_1_101D0_State *);
+extern u32 fn_1_864E8(int);
+extern u8 fn_1_86624(void);
+extern void camera_set_result(s16);
+extern void camera_set_selected_value(u8);
+extern void fn_1_5370(s8, u32);
+
+#pragma opt_strength_reduction off
+static inline u8 * fn_1_FCB0_read_pointer(Sig_fn_1_101D0_Fn_1_101D0_State * owner) { return owner->pad_0; }
+#pragma opt_loop_invariants on
+#pragma opt_schedule off
+void fn_1_FCB0(Sig_fn_1_101D0_Fn_1_101D0_State * arg0, f32 arg1) {
+    s16 *fzgx_value__;
+    u32 fzgx_value_;
+    s16 fzgx_value;
+    u8 v0;
+    f64 v1;
+    u32 v3;
+    u16 v8;
+    s16 v9;
+    s16 v21;
+    s16 v29;
+    s16 v30;
+    u32 v28;
+    s32 v32;
+    s32 v_div;
+    s32 v_n;
+    v0 = fn_1_FCB0_read_pointer(arg0)[0];
+    if (v0 == 1 && (*(u32 *)((u8 *)arg0 + 12) & 0x80000) != 0) {
+        v0 = 4;
+        arg0->unk_12 = v0;
+        v1 = (f64)(u32)arg0->unk_64;
+        if (v1 > (210.0)) {
+            arg0->unk_64 = 0;
+        } else {
+            arg0->unk_64 = 210;
+        }
+        return;
+    } else {
+        if (v0 == 0) {
+            if ((*(u32 *)((u8 *)arg0 + 12) & 0x80000) == 0) {
+                v3 = lbl_801A63C0 * 0x676A4B6B + 13259;
+                fzgx_value_ = v3;
+                lbl_801A63C0 = fzgx_value_;
+                arg0->unk_12 = (s16)((s32)((v3 >> 16) & 0x7FFF) % 4);
+                v9 = *(s16 *)((u8 *)arg0 + 2);
+                if ((s32)arg0->unk_12 == v9) {
+                    fzgx_value__ = &(arg0->unk_12);
+                    *fzgx_value__ = (s16)((v9 + 1) % 4);
+                }
+            } else {
+                v3 = ((0x676A4B6B) * (lbl_801A63C0)) + 13259;
+                lbl_801A63C0 = v3;
+                arg0->unk_12 = (s16)((s32)((v3 >> 16) & 0x7FFF) % 6);
+                if ((s32)arg0->unk_12 >= 5) {
+                    arg0->unk_12 = 4;
+                }
+                if ((s32)arg0->unk_12 == *(s16 *)((u8 *)arg0 + 2)) {
+                    if ((s32)arg0->unk_12 == 4) {
+                        s32 v10 = (s16)(*(s16 *)((u8 *)arg0 + 4));
+                        fn_1_107B8(arg0);
+                        if (v10 == (s32)arg0->unk_14) {
+                            arg0->unk_12 = (s16)((*(s16 *)((u8 *)arg0 + 2) + 1) % 5);
+                        }
+                    } else {
+                        arg0->unk_12 = (s16)((*(s16 *)((u8 *)arg0 + 2) + 1) % 5);
+                    }
+                }
+            }
+        } else {
+            v3 = lbl_801A63C0 * 0x676A4B6B + 13259;
+            lbl_801A63C0 = v3;
+            arg0->unk_12 = (s16)((s32)(((0x7FFF) & ((v3 >> 16)))) % 6);
+            if ((s32)arg0->unk_12 == *(s16 *)((u8 *)arg0 + 2)) {
+                arg0->unk_12 = (s16)((*(s16 *)((u8 *)arg0 + 2) + 1) % 6);
+            }
+            if ((s32)arg0->unk_12 == 5) {
+                arg0->unk_12 = 4;
+            }
+            if ((s32)arg0->unk_12 == 4) {
+                if ((*(u32 *)((u8 *)arg0 + 12) & 0x80000) == 0) {
+                    arg0->unk_12 = 3;
+                }
+                if (fn_1_FCB0_read_pointer(arg0)[0] == 2) {
+                    arg0->unk_12 = (s16)((*(s16 *)((u8 *)arg0 + 2) + 1) % 3);
+                }
+            }
+            if ((s8)camera_get_state() == 6) {
+                if ((s32)arg0->unk_12 == 2) {
+                    arg0->unk_12 = (s16)(((s32)arg0->unk_12 + 1) % 3);
+                }
+            }
+        }
+    }
+    v1 = (f64)(u32)arg0->unk_64;
+    if (v1 > (210.0)) {
+        arg0->unk_64 = 0;
+    } else {
+        arg0->unk_64 = 210;
+    }
+    if ((s8)camera_get_state() == 6) {
+        lbl_801A63C0 = lbl_801A63C0 * 0x676A4B6B + 13259;
+        v3 = (s32)((lbl_801A63C0 >> 16) & 0x7FFF);
+        v_div = v3;
+        arg0->unk_6 = (s16)(v_div % (s32)(s8)fn_1_86624());
+        if ((fn_1_864E8(arg0->unk_6) & 0x1) == 0) {
+            v28 = 0x8000880;
+            if ((fn_1_864E8(arg0->unk_6) & v28) != 0) {
+                v29 = arg0->unk_6;
+                do {
+                    v30 = arg0->unk_6;
+                    fzgx_value = v30;
+                    fzgx_value += 1;
+                    arg0->unk_6 = fzgx_value;
+                    if ((s32)arg0->unk_6 >= (s32)(s8)fn_1_86624()) {
+                        arg0->unk_6 = 0;
+                    }
+                    if ((s32)arg0->unk_6 < 0) {
+                        arg0->unk_6 = (s8)fn_1_86624() - 1;
+                    }
+                } while ((fn_1_864E8(arg0->unk_6) & v28) != 0 && (s32)v29 != (s32)arg0->unk_6);
+                if ((s32)v29 == (s32)arg0->unk_6) {
+                    camera_set_selected_value(1);
+                    camera_set_result(arg0->unk_6);
+                    fn_1_5370(0, 0);
+                    camera_set_result(arg0->unk_6);
+                    camera_set_selected_value(0);
+                    return;
+                }
+            }
+        }
+        *(u16 *)((u8 *)arg0 + 8) = arg0->unk_6;
+    }
+}
+
+#pragma opt_loop_invariants reset
+
+#pragma opt_strength_reduction reset
+/* fzgx:end fn_1_FCB0 */
+
 /* fzgx:begin fn_1_10138 */
 void fn_1_10138(void) {
     Obj_1_bss_17C4_At0 *obj;
