@@ -7133,3 +7133,6 @@ rel/main_rel/bg_common/fn_1_103D28.c:
 
 rel/main_rel/background/fn_1_9F164.c:
 	.text       start:0x0009F164 end:0x0009F4B4 align:4
+
+rel/main_rel/cloth/fn_1_1024F8.c:
+	.text       start:0x001024F8 end:0x00102750 align:4

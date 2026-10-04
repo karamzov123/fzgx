@@ -120,6 +120,100 @@ f32 fn_1_1024C4(const Point1024C4 *a, const Point1024C4 *b) {
 }
 /* fzgx:end fn_1_1024C4 */
 
+/* fzgx:begin fn_1_1024F8 */
+struct Obj1024F8 {
+    u8 pad_0[0x4];
+    u32 unk_4;
+    u8 pad_8[0x18];
+    u32 unk_20;
+};
+
+struct Slot8 {
+    struct Obj1024F8 *ptr;
+    u32 pad_4;
+};
+
+typedef struct {
+    u32 a;
+    u32 b;
+    u32 c;
+} W3_1024F8;
+
+typedef struct {
+    W3_1024F8 v;
+    u8 pad[0x34];
+} Dst1024F8;
+
+typedef struct {
+    u8 unk_0;
+    u8 unk_1;
+    u8 unk_2;
+    u16 unk_4[6];
+    W3_1024F8 pos;
+    u32 unk_1C;
+    u32 unk_20;
+    u32 unk_24;
+    W3_1024F8 vel;
+    u8 pad_34[0x10];
+} Node1024F8;
+
+typedef struct {
+    u8 pad_0[0x10];
+    f32 x;
+    f32 y;
+    f32 z;
+} NodeF1024F8;
+
+extern f64 lbl_1_rodata_7898;
+extern u32 lbl_801A66A0;
+extern f32 lbl_8006D188(u32);
+extern s32 fn_80077B14(struct Obj1024F8 *);
+
+#define ARR ((Node1024F8 *)p->unk_18)
+#define N (&ARR[i])
+#define B ((u8 *)N)
+#define NF ((NodeF1024F8 *)B)
+
+void fn_1_1024F8(void) {
+    Obj_1_bss_85250 *p = (Obj_1_bss_85250 *)&lbl_1_bss_85250;
+    struct Slot8 *tab;
+    struct Obj1024F8 *obj;
+    Dst1024F8 *out;
+    u32 i;
+    u32 j;
+    f64 t;
+
+    tab = (struct Slot8 *)p->unk_10->unk_8;
+    obj = tab[p->unk_4].ptr;
+    if (obj == 0) {
+        return;
+    }
+    out = (Dst1024F8 *)fn_80077B14(obj);
+    if (obj->unk_4 & 0x10) {
+        for (i = 0; i < p->unk_1C; i++) {
+            Node1024F8 *n = (Node1024F8 *)B;
+            n->pos = n->vel;
+            for (j = 0; j < N->unk_2; j++) {
+                out[N->unk_4[j]].v = N->pos;
+            }
+        }
+    }
+    for (i = 0; i < p->unk_1C; i++) {
+        if (N->unk_1 == 1 && (N->unk_0 & 1) == 0) {
+            t = lbl_1_rodata_7898 * lbl_8006D188((s16)((lbl_801A66A0 + i * i) << 8));
+            NF->x += t;
+            t = lbl_1_rodata_7898 * lbl_8006D188((s16)(((lbl_801A66A0 + i * i + i) << 7) + 0x4000));
+            NF->y += t;
+            t = lbl_1_rodata_7898 * lbl_8006D188((s16)((lbl_801A66A0 + i * i * i) << 9));
+            NF->z += t;
+            for (j = 0; j < N->unk_2; j++) {
+                out[N->unk_4[j]].v = N->pos;
+            }
+        }
+    }
+}
+/* fzgx:end fn_1_1024F8 */
+
 /* fzgx:begin fn_1_102FD0 */
 // Initialize the cloth subsystem and reset its shared state.
 void fn_1_102FD0(void) {
