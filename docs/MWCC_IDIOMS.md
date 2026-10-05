@@ -19,7 +19,15 @@ file from what actually unblocked functions; keep each item one or two lines.
   retail `fmuls x; fmadds y; fmadds z` for a squared length is `(f32)(x*x) + y*y + z*z`.
 - **Signedness**: `cmpwi`/`lha`/`extsh`/`srawi` need a signed operand type (cast or
   declaration), `cmplwi`/`lhz`/`clrlwi`/`srwi` an unsigned one; flip the operand of that
-  statement, not unrelated locals.
+  statement, not unrelated locals. `cmpw` vs `cmplw` on the same operands is a type error,
+  not a strength-reduction difference.
+- **Prologue form counts live values.** Retail uses `bl _savegpr_NN` far more often than
+  `stmw`/`lmw` (21:5 across a 400-function matched sample), so a `stmw r27, 0x1c(r1)` where
+  ours emits `_savegpr_27` is not a formatting difference -- per the rule above it says retail
+  keeps **five or more** values live across every call in the body and ours keeps fewer. That
+  is a control-flow-shape fact, not a register one: it usually means retail shares one loop
+  across several call sites where ours repeats near-identical calls, each of which frees its
+  registers at the call. `fn_12_23410` is the worked example (docs/findings/285).
 - **Locked cache**: `lis rX, 0xe000` + `lfs f, 0xc(rX)` is `*(f32 *)(0xE0000000 + 0x0C)`
   (the current matrix); do not invent a symbol for it.
 - **Evaluation order at a call**: a value produced by a call and consumed in an expression
