@@ -9,7 +9,7 @@ from __future__ import annotations
 import shutil
 import subprocess
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from . import carve, oracle
 from .ledger import Ledger
@@ -38,14 +38,52 @@ def fix_branch_hints(text: str) -> tuple:
     return "\n".join(out) + "\n", n
 
 
+def _compiler_generated_aliases(p: Project, sym) -> List[str]:
+    """Labels at this function's address that mwld generates itself, so we must not define them.
+
+    The SDK's save/restore family is the case: `__save_fpr` and `_savefpr_14` share one address,
+    and every `_savefpr_15..31` label follows. Those names are compiler-generated -- mwld
+    synthesises them for any prologue that saves f14-f31, and the runtime's own C references
+    them. An object that defines them collides with the ones mwld is about to emit:
+
+        ### mwldeppc.exe Linker Warning:
+        #   Symbol '_restfpr_14' defined in '__restore_fpr.o' is also defined as a
+        #   linker generated symbol.
+
+    and the link fails after a full configure+split cycle. See docs/findings/281.
+
+    The ordinary linker-alias case is the opposite requirement: there our C must *keep*
+    retail's label reachable, which is what `carve.retain_entry_labels` does. Here retail's
+    labels must not be defined by us at all, because the linker owns them.
+    """
+    out = []
+    for name in p.symbols(sym.module):
+        if name == sym.name:
+            continue
+        if not re.match(r"^_(save|rest)(gpr|fpr)_", name):
+            continue
+        other = p.symbols(sym.module)[name]
+        if other.addr == sym.addr:
+            out.append(name)
+    return out
+
+
 def make(p: Project, symbols: List[str]) -> Dict[str, object]:
     """Carve each symbol into an assembly-backed unit, split, copy the asm, relink and hash.
     On a hash failure every unit of this call is uncarved and nothing is kept."""
     l = Ledger()
     made: List[tuple] = []
+    refused: List[dict] = []
     for s in symbols:
         sym = p.resolve(s)
         if sym is None or p.unit_of(sym):
+            continue
+        aliases = _compiler_generated_aliases(p, sym)
+        if aliases:
+            # Refuse before carving. Naming the aliases is the useful part: it is the
+            # difference between "did not match" and "cannot be represented".
+            refused.append({"symbol": s, "reason": "address aliases compiler-generated symbols",
+                            "aliases": aliases[:6], "alias_count": len(aliases)})
             continue
         cr = carve.carve(p, s)
         c_src = ROOT / "src" / cr.source
@@ -63,8 +101,11 @@ def make(p: Project, symbols: List[str]) -> Dict[str, object]:
             c_src.unlink()  # the carve's stub: the unit is assembly
         made.append((s, cr.module, cr.source, s_source))
     if not made:
-        return {"ok": True, "made": [], "note": "nothing to do"}
-    return finalize(p, made)
+        out: Dict[str, object] = {"ok": True, "made": [], "note": "nothing to do"}
+        if refused:
+            out["refused"] = refused
+        return out
+    return finalize(p, made, refused)
 
 
 def resume(p: Project) -> Dict[str, object]:
@@ -80,7 +121,9 @@ def resume(p: Project) -> Dict[str, object]:
     return finalize(p, made)
 
 
-def finalize(p: Project, made: List[tuple]) -> Dict[str, object]:
+def finalize(p: Project, made: List[tuple], refused: Optional[List[dict]] = None) -> Dict[str, object]:
+    """Relink, hash and record. `refused` are symbols make() declined up front; they ride along
+    in every return so a caller sees the whole outcome, including the ones never attempted."""
     import time  # scoped: phase timing
     l = Ledger()
     t0 = time.time()
@@ -100,7 +143,8 @@ def finalize(p: Project, made: List[tuple]) -> Dict[str, object]:
             asm = p.module_build_dir(module) / "asm" / s_source
             if not asm.exists():
                 uncarve(p, [x[2] for x in made], split=False)
-                return {"ok": False, "error": f"{s}: no split assembly at {asm}", "made": []}
+                return {"ok": False, "error": f"{s}: no split assembly at {asm}", "made": [],
+                        **({"refused": refused} if refused else {})}
             dst = ROOT / "src" / s_source
             dst.parent.mkdir(parents=True, exist_ok=True)
             text, n = fix_branch_hints(asm.read_text())
@@ -120,7 +164,8 @@ def finalize(p: Project, made: List[tuple]) -> Dict[str, object]:
         for s, module, c_source, s_source in made:
             (ROOT / "src" / s_source).unlink(missing_ok=True)
         uncarve(p, [x[2] for x in made], split=True)
-        return {"ok": False, "error": "the tree no longer hashes with these units; rolled back", "made": [], "log": tail}
+        return {"ok": False, "error": "the tree no longer hashes with these units; rolled back", "made": [], "log": tail,
+                **({"refused": refused} if refused else {})}
     for s, module, c_source, s_source in made:
         l.db.execute("UPDATE functions SET status='asm', claimed_by=NULL, unit=? WHERE symbol=?", (c_source, s))
     l.db.commit()
@@ -130,4 +175,5 @@ def finalize(p: Project, made: List[tuple]) -> Dict[str, object]:
         files += [str(d / "splits.txt"), str(d / "symbols.txt")]
     subprocess.run(["git", "add", *files], cwd=ROOT, capture_output=True)
     subprocess.run(["git", "commit", "-q", "-m", f"asm units: {len(made)} assembly-only functions link from their own assembly ({', '.join(x[0] for x in made[:6])}{'...' if len(made) > 6 else ''})"], cwd=ROOT, capture_output=True)
-    return {"ok": True, "made": [x[0] for x in made]}
+    return {"ok": True, "made": [x[0] for x in made],
+            **({"refused": refused} if refused else {})}
