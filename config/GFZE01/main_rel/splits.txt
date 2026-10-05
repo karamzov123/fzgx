@@ -7223,3 +7223,27 @@ rel/main_rel/spline/fn_1_F7F48.c:
 
 rel/main_rel/load/fn_1_466B0.c:
 	.text       start:0x000466B0 end:0x000467F4 align:4
+
+rel/main_rel/cloth/fn_1_1030D4.c:
+	.text       start:0x001030D4 end:0x00103264 align:4
+
+rel/main_rel/bg_common/fn_1_106EB0.c:
+	.text       start:0x00106EB0 end:0x001071C0 align:4
+
+rel/main_rel/screen_effect/fn_1_7AA50.c:
+	.text       start:0x0007AA50 end:0x0007ACDC align:4
+
+rel/main_rel/screen_effect/fn_1_7A6B4.c:
+	.text       start:0x0007A6B4 end:0x0007A9B8 align:4
+
+rel/main_rel/stcoli/fn_1_20A5C.c:
+	.text       start:0x00020A5C end:0x000210A8 align:4
+
+rel/main_rel/stcoli/fn_1_163BC.c:
+	.text       start:0x000163BC end:0x00016BA0 align:4
+
+rel/main_rel/stcoli/fn_1_15578.c:
+	.text       start:0x00015578 end:0x000163BC align:4
+
+rel/main_rel/burner/fn_1_9AF80.c:
+	.text       start:0x0009AF80 end:0x0009BBE4 align:4

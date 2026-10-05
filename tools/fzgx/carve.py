@@ -42,6 +42,16 @@ def _registered(project: Project, module: str, name: str) -> bool:
                if u.get("module") == module)
 
 
+def _registered_asm(project: Project, module: str, name: str) -> bool:
+    """True when units.json already registers this symbol as an assembly unit.
+
+    Such a unit is built from the split's `.s`, so carve adds the missing range and stops --
+    it must not leave a C stub beside it (see the call site for the measured consequence).
+    """
+    return any(u.get("asm") and name in (u.get("symbols") or ())
+               for u in project.load_units() if u.get("module") == module)
+
+
 def _align_for(addr: int, cap: int) -> int:
     a = 4
     while a * 2 <= cap and addr % (a * 2) == 0:
@@ -274,7 +284,16 @@ def carve(project: Project, symbol: str, dry_run: bool = False) -> CarveResult:
         tufile.write_gen(project, {"module": module, "source": source, "symbols": [sym.name], "tu": tu_src})
     else:
         src_path = ROOT / "src" / source
-        if not src_path.exists():
+        # An asm unit is compiled from `src/<source>.s`, which the split generates, not from C.
+        # Writing a C stub for one leaves an empty function body beside the assembly; the body
+        # carries no relocation for the symbols the real code references, and the REL step then
+        # fails with "Failed to find symbol <fn> in any module", taking all fifteen .rel targets
+        # with it. `asmunit.make` deletes this stub for exactly that reason and `asmunit.resume`
+        # expects the range but no source, so carve must not create one either.
+        #
+        # Measured 2026-10-05 on fn_12_D0B8: the stub C was built and linked, and
+        # movie_module.plf then failed to resolve fn_12_5674. Reverted (docs/findings/290).
+        if not src_path.exists() and not _registered_asm(project, module, sym.name):
             src_path.parent.mkdir(parents=True, exist_ok=True)
             src_path.write_text(
                 f'#include "types.h"\n\n'
