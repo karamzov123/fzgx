@@ -1206,6 +1206,17 @@
   },
   {
     "module": "customize",
+    "source": "rel/customize/editor/fn_3_17098.c",
+    "symbols": [
+      "fn_3_17098"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/editor.c"
+  },
+  {
+    "module": "customize",
     "source": "rel/customize/editor/fn_3_170E0.c",
     "symbols": [
       "fn_3_170E0"
@@ -28343,6 +28354,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/accessory/fn_1_128B60.c",
+    "symbols": [
+      "fn_1_128B60"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/accessory.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/accessory/fn_1_128DD8.c",
     "symbols": [
       "fn_1_128DD8"
@@ -30410,6 +30432,17 @@
       "fn_1_FC60C"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/bg_cas.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/bg_cas/fn_1_FC760.c",
+    "symbols": [
+      "fn_1_FC760"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/bg_cas.c"
@@ -38434,6 +38467,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/effect/fn_1_611EC.c",
+    "symbols": [
+      "fn_1_611EC"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/effect.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/effect/fn_1_61640.c",
     "symbols": [
       "fn_1_61640"
@@ -42782,6 +42826,17 @@
       "fn_1_3F440"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/game.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/game/fn_1_3F4B8.c",
+    "symbols": [
+      "fn_1_3F4B8"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/game.c"
@@ -54518,6 +54573,17 @@
     "mw_version": null,
     "extra_cflags": [],
     "asm": true
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/stcoli/fn_1_17A9C.c",
+    "symbols": [
+      "fn_1_17A9C"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/stcoli.c"
   },
   {
     "module": "main_rel",
@@ -66922,6 +66988,17 @@
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/story/story_mode.c"
+  },
+  {
+    "module": "title",
+    "source": "rel/title/_prolog/fn_8_704.c",
+    "symbols": [
+      "fn_8_704"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/title/_prolog.c"
   },
   {
     "module": "title",

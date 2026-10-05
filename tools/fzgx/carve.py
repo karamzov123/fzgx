@@ -31,6 +31,17 @@ class CarveResult:
     notes: List[str] = field(default_factory=list)
 
 
+def _registered(project: Project, module: str, name: str) -> bool:
+    """True when units.json already registers this symbol, by any unit's `symbols` list.
+
+    The registry, not the split, is what makes a unit compile. Matching on `source` instead
+    would miss a record registered under a different path, and matching on the split would say
+    yes for every function whose range is claimed -- which is the bug this replaces.
+    """
+    return any(name in (u.get("symbols") or ()) for u in project.load_units()
+               if u.get("module") == module)
+
+
 def _align_for(addr: int, cap: int) -> int:
     a = 4
     while a * 2 <= cap and addr % (a * 2) == 0:
@@ -135,14 +146,39 @@ def carve(project: Project, symbol: str, dry_run: bool = False) -> CarveResult:
     existing = project.unit_of(sym)
     source = f"{unit_dir_for(project, sym)}/{sym.name}.c"
     if existing:
-        return CarveResult(sym.name, module, existing if existing.endswith(".c") else existing,
-                           created=False, notes=[f"already in unit {existing}"])
+        # A split range and a units.json entry are different things (findings 279/280), and
+        # `unit_of` reads the *split*, so `existing` is truthy whenever the range is claimed --
+        # including for a function that has a source file but was never registered, which then
+        # compiles nothing and leaves the retail auto object supplying the bytes. Returning
+        # here made those bodies permanently unregisterable: every later carve also saw
+        # `existing` and bailed, so nothing could ever add the missing record.
+        #
+        # Measured on fn_1_128B60, fn_8_704, fn_3_17098, fn_1_17A9C, fn_1_3F4B8, fn_1_611EC and
+        # fn_1_FC760: all seven check at 100.0 against retail and all seven were missing only
+        # the units.json entry.
+        if _registered(project, module, sym.name):
+            return CarveResult(sym.name, module, existing if existing.endswith(".c") else existing,
+                               created=False, notes=[f"already in unit {existing}"])
+        notes = [f"split exists at {existing} but no units.json entry; registering"]
+        if not (ROOT / "src" / existing).exists():
+            notes.append(f"no source at src/{existing}; carved stub")
+    else:
+        notes = []
     fn = project.function_asm(module).get(sym.name)
     if fn is None:
         raise LookupError(f"{symbol}: no disassembly found under build/ (run ninja first)")
 
-    res = CarveResult(sym.name, module, source, created=True)
-    res.ranges.append((sym.section, sym.addr, sym.end, 4))  # .init functions in the DOL are not .text
+    res = CarveResult(sym.name, module, existing or source, created=True, notes=notes)
+    # The function's own .text range goes in `res.ranges` only when no split already claims it.
+    # `unit_of` is split-based, so reaching here with `existing` set means the range IS covered,
+    # and re-adding it appended a second entry for the same bytes. dtk then refuses the module:
+    #   Split 0:0x00000704..0x00000754 overlaps with previous split      (fn_8_704, title)
+    # That is not a cosmetic duplicate -- it breaks the whole build, and it happened on the
+    # first attempt at this fix. .init functions in the DOL are not .text, hence sym.section.
+    if not existing:
+        res.ranges.append((sym.section, sym.addr, sym.end, 4))
+    else:
+        res.notes.append(f"split range already present; not re-adding {sym.section}")
     for section, objs in exclusive_data(project, fn).items():
         objs.sort(key=lambda s: s.addr)
         contiguous = all(objs[i].end <= objs[i + 1].addr <= objs[i].end + 32 for i in range(len(objs) - 1))
@@ -176,10 +212,15 @@ def carve(project: Project, symbol: str, dry_run: bool = False) -> CarveResult:
     res.ranges = [r_ for r_ in res.ranges if not (r_[0] == ".data" and any(ref.startswith("jumptable_") and project.symbols(module)[ref].addr == r_[1] for ref in fn.refs if ref in project.symbols(module)))]
 
     splits_path = project.module_config_dir(module) / "splits.txt"
-    with splits_path.open("a") as f:
-        f.write(f"\n{source}:\n")
-        for section, start, end, align in res.ranges:
-            f.write(f"\t{section:<11} start:0x{start:08X} end:0x{end:08X} align:{align}\n")
+    # Only write a split block when there is a range to write. A registration-only carve (a
+    # function whose range is already covered, which is the whole point of the `existing`
+    # branch above) has nothing to add, and emitting a bare `unit:` header with no sections
+    # leaves a dead entry that later reads as a claim on nothing.
+    if res.ranges:
+        with splits_path.open("a") as f:
+            f.write(f"\n{source}:\n")
+            for section, start, end, align in res.ranges:
+                f.write(f"\t{section:<11} start:0x{start:08X} end:0x{end:08X} align:{align}\n")
     # The split must actually cover the function's .text range. A body for an uncovered
     # range still checks at 100% (the per-object oracle never builds the module) but cannot
     # link: the unit adds a second copy of the function, so the module grows past retail or
@@ -217,13 +258,17 @@ def carve(project: Project, symbol: str, dry_run: bool = False) -> CarveResult:
     tu_src = tufile.tu_source_for(project, sym)
     with oracle.build_lock("units.lock"):  # submits flip statuses concurrently
         units = project.load_units()
-        if not any(u["module"] == module and u["source"] == source for u in units):
+        # Match on the symbol, not on `source`: when a split already claims the range the
+        # unit path comes from that split and may differ from the `unit_dir_for` default, so
+        # a source-equality test would append a second record for one function.
+        if not _registered(project, module, sym.name):
             rec = {"module": module, "source": source, "symbols": [sym.name],
                    "status": "nonmatching", "mw_version": None, "extra_cflags": []}
             if tu_src:
                 rec["tu"] = tu_src  # block unit: the C lives in the TU file, the object is generated
             units.append(rec)
             project.save_units(units)
+            res.notes.append(f"registered in units.json as {source}")
     if tu_src:
         # no file in the tree: a stub is generated until the function's block is spliced in
         tufile.write_gen(project, {"module": module, "source": source, "symbols": [sym.name], "tu": tu_src})
