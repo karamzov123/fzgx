@@ -128,10 +128,53 @@ Per-function, not per-class. A candidate that is one instruction away should be 
 one instruction -- which is what a model session does with a diff, and what no single
 generator can do for a 135-function bucket containing three unrelated causes.
 
-## The one measurement caveat worth recording
+## Final distribution, with two corrections this tool found
 
-`oracle.check(p, sym, 0, ...)` returns `ok=True` with **zero diff rows**, because
-`max_diff_lines=0` means "no rows", not "unlimited". My first two census scripts therefore
-reported "0 rows examined" and looked like a null result rather than a bug in the harness.
-Any analysis that classifies diff rows must pass a real limit. `fzgx check` defaults to 80
-for this reason; a script that hardcodes 0 measures nothing and looks like a finding.
+`tools/fzgx/shapecensus.py` (new) reproduces the census in one command and re-measures it as
+the band drains. First run over the same 60 functions: **395 rows**, same total as the manual
+pass, which is the cross-check that both are measuring the same thing.
+
+Two of the classes above needed correcting, and both corrections are the reason the tool
+exists:
+
+1. **Floating-point rows were misfiled.** The first classifier matched registers with `r\d+`,
+   so every row differing only in an FPR fell through to "operands textual only" -- 59 of 395
+   rows. Those are not noise: `f6`/`f7` and `f1`/`f3` swaps are register choices in the float
+   file, a distinct shape with its own idioms. Fixed to `[rf]\d+`, and float rows now appear
+   as their own entries (`stfs -> f31,r8->f31,r4`, `fmr -> f28,f0->f1,f0`).
+
+2. **48 rows carry no codegen information at all.** After the FPR fix, 48 rows remained where
+   mnemonic, registers and immediates were *identical* on both sides. Every one of them has
+   objdiff's `p` flag -- a relocation-binding difference, not a source defect:
+
+       relocation-only (p flag, no codegen difference)   48
+
+   These look like unfixed source if you only compare text, and they are not. A repair pass
+   that counts them as differences would be chasing 12% of the rows and finding nothing.
+
+## The distribution, final
+
+    relocation-only (p flag, no codegen difference)   48
+    same mnemonic, immediate differs                 39
+    same mnemonic, register AND immediate differ      14
+    insert/delete (one side empty)                   10
+    register-only differences, individually named    ~76 across many distinct pairs
+    different mnemonic                               ~13
+
+So of 395 differing rows: **12% are relocation noise**, ~24% are immediates and combined
+register+immediate, and the remaining ~64% are register-only differences spread over at least
+ten unrelated pairs. Not one of those classes is addressable by a single statement-level
+family, which is the finding.
+
+## The measurement caveats, now encoded in the tool
+
+Both traps below cost real time and each produced something that looked like a result. They
+are documented in `shapecensus.py` so they cannot recur silently:
+
+- `oracle.check(..., 0, ...)` returns **zero** diff rows, not unlimited. Two early census
+  scripts reported "0 rows examined" and read as a null result.
+- A diff row contains **both sides** (`target | ours`). Grepping the row matches retail's
+  text. Variant checks must read only the text after the `|`.
+- objdiff prints matching rows as context (leading spaces, no flag). Counting them as
+  divergences overstates the problem; `classify` skips them so the classes sum to real
+  divergences only.

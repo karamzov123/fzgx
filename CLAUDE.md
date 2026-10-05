@@ -46,6 +46,10 @@ Each was measured, not assumed. The evidence is in `docs/findings/`.
   band: 0/40,208 (282). Worked example in 284: four structurally different bodies for
   `colchg_menu_disp` converge on *exactly* 90.093025 with a byte-identical diff, because the
   residue is which register MWCC picks -- not a statement a family can move.
+- **`regalloc` is a bucket, not a shape.** `fzgx shapecensus` splits the band's differing rows:
+  12% are relocation-only (objdiff `p`, no codegen difference at all), and the ~64% that are
+  register-only spread over ten unrelated pairs with different causes (285). Re-measure with
+  the tool before building anything for this band.
 - **An attempt-cap refusal is triage, not an obstacle.** `colchg_menu_disp` sits at 94.74% and
   `claim` refuses it; the fix is a hypothesis about register liveness (284), not another run.
 - **A family band that has drained is silent.** `FAMILY_BANDS` is a *supply* statement, and an

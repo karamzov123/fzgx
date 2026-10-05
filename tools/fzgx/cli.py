@@ -312,6 +312,17 @@ def cmd_honest(a, p):
     return 0
 
 
+def cmd_shapecensus(a, p):
+    """Divergence-kind census of the near-miss band; see tools/fzgx/shapecensus.py."""
+    from fzgx import shapecensus
+    argv = ["--min-percent", str(a.min_percent), "--limit", str(a.limit)]
+    if a.module:
+        argv += ["--module", a.module]
+    if a.json:
+        argv.append("--json")
+    return shapecensus.main(argv)
+
+
 def cmd_snapshot(a, p):
     _print(api.snapshot(p), a.json); return 0
 
@@ -649,6 +660,13 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--limit", type=int, default=0, help="cap --uncredited output")
     s.add_argument("--closure", action="store_true",
                    help="per-module closure table: what is authored, and what each module still costs")
+    s = sub.add_parser("shapecensus",
+                       help="classify the near-miss band by divergence kind (is regalloc one shape?)")
+    s.set_defaults(fn=cmd_shapecensus)
+    s.add_argument("--min-percent", type=float, default=99.0)
+    s.add_argument("--limit", type=int, default=60)
+    s.add_argument("--module")
+    s.add_argument("--json", action="store_true")
     s = sub.add_parser("snapshot", help="write state/ledger.json"); s.set_defaults(fn=cmd_snapshot)
     s = sub.add_parser("restore", help="load state/ledger.json into the local ledger"); s.set_defaults(fn=cmd_restore)
     s = sub.add_parser("lint", help="shiftability/style lint"); s.set_defaults(fn=cmd_lint); s.add_argument("paths", nargs="*")
