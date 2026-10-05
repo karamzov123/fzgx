@@ -42,6 +42,12 @@ Each was measured, not assumed. The evidence is in `docs/findings/`.
   the time even with unlimited further attempts (274).
 - **Do not reallocate providers on the "gpt is 40% cheaper" claim** -- retracted as a
   measurement artifact (276).
+- **The ≥90% band is not short of search, it is short of a source shape.** `sweep` on the whole
+  band: 0/40,208 (282). Worked example in 284: four structurally different bodies for
+  `colchg_menu_disp` converge on *exactly* 90.093025 with a byte-identical diff, because the
+  residue is which register MWCC picks -- not a statement a family can move.
+- **An attempt-cap refusal is triage, not an obstacle.** `colchg_menu_disp` sits at 94.74% and
+  `claim` refuses it; the fix is a hypothesis about register liveness (284), not another run.
 - **A family band that has drained is silent.** `FAMILY_BANDS` is a *supply* statement, and an
   exhausted band raises nothing: `choose()` widens to the whole backlog, so the family keeps
   producing plausible batches while re-deriving what it has already seen. That is how cline and
