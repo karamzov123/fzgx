@@ -845,6 +845,220 @@ void fn_1_18214(Entity *arg0, f32 *arg1, Stack *arg2, f32 t) {
 }
 /* fzgx:end fn_1_18214 */
 
+/* fzgx:begin fn_1_18784 noprologue */
+#include "types.h"
+#include "psvec.h"
+
+typedef struct {
+    u32 f00;
+    u32 f04;
+    u32 f08;
+    u32 f0c;
+    u32 f10;
+    u32 f14;
+    u32 f18;
+    u32 f1c;
+    u32 f20;
+    u32 f24;
+    u32 f28;
+    u32 f2c;
+    u32 f30;
+    u32 f34;
+    u32 f38;
+    u32 f3c;
+    u32 f40;
+    u32 f44;
+} Cfg;
+
+typedef struct {
+    f32 f00;
+    f32 f04;
+    f32 f08;
+    f32 f0c;
+    f32 f10;
+    f32 f14;
+    f32 f18;
+    f32 f1c;
+    f32 f20;
+    f32 f24;
+    f32 f28;
+    f32 f2c;
+} Mat;
+
+typedef struct {
+    u8 pad_0[0x1bc];
+    s32 f1bc;
+    u8 pad_1c0[8];
+    u32 f1c8;
+    s32 f1cc;
+    u8 pad_1d0[0xc];
+    f32 f1dc;
+    f32 f1e0;
+} Mgr;
+
+typedef struct {
+    u32 f00;
+    Cfg *cfg;
+    u32 f08;
+    u32 f0c;
+    u32 f10;
+    u32 f14;
+    f32 f18;
+} Src;
+
+typedef struct {
+    u32 f00;
+    Cfg *cfg;
+    u32 f08;
+    s32 f0c;
+    Src *f10;
+    u32 f14;
+    f32 f18;
+    f32 f1c;
+    f32 f20;
+    f32 f24;
+    f32 f28;
+    f32 f2c;
+} Motion;
+
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+} Vec3;
+
+typedef struct {
+    u8 pad_0[0x30];
+    Vec3 pos;
+    f32 ax;
+    f32 ay;
+    Vec3 v0;
+    Vec3 e;
+    Vec3 m;
+    f32 d0;
+    f32 d1;
+    Vec3 o;
+    u32 f7c;
+    u8 pad_80[0x7c];
+    u32 fffc;
+} Rec;
+
+struct Pool {
+    u8 pad_0[0xc];
+    f32 one;
+    u8 pad_10[0xc];
+    f32 two;
+    u8 pad_20[0x14];
+    f32 half;
+};
+
+extern struct Pool lbl_1_rodata_6C8;
+extern u32 lbl_801A66CC;
+extern u32 lbl_801A6D00;
+extern f64 __fabs(f64);
+extern f32 fn_1_9E14C(u32, u32, f32);
+extern Rec *lbl_8006DB74(Rec *);
+extern void fn_1_18214(Motion *, Vec3 *, void *, f32);
+
+#pragma opt_propagation off
+void fn_1_18784(u32 arg0, Motion *a, Vec3 *b, void *c, f32 d)
+{
+    struct Pool *pl;
+    Rec *p;
+    Rec *q;
+    u32 mask;
+    Cfg *cf;
+    f64 tmp___fabs;
+    f32 scx;
+    f32 s2;
+    f32 ax;
+    f32 ay;
+    f32 sm;
+    f32 px;
+
+    pl = &lbl_1_rodata_6C8;
+    if ((arg0 & 0x800000) != 0) {
+        q = (Rec *)((u8 *)((Mgr *)lbl_801A66CC) + ((((Mgr *)lbl_801A66CC)->f1cc) << 7) + 0x5B0);
+    } else {
+        q = (Rec *)0;
+    }
+    p = q;
+    mask = a->f00 & 0x07E00C01;
+    ((Mgr *)lbl_801A66CC)->f1c8 |= mask;
+    if ((a->f00 & 0x4000000) != 0) {
+        Mgr *m = (Mgr *)lbl_801A66CC;
+        if (m->f1bc == 1 || (m->f1bc > 1 && m->f1cc == 0)) {
+            if (m->f1cc < 3) {
+                m->f1cc = m->f1cc + 1;
+                if (p != 0) {
+                    p->fffc = 0;
+                    p = (Rec *)((u8 *)p + 0x80);
+                }
+            }
+        }
+    }
+    if ((a->f00 & 0x600000) == 0) {
+        fn_1_18214(a, b, c, d);
+        if (p != 0) {
+            f32 *mtx;
+            lbl_8006DB74(p);
+            /* Locked cache: the current matrix at 0xE0000000 is not a data symbol. */
+            mtx = (f32 *)(0xE0000000 + 0);
+            p->pos = *b;
+            psvec_set(&p->v0.x, mtx[11], mtx[7], mtx[3]);
+            p->e.x = -((Mat *)lbl_801A6D00)->f08;
+            p->e.y = -((Mat *)lbl_801A6D00)->f18;
+            p->e.z = -((Mat *)lbl_801A6D00)->f28;
+            p->m.x = ((Mat *)lbl_801A6D00)->f04;
+            p->m.y = ((Mat *)lbl_801A6D00)->f14;
+            p->m.z = ((Mat *)lbl_801A6D00)->f24;
+        }
+    }
+    if ((a->f00 & 0x400000) != 0) {
+        cf = a->cfg;
+        scx = (cf->f3c != 0) ? fn_1_9E14C(cf->f18, cf->f3c, d) : a->f2c;
+        scx = pl->two * scx;
+        s2 = (cf->f28 != 0) ? fn_1_9E14C(cf->f04, cf->f28, d) : a->f18;
+{
+    f32 bx;
+        bx = (*(f32 volatile *)&(b->x)) /* Retail reloads this field. */;
+        sm = scx + s2;
+        scx = scx * bx;
+        tmp___fabs = __fabs(scx);
+        ax = (f32)tmp___fabs;
+        tmp___fabs = __fabs(s2 * b->y);
+        ay = (f32)tmp___fabs;
+        px = bx * sm;
+}
+        ((Mgr *)lbl_801A66CC)->f1dc = ax;
+        ((Mgr *)lbl_801A66CC)->f1e0 = ay;
+        if (p != 0) {
+            p->ax = ax;
+            p->ay = ay;
+        }
+    }
+    if (p != 0) {
+        p->f7c |= mask;
+        if ((a->f00 & 0x800000) != 0 && a->f0c == 1) {
+            Cfg *c2 = (*(Src *volatile *)&(a->f10))->cfg; /* Retail reloads this field. */
+            p->d0 = (*(f32 volatile *)&(b->x)) /* Retail reloads this field. */;
+            p->d1 = (c2->f28 != 0) ? fn_1_9E14C(c2->f04, c2->f28, d) : (*(Src *volatile *)&(a->f10))->f18 /* Retail reloads this field. */;
+        } else if ((a->f00 & 0x200000) == 0) {
+            p->d0 = (a->f00 & 0x400000) ? px : (*(f32 volatile *)&(b->x)) /* Retail reloads this field. */;
+            p->d1 = pl->one;
+        }
+        if ((a->f00 & 0x400000) != 0) {
+            psvec_scale_add(&p->v0.x, &p->m.x, pl->half * p->ay, &p->o.x);
+        } else if ((a->f00 & 0x1800000) != 0) {
+            psvec_scale_add(&p->v0.x, &p->m.x, pl->half * b->y, &p->o.x);
+        } else {
+            p->o = p->v0;
+        }
+    }
+}
+#pragma opt_propagation reset
+/* fzgx:end fn_1_18784 */
+
 /* fzgx:begin fn_1_18B40 */
 typedef u32 (*fn_1_18B40_Fn)(u32, u32, u32, u32, u32, u32, u32, u32, f32);
 
