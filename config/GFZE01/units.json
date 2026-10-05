@@ -1178,6 +1178,23 @@
   },
   {
     "module": "customize",
+    "source": "rel/customize/editor/fn_3_16E14.c",
+    "symbols": [
+      "fn_3_16E14"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/editor.c",
+    "pool": {
+      "...rodata.0": "lbl_3_rodata_538",
+      "@36": "lbl_3_rodata_538+0x70",
+      "@10": "lbl_3_rodata_538+0x8",
+      "@9": "lbl_3_rodata_538+0x4"
+    }
+  },
+  {
+    "module": "customize",
     "source": "rel/customize/editor/fn_3_16FD0.c",
     "symbols": [
       "fn_3_16FD0"

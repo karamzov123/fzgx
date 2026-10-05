@@ -71,6 +71,147 @@ void fn_3_156A8(void) {
 }
 /* fzgx:end fn_3_156A8 */
 
+/* fzgx:begin fn_3_16E14 */
+#include "font.h"
+
+#pragma section code_type ".fzgxpool"
+static const u32 fzgx_pool_table1[1] = {0xFFFFFFFF};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep1(void) { const u32 *volatile cp; cp = fzgx_pool_table1; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime2(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 192.0f;
+    s = 105.0f;
+    s = 90.0f;
+    s = 32.0f;
+    s = 0.0f;
+    s = 184.0f;
+    s = 86.0f;
+    s = 100.0f;
+    s = 175.0f;
+    s = 88.0f;
+    s = 0.5f;
+    s = 10.0f;
+    s = 420.0f;
+    s = 334.0f;
+    s = 29.0f;
+    s = 320.0f;
+    s = 232.0f;
+    s = 50.0f;
+    s = 4.0f;
+    s = 480.0f;
+    s = 92.0f;
+    s = 1.0f;
+    s = 1.0714285373687744f;
+    s = 64.0f;
+    s = 65535.0f;
+    s = 119.0f;
+    s = 30.0f;
+    d = 4503601774854144.0;
+    d = 4503599627370496.0;
+}
+static const u32 fzgx_pool_table3[1] = {0x00000064};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep3(void) { const u32 *volatile cp; cp = fzgx_pool_table3; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime4(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 1.0920546628767624e-05f;
+    s = -0.25f;
+    s = -0.6000000238418579f;
+    s = -0.949999988079071f;
+    s = 0.25f;
+    s = 0.6000000238418579f;
+    s = 0.949999988079071f;
+}
+static const u32 fzgx_pool_table5[1] = {0xFFFFFFFF};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep5(void) { const u32 *volatile cp; cp = fzgx_pool_table5; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime6(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 28.0f;
+    s = 0.05999999865889549f;
+    s = 10.680000305175781f;
+    s = 0.03999999910593033f;
+}
+static const u32 fzgx_pool_table7[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep7(void) { const u32 *volatile cp; cp = fzgx_pool_table7; }  /* fzgx-allow: S2 pool primer sink */
+#pragma section code_type ".text"
+
+extern s32 lbl_1_rodata_26F8;
+extern int fn_1_4F734(FontDrawPacket *);
+
+typedef struct {
+	s32 unk_0;
+	f32 unk_4;
+	f32 unk_8;
+	f32 unk_C;
+	f32 unk_10;
+	f32 unk_14;
+	u8 pad_18[0x18];
+	u32 unk_30;
+	u8 pad_34[0x8];
+	u32 unk_3C;
+	u8 pad_40[0x18];
+} DrawPacket;
+
+#pragma opt_dead_assignments off
+#pragma opt_propagation on
+#pragma opt_common_subs off
+#pragma opt_lifetimes on
+#pragma opt_loop_invariants off
+void fn_3_16E14(void) {
+	u32 fzgx_value;
+	s32 width;
+	s32 hi;
+	DrawPacket pkt;
+	s32 lo;
+	s32 count;
+	u32 i;
+	u32 n;
+	u8 c;
+
+	count = (0x100 / (u16)(0x40 / lbl_3_bss_A23EC.unk_11) - 1) & 0xFF;
+	width = (u16)(0x40 / lbl_3_bss_A23EC.unk_11);
+	pkt = *(DrawPacket *)&lbl_1_rodata_26F8;
+	pkt.unk_0 = 0xC;
+	fzgx_value = 5;
+	pkt.unk_30 = fzgx_value;
+	lo = (count >> 1) & 0x7F;
+	hi = lo + 5;
+	pkt.unk_C = 28.0f;
+	pkt.unk_3C = fzgx_pool_table5[0];
+	{
+    s32 fzgx_loop_i_3181;
+for (fzgx_loop_i_3181 = 0; (u8)fzgx_loop_i_3181 < (u8)count; fzgx_loop_i_3181++) {
+		c = (u8)fzgx_loop_i_3181;
+
+		n = ((u8)fzgx_loop_i_3181 + 1) * width;
+		pkt.unk_4 = (f32)(s32)(n + 191);
+		pkt.unk_8 = 105.0f;
+		pkt.unk_10 = 0.06f;
+		pkt.unk_14 = 10.68f;
+		fn_1_4F734((FontDrawPacket *)&pkt);
+		pkt.unk_4 = 192.0f;
+		pkt.unk_8 = (f32)(s32)(n + 104);
+		pkt.unk_10 = 10.68f;
+		if (c >= lo && c < hi) {
+			pkt.unk_14 = 0.04f;
+		} else {
+			pkt.unk_14 = 0.06f;
+		}
+		fn_1_4F734((FontDrawPacket *)&pkt);
+	}
+    i = fzgx_loop_i_3181;
+}
+}
+#pragma opt_loop_invariants reset
+
+#pragma opt_lifetimes reset
+
+#pragma opt_common_subs reset
+
+#pragma opt_propagation reset
+
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_3_16E14 */
+
 /* fzgx:begin fn_3_16FD0 */
 typedef struct BorderColor { u8 r, g, b, a; } BorderColor;
 extern BorderColor lbl_3_rodata_5EC;
