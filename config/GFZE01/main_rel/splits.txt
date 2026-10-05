@@ -7247,3 +7247,6 @@ rel/main_rel/stcoli/fn_1_15578.c:
 
 rel/main_rel/burner/fn_1_9AF80.c:
 	.text       start:0x0009AF80 end:0x0009BBE4 align:4
+
+rel/main_rel/screen_effect/fn_1_76EB8.c:
+	.text       start:0x00076EB8 end:0x00077200 align:4

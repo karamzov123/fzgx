@@ -1859,6 +1859,146 @@ void fn_1_76DBC(void) {
 }
 /* fzgx:end fn_1_76DBC */
 
+/* fzgx:begin fn_1_76EB8 noprologue */
+#include "types.h"
+#include "rel/main_rel/screen_effect.h"
+
+#pragma section code_type ".fzgxpool"
+static const u32 fzgx_pool_table1[8] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFF910000, 0xFF760044, 0x6600FF32, 0x94009494, 0xCB0005CF, 0x00FF0000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep1(void) { const u32 *volatile cp; cp = fzgx_pool_table1; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime2(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 0.0f;
+    s = 255.0f;
+    s = 40.0f;
+    s = 1.0f;
+    s = 0.5f;
+    s = 0.02500000037252903f;
+    s = 40.959999084472656f;
+    s = 409.6000061035156f;
+    s = 2.0f;
+    s = -2.0f;
+    s = 0.009999999776482582f;
+    s = 0.003000000026077032f;
+    s = 5.0f;
+    s = 15.0f;
+    d = 4503601774854144.0;
+    d = 4503599627370496.0;
+    s = 480.0f;
+    s = 0.949999988079071f;
+    s = 640.0f;
+    s = 30.0f;
+}
+#pragma section code_type ".text"
+struct EffectTail { u32 unk_150; f32 unk_154; f32 unk_158; };
+extern u16 fn_1_A5D9C(void);
+extern u32 fn_80038EEC(f32,f32,f32,f32,f32,f32);
+extern void fn_8003462C(u32,u32,u32);
+extern void fn_80038F10(f32 *);
+extern void fn_800720B0(u32);
+extern void fn_8007245C(u32);
+extern void fn_800724C8(void);
+extern void fn_80072864(u32);
+extern void fn_800728A8(s32,s32,s32,s32);
+extern void fn_80072AB0(s32,s32,s32);
+extern void fn_80072C24(s32,s32,s32,s32,s32);
+extern void fn_80072CC4(s32,s32,s32,s32,s32);
+extern void fn_80072D64(s32,s32,s32,s32,u8,s32);
+extern void fn_80072E20(s32,s32,s32,s32,u8,s32);
+extern void fn_800734A8(u32, s32, s32, s32);
+extern void fn_800735C8(s32,s32);
+extern void fn_80073620(s32,s32);
+extern void fn_80073678(u32);
+extern void fn_800736C0(u32,void *);
+extern void fn_80073898(u32);
+extern void fn_80073C6C(s32);
+extern void fn_800745A4(u32,s32,s32,u32,u32,u32);
+extern void fn_80074660(u32);
+extern void fn_80074788(u32);
+#pragma opt_dead_assignments on
+void fn_1_76EB8(void) {
+    Obj_1_data_1D960 *p_lbl_1_data_1D960;
+    s32 lab_t1;
+    s32 lab_t2;
+    f32 v0,v1,v2,v3,v4,v5,v6;
+    u32 v7;
+    f32 v8,v9,v10,v11;
+    struct { f32 a[6]; } loc_C;
+    u32 loc_8;
+    u16 t29;
+    p_lbl_1_data_1D960 = &lbl_1_data_1D960;
+    loc_8 = ((struct EffectTail *)((u8 *)p_lbl_1_data_1D960 + 0x150))->unk_150;
+    fn_800736C0(0, &loc_8);
+    fn_800724C8();
+    fn_8007245C(8704);
+    fn_80074788(0);
+    fn_80074660(1);
+    fn_80073678(2);
+    fn_80073898(0);
+    fn_80073C6C(0);
+    fn_800745A4(0,1,4,60,0,125);
+    fn_80072AB0(0,0,0);
+    fn_800734A8(0,0,0,255);
+    fn_800735C8(0,12);
+    fn_80073620(0,28);
+    fn_80072C24(0,14,15,15,8);
+    fn_80072D64(0,1,0,0,1,0);
+    fn_80072CC4(0,4,7,7,6);
+    fn_80072E20(0,0,0,1,1,0);
+    fn_80073C6C(1);
+    fn_80072AB0(1,0,0);
+    fn_800734A8(1,0,1,255);
+    fn_80073620(1,0);
+    lab_t1 = 15;
+    fn_80072C24(1, lab_t1, 0, 8, 15);
+    fn_80072D64(1,0,0,0,1,0);
+    fn_80072CC4(1,6,7,0,7);
+    fn_80072E20(1,0,0,0,1,0);
+    fn_800720B0(0);
+    lab_t2 = 5;
+    fn_800728A8(1, 1, lab_t2, 0);
+    fn_80072864(2);
+    v0 = 0.5f;
+    v1 = (f32)(v0 * ((struct EffectTail *)((u8 *)p_lbl_1_data_1D960 + 0x150))->unk_154);
+    v2 = (f32)(v0 * ((struct EffectTail *)((u8 *)p_lbl_1_data_1D960 + 0x150))->unk_158);
+    v3 = (f32)(v0-v1);
+    v4 = (f32)(v0-v2);
+    v5 = (f32)(v0+v1);
+    v6 = (f32)(v0+v2);
+    fn_80038F10((f32 *)&loc_C);
+    t29 = fn_1_A5D9C();
+    v7 = (t29 & 0xFFFF);
+    v8 = 0.0f;
+    fn_80038EEC(v8,v8,640.0f,(f32)(u32)v7,v8,1.0f);
+    fn_8003462C(128,7,4);
+    v9 = 0.0f;
+    v10 = 640.0f;
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = v9;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    v11 = 480.0f;
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = v9;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = 0.0f;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = v3;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = v4;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = v10;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = v9;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = 0.0f;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = v5;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = v4;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = v10;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = v11;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = 0.0f;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = v5;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = v6;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = v9;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = v11;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = 0.0f;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = v3;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    *(volatile f32 *)((u8 *)0xCC010000 + -32768) = v6;  /* fzgx-allow: A1,A2 unnamed OS/hardware memory */
+    fn_80038EEC(loc_C.a[0],loc_C.a[1],loc_C.a[2],loc_C.a[3],loc_C.a[4],loc_C.a[5]);
+}
+#pragma opt_dead_assignments reset
+/* fzgx:end fn_1_76EB8 */
+
 /* fzgx:begin fn_1_77200 */
 void fn_1_77200(void *arg) {
     fn_1_77238();
