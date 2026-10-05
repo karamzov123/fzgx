@@ -200,6 +200,20 @@ ATTEMPT_CAP = 2
 ONE_WORD_TIER = ROOT / "state" / "one_word_tier.json"
 ONE_WORD_RESERVE = 4          # slots per batch held for this tier while it is non-empty
 
+# Share of a batch given to the 80-95% mid band. Bounded rather than a strict precedence
+# because both extremes of that choice were measured and both are wrong: ranking the mid band
+# above virgin took virgin to 0 of 12 picks, and ranking virgin above it (the previous rule)
+# took the mid band to 0. 25% keeps the largest proven source -- virgin, 872 conversions --
+# holding the majority of every batch while giving the band that had no owner at all a
+# guaranteed share.
+MID_BAND_SHARE = 0.25
+
+# Share of a batch for the one-word tier. Bounded rather than "all of them": the tier is 18
+# functions and letting it lead unbounded took 7 of every 12 slots and left none for virgin
+# work, which is the largest proven source of matches (872 conversions). It still leads, because
+# each entry is one edit away from done, but it drains instead of crowding the queue out.
+TIER_SHARE = 0.33
+
 # Families that share the tier, in a fixed order. The rotation below needs a stable index so
 # every family lands on a different subset.
 TIER_FAMILIES = ("agy", "cline", "gpt", "oc1", "oc4")
@@ -484,7 +498,30 @@ def choose(rows, seen, context, count, reserved=(), retry=(), family=None):
     # buried the tier: a one-word function is worth more than a cold 1-2 KB function regardless
     # of which pool it came from, and 12.1% measured conversion on virgin work does not outrank
     # an edit that closes the function.
-    order=lambda r:(0 if r['symbol'] in tier else 1 if r['symbol'] in virgin else 2,
+    # The 80-95% band: unfinished work that no ordering rule could reach.
+    #
+    # Measured 2026-10-05: 384 functions sit between 80% and 95%, 149 of them admitted by
+    # ATTEMPT_CAP, and **choose() selected 0 of them for every family**. Not because they were
+    # ineligible -- `virgin` holds 523 unmatched functions and this band sorts behind all of
+    # them, so with virgin-first ordering the queue never reaches it. Simulating the one-word
+    # tier drained still gave 0/8, which rules out the tier as the cause and confirms the
+    # virgin-first rule is. "Whatever is open" is therefore not true of this band: nothing in
+    # the policy would ever pick it up.
+    #
+    # And it is not a dead shelf. Grouping every function the fleet has ever matched by its
+    # best percent before the fleet first touched it:
+    #
+    #     <80%  872      95-99%  194
+    #     80-95%  378     >=99%   64
+    #
+    # 378 functions have converted *from* this band, against 194 from the near-miss bands the
+    # policy does prioritise. It is the second-largest proven source of matches and it had no
+    # owner at all. The mid band gets slots ahead of virgin work without displacing the tier.
+    mid_band={r['symbol'] for r in rows if r['status']=='unmatched'
+              and 80 <= (r.get('best',r.get('best_percent',0)) or 0) < 95
+              and mine.get(r['symbol'],0) < ATTEMPT_CAP}
+    order=lambda r:(0 if r['symbol'] in tier else 1 if r['symbol'] in mid_band else 2
+                    if r['symbol'] in virgin else 3,
                     -(r.get('best',r.get('best_percent',0)) or 0),
                     mine.get(r['symbol'],0),r['size'],r['symbol'])
     band=band_for(family) if family else None
@@ -495,9 +532,18 @@ def choose(rows, seen, context, count, reserved=(), retry=(), family=None):
     # symbols pass size_allowed, but the band excluded 5 of them outright and demoted the rest,
     # which is what left cline and gpt at 0/6. Everything here is still gated by base -- attempt
     # cap via eligible_retry, link failures, in-flight units and the current-context guard.
-    if tier:
-        inband={r['symbol'] for r in eligible}
-        eligible=sorted([r for r in base if r['symbol'] in tier],key=order)+eligible
+    if tier or mid_band:
+        # Both pools are lifted above the band for the same reason, and the mid band's case is
+        # the sharper one: 126 of its 149 eligible functions are under 1 KB, and every family
+        # band starts at 1 KB or higher (cline 1024, agy 512, oc1 2048, oc4 257, gpt 1024), so
+        # oc1's band excluded **all** of them and the others saw at most 23. A band is a
+        # division of labour, not a quality gate -- it exists so families do not all grind the
+        # same size shelf, which is a reason to share, not a reason to hide a pool with no
+        # other route to a session. Everything is still gated by base: attempt cap, link
+        # failures, in-flight units and the current-context guard.
+        lifted=[r for r in base if r['symbol'] in tier or r['symbol'] in mid_band]
+        seen_ids={id(r) for r in eligible}
+        eligible=sorted(lifted,key=order)+[r for r in eligible if id(r) not in seen_ids]
     if len(eligible)<count:
         # The band's own slice cannot fill the request. Widen to the rest of the
         # backlog rather than idle the slot: a starved family is worse than a band
@@ -514,20 +560,47 @@ def choose(rows, seen, context, count, reserved=(), retry=(), family=None):
         # because they had already run most tier symbols, while oc1 scored 3/6. The tier has to
         # be leading the list, not trailing it -- as `fresh + tierrows` it sat behind six virgin
         # functions and was never reached at all.
-        rest=[r for r in eligible if family not in tried.get(r['symbol'],())]
-        stale=[r for r in eligible if r['symbol'] in tier and r not in rest]
-        tierrows=[r for r in eligible if r['symbol'] in tier and r in rest]
-        eligible=stale+tierrows+rest+[r for r in eligible if r in stale or r in tierrows or r in rest] \
-            if len(rest)<count else stale+tierrows+rest
+        keep=[r for r in eligible if r['symbol'] in tier or r['symbol'] in mid_band]
+        rest=[r for r in eligible if family not in tried.get(r['symbol'],())
+              and r['symbol'] not in tier and r['symbol'] not in mid_band]
+        rest+=[r for r in eligible if r not in keep and r not in rest]
+        eligible=keep+rest
+    # Three pools, each with a bounded share of the batch, then virgin takes the remainder.
+    #
+    # This replaced a strict precedence, and both extremes were measured and are wrong. Ranking
+    # the mid band above virgin took virgin to **0 of 12** picks, and virgin is the largest
+    # proven source of matches (872 conversions). Ranking virgin above the mid band is what
+    # starved it in the first place, at 0 picks.
+    #
+    # The caps are enforced by `_pick` below, at the point rows are actually taken, not by
+    # reordering the list here. Slicing the list did not bind: the lockout block above has
+    # already partitioned rows, so tier rows sit *after* the head and a sliced head left 9 of 12
+    # picks in the tier with the cap nominally at 4.
+    def _pick(pool, cap):
+        out=[]
+        for r in eligible:
+            if len(out) >= cap: break
+            if r['symbol'] in pool and r['symbol'] not in _used:
+                out.append(r['symbol']); _used.add(r['symbol'])
+        return out
+    _used=set()
+    chosen=_pick(tier, min(ONE_WORD_RESERVE, int(count * TIER_SHARE)))
+    chosen+=_pick(mid_band, int(count * MID_BAND_SHARE))
+    # The fallback must skip rows the caps already declined, or the caps do not bind: the earlier
+    # version left every tier and mid row in the tail, so a nominal cap of 4 still produced 9
+    # tier picks out of 12 and virgin work never appeared. A capped pool's remaining rows are
+    # the ones this batch is choosing *not* to run.
+    capped=tier | mid_band
+    eligible=[r for r in eligible if r['symbol'] not in set(chosen) and r['symbol'] not in capped]
     used=set(claimed_units)
-    selected=[]
+    selected=list(chosen)
     for row in eligible:
+        if len(selected)>=count:
+            break
         unit=(row['module'],row.get('unit') or row['symbol'])
         if unit in used:
             continue
         selected.append(row['symbol']);used.add(unit)
-        if len(selected)>=count:
-            break
     return selected
 
 def policy_context():
