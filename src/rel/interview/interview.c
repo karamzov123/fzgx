@@ -250,6 +250,86 @@ void fn_17_9F8(void) {
 }
 /* fzgx:end fn_17_9F8 */
 
+/* fzgx:begin fn_17_C9C */
+extern s16 lbl_1_bss_964;
+extern s16 lbl_1_bss_96A;
+extern u8 lbl_17_bss_0[];
+
+extern void fn_1_3FDA8(void *arg0, void *arg1);
+extern void fn_1_4A00(s32 arg0, u8 arg1, void *arg2);
+extern void fn_1_3EF14(void *arg0);
+extern u32 fn_1_3FC9C(void);
+extern s32 fn_1_FA088(void);
+extern s32 fn_1_FA0A0(void);
+extern s32 fn_1_FA004(void);
+extern s32 fn_1_FA01C(void);
+
+typedef struct InterviewState {
+    u8 field_0;
+    u8 pad_1[0x13];
+    u8 *unk_14;
+    s8 *unk_18;
+    u8 pad_1c[0x3c];
+    u32 unk_58;
+    u8 pad_5c[0x9c];
+    u8 unk_f8;
+    u8 unk_f9;
+    u8 unk_fa;
+    u8 unk_fb;
+    s16 unk_fc;
+    s16 unk_fe;
+    u8 unk_100;
+} InterviewState;
+
+#pragma opt_propagation off
+static inline u8 * fn_17_C9C_read_pointer(InterviewState * owner) { return owner->unk_14; }
+#pragma opt_common_subs off
+static inline u8 fn_17_C9C_array_read(s32 index, u8 *array) { return array[index]; }
+#pragma opt_strength_reduction off
+void fn_17_C9C(void) {
+    InterviewState *state;
+    u8 local[0x14c0];
+    s16 index;
+
+    state = (InterviewState *)&lbl_17_bss_0;
+    state->unk_58 = 0;
+    state->unk_58 |= 0x40000000;
+    index = lbl_1_bss_964;
+    state->unk_fc = 0;
+    state->unk_fe = 0;
+    state->unk_100 = 0;
+    state->unk_f8 = 0;
+    state->field_0 = 0;
+    state->unk_f9 = 0;
+    state->unk_fa = 0;
+    state->unk_fb = 0;
+
+    if (index == 10) {
+        state->unk_58 |= 0x20000000;
+    } else if (index == 8) {
+        state->unk_58 |= 0x00200000;
+        fn_1_3FDA8(fn_17_C9C_read_pointer(state), state->unk_18);
+        fn_1_4A00(1, 0x1e, state->unk_18);
+    } else {
+        state->unk_58 |= 1;
+        lbl_1_bss_96A = 0xc6;
+        fn_1_3EF14(local);
+        state->unk_100 = fn_17_C9C_array_read(0xa6, local) - 1;
+        state->unk_f8 = fn_1_3FC9C();
+        if (fn_1_FA088() != 0) {
+            state->unk_f9 = 1;
+            state->unk_fb = 1;
+            fn_1_FA0A0();
+        }
+        if (fn_1_FA004() != 0) {
+            state->unk_fa = 1;
+            state->unk_fb = 1;
+            fn_1_FA01C();
+        }
+    }
+}
+/* fzgx:end fn_17_C9C */
+
 /* fzgx:begin fn_17_1794 */
 // fn_17_1794: empty in retail (single blr).
 void fn_17_1794(void) {

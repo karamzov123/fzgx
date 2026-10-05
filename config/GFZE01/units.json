@@ -2876,6 +2876,17 @@
     "tu": "rel/interview/interview.c"
   },
   {
+    "module": "interview",
+    "source": "rel/interview/interview/fn_17_C9C.c",
+    "symbols": [
+      "fn_17_C9C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/interview/interview.c"
+  },
+  {
     "module": "main",
     "source": "dol/ADXAMP_Start.c",
     "symbols": [
