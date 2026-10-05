@@ -495,6 +495,59 @@ s32 fn_1_465D0(s32 arg0, s32 arg1) {
 }
 /* fzgx:end fn_1_465D0 */
 
+/* fzgx:begin fn_1_466B0 */
+extern u32 fn_1_467F4(void);
+extern void fn_1_469BC(void);
+
+typedef struct {
+    u32 unk_0;
+    u32 unk_4;
+    u32 unk_8;
+    u32 unk_C;
+} LoadQueueEntry;
+
+#pragma opt_lifetimes off
+u32 fn_1_466B0(u32 arg0, s32 arg1) {
+    struct { u32 value; } result;
+    s32 start;
+    struct { u32 value; } i;
+    struct { LoadQueueEntry *value; } tab;
+    u32 flags;
+
+    if ((s32)fn_1_467F4() != 0) {
+        fn_1_469BC();
+    }
+    result.value = -1;
+    for (i.value = 0, tab.value = (LoadQueueEntry *)&lbl_1_bss_384D8;
+         i.value < 0x400; i.value++, tab.value++) {
+        flags = tab.value->unk_0;
+        if (flags != 0) {
+            start = tab.value->unk_8;
+            if (start < arg0 + 1 && start + tab.value->unk_C > arg0) {
+                if (arg1 == 0 && (flags & 0x10000000)) {
+                    result.value = 0;
+                    break;
+                }
+                flags = 0;
+                tab.value->unk_0 = flags;
+                if (result.value == (u32)-1) {
+                    result.value = flags;
+                }
+                result.value += tab.value->unk_C;
+            }
+        }
+    }
+    {
+        u32 out = result.value;
+        if (result.value == (u32)-1) {
+            out = 0;
+        }
+        return out;
+    }
+}
+#pragma opt_lifetimes reset
+/* fzgx:end fn_1_466B0 */
+
 /* fzgx:begin fn_1_467F4 */
 u32 fn_1_467F4(void) {
     u32 value;
