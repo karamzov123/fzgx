@@ -1,5 +1,5 @@
 {
- "generated": 1791198172,
+ "generated": 1791198456,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -33362,7 +33362,7 @@
    "addr": 2147904532,
    "size": 1744,
    "status": "unmatched",
-   "attempts": 0,
+   "attempts": 1,
    "best_percent": null,
    "claimed_by": null,
    "claimed_at": null,
@@ -593478,6 +593478,27 @@
    "cost_usd": 0.0,
    "outcome": "released",
    "notes": "Traceback (most recent call last):\n  File \"/home/armandofm/projects/fzgx/tools/fzgx/cli.py\", line 801, in worker_main\n    rc = main(request['args'], project=project)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/armandofm/projects/fzgx/tools/fzgx/cli.py\", line 829, in main\n    rc = a.fn(a, p)\n         ^^^^^^^^^^\n  File \"/home/armandofm/projects/fzgx/tools/fzgx/cli.py\", line 71, in cmd_claim\n    r = api.claim(p, a.symbol, a.agent, a.ttl, a.max_attempts, a.no_carve)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/armandofm/projects/fzgx/tools/fzgx/api.py\", line 281, in claim\n    out[\"context\"] = build_context(p, l, symbol, compiler_options=_compiler_options(p, key))\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/armandofm/projects/fzgx/tools/fzgx/context.py\", line 208, in build_context\n    parts.append(f\"- attempts so far: {row['attempts']}  best: {row['best_percent']:.1f}%\")\n                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: unsupported format string passed to NoneType.__format__\n",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 0.0,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 22346,
+   "symbol": "fn_80066C14",
+   "agent": "fleet-v2-agy-1791198454994865491-agy-1",
+   "harness": "agy",
+   "model": null,
+   "started": 1791198455,
+   "ended": 1791198455,
+   "checks": 0,
+   "final_percent": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "harness crash (rc=1); saved best candidate automatically",
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 0.0,
