@@ -7214,3 +7214,6 @@ rel/main_rel/shadowmap/fn_1_568F8.c:
 
 rel/main_rel/effect/fn_1_5D378.c:
 	.text       start:0x0005D378 end:0x0005D4FC align:4
+
+rel/main_rel/mdlload/fn_1_D59A8.c:
+	.text       start:0x000D59A8 end:0x000D5C68 align:4

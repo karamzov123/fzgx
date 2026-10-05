@@ -45240,6 +45240,26 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/mdlload/fn_1_D59A8.c",
+    "symbols": [
+      "fn_1_D59A8"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/mdlload.c",
+    "pool": {
+      "...rodata.0": "lbl_1_rodata_6168",
+      "@56": "lbl_1_rodata_6168+0x1A4",
+      "@57": "lbl_1_rodata_6168+0x1A8",
+      "@58": "lbl_1_rodata_6168+0x1AC",
+      "@5": "lbl_1_rodata_6168",
+      "@59": "lbl_1_rodata_6168+0x1B0",
+      "@60": "lbl_1_rodata_6168+0x1B4"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/mdlload/fn_1_D5C68.c",
     "symbols": [
       "fn_1_D5C68"

@@ -941,6 +941,116 @@ void fn_1_D5958(void *arg) {
 }
 /* fzgx:end fn_1_D5958 */
 
+/* fzgx:begin fn_1_D59A8 */
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d; /* pool primer: volatile forces the stores that place the literals */
+    s = 30.0f; s = 0.6499999761581421f; s = 0.75f; s = 1.0f; s = 0.0f; s = 182.04444885253906f;
+    d = 0.5; d = 2.0; d = 4503599627370496.0;
+    s = 0.5f; s = 0.02500000037252903f; s = 0.9900000095367432f; s = 1.649999976158142f; s = 3000.0f; s = 100.0f;
+}
+static const u32 fzgx_pool_table2[67] = {0x00000000, 0x00000000, 0x0000000E, 0x0000000E, 0x00000000, 0x00000000, 0x0000000E, 0x0000000E, 0x0000000C, 0x0000000C, 0x00000009, 0x00000009, 0x0000000C, 0x0000000C, 0x00000009, 0x00000009, 0x00000000, 0x00000000, 0xFFFFFF4C, 0xFFFFFF4C, 0x00000000, 0x00000000, 0xFFFFFF4C, 0xFFFFFF4C, 0xFFFFFFE2, 0xFFFFFFE2, 0x00000000, 0x00000000, 0xFFFFFFE2, 0xFFFFFFE2, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000014, 0xFFFFFFEC, 0x00000000, 0x00000000, 0x00000014, 0xFFFFFFEC, 0x0000000A, 0xFFFFFFF6, 0xFFFFFFF6, 0x0000000A, 0x0000000A, 0xFFFFFFF6, 0xFFFFFFF6, 0x0000000A, 0x00000000, 0x00000000, 0x00000014, 0x00000014, 0x00000000, 0x00000000, 0xFFFFFFEC, 0xFFFFFFEC, 0x0000000A, 0x0000000A, 0xFFFFFFF6, 0xFFFFFFF6, 0xFFFFFFF6, 0xFFFFFFF6, 0x0000000A, 0x0000000A, 0x00000000, 0x3F800000, 0x00000000};
+__declspec(section ".fzgxpool") static void fzgx_pool_keep2(void) { const u32 *volatile cp = fzgx_pool_table2; (void)cp; } /* keep the table in the pool section */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime3(void) { volatile f32 s = 0.8999999761581421f; s = 32767.0f; (void)s; } /* pool primer */
+static const u32 fzgx_pool_table4[1] = {0};
+__declspec(section ".fzgxpool") static void fzgx_pool_keep4(void) { const u32 *volatile cp = fzgx_pool_table4; (void)cp; } /* keep the table in the pool section */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime5(void) { volatile f32 s; volatile f64 d; d = 4503601774854144.0; s = 23.0f; s = 24.0f; (void)s; (void)d; } /* pool primer */
+static const u32 fzgx_pool_table6[6] = {0,0,0,0,0,0xBF800000};
+__declspec(section ".fzgxpool") static void fzgx_pool_keep6(void) { const u32 *volatile cp = fzgx_pool_table6; (void)cp; } /* keep the table in the pool section */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime7(void) {
+    volatile f32 s; volatile f64 d; /* pool primer: volatile forces the stores that place the literals */
+    s = 1.5f; s = 10.0f; s = 136.0f; s = 90.0f; s = 0.6000000238418579f; s = 0.4000000059604645f; s = 96.0f;
+    s = 0.07999999821186066f; s = 0.10000000149011612f; s = 4.0f; s = 20.0f; s = 70.0f;
+    (void)d;
+}
+#pragma section code_type ".text"
+struct fn_1_D59A8_elem {
+    f32 pos[3];
+    u8 pad_C[0x18];
+    f32 unk_24;
+    s16 unk_28;
+    s16 unk_2A;
+    s16 unk_2C;
+};
+struct fn_1_D59A8_obj {
+    u8 pad_0[0xC07C];
+    struct fn_1_D59A8_elem elems[3];
+};
+extern f32 lbl_1_rodata_6168[112];
+extern void fn_1_681C(u8 value, void *out);
+extern void fn_1_6898(u32, u32 *);
+extern void fn_1_6914(u32, u32 *);
+extern s32 fn_1_58C4(void);
+extern s32 fn_1_66B8(void *, f32);
+extern void fn_1_D550C(void *);
+extern f32 lbl_8006D0B4(f32);
+extern f32 lbl_8006D668(u32 *);
+static inline f32 distance_squared_operand(f32 right, f32 left) { return left * right; }
+#pragma opt_dead_assignments off
+static inline f32 distance_squared(f32 *a, f32 *b) {
+    f32 dx = (*((a) + (0)));
+    f32 dy = a[1];
+    f32 dz = a[2];
+    dx -= b[0]; dy -= (*((1) + (b))); dz -= b[2];
+    dx = distance_squared_operand((dx), (dx));
+    dx += dy * dy; dx += dz * dz;
+    return dx;
+}
+#pragma opt_dead_assignments reset
+
+static inline f32 fn_1_D59A8_operand(f32 left, f32 right) { return left * right; }
+static inline f32 fn_1_D59A8_operand_(f32 right, f32 left) { return left * right; }
+#pragma opt_common_subs on
+static inline f32 fn_1_D59A8_operand__(f32 left, f32 right) { return left * right; }
+static inline f32 fn_1_D59A8_operand___(f32 left, f32 right) { left += right; return left; }
+void fn_1_D59A8(struct fn_1_D59A8_obj *obj) {
+    f32 v44[3]; f32 v38[3]; f32 v2c[3]; f32 v20[3]; f32 v14[3]; f32 v8[3];
+    f32 step1;
+    s32 i;
+    struct { s32 value; } j;
+    u32 count;
+    fn_1_681C(0, (u32 *)v44);
+    fn_1_6898(0, (u32 *)v38);
+    step1 = (0.0799999982f);
+    for (i = 0; i < 3; i++) {
+        obj->elems[i].unk_2C = obj->elems[i].unk_2C - 1;
+        obj->elems[i].pos[0] = obj->elems[i].pos[0] + step1;
+        obj->elems[i].pos[2] = fn_1_D59A8_operand___((obj->elems[i].pos[2]), (((0.100000001f))));
+        obj->elems[i].unk_28 = obj->elems[i].unk_28 + obj->elems[i].unk_2A;
+        count = fn_1_58C4();
+        fn_1_681C(0, (u32 *)v8);
+        best:;
+        {
+            f32 best;
+            best = lbl_8006D0B4(distance_squared(&obj->elems[i].pos[0], v8));
+            for (j.value = 1; (u32)j.value < count; j.value++) {
+                fn_1_681C((u8)j.value, (u32 *)v8);
+                best < lbl_8006D0B4(distance_squared(&obj->elems[i].pos[0], v8))
+                    ? (best = best) : (best = lbl_8006D0B4(distance_squared(&obj->elems[i].pos[0], v8)));
+            }
+            if (fn_1_66B8(&obj->elems[i].pos[0], (4.0f)) == 0) {
+                fn_1_D550C(&obj->elems[i].pos[0]);
+            }
+            if (obj->elems[i].unk_2C < -180 && best > (30.0f)) {
+                fn_1_D550C(&obj->elems[i].pos[0]);
+            }
+        }
+    }
+    obj->elems[i].unk_2C = obj->elems[i].unk_2C - 1;
+    fn_1_681C(0, (u32 *)v2c);
+    fn_1_6914(0, (u32 *)v20);
+    v14[0] = v20[0] - v2c[0];
+    v14[1] = (*((v20) + (1))) - (*((1) + (v2c)));
+    v14[2] = v20[2] - v2c[2];
+    lbl_8006D668((u32 *)v14);
+    obj->elems[3].pos[0] = (f32)(v2c[0] + (f32)(fn_1_D59A8_operand_(((20.0f)), (v14[0]))));
+    obj->elems[3].pos[1] = (f32)(v2c[1] + (f32)(fn_1_D59A8_operand((v14[1]), ((20.0f)))));
+    obj->elems[3].pos[2] = (f32)(v2c[2] + (f32)(fn_1_D59A8_operand__((v14[2]), ((20.0f)))));
+    obj->elems[3].unk_24 = (70.0f);
+}
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_D59A8 */
+
 /* fzgx:begin fn_1_D5C68 */
 // fn_1_D5C68: returns a constant.
 int fn_1_D5C68(void) {
