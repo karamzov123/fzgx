@@ -50,6 +50,11 @@ Each was measured, not assumed. The evidence is in `docs/findings/`.
   12% are relocation-only (objdiff `p`, no codegen difference at all), and the ~64% that are
   register-only spread over ten unrelated pairs with different causes (285). Re-measure with
   the tool before building anything for this band.
+- **Rank near-misses by differing WORDS, never by diff rows.** objdiff aligns rows, so one late
+  divergence inflates into many flagged rows that then look like relocation problems.
+  `fzgx shapecensus --words` is the honest count: `fn_1_2D038` shows 26 rows for **1 word**, and
+  seven functions in the band are exactly one word from matching, five of them with a single
+  named operand to change (286).
 - **An attempt-cap refusal is triage, not an obstacle.** `colchg_menu_disp` sits at 94.74% and
   `claim` refuses it; the fix is a hypothesis about register liveness (284), not another run.
 - **A family band that has drained is silent.** `FAMILY_BANDS` is a *supply* statement, and an

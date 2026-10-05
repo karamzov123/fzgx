@@ -61,12 +61,47 @@ def _side(text: str) -> tuple:
     return (parts[0], " ".join(parts[1:])) if parts else ("", "")
 
 
+def word_diff(p, symbol, body: str):
+    """Differing *words* between retail and our compiled object -- the honest defect count.
+
+    objdiff's diff is row-aligned, so one divergence late in a function makes every following
+    row report as flagged, and the `p` (relocation) flag then makes those rows look like
+    binding problems. `fn_1_2D038` showed 26 differing rows for a single differing word.
+
+    This returns the differing word indices and their decoded register/offset fields, which is
+    what actually separates "one instruction away" from "structurally different" -- and that
+    distinction decides whether a function is worth a model session or a generator.
+    """
+    sym = p.resolve(symbol)
+    target = p.target_object_for(sym)
+    theirs = oracle.words(target, sym.name)
+    with tempfile.TemporaryDirectory() as td:
+        src = Path(td) / "b.c"
+        obj = Path(td) / "b.o"
+        src.write_text(body)
+        if oracle.compile_source(p, sym.module, src, obj, None, None).returncode:
+            return None
+        ours = oracle.words(obj, sym.name)
+    if not theirs or not ours or len(theirs) != len(ours):
+        return None
+    rows = []
+    for i, (a, b) in enumerate(zip(theirs, ours)):
+        if a != b:
+            rows.append({"index": i, "retail": "%08X" % a, "ours": "%08X" % b,
+                         "opcode": (a >> 26) & 0x3F,
+                         "retail_regs": ["r%d" % ((a >> 21) & 0x1F), "r%d" % ((a >> 16) & 0x1F)],
+                         "our_regs": ["r%d" % ((b >> 21) & 0x1F), "r%d" % ((b >> 16) & 0x1F)],
+                         "retail_disp": a & 0xFFFF, "our_disp": b & 0xFFFF})
+    return {"words": len(theirs), "differing": len(rows), "rows": rows}
+
+
 def classify(diff_lines) -> collections.Counter:
     """Row-level divergence classes. Kept separate from the data gathering so it can be
     unit-exercised against literal diff rows without compiling anything.
 
     Matching rows objdiff prints as context are skipped rather than counted: they are
-    excluded from the totals so the classes sum to real divergences only.
+    excluded from the totals so the classes sum to real divergences only. Use `word_diff` for
+    a defect count -- this counts *rows*, which objdiff aligns, and that is not the same thing.
     """
     out: collections.Counter = collections.Counter()
     for line in diff_lines:
@@ -112,6 +147,9 @@ def main(argv=None) -> int:
     ap.add_argument("--limit", type=int, default=60)
     ap.add_argument("--module")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--words", action="store_true",
+                    help="rank by differing WORD count instead of diff rows (the honest defect count)")
+    ap.add_argument("--top", type=int, default=20, help="how many to show in --words mode")
     a = ap.parse_args(argv)
     p = Project()
     db = sqlite3.connect(str(STATE_DIR / "ledger.db"))
@@ -122,6 +160,32 @@ def main(argv=None) -> int:
         q += " AND module=?"
         args.append(a.module)
     rows = db.execute(q + " LIMIT ?", (*args, a.limit)).fetchall()
+
+    if a.words:
+        scored = []
+        for symbol, _module in rows:
+            body = api._attempt_text(p, symbol)
+            if not body:
+                continue
+            try:
+                wd = word_diff(p, symbol, body)
+            except Exception:
+                wd = None
+            if wd:
+                scored.append((wd["differing"], wd["words"], symbol, wd["rows"]))
+        scored.sort(key=lambda t: (t[0], t[2]))
+        if a.json:
+            print(json.dumps([{"symbol": s, "differing": d, "words": w, "rows": r}
+                              for d, w, s, r in scored], indent=1))
+            return 0
+        print("ranked by differing words (%d functions)\n" % len(scored))
+        print("%-24s %6s %7s  first divergences" % ("symbol", "diff", "words"))
+        for d, w, s, r in scored[:a.top]:
+            first = "; ".join("w%d %s%s/%s%s" % (x["index"], x["retail"], x["retail_regs"],
+                                                x["ours"], x["our_regs"]) for x in r[:2])
+            print("%-24s %6d %7d  %s" % (s, d, w, first[:60]))
+        return 0
+
     tally: collections.Counter = collections.Counter()
     seen = rows_ok = 0
     per_function = []
