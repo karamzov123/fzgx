@@ -7217,3 +7217,6 @@ rel/main_rel/effect/fn_1_5D378.c:
 
 rel/main_rel/mdlload/fn_1_D59A8.c:
 	.text       start:0x000D59A8 end:0x000D5C68 align:4
+
+rel/main_rel/spline/fn_1_F7F48.c:
+	.text       start:0x000F7F48 end:0x000F8030 align:4

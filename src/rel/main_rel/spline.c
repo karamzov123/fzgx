@@ -834,6 +834,33 @@ s32 fn_1_F7EDC(s16 value) {
 }
 /* fzgx:end fn_1_F7EDC */
 
+/* fzgx:begin fn_1_F7F48 */
+extern int fn_1_8D5F0(s16 value);
+
+#pragma opt_common_subs off
+void fn_1_F7F48(s16 value) {
+    Obj_1_bss_7F0C0 *p;
+    u64 mask;
+    u64 bit;
+    struct { s32 value; } cond;
+
+    bit = (u64)1 << value;
+    p = (Obj_1_bss_7F0C0 *)&lbl_1_bss_7F0C0;
+    mask = *(u64 *)p | *(u64 *)&p->unk_18;
+    cond.value = 0;
+    if (mask & bit) {
+        cond.value = 1;
+    }
+    if (((0) == (cond.value))) {
+        if ((fn_1_8D5F0(value) & 0x20000000) == 0) {
+            *(u64 *)&lbl_1_bss_7F0C0.unk_48 |= bit;
+        }
+    }
+    *(u64 *)&p->unk_18 |= bit;
+}
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_F7F48 */
+
 /* fzgx:begin fn_1_F8030 */
 // Clears the spline state counters.
 void fn_1_F8030(void) {

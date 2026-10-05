@@ -53579,6 +53579,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/spline/fn_1_F7F48.c",
+    "symbols": [
+      "fn_1_F7F48"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/spline.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/spline/fn_1_F8030.c",
     "symbols": [
       "fn_1_F8030"
