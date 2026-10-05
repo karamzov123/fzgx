@@ -205,7 +205,14 @@ def build_context(project: Project, ledger: Optional[Ledger], symbol: str,
     else:
         parts.append(f"- unit: `src/{unit_src}`" if unit_src else "- unit: created when the function matches (write the complete unit; checks diff it against the retail object)")
     if row and not (row["claimed_by"] or "").startswith("shadow-"):
-        parts.append(f"- attempts so far: {row['attempts']}  best: {row['best_percent']:.1f}%")
+        # best_percent is NULL for a function nobody has attempted yet -- 624 unmatched
+        # functions at last count, i.e. every virgin target the fleet is steered toward.
+        # Formatting that as a float raised TypeError inside the claim worker, so the claim
+        # died before it was recorded: 59 tracebacks in 12h, each losing the whole session.
+        # An unattempted function has no best, and "none yet" is the honest thing to print.
+        best = row["best_percent"]
+        best_text = "none yet" if best is None else f"{float(best):.1f}%"
+        parts.append(f"- attempts so far: {row['attempts']}  best: {best_text}")
     parts.append(f"- hints: {_sig_hint(fn)}")
     from .oracle import module_flags
     flags, default_mw = module_flags(project, module)

@@ -82,6 +82,8 @@ def word_diff(p, symbol, body: str):
         if oracle.compile_source(p, sym.module, src, obj, None, None).returncode:
             return None
         ours = oracle.words(obj, sym.name)
+        # The same compile, read through objdiff, for the class the word count cannot see.
+        check = oracle.check(p, symbol, 400, source=src, mw_version=None, extra_cflags=None)
     if not theirs or not ours or len(theirs) != len(ours):
         return None
     rows = []
@@ -92,7 +94,17 @@ def word_diff(p, symbol, body: str):
                          "retail_regs": ["r%d" % ((a >> 21) & 0x1F), "r%d" % ((a >> 16) & 0x1F)],
                          "our_regs": ["r%d" % ((b >> 21) & 0x1F), "r%d" % ((b >> 16) & 0x1F)],
                          "retail_disp": a & 0xFFFF, "our_disp": b & 0xFFFF})
-    return {"words": len(theirs), "differing": len(rows), "rows": rows}
+    # A relocation difference does not change the instruction word, so `len(rows)` alone
+    # reports ZERO for a body whose only defect is which symbol an instruction binds to --
+    # the shared-pool case (`lis r4, lbl_10_rodata_158@ha` against `...rodata.0@ha`).
+    # fn_10_1B2F4, fn_1_15EC40 and fn_1_9DB04 all read as "0 words differing" that way and
+    # are not done, so the row count is reported alongside and the two are read together.
+    flagged = sum(1 for line in (check.diff or [])
+                  if "|" in line and line.strip()[:1] in "<>?p~!")
+    return {"words": len(theirs), "differing": len(rows), "rows": rows,
+            "flagged_rows": flagged,
+            "note": "'differing' counts instruction words only; a relocation-only defect leaves "
+                    "it at 0, so read flagged_rows too before calling a function finished"}
 
 
 def classify(diff_lines) -> collections.Counter:
@@ -172,6 +184,7 @@ def main(argv=None) -> int:
             except Exception:
                 wd = None
             if wd:
+                wd["_flagged"] = wd.get("flagged_rows", 0)
                 scored.append((wd["differing"], wd["words"], symbol, wd["rows"]))
         scored.sort(key=lambda t: (t[0], t[2]))
         if a.json:
@@ -179,11 +192,15 @@ def main(argv=None) -> int:
                               for d, w, s, r in scored], indent=1))
             return 0
         print("ranked by differing words (%d functions)\n" % len(scored))
-        print("%-24s %6s %7s  first divergences" % ("symbol", "diff", "words"))
+        print("%-20s %5s %6s %7s  first divergences" % ("symbol", "diff", "rows", "words"))
         for d, w, s, r in scored[:a.top]:
             first = "; ".join("w%d %s%s/%s%s" % (x["index"], x["retail"], x["retail_regs"],
                                                 x["ours"], x["our_regs"]) for x in r[:2])
-            print("%-24s %6d %7d  %s" % (s, d, w, first[:60]))
+            print("%-20s %5d %6d %7d  %s" % (s, d, r[0].get("_flagged", 0), w, first[:52]))
+        print()
+        print("diff=instruction words differing; rows=objdiff flagged rows.")
+        print("A relocation-only defect leaves diff at 0 with rows>0: that is a shared-pool")
+        print("binding to fix, not a finished function.")
         return 0
 
     tally: collections.Counter = collections.Counter()
