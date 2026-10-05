@@ -42,6 +42,11 @@ Each was measured, not assumed. The evidence is in `docs/findings/`.
   the time even with unlimited further attempts (274).
 - **Do not reallocate providers on the "gpt is 40% cheaper" claim** -- retracted as a
   measurement artifact (276).
+- **A family band that has drained is silent.** `FAMILY_BANDS` is a *supply* statement, and an
+  exhausted band raises nothing: `choose()` widens to the whole backlog, so the family keeps
+  producing plausible batches while re-deriving what it has already seen. That is how cline and
+  oc1 spent 57% of six hours' attempts on a band measured at 0 matches (283). Re-run the
+  virgin-by-band table before changing or trusting a band.
 
 ## Setup (once)
 

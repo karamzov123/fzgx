@@ -175,29 +175,41 @@ def command(family, batch, symbols, parallel):
 # consuming a model session for a third re-derivation.
 ATTEMPT_CAP = 2
 
-# Which slice of the backlog each family works. Every family used to sort one shared
-# list by -best_percent, so all of them reached for the same few highest near-misses:
-# 476 of 930 attempted symbols had been tried by two or more families and 13 by four
-# or five, while 1,116 unmatched functions had never been attempted by anyone. Bands
-# are size ranges in bytes; a family only sees targets inside its own band, so the
-# pools cannot collide. gpt takes the small high-yield end and the opencode surge
-# instances take the larger functions nobody was reaching.
+# The bands below are the only thing that decides where a family looks, and they were sized when
+# the small-function pools were fresh. Measured 2026-10-04 against the real backlog:
 #
-# Measured against the real ledger at ATTEMPT_CAP=2, including the 1024B size gate:
-# <=256B has 139 eligible (93 virgin), 257-512B has 168 (123 virgin), 513-1024B has
-# 379 (322 virgin). Anything above 1024B has only 3 eligible functions, because
-# size_allowed() admits a large function only as a saved near-miss - so a band that
-# starts above 1024 starves, and the widening path in choose() has to cover it.
+#   band        backlog   virgin   attempted
+#   <=256          198        4        194      <- exhausted
+#   257-512        283        0        283      <- exhausted
+#   513-1K         514        0        514      <- exhausted
+#   1-2K           399      339         60      <- where the untouched work is
+#   >2K            214      206          8      <- ditto
+#
+# cline (257,512) and oc1 (513,1024) therefore had **zero** virgin functions available and were
+# structurally forced into re-deriving saved near-misses, while 545 virgin functions sat in the
+# bands only oc4 and gpt could see. That is where the yield went: over the preceding 6 hours,
+# 56 of 98 attempts (57%) landed on functions at >=99% -- the band finding 282 measured at
+# **0 matches from 40,208 candidates** -- and 3 (3%) on virgin work that converts at 12.1%.
+#
+# So the bands now cover the supply that actually exists. cline takes the 1-2K virgin band
+# (339 functions, the largest pool, and 12.1% measured conversion); oc1 takes >2K (206, gated
+# by SIZE_GATE so only the >=95% subset is reachable -- see the note below); oc4 and gpt keep
+# wide bands. Overlapping is deliberate: the widening path in choose() means a family whose band
+# is empty falls back to the whole backlog rather than idling, and that fallback is what lets
+# cline and oc1 keep working while their own bands drain.
+#
+# A band is a supply statement, not a yield statement: it says where the untouched work is, and
+# the widening path in choose() covers a band that runs dry. Re-measure with the size-band table
+# above before changing one.
 FAMILY_BANDS = {
-    # gpt is pointed at the cold large functions on purpose (2026-10-03). Its usual band is
-    # the smallest functions, which is where its 21.5% yield was measured, but those are
-    # nearly exhausted. The >=1 KB band is 76% of main_rel's unmatched bytes and 328 of its
-    # 374 functions score below 90%, so it is the only work left where a stronger model
-    # could change the outcome. This is an experiment, not a settled default: revert `gpt`
-    # to (0, 256) to restore the yield-tuned assignment.
+    # cline takes the largest untouched pool (1-2 KB, 339 virgin, 12.1% measured conversion).
+    # Its old band (257,512) held 283 functions and 0 of them were virgin.
+    'cline':  (1024, 2048),
+    # oc1 takes >2 KB, the second-largest virgin pool (206 functions). size_allowed() admits a
+    # function above SIZE_GATE=2048 only as a saved near-miss at >=95%, so this band is
+    # reachable mainly through that path -- which is why oc1 keeps a wide net below it.
+    'oc1':    (2048, 1 << 30),
     'gpt':    (1024, 1 << 30),
-    'cline':  (257, 512),
-    'oc1':    (513, 1024),
     'oc4':    (257, 1 << 30),
 }
 
