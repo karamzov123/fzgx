@@ -80,8 +80,39 @@ highest measured yield per session, so it gets the largest supplied pool.
 With the virgin pool removed entirely, every family still fills 6/6. A starved family must
 degrade to near-misses rather than idle, and that behaviour is unchanged.
 
+## Follow-up: agy had no band at all (same finding)
+
+agy was added as a standing family and **has no `FAMILY_BANDS` entry**, so `band_for('agy')`
+returns `None` and `choose()` applies no size filter whatsoever. Measured, it drew from the
+entire backlog and overlapped cline/oc4/gpt on 4 of 6 proposed targets -- and being a
+single-slot family, contention costs it proportionally more than a parallel=6 family.
+
+The obvious fix, `(0, 1024)`, **scored 0/6 virgin** -- because the supply table above says
+there are now *zero* virgin functions at or below 1 KB. It took a second measurement to see
+that, and it is the same trap this finding is about. `(512, 2048)` puts agy at 6/6.
+
+Live after both changes (attempts in the first seven minutes, four families active):
+
+    virgin (untouched)  30%
+    >=99% dead band      0%      (was 57%)
+    cline 6 · oc1 2 · oc4 1 · agy 1
+
 ## What to watch
 
 Re-run the virgin-by-band table before touching a band. The failure mode is silent: an
 exhausted band does not raise, it just quietly converts a productive family into a
 re-derivation loop, and the only visible symptom is a yield number weeks later.
+
+## A claim this finding got wrong, corrected
+
+An earlier draft asserted that overlapping bands were safe because "FAMILY_LOCKOUT plus the
+atomic claim keeps two families off one symbol". **Measured, that is false.** With overlapping
+bands, agy, cline, oc4 and gpt all propose the *same* four symbols, because FAMILY_LOCKOUT only
+demotes a symbol among functions this fleet has already run, and all four are reaching virgin
+work for the first time. FAMILY_LOCKOUT separates nothing here.
+
+What actually prevents two families working one symbol is the atomic claim in `api.claim`:
+the loser is refused and the backlog is wide enough that the next tick refills the slot.
+Verified live -- 10 concurrent claims, no symbol held twice. So overlapping bands are a
+throughput cost (a refused claim burns a tick), not a correctness risk, and the comment in
+`fleet_multi.py` now says exactly that instead of the stronger claim.
