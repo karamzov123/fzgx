@@ -23958,6 +23958,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80072EDC.c",
+    "symbols": [
+      "fn_80072EDC"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_800734A8.c",
     "symbols": [
       "fn_800734A8"
