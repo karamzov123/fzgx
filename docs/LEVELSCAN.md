@@ -5,6 +5,21 @@ under one of -O0/-O1/-O2/-O3/-O4/-Os. Recorded as strict wins, so applying these
 regress a function. This is a snapshot: the fleet rewrites bodies continuously, so a body
 tested here may since have changed and its recorded level may no longer be the best one.
 
+## Do not read this table as a work queue (2026-10-04)
+
+`api._compiler_options` already feeds each recorded level to every `check`, so these levels
+are applied, not pending. `fzgx levelrecheck` re-probed all 269 against the bodies that exist
+now: **268 still win, 1 stale** (`fn_4_B528`). So the table is accurate and current.
+
+But **none of the 268 is a match.** The whole set scores under 90%; the best row below,
+`fn_8003D42C`, reaches 89.19 from 7.89. A better optimisation level moves a body *toward* a
+match, it is not one -- the level maximises word agreement, and word agreement is not
+objdiff's verdict. Finding 282 then closed the follow-up question: the deterministic repair
+engine, given this population and 40,208 candidates, produced 0 matches.
+
+These functions need source changes. Reading the gain column as available progress is how
+that gets mistaken for a harvest.
+
 | symbol | module | flag | as-is | best | gain |
 | --- | --- | --- | ---: | ---: | ---: |
 | `fn_8003D42C` | main | `-O2` | 7.89 | 89.19 | +81.29 |

@@ -47,8 +47,10 @@ worth recording so nobody re-runs it expecting matches:
 
 Conclusion recorded rather than acted on: the 269 recorded levels are correctly applied and
 worth nothing as a match source. The real lever on this population is source repair, which is
-`fzgx sweep` / `fzgx fixup` territory. Keep this command as the staleness check it genuinely
-is -- one stale level out of 269 -- and not as a harvest.
+`fzgx sweep` / `fzgx fixup` territory -- except that finding 282 then measured the repair
+engine against the whole >=99% band and got 0 matches from 40,208 candidates, so this
+population is source work for a model session and nothing cheaper. Keep this command as the
+staleness check it genuinely is -- one stale level out of 269 -- and not as a harvest.
 """
 
 from __future__ import annotations

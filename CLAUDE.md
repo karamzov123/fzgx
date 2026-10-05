@@ -5,6 +5,44 @@ Targets: `sys/main.dol` plus fifteen RELs (fourteen shipped as `files/fze.*.rel`
 and `main.rel`, which `tools/prepare_orig.py` derives from `enemy_line/line__.bin`).
 `ninja` must always end with `16 files OK`.
 
+## What "done" means (owner, 2026-10-04)
+
+**The project is complete when all 16 targets link with 100% of code written in C.** That is
+the definition and it is not yet met.
+
+**The active goal is (b): all 16 targets linked, with honest code percentages, main_rel open.**
+main_rel is 56% of the remaining work and its functions do not yield to the current methods, so
+(b) is the milestone worth steering by while (a) stays the finish line.
+
+Two metrics, and the difference between them matters:
+
+    `fzgx report`      objdiff's matched_functions / complete_units -- SOFT
+    `fzgx honest`      matched functions that have a compiled C body -- HONEST
+
+The soft number credits functions that were never written in C, because a function inside a
+retail auto object matches by construction (docs/findings/280). Giving such a function its own
+split *lowers* both counters with nothing regressing, so the soft number cannot answer "did
+that change help". `fzgx honest --closure` is the steering table for goal (b): per module, what
+is authored and what each module still costs.
+
+## Measured dead ends -- do not re-propose these
+
+Each was measured, not assumed. The evidence is in `docs/findings/`.
+
+- **A better `-O` level is not a match.** 269 functions have a measured better level; they are
+  already applied, and none of the 268 still-valid ones reaches 90%. See 282 and
+  `docs/LEVELSCAN.md`.
+- **The deterministic repair engine does not close the ≥99% band.** 40,208 candidates over the
+  whole band, 0 matches (282). Register repair has likewise produced 0 matches from 170
+  functions of captured allocator decisions (`docs/REGISTER_REPAIR.md`). The hard tail is a
+  source-shape problem; its owner is a model session, not a search.
+- **The SDK save/restore register family cannot be asm units.** `__save_fpr` and friends alias
+  compiler-generated symbols that mwld also defines (281).
+- **Raising MAX_STALE** buys tokens, not matches: a 99.5-100% plateau exit converts 18.8% of
+  the time even with unlimited further attempts (274).
+- **Do not reallocate providers on the "gpt is 40% cheaper" claim** -- retracted as a
+  measurement artifact (276).
+
 ## Setup (once)
 
 ```sh
