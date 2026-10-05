@@ -2778,6 +2778,93 @@ int fn_10_A7DC(s16 mode) {
 }
 /* fzgx:end fn_10_A7DC */
 
+/* fzgx:begin fn_10_A90C */
+struct fn_10_A90C_lbl_1_bss_8B3A0 {
+    s16 value;
+    u8 pad_0[0x92];
+    u32 flags;
+    u32 unk_98;
+};
+extern struct fn_10_A90C_lbl_1_bss_8B3A0 lbl_1_bss_8B3A0;
+extern u8 lbl_1_bss_9C8[];
+extern u8 lbl_1_bss_9F8[];
+extern void fn_1_12F128(s32);
+extern int fn_1_FA070(void);
+extern int fn_1_FA0BC(int);
+extern void fn_1_A2D84(u32);
+
+static inline int available(s16 mode) {
+    if ((lbl_1_bss_8B3A0.flags & 0x200) != 0) {
+        if (mode == 0) return 1;
+        if (mode >= 1 && mode <= 3) return 1;
+        if (mode == 4) {
+            if (fn_1_FA070() != 0) return 1;
+        }
+        if (mode == 5) {
+            if (fn_1_FA0BC(lbl_1_bss_8B3A0.value == 1) != 0) return 1;
+        }
+    } else {
+        if (mode >= 1 && mode <= 3) return 1;
+        if (mode == 4) {
+            if (fn_1_FA070() != 0) return 1;
+        }
+        if (mode == 5) {
+            if (fn_1_FA0BC(lbl_1_bss_8B3A0.value == 1) != 0) return 1;
+        }
+    }
+    return 0;
+}
+
+#pragma opt_loop_invariants off
+#pragma opt_dead_assignments off
+static inline u8 fn_10_A90C_array_read(s32 index, u8 *array) { return array[index]; }
+#pragma opt_common_subs off
+void fn_10_A90C(void *arg0) {
+    u8 *p_lbl_1_bss_9C8;
+    s16 v1;
+    struct fn_10_A90C_lbl_1_bss_8B3A0 *p_lbl_1_bss_8B3A0;
+    s32 v0;
+    void *v2;
+    void *v3;
+    u32 v4;
+    p_lbl_1_bss_9C8 = (u8 *)&lbl_1_bss_9C8;
+    v2 = (u8 *)&lbl_1_bss_9F8;
+    p_lbl_1_bss_8B3A0 = (struct fn_10_A90C_lbl_1_bss_8B3A0 *)&lbl_1_bss_8B3A0;
+    v1 = 0;
+    v0 = 0;
+    v3 = p_lbl_1_bss_9C8;
+    while ((s16)v0 < 4) {
+        if ((s8)fn_10_A90C_array_read(v0 * 12 + 10, p_lbl_1_bss_9C8) != -1) {
+            if (__rlwnm(p_lbl_1_bss_8B3A0->unk_98, (((s16)v0) + 1) & 31, 31, 31)) {
+                if ((*(volatile u16 *)(lbl_1_bss_9F8 + v0 * 20 + 0x10) & 1) || (*(volatile u16 *)(lbl_1_bss_9F8 + v0 * 20 + 0x12) & 1)) v1--; // fzgx-allow: S2 layout primer sink: MWCC emits the literal pool in first-access order
+                if (((*(volatile u16 *)(lbl_1_bss_9F8 + v0 * 20 + 0x10) >> 1) & 1) || ((*(volatile u16 *)(lbl_1_bss_9F8 + v0 * 20 + 0x12) >> 1) & 1)) v1++; // fzgx-allow: S2 layout primer sink: MWCC emits the literal pool in first-access order
+                if (((*(u16 *)(lbl_1_bss_9F8 + v0 * 20 + 0x10) >> 1) & 1) || ((*(u16 *)(lbl_1_bss_9F8 + v0 * 20 + 0x12) >> 1) & 1)) {
+                    fn_1_12F128(v0);
+                } else if ((*(u16 *)(lbl_1_bss_9F8 + v0 * 20 + 0x10) & 1) || (*(u16 *)(lbl_1_bss_9F8 + v0 * 20 + 0x12) & 1)) {
+                    fn_1_12F128(v0);
+                }
+            }
+        }
+        v0++;
+    }
+    if (v1 != 0) {
+        if (*(u32 *)(((0x94) + ((u8 *)arg0))) & 0x40000000) {
+            s32 value = *(s16 *)((u8 *)arg0 + 0x8c) + v1;
+            *(s16 *)((u8 *)arg0 + 0x8c) = value > 8 ? 6 : value < 6 ? 8 : value;
+        } else {
+            v2 = (void *)(s32)v1;
+            do {
+                s32 value = *(s16 *)((u8 *)arg0 + 0x8c) + (s32)v2;
+                *(s16 *)((u8 *)arg0 + 0x8c) = value > 10 ? 0 : value < 0 ? 10 : value;
+            } while (!available(*(s16 *)((u8 *)arg0 + 0x8c)));
+        }
+        *(s16 *)((u8 *)arg0 + 0x8e) = 0;
+        fn_1_A2D84(0xa9010000);
+    }
+}
+#pragma opt_loop_invariants reset
+/* fzgx:end fn_10_A90C */
+
 /* fzgx:begin fn_10_BD64 */
 #define SEL_MAX(x, y) ((x) > (y) ? (x) : (y))
 

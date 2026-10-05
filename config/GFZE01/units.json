@@ -66095,6 +66095,17 @@
   },
   {
     "module": "sel",
+    "source": "rel/sel/sel/fn_10_A90C.c",
+    "symbols": [
+      "fn_10_A90C"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/sel/sel.c"
+  },
+  {
+    "module": "sel",
     "source": "rel/sel/sel/fn_10_BD64.c",
     "symbols": [
       "fn_10_BD64"
