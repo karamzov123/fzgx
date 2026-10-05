@@ -87,7 +87,22 @@ class Ledger:
 
     # ------------------------------------------------------------- inventory
     def sync_functions(self, rows: Iterable[dict]) -> int:
-        """Insert unknown functions (status unmatched); never overwrite status."""
+        """Insert unknown functions (status unmatched); never overwrite status.
+
+        Also retires rows the config no longer describes. Sync used to only ever insert, so a
+        symbol that stopped resolving stayed in the ledger forever and kept being dispatched:
+        `choose()` cannot resolve a symbol either, it only reads sizes, so the selector happily
+        hands an agent work that cannot be claimed. Four such phantoms were live --
+        __save_fpr_runtime, __restore_fpr_runtime, __save_gpr_runtime and __restore_gpr_runtime,
+        ledger twins of the save/restore family in finding 281 -- and they were at the head of
+        agy's queue at 76 B each, so every agy session that drew them was spent.
+
+        Only rows absent from the current config are retired, and never a matched/asm row: a
+        symbol can drop out of `config/` for a reason other than ceasing to exist (a unit was
+        folded into a TU), and forgetting a match would silently lose completed work from the
+        progress count. Attempts are kept either way, since they are the historical record.
+        """
+        rows = list(rows)
         n = 0
         with self.db:
             self.db.execute("BEGIN")
@@ -99,6 +114,15 @@ class Ledger:
                 n += cur.rowcount
                 self.db.execute("UPDATE functions SET unit=?, size=? WHERE symbol=?",
                                 (r.get("unit"), r["size"], r["symbol"]))
+            known = {r["symbol"] for r in rows}
+            live = self.db.execute("SELECT symbol FROM functions").fetchall()
+            stale = [r["symbol"] for r in live
+                     if r["symbol"] not in known
+                     and self.db.execute("SELECT status FROM functions WHERE symbol=?",
+                                         (r["symbol"],)).fetchone()["status"] not in ("matched", "asm")]
+            if stale:
+                self.db.executemany("DELETE FROM functions WHERE symbol=?",
+                                    [(s,) for s in stale])
         return n
 
     def get(self, symbol: str) -> Optional[sqlite3.Row]:

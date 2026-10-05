@@ -202,15 +202,37 @@ ATTEMPT_CAP = 2
 # the widening path in choose() covers a band that runs dry. Re-measure with the size-band table
 # above before changing one.
 FAMILY_BANDS = {
-    # cline takes the largest untouched pool (1-2 KB, 339 virgin, 12.1% measured conversion).
-    # Its old band (257,512) held 283 functions and 0 of them were virgin.
+    # The whole virgin supply sits in two bands: 330 functions at 1-2 KB and 206 above 2 KB.
+    # Nothing below 1 KB is untouched (0 virgin at <=256, 257-512 and 513-1K), so any family
+    # banded there is structurally starved and will fall through to re-deriving near-misses.
+    # Bands below therefore partition the two live pools rather than repeat the old mistake.
+    #
+    # cline: the 1-2 KB pool, the largest and the one with measured conversion (12.1%, 55/454).
+    # Its old band was (257,512), which held 283 functions and 0 virgin.
     'cline':  (1024, 2048),
-    # oc1 takes >2 KB, the second-largest virgin pool (206 functions). size_allowed() admits a
-    # function above SIZE_GATE=2048 only as a saved near-miss at >=95%, so this band is
-    # reachable mainly through that path -- which is why oc1 keeps a wide net below it.
+    # oc1: above 2 KB, the second pool. size_allowed() admits a function past SIZE_GATE=2048
+    # only as a saved near-miss at >=95%, so this band is reached mainly through that path.
     'oc1':    (2048, 1 << 30),
+    # oc4 and gpt keep wide bands deliberately: they are the families that should absorb
+    # whatever the narrow bands leave, and the widening path in choose() means a narrow band
+    # never idles a slot.
     'gpt':    (1024, 1 << 30),
     'oc4':    (257, 1 << 30),
+    # agy is a single-slot family, so contention costs it proportionally more than a
+    # parallel=6 family, and it had no band at all (band_for returned None, so no size filter
+    # applied and it drew from the entire backlog -- 4 of 6 targets overlapping cline/oc4/gpt,
+    # and the four phantom symbols at the head of its queue). It takes 512-2048, the widest
+    # slice in which it can lead on supply instead of trailing into a pool cline is draining.
+    #
+    # Overlapping bands are expected and not a bug. Measured: with these bands agy, cline, oc4
+    # and gpt propose the *same* four symbols, because FAMILY_LOCKOUT only demotes a symbol
+    # among functions this fleet has already run and all four are reaching virgin work for the
+    # first time. FAMILY_LOCKOUT does NOT separate them, and an earlier draft of this comment
+    # claimed it did -- corrected after measuring it. What actually prevents two families
+    # working one symbol is the atomic claim in api.claim: the loser is refused, and the
+    # backlog is wide enough that the next tick fills the slot. Verified live: 10 concurrent
+    # claims, no symbol held twice.
+    'agy':    (512, 2048),
 }
 
 # A family will not re-attempt a symbol another family already has in hand, and will
