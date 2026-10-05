@@ -149,6 +149,17 @@ def cmd_levelscan(a, p):
     r = levelscan.run(p, a.limit, Path(a.out) if a.out else levelscan._OUT,
                       not a.fresh, log=lambda m: print(m, flush=True))
     print(levelscan.format_report(r))
+
+
+def cmd_levelrecheck(a, p):
+    from . import levelrecheck
+    r = levelrecheck.recheck(p, a.symbols or None, a.module,
+                             log=(lambda m: None) if a.json else (lambda m: print(m, flush=True)))
+    if a.json:
+        _print(r, True)
+    else:
+        print(levelrecheck.summary(r))
+    return 0
     return 0 if r['ok'] else 2
 
 
@@ -240,6 +251,13 @@ def cmd_report(a, p):
 def cmd_honest(a, p):
     """Authored-vs-credited progress, and the functions objdiff credits that we never wrote."""
     from . import progress
+    if a.closure:
+        c = progress.closure()
+        if a.json:
+            _print(c, True)
+        else:
+            print(progress.closure_summary(c))
+        return 0
     m = progress.measure()
     if a.uncredited:
         rows = [r for r in progress.uncredited()
@@ -578,6 +596,12 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument('symbol'); s.add_argument('--section', choices=('diff', 'data'), default='diff')
     s.add_argument('--cursor', type=int, default=0)
     s = sub.add_parser('levelscan', help='probe every function with a local body for a better -O level (reports only)'); s.set_defaults(fn=cmd_levelscan)
+    s = sub.add_parser("levelrecheck",
+                       help="re-probe recorded levelscan levels against current bodies (reports only)")
+    s.set_defaults(fn=cmd_levelrecheck)
+    s.add_argument("symbols", nargs="*")
+    s.add_argument("--module")
+    s.add_argument("--json", action="store_true")
     s.add_argument('--limit', type=int, default=0); s.add_argument('--out', default=None); s.add_argument('--fresh', action='store_true', help='ignore any existing scan and start over')
     s = sub.add_parser('structmap', help='retail struct fingerprint: which field offsets each base register touches'); s.set_defaults(fn=cmd_structmap)
     s.add_argument('symbol'); s.add_argument('--body', help='compare retail offsets against this candidate body instead of printing the retail fingerprint'); s.add_argument('--mw-version', default=None)
@@ -623,6 +647,8 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--uncredited", action="store_true",
                    help="list the credited functions this project never wrote in C")
     s.add_argument("--limit", type=int, default=0, help="cap --uncredited output")
+    s.add_argument("--closure", action="store_true",
+                   help="per-module closure table: what is authored, and what each module still costs")
     s = sub.add_parser("snapshot", help="write state/ledger.json"); s.set_defaults(fn=cmd_snapshot)
     s = sub.add_parser("restore", help="load state/ledger.json into the local ledger"); s.set_defaults(fn=cmd_restore)
     s = sub.add_parser("lint", help="shiftability/style lint"); s.set_defaults(fn=cmd_lint); s.add_argument("paths", nargs="*")

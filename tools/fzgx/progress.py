@@ -236,10 +236,66 @@ def _summarise(rows: List[dict], status: Dict[str, str]) -> dict:
     }
 
 
+def closure() -> dict:
+    """Per-module closure state for the project's active goal.
+
+    Goal (b) is *all 16 targets linked, with honest code percentages, main_rel open*. That
+    makes a module finished when every one of its known functions is **authored** -- not when
+    objdiff calls it matched, because a module whose remaining functions sit in retail auto
+    objects links green while contributing nothing (finding 280).
+
+    So this separates what is left to *write* from what is left to *link*. The two are
+    different work: a credited-but-unauthored function needs no decompilation, only a split
+    range and a units.json entry, and it costs minutes against the days a genuinely unmatched
+    function costs. Ranking by a single blended number hides that.
+    """
+    per = measure()["per_module"]
+    out = []
+    for module, v in sorted(per.items()):
+        if not v["known"]:
+            continue
+        out.append({
+            "module": module,
+            "known": v["known"],
+            "credited": v["credited"],
+            "authored": v["authored"],
+            "authored_bytes": v["authored_bytes"],
+            "known_bytes": v["known_bytes"],
+            "authored_code_percent": _pct(v["authored_bytes"], v["known_bytes"]),
+            "complete": v["authored"] == v["known"],
+            "todo": v["known"] - v["authored"],            # still to decompile
+            "todo_bytes": v["known_bytes"] - v["authored_bytes"],
+            "uncredited": v["credited"] - v["authored"],  # registry work, not decompilation
+        })
+    # Cheapest first, so the next module to flip is the smallest amount of real work.
+    out.sort(key=lambda r: (r["todo"], r["todo_bytes"]))
+    return {"modules": out,
+            "complete_modules": sum(1 for r in out if r["complete"]),
+            "total_modules": len(out),
+            "uncredited_total": sum(r["uncredited"] for r in out),
+            "todo_total": sum(r["todo"] for r in out)}
+
+
+def closure_summary(c: dict) -> str:
+    """The closure table: what is finished, and what the next module costs."""
+    out = ["%-14s %6s %5s %5s %8s %7s %10s"
+           % ("module", "known", "done", "todo", "todoKB", "code%", "uncredited")]
+    for r in c["modules"]:
+        out.append("%-14s %6d %5d %5d %8.0f %7.1f %10d"
+                   % (r["module"], r["known"], r["authored"], r["todo"],
+                      r["todo_bytes"] / 1024, r["authored_code_percent"], r["uncredited"]))
+    out.append("")
+    out.append("%d/%d modules fully authored; %d functions to write; %d credited-but-unauthored"
+               % (c["complete_modules"], c["total_modules"], c["todo_total"],
+                  c["uncredited_total"]))
+    return "\n".join(out)
+
+
 def uncredited() -> List[dict]:
     """Functions objdiff credits that this project never wrote: the soft-number gap.
 
     Each row is a candidate for real work, and every one is a place the headline number is
-    currently lying by exactly one function.
+    currently overstating by exactly one function. Under goal (b) these are also the cheapest
+    work in the project: they need a split range and a units.json entry, not a decompilation.
     """
     return [r for r in measure()["functions"] if r["credited"] and not r["authored"]]
