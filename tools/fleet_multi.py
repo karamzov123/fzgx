@@ -396,6 +396,30 @@ def unsearched_near_misses(rows):
 
 SIZE_GATE = 2048
 NEAR_MISS_PCT = 95.0
+# Fraction of the batch that may go to work past SIZE_GATE, to measure whether the gate is
+# still earning its keep rather than assuming it either way. 0 disables the probe.
+#
+# The gate was raised from 1024 to 2048 on the evidence that "2-4KB is 0/10 and >4KB is
+# 0/14". Re-measured over the whole fleet history that evidence is **8 functions, not 24**:
+# only 8 above-2KB functions were ever first-touched (4 virgin, 4 near-miss), and none
+# converted. That is too thin a sample to close 206 functions and 674,472 B -- **38% of all
+# outstanding bytes** -- and it was self-sealing: the gate blocks exactly the functions needed to
+# grow the sample.
+#
+# The real cost was never measured and is concrete. oc1's band is (2048, inf), so:
+#
+#     oc1 band inventory      214 functions
+#     of those servable         8
+#
+# oc1 could not reach 206 virgin functions in its only band and had 0 virgin reachable. The
+# fleet was not being protected from bad work above 2KB; one family was idle.
+#
+# Rather than move the gate on an 8-sample argument in either direction, the gate stands and a
+# quarter of each batch is allowed past it as a **measured probe**. If those conversions land,
+# the gate was wrong and should be raised. If they do not, the probe is the evidence the
+# original claim never had. Either way the question gets answered with data instead of inherited
+# numbers, and the probe is one constant to revert.
+OVERSIZE_PROBE = 0.25
 # A saved body that already diffs at this closeness is worth more per compile than
 # a cold small function, so the size gate widens for it instead of excluding it
 # outright.
@@ -542,8 +566,13 @@ def choose(rows, seen, context, count, reserved=(), retry=(), family=None):
         # other route to a session. Everything is still gated by base: attempt cap, link
         # failures, in-flight units and the current-context guard.
         lifted=[r for r in base if r['symbol'] in tier or r['symbol'] in mid_band]
-        seen_ids={id(r) for r in eligible}
-        eligible=sorted(lifted,key=order)+[r for r in eligible if id(r) not in seen_ids]
+        # Dedup by symbol, not by id(). `id()` identifies the dict object, and `lifted` and
+        # `eligible` are built by two separate comprehensions over `base`, so the same row is a
+        # different object in each and `id(r) not in seen_ids` is always true. That duplicated
+        # every lifted row and, worse, left the later `inband` guard reading a list that no
+        # longer matched what was being prepended.
+        lifted_symbols={r['symbol'] for r in lifted}
+        eligible=sorted(lifted,key=order)+[r for r in eligible if r['symbol'] not in lifted_symbols]
     if len(eligible)<count:
         # The band's own slice cannot fill the request. Widen to the rest of the
         # backlog rather than idle the slot: a starved family is worse than a band
@@ -584,14 +613,42 @@ def choose(rows, seen, context, count, reserved=(), retry=(), family=None):
                 out.append(r['symbol']); _used.add(r['symbol'])
         return out
     _used=set()
-    chosen=_pick(tier, min(ONE_WORD_RESERVE, int(count * TIER_SHARE)))
-    chosen+=_pick(mid_band, int(count * MID_BAND_SHARE))
-    # The fallback must skip rows the caps already declined, or the caps do not bind: the earlier
-    # version left every tier and mid row in the tail, so a nominal cap of 4 still produced 9
-    # tier picks out of 12 and virgin work never appeared. A capped pool's remaining rows are
-    # the ones this batch is choosing *not* to run.
-    capped=tier | mid_band
-    eligible=[r for r in eligible if r['symbol'] not in set(chosen) and r['symbol'] not in capped]
+    n_tier=min(ONE_WORD_RESERVE, int(count * TIER_SHARE))
+    n_mid=int(count * MID_BAND_SHARE)
+    # context ids already run in this batch; the guard `base` applies to gated rows too
+    seen_g=set(seen.values()) if seen else set()
+    chosen=_pick(tier, n_tier)
+    chosen+=_pick(mid_band, n_mid)
+    # Oversize probe: a bounded slice of work past SIZE_GATE, which size_allowed otherwise blocks
+    # (see OVERSIZE_PROBE). Drawn from the gated rows explicitly, so it can only ever be this
+    # share -- it does not widen the gate for anything else, and a batch with no oversize work
+    # simply does not fill this share from it.
+    if OVERSIZE_PROBE:
+        # `base` only holds size_allowed rows, so the gated ones are re-read from `rows`. They
+        # are otherwise-ineligible (that is what the gate means) and are admitted here and
+        # nowhere else, which is what makes this a probe rather than a gate change.
+        gated=[r for r in rows if r['status']=='unmatched'
+               and not size_allowed(r['size'], r.get('best',r.get('best_percent',0)))
+               and r['symbol'] not in linkfail
+               and mine.get(r['symbol'],0) < ATTEMPT_CAP
+               and r['symbol'] not in seen_g
+               and r['symbol'] not in reserved
+               and not (r.get('unit') and (r['module'],r['unit']) in claimed_units)]
+        probe=int(count * OVERSIZE_PROBE)
+        n_probe=0
+        for r in gated:
+            if len(chosen) >= probe + n_tier + n_mid: break
+            if r['symbol'] not in _used:
+                chosen.append(r['symbol']); _used.add(r['symbol']); n_probe+=1
+    # Only pools that were *filled to their cap* have their remaining rows withheld. A pool that
+    # could not fill its share has nothing to withhold, so its leftover rows stay in the fallback
+    # or the batch idles -- measured at 9 of 12 when every capped pool was withheld regardless of
+    # how many rows it actually held.
+    full=set()
+    if len([s for s in _used if s in tier])>=n_tier: full|=tier
+    if len([s for s in _used if s in mid_band])>=n_mid: full|=mid_band
+    if OVERSIZE_PROBE and n_probe>=probe: full|={r['symbol'] for r in gated}
+    eligible=[r for r in eligible if r['symbol'] not in set(chosen) and r['symbol'] not in full]
     used=set(claimed_units)
     selected=list(chosen)
     for row in eligible:
