@@ -1080,8 +1080,18 @@ def report(p: Project) -> Dict[str, Any]:
                                           "complete_units", "total_units")}
     pending = l.db.execute("SELECT COUNT(*) FROM functions WHERE link_state='pending'").fetchone()[0]
     pool = l.db.execute("SELECT COUNT(*) FROM functions WHERE link_state='pool'").fetchone()[0]
-    return {"ledger": l.summary(), "costs": dict(l.costs()), "objdiff": objdiff, "pending_link": pending,
-            "pool_matched": pool}
+    out = {"ledger": l.summary(), "costs": dict(l.costs()), "objdiff": objdiff, "pending_link": pending,
+           "pool_matched": pool}
+    # `objdiff` above is the soft number: it credits functions that were never written in C
+    # because they sit inside a retail auto object (findings 280). `honest` is the same
+    # question restricted to functions with a compiled C body, so the two can be compared.
+    try:
+        from . import progress
+        h = progress.measure()
+        out["honest"] = {k: v for k, v in h.items() if k not in ("functions", "per_module")}
+    except Exception as error:                      # never let the metric break the report
+        out["honest"] = {"error": str(error)[:200]}
+    return out
 
 
 def snapshot(p: Project) -> Dict[str, Any]:

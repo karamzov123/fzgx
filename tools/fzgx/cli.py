@@ -226,6 +226,71 @@ def cmd_report(a, p):
         print("costs:", r["costs"])
         if r["objdiff"]:
             print("objdiff:", r["objdiff"])
+        h = r.get("honest") or {}
+        if "error" in h:
+            print("honest: unavailable:", h["error"])
+        else:
+            t = h["total"]
+            print(f"honest: authored {t['authored']}/{t['credited']} credited "
+                  f"({h['authored_of_credited_percent']}%), authored code "
+                  f"{h['authored_code_percent']}% of {t['known_bytes']}B")
+    return 0
+
+
+def cmd_honest(a, p):
+    """Authored-vs-credited progress, and the functions objdiff credits that we never wrote."""
+    from . import progress
+    m = progress.measure()
+    if a.uncredited:
+        rows = [r for r in progress.uncredited()
+                if not a.module or r["module"] == a.module]
+        rows.sort(key=lambda r: (r["module"], -r["size"]))
+        if a.limit:
+            rows = rows[:a.limit]
+        if a.json:
+            _print(rows, True)
+            return 0
+        if not rows:
+            print("every credited function has a compiled C body")
+            return 0
+        print("%-13s %-22s %7s  %s" % ("module", "symbol", "size", "why not authored"))
+        for r in rows:
+            why = ("no split range" if not r["split"] else
+                   "no units.json entry" if not r["registered"] else
+                   "unit registered but gen/ not built" if not r["compiled"] else
+                   "ledger does not call it matched")
+            print("%-13s %-22s %7d  %s" % (r["module"], r["symbol"], r["size"], why))
+        print("\n%d credited function(s) with no compiled C body" % len(rows))
+        return 0
+
+    if a.json:
+        out = dict(m)
+        out.pop("functions", None)
+        if a.module:
+            out["per_module"] = {a.module: m["per_module"].get(a.module, {})}
+        _print(out, True)
+        return 0
+
+    t = m["total"]
+    print("authored code   %8d B  %6.2f%% of %d B known"
+          % (t["authored_bytes"], m["authored_code_percent"], t["known_bytes"]))
+    print("credited code   %8d B  %6.2f%%  (includes retail auto objects)"
+          % (t["credited_bytes"], m["credited_code_percent"]))
+    print("authored fns    %8d     %6.2f%% of %d credited"
+          % (t["authored"], m["authored_of_credited_percent"], t["credited"]))
+    print("unmatched ledger%8d" % m["unmatched_ledger"])
+    print()
+    mods = m["per_module"]
+    names = [a.module] if a.module else sorted(
+        mods, key=lambda k: -(mods[k]["credited"] - mods[k]["authored"]))
+    print("%-14s %6s %8s %8s %7s" % ("module", "known", "credited", "authored", "gap"))
+    for name in names:
+        v = mods.get(name)
+        if not v:
+            continue
+        print("%-14s %6d %8d %8d %7d"
+              % (name, v["known"], v["credited"], v["authored"],
+                 v["credited"] - v["authored"]))
     return 0
 
 
@@ -550,6 +615,14 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("symbol"); s.add_argument("--reason", required=True)
     s = sub.add_parser("unblock"); s.set_defaults(fn=cmd_unblock); s.add_argument("symbol")
     s = sub.add_parser("report", help="progress and cost summary"); s.set_defaults(fn=cmd_report)
+    s = sub.add_parser("honest",
+                       help="authored-vs-credited progress: matched functions with a real compiled C body")
+    s.set_defaults(fn=cmd_honest)
+    s.add_argument("--json", action="store_true")
+    s.add_argument("--module", help="restrict the per-module table to one module")
+    s.add_argument("--uncredited", action="store_true",
+                   help="list the credited functions this project never wrote in C")
+    s.add_argument("--limit", type=int, default=0, help="cap --uncredited output")
     s = sub.add_parser("snapshot", help="write state/ledger.json"); s.set_defaults(fn=cmd_snapshot)
     s = sub.add_parser("restore", help="load state/ledger.json into the local ledger"); s.set_defaults(fn=cmd_restore)
     s = sub.add_parser("lint", help="shiftability/style lint"); s.set_defaults(fn=cmd_lint); s.add_argument("paths", nargs="*")
