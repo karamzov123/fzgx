@@ -1,5 +1,5 @@
 {
- "generated": 1791399976,
+ "generated": 1791400257,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -601209,6 +601209,27 @@
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 0.0,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 22714,
+   "symbol": "fn_1_8D3F8",
+   "agent": "shadow-model-eval-space-bunny-free-20261007-opencode-1",
+   "harness": "opencode",
+   "model": null,
+   "started": 1791400008,
+   "ended": 1791400257,
+   "checks": 4,
+   "final_percent": 99.18254,
+   "tokens_in": 119099,
+   "tokens_out": 2783,
+   "cost_usd": 0.0,
+   "outcome": "shadow-released",
+   "notes": "harness crash (rc=-15); saved best candidate automatically",
+   "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_8D3F8.shadow.1791400257.c",
+   "stale_checks": 0,
+   "best_in_attempt": 99.18254,
    "cache_read_tokens": 0,
    "cache_write_tokens": 0
   }
