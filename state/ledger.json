@@ -1,5 +1,5 @@
 {
- "generated": 1791399953,
+ "generated": 1791399969,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -601167,6 +601167,27 @@
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_8D3F8.shadow.1791399953205790726.c",
    "stale_checks": 0,
    "best_in_attempt": 100.0,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 22712,
+   "symbol": "fn_1_8D3F8",
+   "agent": "shadow-model-eval-sonnet-20261007-claude-1",
+   "harness": "claude",
+   "model": null,
+   "started": 1791399966,
+   "ended": 1791399969,
+   "checks": 0,
+   "final_percent": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0,
+   "outcome": "shadow-released",
+   "notes": "harness crash (rc=1); saved best candidate automatically",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 0.0,
    "cache_read_tokens": 0,
    "cache_write_tokens": 0
   }
