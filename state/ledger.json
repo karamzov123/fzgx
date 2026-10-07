@@ -1,5 +1,5 @@
 {
- "generated": 1791400257,
+ "generated": 1791400506,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -6774,7 +6774,7 @@
    "addr": 2147496624,
    "size": 144,
    "status": "unmatched",
-   "attempts": 0,
+   "attempts": 1,
    "best_percent": null,
    "claimed_by": null,
    "claimed_at": null,
@@ -601230,6 +601230,27 @@
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_8D3F8.shadow.1791400257.c",
    "stale_checks": 0,
    "best_in_attempt": 99.18254,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 22715,
+   "symbol": "__init_registers",
+   "agent": "space-bunny-free-main-20261007-opencode-1",
+   "harness": "opencode",
+   "model": null,
+   "started": 1791400380,
+   "ended": 1791400505,
+   "checks": 3,
+   "final_percent": 2.7777777,
+   "tokens_in": 122202,
+   "tokens_out": 944,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "All 35 differing rows are direct GPR writes (29 `li rX,0` register-clears plus `lis/ori` loads into r1/r2/r13); MWCC emits register-file setup only from inline assembly, which the tooling rejects (\"inline asm is not allowed\") and no pragma or C expression shape produces it, so pure C compiles to the bare `blr` (2.8%).",
+   "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/__init_registers.1791400505.c",
+   "stale_checks": 2,
+   "best_in_attempt": 2.7777777,
    "cache_read_tokens": 0,
    "cache_write_tokens": 0
   }
