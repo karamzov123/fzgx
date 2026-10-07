@@ -1,5 +1,5 @@
 {
- "generated": 1791399583,
+ "generated": 1791399890,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -601123,6 +601123,27 @@
    "outcome": "released",
    "notes": "batch interrupted; saved for resume",
    "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 0.0,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 22710,
+   "symbol": "fn_1_8D3F8",
+   "agent": "shadow-model-eval-luna-20261007-codex-1",
+   "harness": "codex",
+   "model": "gpt-6-luna",
+   "started": 1791399808,
+   "ended": 1791399890,
+   "checks": 4,
+   "final_percent": 0.0,
+   "tokens_in": 115150,
+   "tokens_out": 2549,
+   "cost_usd": 0.0,
+   "outcome": "shadow-released",
+   "notes": "budget exhausted: 4 checks used",
+   "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_8D3F8.shadow.1791399890.c",
    "stale_checks": 0,
    "best_in_attempt": 0.0,
    "cache_read_tokens": 0,
