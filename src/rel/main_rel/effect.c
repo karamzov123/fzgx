@@ -2446,6 +2446,82 @@ void fn_1_5D014(Fn1_5D014Object *obj) {
 }
 /* fzgx:end fn_1_5D014 */
 
+/* fzgx:begin fn_1_5D1B8 noprologue */
+#include "dolphin/types.h"
+
+typedef struct { f32 x; f32 y; f32 z; } Vec3;
+typedef struct { f32 x; f32 y; Vec3 pos; u8 pad_14[0x28]; u8 r; u8 g; u8 b; u8 a; } Quad;
+typedef struct { u8 pad_00[0x14]; f32 f_14; } Obj;
+typedef struct {
+u8 pad_00[0x14]; f32 f_14; u8 pad_18[4];
+f32 f_1c; f32 f_20; f32 f_24; f32 f_28;
+u8 pad_2c[8]; Obj *f_34; u8 pad_38[4]; Vec3 v_3c;
+u8 pad_48[0x66]; s16 s_ae;
+} Self;
+extern struct fn_1_620C8_lbl_1_rodata_2950 lbl_1_rodata_2950[];
+extern u32 lbl_8006DCA4(void);
+extern void lbl_8006E1B0(const Vec3 *in, Vec3 *out);
+extern void lbl_8006D7DC(Vec3 *v);
+extern void lbl_8006DB74(Vec3 *v);
+extern void mathutil_mtxA_rotate_z(s32 angle);
+extern void *memset(void *dst, int c, u32 n);
+extern f32 fn_1_A71AC(void);
+extern int fn_1_9F914(const void *a, const void *b);
+#define LIT(off) (*(const f32 *)(pool + (off)))
+#pragma opt_lifetimes off
+static inline f32 fn_1_5D1B8_read_pointer(Self * owner) { return owner->f_24; }
+static inline f32 fn_1_5D1B8_scaled(f32 product, f32 scale) { return product; }
+#pragma opt_lifetimes reset
+#pragma opt_common_subs off
+#pragma peephole on
+void fn_1_5D1B8(Self *self)
+{
+f32 fzgx_live_;
+Vec3 v;
+Obj * fzgx_live;
+Quad out;
+const u8 *pool = (const u8 *)&lbl_1_rodata_2950;
+Obj *obj;
+Self *s;
+f32 cr;
+f32 cg;
+f32 cb;
+f32 scale;
+f32 fade;
+f32 d;
+s = self;
+fzgx_live = s->f_34;
+obj = fzgx_live;
+scale = s->f_28;
+lbl_8006DCA4();
+lbl_8006E1B0(&s->v_3c, &v);
+if (v.z > LIT(0x17c)) { return; }
+d = LIT(0x180) * ((LIT(0xa0) * obj->f_14) * fn_1_5D1B8_scaled(scale, 1.0f)) / (-v.z * fn_1_A71AC());
+fade = LIT(0x28);
+if (d < LIT(0x184)) { return; }
+if (d < LIT(0x188)) { fade = fade * ((d - LIT(0x184)) / LIT(0x18c)); }
+if (d > LIT(0x190)) { return; }
+if (d > LIT(0x194)) { fade = fade * (LIT(0x28) - (d - LIT(0x194)) / LIT(0x194)); }
+lbl_8006D7DC(&v);
+mathutil_mtxA_rotate_z(s->s_ae);
+memset(&out, 0, 0x40);
+lbl_8006DB74(&out.pos);
+out.x = LIT(0x150) * scale;
+fzgx_live_ = s->f_1c;
+cr = LIT(0x5c) * fzgx_live_;
+out.r = cr * fade;
+cg = LIT(0x5c) * s->f_20;
+out.g = cg * fade;
+cb = LIT(0x5c) * fn_1_5D1B8_read_pointer(s);
+out.b = cb * fade;
+out.a = LIT(0x5c) * fade;
+out.y = LIT(0x150) * scale;
+fn_1_9F914(&out, obj);
+}
+#pragma peephole reset
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_5D1B8 */
+
 /* fzgx:begin fn_1_5D374 */
 // fn_1_5D374: empty in retail (single blr).
 void fn_1_5D374(void) {
