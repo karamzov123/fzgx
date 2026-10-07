@@ -9,9 +9,15 @@
 - Do not set the policy to `fleet`, start the service, or turn providers on without renewed owner authorization. Read-only auditing may remain active.
 - Two abandoned claims from the stopped GPT/AGY batches were recovered through `api.release(..., save_only=True)` only after confirming no active model runners; candidate files were preserved. No direct SQLite ownership edits were made.
 
-## Exo Free: restricted headless tests failed; normal CLI works according to owner
+## Exo Free: native CLI verified working; bash denial causes restricted-test rejection
 
-The owner reports Exo working in the normal interactive OpenCode CLI. That was not the environment tested below: these probes redirected configuration, denied native tools, and used headless `run` with `--pure` or a private `--standalone` server. They invoked actual OpenCode executables, not Hermes's model API, but did **not** reproduce the owner's normal configuration/session. The 403 results establish a failure in the restricted test setup, not general Exo/OpenCode unavailability. Diagnose the configuration/permission/session differences against the working native CLI before rejecting this route. No additional model test was run to record this correction.
+A subsequent one-variable-at-a-time investigation reproduced the owner's working native CLI. The actual OpenCode 1.18.35 executable returned `EXO_NATIVE_OK` under normal configuration; the local session metadata independently recorded provider `opencode`, model `exo-free`. The same request with **only `OPENCODE_PERMISSION='{"bash":"deny"}'` changed returned the 403**. Denying only `edit` still worked. Normal configuration with `--pure` worked; redirecting only configuration to a copy of the native public permission settings worked; a final unchanged native repeat worked. All seven comparison cases made zero tool calls. These results identify bash denial as a sufficient rejection trigger, not Hermes routing, missing credentials, `--pure`, or config redirection by itself. The provider's internal reason for that rule remains unproven.
+
+The strict function-bound matcher deliberately denies native bash. Do not remove that boundary, spoof client headers, or advertise/expose an unrestricted shell just to pass Zen admission. Exo is verified for native text responses, **not yet verified as compatible with the six-tool-only decomp contract or as delivering compiler/link-verified C**. The fleet remains off under test-only policy. No user global OpenCode configuration or existing TUI was changed.
+
+Native A/B receipts and logs are at `/home/armandofm/.hermes/cache/scratch/fzgx-exo-ab/`, including `receipts.json`; sanitized durable receipts are committed at `state/model-tests/exo-cli-admission-20261007.json`. The diagnostic cases were normal, deny-all, deny-bash, deny-edit, normal plus `--pure`, config-redirection-only, and normal repeat. Successful assistant identities were read back from the local OpenCode database in read-only mode, without printing account secrets or unrelated session content.
+
+The earlier three restricted probe failures remain valid evidence about those configurations, but they did not establish general Exo unavailability:
 
 Exact model ID: **`opencode/exo-free`**. Both the installed catalog and https://opencode.ai/docs/zen/ list it. The published price is free during its limited trial; its policy permits collected data to improve the model. Catalog presence and zero price do not prove a functioning session.
 

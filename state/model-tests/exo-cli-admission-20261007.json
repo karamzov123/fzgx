@@ -1,0 +1,21 @@
+{
+  "model": "opencode/exo-free",
+  "binary": "/home/armandofm/.opencode/bin/opencode",
+  "version": "1.18.35",
+  "cwd": "/home/armandofm",
+  "request": "Do not use any tools, read files, run commands, browse, or delegate. Reply exactly EXO_NATIVE_OK.",
+  "baseline_arguments": ["run", "--model", "opencode/exo-free", "--format", "json", "--title", "Exo native configuration bounded smoke"],
+  "assistant_identity_verification": "Read-only OpenCode SQLite message metadata: providerID=opencode, modelID=exo-free for every case.",
+  "cases": [
+    {"case": "native-baseline", "change": "none", "session": "ses_eeabdf8c6ffe3ctOa7tVEP2P1d", "exit": 0, "response": "EXO_NATIVE_OK", "tool_calls": 0},
+    {"case": "native-deny-all", "change": "OPENCODE_PERMISSION={\"*\":\"deny\"}", "session": "ses_eeabd4707ffelQ0JJOYphie1W5", "exit": 1, "http_status": 403, "tool_calls": 0},
+    {"case": "deny-bash", "change": "OPENCODE_PERMISSION={\"bash\":\"deny\"}", "session": "ses_eeabca726ffemLUurV0IWNaVHc", "exit": 1, "http_status": 403, "tool_calls": 0},
+    {"case": "deny-edit", "change": "OPENCODE_PERMISSION={\"edit\":\"deny\"}", "session": "ses_eeabc9fc7ffemkBwc5bse2PV2K", "exit": 0, "response": "EXO_NATIVE_OK", "tool_calls": 0},
+    {"case": "native-pure", "change": "add --pure", "session": "ses_eeabb35eaffesoNGk2erMXRcxI", "exit": 0, "response": "EXO_NATIVE_OK", "tool_calls": 0},
+    {"case": "redirect-only", "change": "XDG_CONFIG_HOME=/home/armandofm/.hermes/cache/scratch/fzgx-exo-ab/config; copied native public permissions, no auth/secret values", "session": "ses_eeabb2935ffe5Ut9bv33husetw", "exit": 0, "response": "EXO_NATIVE_OK", "tool_calls": 0},
+    {"case": "native-repeat", "change": "none", "session": "ses_eeabb1c9cffeDePy71eFZOrZg1", "exit": 0, "response": "EXO_NATIVE_OK", "tool_calls": 0}
+  ],
+  "error": "Error from provider (Console): OpenCode's free tier can only be used from within OpenCode",
+  "finding": "Native Exo works. A bash-deny override is sufficient to trigger rejection in the controlled comparison. Provider internals remain unproven; six-tool-only decomp compatibility is not established.",
+  "production_policy": "test-only; fleet remains stopped; native matcher bash prohibition is not weakened"
+}

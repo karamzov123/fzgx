@@ -4,7 +4,7 @@
 
 The owner's latest instruction supersedes the overnight launch below: **do not turn models on except to test**. The standing service and sleep inhibitor are stopped and all provider controls are off. `~/.cache/fzgx-agents/model-policy.json` is set to `test-only`; the daemon suppresses managed surge, drains existing jobs, and denies new Job construction under that policy. Do not switch the policy to `fleet` or restart production matching without renewed authorization. Standalone bounded tests remain allowed.
 
-See [the current completion frontier](COMPLETION-FRONTIER-2026-10-07.md): Exo Free (`opencode/exo-free`) was tested with both installed OpenCode versions and returned provider 403s; it is not a verified working transport. Model-free declared-BSS recovery delivered 184,524 bytes with the sixteen-target gate intact. Large saved-body scores must be refreshed and word/shape residuals inspected before routing.
+See [the current completion frontier](COMPLETION-FRONTIER-2026-10-07.md): Exo Free (`opencode/exo-free`) is now verified working in native OpenCode. A controlled comparison isolated `bash: deny` as sufficient to trigger the Zen 403; denying `edit`, adding `--pure`, and redirecting configuration independently still worked. Preserve the six-tool-only/no-native-shell matcher boundary rather than weakening it for admission; compatibility with that restricted contract remains unproven. Model-free declared-BSS recovery delivered 184,524 bytes with the sixteen-target gate intact. Large saved-body scores must be refreshed and word/shape residuals inspected before routing.
 
 ## Historical audited operating envelope (2026-10-07)
 
