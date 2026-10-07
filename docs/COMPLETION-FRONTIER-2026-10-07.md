@@ -9,7 +9,9 @@
 - Do not set the policy to `fleet`, start the service, or turn providers on without renewed owner authorization. Read-only auditing may remain active.
 - Two abandoned claims from the stopped GPT/AGY batches were recovered through `api.release(..., save_only=True)` only after confirming no active model runners; candidate files were preserved. No direct SQLite ownership edits were made.
 
-## Exo Free: verified not working in this setup
+## Exo Free: restricted headless tests failed; normal CLI works according to owner
+
+The owner reports Exo working in the normal interactive OpenCode CLI. That was not the environment tested below: these probes redirected configuration, denied native tools, and used headless `run` with `--pure` or a private `--standalone` server. They invoked actual OpenCode executables, not Hermes's model API, but did **not** reproduce the owner's normal configuration/session. The 403 results establish a failure in the restricted test setup, not general Exo/OpenCode unavailability. Diagnose the configuration/permission/session differences against the working native CLI before rejecting this route. No additional model test was run to record this correction.
 
 Exact model ID: **`opencode/exo-free`**. Both the installed catalog and https://opencode.ai/docs/zen/ list it. The published price is free during its limited trial; its policy permits collected data to improve the model. Catalog presence and zero price do not prove a functioning session.
 
