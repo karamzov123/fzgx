@@ -393,3 +393,181 @@ void fn_1_E1934(Fn1E1934Object *obj, Fn1E1934Object *base, s16 limit) {
     }
 }
 /* fzgx:end fn_1_E1934 */
+
+/* fzgx:begin fn_1_E1A00 */
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = -1.0f;
+    s = 0.9999998807907104f;
+    s = 1.0000001192092896f;
+    s = -1.0000001192092896f;
+    s = -0.9999998807907104f;
+    s = 0.0f;
+    d = 1.1920928955078125e-07;
+}
+static const u32 fzgx_pool_table2[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep2(void) { const u32 *volatile cp; cp = fzgx_pool_table2; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime3(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 5.0f;
+    s = 1.0f;
+}
+static const u32 fzgx_pool_table4[1] = {0x00FF00FF};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep4(void) { const u32 *volatile cp; cp = fzgx_pool_table4; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime5(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 0.10000000149011612f;
+    s = 0.5f;
+    s = 10.0f;
+    s = 182.04444885253906f;
+    d = 4503599627370496.0;
+    s = -0.0027222223579883575f;
+}
+static const u32 fzgx_pool_table6[9] = {0x00000000, 0x3F800000, 0x00000000, 0x00000000, 0x3F800000, 0x00000000, 0x3F800000, 0x00000000, 0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep6(void) { const u32 *volatile cp; cp = fzgx_pool_table6; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime7(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 9.58738019107841e-05f;
+    s = 1.5f;
+    s = -1.1920928955078125e-07f;
+    s = 1.1920928955078125e-07f;
+    d = 4503601774854144.0;
+    s = 60.0f;
+    s = 1000000.0f;
+    s = 250000.0f;
+    s = 20.0f;
+}
+static const u32 fzgx_pool_table8[6] = {0x00000000, 0x3F800000, 0x00000000, 0x00000000, 0x3F800000, 0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep8(void) { const u32 *volatile cp; cp = fzgx_pool_table8; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime9(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = -0.009999999776482582f;
+    s = 0.009999999776482582f;
+    s = -1.0099999904632568f;
+    s = 9.999999747378752e-05f;
+}
+static const u32 fzgx_pool_table10[3] = {0x00000000, 0x3F800000, 0x00000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep10(void) { const u32 *volatile cp; cp = fzgx_pool_table10; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime11(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 0.9900000095367432f;
+    s = 2.0f;
+    s = -0.0f;
+    d = 216.0;
+    d = 3.1415927410125732;
+    d = 4.0;
+    d = 60.0;
+    s = 1.0099999904632568f;
+    s = 0.05000000074505806f;
+    s = 1.0010000467300415f;
+    s = 0.8999999761581421f;
+    s = 3.0f;
+}
+static const u32 fzgx_pool_table12[1] = {0x3FE00000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep12(void) { const u32 *volatile cp; cp = fzgx_pool_table12; }  /* fzgx-allow: S2 pool primer sink */
+#pragma section code_type ".text"
+
+extern void fn_1_E57F4(void *, f32);
+extern void fn_1_E57FC(void *, void *);
+extern void fn_1_E5840(void *, const void *);
+extern void fn_1_E5884(void *, void *);
+extern void fn_1_E58CC(void *, const void *);
+extern void fn_1_E5970(void *, f32);
+extern void fn_1_E5978(void *, f32);
+extern void fn_1_E5980(void *, f32);
+extern void fn_1_E5988(void *, void *);
+extern void fn_1_E5A0C(void *, void *);
+extern void fn_1_E5A50(void *, void *);
+extern void fn_1_E5A94(void *, void *);
+extern void fn_1_E5AD8(void *, f32);
+extern void fn_80008BA8(void *, void *, u32);
+extern f32 lbl_1_rodata_6780[];
+
+typedef struct {
+    u8 pad0[0x8];
+    s16 field8;
+    s16 fieldA;
+    u8 padC[0x48];
+    f32 field54;
+    f32 field58;
+    f32 field5C;
+    u8 pad60[0xD8];
+    u64 field138;
+    u8 pad140[0x14];
+    u32 field154;
+    u32 field158;
+    u32 field15C;
+} Fn1E1A00Object;
+
+#pragma opt_common_subs on
+#pragma opt_strength_reduction off
+void fn_1_E1A00(Fn1E1A00Object *obj, u8 *str) {
+    struct { const f32 *value; } pool;
+    pool.value = lbl_1_rodata_6780;
+
+    while (*str != 0) {
+        switch (*str) {
+        case 0x65:
+            fn_1_E5970(obj, (0.899999976f));
+            break;
+        case 0x6D:
+            fn_1_E5978(obj, (1.0f));
+            break;
+        case 0x75:
+            fn_1_E5980(obj, (0.5f));
+            break;
+        case 0x6B:
+            fn_1_E5AD8(obj, (1.0f));
+            break;
+        case 0x46:
+            fn_1_E5A0C(obj, 0);
+            break;
+        case 0x61:
+            fn_1_E5A50(obj, 0);
+            break;
+        case 0x76:
+            fn_1_E57FC(obj, 0);
+            break;
+        case 0x70:
+            fn_1_E5988(obj, 0);
+            if ((obj->field138 & 0x800) == 0 && (obj->field138 & 3) == 0) {
+                f32 ten = (10.0f);
+
+                obj->field58 = ten;
+                obj->field5C = ten * (f32)obj->field8;
+                obj->field54 = (3.0f) * (f32)obj->fieldA;
+                fn_80008BA8(&obj->pad60[0], &obj->field54, 12);
+            }
+            break;
+        case 0x77:
+            fn_1_E5A94(obj, 0);
+            break;
+        case 0x72:
+            fn_1_E5840(obj, 0);
+            break;
+        case 0x6E:
+            fn_1_E58CC(obj, 0);
+            break;
+        case 0x66:
+            obj->field138 = 0;
+            break;
+        case 0x73:
+            fn_1_E5884(obj, 0);
+            break;
+        case 0x74:
+            fn_1_E57F4(obj, (1.0f));
+            break;
+        case 0x54:
+            obj->field154 = 0;
+            obj->field158 = 0;
+            obj->field15C = 0;
+            break;
+        }
+        str++;
+    }
+}
+#pragma opt_strength_reduction reset
+
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_E1A00 */
