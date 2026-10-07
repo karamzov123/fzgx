@@ -1,5 +1,5 @@
 {
- "generated": 1791360336,
+ "generated": 1791360356,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -3969,7 +3969,7 @@
    "addr": 96340,
    "size": 3368,
    "status": "unmatched",
-   "attempts": 3,
+   "attempts": 4,
    "best_percent": null,
    "claimed_by": null,
    "claimed_at": null,
@@ -600264,6 +600264,27 @@
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_14_6044.1791360312.c",
    "stale_checks": 0,
    "best_in_attempt": 75.42367,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 22669,
+   "symbol": "fn_3_17854",
+   "agent": "agy-overnight-admission-20261007-agy-1",
+   "harness": "agy",
+   "model": null,
+   "started": 1791360349,
+   "ended": 1791360355,
+   "checks": 0,
+   "final_percent": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "harness crash (rc=1); saved best candidate automatically",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 0.0,
    "cache_read_tokens": 0,
    "cache_write_tokens": 0
   }
