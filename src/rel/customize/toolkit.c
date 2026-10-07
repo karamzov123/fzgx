@@ -669,6 +669,31 @@ void fn_3_1ACE4(void *data, s32 first_a, s32 second_a, s32 first_b, s32 second_b
 }
 /* fzgx:end fn_3_1ACE4 */
 
+/* fzgx:begin fn_3_1AE40 */
+extern void fn_3_14E18(void *, u32, u32, s16, u32);
+
+void fn_3_1AE40(void *arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4) {
+    s16 v1;
+    u32 v0;
+    u32 v3;
+    u32 v4;
+    s16 v2;
+
+    v0 = (s16)arg3 - (s16)arg1;
+    v1 = (s16)arg4;
+    v2 = (s16)((s32)(((u32)v0 >> 31) + v0) >> 1);
+    v3 = arg2;
+    while ((s16)v3 < v1) {
+        v4 = arg1;
+        while ((s16)v4 < v2) {
+            fn_3_14E18(arg0, v4, v3, (s16)((v0 - v4) - 1), v3);
+            v4++;
+        }
+        v3++;
+    }
+}
+/* fzgx:end fn_3_1AE40 */
+
 /* fzgx:begin fn_3_1D338 noprologue */
 #include "types.h"
 

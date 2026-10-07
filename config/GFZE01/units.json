@@ -2186,6 +2186,17 @@
   },
   {
     "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_1AE40.c",
+    "symbols": [
+      "fn_3_1AE40"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
     "source": "rel/customize/toolkit/fn_3_1D338.c",
     "symbols": [
       "fn_3_1D338"
