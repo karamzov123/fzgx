@@ -7253,3 +7253,6 @@ rel/main_rel/screen_effect/fn_1_76EB8.c:
 
 rel/main_rel/stcoli/fn_1_18784.c:
 	.text       start:0x00018784 end:0x00018B40 align:4
+
+rel/main_rel/data/lbl_1_bss_26C68.c:
+	.bss        start:0x00026C68 end:0x000381F4 align:8

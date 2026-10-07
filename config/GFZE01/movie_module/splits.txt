@@ -1943,3 +1943,9 @@ rel/movie_module/fn_12_3CB74.c:
 
 rel/movie_module/fn_12_3D144.c:
 	.text       start:0x0003D144 end:0x0003D624 align:4
+
+rel/movie_module/data/lbl_12_bss_DB0.c:
+	.bss        start:0x00000DB0 end:0x00004DB0 align:16
+
+rel/movie_module/data/lbl_12_bss_9710.c:
+	.bss        start:0x00009710 end:0x0001B730 align:16

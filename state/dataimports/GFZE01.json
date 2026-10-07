@@ -354,6 +354,32 @@
     "unit_size": 168,
     "unit_start": 154528
   },
+  "main_rel:lbl_1_bss_26C68": {
+    "address": 158824,
+    "align": 8,
+    "declarations": [
+      {
+        "declaration": "u16 lbl_1_bss_26C68[35526]",
+        "path": "src/rel/main_rel/game.c"
+      }
+    ],
+    "definition": "u16 lbl_1_bss_26C68[35526]",
+    "method": "declared-bss",
+    "module": "main_rel",
+    "references": [
+      "fn_1_3FC18"
+    ],
+    "relocations": [],
+    "section": ".bss",
+    "section_size": 71052,
+    "sha256": "62527d52b815d39b23d8a7aeaad105e6f64c32fef01d62f660c3328a454087c1",
+    "size": 71052,
+    "source": "rel/main_rel/data/lbl_1_bss_26C68.c",
+    "symbol": "lbl_1_bss_26C68",
+    "unit_align": 8,
+    "unit_size": 71052,
+    "unit_start": 158824
+  },
   "main_rel:lbl_1_bss_5480": {
     "address": 21632,
     "align": 32,
@@ -477,6 +503,58 @@
     "unit_align": 16,
     "unit_size": 1800,
     "unit_start": 453328
+  },
+  "movie_module:lbl_12_bss_9710": {
+    "address": 38672,
+    "align": 16,
+    "declarations": [
+      {
+        "declaration": "u8 lbl_12_bss_9710[73760]",
+        "path": "src/rel/movie_module/fn_12_2A34C.c"
+      }
+    ],
+    "definition": "u8 lbl_12_bss_9710[73760]",
+    "method": "declared-bss",
+    "module": "movie_module",
+    "references": [
+      "fn_12_2A34C"
+    ],
+    "relocations": [],
+    "section": ".bss",
+    "section_size": 73760,
+    "sha256": "f02526d30eecedd466d6414c9246fcb28d413cc7a3296f8ed38b06e2727019eb",
+    "size": 73760,
+    "source": "rel/movie_module/data/lbl_12_bss_9710.c",
+    "symbol": "lbl_12_bss_9710",
+    "unit_align": 16,
+    "unit_size": 73760,
+    "unit_start": 38672
+  },
+  "movie_module:lbl_12_bss_DB0": {
+    "address": 3504,
+    "align": 16,
+    "declarations": [
+      {
+        "declaration": "float lbl_12_bss_DB0[64][64]",
+        "path": "src/rel/movie_module/DCT_FsriInitSparseTbl.c"
+      }
+    ],
+    "definition": "float lbl_12_bss_DB0[64][64]",
+    "method": "declared-bss",
+    "module": "movie_module",
+    "references": [
+      "DCT_FsriInitSparseTbl"
+    ],
+    "relocations": [],
+    "section": ".bss",
+    "section_size": 16384,
+    "sha256": "4fe7b59af6de3b665b67788cc2f99892ab827efae3a467342b3bb4e3bc8e5bfe",
+    "size": 16384,
+    "source": "rel/movie_module/data/lbl_12_bss_DB0.c",
+    "symbol": "lbl_12_bss_DB0",
+    "unit_align": 16,
+    "unit_size": 16384,
+    "unit_start": 3504
   },
   "profile:lbl_16_bss_B0B8": {
     "address": 45240,
@@ -2155,6 +2233,40 @@
     "unit_align": 32,
     "unit_size": 298944,
     "unit_start": 960
+  },
+  "sel:lbl_10_bss_493A0": {
+    "address": 299936,
+    "align": 32,
+    "declarations": [
+      {
+        "declaration": "u8 lbl_10_bss_493A0[0x5B20]",
+        "path": "include/rel/sel/sel.h"
+      },
+      {
+        "declaration": "u8 lbl_10_bss_493A0[23328]",
+        "path": "src/rel/sel/sel.c"
+      }
+    ],
+    "definition": "u8 lbl_10_bss_493A0[0x5B20]",
+    "method": "declared-bss",
+    "module": "sel",
+    "references": [
+      "fn_10_13128",
+      "fn_10_18DD0",
+      "fn_10_19040",
+      "fn_10_1AD5C",
+      "fn_10_3DE0"
+    ],
+    "relocations": [],
+    "section": ".bss",
+    "section_size": 23328,
+    "sha256": "a057caf060ad715a84ed2a2bc9f397ae0aa533c19fef86f00f60dfdd8dd61e4a",
+    "size": 23328,
+    "source": "rel/sel/data/lbl_10_bss_493A0.c",
+    "symbol": "lbl_10_bss_493A0",
+    "unit_align": 32,
+    "unit_size": 23328,
+    "unit_start": 299936
   },
   "sel:lbl_10_data_10D0": {
     "address": 4304,

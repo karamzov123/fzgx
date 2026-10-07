@@ -141,6 +141,7 @@ POLICY['oc1'].update(model='opencode/fledge-alpha-free',
                       display='Fledge Alpha Free xHigh (experimental)')
 del _n
 CONTROL = CACHE / 'control-v3.json'
+MODEL_POLICY = CACHE / 'model-policy.json'
 STATE = CACHE / 'status-v3.json'
 RUNTIME = CACHE / 'runtime-v3.json'
 HISTORY = CACHE / 'scheduled-v3.json'
@@ -202,6 +203,15 @@ def band_for(family):
     if in_fallback(family):
         return FALLBACK[family].get('band')
     return FAMILY_BANDS.get(family)
+
+def model_dispatch_hold(policy):
+    """Owner policy gates daemon work, not explicit standalone bounded tests."""
+    if not isinstance(policy, dict) or policy.get('mode') not in ('fleet', 'test-only'):
+        return 'Invalid model dispatch policy; refusing standing model work.'
+    if policy['mode'] == 'test-only':
+        return 'Owner requested test-only models; standing fleet and surge are paused.'
+    return ''
+
 
 def configuration():
     # Backfill families missing from an older control file, so adding a
@@ -1034,6 +1044,8 @@ def apply_surge(statuses, config, clock):
     raises the fleet above FLEET_CAP, and never quietly enables fewer than
     requested: a shortfall is reported, once, so the tile can state it.
     """
+    if model_dispatch_hold(load(MODEL_POLICY, {'mode': 'fleet'})):
+        return None
     down, want = surge_want(statuses, config, clock)
     want = bool(want)
     if want == any(config[f]['enabled'] for f in SURGE):
@@ -1083,6 +1095,9 @@ def apply_surge(statuses, config, clock):
 
 class Job:
     def __init__(self,family,symbols,parallel,gate_passed):
+        hold=model_dispatch_hold(load(MODEL_POLICY, {'mode': 'fleet'}))
+        if hold:
+            raise RuntimeError(hold)
         self.family,self.symbols,self.parallel=family,symbols,parallel
         self.limits=budget_limits(family,parallel,len(symbols))
         self.batch=f'fleet-v2-{family}-{time.time_ns()}'
@@ -1148,6 +1163,7 @@ def run():
                 if not r.get('ok'):raise RuntimeError('Claim recovery failed: '+json.dumps(r))
         while not STOP:
             config=configuration();now=time.time()
+            policy_hold=model_dispatch_hold(load(MODEL_POLICY, {'mode': 'fleet'}))
             for family,job in list(jobs.items()):
                 t=telemetry(job.batch,job.limits)
                 previous=statuses.get(family,{})
@@ -1165,7 +1181,9 @@ def run():
                 # to 10 with a backoff, so the operator's own change silenced the
                 # family. Both drains below are planned, and neither is evidence.
                 planned_drain=False
-                if not config[family]['enabled'] or config[family]['parallel']!=job.parallel:
+                if policy_hold:
+                    planned_drain=True;stop_reason=policy_hold
+                elif not config[family]['enabled'] or config[family]['parallel']!=job.parallel:
                     planned_drain=True
                     stop_reason=('Surge capacity retired; draining current work.' if family in SURGE
                                  else 'Operator control changed; draining current work.')
@@ -1291,6 +1309,8 @@ def run():
                     statuses[family]=dict(status='off',reason='Stopped by operator.',active=0,
                                           retry_at=retries[family]);continue
                 if time.time()<retries[family]:continue
+                if policy_hold:
+                    statuses[family]=dict(status='blocked',reason=policy_hold,active=0);continue
                 hold=launch_hold(sum(j.parallel for j in jobs.values()),cfg['parallel'])
                 if hold:
                     statuses[family]=dict(status='blocked',reason=hold,active=0);continue
