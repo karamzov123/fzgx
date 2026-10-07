@@ -32,26 +32,16 @@ POLICY = {
     # parks it at PERMANENT_RETRY if it is ever switched back on while still withdrawn.
     'cline': {'harness':'cline','model':'stealth/space-bunny-alpha','effort':'high','display':'Space Bunny Alpha High'},
 }
-# Surge capacity, not standing fleet. Four opencode instances on the free model
-# at xhigh, held in reserve and enabled only while the paid providers are down.
-# They are the same work with the same bounds as every other matcher: one
-# function per session, six bound tools, no shell, no filesystem.
+# OpenCode has four configured work slots, all pinned to the same approved model.
+# The Eww tile controls the group; the global FLEET_CAP and OPEN_CODE_ACTIVE_CAP
+# limit concurrent execution to three alongside two Codex and one AGY session.
 PAID = ('claude', 'gpt', 'agy')
-# Surge capacity, not standing fleet. Held in reserve and enabled only while the
-# paid providers are down.
-#
-# Cut from four opencode instances to two (oc1 and oc4, the two best converters of
-# the four at 15.1% and 14.5%). Lifetime the four opencode families burned 84.4
-# worker-hours for 59 matches - 0.70 matches/hour, against 5.7/hour for codex and
-# 14.4/hour for claude - more effort than codex and cline combined for 40% of
-# codex's yield. oc1 and oc4 kept because they lead the group on match rate; oc2 and
-# oc3 dropped, and they were within noise of each other anyway. The paid providers
-# are unchanged, so the surge trigger still governs the whole group.
-SURGE = ('oc1', 'oc4')
-SURGE_DELAY = 600      # cumulative seconds of paid unavailability before adding
-SURGE_RETIRE = 1800    # sustained paid recovery before giving capacity back
+SURGE = ('oc1', 'oc2', 'oc3', 'oc4')
+OPEN_CODE_ACTIVE_CAP = 3
+SURGE_DELAY = 600      # retained for the disabled automatic-surge policy
+SURGE_RETIRE = 1800
 UNAVAILABLE = ('rate-limited', 'error', 'unavailable')
-FLEET_CAP = 6         # laptop ceiling; only evidence-admitted lanes are enabled
+FLEET_CAP = 6         # owner-directed mix: 3 OpenCode + 2 Codex + 1 AGY
 
 def resource_snapshot():
     """Linux host headroom; no model credentials or unrelated process data."""
@@ -136,9 +126,8 @@ FALLBACK_TTL = 1800
 RETRY_MAX = 3 * 3600
 for _n in SURGE:
     POLICY[_n] = {'harness':'opencode','model':'opencode/space-bunny-free','effort':'xhigh',
-                  'display':f'Space Bunny Free xHigh #{_n[-1]}','managed':True}
-POLICY['oc1'].update(model='opencode/exo-free', effort='high',
-                      display='Exo Free (guarded native OpenCode)', managed=False)
+                  'display':f'Space Bunny Free xHigh #{_n[-1]}','managed':False}
+    META[_n] = (f'OpenCode #{_n[-1]}', chr(0xF0A9B))
 del _n
 CONTROL = CACHE / 'control-v3.json'
 MODEL_POLICY = CACHE / 'model-policy.json'
@@ -148,8 +137,8 @@ HISTORY = CACHE / 'scheduled-v3.json'
 STOP = False
 
 def defaults():
-    # Surge families start disabled: capacity is added by measured paid-provider
-    # unavailability, never by being switched on and left running.
+    # OpenCode slots are operator-controlled and start disabled; automatic surge
+    # remains off unless the owner explicitly changes that separate policy.
     return {family:{'enabled':family not in SURGE,'parallel':1} for family in POLICY}
 
 
@@ -217,10 +206,8 @@ def configuration():
     # Backfill families missing from an older control file, so adding a
     # provider never breaks status, the bar, or a running daemon.
     #
-    # Also drop retired surge instances. oc2 and oc3 left SURGE, but their entries
-    # are still in the committed control file and apply_surge only writes the
-    # families it manages, so an orphan would otherwise stay enabled forever and
-    # hold a session slot nothing reconciles.
+    # Drop retired/unknown families from older control files so stale state
+    # cannot keep an unconfigured worker consuming capacity.
     stored=load(CONTROL,{})
     stored={k:v for k,v in stored.items() if k in POLICY}
     return {family:dict(stored.get(family) or defaults()[family]) for family in POLICY}
@@ -240,7 +227,22 @@ def budget_limits(family, parallel, count):
 
 def command(family, batch, symbols, parallel):
     p = effective(family)
+    seeds=ROOT/'state/fleet/priority-seeds.json'
+    # A seed manifest is a closed batch input: every assigned symbol must have
+    # a complete source record, or ordinary functions fail claim with
+    # "seeded batch has no candidate". Priority-only entries without source
+    # bodies are task metadata, not compilable seeds.
+    use_seeds = False
+    if seeds.exists():
+        try:
+            records=json.loads(seeds.read_text())
+            use_seeds = bool(symbols) and all(
+                isinstance(records.get(s),dict) and isinstance(records[s].get('source'),str)
+                and records[s].get('sha256') for s in symbols)
+        except (OSError, ValueError):
+            use_seeds = False
     return [str(ROOT / '.venv/bin/python'), str(ROOT / 'tools/orchestrate.py'),
+        *(['--seeds',str(seeds)] if use_seeds else []),
         '--harness',p['harness'],'--model',p['model'],'--effort',p['effort'],
         '--parallel',str(parallel),'--tool-parallel','1','--timeout',str(SESSION_TIMEOUT),
         '--max-checks','16','--max-stale','5','--max-attempts','999',
@@ -294,8 +296,8 @@ MID_BAND_SHARE = 0.25
 TIER_SHARE = 0.33
 
 # Families that share the tier, in a fixed order. The rotation below needs a stable index so
-# every family lands on a different subset.
-TIER_FAMILIES = ("agy", "cline", "gpt", "oc1", "oc4")
+# every active family lands on a different subset.
+TIER_FAMILIES = ("agy", "cline", "gpt", "oc1", "oc2", "oc3", "oc4")
 
 
 def one_word_tier(family=None):
@@ -342,18 +344,10 @@ def one_word_tier(family=None):
 #   1-2K           399      339         60      <- where the untouched work is
 #   >2K            214      206          8      <- ditto
 #
-# cline (257,512) and oc1 (513,1024) therefore had **zero** virgin functions available and were
-# structurally forced into re-deriving saved near-misses, while 545 virgin functions sat in the
-# bands only oc4 and gpt could see. That is where the yield went: over the preceding 6 hours,
-# 56 of 98 attempts (57%) landed on functions at >=99% -- the band finding 282 measured at
-# **0 matches from 40,208 candidates** -- and 3 (3%) on virgin work that converts at 12.1%.
-#
-# So the bands now cover the supply that actually exists. cline takes the 1-2K virgin band
-# (339 functions, the largest pool, and 12.1% measured conversion); oc1 takes >2K (206, gated
-# by SIZE_GATE so only the >=95% subset is reachable -- see the note below); oc4 and gpt keep
-# wide bands. Overlapping is deliberate: the widening path in choose() means a family whose band
-# is empty falls back to the whole backlog rather than idling, and that fallback is what lets
-# cline and oc1 keep working while their own bands drain.
+# The allocation below preserves the measured Cline 1-2 KB band and reflects the
+# owner's current OpenCode request: four Space Bunny Free slots with three active
+# concurrently. The replicas share the broad virgin-work supply; atomic claims
+# and per-family history prevent duplicate ownership.
 #
 # A band is a supply statement, not a yield statement: it says where the untouched work is, and
 # the widening path in choose() covers a band that runs dry. Re-measure with the size-band table
@@ -367,14 +361,13 @@ FAMILY_BANDS = {
     # cline: the 1-2 KB pool, the largest and the one with measured conversion (12.1%, 55/454).
     # Its old band was (257,512), which held 283 functions and 0 virgin.
     'cline':  (1024, 2048),
-    # oc1 is now Exo: favor the measured 1-2 KB fresh supply. Larger work
-    # remains a bounded oversize probe, not the lane's entire starting pool.
-    'oc1':    (1024, 2048),
-    # oc4 and gpt keep wide bands deliberately: they are the families that should absorb
-    # whatever the narrow bands leave, and the widening path in choose() means a narrow band
-    # never idles a slot.
+    # Four pinned Space Bunny lanes share the current virgin-work pool. Claims
+    # remain function-atomic and the one-word rotation keeps their cheap repairs distinct.
+    'oc1':    (1024, 1 << 30),
+    'oc2':    (1024, 1 << 30),
+    'oc3':    (1024, 1 << 30),
+    'oc4':    (1024, 1 << 30),
     'gpt':    (1024, 1 << 30),
-    'oc4':    (257, 1 << 30),
     # agy is a single-slot family, so contention costs it proportionally more than a
     # parallel=6 family, and it had no band at all (band_for returned None, so no size filter
     # applied and it drew from the entire backlog -- 4 of 6 targets overlapping cline/oc4/gpt,
@@ -848,6 +841,11 @@ def gate_identity(context):
     head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     return [head,context,digest.hexdigest()]
 
+def gate_pass_is_current(runtime, identity):
+    """Reuse only an exact successful identity, never an unchanged failed gate."""
+    return (runtime.get('passed_gate') == identity
+            and runtime.get('failed_gate') != identity)
+
 def publish(families):
     total,last=verified_progress()
     atomic(STATE,dict(families=families,heartbeat=time.time(),supervisor_pid=os.getpid(),
@@ -967,10 +965,41 @@ def status():
 MANAGED = 'Surge capacity is fleet-managed: it comes and goes with paid-provider availability, so it is not manually switchable. Use the paid tiles to change fleet size.'
 
 def control(action,family):
+    CACHE.mkdir(parents=True,exist_ok=True)
+    if family == 'oc':
+        with (CACHE/'control-v3.lock').open('w') as lock:
+            fcntl.flock(lock,fcntl.LOCK_EX)
+            config=configuration()
+            active=[f for f in SURGE if config[f]['enabled']]
+            base=sum(c['parallel'] for f,c in config.items() if f not in SURGE and c['enabled'])
+            limit=min(OPEN_CODE_ACTIVE_CAP,max(0,FLEET_CAP-base))
+            runtime=load(RUNTIME,{})
+            families=runtime.get('families',{}) if isinstance(runtime,dict) else {}
+            now=time.time()
+            ready=[f for f in SURGE if (families.get(f,{}) or {}).get('retry_at',0)<=now]
+            if action=='toggle':
+                desired=0 if active else limit
+            elif action=='scale-up':
+                desired=len(active)+1
+            elif action=='scale-down':
+                desired=max(1,len(active)-1) if active else 0
+            else:
+                raise ValueError('Unknown OpenCode control action')
+            if desired>limit:
+                print(f'OpenCode limit is {limit} with current provider controls; global cap is {FLEET_CAP}.')
+                return
+            if desired>len(ready):
+                print('OpenCode sessions are cooling down; refusing to clear provider backoff.')
+                return
+            enabled=set(ready[:desired])
+            for lane in SURGE:
+                config[lane]={'enabled':lane in enabled,'parallel':1}
+            atomic(CONTROL,config)
+            print(json.dumps(config))
+        return
     if family not in POLICY:raise ValueError('Unknown provider')
     if POLICY[family].get('managed'):
         print(MANAGED);return
-    CACHE.mkdir(parents=True,exist_ok=True)
     with (CACHE/'control-v3.lock').open('w') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX)
         config=configuration();value=config[family]
@@ -1156,7 +1185,8 @@ def run():
     failures={family:statuses[family].get('failures',0) for family in POLICY}
     retries={family:statuses[family].get('retry_at',0) for family in POLICY}
     def persist():
-        atomic(RUNTIME,dict(families=statuses,failed_gate=runtime.get('failed_gate'),surge_clock=clock,fallback=fb))
+        atomic(RUNTIME,dict(families=statuses,failed_gate=runtime.get('failed_gate'),
+                            passed_gate=runtime.get('passed_gate'),surge_clock=clock,fallback=fb))
     try:
         while not STOP and active_runner_pids():
             publish({k:dict(status='blocked',reason='Waiting for previous host to drain.',active=0) for k in POLICY});time.sleep(3)
@@ -1290,14 +1320,14 @@ def run():
                 persist()
                 config = configuration()
             # The 16-target gate is a property of the tree, not of a family. Run it
-            # at most once per tick: with eight families, per-family gating held the
+            # only for a changed identity: with eight families, per-family gating held the
             # build lock and rebuilt eight times to learn the same answer. The
             # scheduling context is a function of the same tree, so it is computed
             # once here too rather than per family.
             context=policy_context()
 
             identity=gate_identity(context)
-            gate_passed=None
+            gate_passed=True if gate_pass_is_current(runtime,identity) else None
             # The corpus and the near-miss pool are properties of the tree, not of a
             # family. Both were rebuilt per family: inventory() re-parses 1.7MB of
             # symbols.txt into 20k objects, and the near-miss sweep stat()s every
@@ -1318,15 +1348,20 @@ def run():
                 hold=launch_hold(sum(j.parallel for j in jobs.values()),cfg['parallel'])
                 if hold:
                     statuses[family]=dict(status='blocked',reason=hold,active=0);continue
+                if runtime.get('failed_gate')==identity or gate_passed is False:
+                    statuses[family]=dict(status='blocked',reason='Unchanged failing 16-target gate. No repeated builds or model requests.',active=0);continue
                 if gate_passed is None:
-                    if runtime.get('failed_gate')==identity:
-                        statuses[family]=dict(status='blocked',reason='Unchanged failing 16-target gate. No repeated builds or model requests.',active=0);continue
                     statuses[family]=dict(status='starting',reason='Checking real 16-target hash gate before assignment.',active=0);publish(statuses)
                     with oracle.build_lock('submit.lock',timeout_s=1800),oracle.build_lock():
                         gate_passed=run_gate()
                     if not gate_passed:
-                        runtime['failed_gate']=identity;persist();continue
+                        runtime['passed_gate']=None
+                        runtime['failed_gate']=identity
+                        statuses[family]=dict(status='blocked',reason='Failed 16-target gate; holding dispatch for this tree identity.',active=0)
+                        persist();continue
                     runtime['failed_gate']=None
+                    runtime['passed_gate']=identity
+                    persist()
                 reserved={s for job in jobs.values() for s in job.symbols}
                 # Reserve whole existing units too, including assignments whose
                 # claim subprocess has not yet committed its SQLite transaction.

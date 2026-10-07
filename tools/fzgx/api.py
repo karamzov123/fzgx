@@ -235,7 +235,12 @@ def claim(p: Project, symbol: str, agent: str, ttl: int = DEFAULT_TTL,
     if os.environ.get('FZGX_SEEDS') and not seed:
         return {'ok': False, 'error': 'seeded batch has no candidate for this function'}
     if seed:
-        seed_body = Path(seed['path']).read_text()
+        if isinstance(seed.get('source'), str):
+            seed_body = seed['source']
+        elif seed.get('path'):
+            seed_body = Path(seed['path']).read_text()
+        else:
+            return {'ok': False, 'error': 'seed candidate has neither inline source nor path'}
         if hashlib.sha256(seed_body.encode()).hexdigest() != seed['sha256']:
             return {'ok': False, 'error': 'seed source changed since batch preparation'}
     shadow = _is_shadow(agent)

@@ -1,14 +1,34 @@
 # New fzgx autonomous fleet
 
-## Current owner policy: verified production resumption
+## Current owner direction: interactive five-provider bar, bounded six-session fleet (2026-10-07)
 
-The owner subsequently renewed authorization to get the fleet running. [Verified resumption](FLEET-RESUME-2026-10-07.md) supersedes the test-only hold below: admit only Codex and the attested Exo adapter; leave crashed/withdrawn lanes off and disable automatic surge. Read the live policy and controls for actual session counts. A functioning transport is not a link-verified match.
+The owner directed one OpenCode icon (not per-model icons), with four configured instances pinned to `opencode/space-bunny-free` xHigh; cap OpenCode concurrency at 3 and total concurrency at 6, allocated as Codex ×2 + AGY ×1 + OpenCode ×3. The bar remains five provider tiles: Claude, GPT, Cline, AGY, and one grouped OpenCode tile. Its tooltip now lists the four lane states and has left-click group toggle, right-click scale-up, scroll scale, and middle-click log controls. `oc4` remains configured to Space Bunny Free but disabled until its existing provider cooldown expires; the control refuses to bypass that timer. Automatic surge remains disabled.
 
-## Earlier owner policy: models only for bounded tests
+At the latest readback, `fzgx-fleet.service` and `fzgx-awake.service` are active. The refreshed Ninja/DTK gate passed all 16 target hashes before work. The Eww bar was reopened on monitor 0; its OpenCode tile read 3/3 sessions active and showed four lanes, with lane 4's retry timer. The small-model trial evidence remains limited: `gpt-6-luna` is the Codex catalog ID (not `gpt-6-luna-900k`) and has no exact-match evidence in the bounded trials; Space Bunny is explicitly selected by the owner despite its recent non-match trial outcomes. Keep the six-tool/no-shell matcher boundary and do not claim a match before link verification.
 
-The owner's latest instruction supersedes the overnight launch below: **do not turn models on except to test**. The standing service and sleep inhibitor are stopped and all provider controls are off. `~/.cache/fzgx-agents/model-policy.json` is set to `test-only`; the daemon suppresses managed surge, drains existing jobs, and denies new Job construction under that policy. Do not switch the policy to `fleet` or restart production matching without renewed authorization. Standalone bounded tests remain allowed.
+The repaired seed path and bounded Claude results are recorded below/at [the fleet resume](FLEET-RESUME-2026-10-07.md). Sonnet 5.5 and Haiku 5.5 both hit Anthropic `429 usage_limit_reached` before inference; their effectiveness is untested and nested subagents remain disabled.
 
-See [the current completion frontier](COMPLETION-FRONTIER-2026-10-07.md): Exo Free (`opencode/exo-free`) is now verified working in native OpenCode. A controlled comparison isolated `bash: deny` as sufficient to trigger the Zen 403; denying `edit`, adding `--pure`, and redirecting configuration independently still worked. Preserve the six-tool-only/no-native-shell matcher boundary rather than weakening it for admission; compatibility with that restricted contract remains unproven. Model-free declared-BSS recovery delivered 184,524 bytes with the sixteen-target gate intact. Large saved-body scores must be refreshed and word/shape residuals inspected before routing.
+GitHub publishing uses the existing authorized `fzgx-integrator.timer`, which is active. Fresh publisher-receipt and `git ls-remote origin refs/heads/main` readback confirmed `b40b1db4322c8c793e4193628f45418ac35e8cb8`. It publishes verified committed snapshots only and does not stage working-tree edits. The local `origin/main` tracking ref may remain stale because the publisher deliberately does not fetch; use its receipt plus `ls-remote` for live status.
+
+### Gate recovery (2026-10-07, after the 16:23 failure)
+
+The earlier supervisor failed when a repeated Ninja gate exceeded its uncaught 180-second timeout. Successful gates now persist in `runtime-v3.json` as `passed_gate` and are reusable only for the exact HEAD/context/split-unit identity. Changed identities gate again. Unchanged failures block every family in the same tick and later ticks/restarts; no model dispatch is allowed on a failed gate. Only successful Ninja plus the explicit sixteen-target DTK check records a passed identity. Ninja now has a 600-second bound; Ninja/hash timeouts return a logged failure instead of terminating the daemon. The local overnight systemd drop-in raises `TimeoutStopSec` to 900 seconds to accommodate the gate and tool drain; boot enablement and resource limits are unchanged.
+
+Scratch timeout/cache and real-scheduler regressions passed, as did group-control regression, Python compilation and lint (zero findings). On recovery the service-owned gate finished and all sixteen target hashes reported OK. Fresh status showed Codex ×2, AGY ×1 and OpenCode ×3; the grouped Eww tile read 3/3 active, and oc4 retained `retry_at=1791441782.6341531`. Thermal admission briefly held oc1 and then admitted it without overriding the guard. These activity checks establish operation, not a new match. The latest verified delivery remains AGY's `fn_1_E1A00` at `454f918a`.
+
+Two wibo SIGABRT core records at 16:13 identify the same GC/1.3.2 fixup probe for `fn_13_3FC`, not the Ninja gate command. They remain separate compiler-probe evidence; no causal attribution to the gate timeout is established.
+
+## Historical owner policy: models only for bounded tests
+
+The previous test-only hold and Exo-only policy below are historical and have been superseded by the latest explicit owner direction. See the live `model-policy.json`, `control-v3.json`, and service status for current operation.
+
+See [the current completion frontier](COMPLETION-FRONTIER-2026-10-07.md) for Exo's prior native-client admission findings, model-free declared-BSS recovery, and the large-candidate residual limits. Its test-only execution instructions predate this renewed owner authorization; the no-shell matcher boundary and data-ownership cautions remain valid.
+
+## Superseded test-only snapshot (pre-authorization)
+
+The following completion-frontier findings retain historical evidence but do not define current launch controls. The renewed owner direction above and the live policy/control files take precedence.
+
+See [the current completion frontier](COMPLETION-FRONTIER-2026-10-07.md) for Exo's prior native-client admission findings, model-free declared-BSS recovery, and large-candidate residual limits. Its test-only execution instructions predate the current fleet authorization; the no-shell matcher boundary and data-ownership cautions remain valid.
 
 ## Historical audited operating envelope (2026-10-07)
 
@@ -20,7 +40,7 @@ This is `~/projects/fzgx`, not the legacy NATC/PM fleet. The enabled user servic
 
 ## Explicit model policy
 
-Four standing providers, independently controlled, with no silent fallback:
+All model IDs are pinned and controls never silently substitute providers. The current session mix is Codex ×2, AGY ×1, OpenCode ×3, capped at six. A fourth Space Bunny lane is configured but remains on its existing cooldown; Claude and Cline remain off.
 
 | Provider | Requested model/effort | Runtime identifier |
 | --- | --- | --- |
@@ -28,27 +48,15 @@ Four standing providers, independently controlled, with no silent fallback:
 | GPT | 6.1-Sol Medium | gpt-6.1-sol, medium |
 | AGY | Gemini 3.8 High | gemini-3.8-flash-high, high |
 | Cline | Space Bunny Alpha High | stealth/space-bunny-alpha, high |
+| OpenCode | Space Bunny Free xHigh ×4 configured, ×3 concurrent | opencode/space-bunny-free, xhigh |
 
 AGY's installed authenticated model catalog recognizes that identifier. Quota failure remains quota failure, not permission to choose a different model. Its reset time is parsed for automatic retry.
 
-## Fleet-managed surge capacity (opencode)
+## OpenCode grouped tile and controlled pool
 
-Four `oc1`..`oc4` families run `opencode/space-bunny-free` at variant `xhigh` on the
-same contract as every other matcher: one function per session, six bound tools, no
-shell, no filesystem. They are **not** standing fleet and are not operator-controlled
-(`fleet.py toggle oc1` is refused with an explanation). They are enabled and retired
-automatically from measured paid-provider availability, in `fleet_multi.apply_surge`:
+Four `oc1`..`oc4` lanes are configured with the same exact pin, `opencode/space-bunny-free`, at xHigh. They share one OpenCode Eww tile; each lane appears in its tooltip. Group controls are operator-driven: left-click toggles the group, right-click/scroll-up adds a session, scroll-down removes one, and middle-click opens the active lane's log. The group respects `OPEN_CODE_ACTIVE_CAP = 3` and the global `FLEET_CAP = 6`, leaving room for Codex ×2 and AGY ×1. A cooling lane is not force-enabled; at the last readback oc4 remained disabled until its provider retry timer expires. `automatic_surge` remains false, so paid-provider state cannot silently enable OpenCode.
 
-- A paid provider is *down* when it is rate-limited, in error, or switched off by the
-  operator. Idle, starting and blocked providers are not down.
-- Two or more down starts a dwell timer. After **600 s cumulative** down time the four
-  come up. Cumulative, not wall-clock, so a single five-minute outage buys nothing
-  while a provider that keeps lapsing and re-limiting does count.
-- While up, capacity is surrendered only after **1800 s** of all providers healthy, and
-  re-arming then requires fresh evidence.
-- The dwell lives in `runtime-v3.json`, so a service restart cannot reset it.
-- `FLEET_CAP` (18) bounds total sessions across all families; if the standing fleet
-  leaves no room the tile says so rather than starting a partial group silently.
+Each OpenCode session still uses the same six bound matcher tools and no shell/filesystem. The family lanes are function-atomic; shared claims prevent duplicate ownership. Catalog presence or a running process is not a match—only link-verified oracle acceptance counts.
 
 The opencode transport has three constraints that are load-bearing and easy to
 regress: the client runs from a directory outside `$HOME` (opencode loads `AGENTS.md`

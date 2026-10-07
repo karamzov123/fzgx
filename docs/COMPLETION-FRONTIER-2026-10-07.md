@@ -1,19 +1,20 @@
 # Completion frontier and Exo Free verification
 
-2026-10-07. This is the new `/home/armandofm/projects/fzgx` project. The measurements below describe the earlier **models off except bounded tests** phase. The owner has since renewed production authorization; [verified resumption](FLEET-RESUME-2026-10-07.md) supersedes that execution policy and records the now-working attested Exo adapter. The data-ownership and structural-frontier findings remain valid.
+2026-10-07. This is the new `/home/armandofm/projects/fzgx` project. The measurements below describe the earlier **models off except bounded tests** phase. The current owner direction is the five-tile Eww bar with four Space Bunny Free slots (maximum three OpenCode sessions), Codex ×2, AGY ×1 and global cap six; see [the live fleet handoff](FLEET.md). The older test-only policy below is historical. Data-ownership and structural-frontier findings remain valid.
 
-## Current execution policy
+## Superseded pre-authorization test-only snapshot
 
-- The standing fleet and its sleep inhibitor were stopped gracefully. All provider controls are off; no standing model or automatic free surge is authorized.
-- `~/.cache/fzgx-agents/model-policy.json` has `mode: test-only`. The daemon now checks that policy, suppresses surge enablement, drains existing jobs on a policy change, and rejects new Job construction before any model process starts. Malformed/unknown modes fail closed. Explicit standalone, bounded tests remain possible; the guard is not a blanket prohibition on testing.
-- Do not set the policy to `fleet`, start the service, or turn providers on without renewed owner authorization. Read-only auditing may remain active.
-- Two abandoned claims from the stopped GPT/AGY batches were recovered through `api.release(..., save_only=True)` only after confirming no active model runners; candidate files were preserved. No direct SQLite ownership edits were made.
+The following describes the earlier test-only state; it is historical, not the current control policy. The owner later authorized the six-session mix documented in [FLEET.md](FLEET.md). Do not infer current service state from these bullets.
+
+- At that earlier snapshot the standing fleet and sleep inhibitor were stopped, provider controls were off, and `model-policy.json` used `mode: test-only`.
+- The daemon's policy guard then suppressed surge, drained jobs on policy changes, and rejected new Job construction under that mode; malformed modes failed closed.
+- Two abandoned GPT/AGY claims from that stopped period were recovered with `api.release(..., save_only=True)` only after confirming no active model runners. Candidate files were preserved; no direct SQLite ownership edits were made.
 
 ## Exo Free: native CLI verified working; bash denial causes restricted-test rejection
 
 A subsequent one-variable-at-a-time investigation reproduced the owner's working native CLI. The actual OpenCode 1.18.35 executable returned `EXO_NATIVE_OK` under normal configuration; the local session metadata independently recorded provider `opencode`, model `exo-free`. The same request with **only `OPENCODE_PERMISSION='{"bash":"deny"}'` changed returned the 403**. Denying only `edit` still worked. Normal configuration with `--pure` worked; redirecting only configuration to a copy of the native public permission settings worked; a final unchanged native repeat worked. All seven comparison cases made zero tool calls. These results identify bash denial as a sufficient rejection trigger, not Hermes routing, missing credentials, `--pure`, or config redirection by itself. The provider's internal reason for that rule remains unproven.
 
-The strict function-bound matcher deliberately denies native bash. Do not remove that boundary, spoof client headers, or advertise/expose an unrestricted shell just to pass Zen admission. Exo is verified for native text responses, **not yet verified as compatible with the six-tool-only decomp contract or as delivering compiler/link-verified C**. The fleet remains off under test-only policy. No user global OpenCode configuration or existing TUI was changed.
+The strict function-bound matcher deliberately denies native bash. Do not remove that boundary, spoof client headers, or advertise/expose an unrestricted shell just to pass Zen admission. Exo is verified for native text responses, **not yet verified as compatible with the six-tool-only decomp contract or as delivering compiler/link-verified C**. At the time of this historical test, the fleet was off under the then-current test-only policy; see [FLEET.md](FLEET.md) for the later authorized live configuration. No personal global OpenCode configuration or existing TUI was changed during that investigation.
 
 Native A/B receipts and logs are at `/home/armandofm/.hermes/cache/scratch/fzgx-exo-ab/`, including `receipts.json`; sanitized durable receipts are committed at `state/model-tests/exo-cli-admission-20261007.json`. The diagnostic cases were normal, deny-all, deny-bash, deny-edit, normal plus `--pure`, config-redirection-only, and normal repeat. Successful assistant identities were read back from the local OpenCode database in read-only mode, without printing account secrets or unrelated session content.
 

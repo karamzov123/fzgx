@@ -55,6 +55,32 @@ Live control readback is GPT/Codex parallel=2 plus owner-enabled AGY parallel=1.
 
 Since production resumption, matched-attempt/verified-link intersection proves two new unique deliveries, both Codex-owned: fn_1_5D1B8 (444 bytes, fdbe02d5) and fn_1_7FD7C (628 bytes, 6f72e7ae). Saved improvements and AGY activity are not additional verified matches. Eww's stale 399/zero-batch-verification display is not the authoritative delivery count; another lane's shared verifier may have accepted the function.
 
+## Earlier owner update: bounded small-model tests only (15:16 EDT; superseded by 15:40)
+
+The owner asked to continue the new fleet and evaluate GPT-6 Luna plus Claude 5.5 Sonnet/Haiku. Production resumed with the existing verified lanes: Codex `gpt-6.1-sol` ×2 and owner-enabled AGY `gemini-3.8-flash-high` ×1; `fzgx-awake.service` was started explicitly. The pre-start Ninja and DTK gate passed, including all 16 retail target hashes. Pilotpoint operator source edits remain quarantined. Automatic surge and the failed Exo/OpenCode fleet lanes remain off.
+
+A startup failure was traced to the new untracked `state/fleet/priority-seeds.json`: mixed work batches passed it as a mandatory manifest, but most selected symbols had no seed, and inline `source` entries lacked the `path` key that `api.claim` assumed. `fleet_multi.command` now passes the manifest only if every assigned symbol has a valid source+SHA record; `api.claim` accepts inline source or path and validates the SHA. `py_compile`, direct selection tests (seeded vs mixed vs normal), and a real seeded one-function OpenCode attempt passed the repaired path without claim crashes. The seeded `fn_1_12C110` attempt retained 99.589% after four checks; it did not match.
+
+Model tests were bounded, run through their normal restricted harnesses, and did not produce an exact match. Codex's live catalog lists `gpt-6-luna` as API-supported (not the requested `gpt-6-luna-900k` alias). A four-check shadow replay on matched `fn_1_8D3F8` scored 0%, while a separate `__cvt_dbl_usll` attempt reached 51.16% in two checks. The existing GPT-6.1-Sol model scored 100% on that same matched-body replay, so the present sample does not support replacing Sol in production. Space Bunny Free did run via native OpenCode: a shadow replay reached 99.18% before timeout; an actual `__init_registers` attempt reached 2.78% (assembly-only GPR setup blocked by the no-inline-asm rule); the seeded `fn_1_12C110` attempt plateaued at 99.589%. Those non-match results did not justify promotion at that time. The later owner direction at 15:40 explicitly selected four Space Bunny lanes with a hard three-session OpenCode ceiling, documented below; retain the other guards and do not override lane-specific cooldowns.
+
+Claude Sonnet 5.5 and Haiku 5.5 both returned Anthropic `429 usage_limit_reached` before any model tokens or tools (reported reset 3:40pm America/New_York); their effectiveness is untested. Do not retry before reset. Do not enable nested Haiku subagents: the harness is deliberately restricted to six bound tools. Current live status should be read from `systemctl --user status fzgx-fleet.service`, `fzgx-awake.service`, and `tools/fleet.py status`, not inferred from this dated note.
+
+## Owner update: grouped OpenCode controls and live six-session mix (2026-10-07, 15:40 EDT)
+
+The owner clarified the Eww design: keep the existing five provider tiles (Claude, GPT, Cline, AGY, OpenCode), keep OpenCode as one grouped icon, show four configured Space Bunny Free instances in its tooltip, and provide controls. The target concurrency is `FLEET_CAP=6`: OpenCode ×3, Codex ×2, AGY ×1. The four OpenCode lanes are all pinned to `opencode/space-bunny-free` xHigh; `oc4` remains off until its existing cooldown expires. No cooldown was cleared. OpenCode tile left-click toggles the group, right-click/scroll adjusts the group size, and middle-click opens a lane log.
+
+The OpenCode group control was regression-tested in scratch for toggle, scale-up/down, exact global-cap arithmetic, and cooldown preservation. Python compilation and Eww reload passed; the bar was opened on monitor 0. Live readback showed six sessions: three Space Bunny lanes, two GPT/Codex, one AGY. After 90 seconds the three OpenCode lanes had 12 combined checks; one plateaued at 99.59% and two continued at 94.92%/98.1%. No exact match was established by those checks. Preserve the tool allowlist and wait for the lane-4 cooldown rather than overriding it.
+
+GitHub publishing resumed through the existing authorized timer after its earlier stop. Fresh publisher receipt and `git ls-remote origin refs/heads/main` now confirm `b40b1db4322c8c793e4193628f45418ac35e8cb8`. The publisher uses its committed-snapshot gate and does not stage the dirty worktree. The remote-tracking `origin/main` may stay stale because this publisher does not fetch.
+
+## Gate-timeout recovery (after 16:23 EDT)
+
+The fleet failed on an uncaught 180-second Ninja timeout; the bar alone did not prove a working fleet. The controller now persists an exact successful gate identity across ticks/restarts, regates changed identities, and blocks unchanged failures, including other families in the failing tick. Ninja and DTK timeouts return logged gate failures. Ninja's bound is 600 seconds and the local overnight service drop-in now allows 900 seconds for graceful stopping; resource limits and disabled boot enablement are unchanged.
+
+Scratch timeout/cache, real-scheduler and OpenCode-control regressions passed; Python compilation and lint passed with zero findings. The restarted fleet's own Ninja plus explicit DTK gate returned all sixteen hashes OK. Both fleet and inhibitor were active at readback; live status showed two Codex, one AGY, three OpenCode sessions, with the grouped tile reporting 3/3 active. No cooldown was cleared: oc4 remains off with `retry_at=1791441782.6341531`. Pilotpoint stays protected. Latest verified delivery is AGY's `fn_1_E1A00`, accepted at `454f918a`; recovery activity is not another match.
+
+The two 16:13 wibo SIGABRT cores name the same GC/1.3.2 `fn_13_3FC` fixup probe. They do not establish the cause of the Ninja gate timeout.
+
 ## Operation
 
     systemctl --user status fzgx-fleet.service

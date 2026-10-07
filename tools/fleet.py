@@ -292,14 +292,33 @@ def stop_runner(proc):
         except subprocess.TimeoutExpired:
             raise RuntimeError('Runner cleanup timed out; refusing to launch another owner')
 
+NINJA_GATE_TIMEOUT = 600
+
+
 def run_gate():
+    CACHE.mkdir(parents=True, exist_ok=True)
     log = CACHE / 'gate.log'
-    with log.open('w') as output:
-        cp = subprocess.run(['ninja', '-j', '4'], cwd=ROOT, stdout=output, stderr=subprocess.STDOUT, timeout=180)
+    try:
+        with log.open('w') as output:
+            cp = subprocess.run(['ninja', '-j', '4'], cwd=ROOT, stdout=output,
+                                stderr=subprocess.STDOUT, timeout=NINJA_GATE_TIMEOUT)
+    except subprocess.TimeoutExpired:
+        with log.open('a') as output:
+            output.write(f'\n[fzgx-gate] ninja timed out after {NINJA_GATE_TIMEOUT}s; '
+                         'the supervisor will hold dispatch for this tree identity.\n')
+        return False
+    if cp.returncode != 0:
+        return False
     # Cached Ninja still must execute the hash gate, not merely be up-to-date.
-    with log.open('a') as output:
-        hashes = subprocess.run([str(ROOT / 'build/tools/dtk'), 'shasum', '-c', 'config/GFZE01/build.sha1'], cwd=ROOT, stdout=output, stderr=subprocess.STDOUT, timeout=30) if cp.returncode == 0 else None
-    return cp.returncode == 0 and hashes is not None and hashes.returncode == 0
+    try:
+        with log.open('a') as output:
+            hashes = subprocess.run([str(ROOT / 'build/tools/dtk'), 'shasum', '-c', 'config/GFZE01/build.sha1'],
+                                    cwd=ROOT, stdout=output, stderr=subprocess.STDOUT, timeout=30)
+    except subprocess.TimeoutExpired:
+        with log.open('a') as output:
+            output.write('\n[fzgx-gate] 16-target hash gate timed out after 30s.\n')
+        return False
+    return hashes.returncode == 0
 
 def record_gate(directory, passed, timestamp):
     if passed is not True:
