@@ -7259,3 +7259,6 @@ rel/main_rel/data/lbl_1_bss_26C68.c:
 
 rel/main_rel/effect/fn_1_5D1B8.c:
 	.text       start:0x0005D1B8 end:0x0005D374 align:4
+
+rel/main_rel/car/fn_1_7FD7C.c:
+	.text       start:0x0007FD7C end:0x0007FFF0 align:4

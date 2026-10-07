@@ -626,6 +626,130 @@ void fn_1_7FA04(u32 arg0) {
 }
 /* fzgx:end fn_1_7FA04 */
 
+/* fzgx:begin fn_1_7FD7C noprologue */
+#include "rel/main_rel/car.h"
+
+extern void fn_1_801F8(s16, char *);
+extern u32 fn_1_46C70(char *);
+extern s32 fn_1_465D0(char *, s32);
+extern u8 *fn_80083DB0(char *, const char *);
+extern void fn_80006E10(char *);
+extern int sprintf(char *, const char *, ...);
+
+typedef struct {
+    s16 unk_00;
+    s16 unk_02;
+    u32 unk_04;
+    u8 unk_08;
+    u32 unk_0C;
+} Fn7FD7CArg;
+
+typedef struct {
+    char *unk_00;
+} TblRow;
+
+#pragma opt_strength_reduction on
+#pragma opt_propagation off
+#pragma opt_lifetimes off
+#pragma opt_loop_invariants off
+#pragma opt_dead_assignments off
+void fn_1_7FD7C(Fn7FD7CArg *arg0)
+{
+    u32 tmp_call9;
+    char buf[32];
+    u32 off;
+    const char * lab_t1__2;
+    TblRow *tbl;
+    u32 idx;
+    s32 flag;
+    u8 i;
+    s16 j;
+    u8 *base = (u8 *)&lbl_1_data_1F1D8;
+    const char *lab_t1;
+    u32 tmp_call5;
+    s32 tmp_call6;
+    const char * lab_t1_;
+    s32 tmp_call15;
+
+    idx = arg0->unk_02;
+    flag = 0;
+    if (arg0->unk_0C & 0x100000) {
+        flag = 1;
+    }
+    off = (u32)((u64)idx << 2);
+    tbl = (TblRow *)(base + 0x324);
+    lab_t1 = *(char **)((u8 *)tbl + off);
+    lab_t1_ = lab_t1;
+    fn_80083DB0(buf, lab_t1_);
+    if (((1) == (flag))) {
+        fn_1_801F8(idx, buf);
+    }
+    fn_80006E10(buf);
+    for (i = 0; i < 8; i++) {
+        if (arg0->unk_08 & (1 << i)) {
+            lab_t1__2 = *(char **)((u8 *)tbl + off);
+            fn_80083DB0(buf, lab_t1__2);
+            if (((1) == (flag))) {
+                fn_1_801F8(idx, buf);
+            }
+            if (i != 0) {
+                if (i >= 4) {
+                    sprintf(buf, (char *)(base + 0x1358), buf, i - 4);
+                } else {
+                    sprintf(buf, (char *)(base + 0x1364), buf, i);
+                }
+            } else {
+                sprintf(buf, (char *)(base + 0x1370), buf);
+            }
+            if ((tmp_call5 = fn_1_46C70(buf)) == 0xFFFFFFFF) {
+                tmp_call6 = fn_1_465D0(buf, 1);
+                tmp_call6;
+            }
+        }
+    }
+    {
+    s16 fzgx_loop_j_1994;
+for (fzgx_loop_j_1994 = 0; fzgx_loop_j_1994 < 5; fzgx_loop_j_1994++) {
+        if (arg0->unk_04 & (1 << fzgx_loop_j_1994)) {
+            lab_t1__2 = *(char **)((u8 *)tbl + off);
+            fn_80083DB0(buf, lab_t1__2);
+            if (((1) == (flag))) {
+                fn_1_801F8(idx, buf);
+            }
+            if (((0) == (fzgx_loop_j_1994))) {
+                sprintf(buf, (char *)(base + 0x1378), buf);
+            } else if (((4) == (fzgx_loop_j_1994))) {
+                sprintf(buf, (char *)(base + 0x1380), buf);
+            } else {
+                sprintf(buf, (char *)(base + 0x1390), buf, fzgx_loop_j_1994 + 1);
+            }
+            tmp_call9 = fn_1_46C70(buf);
+            if (tmp_call9 == 0xFFFFFFFF) {
+                fn_1_465D0(buf, 1);
+            }
+        }
+    }
+    j = fzgx_loop_j_1994;
+}
+    lab_t1__2 = *(char **)((u8 *)tbl + off);
+    fn_80083DB0(buf, lab_t1__2);
+    if (((1) == (flag))) {
+        fn_1_801F8(idx, buf);
+    }
+    sprintf(buf, (char *)(base + 0x139c), buf);
+    if (fn_1_46C70(buf) == 0xFFFFFFFF) {
+        tmp_call15 = fn_1_465D0(buf, 1);
+        tmp_call15;
+    }
+    fn_80006E10((char *)(base + 0xe20));
+}
+#pragma opt_dead_assignments reset
+#pragma opt_loop_invariants reset
+#pragma opt_lifetimes reset
+#pragma opt_propagation reset
+#pragma opt_strength_reduction reset
+/* fzgx:end fn_1_7FD7C */
+
 /* fzgx:begin fn_1_7FFF0 */
 // Installs the default car-data entry used by the car registry.
 void fn_1_7FFF0(void) {
