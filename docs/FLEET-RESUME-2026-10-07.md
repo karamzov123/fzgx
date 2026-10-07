@@ -43,6 +43,18 @@ At live readback, Codex was doing compiler checks on fn_1_B5310 and fn_1_12C110,
 
 The pre-existing operator-file hashes remain unchanged. The tooling commit is 086baeba, with final rollout facts recorded separately. The tree still contains unrelated operator changes; no remote push is claimed.
 
+## Owner check-in: exact Exo CLI pin
+
+The owner clarified that the requested new worker is **Exo Free in the OpenCode CLI**, exact model `opencode/exo-free`, not a Hermes model and not a substitution from the larger catalog. The current production adapter already invokes the official `/home/armandofm/.opencode/bin/opencode` with that exact model through the attested launcher.
+
+Fresh bounded `exo-owner-real-checkin-20261007` on fn_1_53E40 initialized the guard successfully but made zero tool calls/checks. Its exact session ses_ee9307671ffeU2KRacpQdi562K repeatedly reported `Upstream request failed: Endpoint is unavailable` for the matcher. The CLI returned zero, but the host correctly classified the incomplete session as failed and released it. Exo is not re-enabled on this evidence. No personal configuration/authentication or standing provider controls were changed. An earlier command-substitution syntax error created an empty-symbol failed test batch; it did not exercise a model and is not counted as admission.
+
+Before that clarification, restricted Ling 3.1 Flash and Nemotron 3.5 Lightning catalog trials both returned the nonretryable FreeTierError 403. Admission-only reuse of the existing attested adapter produced one allowed write/check for Ling before timeout; Nemotron attempted the blocked `invalid` tool. Neither was promoted; those trials do not prove anything about the requested Exo model.
+
+Live control readback is GPT/Codex parallel=2 plus owner-enabled AGY parallel=1. The GPT tile is the Codex app-server transport, not a separate GPT-versus-Codex provider pair. Preserve this external AGY enablement rather than restoring the previous off configuration. At the final live readback, two Codex functions and one AGY function had actual compiler checks.
+
+Since production resumption, matched-attempt/verified-link intersection proves two new unique deliveries, both Codex-owned: fn_1_5D1B8 (444 bytes, fdbe02d5) and fn_1_7FD7C (628 bytes, 6f72e7ae). Saved improvements and AGY activity are not additional verified matches. Eww's stale 399/zero-batch-verification display is not the authoritative delivery count; another lane's shared verifier may have accepted the function.
+
 ## Operation
 
     systemctl --user status fzgx-fleet.service
