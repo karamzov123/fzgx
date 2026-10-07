@@ -11,6 +11,7 @@ This is the new matching-decomp project, not gx-forge or legacy NATC. This docum
 - DTK reports **2,937,044 text-code bytes**, leaving **12,556 bytes** outside the known-function-size denominator. Completing `honest` alone does not prove every executable byte has a source owner. Reconcile this gap before declaring project completion.
 - Remaining known bytes: **1,797,568**. `main_rel` accounts for **55.99%**. Functions over 2 KB account for **709,472 remaining bytes**. The existing size gate cannot be the permanent completion strategy.
 - Local-attempt accounting found no virgin unmatched functions below 1 KB; there are **294** virgin 1–2 KB functions and **181** virgin functions above 2 KB. Repeatedly mining exhausted small functions is not the primary next phase.
+- The local DTK report also measures data: **1,748,651 / 5,068,465 bytes = 34.500603%**, leaving **3,319,814 data bytes** outside that matched-data count. The code matcher fleet alone cannot finish data ownership. These are DTK data metrics, not a new independent semantic-ownership proof.
 - Seven-day historical terminal results (observational, different target difficulty; not a fair model contest): Claude Opus 5.5: 42/151; GPT 6.1-Sol: 125/805; AGY Gemini 3.8: 24/117; Space Bunny oc1: 26/145; oc4: 31/147. Null-model/error rows are separate in the snapshot. Terminal matches must still be distinguished from verified delivery.
 
 The repeatable evidence source is `tools/fleet_audit.py`, using only the authoritative `.fzgx/ledger.db` opened read-only. Do not use the untracked `state/fzgx.db`; it is not this project's ledger. Historical rate statistics include overhead and are not an ETA.
@@ -44,6 +45,10 @@ The Oracle VM is **aarch64, 2 CPUs, 6.7 GiB RAM**, with **only 231 MB free on a 
 
 ## Best path to completion: ordered workstreams
 
+### 0. Prefer deterministic SDK/data recovery before expensive model search
+
+Follow the orchestrator contract: identify remaining CARD/OS/EXI/SI targets, reuse the existing SDK-import pipeline and recorded CC0 source revisions, preserve array bounds/callback signatures, and prove layout/data/relocations plus all sixteen targets before acceptance. `docs/RESOURCES.md` records MKDD/TWW SDK and MK Deception Sofdec adaptations and their provenance archives. Reuse the established compiler-response/capture engine for new generators; do not add another repair runner. SMB is the closest engine relative but lacks a license in the listed source, so use vocabulary only, not copied code. Community format research and decomp.me scratches are targeted references, not permission to upload retail binaries or share private credentials. This phase is a prioritized follow-up, not a claim that a new import batch was executed by this audit.
+
 ### 1. Deliver verified bytes, not large match-count headlines
 
 Continue subscribed-model work on fresh 1–2 KB bodies and bounded structural repairs. Track verified authored bytes per wall-clock day, pending versus verified candidates, null-tool sessions, and blocked transport time. Do not use pooled terminal success or function-count completion as the sole dashboard. Existing live verifier and hash gate are stronger than post-hoc model claims. Keep object-equal/link-unequal cases out of matcher dispatch; use `why-link` with a reproducible link delta instead.
@@ -65,6 +70,10 @@ Discover through installed CLI catalogs and official provider pages, not search 
 ### 5. Close source ownership and module organization
 
 The endgame includes DOL/SDK/compiler helper ownership, literal pools, cross-module imports, remaining C translation-unit grouping, data ownership, and the 12,556-byte denominator gap. `tu-migrate`, source alignment, and compatible reference research are specialist work, not reason to let every matcher modify build flags. C bodies must be portable within the approved project conventions, not wholesale asm, raw opcode arrays, register-name locals, or fabricated 100% markers. Keep immutable retail assets out of commits. A complete source build must independently reproduce all sixteen targets.
+
+### Website and ecosystem evidence
+
+The live upstream endpoint `https://decomp.dev/rayanht/fzgx.json?mode=overview` returned a **2026-09-16** commit (`3a0542c9d1b58f7a907f932bc00e3657b382e9aa`) and **30.597702% matched code**. It is not a live dashboard for this laptop's current fork. `https://decomp.dev/karamzov123/fzgx.json?mode=overview` returned **Not found**. The upstream “Game Code 100%” category is a filtered category, not whole-project completion. Use the local full-project accounting and exact verification receipts now; add a fork-specific public dashboard only from approved metadata/public source and an independently verified publication workflow, not by replacing the owner of the upstream report. Keep hosting and read-only reporting off the full Oracle root filesystem until it is safely repaired.
 
 ## Permissions and tooling policy
 
