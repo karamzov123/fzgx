@@ -1,5 +1,5 @@
 {
- "generated": 1791359373,
+ "generated": 1791359503,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -2609,7 +2609,7 @@
    "addr": 67324,
    "size": 1132,
    "status": "unmatched",
-   "attempts": 2,
+   "attempts": 3,
    "best_percent": null,
    "claimed_by": null,
    "claimed_at": null,
@@ -600159,6 +600159,27 @@
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 0.0,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 22664,
+   "symbol": "fn_3_106FC",
+   "agent": "exo-guarded-all-20261007-opencode-1",
+   "harness": "opencode",
+   "model": null,
+   "started": 1791359401,
+   "ended": 1791359501,
+   "checks": 1,
+   "final_percent": 85.74558,
+   "tokens_in": 4,
+   "tokens_out": 5972,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "harness crash (rc=-15); saved best candidate automatically",
+   "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_3_106FC.1791359501.c",
+   "stale_checks": 0,
+   "best_in_attempt": 85.74558,
    "cache_read_tokens": 0,
    "cache_write_tokens": 0
   }
