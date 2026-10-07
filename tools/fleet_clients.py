@@ -124,7 +124,6 @@ def opencode_config(env, model):
         }},
         'agent': {'matcher': {
             'mode': 'primary',
-            'model': model,
             'variant': OPENCODE_VARIANT,
             'steps': 40,
             'tools': {name: False for name in OPENCODE_OFF},
@@ -151,7 +150,10 @@ def opencode_config(env, model):
 
 def opencode_command(prompt, model, directory, env):
     opencode_config(env, model)
-    return [opencode_binary(), 'run', '--agent', 'matcher', '--pure', '--format', 'json', prompt]
+    # Model-independent shared config; each process owns its explicit model pin.
+    # Otherwise two different free-model lanes overwrite each other's agent model.
+    return [opencode_binary(), 'run', '--model', model, '--agent', 'matcher',
+            '--pure', '--format', 'json', prompt]
 
 def command(family, prompt, model, directory, env):
     if family == 'claude':

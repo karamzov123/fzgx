@@ -20,6 +20,16 @@ POLICY = {
     'claude': {'harness':'claude','model':'claude-opus-5-5','effort':'high','display':'Opus 5.5 High'},
     'gpt': {'harness':'codex','model':'gpt-6.1-sol','effort':'medium','display':'6.1-Sol Medium'},
     'agy': {'harness':'agy','model':'gemini-3.8-flash-high','effort':'high','display':'Gemini 3.8 High'},
+    # DISABLED 2026-10-05, and the pin is deliberately left on the withdrawn model.
+    # OpenRouter withdrew `stealth/space-bunny-alpha` from its catalogue, so every session
+    # failed in about a second with a 404 "No endpoints found" -- 271 sessions in a day and
+    # zero matches, against the best conversion rate of any family (4.0% on the day it was
+    # healthy). Repinning to a free model that answers would have been worse than useless:
+    # the substitutes that still respond (nemotron-120b, inkling, laguna) are not
+    # decompilation-capable, and a matcher that cannot hold a register allocation in its head
+    # burns checks without moving a function toward a match. The lane stays configured and
+    # disabled until the real model returns or a stronger one is found; `permanent_fault`
+    # parks it at PERMANENT_RETRY if it is ever switched back on while still withdrawn.
     'cline': {'harness':'cline','model':'stealth/space-bunny-alpha','effort':'high','display':'Space Bunny Alpha High'},
 }
 # Surge capacity, not standing fleet. Four opencode instances on the free model
@@ -40,8 +50,65 @@ PAID = ('claude', 'gpt', 'agy')
 SURGE = ('oc1', 'oc4')
 SURGE_DELAY = 600      # cumulative seconds of paid unavailability before adding
 SURGE_RETIRE = 1800    # sustained paid recovery before giving capacity back
-UNAVAILABLE = ('rate-limited', 'error')
-FLEET_CAP = 18        # sessions across all families, surge included
+UNAVAILABLE = ('rate-limited', 'error', 'unavailable')
+FLEET_CAP = 8         # laptop ceiling across all families, surge included
+
+def resource_snapshot():
+    """Linux host headroom; no model credentials or unrelated process data."""
+    memory=dict(line.split(':',1) for line in Path('/proc/meminfo').read_text().splitlines())
+    disk=os.statvfs(ROOT)
+    temperatures=[]
+    for sensor in Path('/sys/class/thermal').glob('thermal_zone*/temp'):
+        try:
+            temperatures.append(int(sensor.read_text()) / 1000)
+        except (OSError, ValueError):
+            pass
+    batteries=[];ac=[]
+    for supply in Path('/sys/class/power_supply').glob('*'):
+        try:
+            kind=(supply/'type').read_text().strip()
+            if kind=='Battery':batteries.append(int((supply/'capacity').read_text()))
+            elif kind in ('Mains','USB','USB_C'):ac.append((supply/'online').read_text().strip()=='1')
+        except (OSError, ValueError):
+            pass
+    return dict(available_bytes=int(memory['MemAvailable'].split()[0])*1024,
+                free_bytes=disk.f_bavail*disk.f_frsize,free_inodes=disk.f_favail,
+                temperature_c=max(temperatures,default=0),
+                battery_percent=min(batteries,default=100),on_ac=any(ac) if ac else not batteries)
+
+def launch_hold(active, parallel, stats=None):
+    """Hold admission under pressure; running bound tools drain normally."""
+    if parallel < 1 or active + parallel > FLEET_CAP:
+        return f'Global session cap {FLEET_CAP}: {active} active, {parallel} requested.'
+    try:
+        stats=resource_snapshot() if stats is None else stats
+        if stats['available_bytes'] < 2 << 30:return 'Host memory reserve below 2 GiB; holding new batches.'
+        if stats['free_bytes'] < 8 << 30:return 'Host disk reserve below 8 GiB; holding new batches.'
+        if stats['free_inodes'] < 100000:return 'Host inode reserve below 100000; holding new batches.'
+        if stats['temperature_c'] >= 90:return 'Host temperature at least 90 C; holding new batches.'
+        if not stats['on_ac'] and stats['battery_percent'] <= 25:return 'Host battery at most 25% off AC; holding new batches.'
+    except (OSError, KeyError, ValueError) as error:
+        return f'Cannot verify host resource headroom: {error}'
+    return ''
+
+# Faults that no amount of retrying can clear. OpenRouter withdrew
+# `stealth/space-bunny-alpha` from its catalogue, and every cline session then failed
+# with a 404 "No endpoints found" inside one second -- 271 sessions a day, 0 matches,
+# against the family's best conversion rate. Classified as a plain `error` it retried
+# every RETRY_DELAY for the life of the daemon, so the fleet reported "cline: error,
+# retrying" forever instead of naming the cause. Retiring the family until an operator
+# repins a model is the only honest response: the model id is gone from the provider,
+# not throttled, and no backoff schedule can bring it back.
+PERMANENT_FAULT = ('no endpoints found', 'model not found', 'unknown model',
+                   'model is not available', 'no providers found', 'freetiererror',
+                   'free tier can only be used from within opencode')
+PERMANENT_RETRY = 24 * 3600  # do not relaunch known-doomed sessions overnight
+
+# Waves of work per batch. One batch at a time per family (see the `family in jobs` check at
+# the launch site), so batch size -- not `parallel` -- is what sets a single-batch family's
+# throughput. 2 waves matches the previous behaviour; 4 keeps a family's slots busy through a
+# long session instead of idling between short batches.
+BATCH_WAVES = 4
 
 # Provider fallback (2026-10-03). A quota failure used to mean the family simply idled,
 # which wasted the slot. FLEET.md's "quota failure remains quota failure, not permission to
@@ -70,6 +137,8 @@ RETRY_MAX = 3 * 3600
 for _n in SURGE:
     POLICY[_n] = {'harness':'opencode','model':'opencode/space-bunny-free','effort':'xhigh',
                   'display':f'Space Bunny Free xHigh #{_n[-1]}','managed':True}
+POLICY['oc1'].update(model='opencode/fledge-alpha-free',
+                      display='Fledge Alpha Free xHigh (experimental)')
 del _n
 CONTROL = CACHE / 'control-v3.json'
 STATE = CACHE / 'status-v3.json'
@@ -497,7 +566,9 @@ def families_that_tried():
         _family_seen_cache['at']=now
     return _family_seen_cache['families']
 
-def choose(rows, seen, context, count, reserved=(), retry=(), family=None):
+def choose(rows, seen, context, count, reserved=(), retry=(), family=None, protected_modules=()):
+    # Do not let autonomous commits absorb pre-existing operator source edits.
+    rows=[r for r in rows if r['module'] not in protected_modules]
     claimed_units={(r['module'],r['unit']) for r in rows if r['status']=='claimed' and r.get('unit')}
     mine=local_attempts()
     virgin=virgin_symbols(rows,mine)
@@ -697,6 +768,18 @@ def _seconds_until(hour, minute, meridiem):
         seconds += 86400
     return max(60, min(86400, seconds + 30))
 
+def permanent_fault(text):
+    """True when the provider says the pinned model itself is gone.
+
+    Deliberately narrow: it matches only the catalogue-withdrawal wording, never a
+    generic 404 or transport error, because retiring a family on a transient fault
+    would take a working provider offline. The check reads the provider's error text
+    rather than the harness exit code, since a withdrawn model exits exactly like any
+    other failed session.
+    """
+    haystack=provider_error_text(text).lower()
+    return any(marker in haystack for marker in PERMANENT_FAULT)
+
 def retry_delay(text, failures):
     """Backoff that trusts the provider's own reset time when it gives one.
 
@@ -758,7 +841,11 @@ def publish(families):
                        total_verified=total,last_landing=last))
 
 GLYPH = {'working':'●', 'starting':'◌', 'idle':'·', 'rate-limited':'⏳',
-         'stalled':'◐', 'error':'✕', 'blocked':'⊘', 'off':''}
+         'stalled':'◐', 'error':'✕', 'blocked':'⊘', 'off':'',
+         # A retired family is not retrying and will not recover on its own, so it reads
+         # as a stop, not a wait. Leaving it to fall through to '!' put a withdrawn model
+         # in the same bucket as a crash.
+         'unavailable':'⊗'}
 
 def brief(text, limit=120):
     """One short human line from a provider failure blob.
@@ -961,10 +1048,11 @@ def apply_surge(statuses, config, clock):
         room = max(0, FLEET_CAP - base)
         for family in SURGE:
             if not committed[family]['enabled']:
-                if room < 1:
-                    break
+                slots = committed[family]['parallel']
+                if room < slots:
+                    continue
                 committed[family]['enabled'] = True
-                room -= 1
+                room -= slots
         active = sum(1 for f in SURGE if committed[f]['enabled'])
         if not active:
             # Nothing may start under the cap. Say so once instead of failing
@@ -1032,6 +1120,15 @@ def run():
     if not CONTROL.exists():atomic(CONTROL,defaults())
     from fzgx import api,oracle
     from fzgx.project import Project
+    dirty=subprocess.run(['git','diff','HEAD','--name-only','--','src'],cwd=ROOT,
+                         text=True,capture_output=True,check=True).stdout.splitlines()
+    protected_modules=set()
+    for path in dirty:
+        parts=Path(path).parts
+        if len(parts)>3 and parts[:2]==('src','rel'):protected_modules.add(parts[2])
+        elif len(parts)>2 and parts[:2]==('src','dol'):protected_modules.add('main')
+    if protected_modules:
+        print('Preserving operator source edits; no dispatch in: '+', '.join(sorted(protected_modules)),flush=True)
     jobs={};seen=load(HISTORY,{})
     runtime=load(RUNTIME,{'families':{},'failed_gate':None})
     clock=dict(runtime.get('surge_clock') or {})
@@ -1091,6 +1188,16 @@ def run():
                         # then has to wait out, and would bury the real reason under
                         # a provider error the provider never reported.
                         delay=3;state='idle';reason=stop_reason
+                    elif permanent_fault(text):
+                        # The provider no longer offers the pinned model. Retrying cannot
+                        # fix that, and a backoff that grows to RETRY_MAX still leaves the
+                        # family launching doomed batches, so park it and say why. The
+                        # reason carries the provider's own words so the operator can see
+                        # which model id to repin without reading a run directory.
+                        delay=PERMANENT_RETRY;state='unavailable'
+                        reason=f'{POLICY[family]["model"]} is not served by {POLICY[family]["harness"]}: {provider_error_text(text).strip()[:240]}'
+                        print(f'{family}: retired, {reason}',flush=True)
+                        failures[family]=0
                     elif rate or broken:
                         failures[family]+=1;delay=retry_delay(text,failures[family]);state='rate-limited' if rate else 'error'
                         # A quota failure is the one condition that justifies serving the
@@ -1166,6 +1273,7 @@ def run():
             # scheduling context is a function of the same tree, so it is computed
             # once here too rather than per family.
             context=policy_context()
+
             identity=gate_identity(context)
             gate_passed=None
             # The corpus and the near-miss pool are properties of the tree, not of a
@@ -1180,8 +1288,12 @@ def run():
                 cfg=config[family]
                 if family in jobs:continue
                 if not cfg['enabled']:
-                    statuses[family]=dict(status='off',reason='Stopped by operator.',active=0);continue
+                    statuses[family]=dict(status='off',reason='Stopped by operator.',active=0,
+                                          retry_at=retries[family]);continue
                 if time.time()<retries[family]:continue
+                hold=launch_hold(sum(j.parallel for j in jobs.values()),cfg['parallel'])
+                if hold:
+                    statuses[family]=dict(status='blocked',reason=hold,active=0);continue
                 if gate_passed is None:
                     if runtime.get('failed_gate')==identity:
                         statuses[family]=dict(status='blocked',reason='Unchanged failing 16-target gate. No repeated builds or model requests.',active=0);continue
@@ -1198,7 +1310,23 @@ def run():
                 reserved_units={(index[s]['module'],index[s]['unit']) for s in reserved if s in index and index[s].get('unit')}
                 for row in rows:
                     if row.get('unit') and (row['module'],row['unit']) in reserved_units:row['status']='claimed'
-                symbols=choose(rows,seen,context,cfg['parallel']*2,reserved,near_miss,family)
+                # Batch size is the throughput lever for a family that runs one batch at a time.
+                # `if family in jobs: continue` means a family can never have two batches in
+                # flight, so `parallel` alone does not set its rate: cline at parallel 6 was
+                # assigned 12 symbols per batch and delivered 11 sessions/hour against a
+                # 6.5% conversion -- the best rate of any family -- because 12 symbols is all
+                # it could ever be working on. Measured inter-batch idle is 1% of wall time
+                # (median gap 8 min), so the batches are not idling between runs; they are
+                # simply small.
+                #
+                # A bigger batch does not raise concurrency, so it does not risk more parallel
+                # sessions against one account than `parallel` already allows -- it just keeps
+                # the same number of slots busy for longer. The deadline scales with it
+                # (`SESSION_TIMEOUT * ceil(len(symbols)/parallel) + 600`), and the unit-reserve
+                # logic below already handles a larger reservation.
+                batch_size=max(cfg['parallel']*2, cfg['parallel']*BATCH_WAVES)
+                symbols=choose(rows,seen,context,batch_size,reserved,near_miss,family,
+                               protected_modules=protected_modules)
                 if not symbols:
                     statuses[family]=dict(status='idle',reason='No fresh eligible target below attempt cap; no blind retries.',active=0);retries[family]=time.time()+30;continue
                 for symbol in symbols:seen[symbol]=context

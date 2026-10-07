@@ -1,0 +1,10 @@
+[Unit]
+Description=Keep the laptop awake only while the new fzgx overnight fleet runs
+BindsTo=fzgx-fleet.service
+After=fzgx-fleet.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/systemd-inhibit --what=idle:sleep --mode=block --who=fzgx-overnight --why="Owner-requested overnight matching decompilation" /usr/bin/sleep infinity
+Restart=on-failure
+RestartSec=30

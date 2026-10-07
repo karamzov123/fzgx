@@ -34,7 +34,7 @@ from .project import ROOT
 CONFIG = ROOT / "config" / "GFZE01"
 RANGE_RE = re.compile(r"start:(0x[0-9A-Fa-f]+)\s+end:(0x[0-9A-Fa-f]+)")
 SYM_RE = re.compile(
-    r"^(\w+) = \.text:(0x[0-9A-Fa-f]+);\s*//\s*type:function size:(0x[0-9A-Fa-f]+)")
+    r"^(\w+) = \.(?:text|init):(0x[0-9A-Fa-f]+);\s*//\s*type:function size:(0x[0-9A-Fa-f]+)")
 
 _VERSION: Optional[str] = None
 _SPLITS: Dict[str, Set[Tuple[int, int]]] = {}
@@ -63,14 +63,20 @@ def reset() -> None:
 def _modules() -> Iterable[str]:
     if not CONFIG.exists():
         return ()
-    return sorted(p.name for p in CONFIG.iterdir() if (p / "symbols.txt").exists())
+    # The DOL lives at the config root, not in a REL module subdirectory.
+    return (["main"] if (CONFIG / "symbols.txt").exists() else []) + sorted(
+        p.name for p in CONFIG.iterdir() if (p / "symbols.txt").exists())
+
+
+def _module_config(module: str) -> Path:
+    return CONFIG if module == "main" else CONFIG / module
 
 
 def symbols(module: str) -> Dict[str, Tuple[int, int]]:
     """module -> {symbol: (addr, size)} from symbols.txt."""
     if module not in _SYMBOLS:
         out: Dict[str, Tuple[int, int]] = {}
-        path = CONFIG / module / "symbols.txt"
+        path = _module_config(module) / "symbols.txt"
         if path.exists():
             for line in path.read_text().splitlines():
                 m = SYM_RE.match(line.strip())
@@ -84,10 +90,10 @@ def covered(module: str) -> Set[Tuple[int, int]]:
     """module -> the .text ranges its splits.txt already covers."""
     if module not in _SPLITS:
         out: Set[Tuple[int, int]] = set()
-        path = CONFIG / module / "splits.txt"
+        path = _module_config(module) / "splits.txt"
         if path.exists():
             for line in path.read_text().splitlines():
-                if ".text" not in line:
+                if ".text" not in line and ".init" not in line:
                     continue
                 m = RANGE_RE.search(line)
                 if m:
@@ -132,13 +138,12 @@ def gen_built(record: Optional[dict]) -> bool:
     src = record.get("source") or ""
     # `source` is `rel/<mod>/<unit>.c` and `<unit>` may contain slashes of its own
     # (`rel/main_rel/_prolog/fn_1_1280.c`), so the module comes from the record, not the path.
-    rel = src[4:] if src.startswith("rel/") else src
-    rel = rel[:-2] + ".o" if rel.endswith(".c") else rel
+    obj = src[:-2] + ".o" if src.endswith(".c") else src
     module = record.get("module") or ""
     root = ROOT / "build" / version()
-    candidates = [root / "src" / "rel" / rel, root / "gen" / "rel" / rel]
+    candidates = [root / "src" / obj, root / "gen" / obj]
     if module:
-        candidates.append(root / module / "obj" / "rel" / rel)
+        candidates.append(root / module / "obj" / obj)
     return any(c.exists() for c in candidates)
 
 

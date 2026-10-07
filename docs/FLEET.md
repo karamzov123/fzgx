@@ -1,5 +1,11 @@
 # New fzgx autonomous fleet
 
+## Current audited operating envelope (2026-10-07)
+
+See [the completion/overnight audit](OVERNIGHT-AUDIT-2026-10-07.md) for the measured whole-project baseline, resource evidence, tests, and unresolved blockers. This entry supersedes older capacity/model counts below: standing sessions are Claude ×2, GPT ×2, AGY ×1; Cline is off. Only oc1/oc4 remain in the surge family set, one session each; oc1 explicitly pins Fledge Alpha Free, oc4 Space Bunny. Both were held for 24 hours after real failed transport/tool-use trials, not promoted on catalog availability. The global ceiling is eight actual sessions, with host admission safeguards and a systemd resource envelope. OpenCode models are pinned per command rather than written into shared agent configuration.
+
+`honest` now includes the root DOL and its objects. `tools/fleet_audit.py` provides read-only, atomic full-project snapshots; `fzgx-audit.timer` refreshes them every thirty minutes without model requests. Pre-existing dirty source modules are quarantined from dispatch for each daemon run. The overnight fleet was started without newly enabling it on every boot; `fzgx-awake.service` holds a sleep/idle inhibitor while the fleet is active. The Oracle VM's full root filesystem makes it ineligible for workers until storage headroom is restored.
+
 This is `~/projects/fzgx`, not the legacy NATC/PM fleet. The enabled user service `fzgx-fleet.service` runs `tools/fleet.py daemon`, whose entrypoint delegates to `fleet_multi.py`. Do not enable the conflicting old `fzgx-autopr.service`.
 
 ## Explicit model policy

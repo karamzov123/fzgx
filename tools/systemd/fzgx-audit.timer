@@ -1,0 +1,11 @@
+[Unit]
+Description=Refresh fzgx evidence every thirty minutes without model requests
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=30min
+AccuracySec=1min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

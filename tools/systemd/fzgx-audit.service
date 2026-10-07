@@ -1,0 +1,13 @@
+[Unit]
+Description=Read-only full-project fzgx overnight evidence snapshot
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/projects/fzgx
+ExecStart=%h/projects/fzgx/.venv/bin/python tools/fleet_audit.py --output %h/projects/fzgx/.fzgx/overnight-latest.json
+Nice=15
+CPUWeight=10
+MemoryMax=256M
+TimeoutStartSec=60
+StandardOutput=journal
+StandardError=journal
