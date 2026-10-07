@@ -1,5 +1,5 @@
 {
- "generated": 1791360605,
+ "generated": 1791360970,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -122833,7 +122833,7 @@
    "addr": 39748,
    "size": 1136,
    "status": "unmatched",
-   "attempts": 4,
+   "attempts": 5,
    "best_percent": 89.33451,
    "claimed_by": null,
    "claimed_at": null,
@@ -600306,6 +600306,27 @@
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 0.0,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 22671,
+   "symbol": "fn_8_9B44",
+   "agent": "agy-small-admission-20261007-agy-1",
+   "harness": "agy",
+   "model": null,
+   "started": 1791360628,
+   "ended": 1791360967,
+   "checks": 2,
+   "final_percent": 83.74,
+   "tokens_in": 194224,
+   "tokens_out": 46836,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "harness crash (rc=1); saved best candidate automatically",
+   "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_8_9B44.1791360967.c",
+   "stale_checks": 1,
+   "best_in_attempt": 83.74,
    "cache_read_tokens": 0,
    "cache_write_tokens": 0
   }
