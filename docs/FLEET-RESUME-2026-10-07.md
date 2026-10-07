@@ -33,6 +33,16 @@ Pre-existing pilotpoint source edits are quarantined by module at daemon startup
 
 Fresh acceptance before launch: Python compile, Node syntax, fzgx lint (zero findings), locked Ninja, and the explicit DTK sixteen-target hash check. The verifier remains the only matcher integration path; no manual configure/Ninja/DTK calls while workers run outside the existing locks. Matching C is not credited until link_state=verified. There is no clean-tree or remote publication claim while unrelated operator edits remain.
 
+## Live rollout outcome
+
+The initial four-session rollout produced one actual code delivery: main_rel:fn_1_5D1B8 (444 bytes), matched by `fleet-v2-gpt-1791381122859784455-codex-2` after six checks, accepted at fdbe02d5 with status=matched and link_state=verified. A concurrently running shared verifier used the Exo batch in the commit title; the matched attempt proves Codex ownership. The interpreter/source score alone is not the acceptance evidence.
+
+Production Exo sessions, despite earlier successful standalone admission, exited with zero tool calls and empty client logs. The exact server sessions reported `AI_APICallError: ... Upstream request failed: Endpoint is unavailable.` This is a new upstream outage, not the old CLI-only rejection or a reason to relax the guard. oc1 was disabled with the repaired operator control and drained; no Exo claims/processes remained at readback. Automatic surge remains disabled. Final enabled capacity is two Codex sessions only, with the user service and its inhibitor still active.
+
+At live readback, Codex was doing compiler checks on fn_1_B5310 and fn_1_12C110, reaching 94.875595 and 97.80822 respectively. Those are saved/working candidate scores, not additional accepted functions. The queued batch also contains bounded oversize work and fresh approximately 1 KiB main_rel functions. Historical results must not be counted as new delivery.
+
+The pre-existing operator-file hashes remain unchanged. The tooling commit is 086baeba, with final rollout facts recorded separately. The tree still contains unrelated operator changes; no remote push is claimed.
+
 ## Operation
 
     systemctl --user status fzgx-fleet.service
