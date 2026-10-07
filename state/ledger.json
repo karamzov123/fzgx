@@ -1,5 +1,5 @@
 {
- "generated": 1791400506,
+ "generated": 1791400540,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -38717,7 +38717,7 @@
    "addr": 2147982884,
    "size": 204,
    "status": "unmatched",
-   "attempts": 0,
+   "attempts": 1,
    "best_percent": null,
    "claimed_by": null,
    "claimed_at": null,
@@ -601251,6 +601251,27 @@
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/__init_registers.1791400505.c",
    "stale_checks": 2,
    "best_in_attempt": 2.7777777,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 22716,
+   "symbol": "__cvt_dbl_usll",
+   "agent": "luna-small-main-20261007-codex-1",
+   "harness": "codex",
+   "model": "gpt-6-luna",
+   "started": 1791400519,
+   "ended": 1791400539,
+   "checks": 2,
+   "final_percent": 51.156864,
+   "tokens_in": 49339,
+   "tokens_out": 938,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "The current reconstruction still differs across the variable-shift and sign-negation paths; exact register/condition-code reproduction needs a source shape matching the lifter's original unsigned-long-long helper idiom.",
+   "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/__cvt_dbl_usll.1791400539.c",
+   "stale_checks": 0,
+   "best_in_attempt": 51.156864,
    "cache_read_tokens": 0,
    "cache_write_tokens": 0
   }
