@@ -1,6 +1,6 @@
 # Completion frontier and Exo Free verification
 
-2026-10-07. This is the new `/home/armandofm/projects/fzgx` project. This entry supersedes the earlier overnight-launch instructions: the owner now requires **models off except bounded tests**.
+2026-10-07. This is the new `/home/armandofm/projects/fzgx` project. The measurements below describe the earlier **models off except bounded tests** phase. The owner has since renewed production authorization; [verified resumption](FLEET-RESUME-2026-10-07.md) supersedes that execution policy and records the now-working attested Exo adapter. The data-ownership and structural-frontier findings remain valid.
 
 ## Current execution policy
 

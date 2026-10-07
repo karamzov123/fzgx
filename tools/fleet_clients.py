@@ -110,7 +110,8 @@ def opencode_config(env, model):
     root and pay opencode's node_modules bootstrap once.
     """
     import stat
-    config_home = OPENCODE_CONFIG
+    guarded = model == 'opencode/exo-free'
+    config_home = OPENCODE_CONFIG.with_name(OPENCODE_CONFIG.name + '-exo') if guarded else OPENCODE_CONFIG
     config_dir = config_home / 'opencode'
     config_dir.mkdir(parents=True, exist_ok=True)
     contract = (ROOT / 'tools/codex_matcher.md').read_text()
@@ -134,6 +135,18 @@ def opencode_config(env, model):
             'prompt': contract,
         }},
     }
+    if guarded:
+        config['plugin'] = [(ROOT / 'tools/fleet_opencode_guard.mjs').as_uri()]
+        # Zen requires advertised bash; the pre-execution hook hard-denies it.
+        config['agent']['matcher']['tools'] = {name: True for name in OPENCODE_OFF}
+        config['agent']['matcher']['permission'] = {'*': 'allow'}
+        config['agent']['matcher']['prompt'] = ('Native tools are advertised only for provider compatibility. '
+            'Every native tool, including bash, is hard-blocked before execution and ends your session. '
+            'Use ONLY fzgx_write_unit, fzgx_patch_unit, fzgx_check, fzgx_search, '
+            'fzgx_read_evidence, fzgx_release. Never call bash, even echo or a no-op.\n' + contract)
+        env['FZGX_OPENCODE_GUARD_LOG'] = env['FZGX_RESULT_FILE'] + '.guard.jsonl'
+        env['OPENCODE_DISABLE_DEFAULT_PLUGINS'] = 'true'
+        env.pop('OPENCODE_PERMISSION', None)
     path = config_dir / 'opencode.json'
     body = json.dumps(config, indent=2) + '\n'
     if not path.exists() or path.read_text() != body:
@@ -152,8 +165,11 @@ def opencode_command(prompt, model, directory, env):
     opencode_config(env, model)
     # Model-independent shared config; each process owns its explicit model pin.
     # Otherwise two different free-model lanes overwrite each other's agent model.
-    return [opencode_binary(), 'run', '--model', model, '--agent', 'matcher',
-            '--pure', '--format', 'json', prompt]
+    cmd = [opencode_binary(), 'run', '--model', model, '--agent', 'matcher',
+           *([] if model == 'opencode/exo-free' else ['--pure']), '--format', 'json', prompt]
+    if model == 'opencode/exo-free':
+        return [str(ROOT / '.venv/bin/python'), str(ROOT / 'tools/fleet_opencode_launch.py'), *cmd]
+    return cmd
 
 def command(family, prompt, model, directory, env):
     if family == 'claude':

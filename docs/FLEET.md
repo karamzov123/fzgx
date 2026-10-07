@@ -1,6 +1,10 @@
 # New fzgx autonomous fleet
 
-## Current owner policy: models only for bounded tests
+## Current owner policy: verified production resumption
+
+The owner subsequently renewed authorization to get the fleet running. [Verified resumption](FLEET-RESUME-2026-10-07.md) supersedes the test-only hold below: admit only Codex and the attested Exo adapter; leave crashed/withdrawn lanes off and disable automatic surge. Read the live policy and controls for actual session counts. A functioning transport is not a link-verified match.
+
+## Earlier owner policy: models only for bounded tests
 
 The owner's latest instruction supersedes the overnight launch below: **do not turn models on except to test**. The standing service and sleep inhibitor are stopped and all provider controls are off. `~/.cache/fzgx-agents/model-policy.json` is set to `test-only`; the daemon suppresses managed surge, drains existing jobs, and denies new Job construction under that policy. Do not switch the policy to `fleet` or restart production matching without renewed authorization. Standalone bounded tests remain allowed.
 

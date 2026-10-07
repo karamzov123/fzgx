@@ -190,6 +190,10 @@ def check(project: Project, symbol: str, max_diff_lines: int = 80, source: Optio
           mw_version: Optional[str] = None, extra_cflags: Optional[str] = None) -> CheckResult:
     """Compile the unit (or `source`, an agent's work copy) into the unit's object and diff it.
     For an uncarved function, `mw_version`/`extra_cflags` are the unit options being proposed."""
+    # Unit manifests store argv lists; saved-body callers can carry that form.
+    # Normalize once so result metadata and later submission also receive strings.
+    if isinstance(extra_cflags, list):
+        extra_cflags = shlex.join(extra_cflags)
     sym = project.resolve(symbol)
     if sym is None:
         return CheckResult(False, symbol, "", error="unknown or ambiguous symbol (use module:name)")

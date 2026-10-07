@@ -51,7 +51,7 @@ SURGE = ('oc1', 'oc4')
 SURGE_DELAY = 600      # cumulative seconds of paid unavailability before adding
 SURGE_RETIRE = 1800    # sustained paid recovery before giving capacity back
 UNAVAILABLE = ('rate-limited', 'error', 'unavailable')
-FLEET_CAP = 8         # laptop ceiling across all families, surge included
+FLEET_CAP = 6         # laptop ceiling; only evidence-admitted lanes are enabled
 
 def resource_snapshot():
     """Linux host headroom; no model credentials or unrelated process data."""
@@ -137,8 +137,8 @@ RETRY_MAX = 3 * 3600
 for _n in SURGE:
     POLICY[_n] = {'harness':'opencode','model':'opencode/space-bunny-free','effort':'xhigh',
                   'display':f'Space Bunny Free xHigh #{_n[-1]}','managed':True}
-POLICY['oc1'].update(model='opencode/fledge-alpha-free',
-                      display='Fledge Alpha Free xHigh (experimental)')
+POLICY['oc1'].update(model='opencode/exo-free', effort='high',
+                      display='Exo Free (guarded native OpenCode)', managed=False)
 del _n
 CONTROL = CACHE / 'control-v3.json'
 MODEL_POLICY = CACHE / 'model-policy.json'
@@ -367,9 +367,9 @@ FAMILY_BANDS = {
     # cline: the 1-2 KB pool, the largest and the one with measured conversion (12.1%, 55/454).
     # Its old band was (257,512), which held 283 functions and 0 virgin.
     'cline':  (1024, 2048),
-    # oc1: above 2 KB, the second pool. size_allowed() admits a function past SIZE_GATE=2048
-    # only as a saved near-miss at >=95%, so this band is reached mainly through that path.
-    'oc1':    (2048, 1 << 30),
+    # oc1 is now Exo: favor the measured 1-2 KB fresh supply. Larger work
+    # remains a bounded oversize probe, not the lane's entire starting pool.
+    'oc1':    (1024, 2048),
     # oc4 and gpt keep wide bands deliberately: they are the families that should absorb
     # whatever the narrow bands leave, and the widening path in choose() means a narrow band
     # never idles a slot.
@@ -686,14 +686,16 @@ def choose(rows, seen, context, count, reserved=(), retry=(), family=None, prote
     # reordering the list here. Slicing the list did not bind: the lockout block above has
     # already partitioned rows, so tier rows sit *after* the head and a sliced head left 9 of 12
     # picks in the tier with the cap nominally at 4.
+    _used=set()
+    _units=set(claimed_units)
     def _pick(pool, cap):
         out=[]
         for r in eligible:
             if len(out) >= cap: break
-            if r['symbol'] in pool and r['symbol'] not in _used:
-                out.append(r['symbol']); _used.add(r['symbol'])
+            unit=(r['module'],r.get('unit') or r['symbol'])
+            if r['symbol'] in pool and r['symbol'] not in _used and unit not in _units:
+                out.append(r['symbol']); _used.add(r['symbol']); _units.add(unit)
         return out
-    _used=set()
     n_tier=min(ONE_WORD_RESERVE, int(count * TIER_SHARE))
     n_mid=int(count * MID_BAND_SHARE)
     # context ids already run in this batch; the guard `base` applies to gated rows too
@@ -718,19 +720,20 @@ def choose(rows, seen, context, count, reserved=(), retry=(), family=None, prote
         probe=int(count * OVERSIZE_PROBE)
         n_probe=0
         for r in gated:
-            if len(chosen) >= probe + n_tier + n_mid: break
-            if r['symbol'] not in _used:
-                chosen.append(r['symbol']); _used.add(r['symbol']); n_probe+=1
+            if n_probe >= probe or len(chosen) >= count: break
+            unit=(r['module'],r.get('unit') or r['symbol'])
+            if r['symbol'] not in _used and unit not in _units:
+                chosen.append(r['symbol']); _used.add(r['symbol']); _units.add(unit); n_probe+=1
     # Only pools that were *filled to their cap* have their remaining rows withheld. A pool that
     # could not fill its share has nothing to withhold, so its leftover rows stay in the fallback
     # or the batch idles -- measured at 9 of 12 when every capped pool was withheld regardless of
     # how many rows it actually held.
     full=set()
-    if len([s for s in _used if s in tier])>=n_tier: full|=tier
-    if len([s for s in _used if s in mid_band])>=n_mid: full|=mid_band
-    if OVERSIZE_PROBE and n_probe>=probe: full|={r['symbol'] for r in gated}
+    if n_tier and len([s for s in _used if s in tier])>=n_tier: full|=tier
+    if n_mid and len([s for s in _used if s in mid_band])>=n_mid: full|=mid_band
+    if OVERSIZE_PROBE and probe and n_probe>=probe: full|={r['symbol'] for r in gated}
     eligible=[r for r in eligible if r['symbol'] not in set(chosen) and r['symbol'] not in full]
-    used=set(claimed_units)
+    used=set(_units)
     selected=list(chosen)
     for row in eligible:
         if len(selected)>=count:
@@ -949,7 +952,7 @@ def status():
                 f'{c["module"]}:{c["symbol"]} ({c.get("checks") or 0})' for c in claims[:3]))
             if len(claims) > 3:
                 lines.append(f'  +{len(claims) - 3} more')
-        if family in SURGE:
+        if POLICY[family].get('managed'):
             lines.append('')
             lines.append(data.get('surge_reason') or
                          'Surge capacity is fleet-managed from paid-provider availability.')
@@ -965,7 +968,7 @@ MANAGED = 'Surge capacity is fleet-managed: it comes and goes with paid-provider
 
 def control(action,family):
     if family not in POLICY:raise ValueError('Unknown provider')
-    if family in SURGE:
+    if POLICY[family].get('managed'):
         print(MANAGED);return
     CACHE.mkdir(parents=True,exist_ok=True)
     with (CACHE/'control-v3.lock').open('w') as lock:
@@ -1044,7 +1047,8 @@ def apply_surge(statuses, config, clock):
     raises the fleet above FLEET_CAP, and never quietly enables fewer than
     requested: a shortfall is reported, once, so the tile can state it.
     """
-    if model_dispatch_hold(load(MODEL_POLICY, {'mode': 'fleet'})):
+    owner_policy=load(MODEL_POLICY, {'mode': 'fleet'})
+    if model_dispatch_hold(owner_policy) or owner_policy.get('automatic_surge') is False:
         return None
     down, want = surge_want(statuses, config, clock)
     want = bool(want)
