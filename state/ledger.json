@@ -1,5 +1,5 @@
 {
- "generated": 1791478232,
+ "generated": 1791478466,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -604737,6 +604737,27 @@
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_487EC.1791478217.c",
    "stale_checks": 3,
    "best_in_attempt": 48.44853,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 22882,
+   "symbol": "fn_1_668",
+   "agent": "shadow-accel-space-medium-20261008-opencode-1",
+   "harness": "opencode",
+   "model": null,
+   "started": 1791478262,
+   "ended": 1791478466,
+   "checks": 0,
+   "final_percent": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0,
+   "outcome": "shadow-released",
+   "notes": "harness timeout (rc=-15); saved best candidate automatically",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 0.0,
    "cache_read_tokens": 0,
    "cache_write_tokens": 0
   }
