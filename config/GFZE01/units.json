@@ -94,6 +94,17 @@
   },
   {
     "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/colchg_menu_disp.c",
+    "symbols": [
+      "colchg_menu_disp"
+    ],
+    "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
     "source": "rel/car_colchg/car_colchg/colchg_menu_init.c",
     "symbols": [
       "colchg_menu_init"

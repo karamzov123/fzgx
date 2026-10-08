@@ -665,6 +665,32 @@ void fn_9_1124(void)
 }
 /* fzgx:end fn_9_1124 */
 
+/* fzgx:begin colchg_menu_disp */
+extern const f32 lbl_9_rodata_14;
+extern const f32 lbl_9_rodata_18;
+extern void fn_1_496FC(f32, f32);
+extern void fn_1_4AE0C(const char *, ...);
+extern struct Struct_lbl_1_bss_970 lbl_1_bss_970;
+
+void colchg_menu_disp(void)
+{
+    u32 base = (u32)&lbl_9_data_0;
+    u8 *sel;
+    s8 i;
+
+    fn_1_496FC(lbl_9_rodata_14, lbl_9_rodata_18);
+    fn_1_4AE0C((const char *)(base + 0xd8));
+    sel = (u8 *)&lbl_1_bss_970;
+    for (i = 0x72; i < 0x79; i++) {
+        switch (i) {
+        case 0x73:
+            fn_1_4AE0C((const char *)(base + 0xe8), (const char *)(sel[4] == i ? base + 0xfc : base + 0x98));
+            break;
+        }
+    }
+}
+/* fzgx:end colchg_menu_disp */
+
 /* fzgx:begin fn_9_120C */
 #pragma section code_type ".fzgxpool"
 __declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {

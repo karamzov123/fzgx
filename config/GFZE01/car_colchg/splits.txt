@@ -110,3 +110,6 @@ rel/car_colchg/car_colchg/fn_9_1310.c:
 
 rel/car_colchg/car_colchg/colchg_selmate_disp.c:
 	.text       start:0x000016B8 end:0x00001890 align:4
+
+rel/car_colchg/car_colchg/colchg_menu_disp.c:
+	.text       start:0x00001160 end:0x0000120C align:4
