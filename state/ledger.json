@@ -1,5 +1,5 @@
 {
- "generated": 1791477440,
+ "generated": 1791477545,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -604632,6 +604632,27 @@
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_668.shadow.1791477429.c",
    "stale_checks": 0,
    "best_in_attempt": 66.96296,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 22877,
+   "symbol": "fn_1_798",
+   "agent": "shadow-accel-sonnet-medium-bound-20261008-claude-1",
+   "harness": "claude",
+   "model": "claude-sonnet-5-5",
+   "started": 1791477510,
+   "ended": 1791477543,
+   "checks": 3,
+   "final_percent": 94.83871,
+   "tokens_in": 51504,
+   "tokens_out": 47,
+   "cost_usd": 0.0,
+   "outcome": "shadow-matched",
+   "notes": "fixup: regalloc: struct-wrap constant pointer p; agent released: budget exhausted: 3 checks used",
+   "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_798.shadow.1791477543784922123.c",
+   "stale_checks": 0,
+   "best_in_attempt": 94.83871,
    "cache_read_tokens": 0,
    "cache_write_tokens": 0
   }
