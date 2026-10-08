@@ -1,5 +1,5 @@
 {
- "generated": 1791476713,
+ "generated": 1791477359,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -1521,7 +1521,7 @@
    "addr": 26636,
    "size": 696,
    "status": "unmatched",
-   "attempts": 2,
+   "attempts": 3,
    "best_percent": 88.52873,
    "claimed_by": null,
    "claimed_at": null,
@@ -604569,6 +604569,27 @@
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_1145C8.1791476702.c",
    "stale_checks": 3,
    "best_in_attempt": 85.84,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 22874,
+   "symbol": "fn_3_680C",
+   "agent": "fleet-v2-oc2-1791477326823715902-opencode-1",
+   "harness": "opencode",
+   "model": null,
+   "started": 1791477326,
+   "ended": 1791477359,
+   "checks": 0,
+   "final_percent": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "harness crash (rc=-15); saved best candidate automatically",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 0.0,
    "cache_read_tokens": 0,
    "cache_write_tokens": 0
   }
