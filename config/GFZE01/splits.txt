@@ -5807,3 +5807,6 @@ dol/data/lbl_80187380.c:
 
 dol/data/lbl_8019E140.c:
 	.bss        start:0x8019E140 end:0x8019E150 align:8
+
+dol/fn_8007A440.c:
+	.text       start:0x8007A440 end:0x8007A710 align:4
