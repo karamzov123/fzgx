@@ -7370,3 +7370,6 @@ rel/main_rel/data/lbl_1_bss_3BC0.c:
 
 rel/main_rel/data/lbl_1_bss_77310.c:
 	.bss        start:0x00077310 end:0x00077380 align:16
+
+rel/main_rel/sel_static_disp/fn_1_138144.c:
+	.text       start:0x00138144 end:0x00138A04 align:4

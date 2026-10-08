@@ -1209,6 +1209,171 @@ void fn_1_138120(void* arg0) {
 }
 /* fzgx:end fn_1_138120 */
 
+/* fzgx:begin fn_1_138144 noprologue */
+#include "types.h"
+#include "rel/main_rel/sel_static_disp.h"
+
+typedef struct {
+    s32 type;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 sx;
+    f32 sy;
+    u8 pad_18[0x18];
+    u32 flags;
+    u32 pad_34;
+    u32 color;
+    u8 pad_3C[0x1C];
+} FontPkt;
+
+extern s8 fn_1_A5DC4(void);
+extern const f32 lbl_1_rodata_884C;
+extern const f32 lbl_1_rodata_8674;
+extern void fn_1_49410(void);
+extern const f32 lbl_1_rodata_8B58;
+extern void fn_1_4954C(f32);
+extern const f32 lbl_1_rodata_8B5C;
+extern void fn_1_4955C(f32, f32);
+extern void fn_1_49768(u8);
+extern const f32 lbl_1_rodata_8B60;
+extern const f32 lbl_1_rodata_88A8;
+extern const f32 lbl_1_rodata_8B28;
+extern void fn_1_49778(s16, s16, s16, s16);
+extern const f32 lbl_1_rodata_85F0;
+extern void fn_1_49590(f32);
+extern void fn_1_495B0(u32);
+extern f32 fn_1_4B068(s32);
+extern const f32 lbl_1_rodata_86F8;
+extern const f32 lbl_1_rodata_8B64;
+extern const f32 lbl_1_rodata_86D0;
+extern const f32 lbl_1_rodata_87E4;
+extern const f32 lbl_1_rodata_8B68;
+extern void fn_1_496FC(f32, f32);
+extern void fn_1_4A0D8(const char *);
+extern const f32 lbl_1_rodata_8B6C;
+extern const f32 lbl_1_rodata_8638;
+extern const FontPkt lbl_1_rodata_26F8;
+extern const f32 lbl_1_rodata_8658;
+extern u32 lbl_1_rodata_8B44;
+extern u16 fn_1_48690(u32);
+extern u16 fn_1_486C4(u32);
+extern const f32 lbl_1_rodata_8834;
+extern int fn_1_4F734(FontPkt *);
+extern const f32 lbl_1_rodata_8B70;
+extern u32 lbl_1_rodata_8B48;
+extern const f32 lbl_1_rodata_8B74;
+extern u32 lbl_1_rodata_8B4C;
+extern const f32 lbl_1_rodata_8838;
+extern u32 lbl_1_rodata_8B50;
+extern u32 lbl_1_rodata_8B54;
+extern s32 lbl_801A66B4;
+extern u32 lbl_801A66A0;
+
+void fn_1_138144(s32 arg0, s32 arg1) {
+    FontPkt p;
+    s32 v0;
+    f32 f31;
+    f32 f30;
+
+    v0 = (s32)(fn_1_A5DC4() != 0 ? lbl_1_rodata_884C : lbl_1_rodata_8674);
+    fn_1_49410();
+    fn_1_4954C(lbl_1_rodata_8B58);
+    fn_1_4955C(lbl_1_rodata_8B5C, lbl_1_rodata_8B5C);
+    fn_1_49768(1);
+    fn_1_49778(lbl_1_rodata_8B60, lbl_1_rodata_88A8, (f32)(s16)v0 - lbl_1_rodata_8B60, lbl_1_rodata_8B28);
+    if (lbl_801A66B4 != 5) {
+        fn_1_49590(lbl_1_rodata_85F0);
+        fn_1_495B0(0x80000000);
+    }
+    f31 = fn_1_4B068(arg0);
+    if (lbl_801A66B4 != 5 && f31 > lbl_1_rodata_86F8) {
+        fn_1_4955C(lbl_1_rodata_8B64, lbl_1_rodata_8B5C);
+        f31 = fn_1_4B068(arg0);
+    }
+    f31 = f31 + lbl_1_rodata_86D0;
+    f30 = (f32)(lbl_801A66A0 % (u32)(s32)f31);
+    if (fn_1_A5DC4() != 0) {
+        fn_1_496FC((lbl_1_rodata_8B68 + (f32)(lbl_1_rodata_87E4 * f31)) - f30, lbl_1_rodata_88A8);
+        fn_1_4A0D8((const char *)arg0);
+        fn_1_496FC((lbl_1_rodata_8B68 + (f32)(lbl_1_rodata_8B6C * f31)) - f30, lbl_1_rodata_88A8);
+        fn_1_4A0D8((const char *)arg0);
+    }
+    fn_1_496FC((lbl_1_rodata_8B68 + (f32)(lbl_1_rodata_8638 * f31)) - f30, lbl_1_rodata_88A8);
+    fn_1_4A0D8((const char *)arg0);
+    fn_1_496FC((lbl_1_rodata_8B68 + f31) - f30, lbl_1_rodata_88A8);
+    fn_1_4A0D8((const char *)arg0);
+    fn_1_496FC(lbl_1_rodata_8B68 - f30, lbl_1_rodata_88A8);
+    fn_1_4A0D8((const char *)arg0);
+    fn_1_496FC((lbl_1_rodata_8B68 - f31) - f30, lbl_1_rodata_88A8);
+    fn_1_4A0D8((const char *)arg0);
+    fn_1_49768(0);
+    if (fn_1_A5DC4() != 0) {
+        p = lbl_1_rodata_26F8;
+        p.type = 5;
+        p.x = lbl_1_rodata_8658;
+        p.y = lbl_1_rodata_88A8;
+        p.color = lbl_1_rodata_8B44;
+        p.sx = p.sx * (lbl_1_rodata_8B28 / (f32)fn_1_48690(5));
+        p.sy = p.sy * (lbl_1_rodata_8B28 / (f32)fn_1_486C4(p.type));
+        p.z = lbl_1_rodata_8834;
+        p.flags = 0x80000;
+        fn_1_4F734(&p);
+        p.x = lbl_1_rodata_8B70;
+        p.flags = 0;
+        fn_1_4F734(&p);
+
+        p = lbl_1_rodata_26F8;
+        p.type = 18;
+        p.x = (f32)(s16)v0;
+        p.y = lbl_1_rodata_88A8;
+        p.z = lbl_1_rodata_8834;
+        p.color = lbl_1_rodata_8B48;
+        p.sx = p.sx * (lbl_1_rodata_8B28 / (f32)fn_1_486C4(18));
+        p.sy = p.sy * (lbl_1_rodata_8B28 / (f32)fn_1_486C4(p.type));
+        p.flags = 7;
+        fn_1_4F734(&p);
+
+        p = lbl_1_rodata_26F8;
+        p.type = 18;
+        p.x = lbl_1_rodata_8B74;
+        p.y = lbl_1_rodata_88A8;
+        p.z = lbl_1_rodata_8834;
+        p.color = lbl_1_rodata_8B4C;
+        p.sx = p.sx * (lbl_1_rodata_8838 / (f32)fn_1_486C4(18));
+        p.sy = p.sy * (lbl_1_rodata_8B28 / (f32)fn_1_486C4(p.type));
+        fn_1_4F734(&p);
+    } else {
+        p = lbl_1_rodata_26F8;
+        p.type = 5;
+        p.x = lbl_1_rodata_8658;
+        p.y = lbl_1_rodata_88A8;
+        p.color = lbl_1_rodata_8B50;
+        p.sx = p.sx * (lbl_1_rodata_8B28 / (f32)fn_1_48690(5));
+        p.sy = p.sy * (lbl_1_rodata_8B28 / (f32)fn_1_486C4(p.type));
+        p.z = lbl_1_rodata_8834;
+        p.flags = 0x80000;
+        fn_1_4F734(&p);
+        p.x = (f32)(arg1 != 0 ? 520 : 616);
+        p.flags = 0;
+        fn_1_4F734(&p);
+
+        p = lbl_1_rodata_26F8;
+        p.type = 18;
+        p.x = lbl_1_rodata_8674;
+        p.y = lbl_1_rodata_88A8;
+        p.z = lbl_1_rodata_8834;
+        p.color = lbl_1_rodata_8B54;
+        if (lbl_1_bss_8B3A0.unk_94 & 0x40000000) {
+            p.sx = p.sx * (lbl_1_rodata_8B28 / (f32)fn_1_486C4(18));
+        }
+        p.sy = p.sy * (lbl_1_rodata_8B28 / (f32)fn_1_486C4(p.type));
+        p.flags = 7;
+        fn_1_4F734(&p);
+    }
+}
+/* fzgx:end fn_1_138144 */
+
 /* fzgx:begin fn_1_13923C */
 struct fn_1_13923C_Copy88 { u32 a[22]; };
 
