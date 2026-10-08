@@ -1,5 +1,5 @@
 {
- "generated": 1791481868,
+ "generated": 1791482185,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -605472,6 +605472,27 @@
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_668.shadow.1791481868589054448.c",
    "stale_checks": 0,
    "best_in_attempt": 100.0,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 22917,
+   "symbol": "fn_1_798",
+   "agent": "shadow-shutdown-luna-interrupt-20261008-codex-1",
+   "harness": "codex",
+   "model": "gpt-6-luna",
+   "started": 1791482006,
+   "ended": 1791482032,
+   "checks": 1,
+   "final_percent": 0.0,
+   "tokens_in": 29895,
+   "tokens_out": 1588,
+   "cost_usd": 0.0,
+   "outcome": "shadow-released",
+   "notes": "batch interrupted; saved for resume",
+   "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_798.shadow.1791482031.c",
+   "stale_checks": 0,
+   "best_in_attempt": 0.0,
    "cache_read_tokens": 0,
    "cache_write_tokens": 0
   }
