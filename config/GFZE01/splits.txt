@@ -5795,3 +5795,15 @@ dol/fn_80072EDC.c:
 
 dol/fn_8008BB7C.c:
 	.text       start:0x8008BB7C end:0x8008BFB4 align:4
+
+dol/data/lbl_8015BE40.c:
+	.bss        start:0x8015BE40 end:0x8015BF00 align:8
+
+dol/data/lbl_80187118.c:
+	.bss        start:0x80187118 end:0x80187330 align:8
+
+dol/data/lbl_80187380.c:
+	.bss        start:0x80187380 end:0x801873C0 align:8
+
+dol/data/lbl_8019E140.c:
+	.bss        start:0x8019E140 end:0x8019E150 align:8

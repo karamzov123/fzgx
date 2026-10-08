@@ -152,3 +152,9 @@ rel/interview/interview/fn_17_72C0.c:
 
 rel/interview/interview/fn_17_C9C.c:
 	.text       start:0x00000C9C end:0x00000DB4 align:4
+
+rel/interview/data/lbl_17_bss_150.c:
+	.bss        start:0x00000150 end:0x00000170 align:8
+
+rel/interview/data/lbl_17_bss_198.c:
+	.bss        start:0x00000198 end:0x00000354 align:8

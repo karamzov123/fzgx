@@ -119,3 +119,9 @@ rel/winning/winning/fn_15_435C.c:
 
 rel/winning/winning/fn_15_27D4.c:
 	.text       start:0x000027D4 end:0x00002AE4 align:4
+
+rel/winning/data/lbl_15_bss_88.c:
+	.bss        start:0x00000088 end:0x000000D0 align:8
+
+rel/winning/data/lbl_15_bss_3F8.c:
+	.bss        start:0x000003F8 end:0x00000480 align:8
