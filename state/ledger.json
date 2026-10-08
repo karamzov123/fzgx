@@ -1,5 +1,5 @@
 {
- "generated": 1791493205,
+ "generated": 1791493281,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -50208,12 +50208,12 @@
    "unit": null,
    "addr": 184376,
    "size": 1260,
-   "status": "unmatched",
+   "status": "claimed",
    "attempts": 22,
    "best_percent": 99.68,
-   "claimed_by": null,
-   "claimed_at": null,
-   "claim_ttl": null,
+   "claimed_by": "fleet-v2-claude-1791493230584092814-claude-1",
+   "claimed_at": 1791493230,
+   "claim_ttl": 2100,
    "matched_commit": null,
    "blocked_reason": null,
    "prev_status": null,
@@ -606690,6 +606690,27 @@
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 0.0,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 22975,
+   "symbol": "fn_1_2D038",
+   "agent": "fleet-v2-claude-1791493230584092814-claude-1",
+   "harness": null,
+   "model": null,
+   "started": 1791493230,
+   "ended": null,
+   "checks": 2,
+   "final_percent": 99.68,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0,
+   "outcome": null,
+   "notes": null,
+   "best_body_path": null,
+   "stale_checks": 1,
+   "best_in_attempt": 99.68,
    "cache_read_tokens": 0,
    "cache_write_tokens": 0
   }
