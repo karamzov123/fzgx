@@ -85,6 +85,20 @@ The first real SIGTERM replay released its claim and finished the matcher in 27.
 
 This repairs the reproduced idle-worker and optional reporting paths, not every possible hung RPC or compiler mutation. Genuine unfinished work still fails closed and may require owner-aware recovery. No transport/tool request deadline was added that could cancel an ambiguous mutation.
 
+## Follow-up: publisher build lock isolation
+
+The publisher previously held the main submit/build locks throughout a committed-snapshot build, despite compiling in a separate checkout. It now captures HEAD and pending state, archives the pinned SHA and materializes private inputs under short locks; releases main locks for compilation; then reacquires in the same order and rechecks HEAD, branch and pending work before any receipt. Changed HEAD/branch, new pending work or a busy reacquisition defers publication without altering that work. The publisher singleton, approved-fork checks, explicit-SHA push and exact remote readback remain unchanged.
+
+Private input copying remaps internal aliases into the snapshot, materializes external tool links and avoids symlink cycles. The actual orig/GFZE01/GFZE01 alias exposed a recursion defect in the first copier attempt; the fixed helper preserves it as a private in-tree alias. Unrelated ISO/GCM links are omitted: config/GFZE01/config.yml consumes extracted DOL/REL objects. Inputs are not published. Receipt version is committed-snapshot-v2-private-inputs; old receipts cannot skip its gate.
+
+Fourteen external Git/lock/input fixtures pass, covering free compiler locks during the gate, pending/HEAD/branch changes, reacquisition failure, dirty-file preservation, private cyclic aliases/backlinks, exact push/readback against a local bare fixture, receipt versions and all four required gate commands. Fixtures never use a real remote.
+
+A real private gate under a one-CPU/two-GiB audit scope completed in 105.245 seconds for d1543a32f7c45e7883b7cf3d96077208a1d6f1e0: configure, Ninja, all sixteen hashes and lint passed. HEAD remained pinned and pending state was clear afterward. No real publication was attempted by this test. Raw proof is in the task scratch private-gate-result.json and private-gate-state.gate.log.
+
+The initial audit attempt respected a thermal admission hold. The thermal diagnosis must distinguish sensors: the fleet guard reads /sys/class/thermal zones, not the separately observed NVMe hwmon sensors. A later valid admission showed a 59 C zone maximum before the real gate.
+
+One depth-1 agent supplied the read-only lock audit. The publisher checkpoint includes its previously uncommitted snapshot support because that is a direct dependency; unrelated user edits stay outside the checkpoint.
+
 ## Acceptance and next measurements
 
 Track verified bytes and unique accepted functions per wall-clock hour, tool-reaching fraction, first-tool latency, and terminal reasons. Compare equivalent target cohorts before permanent effort/model promotion. Do not increase concurrency or CPU allocation until phase telemetry and cgroup samples show local resource pressure rather than inference waits. Preserve existing source edits and all reference/hash gates.
