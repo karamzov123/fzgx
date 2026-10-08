@@ -1,5 +1,5 @@
 {
- "generated": 1791477824,
+ "generated": 1791478232,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -54714,7 +54714,7 @@
    "addr": 296940,
    "size": 544,
    "status": "unmatched",
-   "attempts": 2,
+   "attempts": 3,
    "best_percent": 86.48529,
    "claimed_by": null,
    "claimed_at": null,
@@ -604716,6 +604716,27 @@
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_6E320.1791477812.c",
    "stale_checks": 1,
    "best_in_attempt": 91.15385,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 22881,
+   "symbol": "fn_1_487EC",
+   "agent": "accel-sonnet-real-uncapped-20261008-claude-1",
+   "harness": "claude",
+   "model": "claude-sonnet-5-5",
+   "started": 1791478090,
+   "ended": 1791478217,
+   "checks": 4,
+   "final_percent": 43.05147,
+   "tokens_in": 115725,
+   "tokens_out": 16,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "plateau: 3 consecutive checks without improvement (best 48.4%)",
+   "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_487EC.1791478217.c",
+   "stale_checks": 3,
+   "best_in_attempt": 48.44853,
    "cache_read_tokens": 0,
    "cache_write_tokens": 0
   }
