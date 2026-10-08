@@ -2175,6 +2175,102 @@ void fn_14_C69C(struct fn_14_C69C_Arg0 *arg0, f32 arg1) {
 }
 /* fzgx:end fn_14_C69C */
 
+/* fzgx:begin fn_14_C850 noprologue */
+#include "types.h"
+
+struct fn_14_C850_Arg0 {
+    s32 unk_0;
+    s32 unk_4;
+    s32 unk_8;
+    s32 unk_C;
+    s32 unk_10;
+    f32 unk_14;
+    f32 unk_18;
+};
+
+struct fn_14_C850_lbl_801A63C0 {
+    u32 unk_0;
+};
+
+extern f32 lbl_14_rodata_0;
+extern f32 lbl_14_rodata_30;
+extern const f64 lbl_14_rodata_60;
+extern const f64 lbl_14_rodata_110;
+extern u32 lbl_14_bss_C;
+extern struct fn_14_C850_lbl_801A63C0 lbl_801A63C0;
+extern u8 lbl_14_data_3060[0x74];
+extern u32 lbl_14_data_3248;
+extern void fn_1_4955C(f32, f32);
+extern void fn_1_496FC(f32, f32);
+extern void fn_1_4AE0C(const char *, ...);
+extern f32 fn_1_4B068(char *);
+extern f64 __fabs(f64);
+
+void fn_14_C850(struct fn_14_C850_Arg0 *arg0, f32 arg1) {
+    char buf[2];
+    u32 v31;
+    f32 v30;
+    u32 v29;
+    u32 v28;
+    u8 v27;
+    s32 v26;
+    s32 v25;
+    s32 v24;
+    s32 v4;
+
+    if (arg0 != 0 && lbl_14_rodata_0 != arg1) {
+        if (lbl_14_rodata_30 == arg1 || arg0->unk_0 == 0) {
+            fn_1_4955C(arg0->unk_14, arg0->unk_18);
+            fn_1_4AE0C((const char *)lbl_14_data_3060, arg0->unk_0);
+            return;
+        }
+        v24 = arg0->unk_10 == 0 ? lbl_14_bss_C : arg0->unk_10;
+        v30 = arg1 * arg1;
+        for (v4 = 0, v28 = 10; v4 < 10; v4++) {
+            if (__fabs((f64)(f32)(s32)arg0->unk_0) < v28) {
+                v28 = v4 + 1;
+                break;
+            }
+            v28 *= 10;
+        }
+        if (arg0->unk_0 < 0) {
+            v28++;
+        }
+        v31 = v28;
+        v31 += 1;
+        v25 = 0;
+        v29 = 0;
+        v26 = (s32)__fabs((f64)(f32)(s32)arg0->unk_0);
+        while (v29 < v28) {
+            if (arg0->unk_0 < 0 && v29 == v28 - 1) {
+                v27 = '-';
+            } else {
+                v27 = (u8)('0' + v26 % 10);
+                v26 = v26 / 10;
+            }
+            if ((f32)(v29 + 2) / (f32)v31 < v30) {
+                fn_1_496FC((f32)(s32)(arg0->unk_C - v25), (f32)(s32)v24);
+                fn_1_4955C(arg0->unk_14, arg0->unk_18);
+                fn_1_4AE0C((const char *)&lbl_14_data_3248, (u32)v27);
+                buf[0] = v27;
+                buf[1] = 0;
+                v25 = (s32)((f32)(s32)v25 + fn_1_4B068(buf));
+            } else if ((f32)v29 / (f32)v31 < v30) {
+                fn_1_496FC((f32)(s32)(arg0->unk_C - v25), (f32)(s32)v24);
+                fn_1_4955C(arg0->unk_14, arg0->unk_18);
+                lbl_801A63C0.unk_0 = lbl_801A63C0.unk_0 * 1735019371 + 13259;
+                v27 = (u8)('0' + ((s32)((lbl_801A63C0.unk_0 >> 16) & 0x7FFF)) % 10);
+                fn_1_4AE0C((const char *)&lbl_14_data_3248, (u32)v27);
+                buf[0] = v27;
+                buf[1] = 0;
+                v25 = (s32)((f32)(s32)v25 + fn_1_4B068(buf));
+            }
+            v29++;
+        }
+    }
+}
+/* fzgx:end fn_14_C850 */
+
 /* fzgx:begin fn_14_DC28 */
 // fn_14_DC28: empty in retail (single blr).
 void fn_14_DC28(void) {

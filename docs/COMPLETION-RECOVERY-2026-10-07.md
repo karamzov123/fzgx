@@ -14,8 +14,30 @@ The owner requested targeted completion work while keeping the GPT fleet lane di
 
 Local detailed receipts: `.fzgx/completion-existing-data-reprobe.json` and `.fzgx/completion-existing-data-gate.log`.
 
+## Recovered executable-source ownership
+
+Two existing accepted bodies were missing their unit manifest records: `fn_14_C850` (pilotpoint, 1,056 bytes) and `fn_8_704` (title, 80 bytes). Both freshly checked at exact 100%, but simply registering them failed the complete link hash gate. Registration was rolled back and all 16 original hashes were verified again before correcting the cause.
+
+Binary comparison isolated the failures:
+- title differed in just two bytes: BSS size grew from 0x556 to 0x564. Seven unused private scaffold declarations emitted 12 BSS bytes plus alignment. Removing these declarations preserved the exact code match and prevented the extra BSS allocation.
+- pilotpoint's code was identical, but two anonymous integer-to-double bias literals expanded rodata and shifted the following section. `@40` is the first eight retail bytes at `lbl_14_rodata_60` (4330000080000000); `@42` matches `lbl_14_rodata_110` (4330000000000000). Registered the established pool retarget/drop pipeline with these proven owners.
+
+The corrected manifest registers the existing pilotpoint TU body and title standalone body as matching. Configure + Ninja rebuilt 832 steps, all 16 hashes passed, and lint returned 0 findings. Both actual registered build objects then checked at exact 100%. Build report source-linked code increased from 1,132,692 to 1,133,828 bytes: 1,136 recovered link-owned bytes, not two newly solved functions. Pilotpoint's pending TU edit is included, resolving its source protection too.
+
+Local receipts: `.fzgx/completion-orphan-registration.json`, `.fzgx/completion-orphan-registration-fixed-gate.log`, and the failed and rolled-back gate logs. The failed candidate RELs and section-difference report are retained in `.fzgx/completion-structural-frontier/`.
+
 ## Remaining source-ownership warnings
 
-Configuration still reports missing `src/dol/fn_80036AC4.c` and missing configuration for `rel/title/fn_8_704.c`, `rel/sel/fn_10_266AC.c`, `rel/movie_module/fn_12_23410.c`, and `rel/pilotpoint/pilotpoint/fn_14_C850.c`. A green retail hash gate does not prove these C bodies participate in the build. The pending pilotpoint body and unrelated fleet/tooling edits are deliberately excluded from this data commit.
+Configuration now reports only missing `src/dol/fn_80036AC4.c` and missing configuration for `rel/sel/fn_10_266AC.c` and `rel/movie_module/fn_12_23410.c`. The authored-source audit decreased from three to two credited-but-unauthored functions and from 1,593 to 1,592 functions to write. The selector/movie bodies are not treated as safe link recoveries without a fresh per-object and complete-hash proof.
 
-Small-module closure remains structural work, not easy-work attribution: replay's last function has a saved register/address-promotion residual; car_colchg's menu function has plateaued across prior attempts; sample's entrypoint requires a fresh residual diagnosis. No attempt caps or provider cooldowns are reset by this recovery.
+## Compiler-reproduced structural frontier
+
+The machine-readable dossier is `docs/COMPLETION-FRONTIER-REPROBE-2026-10-07.json`. It includes source SHA-256, compiler identity, residual rows, row classification, and register-flow evidence for five archived candidates. These were evaluated privately; no source claims, attempts, compiler caps or provider cooldowns were reset.
+
+- `sample:_prolog`: fresh baseline 98.56863%, adjusted 98.05%, five differing rows. The initial loop check and indexed-vs-pointer unroll are the isolated residual. A pointer/countdown formulation disabled retail loop unrolling and regressed badly; an explicit pointer with a counted loop also regressed. Keep the saved baseline. Normalize colon-bearing archive names before invoking the Windows compiler, and verify the literal normalized path exists.
+- `colchg_menu_disp`: fresh baseline 94.74419%, six differing rows. Register lifetime and conditional call-argument scheduling remain. A conditional argument expression regressed; retain the baseline rather than redispatch the same shape.
+- `fn_13_3FC` (replay): fresh baseline 95.15212%, adjusted 62.62%, 151 differing rows. The old report's tiny-residual inference is false for this archived body. It needs broader frame/register/address-promotion reconstruction, not one more local cast retry.
+- `fn_1_7D6B8` (main_rel, 2,856 bytes): fresh baseline 99.66339%, adjusted 98.74%, nine differing rows. Isolate two regions: indexed-row pointer lowering at 0x22C/0x230, and signed selection update/bit construction at 0x47C..0x4D0. There are no remaining literal-pool rows. Recover lifetimes in these regions without rebuilding the entire 714-row function or repeating global optimization toggles.
+- `fn_1_13B98` (main_rel, 4,416 bytes): fresh baseline 96.88493%, adjusted 82.07%, 198 differing rows. Four pool rows are not the substantive blocker. Treat this as broad lifetime/frame structure work rather than a near-exact easy closure.
+
+No small module was fully closed and no new unmatched function was solved in this recovery. GPT remains disabled by the owner's live control; other lanes resume unchanged after the verified commits.

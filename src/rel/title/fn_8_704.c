@@ -21,15 +21,6 @@ struct fn_8_704_lbl_8_bss_0 {
     u8 lab_pad[8]; u8 unk_0; };
 
 #pragma opt_propagation off
-/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
-u8 fzgx_obj_lbl_8_bss_0;
-u8 lbl_8_bss_0_gap_1;
-u8 fzgx_obj_lbl_8_bss_2;
-u8 lbl_8_bss_0_gap_3;
-u32 lbl_8_bss_4_fill_4;
-u8 lbl_8_bss_4_fill_9;
-u16 lbl_8_bss_4_fill_A;
-
 extern u8 lbl_8_bss_0;
 
 int fn_8_704(void) {
