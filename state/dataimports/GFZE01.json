@@ -35,6 +35,37 @@
     "unit_size": 266496,
     "unit_start": 182208
   },
+  "customize:lbl_3_bss_6DD78": {
+    "address": 449912,
+    "align": 8,
+    "declarations": [
+      {
+        "declaration": "u32 lbl_3_bss_6DD78[42]",
+        "path": "src/rel/customize/_prolog.c"
+      },
+      {
+        "declaration": "u32 lbl_3_bss_6DD78[42]",
+        "path": "src/rel/customize/_prolog.c"
+      }
+    ],
+    "definition": "u32 lbl_3_bss_6DD78[42]",
+    "method": "declared-bss",
+    "module": "customize",
+    "references": [
+      "fn_3_5CE4",
+      "fn_3_7594"
+    ],
+    "relocations": [],
+    "section": ".bss",
+    "section_size": 168,
+    "sha256": "e3c2af35d1dfc500e16f826a071cc311bf55003a3de77de7ea3376c6b6fa2857",
+    "size": 168,
+    "source": "rel/customize/data/lbl_3_bss_6DD78.c",
+    "symbol": "lbl_3_bss_6DD78",
+    "unit_align": 8,
+    "unit_size": 168,
+    "unit_start": 449912
+  },
   "customize:lbl_3_bss_7E240": {
     "address": 516672,
     "align": 32,
@@ -117,6 +148,37 @@
     "unit_align": 8,
     "unit_size": 8,
     "unit_start": 664584
+  },
+  "customize:lbl_3_bss_A2458": {
+    "address": 664664,
+    "align": 8,
+    "declarations": [
+      {
+        "declaration": "u8 lbl_3_bss_A2458[8]",
+        "path": "src/rel/customize/toolkit.c"
+      },
+      {
+        "declaration": "u8 lbl_3_bss_A2458[8]",
+        "path": "src/rel/customize/toolkit.c"
+      }
+    ],
+    "definition": "u8 lbl_3_bss_A2458[8]",
+    "method": "declared-bss",
+    "module": "customize",
+    "references": [
+      "fn_3_18960",
+      "fn_3_1A068"
+    ],
+    "relocations": [],
+    "section": ".bss",
+    "section_size": 8,
+    "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+    "size": 8,
+    "source": "rel/customize/data/lbl_3_bss_A2458.c",
+    "symbol": "lbl_3_bss_A2458",
+    "unit_align": 8,
+    "unit_size": 8,
+    "unit_start": 664664
   },
   "interview:lbl_17_bss_150": {
     "address": 336,
@@ -914,6 +976,48 @@
     "unit_size": 568,
     "unit_start": 229912
   },
+  "main_rel:lbl_1_bss_3BC0": {
+    "address": 15296,
+    "align": 32,
+    "declarations": [
+      {
+        "declaration": "u8 lbl_1_bss_3BC0[0x20]",
+        "path": "include/rel/main_rel/mdlload.h"
+      },
+      {
+        "declaration": "u8 lbl_1_bss_3BC0[32]",
+        "path": "src/rel/main_rel/mdlload.c"
+      },
+      {
+        "declaration": "u8 lbl_1_bss_3BC0[32]",
+        "path": "src/rel/main_rel/mdlload.c"
+      },
+      {
+        "declaration": "u8 lbl_1_bss_3BC0[32]",
+        "path": "src/rel/main_rel/mdlload.c"
+      }
+    ],
+    "definition": "u8 lbl_1_bss_3BC0[0x20]",
+    "method": "declared-bss",
+    "module": "main_rel",
+    "references": [
+      "fn_1_13B98",
+      "fn_1_D35D4",
+      "fn_1_D3768",
+      "fn_1_D38C4",
+      "fn_1_D3A4C"
+    ],
+    "relocations": [],
+    "section": ".bss",
+    "section_size": 32,
+    "sha256": "66687aadf862bd776c8fc18b8e9f8e20089714856ee233b3902a591d0d5f2925",
+    "size": 32,
+    "source": "rel/main_rel/data/lbl_1_bss_3BC0.c",
+    "symbol": "lbl_1_bss_3BC0",
+    "unit_align": 32,
+    "unit_size": 32,
+    "unit_start": 15296
+  },
   "main_rel:lbl_1_bss_3C08": {
     "address": 15368,
     "align": 8,
@@ -1326,6 +1430,32 @@
     "unit_align": 8,
     "unit_size": 24,
     "unit_start": 464472
+  },
+  "main_rel:lbl_1_bss_77310": {
+    "address": 488208,
+    "align": 16,
+    "declarations": [
+      {
+        "declaration": "u32 lbl_1_bss_77310[28]",
+        "path": "src/rel/main_rel/memcard.c"
+      }
+    ],
+    "definition": "u32 lbl_1_bss_77310[28]",
+    "method": "declared-bss",
+    "module": "main_rel",
+    "references": [
+      "fn_1_AEC34"
+    ],
+    "relocations": [],
+    "section": ".bss",
+    "section_size": 112,
+    "sha256": "b5fdab78d8947eacc864bfeecb4d2100780e5afe1cd8efafb124887913ac49fa",
+    "size": 112,
+    "source": "rel/main_rel/data/lbl_1_bss_77310.c",
+    "symbol": "lbl_1_bss_77310",
+    "unit_align": 16,
+    "unit_size": 112,
+    "unit_start": 488208
   },
   "main_rel:lbl_1_bss_7AB90": {
     "address": 502672,
@@ -2192,6 +2322,34 @@
     "unit_align": 16,
     "unit_size": 16384,
     "unit_start": 3504
+  },
+  "pilotpoint:lbl_14_bss_180": {
+    "address": 384,
+    "align": 32,
+    "declarations": [
+      {
+        "declaration": "u8 lbl_14_bss_180[0x81C0]",
+        "path": "include/rel/pilotpoint/pilotpoint.h"
+      }
+    ],
+    "definition": "u8 lbl_14_bss_180[0x81C0]",
+    "method": "declared-bss",
+    "module": "pilotpoint",
+    "references": [
+      "fn_14_2590",
+      "fn_14_3AE8",
+      "fn_14_4008"
+    ],
+    "relocations": [],
+    "section": ".bss",
+    "section_size": 33216,
+    "sha256": "3b078a57c87a6bf267ef6635202bb23367b6354ef9824fb6e973bcaf417b12cc",
+    "size": 33216,
+    "source": "rel/pilotpoint/data/lbl_14_bss_180.c",
+    "symbol": "lbl_14_bss_180",
+    "unit_align": 32,
+    "unit_size": 33216,
+    "unit_start": 384
   },
   "profile:lbl_16_bss_B0B8": {
     "address": 45240,

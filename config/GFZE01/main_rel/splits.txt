@@ -7364,3 +7364,9 @@ rel/main_rel/data/lbl_1_bss_8FE80.c:
 
 rel/main_rel/bg_for/fn_1_E1A00.c:
 	.text       start:0x000E1A00 end:0x000E1C10 align:4
+
+rel/main_rel/data/lbl_1_bss_3BC0.c:
+	.bss        start:0x00003BC0 end:0x00003BE0 align:32
+
+rel/main_rel/data/lbl_1_bss_77310.c:
+	.bss        start:0x00077310 end:0x00077380 align:16

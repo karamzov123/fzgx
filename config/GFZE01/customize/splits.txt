@@ -524,3 +524,9 @@ rel/customize/data/lbl_3_bss_A2408.c:
 
 rel/customize/toolkit/fn_3_1AE40.c:
 	.text       start:0x0001AE40 end:0x0001AEE4 align:4
+
+rel/customize/data/lbl_3_bss_6DD78.c:
+	.bss        start:0x0006DD78 end:0x0006DE20 align:8
+
+rel/customize/data/lbl_3_bss_A2458.c:
+	.bss        start:0x000A2458 end:0x000A2460 align:8

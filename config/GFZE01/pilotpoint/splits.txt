@@ -137,3 +137,6 @@ rel/pilotpoint/pilotpoint/fn_14_3DF0.c:
 
 rel/pilotpoint/pilotpoint/fn_14_C850.c:
 	.text       start:0x0000C850 end:0x0000CC70 align:4
+
+rel/pilotpoint/data/lbl_14_bss_180.c:
+	.bss        start:0x00000180 end:0x00008340 align:32
