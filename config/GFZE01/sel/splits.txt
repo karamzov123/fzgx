@@ -635,3 +635,6 @@ rel/sel/sel/fn_10_A90C.c:
 
 rel/sel/data/lbl_10_bss_493A0.c:
 	.bss        start:0x000493A0 end:0x0004EEC0 align:32
+
+rel/sel/sel/fn_10_1F3B8.c:
+	.text       start:0x0001F3B8 end:0x0001F688 align:4
