@@ -1,5 +1,5 @@
 {
- "generated": 1791479868,
+ "generated": 1791479911,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -604958,8 +604958,8 @@
    "model": null,
    "started": 1791479134,
    "ended": null,
-   "checks": 4,
-   "final_percent": 56.177788,
+   "checks": 8,
+   "final_percent": 57.744102,
    "tokens_in": 0,
    "tokens_out": 0,
    "cost_usd": 0.0,
@@ -604967,7 +604967,7 @@
    "notes": null,
    "best_body_path": null,
    "stale_checks": 0,
-   "best_in_attempt": 56.177788,
+   "best_in_attempt": 57.744102,
    "cache_read_tokens": 0,
    "cache_write_tokens": 0
   },
@@ -605157,6 +605157,27 @@
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_668.shadow.1791479867438789614.c",
    "stale_checks": 0,
    "best_in_attempt": 100.0,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 22902,
+   "symbol": "fn_1_668",
+   "agent": "shadow-followup-sol-replay-20261008-codex-1",
+   "harness": "codex",
+   "model": "gpt-6.1-sol",
+   "started": 1791479880,
+   "ended": 1791479911,
+   "checks": 3,
+   "final_percent": 84.81481,
+   "tokens_in": 61129,
+   "tokens_out": 742,
+   "cost_usd": 0.0,
+   "outcome": "shadow-matched",
+   "notes": "fixup: response equations: expression-tree + at 405 + expression-tree + at 495; agent released: budget exhausted: 3 checks used",
+   "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_668.shadow.1791479911179386721.c",
+   "stale_checks": 1,
+   "best_in_attempt": 84.81481,
    "cache_read_tokens": 0,
    "cache_write_tokens": 0
   }
