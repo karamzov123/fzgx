@@ -838,6 +838,18 @@ def gate_identity(context):
     for path in [ROOT / 'config/GFZE01/units.json',*sorted((ROOT/'config/GFZE01').glob('*/splits.txt'))]:
         if path.exists():
             digest.update(path.read_bytes())
+    # HEAD alone misses dirty source, root splits and symbol bindings. Git's
+    # binary diff is an exact content delta and avoids rereading every clean TU.
+    inputs=['src','include','config/GFZE01','configure.py','tools/fzgx','tools/mwcc_pool.py']
+    digest.update(subprocess.check_output(['git','diff','--binary','HEAD','--',*inputs],cwd=ROOT))
+    # Accepted split ownership can reference an operator's untracked data TU.
+    # Include those dependencies without staging or modifying any of them.
+    untracked=subprocess.check_output(['git','ls-files','--others','--exclude-standard','-z','--',
+                                       'src','include','config/GFZE01'],cwd=ROOT).split(b'\0')
+    for name in sorted(n for n in untracked if n):
+        path=ROOT / os.fsdecode(name)
+        if path.is_file():
+            digest.update(name+b'\0');digest.update(path.read_bytes())
     head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     return [head,context,digest.hexdigest()]
 
@@ -1126,6 +1138,38 @@ def apply_surge(statuses, config, clock):
     clock['down_accum'] = 0
     return (f'{up}/{len(PAID)} paid providers available for {held}s; surge capacity retired.')
 
+def operator_protected_modules(paths):
+    """Do not let source acceptance absorb dirty source or split ownership."""
+    modules=set()
+    for path in paths:
+        parts=Path(path).parts
+        if len(parts)>3 and parts[:2]==('src','rel'):
+            modules.add(parts[2])
+        elif len(parts)>2 and parts[:2]==('src','dol'):
+            modules.add('main')
+        elif len(parts)>=3 and parts[:2]==('config','GFZE01') and parts[-1]=='splits.txt':
+            modules.add(parts[2] if len(parts)>3 else 'main')
+    return modules
+
+
+def operator_protected_symbols(rows, paths):
+    """Protect untracked target TUs without blocking untouched data-only imports."""
+    owned=set(paths)
+    blocked=set()
+    for row in rows:
+        symbol=row['symbol']
+        module=row['module']
+        unit=row.get('unit')
+        candidates={f'src/dol/{symbol}.c' if module=='main'
+                    else f'src/rel/{module}/{symbol}.c'}
+        if unit:
+            candidates.add(str(Path('src')/unit))
+            candidates.add(str(Path(unit)))
+        if candidates & owned:
+            blocked.add(symbol)
+    return blocked
+
+
 class Job:
     def __init__(self,family,symbols,parallel,gate_passed):
         hold=model_dispatch_hold(load(MODEL_POLICY, {'mode': 'fleet'}))
@@ -1168,15 +1212,15 @@ def run():
     if not CONTROL.exists():atomic(CONTROL,defaults())
     from fzgx import api,oracle
     from fzgx.project import Project
-    dirty=subprocess.run(['git','diff','HEAD','--name-only','--','src'],cwd=ROOT,
+    dirty=subprocess.run(['git','diff','HEAD','--name-only','--','src','config/GFZE01'],cwd=ROOT,
                          text=True,capture_output=True,check=True).stdout.splitlines()
-    protected_modules=set()
-    for path in dirty:
-        parts=Path(path).parts
-        if len(parts)>3 and parts[:2]==('src','rel'):protected_modules.add(parts[2])
-        elif len(parts)>2 and parts[:2]==('src','dol'):protected_modules.add('main')
+    protected_modules=operator_protected_modules(dirty)
+    untracked=subprocess.run(['git','ls-files','--others','--exclude-standard','--','src','config/GFZE01'],
+                             cwd=ROOT,text=True,capture_output=True,check=True).stdout.splitlines()
+    protected_modules.update(operator_protected_modules(path for path in untracked if path.startswith('config/')))
+    protected_symbols=operator_protected_symbols(api.inventory(Project()),untracked)
     if protected_modules:
-        print('Preserving operator source edits; no dispatch in: '+', '.join(sorted(protected_modules)),flush=True)
+        print('Preserving operator source/split edits; no dispatch in: '+', '.join(sorted(protected_modules)),flush=True)
     jobs={};seen=load(HISTORY,{})
     runtime=load(RUNTIME,{'families':{},'failed_gate':None})
     clock=dict(runtime.get('surge_clock') or {})
@@ -1334,6 +1378,7 @@ def run():
             # saved body in the ledger. Once per tick, before any rows are marked
             # reserved, also makes the pool independent of what is in flight.
             rows=api.inventory(Project())
+            rows=[row for row in rows if row['symbol'] not in protected_symbols]
             near_miss=unsearched_near_misses(rows)
             for family in POLICY:
                 if STOP:break
@@ -1353,7 +1398,14 @@ def run():
                 if gate_passed is None:
                     statuses[family]=dict(status='starting',reason='Checking real 16-target hash gate before assignment.',active=0);publish(statuses)
                     with oracle.build_lock('submit.lock',timeout_s=1800),oracle.build_lock():
+                        if gate_identity(policy_context())!=identity:
+                            statuses[family]=dict(status='starting',reason='Tree changed while waiting for gate ownership; refreshing next tick.',active=0)
+                            continue
                         gate_passed=run_gate()
+                        if gate_passed and gate_identity(policy_context())!=identity:
+                            gate_passed=None
+                            statuses[family]=dict(status='starting',reason='Tree changed during gate; not caching stale verification.',active=0)
+                            continue
                     if not gate_passed:
                         runtime['passed_gate']=None
                         runtime['failed_gate']=identity

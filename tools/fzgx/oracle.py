@@ -130,7 +130,10 @@ def relink(project: Project, keep_going: bool = False) -> subprocess.CompletedPr
     in-progress unit cannot fail this step. keep_going reports every failing
     unit instead of stopping at the first.
     """
-    cmd = ["ninja"] + (["-k", "0"] if keep_going else []) + [project.rel(project.build_dir / "ok")]
+    jobs = os.environ.get('FZGX_BUILD_JOBS')
+    if jobs is not None and int(jobs) < 1:
+        raise ValueError('FZGX_BUILD_JOBS must be positive')
+    cmd = ["ninja"] + (["-j", str(int(jobs))] if jobs is not None else []) + (["-k", "0"] if keep_going else []) + [project.rel(project.build_dir / "ok")]
     return run(cmd, timeout=1800)
 
 
@@ -1148,7 +1151,9 @@ def compile_chunk(base_cmd: List[str], chunk: List[Path], out_dir: Path) -> Dict
 
 COMPILE_CHUNK = 24
 COMPILE_CHUNK_MAX = 240
-COMPILE_WORKERS = 16
+COMPILE_WORKERS = int(os.environ.get('FZGX_COMPILE_WORKERS', '16'))
+if not 1 <= COMPILE_WORKERS <= 16:
+    raise ValueError('FZGX_COMPILE_WORKERS must be between 1 and 16')
 
 
 def check_many(project: Project, items: List[Tuple[str, Path]], max_diff_lines: int = 0,

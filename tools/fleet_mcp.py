@@ -10,6 +10,8 @@ import asyncio
 import os
 from pathlib import Path
 import time
+import uuid
+from fleet_activity import tool_succeeded, append_receipt
 from mcp.server.fastmcp import FastMCP
 import fzgx_mcp as backend
 
@@ -30,16 +32,22 @@ def binding():
 
 async def invoke(name, operation):
     binding()
+    operation_id=uuid.uuid4().hex
+    success=False
     def event(phase):
         if EVENTS:
-            with EVENTS.open('a') as output:
-                output.write(json.dumps(dict(timestamp=time.time(), tool=name, phase=phase, symbol=SYMBOL, agent=AGENT)) + '\n')
+            append_receipt(EVENTS,dict(timestamp=time.time(), tool=name, phase=phase,
+                    symbol=SYMBOL, agent=AGENT, operation_id=operation_id,
+                    success=success if phase=='end' else None))
     event('start')
     job = asyncio.create_task(operation())
     try:
-        return await asyncio.shield(job)
+        result=await asyncio.shield(job)
+        success=tool_succeeded(result)
+        return result
     except asyncio.CancelledError:
-        await job
+        result=await job
+        success=tool_succeeded(result)
         raise
     finally:
         event('end')

@@ -98,6 +98,15 @@ def provider_error_text(text):
             continue
         if not isinstance(row, dict):
             continue
+        if row.get('event') == 'fleet_guard':
+            reason=row.get('reason')
+            if reason=='tool-idle':
+                errors.append(f"No completed compiler progress for {row.get('idle_timeout_s', 600)}s; stopped session for candidate-preserving cleanup.")
+            elif reason=='deadline':
+                errors.append('Bound session deadline reached; stopped session for candidate-preserving cleanup.')
+            elif reason:
+                errors.append(f'Local bound-session guard: {reason}.')
+            continue
         if row.get('type') == 'rate_limit_event':
             info = row.get('rate_limit_info') or {}
             if info.get('status') == 'rejected':
@@ -300,7 +309,10 @@ def run_gate():
     log = CACHE / 'gate.log'
     try:
         with log.open('w') as output:
-            cp = subprocess.run(['ninja', '-j', '4'], cwd=ROOT, stdout=output,
+            jobs=int(os.environ.get('FZGX_BUILD_JOBS', '4'))
+            if jobs < 1:
+                raise ValueError('FZGX_BUILD_JOBS must be positive')
+            cp = subprocess.run(['ninja', '-j', str(jobs)], cwd=ROOT, stdout=output,
                                 stderr=subprocess.STDOUT, timeout=NINJA_GATE_TIMEOUT)
     except subprocess.TimeoutExpired:
         with log.open('a') as output:
@@ -334,9 +346,16 @@ def active_runner_pids():
     for path in Path('/proc').glob('[0-9]*/cmdline'):
         try:
             args = path.read_bytes().split(b'\0')
+            owned_descendant=False
+            if path.stat().st_uid==os.getuid():
+                try:
+                    owned_descendant=any(entry.startswith(b'FZGX_AGENT_ID=fleet-v2-')
+                                         for entry in path.with_name('environ').read_bytes().split(b'\0'))
+                except OSError:
+                    pass
         except OSError:
             continue
-        if (str(ROOT / 'tools/orchestrate.py').encode() in args
+        if owned_descendant or (str(ROOT / 'tools/orchestrate.py').encode() in args
                 and any(a.startswith(b'fleet-v2-') for a in args)):
             active.append(int(path.parent.name))
     return active

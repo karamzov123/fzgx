@@ -20,6 +20,7 @@ import subprocess
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from fleet_provider import ProcessDrainError
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -229,8 +230,8 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
             raise RuntimeError((cp.stderr or cp.stdout or 'worker CLI returned no result')[-2000:])
 
     out, rc, proc, setup_secs = '', 0, None, 0.0
+    bound = os.environ.get('FZGX_BOUND_TRANSPORT') == '1' or harness in BOUND_HARNESS
     try:
-        bound = os.environ.get('FZGX_BOUND_TRANSPORT') == '1' or harness in BOUND_HARNESS
         # Bound fleet retries first run the deterministic search on the best saved body;
         # a match ends the assignment here, before any model request.
         assignment = worker_cli('claim', symbol, '--agent', agent_id,
@@ -296,6 +297,9 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
                             break
         else:
             out = 'Completed during deterministic preflight; no model request.\n'
+    except ProcessDrainError:
+        # A surviving bound tool still owns its work copy. Never enter cleanup.
+        raise
     except subprocess.TimeoutExpired:
         if proc:
             try:
@@ -342,9 +346,12 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
     att = l.db.execute("SELECT * FROM attempts WHERE symbol=? AND agent=? ORDER BY id DESC LIMIT 1",
                        (key, agent_id)).fetchone()
     terminal = att and att["outcome"] in ("matched", "matched-pool", "released", "shadow-matched", "shadow-released")
+    guard_path = result_file.with_name(f'{symbol}.guard.json')
+    guard = json.loads(guard_path.read_text()) if bound and guard_path.exists() else {}
     # Tool outcomes and counters are authoritative; models sometimes misformat or miscount RESULT.
     outcome = att["outcome"].removeprefix("shadow-") if terminal else (
-        "timeout" if rc == -9 else "incomplete" if rc == 0 else _refusal(out) or "crash")
+        "timeout" if rc == -9 or guard.get('reason') in ('tool-idle', 'deadline')
+        else "incomplete" if rc == 0 else _refusal(out) or "crash")
     if outcome == "matched-pool":
         outcome = "matched"
     row = l.get(key)
@@ -354,7 +361,7 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
             stopping = False
             if bound:
                 from fleet_provider import STOP
-                stopping = STOP.is_set()
+                stopping = STOP.is_set() or bool(guard)
             worker_cli('release', symbol, '--agent', agent_id,
                        '--reason', f'harness {outcome} (rc={rc}); saved best candidate automatically',
                        *(['--save-only'] if stopping else []), timeout_s=1200)
