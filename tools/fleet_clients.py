@@ -75,7 +75,7 @@ def mcp_config(directory, env):
 
 def claude_command(prompt, model, directory, env):
     config = mcp_config(directory, env)
-    return ['claude', '-p', prompt, '--model', model, '--effort', 'high',
+    return ['claude', '-p', prompt, '--model', model, '--effort', env.get('FZGX_EFFORT', 'high'),
         '--restricted', '--tools', '', '--allowedTools', ','.join('mcp__fzgx__' + t for t in TOOLS),
         '--mcp-config', str(config), '--strict-mcp-config', '--setting-sources', '',
         '--permission-mode', 'dontAsk', '--permission-prompts', 'none',
@@ -166,6 +166,7 @@ def opencode_command(prompt, model, directory, env):
     # Model-independent shared config; each process owns its explicit model pin.
     # Otherwise two different free-model lanes overwrite each other's agent model.
     cmd = [opencode_binary(), 'run', '--model', model, '--agent', 'matcher',
+           '--variant', env.get('FZGX_EFFORT', OPENCODE_VARIANT),
            *([] if model == 'opencode/exo-free' else ['--pure']), '--format', 'json', prompt]
     if model == 'opencode/exo-free':
         return [str(ROOT / '.venv/bin/python'), str(ROOT / 'tools/fleet_opencode_launch.py'), *cmd]

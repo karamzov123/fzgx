@@ -16,6 +16,72 @@ class ProcessDrainError(RuntimeError):
     """Do not save/release a claim whose owned descendants have not drained."""
 
 
+class PhaseTelemetry:
+    """Best-effort atomic lifecycle summary; receipts are the tool-time authority."""
+    def __init__(self, path, env, family, model, spawned_at):
+        self.path, self.env = path, env
+        self.row = dict(spawned_at=spawned_at, symbol=env.get('FZGX_SYMBOL'),
+                        agent=env.get('FZGX_AGENT_ID'), family=family, model=model,
+                        first_stdout_at=None, first_json_at=None,
+                        first_model_event_at=None, first_tool_receipt_at=None,
+                        tool_counts={}, tool_completions={}, exit_at=None,
+                        return_code=None, guard_reason=None, provider_error=None,
+                        provider_error_at=None)
+        self.write_failed = False
+
+    def stdout(self, timestamp, line):
+        self.row['first_stdout_at'] = self.row['first_stdout_at'] or timestamp
+        try:
+            event = json.loads(line)
+        except (ValueError, TypeError):
+            return
+        if not isinstance(event, dict):
+            return
+        self.row['first_json_at'] = self.row['first_json_at'] or timestamp
+        message = event.get('message') or {}
+        if (event.get('type') == 'step_start'
+                or (event.get('type') in ('message', 'assistant', 'response', 'model')
+                    and (event.get('model') or message.get('model')) == self.row['model'])):
+            self.row['first_model_event_at'] = self.row['first_model_event_at'] or timestamp
+        error = event.get('error')
+        if event.get('type') == 'error' or event.get('event') == 'error':
+            data = (error.get('data') or {}) if isinstance(error, dict) else {}
+            text = (error.get('message') or data.get('message')) if isinstance(error, dict) else error
+            self.row['provider_error'] = str(text or 'explicit provider error')[:1000]
+            self.row['provider_status_code'] = data.get('statusCode')
+            self.row['provider_error_at'] = self.row['provider_error_at'] or timestamp
+
+    def read_receipts(self, path):
+        try:
+            with path.open() as source:
+                for line in source:
+                    try: event=json.loads(line)
+                    except (ValueError, TypeError): continue
+                    if not isinstance(event, dict): continue
+                    tool, phase = event.get('tool'), event.get('phase')
+                    if not isinstance(tool, str) or phase not in ('start', 'end'): continue
+                    stamp=event.get('timestamp')
+                    if isinstance(stamp, (int, float)):
+                        old=self.row['first_tool_receipt_at']
+                        self.row['first_tool_receipt_at'] = stamp if old is None else min(old, stamp)
+                    if phase == 'start':
+                        self.row['tool_counts'][tool]=self.row['tool_counts'].get(tool,0)+1
+                    elif event.get('success') is True:
+                        self.row['tool_completions'][tool]=self.row['tool_completions'].get(tool,0)+1
+        except OSError:
+            pass
+
+    def finish(self, exit_at, return_code, guard_reason):
+        self.row.update(exit_at=exit_at, return_code=return_code, guard_reason=guard_reason)
+        try:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            tmp=self.path.with_name(self.path.name+'.tmp')
+            tmp.write_text(json.dumps(self.row, sort_keys=True)+'\n')
+            os.replace(tmp, self.path)
+        except OSError:
+            self.write_failed=True
+
+
 def owned_processes(owner, known, agent=None):
     """Linux process-session plus captured ancestry, with PID-reuse cookies."""
     if not Path('/proc').is_dir():
@@ -136,12 +202,14 @@ def run(family, prompt, model, directory, env, timeout_s):
     (directory / f'{symbol}.assignment.json').write_text(json.dumps(dict(symbol=symbol,agent=env['FZGX_AGENT_ID'],harness=family,model=model,started=time.time())) + '\n')
     proc=subprocess.Popen(cmd,cwd=client,env=env,stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
                           text=True,start_new_session=True,bufsize=1)
+    phase=PhaseTelemetry(directory / f'{symbol}.phase.json', env, family, model, time.time())
     usage=Usage()
     budget=threading.Event()
     violation=threading.Event()
     def read():
         with log_path.open('w',buffering=1) as log:
             for line in proc.stdout:
+                phase.stdout(time.time(), line)
                 log.write(line)
                 try:
                     row=json.loads(line)
@@ -183,7 +251,9 @@ def run(family, prompt, model, directory, env, timeout_s):
             tool_idle=progress.expired(time.time())
             deadline=time.monotonic()-started > timeout_s
             if terminal.exists() or STOP.is_set() or budget.is_set() or violation.is_set() or tool_idle or deadline:
-                if not terminal.exists() and not STOP.is_set():
+                if STOP.is_set():
+                    guard_reason='stop'
+                elif not terminal.exists():
                     guard_reason=('tool-policy' if violation.is_set() else 'token-budget'
                                   if budget.is_set() else 'deadline' if deadline else 'tool-idle')
                 # Interrupt the client, not all of its compiler/MCP children.
@@ -237,4 +307,10 @@ def run(family, prompt, model, directory, env, timeout_s):
                 STOP.set()
                 raise ProcessDrainError('Cannot prove descendant drain; claim retained') from error
         reader.join(timeout=10)
+        try:
+            phase.read_receipts(directory / f'{symbol}.tools.jsonl')
+            phase.finish(time.time(), proc.returncode, guard_reason)
+        except Exception:
+            # Telemetry is observational and must never interfere with draining.
+            phase.write_failed=True
         proc.stdout.close()

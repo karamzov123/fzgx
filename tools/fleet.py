@@ -305,6 +305,15 @@ NINJA_GATE_TIMEOUT = 600
 
 
 def run_gate():
+    from gate_diagnostics import safe_capture
+    safe_capture(ROOT, CACHE, 'before')
+    try:
+        return _run_gate_checked()
+    finally:
+        safe_capture(ROOT, CACHE, 'after')
+
+
+def _run_gate_checked():
     CACHE.mkdir(parents=True, exist_ok=True)
     log = CACHE / 'gate.log'
     try:

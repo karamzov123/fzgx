@@ -17,8 +17,8 @@ from fleet import (ROOT, CACHE, META, atomic, load, pid_alive, activity_state, p
                    record_gate, run_gate, stop_runner, tail_bytes, active_runner_pids)
 
 POLICY = {
-    'claude': {'harness':'claude','model':'claude-opus-5-5','effort':'high','display':'Opus 5.5 High'},
-    'gpt': {'harness':'codex','model':'gpt-6.1-sol','effort':'medium','display':'6.1-Sol Medium'},
+    'claude': {'harness':'claude','model':'claude-sonnet-5-5','effort':'high','display':'Sonnet 5.5 High'},
+    'gpt': {'harness':'codex','model':'gpt-6-luna','effort':'high','display':'6-Luna High'},
     'agy': {'harness':'agy','model':'gemini-3.8-flash-high','effort':'high','display':'Gemini 3.8 High'},
     # DISABLED 2026-10-05, and the pin is deliberately left on the withdrawn model.
     # OpenRouter withdrew `stealth/space-bunny-alpha` from its catalogue, so every session

@@ -921,16 +921,83 @@ def _engine_id() -> str:
 def _mark_searched(body: Path, fx: dict) -> None:
     _search_marker(body).write_text(json.dumps(dict(
         engine=_engine_id(), sha256=hashlib.sha256(body.read_bytes()).hexdigest(), budget_s=SEARCH_S,
-        tried=fx.get('variants', fx.get('tried')), best=fx.get('best'), secs=round(fx.get('secs') or 0, 1), time=int(time.time()))) + '\n')
+        tried=fx.get('variants', fx.get('tried')), best=fx.get('best'),
+        context_key=fx.get('context_key'),
+        secs=round(fx.get('secs') or 0, 1), time=int(time.time()))) + '\n')
 
 
-def _was_searched(body: Path) -> bool:
+def _was_searched(body: Path, p: Project, symbol: str, base) -> bool:
     try:
         saved = json.loads(_search_marker(body).read_text())
     except (OSError, ValueError):
         return False
-    return (saved.get('engine') == _engine_id() and saved.get('budget_s', 0) >= SEARCH_S
+    key = _search_context_key(p, symbol, body.read_text(), base)
+    # Legacy sidecars have no complete compilation identity. Do not use them to
+    # suppress changed-header/compiler work; their historical notes remain intact.
+    return (key is not None and saved.get('context_key') == key
+            and saved.get('engine') == _engine_id() and saved.get('budget_s', 0) >= SEARCH_S
             and saved.get('sha256') == hashlib.sha256(body.read_bytes()).hexdigest())
+
+
+def _search_context_key(p: Project, symbol: str, body: str, base):
+    """Conservative identity for the same bounded deterministic hypothesis.
+
+    All include headers and available compilers are hashed: unrelated changes may
+    expire evidence, but changed compilation inputs must never be suppressed.
+    Missing/unresolved evidence disables caching rather than guessing an identity.
+    """
+    from . import search_evidence
+    import shlex
+    try:
+        sym = p.resolve(symbol)
+        if sym is None:
+            return None
+        target = p.target_object_for(sym)
+        if target is None or not target.exists():
+            return None
+        headers = []
+        roots = [ROOT / 'include', p.build_dir / 'include', ROOT / 'src', STATE_DIR / 'headers']
+        for root in roots:
+            if root.exists():
+                headers.extend(root.rglob('*.h'))
+        # Custom/macro includes outside our complete header inventory fail open.
+        names = {str(h.relative_to(root)) for root in roots if root.exists()
+                 for h in root.rglob('*.h')}
+        for line in body.splitlines():
+            if re.match(r'\s*#\s*include\b', line):
+                match = re.match(r'\s*#\s*include\s*[<\"]([^>\"]+)[>\"]', line)
+                if match is None or match.group(1) not in names:
+                    return None
+        def digest(paths):
+            h = hashlib.sha256()
+            for path in sorted(set(paths)):
+                h.update(str(path.relative_to(ROOT)).encode() + b'\0')
+                h.update(hashlib.sha256(path.read_bytes()).digest())
+            return h.hexdigest()
+        compiler_paths = list((ROOT / 'build/compilers').rglob('mwcceppc.exe'))
+        if not compiler_paths:
+            return None
+        compiler_paths += [ROOT / 'build/tools/wibo', ROOT / 'build/tools/dtk']
+        flags, mw = oracle.module_flags(p, sym.module)
+        versions = oracle.version_candidates(p, sym.module)
+        for version, _ in versions:
+            if not (ROOT / 'build/compilers' / version / 'mwcceppc.exe').exists():
+                return None
+        context_paths = list(p.config_dir.rglob('*.json')) + list(p.config_dir.rglob('*.yml'))
+        context_paths += list(p.config_dir.rglob('*.txt'))
+        context_paths += list((ROOT / 'tools/fzgx').glob('*.py'))
+        context_paths += [ROOT / 'configure.py', target]
+        return search_evidence.key_for(
+            symbol=p.key(sym), source_sha=hashlib.sha256(body.encode()).hexdigest(),
+            header_closure_sha=digest(headers), compiler_identity=digest(compiler_paths),
+            flags={'module': shlex.split(flags), 'mw': mw, 'candidates': versions,
+                   'base_mw': getattr(base, 'mw_version', None),
+                   'base_flags': getattr(base, 'extra_cflags', None)},
+            context_sha=digest(context_paths),
+            hypothesis_signature={'engine': _engine_id(), 'rounds': 12, 'beam': 6,
+                                  'max_candidates': 600})
+    except (OSError, ValueError, TypeError, KeyError):
+        return None
 
 
 def _search_body(p: Project, symbol: str, body: str, base) -> dict:
@@ -939,7 +1006,14 @@ def _search_body(p: Project, symbol: str, body: str, base) -> dict:
     at once; the others wait for a slot so each keeps its 16-wide compile pool."""
     import contextlib
     import fcntl
-    from . import fixup
+    from . import fixup, search_evidence
+    key = _search_context_key(p, symbol, body, base)
+    cache = STATE_DIR / 'search-evidence'
+    import math
+    if key and search_evidence.eligible(search_evidence.read_record(cache, key), key, math.ceil(SEARCH_S)):
+        score = max(base.percent, base.percent_adjusted or 0)
+        return dict(searched=True, quarantined=True, context_key=key, matched=False, base=score, best=score,
+                    variants=0, tried=0, secs=0, reason='identical zero-yield search evidence')
     with contextlib.ExitStack() as stack:
         handles = [stack.enter_context((STATE_DIR / f'search-{i}.lock').open('w')) for i in range(max(1, SEARCH_SLOTS))]
         deadline = time.monotonic() + 4 * SEARCH_S
@@ -955,8 +1029,19 @@ def _search_body(p: Project, symbol: str, body: str, base) -> dict:
         # After a long wait run anyway: a slower search beats none.
         # Measured on fn_14_82E4: 2 rounds x beam 2 left 11 register rows and an unprimed
         # pool; 12 x 6 fixed both in 18 s (5,900 compiles), leaving 8 string relocations.
-        fx = fixup.try_fix(p, symbol, body, budget_s=SEARCH_S, max_candidates=600, base=base, rounds=12, beam=6)
+        fx: dict = fixup.try_fix(p, symbol, body, budget_s=SEARCH_S, max_candidates=600, base=base, rounds=12, beam=6)
     fx['searched'] = True
+    fx['context_key'] = key
+    baseline = max(base.percent, base.percent_adjusted or 0)
+    tried = fx.get('variants', fx.get('tried')) or 0
+    best = fx.get('best')
+    if (key and not fx.get('matched') and not fx.get('error')
+            and isinstance(tried, (int, float)) and not isinstance(tried, bool) and tried > 0
+            and isinstance(best, (int, float)) and not isinstance(best, bool)
+            and best <= baseline + 1e-6):
+        search_evidence.write_record(cache, key, dict(
+            key=key, searched=True, verified_closures=0, budget=int(SEARCH_S),
+            tried=tried, baseline=baseline, best=best, time=int(time.time())))
     return fx
 
 
@@ -975,11 +1060,11 @@ def preflight_repair(p: Project, symbol: str, agent: str) -> Dict[str, Any]:
     if not att:
         return dict(ok=True, searched=False, reason='no saved body')
     body = Path(att['best_body_path'])
-    if _was_searched(body):
-        return dict(ok=True, searched=False, reason='already searched by this engine')
     metadata = body.with_suffix('.json')
     seed = json.loads(metadata.read_text()) if metadata.exists() else {}
     base = oracle.check(p, symbol, 0, source=body, mw_version=seed.get('mw'), extra_cflags=seed.get('flags'))
+    if _was_searched(body, p, symbol, base):
+        return dict(ok=True, searched=False, reason='already searched in this compilation context')
     if not _searchable(base):
         return dict(ok=True, searched=False, reason='saved body is below the search threshold or does not compile')
     fx = _search_body(p, symbol, body.read_text(), base)

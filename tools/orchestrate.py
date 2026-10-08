@@ -580,6 +580,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         os.environ['FZGX_SEEDS'] = str(a.seeds.resolve())
     model = a.model or EXPECTED_MODEL[a.harness]
     a.effort = a.effort or ('medium' if a.harness == 'codex' else 'high')
+    os.environ['FZGX_EFFORT'] = a.effort
     if a.harness == "claude":
         EXPECTED_MODEL["claude"] = CLAUDE_MODELS.get(model, model)  # the guard checks the tier that was asked for
     elif a.model:
