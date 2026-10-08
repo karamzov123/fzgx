@@ -6,6 +6,8 @@ verification. Source/evidence helpers never compile, search or submit independen
 from __future__ import annotations
 
 from collections import defaultdict
+import contextlib
+import os
 import gzip
 import hashlib
 import itertools
@@ -52,6 +54,9 @@ def _generate_in_worker(task):
 class Engine:
     def __init__(self, project, output, verbose=False):
         self.project, self.output, self.verbose = project, output, verbose
+        from . import fixup_gc
+        fixup_gc.guard(STATE_DIR)
+        self._retention_lease = fixup_gc.acquire(output)
         self.generator_sha256 = digest(Path(__file__).read_bytes() + Path(source.__file__).read_bytes() + Path(evidence.__file__).read_bytes() + Path(layout.__file__).read_bytes() + Path(mwgraph.__file__).read_bytes() + b''.join((ROOT/'tools/fzgx'/name).read_bytes() for name in ('signatures.py','evidence.py','dataimport.py','lift.py','reuse.py','sdkimport.py')))
         output.mkdir(parents=True, exist_ok=True)
         self.headers = mwgraph.header_fingerprint(ROOT, project.version)
@@ -64,9 +69,17 @@ class Engine:
         provenance = ROOT/'state/repairs/fixup_imports.json'
         self.rejected = json.loads(provenance.read_text()) if provenance.exists() else {}
         self.compiled = self.cached = 0
+        self._new_sources = 0
         self.compile_seconds = 0.0
         self.clones, self.clone_skips, self.clone_shared, self.clone_independent = [], [], set(), set()
         self.declarations = reuse.Declarations(self)
+
+    def __del__(self):
+        fd = getattr(self, '_retention_lease', None)
+        if fd is not None:
+            with contextlib.suppress(OSError):
+                os.close(fd)
+            self._retention_lease = None
 
     def emit(self, value):
         if self.verbose:
@@ -98,7 +111,11 @@ class Engine:
         path = self.output / 'sources' / (identity[:24]+'.c')
         path.parent.mkdir(exist_ok=True)
         if not path.exists():
+            if self._new_sources % 128 == 0:
+                from .fixup_gc import guard
+                guard(STATE_DIR)
             path.write_text(body)
+            self._new_sources += 1
         elif digest(path.read_bytes()) != sha:
             raise ValueError(f'changed content-addressed source: {path}')
         return dict(metadata, symbol=symbol, source=str(path), sha256=sha, mw=mw, flags=flags,
@@ -126,6 +143,8 @@ class Engine:
         except (OSError, RuntimeError, ValueError, TypeError, ImportError, AttributeError) as error:
             self.emit({'stage': 'generate-serial', 'reason': str(error)[:200]})
             return [self.prioritise(seed, list(itertools.islice(self.proposals(seed, cap), limit * 10)))[:limit] for _, seed, cap in tasks]
+        finally:
+            _ENGINE = None
 
     def row_lines(self, seed):
         """{differing row index: source line} for the seed (MWCC's `.line` table from a

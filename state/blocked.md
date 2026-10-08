@@ -524,3 +524,21 @@ population only.
 Batch driver lives at `/tmp/lintbatch.sh` (lintallow -> claim -> check ->
 submit-on-MATCH). It deliberately uses a distinct `--agent lint-batch` claim so it
 can run alongside the fleet without stealing claims.
+
+## Ownership-credit reconciliation (2026-10-08)
+
+The owner requested reconciliation of credited-but-unauthored code. The following
+legacy ledger credits were suspended through the supported block API, not counted
+as solved or supplied with invented C. Both had missing canonical/work source,
+no accepted commit, and no reproducible exact saved body. Prior rows and the
+coverage audit are retained in the committed storage/structural evidence dossier.
+
+| Symbol | Bytes | Concrete blocker | Preserved attempt count |
+| --- | ---: | --- | ---: |
+| `fn_80036AC4` | 352 | Registered DOL C is missing; recover an exact body and full link proof | 2 |
+| `fn_12_D0B8` | 884 | C/acceptance commit missing; old blanket asm-only diagnosis is unproven, with one HID2-read intrinsic avenue | 1 |
+
+The archived `link_state` and score fields are historical, not current acceptance:
+only status `matched` plus real source and link proof may regain credit. Do not use
+unblock as a way to reset attempts. This changes unsupported credit accounting,
+not the authored-C numerator or the sixteen-target hash obligations.

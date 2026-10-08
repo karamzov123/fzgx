@@ -1,0 +1,11 @@
+{
+  "format": "fzgx-typed-layout-evidence-v1",
+  "symbols": [
+    "fn_1_7D6B8",
+    "fn_1_12C110",
+    "fn_1_38CF4"
+  ],
+  "header": "include/rel/main_rel/selection_row.h",
+  "facts": "Retail witnesses a 0x440-byte row stride. GC/1.3.2 independently proves sizeof and member offsets: s32@0x324, u32@0x334, u8@0x38C, u32@0x390, s16@0x3B8. The names are physical offsets, not invented semantics. Private typed-view probes on these three functions compiled and preserved the original instruction residuals (5,15,51); no exact closures were obtained. Do not repeat those same typed substitutions or reset caps. Use the common layout only where this caller's own loads/stores establish the same view; investigate register/lifetime or control-flow evidence instead of arbitrary global flags.",
+  "header_sha256": "7fa7eb38ed4aadc19d61c68ba36a4bdedff8bbb3991fbfa861c480ef97e11fc3"
+}

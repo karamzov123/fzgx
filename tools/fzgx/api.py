@@ -308,8 +308,25 @@ def carve_many(p: Project, symbols: List[str], dry_run: bool = False) -> List[Di
 
 # -------------------------------------------------------------------- context
 def context(p: Project, symbol: str, budget_tokens: int = 6000) -> str:
-    return build_context(p, Ledger(), symbol, budget_tokens,
-                         compiler_options=_compiler_options(p, _key(p, symbol)))
+    key = _key(p, symbol)
+    notes = []
+    if budget_tokens >= 1200:
+        for path in sorted((ROOT / 'state/fleet/cohorts').glob('*.json')):
+            try:
+                record = json.loads(path.read_text())
+                if not isinstance(record, dict):
+                    continue
+                if record.get('format') != 'fzgx-typed-layout-evidence-v1' or key not in record.get('symbols', []):
+                    continue
+                header = (ROOT / record['header']).resolve()
+                if not header.is_relative_to(ROOT / 'include') or hashlib.sha256(header.read_bytes()).hexdigest() != record['header_sha256']:
+                    continue  # Do not inject stale or out-of-scope structural proof.
+                notes.append('Verified structural cohort\nHeader: ' + record['header'] + '\n' + record['facts'])
+            except (OSError, ValueError, KeyError, TypeError):
+                continue
+    evidence = '\n\n'.join(notes)[:2000]
+    return build_context(p, Ledger(), symbol, max(1, budget_tokens - (len(evidence) + 3) // 4),
+                         compiler_options=_compiler_options(p, key)) + ('\n\n' + evidence if evidence else '')
 
 
 def read_unit(p: Project, symbol: str) -> Dict[str, Any]:

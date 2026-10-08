@@ -1,5 +1,5 @@
 {
- "generated": 1791434225,
+ "generated": 1791449847,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -22124,14 +22124,14 @@
    "unit": "dol/fn_80036AC4.c",
    "addr": 2147707588,
    "size": 352,
-   "status": "matched",
+   "status": "blocked",
    "attempts": 2,
    "best_percent": 100.0,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
    "matched_commit": null,
-   "blocked_reason": null,
+   "blocked_reason": "ownership-evidence: credit suspended; registered C missing, no acceptance commit or reproducible exact body. Recover source and all-target hash proof before accepting; do not reset attempts.",
    "prev_status": null,
    "link_state": "verified"
   },
@@ -102398,14 +102398,14 @@
    "unit": "rel/movie_module/fn_12_D0B8.c",
    "addr": 53432,
    "size": 884,
-   "status": "matched",
+   "status": "blocked",
    "attempts": 1,
    "best_percent": 100.0,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
    "matched_commit": null,
-   "blocked_reason": "asm-only: privileged instruction (mtspr/mfspr/cache/sync); not expressible in C without inline asm",
+   "blocked_reason": "ownership-evidence: credit suspended; C and acceptance commit missing. Old blanket asm-only diagnosis is unproven: one HID2 read has a stock intrinsic avenue. Needs real source/layout/hash evidence, no attempt reset.",
    "prev_status": null,
    "link_state": "verified"
   },

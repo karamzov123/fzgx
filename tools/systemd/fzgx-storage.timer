@@ -1,0 +1,11 @@
+[Unit]
+Description=Monitor fzgx storage and compact closed evidence sessions every ten minutes
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=10min
+AccuracySec=1min
+Persistent=true
+
+[Install]
+WantedBy=timers.target
