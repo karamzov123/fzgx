@@ -69202,6 +69202,17 @@
   },
   {
     "module": "winning",
+    "source": "rel/winning/winning/fn_15_3368.c",
+    "symbols": [
+      "fn_15_3368"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/winning/winning.c"
+  },
+  {
+    "module": "winning",
     "source": "rel/winning/winning/fn_15_350.c",
     "symbols": [
       "fn_15_350"

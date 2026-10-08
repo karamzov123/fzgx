@@ -1872,6 +1872,119 @@ void fn_15_3174(void * arg0) {
 #pragma opt_propagation reset
 /* fzgx:end fn_15_3174 */
 
+/* fzgx:begin fn_15_3368 */
+struct fn_15_3368_data {
+    u8 pad_0[0xa4];
+    u8 unk_a4[0x114];
+    u8 unk_1b8[0x18];
+    u8 unk_1d0[0x70];
+    u8 unk_240[0xc];
+    u8 unk_24c[4];
+};
+extern struct fn_15_3368_data lbl_15_data_0;
+
+struct fn_15_3368_bss {
+    u8 pad_0[0x74];
+    void *unk_74;
+    void *unk_78;
+    u8 pad_7c[0x50];
+    s16 unk_cc;
+    s16 unk_ce;
+    u8 pad_d0[4];
+    void *unk_d4[16];
+};
+extern struct fn_15_3368_bss lbl_15_bss_0;
+
+struct fn_15_3368_obj {
+    u8 pad_0[0x18];
+    u32 unk_18;
+    u8 pad_1c[0x4a8];
+    u8 unk_4c4;
+};
+
+extern void *lbl_801A6410;
+extern s32 fn_1_12CB04(s16);
+extern s32 fn_1_12CCB0(s16, s16);
+extern void *fn_1_4630(void *, u32, u8 *, s32);
+extern void fn_1_8F45C(void *, s16, u32, u32);
+extern void fn_1_934CC(void *, void *, u8 *);
+extern void *fn_1_435C(void *);
+extern void fn_1_3F8C(u8 *, void *, void *, s32);
+extern void fn_15_3174(void *);
+extern void fn_1_8F62C(void *);
+extern void fn_1_92530(void *);
+
+#define FN_15_3368_SETUP(ID)                                                    \
+    do {                                                                       \
+        obj = fn_1_4630(lbl_801A6410, 0x4e0, data->unk_a4, 0x993);           \
+        slot = bss->unk_cc;                                                    \
+        tbl = bss->unk_d4;                                                     \
+        tbl[slot] = obj;                                                       \
+        obj = tbl[slot];                                                       \
+        fn_1_8F45C(obj, ID, 0x10000000, 0x80000000);                           \
+        fn_1_934CC(obj, (u8 *)obj + 0x148, data->unk_240);                     \
+        obj->unk_18 |= 0xc0000000; /* fzgx-allow: A1 flag pair, not an address */ \
+        obj->unk_4c4 = (u8)bss->unk_ce;                                        \
+        fn_1_435C(bss->unk_74);                                                \
+        fn_1_3F8C(data->unk_1b8, fn_1_8F62C, obj, 0xa);                        \
+        fn_1_3F8C(data->unk_24c, fn_15_3174, obj, 0xb);                        \
+        fn_1_435C(bss->unk_78);                                                \
+        fn_1_3F8C(data->unk_1d0, fn_1_92530, obj, 0xa);                        \
+    } while (0)
+
+#pragma opt_common_subs off
+void fn_15_3368(s16 arg0) {
+    s32 tmp_call3;
+    struct fn_15_3368_data *data;
+    struct fn_15_3368_bss *bss;
+    struct fn_15_3368_obj *obj;
+    s32 id;
+    s32 slot;
+    s32 cid;
+    s16 lab_t0;
+    s32 cid_2;
+    void **tbl;
+
+    data = &lbl_15_data_0;
+    (void) data;  /* fzgx: keeps the web at its definition */
+    bss = &lbl_15_bss_0;
+    id = arg0;
+    switch ((s16)fn_1_12CB04(id)) {
+    case 2:
+        FN_15_3368_SETUP(id);
+        bss->unk_cc++;
+        lab_t0 = id;
+        tmp_call3 = fn_1_12CCB0(lab_t0, 0);
+        cid = tmp_call3;
+        FN_15_3368_SETUP(cid);
+        bss->unk_cc++;
+        lab_t0 = id;
+        cid_2 = fn_1_12CCB0(lab_t0, 1);
+        FN_15_3368_SETUP(cid_2);
+        bss->unk_cc++;
+        break;
+    case 1:
+        FN_15_3368_SETUP(id);
+        bss->unk_cc++;
+        lab_t0 = id;
+        cid_2 = fn_1_12CCB0(lab_t0, 0);
+        FN_15_3368_SETUP(cid_2);
+        bss->unk_cc++;
+        bss->unk_ce++;
+        break;
+    case 0:
+        FN_15_3368_SETUP(id);
+        bss->unk_cc++;
+        bss->unk_ce++;
+        break;
+    }
+}
+#pragma opt_common_subs reset
+
+
+#undef FN_15_3368_SETUP
+/* fzgx:end fn_15_3368 */
+
 /* fzgx:begin fn_15_38FC */
 extern u32 lbl_15_bss_D4[32];
 extern u8 lbl_15_data_A4[176];
