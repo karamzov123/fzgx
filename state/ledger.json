@@ -1,5 +1,5 @@
 {
- "generated": 1791423385,
+ "generated": 1791424343,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -104625,16 +104625,16 @@
    "unit": "rel/movie_module/fn_12_23410.c",
    "addr": 144400,
    "size": 752,
-   "status": "unmatched",
-   "attempts": 17,
+   "status": "matched",
+   "attempts": 18,
    "best_percent": 100.0,
    "claimed_by": null,
    "claimed_at": null,
    "claim_ttl": null,
-   "matched_commit": null,
+   "matched_commit": "99606de6",
    "blocked_reason": null,
    "prev_status": null,
-   "link_state": null
+   "link_state": "verified"
   },
   {
    "symbol": "fn_12_23700",
@@ -602740,6 +602740,27 @@
    "outcome": "released",
    "notes": "harness crash (rc=-15); saved best candidate automatically",
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_68284.1791423357.c",
+   "stale_checks": 0,
+   "best_in_attempt": 0.0,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 22787,
+   "symbol": "fn_12_23410",
+   "agent": "hermes-librarian-movie-inline-recovery",
+   "harness": "manual-librarian",
+   "model": "deterministic-source-recovery",
+   "started": 1791423796,
+   "ended": 1791423796,
+   "checks": 0,
+   "final_percent": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0,
+   "outcome": "matched",
+   "notes": "Recover archived exact C: inline helper prevents 220 extra text bytes",
+   "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 0.0,
    "cache_read_tokens": 0,
