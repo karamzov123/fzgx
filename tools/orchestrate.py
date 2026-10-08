@@ -496,6 +496,21 @@ def finish_round(p: Project, a, model: str, module: str) -> Dict:
     return out
 
 
+def checkpoint_batch(p, batch, matched_count, harness, model, *, shadow=False, interrupted=False, total_count=0):
+    # SQLite/attempt bodies are authoritative. A presentation snapshot must not
+    # prolong shutdown, and shadow admission promises not to commit project state.
+    if shadow or interrupted:
+        return dict(snapshot_deferred=True, snapshot_reason='shadow' if shadow else 'interrupted')
+    with oracle.build_lock('submit.lock', timeout_s=1800):
+        oracle.clear_stale_index_lock()
+        api.snapshot(p)
+        subprocess.run(["git", "add", str(ROOT / "state" / "ledger.json")], cwd=ROOT, capture_output=True, check=True)
+        subprocess.run(["git", "commit", '--only', "-q", "-m", f"batch {batch}: {matched_count}/{total_count} matched ({harness}/{model})",
+                        '--', str(ROOT / 'state/ledger.json')], cwd=ROOT, capture_output=True, check=True)
+    return dict(snapshot_deferred=False)
+
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--harness", choices=["claude", "codex", "cline", "agy", "opencode"], default="codex")
@@ -677,13 +692,9 @@ def main(argv: Optional[List[str]] = None) -> int:
                      f"{_num(r['checks'])} | {_num(r['turns'])} | {r['cost']:.3f} | {r['secs']} |")
     rep.parent.mkdir(parents=True, exist_ok=True)
     rep.write_text("\n".join(lines) + "\n")
-    # Four provider batches end independently; the index has one writer at a time.
-    with oracle.build_lock('submit.lock', timeout_s=1800):
-        oracle.clear_stale_index_lock()
-        api.snapshot(p)
-        subprocess.run(["git", "add", str(ROOT / "state" / "ledger.json")], cwd=ROOT, capture_output=True, check=True)
-        subprocess.run(["git", "commit", '--only', "-q", "-m", f"batch {a.batch}: {len(matched)}/{len(results)} matched ({a.harness}/{model})",
-                        '--', str(ROOT / 'state/ledger.json')], cwd=ROOT, capture_output=True, check=True)
+    # Normal reporting checkpoints retain their original serialized path.
+    summary.update(checkpoint_batch(p, a.batch, len(matched), a.harness, model,
+                                    shadow=a.shadow, interrupted=bool(interrupted), total_count=len(results)))
     print(json.dumps({k: v for k, v in summary.items() if k != "results"}))
     return 0 if ver.get("ok") and not other else 1
 

@@ -73,6 +73,18 @@ Two read-only investigation agents and one helper implementation agent assisted 
 
 After restoration, the fleet total reached 405. The authoritative ledger attributes the new verified 2,240-byte `fn_1_138144` closure to `claude-sonnet-5-5`, accepted at commit `3e74a6bc`. It came from the preceding Sonnet batch; it is not evidence that the new search cache caused the closure.
 
+## Follow-up: bounded idle-worker cleanup and interruption reporting
+
+The external stalled-worker reproducer demonstrated that ToolPool previously waited indefinitely after stdin EOF. The fix bounds idle-worker cleanup (30-second EOF grace, 5-second TERM grace, 5-second KILL grace), using Linux pidfds and rechecked ownership. Escalation is refused when a request remains ambiguous/in flight or descendants remain. Busy mutation completion is still protected. Cancelled/malformed requests cannot reuse their worker, and closing during worker creation prevents dispatch after shutdown.
+
+Nine process-level tests cover idle EOF stalls, ignored TERM, busy/descendant protection, successful in-flight completion, ambiguous-result reuse, post-close dispatch and the worker-creation race. A real Luna replay completed normally in 18 seconds.
+
+The first real SIGTERM replay released its claim and finished the matcher in 27.4 seconds, but the outer orchestrator exceeded the 110-second observation limit while finishing reporting. The batch's own wall report was 29.7 seconds; this does not prove the idle-worker defect caused that reporting delay. Shadow runs nevertheless violated their documented non-committing contract by entering the final submit-lock ledger checkpoint.
+
+`checkpoint_batch()` now skips presentation snapshots/commits for shadow and interrupted batches, while keeping the database, attempt bodies and reports. Normal checkpoints keep their serialization; source acceptance and hash verification are not bypassed. In a second actual Luna SIGTERM replay, the test held submit.lock after a completed tool operation: the orchestrator exited in 0.306 seconds after SIGTERM, saved/released its attempt, left no claims/runners, and left HEAD unchanged. Summary explicitly reported snapshot_deferred=true.
+
+This repairs the reproduced idle-worker and optional reporting paths, not every possible hung RPC or compiler mutation. Genuine unfinished work still fails closed and may require owner-aware recovery. No transport/tool request deadline was added that could cancel an ambiguous mutation.
+
 ## Acceptance and next measurements
 
 Track verified bytes and unique accepted functions per wall-clock hour, tool-reaching fraction, first-tool latency, and terminal reasons. Compare equivalent target cohorts before permanent effort/model promotion. Do not increase concurrency or CPU allocation until phase telemetry and cgroup samples show local resource pressure rather than inference waits. Preserve existing source edits and all reference/hash gates.

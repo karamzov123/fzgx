@@ -168,16 +168,28 @@ class DeepSeekTransport:
 
 class ToolPool:
     """Persistent isolated CLI workers; never retry an ambiguous mutation."""
+    CLOSE_GRACE_S = 30
+    CLOSE_TERM_S = 5
+
     def __init__(self, limit, directory):
         self.directory = directory
         self.available = asyncio.Queue()
         self.processes = {}
+        self.busy = set()
+        self.known = {}
+        self.closing = False
         for slot in range(limit):
             self.available.put_nowait(slot)
 
     async def request(self, args, env):
+        from fleet_provider import ProcessDrainError, owned_processes
+        if self.closing:
+            raise ProcessDrainError('Tool pool is closing; request was not started')
         slot = await self.available.get()
         try:
+            if self.closing or slot in self.busy:
+                raise ProcessDrainError('Tool slot has an ambiguous request; refusing reuse')
+            self.busy.add(slot)
             proc = self.processes.get(slot)
             if proc is None or proc.returncode is not None:
                 with (self.directory / f'tool-worker-{slot}.stderr.log').open('a') as errors:
@@ -186,6 +198,14 @@ class ToolPool:
                         stdin=asyncio.subprocess.PIPE, stdout=asyncio.subprocess.PIPE,
                         stderr=errors, start_new_session=True, limit=32 * 1024 * 1024)
                 self.processes[slot] = proc
+                self.known[slot] = {}
+                owned_processes(proc.pid, self.known[slot])
+            assert proc.stdin is not None and proc.stdout is not None
+            if self.closing:
+                # Worker creation yielded to close(); no request has been sent.
+                proc.stdin.close()
+                self.busy.discard(slot)
+                raise ProcessDrainError('Tool pool closed during worker creation; request was not started')
             keys = ('FZGX_AGENT_ID', 'FZGX_SYMBOL', 'FZGX_HARNESS', 'FZGX_MODEL', 'FZGX_RESULT_FILE')
             proc.stdin.write((json.dumps(dict(args=['--json', *args],
                                               env={k: env[k] for k in keys if k in env})) + '\n').encode())
@@ -194,15 +214,63 @@ class ToolPool:
             if not line:
                 await proc.wait()
                 raise RuntimeError(f'tool worker {slot} exited {proc.returncode}; request was not retried')
-            return json.loads(line)
+            result = json.loads(line)
+            if (not isinstance(result, dict) or not isinstance(result.get('rc'), int)
+                    or isinstance(result.get('rc'), bool)
+                    or not isinstance(result.get('stdout'), str)
+                    or not isinstance(result.get('stderr'), str)):
+                raise ProcessDrainError('Malformed tool result; ambiguous request was not retried')
+            self.busy.discard(slot)
+            return result
         finally:
             self.available.put_nowait(slot)
 
     async def close(self):
+        from fleet_provider import ProcessDrainError, owned_processes
+        self.closing = True
+        if self.busy - self.processes.keys():
+            raise ProcessDrainError('Tool worker creation is still pending; shutdown not complete')
         for proc in self.processes.values():
             if proc.returncode is None:
                 proc.stdin.close()
-        await asyncio.gather(*(proc.wait() for proc in self.processes.values()))
+
+        def require_idle(slot, proc):
+            remaining = owned_processes(proc.pid, self.known.setdefault(slot, {}))
+            if slot in self.busy or set(remaining) - {proc.pid}:
+                raise ProcessDrainError(f'Tool worker {slot} has unresolved work/descendants; claim retained')
+            return remaining
+
+        def signal_idle(slot, proc, sig):
+            # Pin the actual Linux process, then recheck ownership and descendants.
+            # Never signal a process group containing a compiler or submission.
+            try:
+                fd = os.pidfd_open(proc.pid)
+            except ProcessLookupError:
+                return
+            try:
+                remaining = require_idle(slot, proc)
+                if proc.pid in remaining:
+                    signal.pidfd_send_signal(fd, sig)
+            finally:
+                os.close(fd)
+
+        async def reap(slot, proc):
+            try:
+                await asyncio.wait_for(proc.wait(), self.CLOSE_GRACE_S)
+            except TimeoutError:
+                signal_idle(slot, proc, signal.SIGTERM)
+                try:
+                    await asyncio.wait_for(proc.wait(), self.CLOSE_TERM_S)
+                except TimeoutError:
+                    signal_idle(slot, proc, signal.SIGKILL)
+                    await asyncio.wait_for(proc.wait(), self.CLOSE_TERM_S)
+            require_idle(slot, proc)
+
+        results = await asyncio.gather(*(reap(slot, proc) for slot, proc in self.processes.items()),
+                                       return_exceptions=True)
+        errors = [str(row) for row in results if isinstance(row, BaseException)]
+        if errors:
+            raise ProcessDrainError('; '.join(errors))
 
 
 class AppServer:
