@@ -1,5 +1,5 @@
 {
- "generated": 1791510223,
+ "generated": 1791510563,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -88340,7 +88340,7 @@
    "addr": 1091792,
    "size": 1096,
    "status": "unmatched",
-   "attempts": 0,
+   "attempts": 1,
    "best_percent": null,
    "claimed_by": null,
    "claimed_at": null,
@@ -610908,6 +610908,27 @@
    "cost_usd": 0.0,
    "outcome": "released",
    "notes": "harness incomplete (rc=0); saved best candidate automatically",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 0.0,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 23176,
+   "symbol": "fn_1_10A8D0",
+   "agent": "step5-bound-direct-20261008-hermes-1",
+   "harness": "hermes",
+   "model": "stepfun/step-5-preview:free",
+   "started": 1791510251,
+   "ended": 1791510562,
+   "checks": 0,
+   "final_percent": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "harness timeout (rc=130); saved best candidate automatically",
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 0.0,
