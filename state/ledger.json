@@ -1,5 +1,5 @@
 {
- "generated": 1791510888,
+ "generated": 1791510935,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -52572,7 +52572,7 @@
    "addr": 263820,
    "size": 132,
    "status": "unmatched",
-   "attempts": 31,
+   "attempts": 32,
    "best_percent": 99.63636,
    "claimed_by": null,
    "claimed_at": null,
@@ -610953,6 +610953,27 @@
    "best_body_path": "/home/armandofm/projects/fzgx/.fzgx/attempts/fn_1_1384C.1791510883.c",
    "stale_checks": 5,
    "best_in_attempt": 99.4958,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 23178,
+   "symbol": "fn_1_4068C",
+   "agent": "step5-six-direct-20261008-hermes-1",
+   "harness": "hermes",
+   "model": null,
+   "started": 1791510929,
+   "ended": 1791510935,
+   "checks": 0,
+   "final_percent": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "harness crash (rc=1); saved best candidate automatically",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 0.0,
    "cache_read_tokens": 0,
    "cache_write_tokens": 0
   }
