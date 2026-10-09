@@ -304,7 +304,7 @@ class SavedCandidates:
         # Before check archives existed, crashes could leave .best.c without an
         # attempt body_path. Keep ledger eligibility, then check that saved body.
         for symbol, row in self.rows.items():
-            if row['best_percent'] > self.threshold:
+            if (row['best_percent'] or 0) > self.threshold:
                 self.evidence[symbol].append(dict(origin='ledger:function', percent=row['best_percent']))
                 if not self.candidates[symbol]:
                     self.add(symbol, dict(percent=row['best_percent'],
@@ -382,8 +382,8 @@ def prepare(output: Path, threshold: float):
                                 kind='recovered', ledger_percent=saved.rows[symbol]['best_percent'])
     audit = dict(threshold=threshold, comparison='>', size_cap=None, sdk_excluded=False,
                  functions=len(manifest), bytes=sum(r['size'] for r in manifest.values()),
-                 ledger_above_threshold=sum(r['best_percent'] > threshold for r in saved.rows.values()),
-                 additional_to_ledger=[s for s in manifest if saved.rows[s]['best_percent'] <= threshold],
+                 ledger_above_threshold=sum((r['best_percent'] or 0) > threshold for r in saved.rows.values()),
+                 additional_to_ledger=[s for s in manifest if (saved.rows[s]['best_percent'] or 0) <= threshold],
                  evidence=dict(saved.evidence), stale=stale, missing=missing,
                  records_without_body=saved.missing, unreadable=saved.unreadable)
     (output / 'selection.json').write_text(json.dumps(audit, indent=2) + '\n')

@@ -1518,61 +1518,97 @@ def why_link(project: Project, symbol: str) -> Dict[str, object]:
             body = cand.read_text()
             break
     recarved = False
-    if not unit_src and body:
-        # Rebuild the unit this diagnosis needs from the rejected body. Carve only; the
-        # relink below supplies the content, and everything is undone before returning.
-        from .api import carve  # scoped: api imports oracle
-        from .ledger import Ledger as _Ledger
-        try:
-            carve(project, symbol)
-        except Exception as error:  # a carve needs the build tree; report, do not raise
-            return {"ok": False, "error": f"cannot re-carve the rejected unit: {error}",
-                    "preserved_body": str(sorted((STATE_DIR / "attempts").glob(f"{key}.linkfail.*.c"))[-1])}
-        _Ledger().db.execute("UPDATE functions SET unit=? WHERE symbol=?",
-                             (project.unit_of(sym), key))
-        unit_src = project.unit_of(sym)
-        recarved = True
-    if not unit_src:
-        return {"ok": False, "error": "no unit for this function",
-                "note": "no preserved link-fail body either; nothing to diagnose"}
-    with build_lock():
-        rec = project.unit_record(unit_src)
-        src_path = unit_source_path(project, unit_src)
-        saved_src = src_path.read_text() if src_path.exists() else None
-        units = project.load_units()
-        for u in units:
-            if u["source"] == unit_src:
-                u["status"] = "matching"
-        project.save_units(units)
-        if body and rec and not rec.get("tu"):
-            src_path.write_text(body)
-        elif body and rec and rec.get("tu"):
-            from . import tufile  # scoped: same reason
-            tufile.splice(project, rec, body)
-        configure(project)
-        cp = relink(project, keep_going=True)
-        diag = byte_diff(project, sym.module)
-        diag["relink_rc"] = cp.returncode
-        text = cp.stdout + cp.stderr
-        diag["failed_units"] = re.findall(r"FAILED: \[code=\d+\] (\S+)", text)[:8]
-        diag["errors"] = [l for l in text.splitlines() if l.startswith("#") and "Usage" not in l and "---" not in l][:12]
-        diag["tail"] = text.strip().splitlines()[-4:]
-        # restore
-        units = project.load_units()
-        for u in units:
-            if u["source"] == unit_src:
-                u["status"] = "nonmatching"
-        project.save_units(units)
-        if saved_src is not None and rec and not rec.get("tu"):
-            src_path.write_text(saved_src)
-        elif rec and rec.get("tu"):
-            from . import tufile  # scoped
-            tufile.remove(project, rec)
-        configure(project)
-        relink(project)
-    if recarved:
-        # Put the tree back exactly as the diagnosis found it: verify had already uncarved
-        # this unit, so a diagnosis must not leave a split range and a stub behind.
-        from .uncarve import uncarve  # scoped: uncarve imports oracle
-        uncarve(project, [unit_src])
-    return {"ok": True, "symbol": symbol, "unit": unit_src, "recarved": recarved, "diag": diag}
+    diagnostic_error = None
+    try:
+        if not unit_src and body:
+            # Rebuild the unit this diagnosis needs from the rejected body. Carve only; the
+            # relink below supplies the content, and everything is undone before returning.
+            from .api import carve  # scoped: api imports oracle
+            from .ledger import Ledger as _Ledger
+            try:
+                carve(project, symbol)
+                unit_src = project.unit_of(sym)
+                recarved = True
+            except Exception as error:  # a carve needs the build tree; report, do not raise
+                return {"ok": False, "error": f"cannot re-carve the rejected unit: {error}",
+                        "preserved_body": str(sorted((STATE_DIR / "attempts").glob(f"{key}.linkfail.*.c"))[-1])}
+            _Ledger().db.execute("UPDATE functions SET unit=? WHERE symbol=?",
+                                 (project.unit_of(sym), key))
+            unit_src = project.unit_of(sym)
+        if not unit_src:
+            return {"ok": False, "error": "no unit for this function",
+                    "note": "no preserved link-fail body either; nothing to diagnose"}
+        with build_lock():
+            rec = project.unit_record(unit_src)
+            src_path = unit_source_path(project, unit_src)
+            saved_src = src_path.read_text() if src_path.exists() else None
+            # A pre-existing block may be an accepted pool reconstruction. Diagnosis
+            # must restore the complete TU, not remove that block on its way out.
+            tu_path = ROOT / 'src' / rec['tu'] if rec and rec.get('tu') else None
+            saved_tu = tu_path.read_text() if tu_path and tu_path.exists() else None
+            original_status = rec.get('status', 'nonmatching') if rec else 'nonmatching'
+            probe_error = None
+            try:
+                units = project.load_units()
+                for u in units:
+                    if u["source"] == unit_src:
+                        u["status"] = "matching"
+                project.save_units(units)
+                if body and rec and not rec.get("tu"):
+                    src_path.write_text(body)
+                elif body and rec and rec.get("tu"):
+                    from . import tufile  # scoped: same reason
+                    tufile.splice(project, rec, body)
+                configure(project)
+                cp = relink(project, keep_going=True)
+                diag = byte_diff(project, sym.module)
+                diag["relink_rc"] = cp.returncode
+                text = cp.stdout + cp.stderr
+                diag["failed_units"] = re.findall(r"FAILED: \[code=\d+\] (\S+)", text)[:8]
+                diag["errors"] = [l for l in text.splitlines() if
+                                  ('error' in l.lower() or 'undefined' in l.lower() or
+                                   'multiply-defined' in l.lower() or 'previously defined' in l.lower() or
+                                   'not found' in l.lower() or 'failed to' in l.lower()) and
+                                  'warning' not in l.lower() and not l.startswith('###')][:40]
+                diag["tail"] = text.strip().splitlines()[-4:]
+            except BaseException as error:
+                probe_error = error
+                raise
+            finally:
+                try:
+                    # Restore exactly the ownership and source state present before diagnosis.
+                    units = project.load_units()
+                    for u in units:
+                        if u["source"] == unit_src:
+                            u["status"] = original_status
+                    project.save_units(units)
+                    if saved_tu is not None and tu_path is not None:
+                        tu_path.write_text(saved_tu)
+                    elif saved_src is not None and rec and not rec.get("tu"):
+                        src_path.write_text(saved_src)
+                    elif rec and rec.get("tu"):
+                        from . import tufile  # scoped
+                        tufile.remove(project, rec)
+                    configure(project)
+                    relink(project)
+                except BaseException as cleanup_error:
+                    if probe_error is not None:
+                        raise BaseExceptionGroup(
+                            "diagnostic and restoration both failed",
+                            [probe_error, cleanup_error]) from None
+                    raise
+        return {"ok": True, "symbol": symbol, "unit": unit_src, "recarved": recarved, "diag": diag}
+    except BaseException as error:
+        diagnostic_error = error
+        raise
+    finally:
+        if recarved and unit_src is not None:
+            try:
+                from .uncarve import uncarve
+                uncarve(project, [unit_src])
+            except BaseException as cleanup_error:
+                if diagnostic_error is not None:
+                    raise BaseExceptionGroup(
+                        "diagnostic and temporary-unit cleanup both failed",
+                        [diagnostic_error, cleanup_error]) from None
+                raise
