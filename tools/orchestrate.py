@@ -31,8 +31,8 @@ from fzgx.project import ROOT, STATE_DIR, Project
 
 MATCHER_TOOLS = ["Read", "mcp__fzgx__write_unit", "mcp__fzgx__patch_unit", "mcp__fzgx__check", "mcp__fzgx__read_evidence", "mcp__fzgx__release"]
 # Explicit fleet policy. No silent cheaper-model or lower-effort fallback.
-BOUND_HARNESS = ("cline", "agy", "opencode")
-EXPECTED_MODEL = {"claude": "claude-opus-5-5", "codex": "gpt-6.1-sol", "cline": "stealth/space-bunny-alpha", "agy": "gemini-3.8-flash-high", "opencode": "opencode/space-bunny-free"}
+BOUND_HARNESS = ("cline", "agy", "opencode", "hermes")
+EXPECTED_MODEL = {"claude": "claude-opus-5-5", "codex": "gpt-6.1-sol", "cline": "stealth/space-bunny-alpha", "agy": "gemini-3.8-flash-high", "opencode": "opencode/space-bunny-free", "hermes": "stepfun/step-5-preview:free"}
 CLAUDE_MODELS = {"haiku": "claude-haiku-4-5", "sonnet": "claude-sonnet-5", "opus": "claude-opus-5-5"}
 # $/M tokens from platform.openai.com/docs/pricing (2026-09-08): input, cached input, cache write, output.
 # Codex reports usage but no cost; Claude Code reports total_cost_usd itself.
@@ -220,6 +220,8 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
     env = {**os.environ, 'CLAUDE_CODE_DISABLE_TERMINAL_TITLE': '1', 'FZGX_AGENT_ID': agent_id,
            'FZGX_SYMBOL': symbol, 'FZGX_HARNESS': harness, 'FZGX_MODEL': model,
            'FZGX_RESULT_FILE': str(result_file)}
+    # Tool-progress watchdog is owned by fleet_provider; retain an explicit
+    # operator override but do not silently stretch Hermes silence to 900 seconds.
 
     def worker_cli(*args, timeout_s=900):
         cp = subprocess.run([sys.executable, str(ROOT / 'tools/fzgx.py'), '--json', *args],
@@ -371,11 +373,11 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
                 outcome = 'matched' if att['outcome'] in ('matched', 'matched-pool', 'shadow-matched') else outcome + '+released'
         except Exception as error:
             out += '\nAutomatic cleanup failed: ' + str(error)
-    # AGY and opencode report no model string: AGY's transport masks it, and
+    # AGY, opencode and hermes report no model string: AGY's transport masks it,
     # opencode's model is pinned by the session-local agent config rather than
-    # self-reported. Both are excluded so a future field cannot cause a false
-    # WRONG-MODEL abort.
-    if harness not in ('agy', 'opencode') and info["model"] and not info["model"].startswith(EXPECTED_MODEL[harness]):
+    # self-reported, and hermes' stream events name the model only on the init event.
+    # All are excluded so a future field cannot cause a false WRONG-MODEL abort.
+    if harness not in ('agy', 'opencode', 'hermes') and info["model"] and not info["model"].startswith(EXPECTED_MODEL[harness]):
         outcome = f"WRONG-MODEL({info['model']})"
     pct = 100.0 if outcome == "matched" else (att["best_in_attempt"] if att else None)
     checks = att["checks"] if att else None
@@ -510,10 +512,9 @@ def checkpoint_batch(p, batch, matched_count, harness, model, *, shadow=False, i
     return dict(snapshot_deferred=False)
 
 
-
 def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--harness", choices=["claude", "codex", "cline", "agy", "opencode"], default="codex")
+    ap.add_argument("--harness", choices=["claude", "codex", "cline", "agy", "opencode", "hermes"], default="codex")
     ap.add_argument("--provider", choices=["openai", "deepseek"], default="openai", help="codex model provider")
     ap.add_argument("--api-key-file", type=Path, help="DeepSeek key file; otherwise use DEEPSEEK_API_KEY")
     ap.add_argument("--model", help="explicit provider model; defaults: Opus 5.5 / GPT 6.1-Sol / Space Bunny Alpha / Gemini 3.8 High")
@@ -538,7 +539,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--no-trivial", action="store_true", help="skip the mechanical blr/li pass first")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--fast", action="store_true", help="codex: service_tier=fast (2x price, faster generation)")
-    ap.add_argument("--effort", choices=["none", "minimal", "low", "medium", "high", "xhigh", "max"], help="codex: model_reasoning_effort")
+    ap.add_argument("--effort", choices=["none", "minimal", "low", "medium", "high", "xhigh", "max", "ultra"], help="model reasoning effort; hermes accepts ultra")
     ap.add_argument("--shadow", action="store_true",
                     help="A/B trial: run on already-matched functions without relinking or committing")
     ap.add_argument("--finish", action="store_true", help="after the batch: TU-finish pass, revise round on its queue, pass again")

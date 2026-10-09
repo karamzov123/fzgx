@@ -15,6 +15,20 @@ TOOLS = ['write_unit', 'patch_unit', 'check', 'search', 'read_evidence', 'releas
 # must not live under $HOME: ~/AGENTS.md belongs to an unrelated project and
 # would otherwise be injected into a matcher prompt.
 OPENCODE_ROOT = Path(os.environ.get('XDG_RUNTIME_DIR', f'/run/user/{os.getuid()}')) / 'fzgx-opencode-clients'
+# Hermes reads AGENTS.md/CLAUDE.md from the working directory upwards exactly like
+# opencode, so its client directories live outside $HOME for the same reason (see
+# client_root). One directory per session; the six bound tools arrive over the fzgx
+# MCP server declared in the operator's hermes config, which reads its binding from
+# the FZGX_* variables the runner puts on this process.
+HERMES_ROOT = Path(os.environ.get('XDG_RUNTIME_DIR', f'/run/user/{os.getuid()}')) / 'fzgx-hermes-clients'
+# The only toolset a matcher may hold: the fzgx MCP server's six bound tools. Hermes
+# has no agent-prompt flag, so the matcher contract travels in the prompt itself
+# (hermes_command), the way the agy transport does it.
+HERMES_TOOLSET = 'fzgx'
+HERMES_MAX_TURNS = 40
+# The one reasoning level this model survives on a full-size assignment: higher levels
+# stall the portal outright (see the POLICY note in fleet_multi.py).
+HERMES_DEFAULT_EFFORT = 'low'
 # One shared config root for every session. opencode bootstraps ~62MB of
 # node_modules into whatever XDG_CONFIG_HOME points at, and /run/user is tmpfs,
 # so a per-session config root would spend 62MB of RAM per matcher session. The
@@ -92,6 +106,8 @@ def client_root(family, agent_id):
     """
     if family == 'opencode':
         return OPENCODE_ROOT / agent_id
+    if family == 'hermes':
+        return HERMES_ROOT / agent_id
     return Path.home() / '.cache/fzgx-agents/clients' / agent_id
 
 def opencode_config(env, model):
@@ -172,11 +188,83 @@ def opencode_command(prompt, model, directory, env):
         return [str(ROOT / '.venv/bin/python'), str(ROOT / 'tools/fleet_opencode_launch.py'), *cmd]
     return cmd
 
+def hermes_command(prompt, model, directory, env):
+    """Hermes matcher session: one nous-portal model, the fzgx toolset, nothing else.
+
+    `--toolsets fzgx` is the whole boundary: hermes then advertises only the six
+    mcp__fzgx__* tools (verified: no terminal, file, web, delegate or skill tools).
+    The reasoning level comes from FZGX_EFFORT and defaults to HERMES_DEFAULT_EFFORT:
+    measured on a real 37 KB assignment, only `low` reaches write_unit; `medium`,
+    `high` and `ultra` stall the portal with no events for minutes.
+
+    The prompt travels through --query-file: the assignment plus the matcher contract
+    is well past a comfortable argv, and the file form is passed verbatim with no
+    shell interpretation. The contract is prepended here because hermes has no
+    system-prompt flag to carry it, exactly as the agy transport does.
+    """
+    # A private session home keeps tool-search policy away from the operator's
+    # interactive Hermes configuration. Reuse existing Nous auth, never credentials
+    # copied into prompts. Configure through the installed CLI, not YAML edits.
+    import fcntl
+    import hashlib
+    import shutil
+    operator_home = Path(env.get('HERMES_HOME') or Path.home() / '.hermes')
+    session_home = Path.home() / '.cache/fzgx-agents/hermes-runtime/active'
+    session_home.mkdir(mode=0o700, parents=True, exist_ok=True)
+    config = operator_home / 'config.yaml'
+    bound_mcp = {'fzgx': {'enabled': True,
+        'command': str(ROOT / '.venv/bin/python'),
+        'args': [str(ROOT / 'tools/fleet_mcp.py')],
+        'tools': {'include': TOOLS, 'resources': False, 'prompts': False},
+        'env': {key: '${' + key + '}' for key in ('FZGX_SYMBOL', 'FZGX_AGENT_ID',
+            'FZGX_HARNESS', 'FZGX_MODEL', 'FZGX_RESULT_FILE')}}}
+    signature = hashlib.sha256((config.read_bytes() if config.exists() else b'') +
+                               json.dumps(bound_mcp, sort_keys=True).encode() + b'direct-v1').hexdigest()
+    env['HERMES_HOME'] = str(session_home)
+    # One isolated fleet runtime, not an installation per function. Serialize
+    # setup; identity placeholders resolve from each client's environment.
+    with (session_home / 'fleet-config.lock').open('a') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        marker = session_home / 'fleet-config.signature'
+        if not marker.exists() or marker.read_text() != signature:
+            if config.is_file():
+                shutil.copyfile(config, session_home / 'config.yaml')
+                (session_home / 'config.yaml').chmod(0o600)
+            for name in ('auth.json', '.env'):
+                original = operator_home / name
+                link = session_home / name
+                if original.exists() and not link.exists():
+                    link.symlink_to(original)
+            for key, value in (('mcp_servers', json.dumps(bound_mcp)),
+                               ('tools.tool_search.enabled', 'off')):
+                configured = subprocess.run(['hermes', 'config', 'set', '--force', key, value],
+                    env=env, capture_output=True, text=True, timeout=120)
+                if configured.returncode:
+                    raise RuntimeError('Hermes session configuration failed: ' +
+                                       (configured.stderr or configured.stdout)[-1000:])
+            marker.write_text(signature)
+    seed = directory / 'prompt.txt'
+    instruction = ('You are a function-bound decompilation matcher. Your ONLY tools are the fzgx MCP '
+        'server tools (mcp__fzgx__write_unit, mcp__fzgx__patch_unit, mcp__fzgx__check, '
+        'mcp__fzgx__search, mcp__fzgx__read_evidence, mcp__fzgx__release). Identity is bound by the '
+        'host: never pass symbol or agent parameters, and never call any other tool. '
+        'Do not ask for shell, files, web, or user input. Source is already in the '
+        'assignment; continue from it.\n'
+        + (ROOT / 'tools/codex_matcher.md').read_text() + '\n')
+    seed.write_text(instruction + prompt)
+    return ['hermes', 'chat', '--oneshot', '--query-file', str(seed),
+            '--provider', 'nous', '--model', model,
+            '--reasoning', env.get('FZGX_EFFORT', HERMES_DEFAULT_EFFORT),
+            '--toolsets', HERMES_TOOLSET, '--max-turns', str(HERMES_MAX_TURNS),
+            '--ignore-rules', '--source', 'tool', '--format', 'stream-json']
+
 def command(family, prompt, model, directory, env):
     if family == 'claude':
         return claude_command(prompt, model, directory, env)
     if family == 'opencode':
         return opencode_command(prompt, model, directory, env)
+    if family == 'hermes':
+        return hermes_command(prompt, model, directory, env)
     if family == 'cline':
         seed = directory / 'prompt.txt'
         seed.write_text(prompt)

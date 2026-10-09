@@ -2,7 +2,9 @@
 
 ## Current owner direction: interactive five-provider bar, bounded six-session fleet (2026-10-07)
 
-The owner directed one OpenCode icon (not per-model icons), with four configured instances pinned to `opencode/space-bunny-free` xHigh; cap OpenCode concurrency at 3 and total concurrency at 6, allocated as Codex ×2 + AGY ×1 + OpenCode ×3. The bar remains five provider tiles: Claude, GPT, Cline, AGY, and one grouped OpenCode tile. Its tooltip now lists the four lane states and has left-click group toggle, right-click scale-up, scroll scale, and middle-click log controls. `oc4` remains configured to Space Bunny Free but disabled until its existing provider cooldown expires; the control refuses to bypass that timer. Automatic surge remains disabled.
+The owner directed one grouped tile (not per-model icons) for the four matcher lanes, now running the **hermes** transport against `stepfun/step-5-preview:free` on the Nous portal at `low` reasoning; concurrency for the group is capped at 4 and the fleet total at 6, allocated as those ×4 + Codex ×2. The bar remains five provider tiles: Claude, GPT, Cline, AGY, and the grouped matcher tile. Its tooltip lists the four lane states and has left-click group toggle, right-click scale-up, scroll scale, and middle-click log controls. All four lanes are enabled; the control still refuses to bypass a provider cooldown. Automatic surge remains disabled.
+
+The opencode transport was retired for these lanes on measured evidence: the opencode free tier answers the fleet's restricted matcher agent with `403 FreeTierError: OpenCode's free tier can only be used from within Opencode` for every free model (`step-5-preview-free`, `muse-spark-1.3-contributor-free`, `ling-3.1-flash-free`), which parked all four lanes as `unavailable` within a minute. The same model is served by the Nous portal through hermes, which keeps the identical six-tool/no-shell boundary: hermes runs with `--toolsets fzgx`, so the only advertised tools are `mcp__fzgx__write_unit|patch_unit|check|search|read_evidence|release` plus its own MCP bridge (`tool_search`/`tool_describe`/`tool_call`, confined to the enabled toolset). The matcher contract travels in the prompt because hermes has no agent-prompt flag.
 
 At the latest readback, `fzgx-fleet.service` and `fzgx-awake.service` are active. The refreshed Ninja/DTK gate passed all 16 target hashes before work. The Eww bar was reopened on monitor 0; its OpenCode tile read 3/3 sessions active and showed four lanes, with lane 4's retry timer. The small-model trial evidence remains limited: `gpt-6-luna` is the Codex catalog ID (not `gpt-6-luna-900k`) and has no exact-match evidence in the bounded trials; Space Bunny is explicitly selected by the owner despite its recent non-match trial outcomes. Keep the six-tool/no-shell matcher boundary and do not claim a match before link verification.
 
@@ -40,7 +42,7 @@ This is `~/projects/fzgx`, not the legacy NATC/PM fleet. The enabled user servic
 
 ## Explicit model policy
 
-All model IDs are pinned and controls never silently substitute providers. The current session mix is Codex ×2, AGY ×1, OpenCode ×3, capped at six. A fourth Space Bunny lane is configured but remains on its existing cooldown; Claude and Cline remain off.
+All model IDs are pinned and controls never silently substitute providers. The current session mix is matcher lanes ×4 (hermes), Codex ×2, capped at six. All four lanes are enabled; Claude and Cline remain off.
 
 | Provider | Requested model/effort | Runtime identifier |
 | --- | --- | --- |
@@ -48,15 +50,17 @@ All model IDs are pinned and controls never silently substitute providers. The c
 | GPT | 6.1-Sol Medium | gpt-6.1-sol, medium |
 | AGY | Gemini 3.8 High | gemini-3.8-flash-high, high |
 | Cline | Space Bunny Alpha High | stealth/space-bunny-alpha, high |
-| OpenCode | Space Bunny Free xHigh ×4 configured, ×3 concurrent | opencode/space-bunny-free, xhigh |
+| Hermes matcher lanes | Step 5 Preview Free low ×4 concurrent | stepfun/step-5-preview:free, low |
+
+Reasoning effort on the Hermes lanes is pinned to `low`, not claimed universally optimal. Earlier medium samples were bimodal; new bounded medium probes still produced zero compiler receipts even with exactly six direct MCP schemas registered. A low-effort probe on `fn_1_1384C` performed ten real compiler cycles (best 73.6%) in 318 seconds, but delivered no oracle match. These samples are not a controlled benchmark. The Hermes default compiler-progress idle bound is now 240 seconds, independently overrideable with `FZGX_TOOL_IDLE_TIMEOUT_S`. It measures compiler receipts, not stdout, reasoning, or discovery calls; silent sessions drain and save/release before advancing. Other provider defaults remain unchanged.
 
 AGY's installed authenticated model catalog recognizes that identifier. Quota failure remains quota failure, not permission to choose a different model. Its reset time is parsed for automatic retry.
 
-## OpenCode grouped tile and controlled pool
+## Hermes matcher lanes and the controlled pool
 
-Four `oc1`..`oc4` lanes are configured with the same exact pin, `opencode/space-bunny-free`, at xHigh. They share one OpenCode Eww tile; each lane appears in its tooltip. Group controls are operator-driven: left-click toggles the group, right-click/scroll-up adds a session, scroll-down removes one, and middle-click opens the active lane's log. The group respects `OPEN_CODE_ACTIVE_CAP = 3` and the global `FLEET_CAP = 6`, leaving room for Codex ×2 and AGY ×1. A cooling lane is not force-enabled; at the last readback oc4 remained disabled until its provider retry timer expires. `automatic_surge` remains false, so paid-provider state cannot silently enable OpenCode.
+Four `oc1`..`oc4` lanes (lane ids retained for ledger continuity) are configured with the same exact pin, `stepfun/step-5-preview:free` at `low`, served by hermes through the Nous portal. They share one tile; each lane appears in its tooltip. Group controls are operator-driven: left-click toggles the group, right-click/scroll-up adds a session, scroll-down removes one, and middle-click opens the active lane's log. The group respects `OPEN_CODE_ACTIVE_CAP = 4` and the global `FLEET_CAP = 6`, so four matcher sessions plus Codex ×2 fill the cap and AGY must stay off while all four lanes run. A cooling lane is not force-enabled. `automatic_surge` remains false, so paid-provider state cannot silently enable the group.
 
-Each OpenCode session still uses the same six bound matcher tools and no shell/filesystem. The family lanes are function-atomic; shared claims prevent duplicate ownership. Catalog presence or a running process is not a match—only link-verified oracle acceptance counts.
+Each Hermes session advertises exactly the six bound matcher tools and no shell/filesystem. `fleet_clients.hermes_command` prepends the matcher contract (previously constructed but discarded), uses `--ignore-rules --source tool`, and builds a isolated, reusable disk-backed fleet runtime home under `~/.cache/fzgx-agents/hermes-runtime/active`. It copies configuration privately and configures it through the installed CLI: only the bound `fzgx` server, native six-tool include filter, resource/prompt utilities disabled, and `tools.tool_search.enabled=off` so schemas arrive directly without discovery round trips. Function/agent environment uses per-process placeholders; setup is serialized and signature-cached. Auth is reused; the runtime/dependency environment is shared across matcher sessions rather than rebuilt per function, avoiding hundreds of MB per session and exhausting `/run/user/1000`. The operator's interactive configuration and memories remain unchanged. Any native tool call — terminal, file, web, delegate — remains a session-ending violation in `fleet_provider.py`. Compiler-progress silence triggers descendant drain before cleanup. Catalog presence, running processes, or compiler attempts are not deliveries: only link-verified oracle acceptance counts.
 
 The opencode transport has three constraints that are load-bearing and easy to
 regress: the client runs from a directory outside `$HOME` (opencode loads `AGENTS.md`
@@ -104,11 +108,13 @@ truncation worse. The measured symptom was 32 of 209 turns truncated before any 
 32768. Both are raised here because the cap increase is what makes the effort increase
 affordable — had only the effort moved, the expected result was fewer, not more, usable turns.
 
-`xxhigh` is not a real value anywhere: `orchestrate.py --effort` stops at `xhigh`/`max`, and
-nothing downstream accepts it. `xhigh` is the ceiling that can actually be set.
+`ultra` exists only for hermes: `orchestrate.py --effort` accepts it, and hermes is the sole
+transport that reaches it. Measured on `stepfun/step-5-preview:free` it stalls the model on a
+full-size assignment, so the lanes are pinned to `low` (see the effort table above); the value is
+accepted for re-measurement, not for use.
 
-Cline (`stealth/space-bunny-alpha`) and the opencode surge families
-(`opencode/space-bunny-free`) are free with no usage limit for a few more days. That
+Cline (`stealth/space-bunny-alpha`) and the matcher surge families
+(`stepfun/step-5-preview:free` via hermes) are free with no usage limit for a few more days. That
 changes the allocation rule, and it is worth stating plainly because the obvious
 efficiency ranking points the other way.
 

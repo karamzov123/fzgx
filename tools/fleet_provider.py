@@ -11,6 +11,9 @@ from fleet_clients import client_root, command
 from fleet_activity import ToolProgress
 
 STOP = threading.Event()
+# hermes reaches MCP tools through a bridge; `--toolsets fzgx` confines it to the fzgx
+# server, so these three names are plumbing rather than an escape from the boundary.
+HERMES_BRIDGE_TOOLS = frozenset({'tool_search', 'tool_describe', 'tool_call'})
 
 class ProcessDrainError(RuntimeError):
     """Do not save/release a claim whose owned descendants have not drained."""
@@ -168,6 +171,12 @@ class Usage:
         if row.get('event') == 'result' and isinstance(row.get('result'), dict):
             usage = row['result'].get('usage') or {}
             self.total = dict(inputTokens=(usage.get('input_tokens', 0) or 0)+(usage.get('cache_read_tokens', 0) or 0), outputTokens=usage.get('output_tokens', 0) or 0)
+        if kind == 'result' and isinstance(row.get('tokens'), dict):
+            # hermes reports usage on the terminal result event as `tokens`, not `usage`.
+            t = row['tokens']
+            cache = t.get('cache_read', 0) or 0
+            self.total = dict(inputTokens=(t.get('input', 0) or 0) + cache,
+                              outputTokens=t.get('output', 0) or 0)
         if kind == 'usage-updated' and isinstance(row.get('usage'), dict):
             # inputTokens is cache-inclusive; carry the cache split through so cost
             # and cross-family comparisons are measured rather than assumed
@@ -190,7 +199,8 @@ class Usage:
         return self.total
 
 def run(family, prompt, model, directory, env, timeout_s):
-    idle_timeout=float(env.get('FZGX_TOOL_IDLE_TIMEOUT_S', '600'))
+    idle_timeout=float(env.get('FZGX_TOOL_IDLE_TIMEOUT_S',
+                               '240' if family == 'hermes' else '600'))
     if not 0 <= idle_timeout < float('inf'):
         raise ValueError('FZGX_TOOL_IDLE_TIMEOUT_S must be finite and nonnegative')
     client = client_root(family, env['FZGX_AGENT_ID'])
@@ -222,8 +232,15 @@ def run(family, prompt, model, directory, env, timeout_s):
                 # call ever escapes it, stop the session immediately instead of
                 # letting it wander through the tree burning the assignment.
                 if row.get('type') == 'tool_use':
-                    name=(row.get('part') or {}).get('tool') or ''
-                    if not name.startswith('fzgx_'):
+                    # opencode nests the name under part.tool; hermes puts it at the
+                    # top level, prefixes MCP tools with mcp__<server>__, and reaches
+                    # them through its own bridge (tool_search/tool_describe/tool_call).
+                    # The bridge is hermes' MCP plumbing, gated to the enabled toolset
+                    # (fzgx) by --toolsets, so it is part of the boundary; every native
+                    # tool -- terminal, file, web, delegate -- is still fatal here.
+                    name=(row.get('name') or (row.get('part') or {}).get('tool') or '')
+                    if not (name.startswith('fzgx_') or name.startswith('mcp__fzgx__')
+                            or name in HERMES_BRIDGE_TOOLS):
                         violation.set()
                         with (directory / 'violations.jsonl').open('a') as out:
                             out.write(json.dumps(dict(timestamp=time.time(),

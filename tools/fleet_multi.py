@@ -32,12 +32,12 @@ POLICY = {
     # parks it at PERMANENT_RETRY if it is ever switched back on while still withdrawn.
     'cline': {'harness':'cline','model':'stealth/space-bunny-alpha','effort':'high','display':'Space Bunny Alpha High'},
 }
-# OpenCode has four configured work slots, all pinned to the same approved model.
-# The Eww tile controls the group; the global FLEET_CAP and OPEN_CODE_ACTIVE_CAP
-# limit concurrent execution to three alongside two Codex and one AGY session.
+# The four opencode work slots are configured here but run the hermes transport (see the
+# POLICY loop below). The Eww tile controls the group; the global FLEET_CAP and
+# OPEN_CODE_ACTIVE_CAP limit concurrent execution to four.
 PAID = ('claude', 'gpt', 'agy')
 SURGE = ('oc1', 'oc2', 'oc3', 'oc4')
-OPEN_CODE_ACTIVE_CAP = 3
+OPEN_CODE_ACTIVE_CAP = 4
 SURGE_DELAY = 600      # retained for the disabled automatic-surge policy
 SURGE_RETIRE = 1800
 UNAVAILABLE = ('rate-limited', 'error', 'unavailable')
@@ -125,9 +125,19 @@ FALLBACK_TTL = 1800
 # single mis-parse to park a lane for days.
 RETRY_MAX = 3 * 3600
 for _n in SURGE:
-    POLICY[_n] = {'harness':'opencode','model':'opencode/space-bunny-free','effort':'xhigh',
-                  'display':f'Space Bunny Free xHigh #{_n[-1]}','managed':False}
-    META[_n] = (f'OpenCode #{_n[-1]}', chr(0xF0A9B))
+    # Hermes, not opencode: the opencode free tier answers the restricted matcher agent
+    # with 403 FreeTierError ("can only be used from within Opencode") for every free
+    # model, which retired all four lanes inside a minute. The same model is served by
+    # the Nous portal through hermes. The six bound tools still arrive over
+    # fleet_mcp.py; hermes' `--toolsets fzgx` leaves nothing else advertised. No opencode
+    # model is pinned anywhere in the fleet policy.
+    #
+    # Medium still produced zero tool receipts in bounded direct-schema probes.
+    # Low has executed real compiler cycles. Bound compiler silence to 240 seconds
+    # in fleet_provider so upstream thinking/discovery cannot monopolize a lane.
+    POLICY[_n] = {'harness':'hermes','model':'stepfun/step-5-preview:free','effort':'low',
+                  'display':f'Step 5 Free Low #{_n[-1]}','managed':False}
+    META[_n] = (f'Hermes #{_n[-1]}', chr(0xF0A9B))
 del _n
 CONTROL = CACHE / 'control-v3.json'
 MODEL_POLICY = CACHE / 'model-policy.json'
@@ -345,8 +355,8 @@ def one_word_tier(family=None):
 #   >2K            214      206          8      <- ditto
 #
 # The allocation below preserves the measured Cline 1-2 KB band and reflects the
-# owner's current OpenCode request: four Space Bunny Free slots with three active
-# concurrently. The replicas share the broad virgin-work supply; atomic claims
+# owner's current request: four Step 5 Free (hermes) slots with all four
+# active concurrently. The replicas share the broad virgin-work supply; atomic claims
 # and per-family history prevent duplicate ownership.
 #
 # A band is a supply statement, not a yield statement: it says where the untouched work is, and
@@ -361,7 +371,7 @@ FAMILY_BANDS = {
     # cline: the 1-2 KB pool, the largest and the one with measured conversion (12.1%, 55/454).
     # Its old band was (257,512), which held 283 functions and 0 virgin.
     'cline':  (1024, 2048),
-    # Four pinned Space Bunny lanes share the current virgin-work pool. Claims
+    # Four pinned Step 5 Free lanes share the current virgin-work pool. Claims
     # remain function-atomic and the one-word rotation keeps their cheap repairs distinct.
     'oc1':    (1024, 1 << 30),
     'oc2':    (1024, 1 << 30),
