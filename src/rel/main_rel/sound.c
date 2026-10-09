@@ -513,6 +513,206 @@ void fn_1_A1360(void) {
 }
 /* fzgx:end fn_1_A1360 */
 
+/* fzgx:begin fn_1_A2A70 pool noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/sound.h"
+
+#pragma section code_type ".fzgxpool"
+static const u32 fzgx_pool_table1[1] = {0x43300000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep1(void) { const u32 *volatile cp; cp = fzgx_pool_table1; }  /* fzgx-allow: S2 pool primer sink */
+static const u32 fzgx_pool_table2[1] = {0x80000000};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep2(void) { const u32 *volatile cp; cp = fzgx_pool_table2; }  /* fzgx-allow: S2 pool primer sink */
+#pragma section code_type ".text"
+
+struct fn_1_A2A70_lbl_1_bss_6EA98 {
+    u8 pad_0[0x1C];
+    u32 unk_1C;
+    u8 pad_20[0x4];
+    f32 unk_24;
+    f32 unk_28;
+    u8 pad_2C[0xC];
+    void **unk_38;
+    u8 pad_3C[0x774];
+    u8 unk_7B0[4];
+    u8 pad_7B4[0xD4];
+    f32 unk_888;
+    f32 unk_88C;
+};
+extern const f64 lbl_1_rodata_42F0;
+extern const f32 lbl_1_rodata_446C;
+extern const f32 lbl_1_rodata_4470;
+extern const f32 lbl_1_rodata_4474;
+extern s32 fn_800672E4(u32, s32);
+extern u32 fn_8004BED0(void *);
+
+#pragma opt_common_subs off
+/* file-scope objects of the retail TU, in retail order: MWCC addresses them off one section base */
+u32 fzgx_obj_lbl_1_bss_6EA98;
+u32 fzgx_obj_lbl_1_bss_6EA9C[2];
+u8 lbl_1_bss_6EAA4;
+u8 lbl_1_bss_6EA98_gap_6EAA5;
+u8 lbl_1_bss_6EAA6;
+u8 lbl_1_bss_6EA98_gap_6EAA7;
+u32 lbl_1_bss_6EAA8[2];
+u8 lbl_1_bss_6EAB0;
+u8 lbl_1_bss_6EA98_gap_6EAB1;
+u16 lbl_1_bss_6EA98_gap_6EAB1_fill_6EAB2;
+u32 fzgx_obj_lbl_1_bss_6EAB4;
+u32 lbl_1_bss_6EAB4_fill_6EAB8;
+f32 lbl_1_bss_6EAB4_8;
+f32 lbl_1_bss_6EAB4_C;
+u16 lbl_1_bss_6EAB4_fill_6EAC4;
+u16 fzgx_obj_lbl_1_bss_6EAC6;
+u32 lbl_1_bss_6EAC6_fill_6EAC8[2];
+void **fzgx_obj_lbl_1_bss_6EAD0;
+u32 lbl_1_bss_6EAD0_fill_6EAD4[449];
+u8 fzgx_obj_lbl_1_bss_6F1D8;
+u8 lbl_1_bss_6EA98_gap_6F1D9;
+u16 lbl_1_bss_6EA98_gap_6F1D9_fill_6F1DA;
+u32 fzgx_obj_lbl_1_bss_6F1DC;
+u8 fzgx_obj_lbl_1_bss_6F1E0;
+u8 lbl_1_bss_6F1E1;
+u16 lbl_1_bss_6EA98_gap_6F1E2;
+u32 fzgx_obj_lbl_1_bss_6F1E4[21];
+u8 lbl_1_bss_6F1E4_fill_6F238;
+u8 lbl_1_bss_6F239;
+u16 lbl_1_bss_6EA98_gap_6F23A;
+u32 lbl_1_bss_6F23C;
+u16 lbl_1_bss_6F23C_fill_6F240;
+u8 lbl_1_bss_6F23C_fill_6F242;
+u8 fzgx_obj_lbl_1_bss_6F243;
+u32 lbl_1_bss_6F244_fill_6F244;
+u8 lbl_1_bss_6F244_4[4];
+u32 lbl_1_bss_6F244_fill_6F24C[30];
+u8 lbl_1_bss_6F2C4;
+u8 lbl_1_bss_6EA98_gap_6F2C5;
+u16 lbl_1_bss_6EA98_gap_6F2C5_fill_6F2C6;
+u32 lbl_1_bss_6F2C8[4];
+u32 lbl_1_bss_6F2D8[15];
+u16 lbl_1_bss_6F2D8_fill_6F314;
+u8 lbl_1_bss_6F316;
+u8 lbl_1_bss_6F317;
+u16 lbl_1_bss_6EA98_gap_6F318;
+u16 lbl_1_bss_6F31A_fill_6F31A;
+u32 lbl_1_bss_6F31A_fill_6F31C;
+f32 lbl_1_bss_6F31A_6;
+f32 lbl_1_bss_6F31A_A;
+u32 lbl_1_bss_6F31A_fill_6F328[31];
+
+#pragma section code_type ".fzgxpool"
+static void fzgx_bss_layout(void) {
+    volatile u8 s;  /* fzgx-allow: S2 layout primer sink: MWCC emits .bss objects in first-access order */
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6EA98;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6EA9C;
+    s = *(u8 *)&lbl_1_bss_6EAA4;
+    s = *(u8 *)&lbl_1_bss_6EA98_gap_6EAA5;
+    s = *(u8 *)&lbl_1_bss_6EAA6;
+    s = *(u8 *)&lbl_1_bss_6EA98_gap_6EAA7;
+    s = *(u8 *)&lbl_1_bss_6EAA8;
+    s = *(u8 *)&lbl_1_bss_6EAB0;
+    s = *(u8 *)&lbl_1_bss_6EA98_gap_6EAB1;
+    s = *(u8 *)&lbl_1_bss_6EA98_gap_6EAB1_fill_6EAB2;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6EAB4;
+    s = *(u8 *)&lbl_1_bss_6EAB4_fill_6EAB8;
+    s = *(u8 *)&lbl_1_bss_6EAB4_8;
+    s = *(u8 *)&lbl_1_bss_6EAB4_C;
+    s = *(u8 *)&lbl_1_bss_6EAB4_fill_6EAC4;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6EAC6;
+    s = *(u8 *)&lbl_1_bss_6EAC6_fill_6EAC8;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6EAD0;
+    s = *(u8 *)&lbl_1_bss_6EAD0_fill_6EAD4;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6F1D8;
+    s = *(u8 *)&lbl_1_bss_6EA98_gap_6F1D9;
+    s = *(u8 *)&lbl_1_bss_6EA98_gap_6F1D9_fill_6F1DA;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6F1DC;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6F1E0;
+    s = *(u8 *)&lbl_1_bss_6F1E1;
+    s = *(u8 *)&lbl_1_bss_6EA98_gap_6F1E2;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6F1E4;
+    s = *(u8 *)&lbl_1_bss_6F1E4_fill_6F238;
+    s = *(u8 *)&lbl_1_bss_6F239;
+    s = *(u8 *)&lbl_1_bss_6EA98_gap_6F23A;
+    s = *(u8 *)&lbl_1_bss_6F23C;
+    s = *(u8 *)&lbl_1_bss_6F23C_fill_6F240;
+    s = *(u8 *)&lbl_1_bss_6F23C_fill_6F242;
+    s = *(u8 *)&fzgx_obj_lbl_1_bss_6F243;
+    s = *(u8 *)&lbl_1_bss_6F244_fill_6F244;
+    s = *(u8 *)&lbl_1_bss_6F244_4;
+    s = *(u8 *)&lbl_1_bss_6F244_fill_6F24C;
+    s = *(u8 *)&lbl_1_bss_6F2C4;
+    s = *(u8 *)&lbl_1_bss_6EA98_gap_6F2C5;
+    s = *(u8 *)&lbl_1_bss_6EA98_gap_6F2C5_fill_6F2C6;
+    s = *(u8 *)&lbl_1_bss_6F2C8;
+    s = *(u8 *)&lbl_1_bss_6F2D8;
+    s = *(u8 *)&lbl_1_bss_6F2D8_fill_6F314;
+    s = *(u8 *)&lbl_1_bss_6F316;
+    s = *(u8 *)&lbl_1_bss_6F317;
+    s = *(u8 *)&lbl_1_bss_6EA98_gap_6F318;
+    s = *(u8 *)&lbl_1_bss_6F31A_fill_6F31A;
+    s = *(u8 *)&lbl_1_bss_6F31A_fill_6F31C;
+    s = *(u8 *)&lbl_1_bss_6F31A_6;
+    s = *(u8 *)&lbl_1_bss_6F31A_A;
+    s = *(u8 *)&lbl_1_bss_6F31A_fill_6F328;
+}
+#pragma section code_type ".text"
+
+#pragma opt_dead_assignments off
+void fn_1_A2A70(u32 arg0, s32 arg1) {
+    s32 v0_2;
+    f32 v1;
+    s32 v0;
+    volatile s32 loc_8;  /* fzgx-allow: S2 retail round-trips the float through a stack slot */
+    u8 *v11;
+    s32 i;
+    
+    if (arg1 > 0) {
+        if (arg0 & 1) {
+            fzgx_obj_lbl_1_bss_6EAB4 &= ~4;
+            lbl_1_bss_6EAB4_8 = lbl_1_rodata_446C / (f32)arg1;
+        }
+        if (arg0 & 2) {
+            fzgx_obj_lbl_1_bss_6EAB4 &= ~8;
+            lbl_1_bss_6EAB4_C = lbl_1_rodata_446C / (f32)arg1;
+        }
+        if (arg0 & 4) {
+            lbl_1_bss_6F31A_6 = (f32)(s32)fn_8004BED0((*(void ** volatile *)&(fzgx_obj_lbl_1_bss_6EAD0)) /* Retail reloads this field. */[0]);
+            v1 = lbl_1_rodata_446C + (f32)(s32)fn_8004BED0((*(void ** volatile *)&(fzgx_obj_lbl_1_bss_6EAD0)) /* Retail reloads this field. */[0]);
+            fzgx_obj_lbl_1_bss_6EAB4 &= ~1;
+            lbl_1_bss_6EAB4_8 = v1 / (f32)arg1;
+        }
+        if (arg0 & 8) {
+            lbl_1_bss_6F31A_A = (f32)(s32)fn_8004BED0((*(void ** volatile *)&(fzgx_obj_lbl_1_bss_6EAD0)) /* Retail reloads this field. */[1]);
+            v1 = lbl_1_rodata_446C + (f32)(s32)fn_8004BED0((*(void ** volatile *)&(fzgx_obj_lbl_1_bss_6EAD0)) /* Retail reloads this field. */[1]);
+            lbl_1_bss_6EAB4_C = v1 / (f32)arg1;
+            if (arg0 & 0x40) {
+                v0 = (s32)(fn_8004BED0((*(void ** volatile *)&(fzgx_obj_lbl_1_bss_6EAD0)) /* Retail reloads this field. */[1]) + 600) / arg1;
+                loc_8 = (s32)(lbl_1_bss_6EAB4_C = (f32)v0);
+                lbl_1_bss_6EAB4_C = (f32)loc_8;
+                if (lbl_1_bss_6EAB4_C < lbl_1_rodata_4470) {
+                    lbl_1_bss_6EAB4_C = lbl_1_rodata_4470;
+                }
+            }
+            fzgx_obj_lbl_1_bss_6EAB4 &= ~2;
+        }
+        i = 0;
+        v11 = lbl_1_bss_6F244_4;
+        for (; i < 4; i++) {
+            v0_2 = fn_800672E4(i, 0xA0100000) / arg1;
+            if (v0_2 <= 0) v0_2 = 0;
+            *v11++ = v0_2 + 1;
+        }
+        if (lbl_1_bss_6EAB4_8 < lbl_1_rodata_4474)
+            lbl_1_bss_6EAB4_8 = lbl_1_rodata_4470;
+        if (lbl_1_bss_6EAB4_C < lbl_1_rodata_4474)
+            lbl_1_bss_6EAB4_C = lbl_1_rodata_4470;
+    }
+}
+#pragma opt_dead_assignments reset
+
+#pragma opt_common_subs reset
+/* fzgx:end fn_1_A2A70 */
+
 /* fzgx:begin fn_1_A2D84 */
 void fn_1_A2D84(u32 arg0) {
     if (lbl_1_bss_6F1D8 == 0 && lbl_1_bss_6F1DC <= 0x2D) {

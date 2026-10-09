@@ -7376,3 +7376,6 @@ rel/main_rel/sel_static_disp/fn_1_138144.c:
 
 rel/main_rel/memcard/fn_1_C17D0.c:
 	.text       start:0x000C17D0 end:0x000C1ACC align:4
+
+rel/main_rel/sound/fn_1_A2A70.c:
+	.text       start:0x000A2A70 end:0x000A2D84 align:4
