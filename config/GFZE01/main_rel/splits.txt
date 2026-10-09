@@ -7385,3 +7385,9 @@ rel/main_rel/stcoli/fn_1_21CFC.c:
 
 rel/main_rel/font/fn_1_51E60.c:
 	.text       start:0x00051E60 end:0x00052070 align:4
+
+rel/main_rel/motasglist/fn_1_42AD0.c:
+	.text       start:0x00042AD0 end:0x00042E74 align:4
+
+rel/main_rel/font/fn_1_535A0.c:
+	.text       start:0x000535A0 end:0x00053830 align:4

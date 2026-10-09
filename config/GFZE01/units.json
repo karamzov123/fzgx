@@ -1068,6 +1068,25 @@
   },
   {
     "module": "customize",
+    "source": "rel/customize/customize/fn_3_BF1C.c",
+    "symbols": [
+      "fn_3_BF1C"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/customize/customize.c",
+    "pool": {
+      "...rodata.0": "lbl_3_rodata_270",
+      "@6": "lbl_3_rodata_270",
+      "@17": "lbl_3_rodata_270+0x4",
+      "@18": "lbl_3_rodata_270+0x8",
+      "@19": "lbl_3_rodata_270+0xC",
+      "@20": "lbl_3_rodata_270+0x10"
+    }
+  },
+  {
+    "module": "customize",
     "source": "rel/customize/customize/fn_3_C128.c",
     "symbols": [
       "fn_3_C128"
@@ -15996,6 +16015,30 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_800244C8.c",
+    "symbols": [
+      "fn_800244C8"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.2.5n",
+    "extra_cflags": [
+      "-fp_contract",
+      "off"
+    ],
+    "pool": {
+      "@94": "lbl_801A6FC0",
+      "@95": "lbl_801A6FC4",
+      "@96": "lbl_801A6FC8",
+      "@97": "lbl_801A6FCC",
+      "@98": "lbl_801A6FD0",
+      "@99": "lbl_801A6FD4",
+      "@103": "lbl_801A6FE0",
+      "@100": "lbl_801A6FD8",
+      "@101": "lbl_801A6FDC"
+    }
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80024C88.c",
     "symbols": [
       "fn_80024C88"
@@ -22797,6 +22840,32 @@
     "status": "matching",
     "mw_version": "GC/1.2.5n",
     "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8006A768.c",
+    "symbols": [
+      "fn_8006A768"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.2.5",
+    "extra_cflags": [
+      "-char",
+      "unsigned"
+    ]
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8006A8CC.c",
+    "symbols": [
+      "fn_8006A8CC"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.2.5",
+    "extra_cflags": [
+      "-char",
+      "unsigned"
+    ]
   },
   {
     "module": "main",
@@ -42578,6 +42647,20 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/font/fn_1_535A0.c",
+    "symbols": [
+      "fn_1_535A0"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/font.c",
+    "pool": {
+      "@15": "lbl_1_rodata_282C"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/font/fn_1_5415C.c",
     "symbols": [
       "fn_1_5415C"
@@ -47855,6 +47938,21 @@
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/motasglist.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/motasglist/fn_1_42AD0.c",
+    "symbols": [
+      "fn_1_42AD0"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/motasglist.c",
+    "pool": {
+      "@43": "lbl_1_rodata_F58",
+      "@45": "lbl_1_rodata_F60"
+    }
   },
   {
     "module": "main_rel",

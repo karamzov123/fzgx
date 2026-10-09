@@ -10436,7 +10436,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_800084E8": {
     "seed_symbol": "fn_800084E8",
@@ -10453,7 +10454,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_1_21CFC": {
     "seed_symbol": "fn_1_21CFC",
@@ -10470,7 +10472,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_8004FF68": {
     "seed_symbol": "fn_8004FF68",
@@ -10487,7 +10490,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "long2str": {
     "seed_symbol": "long2str",
@@ -10504,7 +10508,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_8003A1CC": {
     "seed_symbol": "fn_8003A1CC",
@@ -10521,7 +10526,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_800090A4": {
     "seed_symbol": "fn_800090A4",
@@ -10538,7 +10544,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_80041EF8": {
     "seed_symbol": "fn_80041EF8",
@@ -10555,7 +10562,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_8004A80C": {
     "seed_symbol": "fn_8004A80C",
@@ -10572,7 +10580,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_8006AC44": {
     "seed_symbol": "fn_8006AC44",
@@ -10589,7 +10598,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_800571EC": {
     "seed_symbol": "fn_800571EC",
@@ -10606,7 +10616,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_800251F0": {
     "seed_symbol": "fn_800251F0",
@@ -10623,7 +10634,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_18_444": {
     "seed_symbol": "fn_18_444",
@@ -10640,7 +10652,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_8007A710": {
     "seed_symbol": "fn_8007A710",
@@ -10657,7 +10670,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_800674FC": {
     "seed_symbol": "fn_800674FC",
@@ -10674,7 +10688,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_8008596C": {
     "seed_symbol": "fn_8008596C",
@@ -10691,7 +10706,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_8008FC3C": {
     "seed_symbol": "fn_8008FC3C",
@@ -10708,7 +10724,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_8000D1F0": {
     "seed_symbol": "fn_8000D1F0",
@@ -10725,7 +10742,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_800377F8": {
     "seed_symbol": "fn_800377F8",
@@ -10742,7 +10760,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "longlong2str": {
     "seed_symbol": "longlong2str",
@@ -10759,7 +10778,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_80087C44": {
     "seed_symbol": "fn_80087C44",
@@ -10776,7 +10796,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_1_51E60": {
     "seed_symbol": "fn_1_51E60",
@@ -10793,7 +10814,8 @@
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
-    "link": "pending"
+    "link": "verified",
+    "commit": "d3ca97ce"
   },
   "fn_800581CC": {
     "seed_symbol": "fn_800581CC",
@@ -10807,6 +10829,109 @@
     "flags": "",
     "source": "dol/fn_800581CC.c",
     "bytes": 436,
+    "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
+    "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
+    "recipe": [],
+    "link": "verified",
+    "commit": "d3ca97ce"
+  },
+  "fn_800244C8": {
+    "seed_symbol": "fn_800244C8",
+    "generator": "fzgx fixup",
+    "transform": "saved-body",
+    "seed": "#include \"types.h\"\n\ntypedef struct Fn800244C8_DelayLine {\n    s32 in_point;\n    s32 out_point;\n    s32 length;\n    f32 *inputs;\n    f32 last_output;\n} Fn800244C8_DelayLine;\n\ntypedef struct Fn800244C8_ReverbStd {\n    Fn800244C8_DelayLine all_pass[6];\n    Fn800244C8_DelayLine comb[6];\n    f32 all_pass_coef;\n    f32 comb_coef[6];\n    f32 lp_last_out[3];\n    f32 level;\n    f32 damping;\n    s32 pre_delay_time;\n    f32 *pre_delay_line[3];\n    f32 *pre_delay_ptr[3];\n} Fn800244C8_ReverbStd;\n\nextern void *memset(void *, int, u32);\nextern void *(*lbl_801A64F8)(u32);\nextern f32 fn_800885B8(f32 x, f32 y);\nextern u32 lbl_80128180[4];\n\nstatic inline void fn_800244C8_SetDelay(Fn800244C8_DelayLine *dl, s32 lag) {\n    dl->out_point = dl->in_point - lag * sizeof(f32);\n    while (dl->out_point < 0) {\n        dl->out_point += dl->length;\n    }\n}\n\nstatic inline void fn_800244C8_Create(Fn800244C8_DelayLine *dl, s32 len) {\n    dl->length = len * sizeof(f32);\n    dl->inputs = lbl_801A64F8(len * sizeof(f32));\n    memset(dl->inputs, 0, len * sizeof(f32));\n    dl->last_output = 0.0f;\n    fn_800244C8_SetDelay(dl, len >> 1);\n    dl->in_point = 0;\n    dl->out_point = 0;\n}\n\nBOOL fn_800244C8(Fn800244C8_ReverbStd *rv, f32 coloration, f32 time, f32 mix, f32 damping, f32 predelay) {\n    u8 i;\n    u8 k;\n\n    if (coloration < 0.0f || coloration > 1.0f || time < 0.01f || time > 10.0f || mix < 0.0f || mix > 1.0f ||\n        damping < 0.0f || damping > 1.0f || predelay < 0.0f || predelay > 0.1f) {\n        return FALSE;\n    }\n\n    memset(rv, 0, sizeof(Fn800244C8_ReverbStd));\n    for (k = 0; k < 3; k++) {\n        for (i = 0; i < 2; i++) {\n            fn_800244C8_Create(&rv->comb[i + k * 2], lbl_80128180[i] + 2);\n            fn_800244C8_SetDelay(&rv->comb[i + k * 2], lbl_80128180[i]);\n            rv->comb_coef[i + k * 2] = fn_800885B8(10.0f, (s32)(lbl_80128180[i] * -3) / (32000.0f * time));\n        }\n        for (i = 0; i < 2; i++) {\n            fn_800244C8_Create(&rv->all_pass[i + k * 2], lbl_80128180[i + 2] + 2);\n            fn_800244C8_SetDelay(&rv->all_pass[i + k * 2], lbl_80128180[i + 2]);\n        }\n        rv->lp_last_out[k] = 0.0f;\n    }\n\n    rv->all_pass_coef = coloration;\n    rv->level = mix;\n    rv->damping = damping;\n    if (rv->damping < 0.05f) {\n        rv->damping = 0.05f;\n    }\n    rv->damping = 1.0f - (0.05f + 0.8f * rv->damping);\n\n    if (predelay != 0.0f) {\n        rv->pre_delay_time = 32000.0f * predelay;\n        for (k = 0; k < 3; k++) {\n            rv->pre_delay_line[k] = lbl_801A64F8(rv->pre_delay_time << 2);\n            memset(rv->pre_delay_line[k], 0, rv->pre_delay_time << 2);\n            rv->pre_delay_ptr[k] = rv->pre_delay_line[k];\n        }\n    } else {\n        rv->pre_delay_time = 0;\n        for (k = 0; k < 3; k++) {\n            rv->pre_delay_ptr[k] = NULL;\n            rv->pre_delay_line[k] = NULL;\n        }\n    }\n    return TRUE;\n}\n",
+    "seed_sha256": "10284d3cb42269dd11d82437dc2e50bc332b8853a5bc18dff79b64199a0b36c8",
+    "generated_sha256": "10284d3cb42269dd11d82437dc2e50bc332b8853a5bc18dff79b64199a0b36c8",
+    "generated_source": "#include \"types.h\"\n\ntypedef struct Fn800244C8_DelayLine {\n    s32 in_point;\n    s32 out_point;\n    s32 length;\n    f32 *inputs;\n    f32 last_output;\n} Fn800244C8_DelayLine;\n\ntypedef struct Fn800244C8_ReverbStd {\n    Fn800244C8_DelayLine all_pass[6];\n    Fn800244C8_DelayLine comb[6];\n    f32 all_pass_coef;\n    f32 comb_coef[6];\n    f32 lp_last_out[3];\n    f32 level;\n    f32 damping;\n    s32 pre_delay_time;\n    f32 *pre_delay_line[3];\n    f32 *pre_delay_ptr[3];\n} Fn800244C8_ReverbStd;\n\nextern void *memset(void *, int, u32);\nextern void *(*lbl_801A64F8)(u32);\nextern f32 fn_800885B8(f32 x, f32 y);\nextern u32 lbl_80128180[4];\n\nstatic inline void fn_800244C8_SetDelay(Fn800244C8_DelayLine *dl, s32 lag) {\n    dl->out_point = dl->in_point - lag * sizeof(f32);\n    while (dl->out_point < 0) {\n        dl->out_point += dl->length;\n    }\n}\n\nstatic inline void fn_800244C8_Create(Fn800244C8_DelayLine *dl, s32 len) {\n    dl->length = len * sizeof(f32);\n    dl->inputs = lbl_801A64F8(len * sizeof(f32));\n    memset(dl->inputs, 0, len * sizeof(f32));\n    dl->last_output = 0.0f;\n    fn_800244C8_SetDelay(dl, len >> 1);\n    dl->in_point = 0;\n    dl->out_point = 0;\n}\n\nBOOL fn_800244C8(Fn800244C8_ReverbStd *rv, f32 coloration, f32 time, f32 mix, f32 damping, f32 predelay) {\n    u8 i;\n    u8 k;\n\n    if (coloration < 0.0f || coloration > 1.0f || time < 0.01f || time > 10.0f || mix < 0.0f || mix > 1.0f ||\n        damping < 0.0f || damping > 1.0f || predelay < 0.0f || predelay > 0.1f) {\n        return FALSE;\n    }\n\n    memset(rv, 0, sizeof(Fn800244C8_ReverbStd));\n    for (k = 0; k < 3; k++) {\n        for (i = 0; i < 2; i++) {\n            fn_800244C8_Create(&rv->comb[i + k * 2], lbl_80128180[i] + 2);\n            fn_800244C8_SetDelay(&rv->comb[i + k * 2], lbl_80128180[i]);\n            rv->comb_coef[i + k * 2] = fn_800885B8(10.0f, (s32)(lbl_80128180[i] * -3) / (32000.0f * time));\n        }\n        for (i = 0; i < 2; i++) {\n            fn_800244C8_Create(&rv->all_pass[i + k * 2], lbl_80128180[i + 2] + 2);\n            fn_800244C8_SetDelay(&rv->all_pass[i + k * 2], lbl_80128180[i + 2]);\n        }\n        rv->lp_last_out[k] = 0.0f;\n    }\n\n    rv->all_pass_coef = coloration;\n    rv->level = mix;\n    rv->damping = damping;\n    if (rv->damping < 0.05f) {\n        rv->damping = 0.05f;\n    }\n    rv->damping = 1.0f - (0.05f + 0.8f * rv->damping);\n\n    if (predelay != 0.0f) {\n        rv->pre_delay_time = 32000.0f * predelay;\n        for (k = 0; k < 3; k++) {\n            rv->pre_delay_line[k] = lbl_801A64F8(rv->pre_delay_time << 2);\n            memset(rv->pre_delay_line[k], 0, rv->pre_delay_time << 2);\n            rv->pre_delay_ptr[k] = rv->pre_delay_line[k];\n        }\n    } else {\n        rv->pre_delay_time = 0;\n        for (k = 0; k < 3; k++) {\n            rv->pre_delay_ptr[k] = NULL;\n            rv->pre_delay_line[k] = NULL;\n        }\n    }\n    return TRUE;\n}\n",
+    "compiler": "GC/1.2.5n",
+    "flags": "-fp_contract off",
+    "source": "dol/fn_800244C8.c",
+    "bytes": 1036,
+    "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
+    "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
+    "recipe": [],
+    "link": "pending"
+  },
+  "fn_3_BF1C": {
+    "seed_symbol": "fn_3_BF1C",
+    "generator": "fzgx fixup",
+    "transform": "saved-body",
+    "seed": "#include \"types.h\"\nextern s32 lbl_3_bss_120;\nextern u32 lbl_3_bss_F0[12];\nextern s32 fn_1_4C10(void);\nextern s16 fn_3_B270(void);\nextern u16 lbl_1_bss_96A;\nextern u32 lbl_3_bss_20850;\nextern u32 lbl_3_bss_243A8[6];\nextern void fn_1_4A00(s32, s32, u32);\nextern u16 lbl_3_bss_20[104];\nextern u32 lbl_3_bss_2C7C0[66624];\nextern void fn_80008BEC(void *, s32, s32);\nextern void fn_1_FDFF4(void);\nextern void fn_1_FC4E0(void *, s32);\nextern u32 lbl_3_bss_7EBA4;\nextern u32 lbl_3_bss_7EBA8;\nextern u8 lbl_3_data_11DC[84];\nextern u32 lbl_801A6410;\nextern void fn_1_7F3AC(u32);\nextern void fn_1_46B4(u32, u32, u8 *, s32);\nextern void fn_1_BC29C(u32 *arg0);\nextern void fn_1_B9C0C(void);\nextern char lbl_3_data_1A1C[17];\nextern u8 fn_1_B7C00(void);\nextern s32 fn_1_B7CD4(void);\nextern s32 fn_1_B7C5C(void);\nextern void OSReport(const char *, ...);\nextern u32 lbl_3_bss_A179C;\nextern u32 lbl_3_data_1A14;\n\n#include \"types.h\"\n#include \"sdk_addresses.h\"\n\ntypedef struct Fn3_BF1C_Color {\n    u8 r;\n    u8 g;\n    u8 b;\n    u8 a;\n} Fn3_BF1C_Color;\n\ntypedef union {\n    u8 u8;\n    u16 u16;\n    u32 u32;\n    u64 u64;\n    s8 s8;\n    s16 s16;\n    s32 s32;\n    s64 s64;\n    f32 f32;\n    f64 f64;\n} PPCWGPipe;\n\n// Hardware or OS state can change asynchronously.\nvolatile PPCWGPipe\n    GXFIFO : FZGX_ADDR_GXFIFO; // fzgx-allow: S2 SDK asynchronous state\n\nextern s32 lbl_3_bss_A1798;\n\nextern u8 lbl_3_bss_7ED58[];\nextern void fn_1_4FD64(void);\nextern void fn_80074918(s32, s32, s32);\nextern void fn_80074788(s32);\nextern void fn_80074660(s32);\nextern void fn_80073678(s32);\nextern void fn_80073C6C(s32);\nextern void fn_800747D0(s32, s32, s32, s32, s32, s32, s32);\nextern void fn_80072AB0(s32, s32, s32);\nextern void fn_800734A8(s32, s32, s32, s32);\nextern void fn_80072C24(s32, s32, s32, s32, s32);\nextern void fn_80072D64(s32, s32, s32, s32, s32, s32);\nextern void fn_80072CC4(s32, s32, s32, s32, s32);\nextern void fn_80072E20(s32, s32, s32, s32, s32, s32);\nextern void fn_800728A8(s32, s32, s32, s32);\nextern void fn_80072864(s32);\nextern void fn_8007245C(s32);\nextern void fn_800371F8(s32, Fn3_BF1C_Color);\nextern void fn_8003462C(s32, s32, s32);\nextern u8 fn_1_B7C00(void);\nextern void fn_1_BC310(void *);\n\nvoid fn_3_BF1C(void) {\n    s32 mode;\n\n    if (lbl_3_bss_A1798 == 0) {\n        return;\n    }\n    fn_1_4FD64();\n    fn_80074918(0, 7, 0);\n    fn_80074788(1);\n    fn_80074660(0);\n    fn_80073678(1);\n    fn_80073C6C(0);\n    fn_800747D0(4, 0, 0, 0, 0, 2, 2);\n    fn_80072AB0(0, 0, 0);\n    fn_800734A8(0, 0xFF, 0xFF, 4);\n    fn_80072C24(0, 0xF, 0xF, 0xF, 2);\n    fn_80072D64(0, 0, 0, 0, 1, 0);\n    fn_80072CC4(0, 7, 7, 7, 1);\n    fn_80072E20(0, 0, 0, 0, 1, 0);\n    fn_800728A8(1, 4, 5, 0);\n    fn_80072864(2);\n    fn_8007245C(0x200);\n    {\n        Fn3_BF1C_Color color = {0x00, 0x00, 0x00, 0xA0};\n\n        fn_800371F8(1, color);\n    }\n    fn_8003462C(0x80, 7, 4);\n    GXFIFO.f32 = 0.0f;\n    GXFIFO.f32 = 0.0f;\n    GXFIFO.f32 = -1.0f;\n    GXFIFO.f32 = 640.0f;\n    GXFIFO.f32 = 0.0f;\n    GXFIFO.f32 = -1.0f;\n    GXFIFO.f32 = 640.0f;\n    GXFIFO.f32 = 480.0f;\n    GXFIFO.f32 = -1.0f;\n    GXFIFO.f32 = 0.0f;\n    GXFIFO.f32 = 480.0f;\n    GXFIFO.f32 = -1.0f;\n    if (fn_1_B7C00() != 0) {\n        return;\n    }\n    mode = (s32)lbl_3_data_1A14;\n    if (mode == 5 || (u32)(mode - 2) <= 1 || mode == 4) {\n        return;\n    }\n    fn_1_BC310(lbl_3_bss_7ED58);\n}\n",
+    "seed_sha256": "1464c64ad9c70e1383af17b8e1f72c274d4fa09d9b6f82b5893017fe4d84fd9d",
+    "generated_sha256": "1464c64ad9c70e1383af17b8e1f72c274d4fa09d9b6f82b5893017fe4d84fd9d",
+    "generated_source": "#include \"types.h\"\nextern s32 lbl_3_bss_120;\nextern u32 lbl_3_bss_F0[12];\nextern s32 fn_1_4C10(void);\nextern s16 fn_3_B270(void);\nextern u16 lbl_1_bss_96A;\nextern u32 lbl_3_bss_20850;\nextern u32 lbl_3_bss_243A8[6];\nextern void fn_1_4A00(s32, s32, u32);\nextern u16 lbl_3_bss_20[104];\nextern u32 lbl_3_bss_2C7C0[66624];\nextern void fn_80008BEC(void *, s32, s32);\nextern void fn_1_FDFF4(void);\nextern void fn_1_FC4E0(void *, s32);\nextern u32 lbl_3_bss_7EBA4;\nextern u32 lbl_3_bss_7EBA8;\nextern u8 lbl_3_data_11DC[84];\nextern u32 lbl_801A6410;\nextern void fn_1_7F3AC(u32);\nextern void fn_1_46B4(u32, u32, u8 *, s32);\nextern void fn_1_BC29C(u32 *arg0);\nextern void fn_1_B9C0C(void);\nextern char lbl_3_data_1A1C[17];\nextern u8 fn_1_B7C00(void);\nextern s32 fn_1_B7CD4(void);\nextern s32 fn_1_B7C5C(void);\nextern void OSReport(const char *, ...);\nextern u32 lbl_3_bss_A179C;\nextern u32 lbl_3_data_1A14;\n\n#include \"types.h\"\n#include \"sdk_addresses.h\"\n\ntypedef struct Fn3_BF1C_Color {\n    u8 r;\n    u8 g;\n    u8 b;\n    u8 a;\n} Fn3_BF1C_Color;\n\ntypedef union {\n    u8 u8;\n    u16 u16;\n    u32 u32;\n    u64 u64;\n    s8 s8;\n    s16 s16;\n    s32 s32;\n    s64 s64;\n    f32 f32;\n    f64 f64;\n} PPCWGPipe;\n\n// Hardware or OS state can change asynchronously.\nvolatile PPCWGPipe\n    GXFIFO : FZGX_ADDR_GXFIFO; // fzgx-allow: S2 SDK asynchronous state\n\nextern s32 lbl_3_bss_A1798;\n\nextern u8 lbl_3_bss_7ED58[];\nextern void fn_1_4FD64(void);\nextern void fn_80074918(s32, s32, s32);\nextern void fn_80074788(s32);\nextern void fn_80074660(s32);\nextern void fn_80073678(s32);\nextern void fn_80073C6C(s32);\nextern void fn_800747D0(s32, s32, s32, s32, s32, s32, s32);\nextern void fn_80072AB0(s32, s32, s32);\nextern void fn_800734A8(s32, s32, s32, s32);\nextern void fn_80072C24(s32, s32, s32, s32, s32);\nextern void fn_80072D64(s32, s32, s32, s32, s32, s32);\nextern void fn_80072CC4(s32, s32, s32, s32, s32);\nextern void fn_80072E20(s32, s32, s32, s32, s32, s32);\nextern void fn_800728A8(s32, s32, s32, s32);\nextern void fn_80072864(s32);\nextern void fn_8007245C(s32);\nextern void fn_800371F8(s32, Fn3_BF1C_Color);\nextern void fn_8003462C(s32, s32, s32);\nextern u8 fn_1_B7C00(void);\nextern void fn_1_BC310(void *);\n\nvoid fn_3_BF1C(void) {\n    s32 mode;\n\n    if (lbl_3_bss_A1798 == 0) {\n        return;\n    }\n    fn_1_4FD64();\n    fn_80074918(0, 7, 0);\n    fn_80074788(1);\n    fn_80074660(0);\n    fn_80073678(1);\n    fn_80073C6C(0);\n    fn_800747D0(4, 0, 0, 0, 0, 2, 2);\n    fn_80072AB0(0, 0, 0);\n    fn_800734A8(0, 0xFF, 0xFF, 4);\n    fn_80072C24(0, 0xF, 0xF, 0xF, 2);\n    fn_80072D64(0, 0, 0, 0, 1, 0);\n    fn_80072CC4(0, 7, 7, 7, 1);\n    fn_80072E20(0, 0, 0, 0, 1, 0);\n    fn_800728A8(1, 4, 5, 0);\n    fn_80072864(2);\n    fn_8007245C(0x200);\n    {\n        Fn3_BF1C_Color color = {0x00, 0x00, 0x00, 0xA0};\n\n        fn_800371F8(1, color);\n    }\n    fn_8003462C(0x80, 7, 4);\n    GXFIFO.f32 = 0.0f;\n    GXFIFO.f32 = 0.0f;\n    GXFIFO.f32 = -1.0f;\n    GXFIFO.f32 = 640.0f;\n    GXFIFO.f32 = 0.0f;\n    GXFIFO.f32 = -1.0f;\n    GXFIFO.f32 = 640.0f;\n    GXFIFO.f32 = 480.0f;\n    GXFIFO.f32 = -1.0f;\n    GXFIFO.f32 = 0.0f;\n    GXFIFO.f32 = 480.0f;\n    GXFIFO.f32 = -1.0f;\n    if (fn_1_B7C00() != 0) {\n        return;\n    }\n    mode = (s32)lbl_3_data_1A14;\n    if (mode == 5 || (u32)(mode - 2) <= 1 || mode == 4) {\n        return;\n    }\n    fn_1_BC310(lbl_3_bss_7ED58);\n}\n",
+    "compiler": "GC/1.3.2",
+    "flags": "",
+    "source": "rel/customize/customize/fn_3_BF1C.c",
+    "bytes": 524,
+    "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
+    "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
+    "recipe": [],
+    "link": "pending"
+  },
+  "fn_1_42AD0": {
+    "seed_symbol": "fn_1_42AD0",
+    "generator": "fzgx fixup",
+    "transform": "saved-body",
+    "seed": "#include \"types.h\"\n#include \"rel/main_rel/globals.h\"\n#include \"rel/main_rel/motasglist.h\"\n\nextern void fn_1_41328(void *arg0);\nextern void fn_1_43264(void *arg0, f32 arg1);\nextern void lbl_8006DAEC(void);\nextern void lbl_8006DB30(void);\nextern void lbl_8006D668(void *vector);\nextern void lbl_8006DBAC(void *value);\nextern void fn_1_449A8(void *vector);\nextern void lbl_8006DB74(void *value);\nextern u32 lbl_1_bss_384CC;\nextern struct fn_1_41850_lbl_801A6410 lbl_801A6410;\nextern void fn_1_46B4(u32, void *, const char *, int);\nextern const f64 lbl_1_rodata_F40;\nextern const f32 lbl_1_rodata_F34;\nextern const f32 lbl_1_rodata_F30;\nextern const f64 lbl_1_rodata_F48;\nextern const f32 lbl_1_rodata_F38;\nextern void fn_8006E5FC(void *);\nextern const f32 lbl_1_rodata_F50;\nextern const f32 lbl_1_rodata_F54;\n\n#include \"types.h\"\n\ntypedef struct Fn1_42AD0_Vec {\n    f32 x;\n    f32 y;\n    f32 z;\n} Fn1_42AD0_Vec;\n\ntypedef struct Fn1_42AD0_Key16 {\n    u16 cur[3];\n    u16 prev[3];\n} Fn1_42AD0_Key16;\n\ntypedef struct Fn1_42AD0_Key32 {\n    s32 cur[3];\n    s32 prev[3];\n} Fn1_42AD0_Key32;\n\ntypedef struct Fn1_42AD0_Bone {\n    u8 pad_0[0x88];\n    f32 mtx[3][4];\n    Fn1_42AD0_Vec pos;\n    Fn1_42AD0_Vec scale;\n    u8 pad_D0[0x4];\n    Fn1_42AD0_Key16 rot[3];\n    Fn1_42AD0_Key16 rot2[3];\n    Fn1_42AD0_Key32 trans[3];\n    u8 pad_164[0x10];\n    Fn1_42AD0_Vec prev_pos;\n    Fn1_42AD0_Vec prev_scale;\n} Fn1_42AD0_Bone;\n\ntypedef struct Fn1_42AD0_Anim {\n    u16 unk_0;\n    u16 start;\n    u16 end;\n    u16 unk_6;\n    f32 speed;\n    f32 frame;\n    f32 unk_10;\n    u8 pad_14[0x4];\n} Fn1_42AD0_Anim;\n\ntypedef struct Fn1_42AD0_Skel {\n    u16 count;\n    u16 flags;\n    u8 pad_4[0x4];\n    Fn1_42AD0_Bone *bones;\n    u8 pad_C[0x20];\n    f32 blend_frames;\n    Fn1_42AD0_Vec root;\n    u8 pad_3C[0x4];\n    Fn1_42AD0_Anim anim;\n    Fn1_42AD0_Anim prev_anim;\n} Fn1_42AD0_Skel;\n\nextern void fn_1_4270C(Fn1_42AD0_Skel *, void *, u32);\nextern void fn_1_433A4(Fn1_42AD0_Anim *, Fn1_42AD0_Anim *);\n\nextern void fn_8006E5FC(void *);\n\nvoid fn_1_42AD0(Fn1_42AD0_Skel *skel, void *data, u32 arg2, u16 blend, u32 flags) {\n    f32 progress;\n    f32 length;\n    f32 start;\n    f32 new_length;\n    s32 i;\n    Fn1_42AD0_Bone *bone;\n    s32 keep;\n    u16 mode;\n\n    if (blend == 0 || (skel->flags & 0x100)) {\n        fn_1_4270C(skel, data, arg2);\n        return;\n    }\n    start = skel->anim.start;\n    length = (f32)skel->anim.end - start;\n    progress = (skel->anim.frame - start) / length;\n    fn_1_433A4(&skel->prev_anim, &skel->anim);\n    keep = flags & 2;\n    mode = flags;\n    if (keep) {\n        for (i = 0; i < skel->count; i++) {\n            bone = &skel->bones[i];\n            bone->rot[0].prev[0] = bone->rot[0].cur[0];\n            bone->rot[1].prev[0] = bone->rot[1].cur[0];\n            bone->rot[2].prev[0] = bone->rot[2].cur[0];\n            bone->trans[0].prev[0] = bone->trans[0].cur[0];\n            bone->trans[1].prev[0] = bone->trans[1].cur[0];\n            bone->trans[2].prev[0] = bone->trans[2].cur[0];\n            bone->rot2[0].prev[0] = bone->rot2[0].cur[0];\n            bone->rot2[1].prev[0] = bone->rot2[1].cur[0];\n            bone->rot2[2].prev[0] = bone->rot2[2].cur[0];\n            bone->rot[0].prev[1] = bone->rot[0].cur[1];\n            bone->rot[1].prev[1] = bone->rot[1].cur[1];\n            bone->rot[2].prev[1] = bone->rot[2].cur[1];\n            bone->trans[0].prev[1] = bone->trans[0].cur[1];\n            bone->trans[1].prev[1] = bone->trans[1].cur[1];\n            bone->trans[2].prev[1] = bone->trans[2].cur[1];\n            bone->rot2[0].prev[1] = bone->rot2[0].cur[1];\n            bone->rot2[1].prev[1] = bone->rot2[1].cur[1];\n            bone->rot2[2].prev[1] = bone->rot2[2].cur[1];\n            bone->rot[0].prev[2] = bone->rot[0].cur[2];\n            bone->rot[1].prev[2] = bone->rot[1].cur[2];\n            bone->rot[2].prev[2] = bone->rot[2].cur[2];\n            bone->trans[0].prev[2] = bone->trans[0].cur[2];\n            bone->trans[1].prev[2] = bone->trans[1].cur[2];\n            bone->trans[2].prev[2] = bone->trans[2].cur[2];\n            bone->rot2[0].prev[2] = bone->rot2[0].cur[2];\n            bone->rot2[1].prev[2] = bone->rot2[1].cur[2];\n            bone->rot2[2].prev[2] = bone->rot2[2].cur[2];\n        }\n    } else {\n        for (i = 0; i < skel->count; i++) {\n            bone = &skel->bones[i];\n            lbl_8006DBAC(bone->mtx);\n            fn_8006E5FC((u8 *)bone + 0x164);\n            bone->prev_pos = bone->pos;\n            bone->prev_scale = bone->scale;\n        }\n    }\n    fn_1_4270C(skel, data, arg2);\n    new_length = (s32)(skel->anim.end - skel->anim.start);\n    if (keep) {\n        skel->flags |= 1;\n        skel->prev_anim.speed *= length / new_length;\n    }\n    if (mode & 0x20) {\n        skel->flags |= 0x400;\n    }\n    if (mode & 0x80) {\n        skel->flags |= 0x800;\n    }\n    if (mode & 0x40) {\n        skel->flags |= 0x200;\n    }\n    if (mode & 1) {\n        f32 offset = new_length * progress;\n\n        skel->anim.frame = (f32)skel->anim.start + offset;\n    }\n    if (mode & 4) {\n        skel->flags |= 0x20;\n    }\n    if (mode & 8) {\n        skel->flags |= 0x40;\n    }\n    if (mode & 0x10) {\n        skel->flags |= 0x80;\n    }\n    skel->blend_frames = blend;\n    skel->root.x = skel->bones->mtx[0][3];\n    skel->root.y = skel->bones->mtx[1][3];\n    skel->root.z = skel->bones->mtx[2][3];\n}\n",
+    "seed_sha256": "0b1c5487a6d9783c5bd9ad8d948831c428940748280760c56c03211722b4a7c4",
+    "generated_sha256": "0b1c5487a6d9783c5bd9ad8d948831c428940748280760c56c03211722b4a7c4",
+    "generated_source": "#include \"types.h\"\n#include \"rel/main_rel/globals.h\"\n#include \"rel/main_rel/motasglist.h\"\n\nextern void fn_1_41328(void *arg0);\nextern void fn_1_43264(void *arg0, f32 arg1);\nextern void lbl_8006DAEC(void);\nextern void lbl_8006DB30(void);\nextern void lbl_8006D668(void *vector);\nextern void lbl_8006DBAC(void *value);\nextern void fn_1_449A8(void *vector);\nextern void lbl_8006DB74(void *value);\nextern u32 lbl_1_bss_384CC;\nextern struct fn_1_41850_lbl_801A6410 lbl_801A6410;\nextern void fn_1_46B4(u32, void *, const char *, int);\nextern const f64 lbl_1_rodata_F40;\nextern const f32 lbl_1_rodata_F34;\nextern const f32 lbl_1_rodata_F30;\nextern const f64 lbl_1_rodata_F48;\nextern const f32 lbl_1_rodata_F38;\nextern void fn_8006E5FC(void *);\nextern const f32 lbl_1_rodata_F50;\nextern const f32 lbl_1_rodata_F54;\n\n#include \"types.h\"\n\ntypedef struct Fn1_42AD0_Vec {\n    f32 x;\n    f32 y;\n    f32 z;\n} Fn1_42AD0_Vec;\n\ntypedef struct Fn1_42AD0_Key16 {\n    u16 cur[3];\n    u16 prev[3];\n} Fn1_42AD0_Key16;\n\ntypedef struct Fn1_42AD0_Key32 {\n    s32 cur[3];\n    s32 prev[3];\n} Fn1_42AD0_Key32;\n\ntypedef struct Fn1_42AD0_Bone {\n    u8 pad_0[0x88];\n    f32 mtx[3][4];\n    Fn1_42AD0_Vec pos;\n    Fn1_42AD0_Vec scale;\n    u8 pad_D0[0x4];\n    Fn1_42AD0_Key16 rot[3];\n    Fn1_42AD0_Key16 rot2[3];\n    Fn1_42AD0_Key32 trans[3];\n    u8 pad_164[0x10];\n    Fn1_42AD0_Vec prev_pos;\n    Fn1_42AD0_Vec prev_scale;\n} Fn1_42AD0_Bone;\n\ntypedef struct Fn1_42AD0_Anim {\n    u16 unk_0;\n    u16 start;\n    u16 end;\n    u16 unk_6;\n    f32 speed;\n    f32 frame;\n    f32 unk_10;\n    u8 pad_14[0x4];\n} Fn1_42AD0_Anim;\n\ntypedef struct Fn1_42AD0_Skel {\n    u16 count;\n    u16 flags;\n    u8 pad_4[0x4];\n    Fn1_42AD0_Bone *bones;\n    u8 pad_C[0x20];\n    f32 blend_frames;\n    Fn1_42AD0_Vec root;\n    u8 pad_3C[0x4];\n    Fn1_42AD0_Anim anim;\n    Fn1_42AD0_Anim prev_anim;\n} Fn1_42AD0_Skel;\n\nextern void fn_1_4270C(Fn1_42AD0_Skel *, void *, u32);\nextern void fn_1_433A4(Fn1_42AD0_Anim *, Fn1_42AD0_Anim *);\n\nextern void fn_8006E5FC(void *);\n\nvoid fn_1_42AD0(Fn1_42AD0_Skel *skel, void *data, u32 arg2, u16 blend, u32 flags) {\n    f32 progress;\n    f32 length;\n    f32 start;\n    f32 new_length;\n    s32 i;\n    Fn1_42AD0_Bone *bone;\n    s32 keep;\n    u16 mode;\n\n    if (blend == 0 || (skel->flags & 0x100)) {\n        fn_1_4270C(skel, data, arg2);\n        return;\n    }\n    start = skel->anim.start;\n    length = (f32)skel->anim.end - start;\n    progress = (skel->anim.frame - start) / length;\n    fn_1_433A4(&skel->prev_anim, &skel->anim);\n    keep = flags & 2;\n    mode = flags;\n    if (keep) {\n        for (i = 0; i < skel->count; i++) {\n            bone = &skel->bones[i];\n            bone->rot[0].prev[0] = bone->rot[0].cur[0];\n            bone->rot[1].prev[0] = bone->rot[1].cur[0];\n            bone->rot[2].prev[0] = bone->rot[2].cur[0];\n            bone->trans[0].prev[0] = bone->trans[0].cur[0];\n            bone->trans[1].prev[0] = bone->trans[1].cur[0];\n            bone->trans[2].prev[0] = bone->trans[2].cur[0];\n            bone->rot2[0].prev[0] = bone->rot2[0].cur[0];\n            bone->rot2[1].prev[0] = bone->rot2[1].cur[0];\n            bone->rot2[2].prev[0] = bone->rot2[2].cur[0];\n            bone->rot[0].prev[1] = bone->rot[0].cur[1];\n            bone->rot[1].prev[1] = bone->rot[1].cur[1];\n            bone->rot[2].prev[1] = bone->rot[2].cur[1];\n            bone->trans[0].prev[1] = bone->trans[0].cur[1];\n            bone->trans[1].prev[1] = bone->trans[1].cur[1];\n            bone->trans[2].prev[1] = bone->trans[2].cur[1];\n            bone->rot2[0].prev[1] = bone->rot2[0].cur[1];\n            bone->rot2[1].prev[1] = bone->rot2[1].cur[1];\n            bone->rot2[2].prev[1] = bone->rot2[2].cur[1];\n            bone->rot[0].prev[2] = bone->rot[0].cur[2];\n            bone->rot[1].prev[2] = bone->rot[1].cur[2];\n            bone->rot[2].prev[2] = bone->rot[2].cur[2];\n            bone->trans[0].prev[2] = bone->trans[0].cur[2];\n            bone->trans[1].prev[2] = bone->trans[1].cur[2];\n            bone->trans[2].prev[2] = bone->trans[2].cur[2];\n            bone->rot2[0].prev[2] = bone->rot2[0].cur[2];\n            bone->rot2[1].prev[2] = bone->rot2[1].cur[2];\n            bone->rot2[2].prev[2] = bone->rot2[2].cur[2];\n        }\n    } else {\n        for (i = 0; i < skel->count; i++) {\n            bone = &skel->bones[i];\n            lbl_8006DBAC(bone->mtx);\n            fn_8006E5FC((u8 *)bone + 0x164);\n            bone->prev_pos = bone->pos;\n            bone->prev_scale = bone->scale;\n        }\n    }\n    fn_1_4270C(skel, data, arg2);\n    new_length = (s32)(skel->anim.end - skel->anim.start);\n    if (keep) {\n        skel->flags |= 1;\n        skel->prev_anim.speed *= length / new_length;\n    }\n    if (mode & 0x20) {\n        skel->flags |= 0x400;\n    }\n    if (mode & 0x80) {\n        skel->flags |= 0x800;\n    }\n    if (mode & 0x40) {\n        skel->flags |= 0x200;\n    }\n    if (mode & 1) {\n        f32 offset = new_length * progress;\n\n        skel->anim.frame = (f32)skel->anim.start + offset;\n    }\n    if (mode & 4) {\n        skel->flags |= 0x20;\n    }\n    if (mode & 8) {\n        skel->flags |= 0x40;\n    }\n    if (mode & 0x10) {\n        skel->flags |= 0x80;\n    }\n    skel->blend_frames = blend;\n    skel->root.x = skel->bones->mtx[0][3];\n    skel->root.y = skel->bones->mtx[1][3];\n    skel->root.z = skel->bones->mtx[2][3];\n}\n",
+    "compiler": "GC/1.3.2",
+    "flags": "",
+    "source": "rel/main_rel/motasglist/fn_1_42AD0.c",
+    "bytes": 932,
+    "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
+    "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
+    "recipe": [],
+    "link": "pending"
+  },
+  "fn_1_535A0": {
+    "seed_symbol": "fn_1_535A0",
+    "generator": "fzgx fixup",
+    "transform": "saved-body",
+    "seed": "#include \"types.h\"\n#include \"dolphin/types.h\"\n#include \"rel/main_rel/globals.h\"\n#include \"rel/main_rel/font.h\"\n#include \"runtime/va_list.h\"\n#include \"font.h\"\n\ntypedef struct FontParams {\n    u8 unk_00[0x30];\n    u32 unk_30;\n    f32 unk_34;\n    u8 unk_38[0x58 - 0x38];\n} FontParams;\n\ntypedef struct fn_1_4EB74_FontObject {\n    u32 unk_0;\n    u8 pad_4[0x2c];\n    u32 unk_30;\n} fn_1_4EB74_FontObject;\n\ntypedef struct fn_1_54668_node {\n    struct fn_1_54668_node *next;\n    void *data;\n} fn_1_54668_node;\n\ntypedef struct {\n    f32 x;\n    f32 y;\n    f32 z;\n} Vec3;\n\ntypedef struct fn_1_547F8_node {\n    struct fn_1_547F8_node *next;\n    void (*callback)(struct fn_1_547F8_node *);\n} fn_1_547F8_node;\n\ntypedef struct fn_1_563E4_FontState {\n    u8 pad_00[8];\n    f32 scale;\n    u8 pad_0C[6];\n    u8 enabled;\n    u8 color;\n    u32 value;\n    f32 x;\n    f32 y;\n    u8 pad_20[4];\n    u32 state;\n} fn_1_563E4_FontState;\n\ntypedef struct State {\n    FontDrawPacket *current;\n    s32 warned;\n    u8 unk_8[0x2028];\n    s32 override_enabled, override_value;\n    u32 texture[8];\n} State;\n\ntypedef struct Config {\n    u32 capacity;\n    FontDrawPacket *packets;\n    u8 unk_8[0x44];\n    char warning[1];\n} Config;\n\ntypedef struct ImageInfo {\n    u8 unk_0[8];\n    u16 width, height;\n    u32 unk_C;\n} ImageInfo;\n\ntypedef struct Images {\n    u32 unk_0;\n    ImageInfo *info;\n    u32 unk_8;\n    u32 (*textures)[8];\n} Images;\n\ntypedef struct Resource {\n    s32 loaded;\n    u8 unk_4[0x1c];\n    Images *images;\n    u32 unk_24;\n} Resource;\n\nstruct fn_1_530C8_lbl_1_rodata_282C {\n    f32 unk_0;\n};\n\nstruct FzgxCopy_88 { u32 words[22]; };\nextern void *lbl_801A6D00;\nextern void fn_1_A71CC(void);\nextern void fn_800724C8(void);\nextern void lbl_8006D758(void);\nextern void fn_80072558(void);\nextern void fn_1_A722C(void);\nextern void fn_8007245C(u32 value);\nextern void fn_80074788(u32 arg0);\nextern void fn_80074660(u32 arg0);\nextern void fn_80073678(u32 arg0);\nextern void fn_80073898(u32 arg0);\nextern void fn_80073C6C(s32 index);\nextern void fn_800720B0(int);\nextern void fn_80072864(u32 arg0);\nextern void fn_800745A4(u32 arg0, s32 arg1, s32 arg2, u32 arg3, u32 arg4, u32 arg5);\nextern void fn_80072D64(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5);\nextern void fn_80072E20(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5);\nextern void fn_800734A8(u32 arg0, s32 arg1, s32 arg2, s32 arg3);\nextern void fn_800728A8(s32 arg0, s32 arg1, s32 arg2, s32 arg3);\nextern void fn_80072AB0(s32 arg0, s32 arg1, s32 arg2);\nextern void fn_80074918(u8 arg0, s32 arg1, u8 arg2);\nextern void fn_80072C24(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);\nextern void fn_80072CC4(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);\nextern f32 fn_1_519AC(u32);\nextern void DCFlushRange(void *, u32);\nextern void GXInitTexObj(void *, void *, u16, u16, u32, u32, u32, u8);\nextern void GXInitTexObjLOD(void *, u32, u32, f32, f32, f32, u8, u8, u32);\nextern void fn_80073778(void *obj, s32 index);\nextern int fn_1_159588(int arg);\nextern void OSReport(const char *format, ...);\nextern void fn_80008BA8(u32 arg0, u32 arg1, u32 arg2);\nextern u32 fn_1_54298(void);\nextern u32 fn_1_542A8(void);\nextern f32 fn_1_542B8(void);\nextern f32 fn_1_4B1D4(s32 mode, s32 value);\nextern const f64 lbl_1_rodata_10F8;\nextern s32 fn_8008077C(u32 arg0, u32 arg1, u32 arg2);\nextern u8 lbl_1_rodata_FD0[];\nextern u8 *lbl_801A66CC;\nextern const f32 lbl_1_rodata_2870;\nextern const f64 lbl_1_rodata_2878;\nextern void lbl_8006E1B0();\nextern f32 lbl_8006D0B4(f32 value);\nextern void **fn_1_54448(s32 arg0);\nextern void * fn_1_548AC(u32 amount);\nextern void fn_1_55C48(void);\nextern u16 fn_1_7BE94(void);\nextern void fn_1_5489C(void **arg0, void **arg1);\nextern void fn_1_56530(void);\nextern void lbl_8006DB74(void *value);\nextern void lbl_8006DD14(void *value, void *object);\nextern void fn_1_4E500(void);\nextern void fn_1_48D80(void *value);\nextern void fn_1_4E6F4(void);\nextern s32 fn_1_4E724(FontParams *arg);\nextern s32 fn_1_4B16C(s32 value);\nextern const f32 lbl_1_rodata_2750;\nextern s32 fn_1_4EC74(FontParams *);\nextern s32 fn_1_4EB74(fn_1_4EB74_FontObject *self);\nextern f64 lbl_1_rodata_2778[2];\nextern u16 fn_1_48690(u32 unused);\nextern u16 fn_1_486C4(u32 value);\nextern void fn_80038F10(f32* out);\nextern u16 fn_1_A5D88(void);\nextern u16 fn_1_A5DB0(void);\nextern const f32 lbl_1_rodata_2770;\nextern const f32 lbl_1_rodata_276C;\nextern const f32 lbl_1_rodata_2754;\nextern void lbl_8006D7F4(f32 arg0, f32 arg1, f32 arg2);\nextern void lbl_8006E15C(f32 arg0, f32 arg1, f32 arg2);\nextern void mathutil_mtxA_rotate_z(s16 arg0);\nextern void lbl_8006DD7C(void);\nextern u32 GXLoadTexMtxImm(u32, u32, u32);\nextern f32 lbl_8006D188(s16);\nextern struct fn_1_530C8_lbl_1_rodata_282C lbl_1_rodata_282C;\nextern u32 fn_1_54320(void);\nextern void fn_1_54668(fn_1_54668_node *node, s32 count, u32 reverse);\nextern void fn_1_547F8(fn_1_547F8_node *node);\nextern u32 fn_1_5448C();\nextern void fn_1_563E4(fn_1_563E4_FontState *font);\nextern void fn_80074B40(u8 *arg0);\nextern void fn_80077B04(f32 value);\nextern void fn_80071ED4(u8 value, f32 x, f32 y);\nextern void fn_80072014(u32 *value);\nextern void fn_80074C74(u8 *arg0);\nextern void fn_80077BBC(s32 arg0);\nextern void fn_80037D40(u8 a, u8 b);\nextern u32 fn_80074A7C();\nextern u32 fn_80077BAC();\nextern const f32 lbl_1_rodata_10D4;\nextern void fn_1_4955C(f32 value1, f32 value2);\nextern f32 lbl_1_rodata_10C0[5];\nextern size_t strlen(const char *str);\nextern int sprintf(char *s, const char *format, ...);\nextern f32 lbl_1_rodata_26B8[16];\nextern void fn_1_4D10C(void *data, f32 scale, f32 value);\nextern void fn_1_4D2AC(void *data, f32 scale, f32 value);\nextern s32 fn_1_3F164(void);\nextern f32 lbl_1_rodata_26F8[22];\nextern f32 fn_1_A6FE8(void);\nextern void fn_80015E18(f32 *out, f32 a1, f32 a2, f32 a3, f32 a4);\nextern void fn_80015EE8(void *, f32, f32, f32, f32, f32, f32);\nextern void fn_800737E4(void *, s32);\nextern void fn_1_50190(f32 a, f32 b, f32 c, f32 d, f32 e, f32 f);\nextern void fn_1_52BF8(void *arg0, u32 arg1, s16 arg2);\nextern void *fn_1_541A8(void *arg, s32 column);\nextern u32 lbl_801A66B4;\nextern void fn_1_9FA18(void);\nextern void fn_1_58248(void);\nextern void fn_1_54848(void);\nextern void fn_800794F0(u8 *data, void *value, s32 size);\nextern s32 fn_1_54F5C(void *arg0, f32 arg1, f32 arg2);\nextern void fn_1_55210(void *value);\nextern const f32 lbl_1_rodata_28A8;\nextern void fn_1_557C4(void *value);\nextern void fn_1_556B8(void *value);\nextern void fn_80077E7C(void *value);\nextern void fn_80077F8C(void *value);\nextern void fn_80074CF4();\nextern void fn_800749B0(s32 arg0, void *arg1);\nextern const f32 lbl_1_rodata_28AC;\nextern u8 lbl_1_bss_6C7DC[100];\nextern u8 *fn_1_565E8(void);\nextern void fn_1_45730(void);\nextern void fn_1_45B2C(void);\nextern void fn_1_458A0(void);\nextern void fn_1_45850(void);\nextern void fn_1_565F4(void);\nextern void fn_80070D60(void *);\nextern s32 fn_1_A5DC4();\nextern f32 lbl_1_rodata_2788[6];\nextern f32 fn_1_519FC(f32 value);\nextern f32 fn_1_51AC0(f32 value);\nextern f32 fn_1_51B84(f32 value);\nextern f32 fn_1_51BFC(f32 value);\nextern const f64 lbl_1_rodata_2758;\nextern void lbl_8006D784(void *arg);\nextern void fn_1_55D6C(void);\n\n#include \"types.h\"\n#include \"font.h\"\n\ntypedef struct Fn1_535A0_Color {\n    u8 r;\n    u8 g;\n    u8 b;\n    u8 a;\n} Fn1_535A0_Color;\n\n\n/* font.h declares the packet colour as u8[4]; it holds a GXColor */\n#define FN_1_535A0_COLOR(packet) (*(Fn1_535A0_Color *)(packet).color)\n\nvoid fn_1_535A0(Fn1_535A0_Color color, f32 x, f32 y, f32 z, f32 width, f32 height, f32 thickness) {\n    FontDrawPacket packet;\n\n    packet = *(const FontDrawPacket *)lbl_1_rodata_26F8;\n    packet.image = 0x12;\n    packet.x = x;\n    packet.y = y;\n    packet.z = z;\n    packet.scale_x *= width / 8.0f;\n    packet.scale_y *= thickness / 8.0f;\n    FN_1_535A0_COLOR(packet) = color;\n    fn_1_4F734(&packet);\n\n    packet = *(const FontDrawPacket *)lbl_1_rodata_26F8;\n    packet.image = 0x12;\n    packet.x = x;\n    packet.y = y;\n    packet.z = z;\n    packet.scale_x *= thickness / 8.0f;\n    packet.scale_y *= height / 8.0f;\n    FN_1_535A0_COLOR(packet) = color;\n    fn_1_4F734(&packet);\n\n    packet = *(const FontDrawPacket *)lbl_1_rodata_26F8;\n    packet.image = 0x12;\n    packet.x = x;\n    packet.y = y + height;\n    packet.z = z;\n    packet.scale_x *= width / 8.0f;\n    packet.scale_y *= thickness / 8.0f;\n    packet.flags = 0xD;\n    FN_1_535A0_COLOR(packet) = color;\n    fn_1_4F734(&packet);\n\n    packet = *(const FontDrawPacket *)lbl_1_rodata_26F8;\n    packet.image = 0x12;\n    packet.x = x + width;\n    packet.y = y;\n    packet.z = z;\n    packet.scale_x *= thickness / 8.0f;\n    packet.scale_y *= height / 8.0f;\n    packet.flags = 0x7;\n    FN_1_535A0_COLOR(packet) = color;\n    fn_1_4F734(&packet);\n}\n",
+    "seed_sha256": "dadc1aa31ec28e3fdf6709e1ea9ca247479d5e315351238d09c361e6ec27cf05",
+    "generated_sha256": "dadc1aa31ec28e3fdf6709e1ea9ca247479d5e315351238d09c361e6ec27cf05",
+    "generated_source": "#include \"types.h\"\n#include \"dolphin/types.h\"\n#include \"rel/main_rel/globals.h\"\n#include \"rel/main_rel/font.h\"\n#include \"runtime/va_list.h\"\n#include \"font.h\"\n\ntypedef struct FontParams {\n    u8 unk_00[0x30];\n    u32 unk_30;\n    f32 unk_34;\n    u8 unk_38[0x58 - 0x38];\n} FontParams;\n\ntypedef struct fn_1_4EB74_FontObject {\n    u32 unk_0;\n    u8 pad_4[0x2c];\n    u32 unk_30;\n} fn_1_4EB74_FontObject;\n\ntypedef struct fn_1_54668_node {\n    struct fn_1_54668_node *next;\n    void *data;\n} fn_1_54668_node;\n\ntypedef struct {\n    f32 x;\n    f32 y;\n    f32 z;\n} Vec3;\n\ntypedef struct fn_1_547F8_node {\n    struct fn_1_547F8_node *next;\n    void (*callback)(struct fn_1_547F8_node *);\n} fn_1_547F8_node;\n\ntypedef struct fn_1_563E4_FontState {\n    u8 pad_00[8];\n    f32 scale;\n    u8 pad_0C[6];\n    u8 enabled;\n    u8 color;\n    u32 value;\n    f32 x;\n    f32 y;\n    u8 pad_20[4];\n    u32 state;\n} fn_1_563E4_FontState;\n\ntypedef struct State {\n    FontDrawPacket *current;\n    s32 warned;\n    u8 unk_8[0x2028];\n    s32 override_enabled, override_value;\n    u32 texture[8];\n} State;\n\ntypedef struct Config {\n    u32 capacity;\n    FontDrawPacket *packets;\n    u8 unk_8[0x44];\n    char warning[1];\n} Config;\n\ntypedef struct ImageInfo {\n    u8 unk_0[8];\n    u16 width, height;\n    u32 unk_C;\n} ImageInfo;\n\ntypedef struct Images {\n    u32 unk_0;\n    ImageInfo *info;\n    u32 unk_8;\n    u32 (*textures)[8];\n} Images;\n\ntypedef struct Resource {\n    s32 loaded;\n    u8 unk_4[0x1c];\n    Images *images;\n    u32 unk_24;\n} Resource;\n\nstruct fn_1_530C8_lbl_1_rodata_282C {\n    f32 unk_0;\n};\n\nstruct FzgxCopy_88 { u32 words[22]; };\nextern void *lbl_801A6D00;\nextern void fn_1_A71CC(void);\nextern void fn_800724C8(void);\nextern void lbl_8006D758(void);\nextern void fn_80072558(void);\nextern void fn_1_A722C(void);\nextern void fn_8007245C(u32 value);\nextern void fn_80074788(u32 arg0);\nextern void fn_80074660(u32 arg0);\nextern void fn_80073678(u32 arg0);\nextern void fn_80073898(u32 arg0);\nextern void fn_80073C6C(s32 index);\nextern void fn_800720B0(int);\nextern void fn_80072864(u32 arg0);\nextern void fn_800745A4(u32 arg0, s32 arg1, s32 arg2, u32 arg3, u32 arg4, u32 arg5);\nextern void fn_80072D64(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5);\nextern void fn_80072E20(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5);\nextern void fn_800734A8(u32 arg0, s32 arg1, s32 arg2, s32 arg3);\nextern void fn_800728A8(s32 arg0, s32 arg1, s32 arg2, s32 arg3);\nextern void fn_80072AB0(s32 arg0, s32 arg1, s32 arg2);\nextern void fn_80074918(u8 arg0, s32 arg1, u8 arg2);\nextern void fn_80072C24(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);\nextern void fn_80072CC4(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);\nextern f32 fn_1_519AC(u32);\nextern void DCFlushRange(void *, u32);\nextern void GXInitTexObj(void *, void *, u16, u16, u32, u32, u32, u8);\nextern void GXInitTexObjLOD(void *, u32, u32, f32, f32, f32, u8, u8, u32);\nextern void fn_80073778(void *obj, s32 index);\nextern int fn_1_159588(int arg);\nextern void OSReport(const char *format, ...);\nextern void fn_80008BA8(u32 arg0, u32 arg1, u32 arg2);\nextern u32 fn_1_54298(void);\nextern u32 fn_1_542A8(void);\nextern f32 fn_1_542B8(void);\nextern f32 fn_1_4B1D4(s32 mode, s32 value);\nextern const f64 lbl_1_rodata_10F8;\nextern s32 fn_8008077C(u32 arg0, u32 arg1, u32 arg2);\nextern u8 lbl_1_rodata_FD0[];\nextern u8 *lbl_801A66CC;\nextern const f32 lbl_1_rodata_2870;\nextern const f64 lbl_1_rodata_2878;\nextern void lbl_8006E1B0();\nextern f32 lbl_8006D0B4(f32 value);\nextern void **fn_1_54448(s32 arg0);\nextern void * fn_1_548AC(u32 amount);\nextern void fn_1_55C48(void);\nextern u16 fn_1_7BE94(void);\nextern void fn_1_5489C(void **arg0, void **arg1);\nextern void fn_1_56530(void);\nextern void lbl_8006DB74(void *value);\nextern void lbl_8006DD14(void *value, void *object);\nextern void fn_1_4E500(void);\nextern void fn_1_48D80(void *value);\nextern void fn_1_4E6F4(void);\nextern s32 fn_1_4E724(FontParams *arg);\nextern s32 fn_1_4B16C(s32 value);\nextern const f32 lbl_1_rodata_2750;\nextern s32 fn_1_4EC74(FontParams *);\nextern s32 fn_1_4EB74(fn_1_4EB74_FontObject *self);\nextern f64 lbl_1_rodata_2778[2];\nextern u16 fn_1_48690(u32 unused);\nextern u16 fn_1_486C4(u32 value);\nextern void fn_80038F10(f32* out);\nextern u16 fn_1_A5D88(void);\nextern u16 fn_1_A5DB0(void);\nextern const f32 lbl_1_rodata_2770;\nextern const f32 lbl_1_rodata_276C;\nextern const f32 lbl_1_rodata_2754;\nextern void lbl_8006D7F4(f32 arg0, f32 arg1, f32 arg2);\nextern void lbl_8006E15C(f32 arg0, f32 arg1, f32 arg2);\nextern void mathutil_mtxA_rotate_z(s16 arg0);\nextern void lbl_8006DD7C(void);\nextern u32 GXLoadTexMtxImm(u32, u32, u32);\nextern f32 lbl_8006D188(s16);\nextern struct fn_1_530C8_lbl_1_rodata_282C lbl_1_rodata_282C;\nextern u32 fn_1_54320(void);\nextern void fn_1_54668(fn_1_54668_node *node, s32 count, u32 reverse);\nextern void fn_1_547F8(fn_1_547F8_node *node);\nextern u32 fn_1_5448C();\nextern void fn_1_563E4(fn_1_563E4_FontState *font);\nextern void fn_80074B40(u8 *arg0);\nextern void fn_80077B04(f32 value);\nextern void fn_80071ED4(u8 value, f32 x, f32 y);\nextern void fn_80072014(u32 *value);\nextern void fn_80074C74(u8 *arg0);\nextern void fn_80077BBC(s32 arg0);\nextern void fn_80037D40(u8 a, u8 b);\nextern u32 fn_80074A7C();\nextern u32 fn_80077BAC();\nextern const f32 lbl_1_rodata_10D4;\nextern void fn_1_4955C(f32 value1, f32 value2);\nextern f32 lbl_1_rodata_10C0[5];\nextern size_t strlen(const char *str);\nextern int sprintf(char *s, const char *format, ...);\nextern f32 lbl_1_rodata_26B8[16];\nextern void fn_1_4D10C(void *data, f32 scale, f32 value);\nextern void fn_1_4D2AC(void *data, f32 scale, f32 value);\nextern s32 fn_1_3F164(void);\nextern f32 lbl_1_rodata_26F8[22];\nextern f32 fn_1_A6FE8(void);\nextern void fn_80015E18(f32 *out, f32 a1, f32 a2, f32 a3, f32 a4);\nextern void fn_80015EE8(void *, f32, f32, f32, f32, f32, f32);\nextern void fn_800737E4(void *, s32);\nextern void fn_1_50190(f32 a, f32 b, f32 c, f32 d, f32 e, f32 f);\nextern void fn_1_52BF8(void *arg0, u32 arg1, s16 arg2);\nextern void *fn_1_541A8(void *arg, s32 column);\nextern u32 lbl_801A66B4;\nextern void fn_1_9FA18(void);\nextern void fn_1_58248(void);\nextern void fn_1_54848(void);\nextern void fn_800794F0(u8 *data, void *value, s32 size);\nextern s32 fn_1_54F5C(void *arg0, f32 arg1, f32 arg2);\nextern void fn_1_55210(void *value);\nextern const f32 lbl_1_rodata_28A8;\nextern void fn_1_557C4(void *value);\nextern void fn_1_556B8(void *value);\nextern void fn_80077E7C(void *value);\nextern void fn_80077F8C(void *value);\nextern void fn_80074CF4();\nextern void fn_800749B0(s32 arg0, void *arg1);\nextern const f32 lbl_1_rodata_28AC;\nextern u8 lbl_1_bss_6C7DC[100];\nextern u8 *fn_1_565E8(void);\nextern void fn_1_45730(void);\nextern void fn_1_45B2C(void);\nextern void fn_1_458A0(void);\nextern void fn_1_45850(void);\nextern void fn_1_565F4(void);\nextern void fn_80070D60(void *);\nextern s32 fn_1_A5DC4();\nextern f32 lbl_1_rodata_2788[6];\nextern f32 fn_1_519FC(f32 value);\nextern f32 fn_1_51AC0(f32 value);\nextern f32 fn_1_51B84(f32 value);\nextern f32 fn_1_51BFC(f32 value);\nextern const f64 lbl_1_rodata_2758;\nextern void lbl_8006D784(void *arg);\nextern void fn_1_55D6C(void);\n\n#include \"types.h\"\n#include \"font.h\"\n\ntypedef struct Fn1_535A0_Color {\n    u8 r;\n    u8 g;\n    u8 b;\n    u8 a;\n} Fn1_535A0_Color;\n\n\n/* font.h declares the packet colour as u8[4]; it holds a GXColor */\n#define FN_1_535A0_COLOR(packet) (*(Fn1_535A0_Color *)(packet).color)\n\nvoid fn_1_535A0(Fn1_535A0_Color color, f32 x, f32 y, f32 z, f32 width, f32 height, f32 thickness) {\n    FontDrawPacket packet;\n\n    packet = *(const FontDrawPacket *)lbl_1_rodata_26F8;\n    packet.image = 0x12;\n    packet.x = x;\n    packet.y = y;\n    packet.z = z;\n    packet.scale_x *= width / 8.0f;\n    packet.scale_y *= thickness / 8.0f;\n    FN_1_535A0_COLOR(packet) = color;\n    fn_1_4F734(&packet);\n\n    packet = *(const FontDrawPacket *)lbl_1_rodata_26F8;\n    packet.image = 0x12;\n    packet.x = x;\n    packet.y = y;\n    packet.z = z;\n    packet.scale_x *= thickness / 8.0f;\n    packet.scale_y *= height / 8.0f;\n    FN_1_535A0_COLOR(packet) = color;\n    fn_1_4F734(&packet);\n\n    packet = *(const FontDrawPacket *)lbl_1_rodata_26F8;\n    packet.image = 0x12;\n    packet.x = x;\n    packet.y = y + height;\n    packet.z = z;\n    packet.scale_x *= width / 8.0f;\n    packet.scale_y *= thickness / 8.0f;\n    packet.flags = 0xD;\n    FN_1_535A0_COLOR(packet) = color;\n    fn_1_4F734(&packet);\n\n    packet = *(const FontDrawPacket *)lbl_1_rodata_26F8;\n    packet.image = 0x12;\n    packet.x = x + width;\n    packet.y = y;\n    packet.z = z;\n    packet.scale_x *= thickness / 8.0f;\n    packet.scale_y *= height / 8.0f;\n    packet.flags = 0x7;\n    FN_1_535A0_COLOR(packet) = color;\n    fn_1_4F734(&packet);\n}\n",
+    "compiler": "GC/1.3.2",
+    "flags": "",
+    "source": "rel/main_rel/font/fn_1_535A0.c",
+    "bytes": 656,
+    "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
+    "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
+    "recipe": [],
+    "link": "pending"
+  },
+  "fn_8006A8CC": {
+    "seed_symbol": "fn_8006A8CC",
+    "generator": "fzgx fixup",
+    "transform": "saved-body",
+    "seed": "#include \"types.h\"\n\ntypedef struct ARCEntry {\n    u32 isDirAndStringOff;\n    u32 parentOrPosition;\n    u32 nextEntryOrLength;\n} ARCEntry;\n\ntypedef struct ARCHandle {\n    void *archiveStartAddr;\n    void *FSTStart;\n    void *fileStart;\n    u32 entryNum;\n    char *FSTStringStart;\n    u32 FSTLength;\n    u32 currDir;\n} ARCHandle;\n\ntypedef struct ARCFileInfo {\n    ARCHandle *handle;\n    u32 startOffset;\n    u32 length;\n} ARCFileInfo;\n\n#define entryIsDir(i) (((FSTEntries[i].isDirAndStringOff & 0xff000000) == 0) ? FALSE : TRUE)\n#define stringOff(i) (FSTEntries[i].isDirAndStringOff & ~0xff000000)\n#define parentDir(i) (FSTEntries[i].parentOrPosition)\n#define nextDir(i) (FSTEntries[i].nextEntryOrLength)\n\nextern u32 fn_8006A768(ARCHandle *handle, u32 entry, char *path, u32 maxlen); /* entryToPath */\n\nstatic inline BOOL ARCConvertEntrynumToPath(ARCHandle *handle, s32 entrynum, char *path, u32 maxlen) {\n    u32 loc;\n    ARCEntry *FSTEntries;\n\n    FSTEntries = (ARCEntry *)handle->FSTStart;\n    loc = fn_8006A768(handle, (u32)entrynum, path, maxlen);\n\n    if (loc == maxlen) {\n        path[maxlen - 1] = '\\0';\n        return FALSE;\n    }\n\n    if (entryIsDir(entrynum)) {\n        if (loc == maxlen - 1) {\n            path[loc] = '\\0';\n            return FALSE;\n        }\n        path[loc++] = '/';\n    }\n\n    path[loc] = '\\0';\n    return TRUE;\n}\n\nBOOL fn_8006A8CC(ARCHandle *handle, char *path, u32 maxlen) {\n    return ARCConvertEntrynumToPath(handle, (s32)handle->currDir, path, maxlen);\n}\n",
+    "seed_sha256": "7ef3e79d29cab24ee55c125de6954cf67ae2eef238cc0aff67c605ee5f92537c",
+    "generated_sha256": "7ef3e79d29cab24ee55c125de6954cf67ae2eef238cc0aff67c605ee5f92537c",
+    "generated_source": "#include \"types.h\"\n\ntypedef struct ARCEntry {\n    u32 isDirAndStringOff;\n    u32 parentOrPosition;\n    u32 nextEntryOrLength;\n} ARCEntry;\n\ntypedef struct ARCHandle {\n    void *archiveStartAddr;\n    void *FSTStart;\n    void *fileStart;\n    u32 entryNum;\n    char *FSTStringStart;\n    u32 FSTLength;\n    u32 currDir;\n} ARCHandle;\n\ntypedef struct ARCFileInfo {\n    ARCHandle *handle;\n    u32 startOffset;\n    u32 length;\n} ARCFileInfo;\n\n#define entryIsDir(i) (((FSTEntries[i].isDirAndStringOff & 0xff000000) == 0) ? FALSE : TRUE)\n#define stringOff(i) (FSTEntries[i].isDirAndStringOff & ~0xff000000)\n#define parentDir(i) (FSTEntries[i].parentOrPosition)\n#define nextDir(i) (FSTEntries[i].nextEntryOrLength)\n\nextern u32 fn_8006A768(ARCHandle *handle, u32 entry, char *path, u32 maxlen); /* entryToPath */\n\nstatic inline BOOL ARCConvertEntrynumToPath(ARCHandle *handle, s32 entrynum, char *path, u32 maxlen) {\n    u32 loc;\n    ARCEntry *FSTEntries;\n\n    FSTEntries = (ARCEntry *)handle->FSTStart;\n    loc = fn_8006A768(handle, (u32)entrynum, path, maxlen);\n\n    if (loc == maxlen) {\n        path[maxlen - 1] = '\\0';\n        return FALSE;\n    }\n\n    if (entryIsDir(entrynum)) {\n        if (loc == maxlen - 1) {\n            path[loc] = '\\0';\n            return FALSE;\n        }\n        path[loc++] = '/';\n    }\n\n    path[loc] = '\\0';\n    return TRUE;\n}\n\nBOOL fn_8006A8CC(ARCHandle *handle, char *path, u32 maxlen) {\n    return ARCConvertEntrynumToPath(handle, (s32)handle->currDir, path, maxlen);\n}\n",
+    "compiler": "GC/1.2.5",
+    "flags": "-char unsigned",
+    "source": "dol/fn_8006A8CC.c",
+    "bytes": 204,
+    "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
+    "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
+    "recipe": [],
+    "link": "pending"
+  },
+  "fn_8006A768": {
+    "seed_symbol": "fn_8006A768",
+    "generator": "fzgx fixup",
+    "transform": "saved-body",
+    "seed": "#include \"types.h\"\n\ntypedef struct ARCEntry {\n    u32 isDirAndStringOff;\n    u32 parentOrPosition;\n    u32 nextEntryOrLength;\n} ARCEntry;\n\ntypedef struct ARCHandle {\n    void *archiveStartAddr;\n    void *FSTStart;\n    void *fileStart;\n    u32 entryNum;\n    char *FSTStringStart;\n    u32 FSTLength;\n    u32 currDir;\n} ARCHandle;\n\ntypedef struct ARCFileInfo {\n    ARCHandle *handle;\n    u32 startOffset;\n    u32 length;\n} ARCFileInfo;\n\n#define entryIsDir(i) (((FSTEntries[i].isDirAndStringOff & 0xff000000) == 0) ? FALSE : TRUE)\n#define stringOff(i) (FSTEntries[i].isDirAndStringOff & ~0xff000000)\n#define parentDir(i) (FSTEntries[i].parentOrPosition)\n#define nextDir(i) (FSTEntries[i].nextEntryOrLength)\n\nstatic inline u32 myStrncpy(char *dest, char *src, u32 maxlen) {\n    u32 i = maxlen;\n\n    while ((i > 0) && (*src != 0)) {\n        *dest++ = *src++;\n        i--;\n    }\n    return (maxlen - i);\n}\n\nu32 fn_8006A768(ARCHandle *handle, u32 entry, char *path, u32 maxlen) {\n    char *name;\n    u32 loc;\n    ARCEntry *FSTEntries;\n\n    FSTEntries = (ARCEntry *)handle->FSTStart;\n\n    if (entry == 0) {\n        return 0;\n    }\n\n    name = handle->FSTStringStart + stringOff(entry);\n    loc = fn_8006A768(handle, parentDir(entry), path, maxlen);\n\n    if (loc == maxlen) {\n        return loc;\n    }\n\n    *(path + loc++) = '/';\n    loc += myStrncpy(path + loc, name, maxlen - loc);\n    return loc;\n}\n",
+    "seed_sha256": "212dde4646f526b3e93db62165d8dfced1c116e3863ee48dab463a4d83881247",
+    "generated_sha256": "212dde4646f526b3e93db62165d8dfced1c116e3863ee48dab463a4d83881247",
+    "generated_source": "#include \"types.h\"\n\ntypedef struct ARCEntry {\n    u32 isDirAndStringOff;\n    u32 parentOrPosition;\n    u32 nextEntryOrLength;\n} ARCEntry;\n\ntypedef struct ARCHandle {\n    void *archiveStartAddr;\n    void *FSTStart;\n    void *fileStart;\n    u32 entryNum;\n    char *FSTStringStart;\n    u32 FSTLength;\n    u32 currDir;\n} ARCHandle;\n\ntypedef struct ARCFileInfo {\n    ARCHandle *handle;\n    u32 startOffset;\n    u32 length;\n} ARCFileInfo;\n\n#define entryIsDir(i) (((FSTEntries[i].isDirAndStringOff & 0xff000000) == 0) ? FALSE : TRUE)\n#define stringOff(i) (FSTEntries[i].isDirAndStringOff & ~0xff000000)\n#define parentDir(i) (FSTEntries[i].parentOrPosition)\n#define nextDir(i) (FSTEntries[i].nextEntryOrLength)\n\nstatic inline u32 myStrncpy(char *dest, char *src, u32 maxlen) {\n    u32 i = maxlen;\n\n    while ((i > 0) && (*src != 0)) {\n        *dest++ = *src++;\n        i--;\n    }\n    return (maxlen - i);\n}\n\nu32 fn_8006A768(ARCHandle *handle, u32 entry, char *path, u32 maxlen) {\n    char *name;\n    u32 loc;\n    ARCEntry *FSTEntries;\n\n    FSTEntries = (ARCEntry *)handle->FSTStart;\n\n    if (entry == 0) {\n        return 0;\n    }\n\n    name = handle->FSTStringStart + stringOff(entry);\n    loc = fn_8006A768(handle, parentDir(entry), path, maxlen);\n\n    if (loc == maxlen) {\n        return loc;\n    }\n\n    *(path + loc++) = '/';\n    loc += myStrncpy(path + loc, name, maxlen - loc);\n    return loc;\n}\n",
+    "compiler": "GC/1.2.5",
+    "flags": "-char unsigned",
+    "source": "dol/fn_8006A768.c",
+    "bytes": 356,
     "headers_sha256": "08c049b88fe7e0b356c7398913ee9ebee11da313f4563e59e70f327fc799817b",
     "oracle_sha256": "1312cf724d4f48ab0f29bce25d63f0021603b399fd8f0f2ce8e5a270ac47f739",
     "recipe": [],
