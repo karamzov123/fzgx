@@ -219,7 +219,7 @@ def hermes_command(prompt, model, directory, env):
         'env': {key: '${' + key + '}' for key in ('FZGX_SYMBOL', 'FZGX_AGENT_ID',
             'FZGX_HARNESS', 'FZGX_MODEL', 'FZGX_RESULT_FILE')}}}
     signature = hashlib.sha256((config.read_bytes() if config.exists() else b'') +
-                               json.dumps(bound_mcp, sort_keys=True).encode() + b'direct-v1').hexdigest()
+                               json.dumps(bound_mcp, sort_keys=True).encode() + b'direct-v2').hexdigest()
     env['HERMES_HOME'] = str(session_home)
     # One isolated fleet runtime, not an installation per function. Serialize
     # setup; identity placeholders resolve from each client's environment.
@@ -236,7 +236,8 @@ def hermes_command(prompt, model, directory, env):
                 if original.exists() and not link.exists():
                     link.symlink_to(original)
             for key, value in (('mcp_servers', json.dumps(bound_mcp)),
-                               ('tools.tool_search.enabled', 'off')):
+                               ('tools.tool_search.enabled', 'off'),
+                               ('auxiliary.title_generation.enabled', 'false')):
                 configured = subprocess.run(['hermes', 'config', 'set', '--force', key, value],
                     env=env, capture_output=True, text=True, timeout=120)
                 if configured.returncode:
