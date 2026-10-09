@@ -1704,6 +1704,210 @@ void fn_1_21CA0(Fn_1_21CA0 *self, void *arg) {
 }
 /* fzgx:end fn_1_21CA0 */
 
+/* fzgx:begin fn_1_21CFC noprologue */
+#include "types.h"
+#include "rel/main_rel/globals.h"
+#include "rel/main_rel/stcoli.h"
+#include "dolphin/hw_regs.h"
+#include "psvec.h"
+#include "types.h"
+#include "dolphin/hw_regs.h"
+
+typedef struct Node {
+    u32 unk_0;
+    u8 pad_4[0x8];
+    s32 count;
+    struct Node *children;
+    u8 pad_14[0x50 - 0x14];
+} Node;
+
+typedef struct StcoliNode StcoliNode;
+
+struct StcoliNode {
+    u32 flags;
+    u8 pad[8];
+    s32 count;
+    StcoliNode *items;
+    u8 rest[0x3c];
+};
+
+typedef struct StcoliVec {
+    u32 x;
+    u32 y;
+    u32 z;
+} StcoliVec;
+
+typedef struct {
+    unsigned char pad0[0x0c];
+    int count;
+    void *entries;
+} Fn118F28Object;
+
+typedef struct Fn_1_20258Constants {
+    unsigned char pad08[8];
+    f32 value08;
+    f32 value0c;
+    unsigned char pad10[0xb0];
+    f64 valuec0;
+    f32 valuec8;
+    unsigned char padcc[4];
+    f64 valued0;
+} Fn_1_20258Constants;
+
+typedef struct {
+    u32 f00, f04, f08, f0c, f10, f14, f18, f1c, f20, f24;
+    u32 f28, f2c, f30, f34, f38, f3c, f40, f44;
+} Cfg;
+
+typedef struct {
+    u8 pad_0[0x4];
+    Cfg *cfg;
+    u8 pad_8[0xc];
+    f32 fx;
+    f32 fy;
+    f32 fz;
+    f32 rxv;
+    f32 ryv;
+    f32 rzv;
+    f32 sxv;
+    f32 syv;
+    f32 szv;
+} Entity;
+
+typedef struct {
+    u32 count;
+    u32 entries[1];
+} Stack;
+
+struct fn_1_2B478_lbl_801A6D00 {
+    u32 unk_0;
+};
+extern f32 lbl_1_rodata_6B0[6];
+extern void fn_1_17D5C(Node *node, u32 *acc);
+extern void fn_1_9E14C();
+extern void fn_1_9E170(u32 arg0, u32 arg1, u32 arg2, u32 arg3);
+extern const f32 lbl_1_rodata_6D0;
+extern f32 lbl_1_rodata_6F8;
+extern u32 mathutil_mtxA_rotate_x(u32);
+extern u32 mathutil_mtxA_rotate_y(u32);
+extern u32 mathutil_mtxA_rotate_z(u32);
+extern void fn_80008BEC(void *dest, int value, u32 size);
+extern void lbl_8006E0B4(f32, f32, f32);
+extern void lbl_8006DBE4();
+extern void lbl_8006DAEC(void);
+extern void lbl_8006DB30(void);
+extern void fn_1_1902C(StcoliNode *root, StcoliVec *vec, void *arg3, f32 value);
+extern void fn_1_18F28(Fn118F28Object *obj, int *args, int arg2, float value);
+extern Fn_1_20258Constants lbl_1_rodata_6C8;
+extern int fn_1_210A8(void *, f32 *, int, int, int);
+extern int fn_1_16BA0(void *, void *, void *, int *, int);
+extern f32 fn_1_16E68(void *, void *, int);
+extern unsigned char lbl_1_rodata_840[];
+extern void fn_1_22F90(void *self, int value);
+extern void lbl_8006E1F0(void *, f32, f32, f32);
+extern void fn_1_8A190(void *arg0, void *arg1);
+extern int fn_1_15578(void *, void *, void *, void *, u32, void *, void *, void *, u32, void *);
+extern void *memset(void *, int, unsigned int);
+extern int fn_1_4C10(void);
+extern u32 fn_1_4060(void);
+extern void fn_1_EB080(int);
+extern void fn_1_9D77C(u32, u32);
+extern void fn_1_46B4(u32 arg0, u32 arg1, const char *arg2, int arg3);
+extern u32 lbl_801A6410;
+extern u8 *lbl_801A66CC;
+extern int fn_1_180F4(int first, int second, int count, int ascending);
+extern void fn_1_18784();
+extern void fn_1_18214();
+extern void fn_1_21950(void *, f32, f32);
+extern f32 lbl_1_rodata_6D4;
+extern char lbl_1_bss_9C;
+extern void fn_1_A2D84(u32 arg0);
+extern u32 fn_1_8C66C(u32 index);
+extern int fn_1_163BC(void *arg0, void *arg1, int mask, int value);
+extern void lbl_8006E1D8(void *arg0, f32 arg1, f32 arg2, f32 arg3);
+extern double lbl_1_rodata_910;
+extern const f32 lbl_1_rodata_84C;
+extern const f32 lbl_1_rodata_854;
+extern s16 fn_1_7B054();
+extern void OSReport(const char *format, ...);
+extern void OSPanic(const char *file, int line, const char *msg, ...);
+extern void *fn_1_868C0(s8 index);
+extern void fn_1_F7338(int arg0, void *arg1, void *arg2);
+extern const f32 lbl_1_rodata_85C;
+extern void fn_8006E978(void *, void *, void *);
+extern void mathutil_mtxA_from_quat(void *);
+extern void lbl_8006DFC4(void *);
+extern void lbl_8006DB74(void *);
+extern f64 lbl_1_rodata_860[22];
+extern f32 lbl_1_rodata_B74[25];
+extern struct fn_1_2B478_lbl_801A6D00 lbl_801A6D00;
+extern f32 lbl_8006D6FC(void *, void *);
+extern s16 lbl_1_bss_3C2A[3];
+
+
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+} fn_1_21CFC_Vec;
+
+extern void fn_1_18214();
+extern const f32 lbl_1_rodata_6D0; /* 0.0f */
+extern const f32 lbl_1_rodata_6E8; /* 0.5f */
+extern f32 lbl_8006D188(s16 angle);
+extern void lbl_8006E1B0(fn_1_21CFC_Vec *src, fn_1_21CFC_Vec *dst);
+extern void lbl_8006DAEC(void);
+extern void lbl_8006DCA4(void);
+extern void fn_80072558(void);
+extern void fn_8003462C(u32 type, u32 fmt, u32 count);
+extern void lbl_8006DB30(void);
+
+/* fzgx-allow: A1 GX FIFO write port; retail materialises it as lis 0xcc01/stfs -0x8000 */
+#define STCOLI_GX_WRITE_F32(v) (*(volatile f32 *)(GX_FIFO_BASE + 0x0) = (v)) /* Hardware access must remain ordered. */
+
+static inline void fn_1_21CFC_Position3f32(f32 x, f32 y, f32 z) {
+    STCOLI_GX_WRITE_F32(x);
+    STCOLI_GX_WRITE_F32(y);
+    STCOLI_GX_WRITE_F32(z);
+}
+
+void fn_1_21CFC(void *entity, fn_1_21CFC_Vec *scale, f32 t) {
+    f32 y;
+    f32 z;
+    fn_1_21CFC_Vec points[16];
+    fn_1_21CFC_Vec *point;
+    s32 i;
+    s32 angle;
+
+    fn_1_18214(entity, scale, NULL, t);
+    z = lbl_1_rodata_6D0;
+    point = points;
+    for (i = 0, angle = 0; i < 16; i++, angle += 0x1000) {
+        y = lbl_1_rodata_6E8 * lbl_8006D188(angle + 0x4000);
+        point->x = lbl_1_rodata_6E8 * lbl_8006D188(angle);
+        point->y = y;
+        point->z = z;
+        point->x *= scale->x;
+        point->y *= scale->y;
+        lbl_8006E1B0(point, point);
+        point++;
+    }
+    lbl_8006DAEC();
+    lbl_8006DCA4();
+    fn_80072558();
+    point = points;
+    fn_8003462C(0xB0, 0, 17);
+    for (i = 0; i < 16; i++) {
+        fn_1_21CFC_Position3f32(point->x, point->y, point->z);
+        point++;
+    }
+    STCOLI_GX_WRITE_F32(points[0].x);
+    STCOLI_GX_WRITE_F32(points[0].y);
+    STCOLI_GX_WRITE_F32(points[0].z);
+    lbl_8006DB30();
+}
+/* fzgx:end fn_1_21CFC */
+
 /* fzgx:begin fn_1_229EC noprologue */
 #include "dolphin/types.h"
 

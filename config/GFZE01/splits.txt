@@ -5810,3 +5810,63 @@ dol/data/lbl_8019E140.c:
 
 dol/fn_8007A440.c:
 	.text       start:0x8007A440 end:0x8007A710 align:4
+
+dol/fn_8004D528.c:
+	.text       start:0x8004D528 end:0x8004D8DC align:4
+
+dol/fn_800084E8.c:
+	.text       start:0x800084E8 end:0x800087F4 align:4
+
+dol/fn_8004FF68.c:
+	.text       start:0x8004FF68 end:0x80050180 align:4
+
+dol/long2str.c:
+	.text       start:0x80082040 end:0x80082298 align:4
+
+dol/fn_8003A1CC.c:
+	.text       start:0x8003A1CC end:0x8003A3D4 align:4
+
+dol/fn_800090A4.c:
+	.text       start:0x800090A4 end:0x80009468 align:4
+
+dol/fn_80041EF8.c:
+	.text       start:0x80041EF8 end:0x800420F4 align:4
+
+dol/fn_8004A80C.c:
+	.text       start:0x8004A80C end:0x8004AC04 align:4
+
+dol/fn_8006AC44.c:
+	.text       start:0x8006AC44 end:0x8006AE90 align:4
+
+dol/fn_800571EC.c:
+	.text       start:0x800571EC end:0x80057378 align:4
+
+dol/fn_800251F0.c:
+	.text       start:0x800251F0 end:0x800253F0 align:4
+
+dol/fn_8007A710.c:
+	.text       start:0x8007A710 end:0x8007A9A4 align:4
+
+dol/fn_800674FC.c:
+	.text       start:0x800674FC end:0x80067898 align:4
+
+dol/fn_8008596C.c:
+	.text       start:0x8008596C end:0x80085C7C align:4
+
+dol/fn_8008FC3C.c:
+	.text       start:0x8008FC3C end:0x8008FED4 align:4
+
+dol/fn_8000D1F0.c:
+	.text       start:0x8000D1F0 end:0x8000D4F4 align:4
+
+dol/fn_800377F8.c:
+	.text       start:0x800377F8 end:0x80037A14 align:4
+
+dol/longlong2str.c:
+	.text       start:0x80081D2C end:0x80082040 align:4
+
+dol/fn_80087C44.c:
+	.text       start:0x80087C44 end:0x80087E58 align:4
+
+dol/fn_800581CC.c:
+	.text       start:0x800581CC end:0x80058380 align:4

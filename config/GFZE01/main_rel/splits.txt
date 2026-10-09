@@ -7379,3 +7379,9 @@ rel/main_rel/memcard/fn_1_C17D0.c:
 
 rel/main_rel/sound/fn_1_A2A70.c:
 	.text       start:0x000A2A70 end:0x000A2D84 align:4
+
+rel/main_rel/stcoli/fn_1_21CFC.c:
+	.text       start:0x00021CFC end:0x00021F18 align:4
+
+rel/main_rel/font/fn_1_51E60.c:
+	.text       start:0x00051E60 end:0x00052070 align:4
