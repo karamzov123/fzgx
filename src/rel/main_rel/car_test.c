@@ -77,6 +77,236 @@ void fn_1_7C1E8(void *out) {
 }
 /* fzgx:end fn_1_7C1E8 */
 
+/* fzgx:begin fn_1_7C2A0 noprologue */
+#include "types.h"
+
+#pragma section code_type ".fzgxpool"
+__declspec(section ".fzgxpool") static void fzgx_pool_prime1(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = 1.0f;
+    s = 100.0f;
+    s = 17.320507049560547f;
+}
+static const u32 fzgx_pool_table2[1] = {0x00FF00FF};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep2(void) { const u32 *volatile cp; cp = fzgx_pool_table2; }  /* fzgx-allow: S2 pool primer sink */
+static const u32 fzgx_pool_table3[1] = {0x00FF00FF};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep3(void) { const u32 *volatile cp; cp = fzgx_pool_table3; }  /* fzgx-allow: S2 pool primer sink */
+static const u32 fzgx_pool_table4[1] = {0x00FF00FF};  /* fzgx-allow: A1 retail pool bytes */
+__declspec(section ".fzgxpool") static void fzgx_pool_keep4(void) { const u32 *volatile cp; cp = fzgx_pool_table4; }  /* fzgx-allow: S2 pool primer sink */
+__declspec(section ".fzgxpool") static void fzgx_pool_prime5(void) {
+    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */
+    s = -100.0f;
+    s = 3.0f;
+    s = 6.0f;
+    s = -3.0f;
+    s = 182.04444885253906f;
+    s = 255.0f;
+    d = 4503601774854144.0;
+    d = 4503599627370496.0;
+}
+#pragma section code_type ".text"
+
+typedef struct Vec3f {
+    f32 x, y, z;
+} Vec3f;
+
+typedef struct Line3 {
+    Vec3f a;
+    Vec3f b;
+} Line3;
+
+typedef struct Rodata33A8 {
+    f32 f0;
+    f32 f4;
+    u8 pad8[4];
+    u32 c0;
+    u32 c1;
+    u32 c2;
+    f32 f18;
+    f32 f1c;
+    f32 f20;
+    f32 f24;
+    f32 f28;
+    f32 f2c;
+} Rodata33A8;
+
+typedef struct CarInner {
+    u8 pad0[4];
+    s16 idx;
+    u8 pad6[0x76];
+    f32 f7c;
+    u8 pad80[4];
+    f32 f84;
+} CarInner;
+
+typedef struct CarInfo {
+    s32 count;
+    u8 pad4[4];
+    u8 *tbl;
+} CarInfo;
+
+typedef struct CarSlot {
+    u8 **list;
+    CarInfo *info;
+    u32 pad;
+} CarSlot;
+
+typedef struct Car {
+    u8 pad0[2];
+    s8 limit;
+    u8 pad3[0x329];
+    CarInner *inner;
+    u8 *p330;
+    CarSlot slots[3];
+    u8 pad358[0x62];
+    s16 f3ba;
+} Car;
+
+typedef struct Game {
+    u8 pad0[6];
+    s8 f6;
+    s8 f7;
+    s8 f8;
+    u8 pad9[3];
+    u32 *masks;
+    u8 pad10[0xc];
+    u8 **color;
+    u32 flags;
+    s8 f24;
+} Game;
+
+extern Game *lbl_1_bss_6D7E8;
+extern Rodata33A8 lbl_1_rodata_33A8;
+extern u32 lbl_801A66A0;
+extern u32 lbl_1_data_1EFDC;
+extern u32 lbl_1_data_1EFE4;
+
+extern u32 fn_1_3C18(u32);
+extern void fn_1_3BDC(u32);
+extern void fn_1_55210(void *);
+extern void fn_1_57714(u8);
+extern void fn_1_5773C(Vec3f *, Vec3f *, u32 *);
+extern void fn_1_87238(Car *, s8, f32);
+extern void fn_1_87610(Car *, Car *);
+extern void fn_1_A77DC(Car *);
+extern void fn_1_A7854(Car *, void *);
+extern void fn_1_A8DD4(const char *, ...);
+extern void fn_1_A8EF8(u16, u16);
+extern void fn_80008BEC(void *, int, u32);
+extern void fn_80072558(void);
+extern void fn_80074D68(f32, f32, f32);
+extern void fn_80074D78(u32);
+extern void lbl_8006D7DC(void *);
+extern void lbl_8006DAEC(void);
+extern void lbl_8006DB74(void *);
+extern void lbl_8006DB30(void);
+extern void lbl_8006DBE4(void);
+extern void lbl_8006DCA4(void);
+extern void lbl_8006DFC4(void *);
+extern void lbl_8006E0A4(void *);
+extern void mathutil_mtxA_rotate_y(s32);
+extern u8 *fn_80083970(u8 *, const u8 *);
+
+void fn_1_7C2A0(Car *car) {
+    Rodata33A8 *pool = &lbl_1_rodata_33A8;
+    s8 count;
+    void * lab_t1;
+    Line3 l0, l1, l2;
+    u32 c0, c1, c2;
+    s16 i, k;
+
+    if (lbl_1_bss_6D7E8->flags & 0x40000000) {
+        return;
+    }
+    count = car->slots[lbl_1_bss_6D7E8->f24 - 0 + 0].info->count;
+    if (car->inner->idx == lbl_1_bss_6D7E8->f7 || lbl_1_bss_6D7E8->f6 == 5) {
+        lbl_8006DAEC();
+        lbl_8006DCA4();
+        c0 = fzgx_pool_table2[0];
+        c1 = fzgx_pool_table3[0];
+        c2 = fzgx_pool_table4[0];
+        fn_80008BEC(&l0, 0, 0x18);
+        fn_80008BEC(&l1, 0, 0x18);
+        fn_80008BEC(&l2, 0, 0x18);
+        l0.a.x = (-100.0f);
+        l0.b.x = (100.0f);
+        l1.a.y = (-100.0f);
+        l1.b.y = (100.0f);
+        l2.a.z = (-100.0f);
+        l2.b.z = (100.0f);
+        fn_1_57714(2);
+        fn_80072558();
+        fn_1_5773C(&l0.a, &l0.b, &c0);
+        fn_1_5773C(&l1.a, &l1.b, &c1);
+        fn_1_5773C(&l2.a, &l2.b, &c2);
+        if (lbl_1_bss_6D7E8->f6 == 5) {
+            s8 v = car->inner->idx;
+            f32 t0 = (6.0f) * (f32)(v % 2);
+            f32 t1 = (6.0f) * (f32)(v / 2);
+            car->inner->f7c = (3.0f) - t0;
+            car->inner->f84 = (-3.0f) + t1;
+        }
+        lbl_8006E0A4((u8 *)car->inner + 0x7c);
+        if (lbl_1_bss_6D7E8->f6 == 5) {
+            mathutil_mtxA_rotate_y((s32)((182.044449f) * (f32)(lbl_801A66A0 % 360)));
+        }
+        {
+            u8 *c = *lbl_1_bss_6D7E8->color;
+            fn_80074D68((f32)c[0] / (255.0f), (f32)c[1] / (255.0f), (f32)c[2] / (255.0f));
+        }
+        fn_80074D78((u32)__cntlzw(lbl_1_bss_6D7E8->flags & 0x80000000) >> 5);
+        lbl_8006DAEC();
+        lbl_8006D7DC((u8 *)car->inner + 0x7c);
+        lbl_8006DB74((u8 *)car->inner + 0x14c);
+        fn_1_A77DC(car);
+        lab_t1 = 0;
+        fn_1_A7854(car, lab_t1);
+        lbl_8006DB30();
+        car->f3ba = lbl_1_bss_6D7E8->f24;
+        fn_1_3BDC(3);
+        if (lbl_1_bss_6D7E8->f8 == count) {
+            i = 0;
+            k = 0;
+            for (; i < count; i++) {
+                if (((1 << i) & lbl_1_bss_6D7E8->masks[lbl_1_bss_6D7E8->f7]) && i != 0) {
+                    if ((s16)k > car->limit - 1) {
+                        break;
+                    }
+                    if (fn_80083970(*(u8 **)(car->slots[lbl_1_bss_6D7E8->f24].info->tbl + i * 8 + 4), (u8 *)&lbl_1_data_1EFDC)
+                        != *(u8 **)(car->slots[lbl_1_bss_6D7E8->f24].info->tbl + i * 8 + 4)) {
+                        if (car->slots[lbl_1_bss_6D7E8->f24].list[i] == 0) {
+                            k++;
+                        } else {
+                            lbl_8006DAEC();
+                            if (car->p330 != 0) {
+                                fn_1_87610(car, car);
+                                lbl_8006DBE4();
+                                lbl_8006DFC4(car->p330 + k * 0x30);
+                                fn_80072558();
+                                fn_1_55210(car->slots[lbl_1_bss_6D7E8->f24].list[i]);
+                            }
+                            lbl_8006DB30();
+                            k++;
+                        }
+                    }
+                }
+            }
+            fn_80072558();
+            fn_1_87238(car, lbl_1_bss_6D7E8->f24, (1.0f));
+        } else {
+            fn_80072558();
+            fn_1_55210(car->slots[lbl_1_bss_6D7E8->f24].list[lbl_1_bss_6D7E8->f8]);
+        }
+        {
+            s16 r = fn_1_3C18(3);
+            fn_1_A8EF8(0x140, 0x190);
+            fn_1_A8DD4((const char *)&"cpu:%d\n", r);
+        }
+        lbl_8006DB30();
+    }
+}
+/* fzgx:end fn_1_7C2A0 */
+
 /* fzgx:begin fn_1_7D694 */
 typedef struct {
     u8 _pad4[4];
