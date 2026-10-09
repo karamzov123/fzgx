@@ -1,0 +1,619 @@
+{
+  "upstream_pr": 22,
+  "upstream_repository": "rayanht/fzgx",
+  "upstream_head": "ced1e6b523600e5b2f7fab6f78b571eedc172c85",
+  "verified_functions": 30,
+  "verified_executable_bytes": 19572,
+  "scope": "Per-function verified compilation contexts, not blanket family overrides. Apply context only with source/provenance and fresh object/link/hash checks.",
+  "cohorts": [
+    {
+      "compiler": "GC/1.2.5",
+      "flags": "-char unsigned",
+      "verified_functions": 2
+    },
+    {
+      "compiler": "GC/1.2.5n",
+      "flags": "",
+      "verified_functions": 4
+    },
+    {
+      "compiler": "GC/1.2.5n",
+      "flags": "-fp_contract off",
+      "verified_functions": 1
+    },
+    {
+      "compiler": "GC/1.2.5n",
+      "flags": "-opt nopeephole",
+      "verified_functions": 1
+    },
+    {
+      "compiler": "GC/1.3.2",
+      "flags": "",
+      "verified_functions": 15
+    },
+    {
+      "compiler": "GC/1.3.2",
+      "flags": "-sdata 0 -sdata2 0",
+      "verified_functions": 2
+    },
+    {
+      "compiler": "GC/1.3.2",
+      "flags": "-sdata 0 -sdata2 0 -use_lmw_stmw on",
+      "verified_functions": 1
+    },
+    {
+      "compiler": "GC/1.3.2",
+      "flags": "-use_lmw_stmw on",
+      "verified_functions": 1
+    },
+    {
+      "compiler": "GC/1.3.2r",
+      "flags": "",
+      "verified_functions": 1
+    },
+    {
+      "compiler": "GC/2.6",
+      "flags": "",
+      "verified_functions": 1
+    },
+    {
+      "compiler": "GC/2.6",
+      "flags": "-use_lmw_stmw on",
+      "verified_functions": 1
+    }
+  ],
+  "records": [
+    {
+      "module": "customize",
+      "symbol": "fn_3_BF1C",
+      "executable_bytes": 524,
+      "compiler": "GC/1.3.2",
+      "flags": "",
+      "matched_commit": "fc787c86",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/rel/customize/customize.c",
+      "original_sha256": "ac6ae11075e82e21c53ad7cec9e9ee1d7bec9ff54b5bffa3255aba78afd780cc",
+      "accepted_candidate_sha256": "1464c64ad9c70e1383af17b8e1f72c274d4fa09d9b6f82b5893017fe4d84fd9d",
+      "matching_sources": [
+        "rel/customize/customize/fn_3_BF1C.c"
+      ],
+      "matching_tus": [
+        "rel/customize/customize.c"
+      ],
+      "receipt_directory": "pr22-normalized-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_800084E8",
+      "executable_bytes": 780,
+      "compiler": "GC/1.3.2",
+      "flags": "",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_800084E8.c",
+      "original_sha256": "a6881a658edc4310384a06af8377abee3cd155289cc9ebaa29557d81d3e692e1",
+      "accepted_candidate_sha256": "a6881a658edc4310384a06af8377abee3cd155289cc9ebaa29557d81d3e692e1",
+      "matching_sources": [
+        "dol/fn_800084E8.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_800090A4",
+      "executable_bytes": 964,
+      "compiler": "GC/1.3.2",
+      "flags": "",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_800090A4.c",
+      "original_sha256": "bb80d2419a6488d4b7b49c53c37d8c708cc7288a1cc9457b1fb34d09911addc5",
+      "accepted_candidate_sha256": "bb80d2419a6488d4b7b49c53c37d8c708cc7288a1cc9457b1fb34d09911addc5",
+      "matching_sources": [
+        "dol/fn_800090A4.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_8000D1F0",
+      "executable_bytes": 772,
+      "compiler": "GC/1.2.5n",
+      "flags": "",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_8000D1F0.c",
+      "original_sha256": "67459eec2a3a2ac914a07f3048a133fef8d4198376271f8bf7b72d87d8577822",
+      "accepted_candidate_sha256": "67459eec2a3a2ac914a07f3048a133fef8d4198376271f8bf7b72d87d8577822",
+      "matching_sources": [
+        "dol/fn_8000D1F0.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_800244C8",
+      "executable_bytes": 1036,
+      "compiler": "GC/1.2.5n",
+      "flags": "-fp_contract off",
+      "matched_commit": "fc787c86",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_800244C8.c",
+      "original_sha256": "7460fcac9294d86180ad176e3d11b801eac958ea0d27bf0791606bb6b4883b18",
+      "accepted_candidate_sha256": "10284d3cb42269dd11d82437dc2e50bc332b8853a5bc18dff79b64199a0b36c8",
+      "matching_sources": [
+        "dol/fn_800244C8.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-normalized-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_800251F0",
+      "executable_bytes": 512,
+      "compiler": "GC/1.2.5n",
+      "flags": "-opt nopeephole",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_800251F0.c",
+      "original_sha256": "bf2cf2e34eb11a91561f741163bbb1714a5cba270ab4e60166774a98de65dfc7",
+      "accepted_candidate_sha256": "bf2cf2e34eb11a91561f741163bbb1714a5cba270ab4e60166774a98de65dfc7",
+      "matching_sources": [
+        "dol/fn_800251F0.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_800377F8",
+      "executable_bytes": 540,
+      "compiler": "GC/1.2.5n",
+      "flags": "",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_800377F8.c",
+      "original_sha256": "d4b82f081a9191fb72ae52588072ba0f4bd97bbcf9e2dd7419ca9b6f28bbc3fa",
+      "accepted_candidate_sha256": "d4b82f081a9191fb72ae52588072ba0f4bd97bbcf9e2dd7419ca9b6f28bbc3fa",
+      "matching_sources": [
+        "dol/fn_800377F8.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_8003A1CC",
+      "executable_bytes": 520,
+      "compiler": "GC/1.2.5n",
+      "flags": "",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_8003A1CC.c",
+      "original_sha256": "e57d27a206b451df6d6ecac1b8b3129752f01f582d9e6941287adf710b99be52",
+      "accepted_candidate_sha256": "e57d27a206b451df6d6ecac1b8b3129752f01f582d9e6941287adf710b99be52",
+      "matching_sources": [
+        "dol/fn_8003A1CC.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_80041EF8",
+      "executable_bytes": 508,
+      "compiler": "GC/1.3.2",
+      "flags": "-sdata 0 -sdata2 0",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_80041EF8.c",
+      "original_sha256": "87ac1ee64d3dd0255655808be5b4128bc89c1c310c14635de884d9c85117cb51",
+      "accepted_candidate_sha256": "87ac1ee64d3dd0255655808be5b4128bc89c1c310c14635de884d9c85117cb51",
+      "matching_sources": [
+        "dol/fn_80041EF8.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_8004A80C",
+      "executable_bytes": 1016,
+      "compiler": "GC/1.3.2",
+      "flags": "-sdata 0 -sdata2 0",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_8004A80C.c",
+      "original_sha256": "bc87ec367d3019ca00314c799188f341a4657b9bf3127d16b7c1951c063c3dff",
+      "accepted_candidate_sha256": "bc87ec367d3019ca00314c799188f341a4657b9bf3127d16b7c1951c063c3dff",
+      "matching_sources": [
+        "dol/fn_8004A80C.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_8004D528",
+      "executable_bytes": 948,
+      "compiler": "GC/1.3.2",
+      "flags": "-use_lmw_stmw on",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_8004D528.c",
+      "original_sha256": "d5c1cd2001efffa524400fc34e5069729d2bcd0aa1dd2cc8e50a5bf5a7310429",
+      "accepted_candidate_sha256": "d5c1cd2001efffa524400fc34e5069729d2bcd0aa1dd2cc8e50a5bf5a7310429",
+      "matching_sources": [
+        "dol/fn_8004D528.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_8004FF68",
+      "executable_bytes": 536,
+      "compiler": "GC/1.3.2",
+      "flags": "-sdata 0 -sdata2 0 -use_lmw_stmw on",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_8004FF68.c",
+      "original_sha256": "60f3d33970905bd1ddfd7b670288378311bc76c0af03f8ce107dc8334a340d68",
+      "accepted_candidate_sha256": "60f3d33970905bd1ddfd7b670288378311bc76c0af03f8ce107dc8334a340d68",
+      "matching_sources": [
+        "dol/fn_8004FF68.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_800571EC",
+      "executable_bytes": 396,
+      "compiler": "GC/1.3.2",
+      "flags": "",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_800571EC.c",
+      "original_sha256": "a98a63d7de4c495eee3d12a147037cf200e396f41ace28c76082ad4c851cdbf5",
+      "accepted_candidate_sha256": "a98a63d7de4c495eee3d12a147037cf200e396f41ace28c76082ad4c851cdbf5",
+      "matching_sources": [
+        "dol/fn_800571EC.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_800581CC",
+      "executable_bytes": 436,
+      "compiler": "GC/1.3.2",
+      "flags": "",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_800581CC.c",
+      "original_sha256": "9da549f2d388f20ad741dd4be5c3cdbe78d775ecb6031df663a4f2b8df9f6de7",
+      "accepted_candidate_sha256": "9da549f2d388f20ad741dd4be5c3cdbe78d775ecb6031df663a4f2b8df9f6de7",
+      "matching_sources": [
+        "dol/fn_800581CC.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_800674FC",
+      "executable_bytes": 924,
+      "compiler": "GC/1.3.2",
+      "flags": "",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_800674FC.c",
+      "original_sha256": "8b44550e20ce75560f19e013fd311a6717f1ca7275e75b82dbfb719e2aefb019",
+      "accepted_candidate_sha256": "8b44550e20ce75560f19e013fd311a6717f1ca7275e75b82dbfb719e2aefb019",
+      "matching_sources": [
+        "dol/fn_800674FC.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_8006A768",
+      "executable_bytes": 356,
+      "compiler": "GC/1.2.5",
+      "flags": "-char unsigned",
+      "matched_commit": "fc787c86",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_8006A768.c",
+      "original_sha256": "00a6589c81e709bc5952b088dc4b4abfbce09c53f12aa07f081f957fcadc8f8c",
+      "accepted_candidate_sha256": "212dde4646f526b3e93db62165d8dfced1c116e3863ee48dab463a4d83881247",
+      "matching_sources": [
+        "dol/fn_8006A768.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-normalized-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_8006A8CC",
+      "executable_bytes": 204,
+      "compiler": "GC/1.2.5",
+      "flags": "-char unsigned",
+      "matched_commit": "fc787c86",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_8006A8CC.c",
+      "original_sha256": "d2ff360cc27636823d9b08cc4f3922fcf3d6e430b3d416efd1ca14e40ea42cad",
+      "accepted_candidate_sha256": "7ef3e79d29cab24ee55c125de6954cf67ae2eef238cc0aff67c605ee5f92537c",
+      "matching_sources": [
+        "dol/fn_8006A8CC.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-normalized-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_8006AC44",
+      "executable_bytes": 588,
+      "compiler": "GC/1.3.2",
+      "flags": "",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_8006AC44.c",
+      "original_sha256": "b35fa10f3135bcced82156f085dbe3dc43e704565ff1e8f53f7b0c0891a993c3",
+      "accepted_candidate_sha256": "b35fa10f3135bcced82156f085dbe3dc43e704565ff1e8f53f7b0c0891a993c3",
+      "matching_sources": [
+        "dol/fn_8006AC44.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_8007A710",
+      "executable_bytes": 660,
+      "compiler": "GC/1.3.2",
+      "flags": "",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_8007A710.c",
+      "original_sha256": "0dd8f5e7a86d0967c1b71d463aa478ecbb8e44ea9dc5dad1430100594b8956bd",
+      "accepted_candidate_sha256": "0dd8f5e7a86d0967c1b71d463aa478ecbb8e44ea9dc5dad1430100594b8956bd",
+      "matching_sources": [
+        "dol/fn_8007A710.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_8008596C",
+      "executable_bytes": 784,
+      "compiler": "GC/1.3.2",
+      "flags": "",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_8008596C.c",
+      "original_sha256": "07012ea4a083770ee3837b03c72acff7c0ee45f637a0fdd1d742491b9d14e3f8",
+      "accepted_candidate_sha256": "07012ea4a083770ee3837b03c72acff7c0ee45f637a0fdd1d742491b9d14e3f8",
+      "matching_sources": [
+        "dol/fn_8008596C.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_80087C44",
+      "executable_bytes": 532,
+      "compiler": "GC/1.3.2",
+      "flags": "",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_80087C44.c",
+      "original_sha256": "f622c20e07c11dedbc17a379a1592cd35455d176c3d980d016beae5171ca49f9",
+      "accepted_candidate_sha256": "f622c20e07c11dedbc17a379a1592cd35455d176c3d980d016beae5171ca49f9",
+      "matching_sources": [
+        "dol/fn_80087C44.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "fn_8008FC3C",
+      "executable_bytes": 664,
+      "compiler": "GC/1.2.5n",
+      "flags": "",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/fn_8008FC3C.c",
+      "original_sha256": "6ff9f39172cc46aa156612b3887aab9e7865e968fc431445c3eaf2b7c1dec2e3",
+      "accepted_candidate_sha256": "6ff9f39172cc46aa156612b3887aab9e7865e968fc431445c3eaf2b7c1dec2e3",
+      "matching_sources": [
+        "dol/fn_8008FC3C.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "long2str",
+      "executable_bytes": 600,
+      "compiler": "GC/2.6",
+      "flags": "",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/long2str.c",
+      "original_sha256": "cd8dc06a07704bd9092801ea3e47c2cf4d372975ac1a340459d9ab0d87f9f4b7",
+      "accepted_candidate_sha256": "cd8dc06a07704bd9092801ea3e47c2cf4d372975ac1a340459d9ab0d87f9f4b7",
+      "matching_sources": [
+        "dol/long2str.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main",
+      "symbol": "longlong2str",
+      "executable_bytes": 788,
+      "compiler": "GC/2.6",
+      "flags": "-use_lmw_stmw on",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/dol/longlong2str.c",
+      "original_sha256": "59105549eab647e8a1d2f20de63f249079bf6fadd576e15e6ba4ddab60bde43a",
+      "accepted_candidate_sha256": "59105549eab647e8a1d2f20de63f249079bf6fadd576e15e6ba4ddab60bde43a",
+      "matching_sources": [
+        "dol/longlong2str.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main_rel",
+      "symbol": "fn_1_13A21C",
+      "executable_bytes": 580,
+      "compiler": "GC/1.3.2r",
+      "flags": "",
+      "matched_commit": "a4b900e5",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/rel/main_rel/sel_static_disp.c",
+      "original_sha256": "12b4f19d572b1a4a59754e322ca2ffda01c85ce2a4bd6db3ad42216240f9594d",
+      "accepted_candidate_sha256": "58a0d691194781b4cd3d546bd9777a4a0c041fced340cc5a097149427a393d08",
+      "matching_sources": [
+        "rel/main_rel/sel_static_disp/fn_1_13A21C.c"
+      ],
+      "matching_tus": [
+        "rel/main_rel/sel_static_disp.c"
+      ],
+      "receipt_directory": "pr22-simple-views-results"
+    },
+    {
+      "module": "main_rel",
+      "symbol": "fn_1_21CFC",
+      "executable_bytes": 540,
+      "compiler": "GC/1.3.2",
+      "flags": "",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/rel/main_rel/stcoli.c",
+      "original_sha256": "351f69877f946dc39d24efa52d372a2ad4b5a7d2dcd6cedb04a84ab3d864fb52",
+      "accepted_candidate_sha256": "351f69877f946dc39d24efa52d372a2ad4b5a7d2dcd6cedb04a84ab3d864fb52",
+      "matching_sources": [
+        "rel/main_rel/stcoli/fn_1_21CFC.c"
+      ],
+      "matching_tus": [
+        "rel/main_rel/stcoli.c"
+      ],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main_rel",
+      "symbol": "fn_1_42AD0",
+      "executable_bytes": 932,
+      "compiler": "GC/1.3.2",
+      "flags": "",
+      "matched_commit": "fc787c86",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/rel/main_rel/motasglist.c",
+      "original_sha256": "8b2033f81b6d4ad5940806915dc3f45c8cec0e196e0992c4bd4801ed15ea103a",
+      "accepted_candidate_sha256": "0b1c5487a6d9783c5bd9ad8d948831c428940748280760c56c03211722b4a7c4",
+      "matching_sources": [
+        "rel/main_rel/motasglist/fn_1_42AD0.c"
+      ],
+      "matching_tus": [
+        "rel/main_rel/motasglist.c"
+      ],
+      "receipt_directory": "pr22-normalized-results"
+    },
+    {
+      "module": "main_rel",
+      "symbol": "fn_1_51E60",
+      "executable_bytes": 528,
+      "compiler": "GC/1.3.2",
+      "flags": "",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/rel/main_rel/font.c",
+      "original_sha256": "12c67fb166e2bd9688326bf302125d162007beb23011de9ad36541f98231ec45",
+      "accepted_candidate_sha256": "12c67fb166e2bd9688326bf302125d162007beb23011de9ad36541f98231ec45",
+      "matching_sources": [
+        "rel/main_rel/font/fn_1_51E60.c"
+      ],
+      "matching_tus": [
+        "rel/main_rel/font.c"
+      ],
+      "receipt_directory": "pr22-results"
+    },
+    {
+      "module": "main_rel",
+      "symbol": "fn_1_535A0",
+      "executable_bytes": 656,
+      "compiler": "GC/1.3.2",
+      "flags": "",
+      "matched_commit": "fc787c86",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/rel/main_rel/font.c",
+      "original_sha256": "72fb8db3745d10144c9f2a98a6ba0a7e8f1844ee8e79f03dc9b7814b234d4af6",
+      "accepted_candidate_sha256": "dadc1aa31ec28e3fdf6709e1ea9ca247479d5e315351238d09c361e6ec27cf05",
+      "matching_sources": [
+        "rel/main_rel/font/fn_1_535A0.c"
+      ],
+      "matching_tus": [
+        "rel/main_rel/font.c"
+      ],
+      "receipt_directory": "pr22-normalized-results"
+    },
+    {
+      "module": "sample",
+      "symbol": "fn_18_444",
+      "executable_bytes": 748,
+      "compiler": "GC/1.3.2",
+      "flags": "",
+      "matched_commit": "d3ca97ce",
+      "status": "matched",
+      "link_state": "verified",
+      "provenance": "https://github.com/rayanht/fzgx/pull/22@ced1e6b523600e5b2f7fab6f78b571eedc172c85:src/rel/sample/fn_18_444.c",
+      "original_sha256": "6554ccfd2108bc3e14db9a49273a5178602f7ac0241f58aabf431c562ac2ea69",
+      "accepted_candidate_sha256": "6554ccfd2108bc3e14db9a49273a5178602f7ac0241f58aabf431c562ac2ea69",
+      "matching_sources": [
+        "rel/sample/fn_18_444.c"
+      ],
+      "matching_tus": [],
+      "receipt_directory": "pr22-results"
+    }
+  ]
+}
