@@ -9357,6 +9357,91 @@ void fn_1_C17CC(void) {
 }
 /* fzgx:end fn_1_C17CC */
 
+/* fzgx:begin fn_1_C17D0 */
+extern void *lbl_801A6410;
+extern void strncpy(void *arg0, void *arg1, int arg2);
+extern void fn_1_46B4(void *heap, void *old, const char *file, s32 line);
+extern u32 fn_1_4630(void *heap, u32 size, void *file, s32 line);
+extern void fn_80008BA8(u32 arg0, u32 arg1, u32 arg2);
+
+typedef struct {
+	u8 unk_0;
+	u8 unk_1;
+	u8 unk_2[0x20];
+	u32 unk_24;
+	u32 unk_28;
+	void *unk_2c;
+} MemCardFile;
+
+static inline u32 fn_1_hexnum(u8 *s, u32 len) {
+	u32 i;
+	u32 c;
+	u32 v;
+
+	v = 0;
+	for (i = 0; i < len; i++) {
+		c = s[i];
+		if (c >= 0x41 && c <= 0x46) {
+			c -= 0x37;
+		} else {
+			c -= 0x30;
+		}
+		v += c << ((len - 1 - i) * 4);
+	}
+	return v;
+}
+
+static inline u32 fn_1_hexnum2(u8 *s, u32 len) {
+	u8 *p;
+	u32 i;
+	u32 c;
+	u32 v;
+
+	v = 0;
+	for (i = 0, p = s; i < len; i++, p++) {
+		c = *p;
+		if (c >= 0x41 && c <= 0x46) {
+			c -= 0x37;
+		} else {
+			c -= 0x30;
+		}
+		v += c << ((len - 1 - i) * 4);
+	}
+	return v;
+}
+
+static inline void * fn_1_C17D0_read_pointer(MemCardFile * owner) { return owner->unk_2c; }
+#pragma opt_propagation off
+void fn_1_C17D0(void *arg0, MemCardFile *file, MemCardFile *prev, u32 unused3, u32 unused4, u32 unused5) {
+	u32 val;
+    void * lab_t1;
+
+	file->unk_1 = *(u32 *)((u8 *)&lbl_1_bss_716C0 + 0x94F4);
+	file->unk_24 = *(u32 *)((u8 *)&lbl_1_bss_716C0 + 0x94F8);
+	file->unk_28 = *(u32 *)((u8 *)&lbl_1_bss_716C0 + 0x94D0);
+	lab_t1 = (void *)((u8 *)&lbl_1_bss_716C0 + 0x94D4);
+	strncpy(file->unk_2, lab_t1, 0x20);
+
+	if (file->unk_1 == 2) {
+		val = 0x3EA8;
+	} else if (4 == file->unk_1) {
+		val = fn_1_hexnum(file->unk_2, 5);
+	} else if (file->unk_1 == 5) {
+		val = fn_1_hexnum2(file->unk_2, 8);
+	}
+
+	if (fn_1_C17D0_read_pointer(file) != 0) {
+		fn_1_46B4(*(void **)&lbl_801A6410, fn_1_C17D0_read_pointer(file), (const char *)&"memcard.c", 0x32E5);
+		file->unk_2c = 0;
+	}
+	file->unk_2c = (void *)fn_1_4630(*(void **)&lbl_801A6410, val, &lbl_1_data_3C7B8, 0x32E8);
+	if (prev->unk_2c != 0) {
+		fn_80008BA8((u32)fn_1_C17D0_read_pointer(file), (u32)prev->unk_2c, val);
+	}
+}
+#pragma opt_propagation reset
+/* fzgx:end fn_1_C17D0 */
+
 /* fzgx:begin fn_1_C1ACC */
 extern void* lbl_801A6410;
 extern void fn_1_46B4(void *, u32, void *, int);

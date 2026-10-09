@@ -47329,6 +47329,20 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/memcard/fn_1_C17D0.c",
+    "symbols": [
+      "fn_1_C17D0"
+    ],
+    "status": "matching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/memcard.c",
+    "pool": {
+      "@69": "lbl_1_data_3C7B8"
+    }
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/memcard/fn_1_C1ACC.c",
     "symbols": [
       "fn_1_C1ACC"
