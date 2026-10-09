@@ -1,5 +1,5 @@
 {
- "generated": 1791575667,
+ "generated": 1791575766,
  "functions": [
   {
    "symbol": "car_colchg:_prolog",
@@ -88595,7 +88595,7 @@
    "addr": 1106868,
    "size": 7252,
    "status": "unmatched",
-   "attempts": 0,
+   "attempts": 1,
    "best_percent": null,
    "claimed_by": null,
    "claimed_at": null,
@@ -613722,6 +613722,27 @@
    "cost_usd": 0.0,
    "outcome": "released",
    "notes": "harness timeout (rc=0); saved best candidate automatically",
+   "best_body_path": null,
+   "stale_checks": 0,
+   "best_in_attempt": 0.0,
+   "cache_read_tokens": 0,
+   "cache_write_tokens": 0
+  },
+  {
+   "id": 23310,
+   "symbol": "fn_1_10E3B4",
+   "agent": "fleet-v2-claude-1791575763012190748-claude-1",
+   "harness": "claude",
+   "model": "claude-sonnet-5-5",
+   "started": 1791575763,
+   "ended": 1791575765,
+   "checks": 0,
+   "final_percent": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0,
+   "outcome": "released",
+   "notes": "harness rate-limited (rc=1); saved best candidate automatically",
    "best_body_path": null,
    "stale_checks": 0,
    "best_in_attempt": 0.0,
