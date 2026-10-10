@@ -2903,6 +2903,17 @@
   },
   {
     "module": "interview",
+    "source": "rel/interview/interview/fn_17_7728.c",
+    "symbols": [
+      "fn_17_7728"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/interview/interview.c"
+  },
+  {
+    "module": "interview",
     "source": "rel/interview/interview/fn_17_802C.c",
     "symbols": [
       "fn_17_802C"
@@ -57652,6 +57663,16 @@
       "fn_12_21B70"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
+    "source": "rel/movie_module/fn_12_21C00.c",
+    "symbols": [
+      "fn_12_21C00"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": []
   },

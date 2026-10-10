@@ -158,3 +158,6 @@ rel/interview/data/lbl_17_bss_150.c:
 
 rel/interview/data/lbl_17_bss_198.c:
 	.bss        start:0x00000198 end:0x00000354 align:8
+
+rel/interview/interview/fn_17_7728.c:
+	.text       start:0x00007728 end:0x00007A74 align:4
