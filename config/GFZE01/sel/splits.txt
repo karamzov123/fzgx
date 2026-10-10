@@ -638,3 +638,6 @@ rel/sel/data/lbl_10_bss_493A0.c:
 
 rel/sel/sel/fn_10_1F3B8.c:
 	.text       start:0x0001F3B8 end:0x0001F688 align:4
+
+rel/sel/sel/fn_10_22760.c:
+	.text       start:0x00022760 end:0x0002287C align:4
