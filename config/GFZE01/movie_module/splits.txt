@@ -2003,3 +2003,6 @@ rel/movie_module/fn_12_29524.c:
 
 rel/movie_module/fn_12_36208.c:
 	.text       start:0x00036208 end:0x000364CC align:4
+
+rel/movie_module/fn_12_D0B8.c:
+	.text       start:0x0000D0B8 end:0x0000D42C align:4
