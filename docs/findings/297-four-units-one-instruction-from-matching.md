@@ -1,4 +1,4 @@
-# 297 -- three units sit exactly one instruction from matching
+# 297 -- four units sit exactly one instruction from matching
 
 Each residual below is fully characterized, byte-verified against retail, and reproducible
 locally without a lease. None has been closed. The point of this finding is to record *exactly*
@@ -112,6 +112,31 @@ Tried and failed:
 
 ---
 
+## D. `fn_1_2D038` (main_rel, 0x4EC, 315 instructions, plateau 99.5365%, 32 attempts)
+
+Single differing word at offset 0x104:
+
+    target  88 03 00 05   lis r3, 0x5
+    ours    88 1F 00 35   lis r31, 0x35
+
+Best archived body: `.fzgx/checks/fn_1_2D038/010.c`. Both reach `lbl_1_rodata_BD8`; the only
+difference is which base register carries the address and how the immediate is split. The
+27 `DIFF_ARG_MISMATCH` rows reported by the oracle all cascade from this one instruction --
+every later `lfs`/`lfd` through `r30` is downstream of it.
+
+Tried and failed (all still emit `0x881F0035`):
+
+    statement order       p_rod before/after p_bss, or after the var inits
+    init at declaration  hoisting the cast to the declaration
+    dropping the cast    p_rod = &lbl_1_rodata_BD8;
+    separate extern ptr  declaring p_rod as its own extern pointer
+    removing p_rod       deleting the dead local entirely     -> build shape breaks
+
+Statement order has no effect: MWCC's register allocator picks the base independently of
+source sequence. This is the same class as B and C -- an allocation choice, not a source shape.
+
+---
+
 ## Method note
 
 All probes were read-only local compiles into `.fzgx/analysis/` (gitignored), with the fleet
@@ -127,7 +152,7 @@ and the exact differing word isolated by comparing `oracle.words()` on the retai
 against `.fzgx/work/<SYMBOL>.o`. That is how each residual above was reduced to one
 instruction. `dtk elf disasm <retail.o> <out>` gives the byte-verified retail encoding.
 
-**Two of the three residuals (B and C) are register-allocation choices, not source-shape
+**Three of the four residuals (B, C and D) are register-allocation choices, not source-shape
 differences.** No source rewrite tested changes them, and the surrounding instructions are
 byte-identical. These are candidates for a register-allocation flag or an accepted hand-edit,
 not for another model session.
