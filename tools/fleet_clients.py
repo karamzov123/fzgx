@@ -131,6 +131,13 @@ def opencode_config(env, model):
     config_dir = config_home / 'opencode'
     config_dir.mkdir(parents=True, exist_ok=True)
     contract = (ROOT / 'tools/codex_matcher.md').read_text()
+    # The CLI --variant and the agent.variant must agree: the fleet policy sets the
+    # variant per lane via --effort (space-bunny runs `medium`, measured -- xhigh
+    # burned the whole output budget on reasoning over the 40-58KB matcher prompt and
+    # emitted no tool call). Writing OPENCODE_VARIANT here while the CLI passes
+    # `medium` let the config value win, so the lane stayed on xhigh and kept dying
+    # at checks=0. Honour the same env the CLI reads so both are one value.
+    variant = env.get('FZGX_EFFORT') or OPENCODE_VARIANT
     config = {
         '$schema': 'https://opencode.ai/config.json',
         'mcp': {'fzgx': {
@@ -141,7 +148,7 @@ def opencode_config(env, model):
         }},
         'agent': {'matcher': {
             'mode': 'primary',
-            'variant': OPENCODE_VARIANT,
+            'variant': variant,
             'steps': 40,
             'tools': {name: False for name in OPENCODE_OFF},
             'permission': {name: 'deny' for name in

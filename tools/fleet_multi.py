@@ -139,10 +139,14 @@ for _n in SURGE:
     # attempts on this model produced 85 verified matches, so the lane has a real
     # conversion record -- unlike the Step5 transport it replaced.
     #
-    # Variant `xhigh` is the config default (OPENCODE_VARIANT). Compiler silence
-    # is bound to 240s in fleet_provider so upstream thinking cannot monopolize
-    # a lane.
-    POLICY[_n] = {'harness':'opencode','model':'opencode/space-bunny-free','effort':'xhigh',
+    # Variant is `medium`, not the config default `xhigh` (OPENCODE_VARIANT). Measured:
+    # at xhigh the full 40-58KB matcher prompt drives the model to burn its whole
+    # output budget on reasoning (one failed symbol logged 31,990 reasoning tokens,
+    # 10 output, step_finish reason "length") -- it never emits a tool call, so
+    # checks=0 and the symbol is a dead slot. The first symbol in a batch (smaller
+    # body) fits and completes; the rest of the batch silently dies. `medium` keeps
+    # reasoning bounded on large prompts so the model actually writes and checks.
+    POLICY[_n] = {'harness':'opencode','model':'opencode/space-bunny-free','effort':'medium',
                   'display':f'Space Bunny Free (OpenCode #{_n[-1]})','managed':False}
     META[_n] = (f'OpenCode #{_n[-1]}', chr(0xF0A9B))
 del _n
