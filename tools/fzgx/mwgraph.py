@@ -377,8 +377,19 @@ def capture(project, args, locked=False):
             command = [*launcher, '-b', '-o', f'command script import "{script}"',
                        '-o', f'script mwgraph_lldb.run(lldb.debugger, {str(config)!r})',
                        '-o', 'quit']
+            # Sanitize the env for lldb: leaking the full parent env makes lldb's
+            # embedded Python resolve to a broken install (the Hermes tools
+            # Python) missing encodings/math/_struct, so every capture dies with
+            # "No module named 'encodings'". lldb must use the system Python it
+            # was linked against (libpython3.14.so), so give it a minimal clean
+            # env: HOME, a system-only PATH, and PYTHONHOME=/usr (Python 3.14 then
+            # finds its stdlib at /usr/lib/python3.14). A fully clean env was
+            # verified to import mwgraph_lldb without error.
+            lldb_env = {'HOME': os.environ.get('HOME', '/tmp'),
+                        'PATH': '/usr/bin:/bin:/usr/local/bin',
+                        'PYTHONHOME': '/usr'}
             process = subprocess.Popen(command, cwd=root, stdout=log, stderr=subprocess.STDOUT,
-                                       start_new_session=True)
+                                       start_new_session=True, env=lldb_env)
             try:
                 code = process.wait(timeout=max(60, len(jobs) * 20))
                 if code:
