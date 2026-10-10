@@ -1642,11 +1642,14 @@ def run():
                           f'{POLICY[_fb_family]["display"]}', flush=True)
                     persist()
             # Drain local main to the fork between batches (background, cooldown-gated).
-            # Safe to call every tick: it no-ops while a publish is in flight or within
-            # cooldown, and the integrator's own HEAD-change check protects a mid-flight
-            # gate. See the PUBLISH_COOLDOWN note above.
-            if not jobs:
-                tick_publisher()
+            # Fired every tick, not only when idle: with four lanes the fleet holds a
+            # batch job continuously, so an `if not jobs` guard meant the publisher
+            # never ran and commits piled up unpublished. The integrator is safe to
+            # call mid-fleet -- it yields on a busy submit/build lock ("Project
+            # submit/build lock is busy; yielding") and discards a receipt if HEAD
+            # moved during its gate -- so a quiet compile window still drains to the
+            # fork. tick_publisher no-ops within cooldown or while one is in flight.
+            tick_publisher()
             # Surge capacity is decided from measured paid-provider state, after
             # this tick's telemetry and before anything is launched.
             note = apply_surge(statuses, config, clock)
