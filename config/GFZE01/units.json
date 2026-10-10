@@ -37409,6 +37409,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/car_test/fn_1_7D6B8.c",
+    "symbols": [
+      "fn_1_7D6B8"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/car_test.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/car_test/fn_1_7E7A4.c",
     "symbols": [
       "fn_1_7E7A4"
@@ -53062,6 +53073,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/sel_static_disp/fn_1_149E2C.c",
+    "symbols": [
+      "fn_1_149E2C"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/sel_static_disp.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/sel_static_disp/fn_1_149F04.c",
     "symbols": [
       "fn_1_149F04"
@@ -65824,6 +65846,16 @@
       "fn_16_DC8"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "profile",
+    "source": "rel/profile/fn_16_E20.c",
+    "symbols": [
+      "fn_16_E20"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": []
   },
