@@ -2021,3 +2021,6 @@ rel/movie_module/fn_12_364CC.c:
 
 rel/movie_module/fn_12_2B358.c:
 	.text       start:0x0002B358 end:0x0002B634 align:4
+
+rel/movie_module/fn_12_27224.c:
+	.text       start:0x00027224 end:0x00027478 align:4

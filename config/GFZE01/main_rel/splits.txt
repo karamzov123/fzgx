@@ -7595,3 +7595,33 @@ rel/main_rel/game/fn_1_3ED8C.c:
 
 rel/main_rel/motasglist/fn_1_4270C.c:
 	.text       start:0x0004270C end:0x00042AD0 align:4
+
+rel/main_rel/phys/fn_1_E5568.c:
+	.text       start:0x000E5568 end:0x000E5724 align:4
+
+rel/main_rel/ranking/fn_1_15906C.c:
+	.text       start:0x0015906C end:0x00159440 align:4
+
+rel/main_rel/bitmap/fn_1_48A0C.c:
+	.text       start:0x00048A0C end:0x00048C28 align:4
+
+rel/main_rel/archive/fn_1_12E0B8.c:
+	.text       start:0x0012E0B8 end:0x0012E424 align:4
+
+rel/main_rel/bg_for/fn_1_E3778.c:
+	.text       start:0x000E3778 end:0x000E38D4 align:4
+
+rel/main_rel/memcard/fn_1_BF198.c:
+	.text       start:0x000BF198 end:0x000BF520 align:4
+
+rel/main_rel/effect/fn_1_633C0.c:
+	.text       start:0x000633C0 end:0x00063514 align:4
+
+rel/main_rel/car/fn_1_8901C.c:
+	.text       start:0x0008901C end:0x000892CC align:4
+
+rel/main_rel/accessory/fn_1_1188CC.c:
+	.text       start:0x001188CC end:0x00118D90 align:4
+
+rel/main_rel/stcoli/fn_1_2221C.c:
+	.text       start:0x0002221C end:0x000224F8 align:4

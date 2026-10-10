@@ -650,3 +650,9 @@ rel/sel/sel/fn_10_1B2F4.c:
 
 rel/sel/sel/_epilog.c:
 	.text       start:0x00000B00 end:0x00000D2C align:4
+
+rel/sel/sel/fn_10_C6A4.c:
+	.text       start:0x0000C6A4 end:0x0000C8A8 align:4
+
+rel/sel/sel/fn_10_7130.c:
+	.text       start:0x00007130 end:0x00007320 align:4

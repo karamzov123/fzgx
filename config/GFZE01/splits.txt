@@ -5975,3 +5975,15 @@ dol/fn_80059DD8.c:
 
 dol/fn_80077BD4.c:
 	.text       start:0x80077BD4 end:0x80077D40 align:4
+
+dol/fn_80009830.c:
+	.text       start:0x80009830 end:0x80009AA8 align:4
+
+dol/fn_8006B470.c:
+	.text       start:0x8006B470 end:0x8006B55C align:4
+
+dol/fn_800063AC.c:
+	.text       start:0x800063AC end:0x8000659C align:4
+
+dol/fn_800789D8.c:
+	.text       start:0x800789D8 end:0x80078BC4 align:4
