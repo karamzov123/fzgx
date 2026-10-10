@@ -22457,6 +22457,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80059DD8.c",
+    "symbols": [
+      "fn_80059DD8"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_8005A060.c",
     "symbols": [
       "fn_8005A060"
@@ -25399,6 +25409,16 @@
     ],
     "status": "matching",
     "mw_version": "GC/1.3.2",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_80077BD4.c",
+    "symbols": [
+      "fn_80077BD4"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
     "extra_cflags": []
   },
   {
@@ -29184,6 +29204,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/accessory/fn_1_10A6A0.c",
+    "symbols": [
+      "fn_1_10A6A0"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/accessory.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/accessory/fn_1_10B344.c",
     "symbols": [
       "fn_1_10B344"
@@ -29275,6 +29306,17 @@
     "source": "rel/main_rel/accessory/fn_1_118D90.c",
     "symbols": [
       "fn_1_118D90"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/accessory.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/accessory/fn_1_12277C.c",
+    "symbols": [
+      "fn_1_12277C"
     ],
     "status": "nonmatching",
     "mw_version": null,
@@ -31303,6 +31345,17 @@
       "fn_1_101454"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/bg_cas.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/bg_cas/fn_1_10161C.c",
+    "symbols": [
+      "fn_1_10161C"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/bg_cas.c"
@@ -33778,6 +33831,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/burner/fn_1_98E18.c",
+    "symbols": [
+      "fn_1_98E18"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/burner.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/burner/fn_1_9A0A4.c",
     "symbols": [
       "fn_1_9A0A4"
@@ -33961,6 +34025,17 @@
       "fn_1_9CE1C"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/burner.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/burner/fn_1_9D0EC.c",
+    "symbols": [
+      "fn_1_9D0EC"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/burner.c"
@@ -34995,6 +35070,17 @@
       "fn_1_7FA04"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/car.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/car/fn_1_7FAA8.c",
+    "symbols": [
+      "fn_1_7FAA8"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -38648,6 +38734,17 @@
       "fn_1_A8528"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/driver.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/driver/fn_1_A8834.c",
+    "symbols": [
+      "fn_1_A8834"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/driver.c"
@@ -44322,6 +44419,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/game/fn_1_3ED8C.c",
+    "symbols": [
+      "fn_1_3ED8C"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/game.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/game/fn_1_3EF08.c",
     "symbols": [
       "fn_1_3EF08"
@@ -46038,6 +46146,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/live_camera/fn_1_103B0.c",
+    "symbols": [
+      "fn_1_103B0"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/live_camera.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/live_camera/fn_1_11544.c",
     "symbols": [
       "fn_1_11544"
@@ -46050,6 +46169,17 @@
       "@20": "lbl_1_rodata_540",
       "@18": "lbl_1_rodata_604"
     }
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/live_camera/fn_1_1189C.c",
+    "symbols": [
+      "fn_1_1189C"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/live_camera.c"
   },
   {
     "module": "main_rel",
@@ -54256,6 +54386,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/sel_static_disp/fn_1_1502BC.c",
+    "symbols": [
+      "fn_1_1502BC"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/sel_static_disp.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/sel_static_disp/fn_1_150464.c",
     "symbols": [
       "fn_1_150464"
@@ -55193,6 +55334,17 @@
     "mw_version": "GC/1.3.2",
     "extra_cflags": [],
     "tu": "rel/main_rel/sound.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/spline/fn_1_F4F08.c",
+    "symbols": [
+      "fn_1_F4F08"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/spline.c"
   },
   {
     "module": "main_rel",
@@ -56901,6 +57053,17 @@
     ],
     "status": "matching",
     "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/main_rel/stcoli.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/stcoli/fn_1_203E4.c",
+    "symbols": [
+      "fn_1_203E4"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/stcoli.c"
   },
@@ -60018,6 +60181,16 @@
   },
   {
     "module": "movie_module",
+    "source": "rel/movie_module/fn_12_2B358.c",
+    "symbols": [
+      "fn_12_2B358"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
     "source": "rel/movie_module/fn_12_2B634.c",
     "symbols": [
       "fn_12_2B634"
@@ -62487,6 +62660,16 @@
       "fn_12_3630"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
+    "source": "rel/movie_module/fn_12_364CC.c",
+    "symbols": [
+      "fn_12_364CC"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": []
   },

@@ -2015,3 +2015,9 @@ rel/movie_module/fn_12_3A64.c:
 
 rel/movie_module/fn_12_2DBD4.c:
 	.text       start:0x0002DBD4 end:0x0002DEB0 align:4
+
+rel/movie_module/fn_12_364CC.c:
+	.text       start:0x000364CC end:0x0003753C align:4
+
+rel/movie_module/fn_12_2B358.c:
+	.text       start:0x0002B358 end:0x0002B634 align:4
