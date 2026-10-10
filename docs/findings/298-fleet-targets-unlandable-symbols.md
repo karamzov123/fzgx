@@ -69,10 +69,29 @@ Same query, by model:
     stepfun/step-5-preview:free        85        0          60
     claude-sonnet-5-5                  63        6           7
 
-`stepfun/step-5-preview:free` is **every one of the 90 harness timeouts in the last 300
+`stepfun/step-5-preview:free` is **all 90 harness timeouts in the last 300
 attempts** (median 616s, max 1904s) and has matched **0 of 85**. 79 of its attempts ran zero
 checks. It is configured for four surge lanes in `fleet_multi.py` with `effort: low` and a
 240s compiler-silence bound. The lane is not slow, it is not converting -- four concurrency
 slots are occupied by a model that has never produced a match.
 
 `gpt-6-luna` (168 attempts, 0 matched, 25 zero-check) is a second candidate for retirement.
+
+### Resolution: implemented, and deliberately not overridden
+
+The coverage filter above is implemented in `fleet_multi.py` (commit 875ff7b8). The lane
+question is **not** an implementation change and was left alone.
+
+`~/.cache/fzgx-agents/model-policy.json` pins all four surge lanes to
+`stepfun/step-5-preview:free` with an explicit owner-directed reason string, and
+`control-v3.json` enables exactly one of the four. Repinning a lane is a provider/cost
+decision, not a code defect, so the measurement is recorded here for the owner to act on
+rather than silently changed underneath the policy file.
+
+The timeout signature is worth stating precisely, because it is the actionable part: 52 of the
+85 attempts ended in `harness timeout (rc=130)` with **zero checks**, meaning the session never
+reached a compiler cycle at all. With `effort: low` and a 240s compiler-silence bound already
+in `fleet_provider`, the remaining suspect is upstream thinking time before the first tool
+receipt, not the compiler. If the lane is kept, the lever to try first is a
+no-tool-receipt grace bound shorter than `SESSION_TIMEOUT` (1800s) so a dead session releases
+its slot in ~300s instead of ~1900s.
