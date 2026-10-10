@@ -539,3 +539,6 @@ rel/customize/_prolog/fn_3_4F08.c:
 
 rel/customize/emb_paste_editor/fn_3_104C4.c:
 	.text       start:0x000104C4 end:0x000106FC align:4
+
+rel/customize/toolkit/fn_3_1AEE4.c:
+	.text       start:0x0001AEE4 end:0x0001B008 align:4

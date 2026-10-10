@@ -2284,6 +2284,17 @@
   },
   {
     "module": "customize",
+    "source": "rel/customize/toolkit/fn_3_1AEE4.c",
+    "symbols": [
+      "fn_3_1AEE4"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/customize/toolkit.c"
+  },
+  {
+    "module": "customize",
     "source": "rel/customize/toolkit/fn_3_1D338.c",
     "symbols": [
       "fn_3_1D338"
@@ -29140,6 +29151,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/accessory/fn_1_108EEC.c",
+    "symbols": [
+      "fn_1_108EEC"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/accessory.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/accessory/fn_1_109114.c",
     "symbols": [
       "fn_1_109114"
@@ -29244,6 +29266,17 @@
       "fn_1_1166EC"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/accessory.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/accessory/fn_1_118D90.c",
+    "symbols": [
+      "fn_1_118D90"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/accessory.c"
@@ -48609,6 +48642,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/motasglist/fn_1_42044.c",
+    "symbols": [
+      "fn_1_42044"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/motasglist.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/motasglist/fn_1_42458.c",
     "symbols": [
       "fn_1_42458"
@@ -60239,6 +60283,16 @@
     ],
     "status": "matching",
     "mw_version": "GC/1.3.2",
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
+    "source": "rel/movie_module/fn_12_2DBD4.c",
+    "symbols": [
+      "fn_12_2DBD4"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
     "extra_cflags": []
   },
   {

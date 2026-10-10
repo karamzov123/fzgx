@@ -2012,3 +2012,6 @@ rel/movie_module/fn_12_349CC.c:
 
 rel/movie_module/fn_12_3A64.c:
 	.text       start:0x00003A64 end:0x00003DB8 align:4
+
+rel/movie_module/fn_12_2DBD4.c:
+	.text       start:0x0002DBD4 end:0x0002DEB0 align:4

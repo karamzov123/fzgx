@@ -7547,3 +7547,12 @@ rel/main_rel/screen_effect/fn_1_76504.c:
 
 rel/main_rel/car/fn_1_8E244.c:
 	.text       start:0x0008E244 end:0x0008E3A4 align:4
+
+rel/main_rel/motasglist/fn_1_42044.c:
+	.text       start:0x00042044 end:0x00042254 align:4
+
+rel/main_rel/accessory/fn_1_108EEC.c:
+	.text       start:0x00108EEC end:0x00109114 align:4
+
+rel/main_rel/accessory/fn_1_118D90.c:
+	.text       start:0x00118D90 end:0x001192D0 align:4
