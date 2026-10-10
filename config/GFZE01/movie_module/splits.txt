@@ -1988,3 +1988,12 @@ rel/movie_module/fn_12_30BF8.c:
 
 rel/movie_module/fn_12_31B5C.c:
 	.text       start:0x00031B5C end:0x00031CA4 align:4
+
+rel/movie_module/fn_12_331A8.c:
+	.text       start:0x000331A8 end:0x000332DC align:4
+
+rel/movie_module/fn_12_2F7AC.c:
+	.text       start:0x0002F7AC end:0x0002F8A0 align:4
+
+rel/movie_module/fn_12_2F730.c:
+	.text       start:0x0002F730 end:0x0002F7AC align:4

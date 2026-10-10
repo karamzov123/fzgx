@@ -7427,3 +7427,75 @@ rel/main_rel/sound/fn_1_A5594.c:
 
 rel/main_rel/burner/fn_1_9AABC.c:
 	.text       start:0x0009AABC end:0x0009AD20 align:4
+
+rel/main_rel/sel_static_disp/fn_1_135D7C.c:
+	.text       start:0x00135D7C end:0x00136174 align:4
+
+rel/main_rel/motasglist/fn_1_4270C.c:
+	.text       start:0x0004270C end:0x00042AD0 align:4
+
+rel/main_rel/som/fn_1_1384C.c:
+	.text       start:0x0001384C end:0x00013A28 align:4
+
+rel/main_rel/font/fn_1_53E40.c:
+	.text       start:0x00053E40 end:0x00053FE4 align:4
+
+rel/main_rel/ranking/fn_1_156C08.c:
+	.text       start:0x00156C08 end:0x00156D9C align:4
+
+rel/main_rel/memcard/fn_1_B7CE4.c:
+	.text       start:0x000B7CE4 end:0x000B7E14 align:4
+
+rel/main_rel/sound/fn_1_A1CE8.c:
+	.text       start:0x000A1CE8 end:0x000A1DCC align:4
+
+rel/main_rel/enemy_ctrl/fn_1_D123C.c:
+	.text       start:0x000D123C end:0x000D1780 align:4
+
+rel/main_rel/game/fn_1_3F8EC.c:
+	.text       start:0x0003F8EC end:0x0003FBF4 align:4
+
+rel/main_rel/sel_static_disp/fn_1_1358BC.c:
+	.text       start:0x001358BC end:0x00135B80 align:4
+
+rel/main_rel/load/fn_1_45E98.c:
+	.text       start:0x00045E98 end:0x00046144 align:4
+
+rel/main_rel/effect/fn_1_62E9C.c:
+	.text       start:0x00062E9C end:0x0006312C align:4
+
+rel/main_rel/bg_win/fn_1_15B70C.c:
+	.text       start:0x0015B70C end:0x0015B970 align:4
+
+rel/main_rel/sound/fn_1_A1364.c:
+	.text       start:0x000A1364 end:0x000A1588 align:4
+
+rel/main_rel/sel_static_disp/fn_1_135B80.c:
+	.text       start:0x00135B80 end:0x00135D7C align:4
+
+rel/main_rel/effect/fn_1_61EF4.c:
+	.text       start:0x00061EF4 end:0x000620C4 align:4
+
+rel/main_rel/sound/fn_1_A0AA4.c:
+	.text       start:0x000A0AA4 end:0x000A0C68 align:4
+
+rel/main_rel/sound/fn_1_A02F0.c:
+	.text       start:0x000A02F0 end:0x000A04AC align:4
+
+rel/main_rel/camera/fn_1_727C.c:
+	.text       start:0x0000727C end:0x0000739C align:4
+
+rel/main_rel/burner/fn_1_9A958.c:
+	.text       start:0x0009A958 end:0x0009AA2C align:4
+
+rel/main_rel/font/fn_1_4B6D4.c:
+	.text       start:0x0004B6D4 end:0x0004B788 align:4
+
+rel/main_rel/font/fn_1_4B788.c:
+	.text       start:0x0004B788 end:0x0004B83C align:4
+
+rel/main_rel/sel_static_disp/fn_1_14BD94.c:
+	.text       start:0x0014BD94 end:0x0014BE30 align:4
+
+rel/main_rel/car/fn_1_892CC.c:
+	.text       start:0x000892CC end:0x000892E8 align:4
