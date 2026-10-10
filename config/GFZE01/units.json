@@ -30481,6 +30481,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/background/fn_1_9DB04.c",
+    "symbols": [
+      "fn_1_9DB04"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/background.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/background/fn_1_9E14C.c",
     "symbols": [
       "fn_1_9E14C"
@@ -33024,6 +33035,17 @@
       "fn_1_15E764"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/bg_win.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/bg_win/fn_1_15EC40.c",
+    "symbols": [
+      "fn_1_15EC40"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/bg_win.c"
@@ -67384,6 +67406,17 @@
       "@26": "lbl_10_rodata_1E0",
       "@126": "lbl_10_rodata_3AC"
     }
+  },
+  {
+    "module": "sel",
+    "source": "rel/sel/sel/fn_10_1B2F4.c",
+    "symbols": [
+      "fn_10_1B2F4"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/sel/sel.c"
   },
   {
     "module": "sel",

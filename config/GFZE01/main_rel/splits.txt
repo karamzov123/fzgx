@@ -7499,3 +7499,9 @@ rel/main_rel/sel_static_disp/fn_1_14BD94.c:
 
 rel/main_rel/car/fn_1_892CC.c:
 	.text       start:0x000892CC end:0x000892E8 align:4
+
+rel/main_rel/bg_win/fn_1_15EC40.c:
+	.text       start:0x0015EC40 end:0x0015EFEC align:4
+
+rel/main_rel/background/fn_1_9DB04.c:
+	.text       start:0x0009DB04 end:0x0009DDA8 align:4
