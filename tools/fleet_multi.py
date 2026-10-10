@@ -1449,6 +1449,39 @@ class Job:
     def text(self):
         return tail_bytes(self.logpath,start=self.offset)+'\n'+'\n'.join(tail_bytes(p,4000) for p in self.directory.glob('*.log'))
 
+# The publisher (tools/fleet_integrator.py) gates and pushes local main to the
+# fork, but it refuses to verify a moving HEAD: every fleet batch commits to main,
+# so a gate started mid-fleet keeps hitting "HEAD/branch changed during snapshot
+# gate" and nothing is ever published until the daemon is stopped by hand. Rather
+# than stop the daemon to drain, tick the publisher from the loop itself: launch it
+# in the background between batches, gated so only one runs at a time and never
+# more than one attempt per PUBLISH_COOLDOWN. When HEAD is already verified it
+# pushes immediately (no gate); when it is not, the background gate races the next
+# batch, but the integrator's own HEAD-change check discards an invalidated receipt
+# and the next tick retries -- so a quiet moment still drains to the fork without
+# an operator stopping the fleet.
+PUBLISH_COOLDOWN = 300
+_publish_last = [0.0]
+_publish_proc: list = [None]
+
+def tick_publisher():
+    """Best-effort background publish between batches. Never blocks, never raises."""
+    try:
+        if _publish_proc[0] is not None:
+            if _publish_proc[0].poll() is None:
+                return  # already running
+            _publish_proc[0] = None
+        now = time.time()
+        if now - _publish_last[0] < PUBLISH_COOLDOWN:
+            return
+        _publish_last[0] = now
+        _publish_proc[0] = subprocess.Popen(
+            [sys.executable, str(ROOT / 'tools' / 'fleet_integrator.py'), 'once'],
+            cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            stdin=subprocess.DEVNULL, start_new_session=True)
+    except Exception:
+        pass
+
 def run():
     global STOP
     CACHE.mkdir(parents=True,exist_ok=True)
@@ -1608,6 +1641,12 @@ def run():
                     print(f'{_fb_family}: fallback dwell expired, re-probing '
                           f'{POLICY[_fb_family]["display"]}', flush=True)
                     persist()
+            # Drain local main to the fork between batches (background, cooldown-gated).
+            # Safe to call every tick: it no-ops while a publish is in flight or within
+            # cooldown, and the integrator's own HEAD-change check protects a mid-flight
+            # gate. See the PUBLISH_COOLDOWN note above.
+            if not jobs:
+                tick_publisher()
             # Surge capacity is decided from measured paid-provider state, after
             # this tick's telemetry and before anything is launched.
             note = apply_surge(statuses, config, clock)
