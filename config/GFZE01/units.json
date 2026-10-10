@@ -2835,6 +2835,17 @@
   },
   {
     "module": "interview",
+    "source": "rel/interview/interview/fn_17_6C30.c",
+    "symbols": [
+      "fn_17_6C30"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/interview/interview.c"
+  },
+  {
+    "module": "interview",
     "source": "rel/interview/interview/fn_17_6F30.c",
     "symbols": [
       "fn_17_6F30"
@@ -25096,6 +25107,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80074D88.c",
+    "symbols": [
+      "fn_80074D88"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80075080.c",
     "symbols": [
       "fn_80075080"
@@ -37066,6 +37087,17 @@
       "fn_1_8E1E8"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/car.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/car/fn_1_8E244.c",
+    "symbols": [
+      "fn_1_8E244"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/main_rel/car.c"
@@ -61660,6 +61692,16 @@
   },
   {
     "module": "movie_module",
+    "source": "rel/movie_module/fn_12_349CC.c",
+    "symbols": [
+      "fn_12_349CC"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
     "source": "rel/movie_module/fn_12_34A8.c",
     "symbols": [
       "fn_12_34A8"
@@ -62862,6 +62904,16 @@
       "fn_12_3A600"
     ],
     "status": "matching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "movie_module",
+    "source": "rel/movie_module/fn_12_3A64.c",
+    "symbols": [
+      "fn_12_3A64"
+    ],
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": []
   },
@@ -67613,6 +67665,17 @@
   },
   {
     "module": "sel",
+    "source": "rel/sel/name_entry/fn_10_266AC.c",
+    "symbols": [
+      "fn_10_266AC"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/sel/name_entry.c"
+  },
+  {
+    "module": "sel",
     "source": "rel/sel/record/fn_10_26554.c",
     "symbols": [
       "fn_10_26554"
@@ -70997,6 +71060,17 @@
     "source": "rel/winning/winning/fn_15_5460.c",
     "symbols": [
       "fn_15_5460"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/winning/winning.c"
+  },
+  {
+    "module": "winning",
+    "source": "rel/winning/winning/fn_15_5730.c",
+    "symbols": [
+      "fn_15_5730"
     ],
     "status": "nonmatching",
     "mw_version": null,

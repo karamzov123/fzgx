@@ -131,3 +131,6 @@ rel/winning/winning/fn_15_3368.c:
 
 rel/winning/winning/fn_15_5460.c:
 	.text       start:0x00005460 end:0x00005730 align:4
+
+rel/winning/winning/fn_15_5730.c:
+	.text       start:0x00005730 end:0x00005864 align:4
