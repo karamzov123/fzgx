@@ -125,19 +125,26 @@ FALLBACK_TTL = 1800
 # single mis-parse to park a lane for days.
 RETRY_MAX = 3 * 3600
 for _n in SURGE:
-    # Hermes, not opencode: the opencode free tier answers the restricted matcher agent
-    # with 403 FreeTierError ("can only be used from within Opencode") for every free
-    # model, which retired all four lanes inside a minute. The same model is served by
-    # the Nous portal through hermes. The six bound tools still arrive over
-    # fleet_mcp.py; hermes' `--toolsets fzgx` leaves nothing else advertised. No opencode
-    # model is pinned anywhere in the fleet policy.
+    # OpenCode CLI with Space Bunny Free (operator-directed 2026-10-10).
     #
-    # Medium still produced zero tool receipts in bounded direct-schema probes.
-    # Low has executed real compiler cycles. Bound compiler silence to 240 seconds
-    # in fleet_provider so upstream thinking/discovery cannot monopolize a lane.
-    POLICY[_n] = {'harness':'hermes','model':'stepfun/step-5-preview:free','effort':'low',
-                  'display':f'Step 5 Free Low #{_n[-1]}','managed':False}
-    META[_n] = (f'Hermes #{_n[-1]}', chr(0xF0A9B))
+    # These lanes previously ran the hermes transport on Step5 Free: the opencode
+    # free tier answers the restricted matcher agent with 403 FreeTierError
+    # ("can only be used from within Opencode") when the client is NOT the
+    # official opencode build, so a non-official client could not serve the free
+    # models. The official client at ~/.opencode/bin/opencode (1.18.35) does serve
+    # them, and `opencode/space-bunny-free` is in its catalogue, so the lanes now
+    # run the real opencode harness on the free model. fleet_clients pins the
+    # official binary (OPENCODE_CANDIDATES), launches with --pure, and confines
+    # the agent to the six fzgx MCP tools; the 452 historical opencode-harness
+    # attempts on this model produced 85 verified matches, so the lane has a real
+    # conversion record -- unlike the Step5 transport it replaced.
+    #
+    # Variant `xhigh` is the config default (OPENCODE_VARIANT). Compiler silence
+    # is bound to 240s in fleet_provider so upstream thinking cannot monopolize
+    # a lane.
+    POLICY[_n] = {'harness':'opencode','model':'opencode/space-bunny-free','effort':'xhigh',
+                  'display':f'Space Bunny Free (OpenCode #{_n[-1]})','managed':False}
+    META[_n] = (f'OpenCode #{_n[-1]}', chr(0xF0A9B))
 del _n
 CONTROL = CACHE / 'control-v3.json'
 MODEL_POLICY = CACHE / 'model-policy.json'

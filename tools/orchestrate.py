@@ -353,7 +353,13 @@ def run_one(p: Project, harness: str, model: str, symbol: str, idx: int, timeout
     # Tool outcomes and counters are authoritative; models sometimes misformat or miscount RESULT.
     outcome = att["outcome"].removeprefix("shadow-") if terminal else (
         "timeout" if rc == -9 or guard.get('reason') in ('tool-idle', 'deadline')
-        else "incomplete" if rc == 0 else _refusal(out) or "crash")
+        # A clean exit (rc=0) that never called fzgx_check produced zero compiler evidence.
+        # It is not "incomplete" (which reads as work-in-progress on a real body): the model
+        # edited nothing the oracle ever saw, so nothing moved. Recording it distinctly keeps
+        # it out of the productive-attempt rate and makes the no-tool pattern measurable
+        # instead of hiding inside "incomplete" next to sessions that DID compile.
+        else "no-tool" if rc == 0 and not (att["checks"] if att else 0) else "incomplete" if rc == 0
+        else _refusal(out) or "crash")
     if outcome == "matched-pool":
         outcome = "matched"
     row = l.get(key)
