@@ -59846,7 +59846,10 @@
     ],
     "status": "nonmatching",
     "mw_version": null,
-    "extra_cflags": []
+    "extra_cflags": [
+      "-use_lmw_stmw",
+      "on"
+    ]
   },
   {
     "module": "movie_module",
@@ -62646,7 +62649,10 @@
     ],
     "status": "nonmatching",
     "mw_version": null,
-    "extra_cflags": []
+    "extra_cflags": [
+      "-use_lmw_stmw",
+      "on"
+    ]
   },
   {
     "module": "movie_module",
@@ -63045,7 +63051,10 @@
     ],
     "status": "nonmatching",
     "mw_version": null,
-    "extra_cflags": []
+    "extra_cflags": [
+      "-use_lmw_stmw",
+      "on"
+    ]
   },
   {
     "module": "movie_module",
