@@ -139,14 +139,20 @@ for _n in SURGE:
     # attempts on this model produced 85 verified matches, so the lane has a real
     # conversion record -- unlike the Step5 transport it replaced.
     #
-    # Variant is `medium`, not the config default `xhigh` (OPENCODE_VARIANT). Measured:
-    # at xhigh the full 40-58KB matcher prompt drives the model to burn its whole
-    # output budget on reasoning (one failed symbol logged 31,990 reasoning tokens,
-    # 10 output, step_finish reason "length") -- it never emits a tool call, so
-    # checks=0 and the symbol is a dead slot. The first symbol in a batch (smaller
-    # body) fits and completes; the rest of the batch silently dies. `medium` keeps
-    # reasoning bounded on large prompts so the model actually writes and checks.
-    POLICY[_n] = {'harness':'opencode','model':'opencode/space-bunny-free','effort':'medium',
+    # Variant is `high` (operator-directed 2026-10-10, moved up from `medium`).
+    #
+    # Why not the model's cap is the binding constraint: space-bunny-free advertises
+    # limit.context=1048576, limit.input=524288, limit.output=524288, and the
+    # variants are reasoningEffort levels (low/medium/high/xhigh) -- raising the
+    # variant does NOT raise the output cap, it raises how many of those tokens the
+    # model spends thinking. The measured failure was a per-step ceiling, not the
+    # 524K output limit: one hard symbol at xhigh logged total=61664, output=10,
+    # reasoning=31990, step_finish reason "length" -- it spent its whole per-step
+    # budget on reasoning and emitted no tool call. So xhigh is a trap on hard
+    # symbols (more reasoning headroom = more room to spiral), while `high` measured
+    # stable on the full 58KB matcher prompt (3/3 completed, output 59-7738, no
+    # length cap). `high` is the ceiling that still emits output reliably.
+    POLICY[_n] = {'harness':'opencode','model':'opencode/space-bunny-free','effort':'high',
                   'display':f'Space Bunny Free (OpenCode #{_n[-1]})','managed':False}
     META[_n] = (f'OpenCode #{_n[-1]}', chr(0xF0A9B))
 del _n
