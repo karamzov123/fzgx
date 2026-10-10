@@ -33,7 +33,7 @@ typedef struct {
     s8 field_25[5];
 } Fn1_7D6B8Arg;
 #define INPUT(o) (*(u16 *)((u8 *)&lbl_1_bss_9F8 + (o)))
-#define VINPUT(o) (*(volatile u16 *)((u8 *)&lbl_1_bss_9F8 + (o)))
+#define VINPUT(o) (*(volatile u16 *)((u8 *)&lbl_1_bss_9F8 + (o))) /* Retail reloads this memory-mapped input each read. */
 #define BIT(o,b) ((INPUT(o) >> (b)) & 1)
 #define VBIT(o,b) ((VINPUT(o) >> (b)) & 1)
 #define BOTH(b) (VBIT(0x10,b) || BIT(0x12,b))
@@ -143,7 +143,7 @@ void fn_1_7D6B8(void *arg0) {
             else if (BIT(0x12,7) || BIT(0x12,4)) var_r4_2 = -1;
             if (var_r4_2 != 0) {
                 do {
-                    temp_r3_4 = ((var_r4_2) + ((*(s8 volatile *)&(arg->field_24))));
+                    temp_r3_4 = ((var_r4_2) + ((*(s8 volatile *)&(arg->field_24)) /* Retail reloads this field. */));
                     if (temp_r3_4 > 4) var_r0.value = 0;
                     else {
                         var_r0.value = 4;
