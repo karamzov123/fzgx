@@ -13880,6 +13880,16 @@
   },
   {
     "module": "main",
+    "source": "dol/fn_80009830.c",
+    "symbols": [
+      "fn_80009830"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
     "source": "dol/fn_80009AA8.c",
     "symbols": [
       "fn_80009AA8"
@@ -48831,10 +48841,10 @@
     "symbols": [
       "fn_1_4270C"
     ],
-    "status": "matching",
+    "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
-    "asm": true
+    "tu": "rel/main_rel/motasglist.c"
   },
   {
     "module": "main_rel",

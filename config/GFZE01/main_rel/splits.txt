@@ -7554,9 +7554,6 @@ rel/main_rel/accessory/fn_1_108EEC.c:
 rel/main_rel/accessory/fn_1_118D90.c:
 	.text       start:0x00118D90 end:0x001192D0 align:4
 
-rel/main_rel/motasglist/fn_1_4270C.c:
-	.text       start:0x0004270C end:0x00042AD0 align:4
-
 rel/main_rel/accessory/fn_1_10A6A0.c:
 	.text       start:0x0010A6A0 end:0x0010A8D0 align:4
 
@@ -7595,3 +7592,6 @@ rel/main_rel/driver/fn_1_A8834.c:
 
 rel/main_rel/game/fn_1_3ED8C.c:
 	.text       start:0x0003ED8C end:0x0003EF08 align:4
+
+rel/main_rel/motasglist/fn_1_4270C.c:
+	.text       start:0x0004270C end:0x00042AD0 align:4
