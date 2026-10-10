@@ -377,6 +377,17 @@
   },
   {
     "module": "car_colchg",
+    "source": "rel/car_colchg/car_colchg/fn_9_AF0.c",
+    "symbols": [
+      "fn_9_AF0"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/car_colchg/car_colchg.c"
+  },
+  {
+    "module": "car_colchg",
     "source": "rel/car_colchg/car_colchg/fn_9_DC0.c",
     "symbols": [
       "fn_9_DC0"
@@ -20358,6 +20369,16 @@
     ],
     "status": "matching",
     "mw_version": "GC/1.3.2",
+    "extra_cflags": []
+  },
+  {
+    "module": "main",
+    "source": "dol/fn_8004CD70.c",
+    "symbols": [
+      "fn_8004CD70"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
     "extra_cflags": []
   },
   {
@@ -49689,6 +49710,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/ptclput/fn_1_9FA18.c",
+    "symbols": [
+      "fn_1_9FA18"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/ptclput.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/ranking/fn_1_1554D0.c",
     "symbols": [
       "fn_1_1554D0"
@@ -54624,6 +54656,17 @@
   },
   {
     "module": "main_rel",
+    "source": "rel/main_rel/sound/fn_1_A1DCC.c",
+    "symbols": [
+      "fn_1_A1DCC"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/sound.c"
+  },
+  {
+    "module": "main_rel",
     "source": "rel/main_rel/sound/fn_1_A24CC.c",
     "symbols": [
       "fn_1_A24CC"
@@ -56497,6 +56540,17 @@
     "source": "rel/main_rel/stcoli/fn_1_16BA0.c",
     "symbols": [
       "fn_1_16BA0"
+    ],
+    "status": "nonmatching",
+    "mw_version": null,
+    "extra_cflags": [],
+    "tu": "rel/main_rel/stcoli.c"
+  },
+  {
+    "module": "main_rel",
+    "source": "rel/main_rel/stcoli/fn_1_17098.c",
+    "symbols": [
+      "fn_1_17098"
     ],
     "status": "nonmatching",
     "mw_version": null,
