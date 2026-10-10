@@ -1031,6 +1031,44 @@ def extra_families(body: str, name: str) -> List[Tuple[str, str, str]]:
     for m in re.finditer(r"for \((\w+) = 0; \1 < ([^;]+); \1\+\+\)", body):
         v, n = m.groups()
         out.append(("loop-form", "count up -> down", body[:m.start()] + f"for ({v} = {n}; {v} != 0; {v}--)" + body[m.end():]))
+    # 4b. combinatorial induction-variable spellings (regalloc tie-break lever).
+    # A pure-regalloc near-miss where retail keeps the loop counter and the byte-offset
+    # accumulator in specific registers, and MWCC coalesces the counter onto a live zero
+    # (mr r30,r31) while ours materialises an independent li. Single levers (counter form,
+    # offset rematerialisation) just shuffle which tied register each lands in -- measured
+    # on fn_1_10161C and fn_12_2F970. What has not been tried is the COMBINATION: spell
+    # the counter and the offset accumulator together, in every pairing, so the allocator
+    # sees a different live-range shape and may pick retail's colouring. Each pairing is a
+    # distinct candidate; the oracle decides. (finding 301)
+    for am in re.finditer(r"(\w+) \+= (0x[0-9A-Fa-f]+|\d+)", inner):
+        acc, kstr = am.group(1), am.group(2)
+        k = kstr
+        # find the innermost for-loop whose increment clause or body contains this
+        # += (scan backward from the += site to find the nearest 'for (' or '{')
+        acc_pos = inner.find(f"{acc} +=")
+        if acc_pos < 0:
+            continue
+        counter = None
+        nearest_for = None
+        for m2 in re.finditer(r"for \(", inner[:acc_pos]):
+            nearest_for = m2
+        if nearest_for:
+            cm = re.match(r"\s*for \(([\w.]+) =", inner[nearest_for.start():])
+            if cm:
+                counter = cm.group(1)
+        if counter is None:
+            continue
+        # rematerialise: drop the declaration, initialisation, and += step FIRST,
+        # then replace remaining uses of acc with (counter * K)
+        new_text = re.sub(rf"(?m)^\s*(?:u32|s32|int)\s+{re.escape(acc)}\s*;\s*\n", "", inner)
+        new_text = re.sub(rf"(?m)^\s*{re.escape(acc)}\s*=\s*0\s*;\s*\n", "", new_text)
+        new_text = new_text.replace(f"{acc} += {k}, ", "").replace(f", {acc} += {k}", "")
+        new_text = new_text.replace(f"{acc} += {k}", "").replace(f"{acc} += {k};", "")
+        new_text = re.sub(rf"(?<![\w>.]){re.escape(acc)}(?![\w])", f"({counter} * {k})", new_text)
+        if new_text != inner:
+            out.append(("induction-combo",
+                        f"counter={counter} acc={acc} rematerialised as {counter}*{k}",
+                        body[:span[1]] + new_text + body[span[2]:]))
     # 5. compare casts: drop or flip the cast on a compare operand
     for m in re.finditer(r"\((s32|u32)\)([A-Za-z_][\w>.\-\[\]]*) (==|!=|<|>|<=|>=)", inner):
         s0 = span[1] + m.start(); e0 = span[1] + m.end()
