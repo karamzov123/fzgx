@@ -266,6 +266,20 @@ def command(family, batch, symbols, parallel):
 # consuming a model session for a third re-derivation.
 ATTEMPT_CAP = 2
 
+# Carve-on-cap: when a family selects nothing, carve a few capped symbols into landable units.
+#
+# 1186 unmatched functions have no `splits.txt` range, so a body for one cannot be linked from C
+# (docs/findings/279) -- and 2941 fleet attempts on them produced 0 matches against 410 on
+# covered symbols (docs/findings/298). The bodies are already in the archive at ~99.6%; what is
+# missing is the split range. `fzgx carve` supplies it with no lease, no model and no fleet slot,
+# so an idle tick is not out of work, it is out of *landable* work.
+#
+# Bounded so a continuously-idle fleet cannot churn configure.py/ninja: at most CARVE_PER_TICK
+# symbols per CARVE_INTERVAL, and only ones already past the attempt cap, so nothing is carved
+# that has not had a real attempt.
+CARVE_PER_TICK = 3
+CARVE_INTERVAL = 600
+
 # One-word tier: functions this fleet has already spent attempts on and whose only remaining
 # defect is a single instruction word.
 #
@@ -524,6 +538,189 @@ def size_allowed(size, best):
 
 _linkfail_cache = {'at': 0.0, 'symbols': frozenset()}
 
+_uncovered_cache = {'at': 0.0, 'symbols': frozenset()}
+
+# Same shapes tools/fzgx/splitgaps.py parses, so the fleet and the diagnostic tool cannot
+# disagree about what "covered" means.
+SYM_RE = re.compile(r'^(\w+) = \.text:(0x[0-9A-Fa-f]+);\s*//\s*type:function size:(0x[0-9A-Fa-f]+)')
+RANGE_RE = re.compile(r'start:(0x[0-9A-Fa-f]+)\s+end:(0x[0-9A-Fa-f]+)')
+
+def uncovered_symbols():
+    """Unmatched functions with no `splits.txt` range covering their `.text`.
+
+    A split range is a hard prerequisite for a body to land at all: without one,
+    carving a unit duplicates the function in the module and the byte count stops
+    matching retail (docs/findings/279). The per-object oracle still reports ~100%
+    for the body, because it diffs one object against retail and never sees the
+    module, so a model session can produce a perfect body for a symbol that cannot
+    be linked from C.
+
+    `link_failed()` cannot catch this class: a symbol with no split range never
+    reaches a link test, so it never records `link-mismatch` and is never retired.
+
+    Measured over every fleet attempt in the ledger (docs/findings/298):
+
+        uncoverable  1186 symbols  2941 attempts    0 matched
+        landable      724 symbols  1690 attempts  410 matched
+
+    71% of the most-attempted symbols were uncoverable. `fzgx carve` closes the gap
+    deterministically -- it needs no lease, no model and no fleet -- so these are not
+    dead work, they are unscheduled work. They sort behind covered symbols rather
+    than being dropped, which keeps virgin/mid/tier pools intact while stopping the
+    fleet from spending its best slots re-deriving bodies that cannot land.
+    """
+    now = time.time()
+    if now - _uncovered_cache['at'] > 30.0:
+        # Split entries name source paths, the ledger names symbols, and neither is a
+        # reliable key on its own: a split can cover a `.text` range without naming the
+        # symbol, and units.json lists symbols with no split. The authority is address
+        # coverage -- symbols.txt gives (symbol -> addr, size) and splits.txt gives the
+        # ranges already claimed -- which is exactly how tools/fzgx/splitgaps.py answers
+        # the same question. Matching on names instead answers "nothing is covered" for
+        # every function whose split lives under a different basename.
+        covered = {}
+        # The DOL module keeps its symbols.txt/splits.txt at config/GFZE01/ top level;
+        # every REL module has its own config/GFZE01/<module>/ pair. Both layouts must be
+        # read or the whole main module reports as uncovered.
+        #
+        # Keyed by module for the same reason `units` is: `_prolog` and `_epilog` exist in
+        # every module, so a flat set would mark `customize:_prolog` covered on the strength
+        # of `movie_module:_prolog`, and the filter would silently skip real gaps.
+        sources = [(ROOT / 'config' / 'GFZE01' / 'symbols.txt',
+                    ROOT / 'config' / 'GFZE01' / 'splits.txt', 'main')]
+        sources += [(d / 'symbols.txt', d / 'splits.txt', d.name)
+                    for d in sorted((ROOT / 'config' / 'GFZE01').glob('*/'))]
+        for sym_txt, split_txt, mod in sources:
+            if not sym_txt.exists() or not split_txt.exists():
+                continue
+            ranges = []
+            cur_ok = False
+            for line in split_txt.read_text(errors='replace').splitlines():
+                s = line.strip()
+                if s.startswith('rel/') or s.startswith('dol/'):
+                    cur_ok = True
+                    continue
+                if cur_ok and '.text' in s:
+                    m = RANGE_RE.search(s)
+                    if m:
+                        ranges.append((int(m.group(1), 16), int(m.group(2), 16)))
+            if not ranges:
+                continue
+            hit = set()
+            for line in sym_txt.read_text(errors='replace').splitlines():
+                m = SYM_RE.match(line.strip())
+                if not m:
+                    continue
+                addr, size = int(m.group(2), 16), int(m.group(3), 16)
+                if any(s <= addr and addr + size <= e for s, e in ranges):
+                    hit.add(m.group(1))
+            if hit:
+                covered.setdefault(mod, set()).update(hit)
+        try:
+            rows = json.loads((ROOT / 'config' / 'GFZE01' / 'units.json').read_text())
+        except (OSError, ValueError):
+            rows = []
+        # Keyed by module: `_prolog` and `_epilog` exist in every module, so a flat
+        # symbol set would make `sel:_prolog` look covered because `customize:_prolog`
+        # is registered. Symbol -> module is what disambiguates them.
+        from fzgx.project import Project
+        try:
+            proj = Project()
+        except Exception:
+            proj = None
+        module_of = {}
+
+        def resolve(sym):
+            if proj is None:
+                return sym.split(':', 1)[1] if ':' in sym else sym
+            try:
+                r = proj.resolve(sym)
+                return r.name if r is not None else (sym.split(':', 1)[1] if ':' in sym else sym)
+            except Exception:
+                return sym.split(':', 1)[1] if ':' in sym else sym
+
+        units = {}
+        for row in rows:
+            mod, src = row.get('module'), (row.get('source') or '')
+            stem = src.rsplit('/', 1)[-1]
+            if stem.endswith('.c'):
+                stem = stem[:-2]
+            names = set(row.get('symbols') or ())
+            names.add(stem)
+            units.setdefault(mod, set()).update(names)
+
+        # symbol -> module, from the same resolver the rest of the fleet trusts. A bare
+        # ledger symbol resolves unambiguously; a module-qualified one is taken literally.
+        unmatched_rows = db_rows("SELECT symbol FROM functions WHERE status='unmatched'")
+        for r in unmatched_rows:
+            sym = r['symbol']
+            if ':' in sym:
+                module_of[sym] = sym.split(':', 1)[0]
+                continue
+            if proj is None:
+                continue
+            try:
+                res = proj.resolve(sym)
+            except Exception:
+                res = None
+            if res is not None:
+                module_of[sym] = res.module
+
+        _uncovered_cache['symbols'] = frozenset(
+            r['symbol'] for r in unmatched_rows
+            if resolve(r['symbol']) not in covered.get(module_of.get(r['symbol']), set())
+            and resolve(r['symbol']) not in units.get(module_of.get(r['symbol']), set()))
+        _uncovered_cache['at'] = now
+    return _uncovered_cache['symbols']
+
+_carve_budget_cache = {'at': 0.0, 'n': 0}
+
+def carve_capped(rows, retry, statuses, family):
+    """Carve a few uncovered symbols that have already burned their attempt cap.
+
+    A family that selected nothing is usually not out of work -- it is out of *landable*
+    work. Every uncovered symbol it passed over is a body the fleet already produced at
+    ~99.6% and cannot link, and `fzgx carve` converts one into a landable unit with no
+    lease, no model request and no fleet slot. Doing it here turns an idle tick into
+    forward progress instead of a 30s sleep.
+
+    Bounded to CARVE_PER_TICK per carve interval so a steady fleet cannot churn
+    configure.py/ninja. Symbols are taken highest-best-first: those are the ones where a
+    body is already sitting in the archive waiting for a split range.
+    """
+    now = time.time()
+    if now - _carve_budget_cache['at'] < CARVE_INTERVAL:
+        return
+    unc = uncovered_symbols()
+    if not unc:
+        return
+    mine = local_attempts()
+    pool = [r for r in rows if r['status'] == 'unmatched'
+            and r['symbol'] in unc
+            and mine.get(r['symbol'], 0) >= ATTEMPT_CAP
+            and (r.get('best', r.get('best_percent', 0)) or 0) >= 90
+            and size_allowed(r['size'], r.get('best', r.get('best_percent', 0)))]
+    pool.sort(key=lambda r: -(r.get('best', r.get('best_percent', 0)) or 0))
+    pool = [r for r in pool if r['symbol'] not in set(retry)][:CARVE_PER_TICK]
+    if not pool:
+        return
+    try:
+        from fzgx import api
+        from fzgx.project import Project
+        res = api.carve_many(Project(), [r['symbol'] for r in pool])
+    except Exception as exc:                      # never let a carve stall the daemon
+        print(f'{family}: carve_capped skipped: {exc!r}', flush=True)
+        _carve_budget_cache['at'] = now
+        return
+    done = [r['symbol'] for r in res if r.get('created')]
+    _carve_budget_cache.update(at=now, n=len(done))
+    if done:
+        # A fresh split range changes what the next choose() can land, so the
+        # per-tick row cache must not serve the pre-carve view.
+        _uncovered_cache['at'] = 0.0
+        print(f'{family}: carved {len(done)} capped symbol(s) into landable units: '
+              f'{", ".join(done[:6])}', flush=True)
+
 def link_failed():
     """Symbols whose last attempt matched the object and was rejected by the link.
 
@@ -586,6 +783,13 @@ def choose(rows, seen, context, count, reserved=(), retry=(), family=None, prote
     mine=local_attempts()
     virgin=virgin_symbols(rows,mine)
     linkfail=link_failed()
+    # Symbols with no split range cannot be linked from C (docs/findings/298), so a
+    # matching body for one is unlandable. They stay eligible -- `fzgx carve` closes the
+    # gap with no lease, no model and no fleet -- but they sort behind covered work in
+    # every pool, so the fleet converts what it has instead of re-deriving bodies that
+    # cannot land. 2941 attempts on uncovered symbols produced 0 matches against 410 on
+    # covered ones.
+    uncovered=uncovered_symbols()
     tried=families_that_tried() if FAMILY_LOCKOUT else {}
     tier=one_word_tier(family)
     # The one-word tier joins `retry`, the existing mechanism for "past the cap, but one more
@@ -628,8 +832,11 @@ def choose(rows, seen, context, count, reserved=(), retry=(), family=None, prote
     mid_band={r['symbol'] for r in rows if r['status']=='unmatched'
               and 80 <= (r.get('best',r.get('best_percent',0)) or 0) < 95
               and mine.get(r['symbol'],0) < ATTEMPT_CAP}
-    order=lambda r:(0 if r['symbol'] in tier else 1 if r['symbol'] in mid_band else 2
+    closure={r['symbol'] for r in rows if r['status']=='unmatched' and r['module'] in ('replay','car_colchg','sample')}
+    order=lambda r:(0 if r['module']=='main_rel' else 1 if r['symbol'] in closure else 2,
+                    0 if r['symbol'] in tier else 1 if r['symbol'] in mid_band else 2
                     if r['symbol'] in virgin else 3,
+                    1 if r['symbol'] in uncovered else 0,
                     -(r.get('best',r.get('best_percent',0)) or 0),
                     mine.get(r['symbol'],0),r['size'],r['symbol'])
     band=band_for(family) if family else None
@@ -640,7 +847,7 @@ def choose(rows, seen, context, count, reserved=(), retry=(), family=None, prote
     # symbols pass size_allowed, but the band excluded 5 of them outright and demoted the rest,
     # which is what left cline and gpt at 0/6. Everything here is still gated by base -- attempt
     # cap via eligible_retry, link failures, in-flight units and the current-context guard.
-    if tier or mid_band:
+    if tier or mid_band or closure:
         # Both pools are lifted above the band for the same reason, and the mid band's case is
         # the sharper one: 126 of its 149 eligible functions are under 1 KB, and every family
         # band starts at 1 KB or higher (cline 1024, agy 512, oc1 2048, oc4 257, gpt 1024), so
@@ -649,7 +856,7 @@ def choose(rows, seen, context, count, reserved=(), retry=(), family=None, prote
         # same size shelf, which is a reason to share, not a reason to hide a pool with no
         # other route to a session. Everything is still gated by base: attempt cap, link
         # failures, in-flight units and the current-context guard.
-        lifted=[r for r in base if r['symbol'] in tier or r['symbol'] in mid_band]
+        lifted=[r for r in base if r['symbol'] in tier or r['symbol'] in mid_band or r['symbol'] in closure]
         # Dedup by symbol, not by id(). `id()` identifies the dict object, and `lifted` and
         # `eligible` are built by two separate comprehensions over `base`, so the same row is a
         # different object in each and `id(r) not in seen_ids` is always true. That duplicated
@@ -691,19 +898,35 @@ def choose(rows, seen, context, count, reserved=(), retry=(), family=None, prote
     # picks in the tier with the cap nominally at 4.
     _used=set()
     _units=set(claimed_units)
+    # Reserve two thirds for the largest backlog without widening any attempt,
+    # size or pool cap. Unavailable primary supply spills back to other modules.
+    primary_target=(2*count+2)//3
+    primary_units={(r['module'],r.get('unit') or r['symbol']) for r in base if r['module']=='main_rel'}
+    secondary_limit=count-min(primary_target,len(primary_units))
+    secondary_used=0
+    def _take(r, enforce_share=True):
+        nonlocal secondary_used
+        unit=(r['module'],r.get('unit') or r['symbol'])
+        if r['symbol'] in _used or unit in _units or len(_used)>=count:
+            return False
+        if count>=4 and r['symbol'] in closure and _used & closure:
+            return False
+        if enforce_share and r['module']!='main_rel' and secondary_used>=secondary_limit:
+            return False
+        _used.add(r['symbol']); _units.add(unit)
+        secondary_used+=r['module']!='main_rel'
+        return True
     def _pick(pool, cap):
         out=[]
         for r in eligible:
             if len(out) >= cap: break
-            unit=(r['module'],r.get('unit') or r['symbol'])
-            if r['symbol'] in pool and r['symbol'] not in _used and unit not in _units:
-                out.append(r['symbol']); _used.add(r['symbol']); _units.add(unit)
+            if r['symbol'] in pool and _take(r):
+                out.append(r['symbol'])
         return out
     n_tier=min(ONE_WORD_RESERVE, int(count * TIER_SHARE))
     n_mid=int(count * MID_BAND_SHARE)
-    # context ids already run in this batch; the guard `base` applies to gated rows too
-    seen_g=set(seen.values()) if seen else set()
-    chosen=_pick(tier, n_tier)
+    chosen=_pick(closure, int(count>=4))
+    chosen+=_pick(tier, n_tier)
     chosen+=_pick(mid_band, n_mid)
     # Oversize probe: a bounded slice of work past SIZE_GATE, which size_allowed otherwise blocks
     # (see OVERSIZE_PROBE). Drawn from the gated rows explicitly, so it can only ever be this
@@ -717,34 +940,38 @@ def choose(rows, seen, context, count, reserved=(), retry=(), family=None, prote
                and not size_allowed(r['size'], r.get('best',r.get('best_percent',0)))
                and r['symbol'] not in linkfail
                and mine.get(r['symbol'],0) < ATTEMPT_CAP
-               and r['symbol'] not in seen_g
+               and seen.get(r['symbol']) != context
                and r['symbol'] not in reserved
                and not (r.get('unit') and (r['module'],r['unit']) in claimed_units)]
         probe=int(count * OVERSIZE_PROBE)
         n_probe=0
-        for r in gated:
+        for r in sorted(gated,key=order):
             if n_probe >= probe or len(chosen) >= count: break
-            unit=(r['module'],r.get('unit') or r['symbol'])
-            if r['symbol'] not in _used and unit not in _units:
-                chosen.append(r['symbol']); _used.add(r['symbol']); _units.add(unit); n_probe+=1
+            if _take(r):
+                chosen.append(r['symbol']); n_probe+=1
     # Only pools that were *filled to their cap* have their remaining rows withheld. A pool that
     # could not fill its share has nothing to withhold, so its leftover rows stay in the fallback
     # or the batch idles -- measured at 9 of 12 when every capped pool was withheld regardless of
     # how many rows it actually held.
     full=set()
+    if count>=4 and _used & closure: full|=closure
     if n_tier and len([s for s in _used if s in tier])>=n_tier: full|=tier
     if n_mid and len([s for s in _used if s in mid_band])>=n_mid: full|=mid_band
     if OVERSIZE_PROBE and probe and n_probe>=probe: full|={r['symbol'] for r in gated}
     eligible=[r for r in eligible if r['symbol'] not in set(chosen) and r['symbol'] not in full]
-    used=set(_units)
     selected=list(chosen)
-    for row in eligible:
-        if len(selected)>=count:
-            break
-        unit=(row['module'],row.get('unit') or row['symbol'])
-        if unit in used:
-            continue
-        selected.append(row['symbol']);used.add(unit)
+    while len(selected)<count:
+        primary_count=len(selected)-secondary_used
+        ordered=sorted(eligible,key=lambda r:(
+            (r['module']!='main_rel') if primary_count<primary_target else (r['module']=='main_rel'),
+            order(r)))
+        row=next((r for r in ordered if _take(r)),None)
+        if row is None:
+            # A capped pool/shared unit can exhaust the nominal primary supply.
+            # Fill from already eligible rows; never bypass the hard guards.
+            row=next((r for r in ordered if _take(r,False)),None)
+        if row is None:break
+        selected.append(row['symbol'])
     return selected
 
 def policy_context():
@@ -1449,6 +1676,7 @@ def run():
                 symbols=choose(rows,seen,context,batch_size,reserved,near_miss,family,
                                protected_modules=protected_modules)
                 if not symbols:
+                    carve_capped(rows,near_miss,statuses,family)
                     statuses[family]=dict(status='idle',reason='No fresh eligible target below attempt cap; no blind retries.',active=0);retries[family]=time.time()+30;continue
                 for symbol in symbols:seen[symbol]=context
                 atomic(HISTORY,seen)
