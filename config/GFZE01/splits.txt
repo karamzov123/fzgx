@@ -5879,3 +5879,21 @@ dol/fn_8006A8CC.c:
 
 dol/fn_8006A768.c:
 	.text       start:0x8006A768 end:0x8006A8CC align:4
+
+dol/fn_8003D42C.c:
+	.text       start:0x8003D42C end:0x8003D4C0 align:4
+
+dol/fn_8007F508.c:
+	.text       start:0x8007F508 end:0x8007F684 align:4
+
+dol/fn_8008983C.c:
+	.text       start:0x8008983C end:0x800898E4 align:4
+
+dol/fn_80078360.c:
+	.text       start:0x80078360 end:0x80078538 align:4
+
+dol/fn_8004EC34.c:
+	.text       start:0x8004EC34 end:0x8004ECF4 align:4
+
+dol/fn_8006B224.c:
+	.text       start:0x8006B224 end:0x8006B294 align:4

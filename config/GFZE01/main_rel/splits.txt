@@ -7415,3 +7415,6 @@ rel/main_rel/stcoli/fn_1_2D038.c:
 
 rel/main_rel/game/fn_1_4068C.c:
 	.text       start:0x0004068C end:0x00040710 align:4
+
+rel/main_rel/sound/fn_1_A24CC.c:
+	.text       start:0x000A24CC end:0x000A266C align:4
