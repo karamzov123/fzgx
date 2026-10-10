@@ -7431,9 +7431,6 @@ rel/main_rel/burner/fn_1_9AABC.c:
 rel/main_rel/sel_static_disp/fn_1_135D7C.c:
 	.text       start:0x00135D7C end:0x00136174 align:4
 
-rel/main_rel/motasglist/fn_1_4270C.c:
-	.text       start:0x0004270C end:0x00042AD0 align:4
-
 rel/main_rel/som/fn_1_1384C.c:
 	.text       start:0x0001384C end:0x00013A28 align:4
 
@@ -7556,3 +7553,6 @@ rel/main_rel/accessory/fn_1_108EEC.c:
 
 rel/main_rel/accessory/fn_1_118D90.c:
 	.text       start:0x00118D90 end:0x001192D0 align:4
+
+rel/main_rel/motasglist/fn_1_4270C.c:
+	.text       start:0x0004270C end:0x00042AD0 align:4

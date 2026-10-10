@@ -48701,10 +48701,10 @@
     "symbols": [
       "fn_1_4270C"
     ],
-    "status": "nonmatching",
+    "status": "matching",
     "mw_version": null,
     "extra_cflags": [],
-    "tu": "rel/main_rel/motasglist.c"
+    "asm": true
   },
   {
     "module": "main_rel",
