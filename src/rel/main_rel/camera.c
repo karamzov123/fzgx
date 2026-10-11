@@ -1098,6 +1098,60 @@ s16 camera_get_entry_field_0xa4(u32 index) {
 }
 /* fzgx:end camera_get_entry_field_0xa4 */
 
+/* fzgx:begin fn_1_727C */
+typedef struct {
+    Obj_1_bss_F68_Target *state;
+    u8 *table_1;
+    u8 *table_2;
+} Fn1_727C_Globals;
+
+extern u8 lbl_1_bss_6F244[128];
+extern u8 lbl_1_bss_6EAC6[10];
+
+extern s32 fn_1_3F864(void);
+extern s32 fn_1_4C10(void);
+extern s16 fn_1_3F0C8(void);
+extern void fn_1_739C(void *, u32, s32);
+
+void fn_1_727C(void) {
+    u32 camera_index;
+    Fn1_727C_Globals *globals;
+    u32 lab_t1;
+    s8 status;
+    u8 index;
+
+    globals = (Fn1_727C_Globals *)&lbl_1_bss_F68;
+    index = fn_1_86624();
+    camera_index = globals->state->unk_4A;
+    if (!(globals->state != 0 && index != 0 && (lbl_1_bss_6EAB4.unk_0 & 0x20) == 0
+        && fn_1_3F864() != 0 && fn_1_4C10() == 0 && lbl_1_bss_6F244[0] != 0
+        && lbl_1_bss_6EAC6[0] != 0)) {
+        return;
+    } else {
+        switch (fn_1_3F0C8()) {
+            case 0x25:
+                return;
+            default:
+                goto ok; /* Keep the verified branch to ok. */
+        }
+        return;
+    ok:
+        status = globals->state->unk_48;
+        switch (status) {
+        case 0: case 1: case 2: case 3: case 4:
+        case 5: case 6: case 7: case 8: case 10:
+            lab_t1 = index;
+            fn_1_739C(globals->table_1 + camera_index * 0x1fc + 0x10, lab_t1, 4);
+            break;
+        case 9:
+            lab_t1 = index;
+            fn_1_739C(globals->table_2 + 0x1c, lab_t1, 4);
+            break;
+        }
+    }
+}
+/* fzgx:end fn_1_727C */
+
 /* fzgx:begin camera_compare_values */
 s32 camera_compare_values(const u8 *lhs_index, const u8 *rhs_index) {
     f32 *camera_values = &lbl_1_bss_6F524.unk_0;
