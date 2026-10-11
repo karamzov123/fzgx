@@ -1,0 +1,480 @@
+{
+ "fn_1_15E7F4": {
+  "id": "priority-fn_1_15E7F4",
+  "symbol": "fn_1_15E7F4",
+  "kind": "priority_task",
+  "task": {
+   "queue_kind": "residual",
+   "module": "main_rel",
+   "instruction": "Continue from the pinned, freshly compiled saved C. Classify the residual before editing; propose one source-shape hypothesis, do not rerun unchanged flags/source or raise budgets.",
+   "baseline": {
+    "ok": true,
+    "symbol": "fn_1_15E7F4",
+    "unit": "",
+    "percent": 98.96,
+    "matched": false,
+    "symbols": {
+     "fn_1_15E7F4": 98.96
+    },
+    "data_sections": {},
+    "diff": [
+     "  0000  stwu r1, -0x180(r1)                | stwu r1, -0x180(r1)",
+     "  0004  mflr r0                            | mflr r0",
+     "  0008  stw r0, 0x184(r1)                  | stw r0, 0x184(r1)",
+     "  000C  stfd f31, 0x170(r1)                | stfd f31, 0x170(r1)",
+     "p 0058  lis r3, lbl_1_rodata_DD58@ha       | lis r3, ...rodata.0@ha",
+     "p 0064  addi r30, r3, lbl_1_rodata_DD58@l  | addi r30, r3, ...rodata.0@l",
+     "p 00C0  lfs f1, 0x14(r30)                  | lfs f1, 0x14(r30)",
+     "p 00D4  lfs f1, 0xfc(r30)                  | lfs f1, 0xfc(r30)",
+     "p 00DC  lfs f0, 0x58(r30)                  | lfs f0, 0x58(r30)",
+     "p 00F4  lfs f1, 0x1c(r30)                  | lfs f1, 0x1c(r30)",
+     "p 00FC  lfs f1, 0x20(r30)                  | lfs f1, 0x20(r30)",
+     "p 0118  lfs f1, 0x1c(r30)                  | lfs f1, 0x1c(r30)",
+     "p 0120  lfs f1, 0x20(r30)                  | lfs f1, 0x20(r30)",
+     "p 0144  lfd f31, 0x8(r30)                  | lfd f31, 0x8(r30)",
+     "p 0174  lfs f1, 0x3c(r30)                  | lfs f1, 0x3c(r30)",
+     "p 0188  lwz r17, 0x110(r30)                | lwz r17, 0x110(r30)",
+     "p 0190  lwz r18, 0x114(r30)                | lwz r18, 0x114(r30)",
+     "p 0194  lwz r19, 0x118(r30)                | lwz r19, 0x118(r30)",
+     "p 019C  lwz r20, 0x11c(r30)                | lwz r20, 0x11c(r30)",
+     "p 01A0  lwz r21, 0x120(r30)                | lwz r21, 0x120(r30)",
+     "p 01A4  lwz r22, 0x124(r30)                | lwz r22, 0x124(r30)",
+     "p 01A8  lwz r23, 0x128(r30)                | lwz r23, 0x128(r30)",
+     "p 01AC  lwz r24, 0x12c(r30)                | lwz r24, 0x12c(r30)",
+     "... 31 more differing rows"
+    ],
+    "error": "",
+    "missing_in_base": [],
+    "extra_in_base": [],
+    "matched_pool": false,
+    "pool": [
+     "lbl_1_rodata_DD58=initializer[368]",
+     "lbl_1_rodata_DD6C=initializer[4]",
+     "lbl_1_rodata_DD60=initializer[8]",
+     "lbl_1_rodata_DD58=literal pool[368]"
+    ],
+    "pool_map": {},
+    "uncarved": true,
+    "pool_rows": 44,
+    "percent_adjusted": 97.82,
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": "",
+    "instruction_rows": 275,
+    "differing_rows": 6,
+    "value_flow": [],
+    "operand_order": []
+   },
+   "prior_note": "The best candidate has six loop-invariant floating-constant loads scheduled in a different order; all other instruction rows match after accepted pool relocations.",
+   "prior_attempt": 22691
+  },
+  "source": "#include \"types.h\"\n#include \"font.h\"\n#pragma section code_type \".fzgxpool\"\n__declspec(section \".fzgxpool\") static void fzgx_pool_prime1(void) {\n    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */\n    s = 1000000.0f;\n    s = 0.0f;\n    d = 4503601774854144.0;\n}\nstatic const u32 fzgx_pool_table2[1] = {0xFFFFFF00};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep2(void) { const u32 *volatile cp; cp = fzgx_pool_table2; }  /* fzgx-allow: S2 pool primer sink */\n__declspec(section \".fzgxpool\") static void fzgx_pool_prime3(void) {\n    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */\n    s = 320.0f;\n    s = 240.0f;\n    s = 1.0f;\n    s = 0.800000011920929f;\n    s = 464.0f;\n    s = 5.0f;\n    s = 0.699999988079071f;\n    s = 255.0f;\n    s = 3.299999952316284f;\n    s = 20.0f;\n    s = 0.5f;\n}\nstatic const u32 fzgx_pool_table4[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep4(void) { const u32 *volatile cp; cp = fzgx_pool_table4; }  /* fzgx-allow: S2 pool primer sink */\n__declspec(section \".fzgxpool\") static void fzgx_pool_prime5(void) {\n    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */\n    s = 800.0f;\n    s = 42.0f;\n    s = 30.0f;\n    s = 16384.0f;\n    s = 32768.0f;\n    s = 0.0010000000474974513f;\n    s = 3.0f;\n    s = 8.0f;\n}\nstatic const u32 fzgx_pool_table6[24] = {0x00000000, 0x00000000, 0x0000004B, 0x00000064, 0x0000004C, 0x00000000, 0x00000023, 0x00000064, 0x00000098, 0x00000000, 0x0000004B, 0x00000064, 0x0000004C, 0x00000000, 0x00000023, 0x00000064, 0x000000E4, 0x00000000, 0x0000004B, 0x00000064, 0x00000130, 0x00000000, 0x0000004B, 0x00000064};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep6(void) { const u32 *volatile cp; cp = fzgx_pool_table6; }  /* fzgx-allow: S2 pool primer sink */\n__declspec(section \".fzgxpool\") static void fzgx_pool_prime7(void) {\n    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */\n    s = 120.0f;\n    s = 10.0f;\n    s = 2.0f;\n    s = -10.0f;\n    s = 0.25f;\n    s = 100.0f;\n    s = 60.0f;\n    s = 5120.0f;\n    s = 1.5f;\n    s = 208.0f;\n    s = 0.8999999761581421f;\n    s = 50.0f;\n    s = 370.0f;\n    s = 128.0f;\n    s = 150.0f;\n    s = 0.125f;\n}\nstatic const u32 fzgx_pool_table8[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep8(void) { const u32 *volatile cp; cp = fzgx_pool_table8; }  /* fzgx-allow: S2 pool primer sink */\n__declspec(section \".fzgxpool\") static void fzgx_pool_prime9(void) {\n    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */\n    d = 4503599627370496.0;\n}\nstatic const u32 fzgx_pool_table10[1] = {0x0000000F};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep10(void) { const u32 *volatile cp; cp = fzgx_pool_table10; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table11[1] = {0x00000007};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep11(void) { const u32 *volatile cp; cp = fzgx_pool_table11; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table12[1] = {0x0000000D};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep12(void) { const u32 *volatile cp; cp = fzgx_pool_table12; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table13[1] = {0x00000005};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep13(void) { const u32 *volatile cp; cp = fzgx_pool_table13; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table14[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep14(void) { const u32 *volatile cp; cp = fzgx_pool_table14; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table15[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep15(void) { const u32 *volatile cp; cp = fzgx_pool_table15; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table16[1] = {0x3F000000};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep16(void) { const u32 *volatile cp; cp = fzgx_pool_table16; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table17[1] = {0x3F000000};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep17(void) { const u32 *volatile cp; cp = fzgx_pool_table17; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table18[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep18(void) { const u32 *volatile cp; cp = fzgx_pool_table18; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table19[1] = {0x3F000000};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep19(void) { const u32 *volatile cp; cp = fzgx_pool_table19; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table20[1] = {0x3F000000};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep20(void) { const u32 *volatile cp; cp = fzgx_pool_table20; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table21[1] = {0x3F800000};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep21(void) { const u32 *volatile cp; cp = fzgx_pool_table21; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table22[1] = {0x3F000000};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep22(void) { const u32 *volatile cp; cp = fzgx_pool_table22; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table23[1] = {0x00000000};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep23(void) { const u32 *volatile cp; cp = fzgx_pool_table23; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table24[1] = {0x3F800000};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep24(void) { const u32 *volatile cp; cp = fzgx_pool_table24; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table25[1] = {0x3F000000};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep25(void) { const u32 *volatile cp; cp = fzgx_pool_table25; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table26[1] = {0x3F000000};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep26(void) { const u32 *volatile cp; cp = fzgx_pool_table26; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table27[1] = {0x3F000000};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep27(void) { const u32 *volatile cp; cp = fzgx_pool_table27; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table28[1] = {0x3F800000};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep28(void) { const u32 *volatile cp; cp = fzgx_pool_table28; }  /* fzgx-allow: S2 pool primer sink */\nstatic const u32 fzgx_pool_table29[1] = {0x3F800000};  /* fzgx-allow: A1 retail pool bytes */\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep29(void) { const u32 *volatile cp; cp = fzgx_pool_table29; }  /* fzgx-allow: S2 pool primer sink */\n__declspec(section \".fzgxpool\") static void fzgx_pool_prime30(void) {\n    volatile f32 s; volatile f64 d;  /* fzgx-allow: S2 pool primer sinks */\n    s = 40.0f;\n    s = 350.0f;\n    s = 1.399999976158142f;\n    s = 90.0f;\n}\n#pragma section code_type \".text\"\n\nstruct fn_1_15E7F4_Copy88 { u32 a[22]; };\nstruct fn_1_15E7F4_lbl_1_rodata_DD58 {\n    u8 pad_0[8]; f64 unk_8;\n    u8 pad_10[4]; f32 unk_14;\n    u8 pad_18[4]; f32 unk_1C; f32 unk_20;\n    u8 pad_24[12]; f32 unk_30;\n    u8 pad_34[8]; f32 unk_3C;\n    u8 pad_40[24]; f32 unk_58;\n    u8 pad_5C[108]; f32 unk_C8; f32 unk_CC;\n    u8 pad_D0[20]; f32 unk_E4;\n    u8 pad_E8[20]; f32 unk_FC;\n    u8 pad_100[8]; f64 unk_108;\n    u32 unk_110; u32 unk_114; u32 unk_118; u32 unk_11C;\n    u32 unk_120; u32 unk_124; u32 unk_128; u32 unk_12C;\n    u32 unk_130; u32 unk_134; u32 unk_138; u32 unk_13C;\n    u32 unk_140; u32 unk_144; u32 unk_148; u32 unk_14C;\n    u32 unk_150; u32 unk_154; u32 unk_158; u32 unk_15C;\n    f32 unk_160; f32 unk_164; f32 unk_168; f32 unk_16C;\n};\nextern f32 fn_1_519FC(f32);\nextern f32 fn_1_51AC0(f32);\nextern f32 lbl_8006D188(s32);\nextern int fn_1_4F734(FontDrawPacket *);\nextern struct fn_1_15E7F4_lbl_1_rodata_DD58 lbl_1_rodata_DD58;\nextern u32 fn_1_15C4EC(void *);\nextern u32 lbl_1_rodata_26F8;\nextern s32 fn_1_3F864(void);\nextern u32 fn_1_58C4(void);\nextern void fn_1_A2D84(u32);\n\n#pragma opt_strength_reduction off\nstatic inline u32 * fn_1_15E7F4_read_pointer(struct fn_1_15E7F4_Copy88 * owner) { return owner->a; }\n#pragma opt_lifetimes off\nvoid fn_1_15E7F4(void *arg0, s32 arg1) {\n    struct fn_1_15E7F4_lbl_1_rodata_DD58 *p_lbl_1_rodata_DD58;\n    f32 v0;\n    f32 v1;\n    f32 v3;\n    f32 v4;\n    f32 v6;\n    u32 v5;\n    u32 v7;\n    u32 v8;\n    u32 v9;\n    u32 v10;\n    u32 v11;\n    u32 v12;\n    u32 v5_2;\n    u32 v13;\n    f32 v26;\n    f32 c;\n    f32 d;\n    void *v16, *v15;\n    f32 v17;\n    f32 v18;\n    f32 v19;\n    f32 v20;\n    f32 v21;\n    s32 v22;\n    f32 v23;\n    f32 v24;\n    f32 v25;\n    f32 offset;\n    struct fn_1_15E7F4_Copy88 loc_58;\n    struct { u32 a[16]; } loc_18;\n    struct { u32 a[4]; } loc_8;\n    p_lbl_1_rodata_DD58 = &lbl_1_rodata_DD58;\n    if (*(u8 *)((u8 *)arg0 + 2) == 255) {\n        if (fn_1_3F864() != 0) fn_1_A2D84(0xA9061700);\n        *(u8 *)((u8 *)arg0 + 2) = 120;\n    }\n    loc_58 = *(struct fn_1_15E7F4_Copy88 *)&lbl_1_rodata_26F8;\n    fn_1_15E7F4_read_pointer(&loc_58)[0] = 0x941A;\n    *(f32 *)((u8 *)&loc_58 + 4) = fn_1_519FC((320.0f));\n    *(f32 *)((u8 *)&loc_58 + 8) = fn_1_51AC0((150.0f));\n    *(f32 *)((u8 *)&loc_58 + 12) = (0.00100000005f);\n    v0 = fn_1_58C4() == 1 ? (1.0f) : (0.800000012f);\n    *(f32 *)((u8 *)&loc_58 + 16) *= v0;\n    v1 = fn_1_58C4() == 1 ? (1.0f) : (0.800000012f);\n    v3 = *(f32 *)((u8 *)&loc_58 + 20) * v1;\n    fn_1_15E7F4_read_pointer(&loc_58)[12] = 0x400000A;\n    *(f32 *)((u8 *)&loc_58 + 20) = v3;\n    *(f32 *)((u8 *)&loc_58 + 84) = (f32)arg1;\n    fn_1_15E7F4_read_pointer(&loc_58)[20] = (u32)fn_1_15C4EC;\n    if (*(u8 *)((u8 *)arg0 + 2) > 110) {\n        v4 = (0.5f);\n        v6 = v3 * v4;\n        v4 = *(f32 *)((u8 *)&loc_58 + 16) * v4;\n        v7 = fzgx_pool_table21[0];\n        v8 = fzgx_pool_table22[0];\n        v9 = fzgx_pool_table23[0];\n        v10 = fzgx_pool_table24[0];\n        v11 = fzgx_pool_table25[0];\n        v12 = fzgx_pool_table26[0];\n        v13 = fzgx_pool_table27[0];\n        v5 = fzgx_pool_table28[0];\n        loc_8.a[0] = fzgx_pool_table10[0];\n        loc_8.a[1] = fzgx_pool_table11[0];\n        loc_8.a[2] = fzgx_pool_table12[0];\n        loc_8.a[3] = fzgx_pool_table13[0];\n        loc_18.a[0] = fzgx_pool_table14[0];\n        loc_18.a[1] = fzgx_pool_table15[0];\n        loc_18.a[2] = fzgx_pool_table16[0];\n        loc_18.a[3] = fzgx_pool_table17[0];\n        loc_18.a[4] = fzgx_pool_table18[0];\n        loc_18.a[5] = fzgx_pool_table19[0];\n        loc_18.a[6] = fzgx_pool_table20[0];\n        loc_18.a[7] = v7;\n        loc_18.a[8] = v8;\n        loc_18.a[9] = v9;\n        loc_18.a[10] = v10;\n        loc_18.a[11] = v11;\n        loc_18.a[12] = v12;\n        loc_18.a[13] = v13;\n        loc_18.a[14] = v5;\n        loc_18.a[15] = fzgx_pool_table29[0];\n        *(f32 *)((u8 *)&loc_58 + 16) = v4;\n        *(f32 *)((u8 *)&loc_58 + 20) = v6;\n{\n    s32 v14;\n        v14 = 0;\n        v16 = &loc_18;\n        v15 = &loc_8;\n        do {\n            f32 a;\n            f32 b;\n            v5 = *(u32 *)v15;\n            *(f32 *)((u8 *)&loc_58 + 24) = *(f32 *)v16;\n            *(f32 *)((u8 *)&loc_58 + 28) = *(f32 *)((u8 *)v16 + 4);\n            *(f32 *)((u8 *)&loc_58 + 32) = *(f32 *)((u8 *)v16 + 8);\n            *(f32 *)((u8 *)&loc_58 + 36) = *(f32 *)((u8 *)v16 + 12);\n            fn_1_15E7F4_read_pointer(&loc_58)[12] = v5 | 0x4000000;\n            v19 = (1.0f) - (f32)(s32)(120 - *(u8 *)((u8 *)arg0 + 2)) / (10.0f);\n            v20 = (40.0f) * v19;\n            offset = (350.0f) * v19;\n            if (v14 & 1) v20 = -v20;\n            if (v14 & 2) offset = -offset;\n            *(f32 *)((u8 *)&loc_58 + 4) = fn_1_519FC((320.0f) - offset);\n            *(f32 *)((u8 *)&loc_58 + 8) = fn_1_51AC0((150.0f) - v20);\n            fn_1_4F734((FontDrawPacket *)&loc_58);\n            v14++;\n            v16 = (u8 *)v16 + 16;\n            v15 = (u8 *)v15 + 4;\n        } while (v14 < 4);\n}\n    } else {\n        if (*(u8 *)((u8 *)arg0 + 2) < 16) {\n            v4 = lbl_8006D188((s16)((16 - *(u8 *)((u8 *)arg0 + 2)) << 11));\n            v21 = (1.0f);\n            v4 = (1.39999998f) * v4;\n            if (v4 > v21) v4 = v21;\n            v22 = (s32)((255.0f) * v4);\n            *(u8 *)((u8 *)&loc_58 + 62) = v22;\n            *(u8 *)((u8 *)&loc_58 + 61) = v22;\n            *(u8 *)((u8 *)&loc_58 + 60) = v22;\n        }\n        v5_2 = *(u8 *)((u8 *)arg0 + 2);\n        if (v5_2 < 10) {\n            v23 = (1.0f);\n            v24 = (f32)v5_2 / (10.0f);\n            *(f32 *)((u8 *)&loc_58 + 44) = v24;\n            v25 = (v23 - v24) * (v23 - v24);\n            v4 = (f32)((90.0f) * v25);\n            *(f32 *)((u8 *)&loc_58 + 8) -= v4;\n            v26 = v23 + (f32)((2.0f) * v25);\n            v4 = fn_1_58C4() == 1 ? (1.0f) : (0.800000012f);\n            *(f32 *)((u8 *)&loc_58 + 16) = (f32)((1.5f) * v26) * v4;\n            v4 = fn_1_58C4() == 1 ? (1.0f) : (0.800000012f);\n            *(f32 *)((u8 *)&loc_58 + 20) = v26 * v4;\n        }\n        fn_1_4F734((FontDrawPacket *)&loc_58);\n    }\n}\n#pragma opt_lifetimes reset\n\n#pragma opt_strength_reduction reset\n\n",
+  "sha256": "0a825cef334ea6384632c634b96a25790a17fae8d936595ae24ffb7ef79e7662",
+  "mw": "GC/1.3.2",
+  "flags": ""
+ },
+ "fn_1_12C110": {
+  "id": "priority-fn_1_12C110",
+  "symbol": "fn_1_12C110",
+  "kind": "priority_task",
+  "task": {
+   "queue_kind": "residual",
+   "module": "main_rel",
+   "instruction": "Continue from the pinned, freshly compiled saved C. Classify the residual before editing; propose one source-shape hypothesis, do not rerun unchanged flags/source or raise budgets.",
+   "baseline": {
+    "ok": true,
+    "symbol": "fn_1_12C110",
+    "unit": "",
+    "percent": 99.58904,
+    "matched": false,
+    "symbols": {
+     "fn_1_12C110": 99.58904
+    },
+    "data_sections": {},
+    "diff": [
+     "  0000  stwu r1, -0x50(r1)                 | stwu r1, -0x50(r1)",
+     "  0004  mflr r0                            | mflr r0",
+     "  0008  stw r0, 0x54(r1)                   | stw r0, 0x54(r1)",
+     "  000C  addi r11, r1, 0x50                 | addi r11, r1, 0x50",
+     "? 01E4  addi r4, r3, lbl_1_bss_8B3A0@l     | addi r3, r3, lbl_1_bss_8B3A0@l",
+     "? 01E8  extsh r3, r28                      | extsh r4, r28",
+     "? 01EC  addi r4, r4, 0x20                  | addi r5, r3, 0x20",
+     "? 01F0  clrlwi r5, r0, 16                  | clrlwi r3, r0, 16",
+     "? 01FC  lha r0, 0xe(r4)                    | lha r0, 0xe(r5)",
+     "? 0200  cmpw r0, r3                        | cmpw r0, r4",
+     "? 0208  cmplwi r5, 0x2                     | cmplwi r3, 0x2",
+     "? 0210  cmpwi r3, 0x2                      | cmpwi r4, 0x2",
+     "? 0220  addi r4, r4, 0x20                  | addi r5, r5, 0x20",
+     "? 0244  extsh r6, r28                      | extsh r7, r28",
+     "? 0248  li r7, 0x0                         | li r6, 0x0",
+     "? 0254  cmpw r0, r6                        | cmpw r0, r7",
+     "? 0288  cmpw r6, r0                        | cmpw r7, r0",
+     "? 029C  addi r7, r7, 0x1                   | addi r6, r6, 0x1",
+     "? 02A8  extsh r0, r7                       | extsh r0, r6"
+    ],
+    "error": "",
+    "missing_in_base": [],
+    "extra_in_base": [],
+    "matched_pool": false,
+    "pool": [],
+    "pool_map": {},
+    "uncarved": true,
+    "pool_rows": 0,
+    "percent_adjusted": 93.15,
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": "",
+    "instruction_rows": 219,
+    "differing_rows": 15,
+    "value_flow": [],
+    "operand_order": []
+   },
+   "prior_note": "budget exhausted: 16 checks used",
+   "prior_attempt": 22683
+  },
+  "source": "#include \"rel/main_rel/archive.h\"\nextern u32 lbl_1_bss_6D82C[3];\nextern int fn_1_8623C(void);\nextern u32 fn_1_12AC00(void *);\nextern void *fn_1_12F118(void);\nextern void fn_1_12A2B8(u32);\nextern void fn_1_12A2D0(s32);\nextern void fn_1_12AB38(void *);\nextern void fn_1_80058(s8, u8 *);\nextern void fn_1_80270(void *, void *);\nstruct Loc8 {\n u32 unk_0;\n u32 unk_4;\n u8 unk_8;\n u8 pad_9[15];\n};\n#pragma opt_loop_invariants off\n#pragma opt_common_subs off\n#pragma opt_propagation on\nstatic inline u8 *fn_1_12C110_address_4352(u8 *base, s32 offset) {\n return base + offset;\n}\nvoid fn_1_12C110(void *arg0, s32 arg1, s32 arg2) {\n u32 fzgx_value;\n s16 found;\n struct Loc8 loc_8;\n u8 *p_data;\n u32 v1;\n u32 v2;\n Obj_1_bss_8B3A0 * p_mgr_2;\n s16 a1;\n s16 i_2;\n s16 found_2_2;\n s16 i;\n void *t0;\n s16 found_2;\n    void * lab_t0;\n p_data = (u8 *)&lbl_1_data_40798;\n t0 = fn_1_12F118();\n a1 = (s16)arg1;\n v1 = 1u << a1;\n v2 = 1u << (s16)arg2;\n i = 0;\n while (i < 41) {\n  Obj_1_bss_8B3A0 *p_cur;\n  s16 j;\n  void *tmp;\n  s32 tmpv;\n  p_cur = (&lbl_1_bss_8B3A0);\n  found_2 = -1;\n  j = 0;\n  while (j < 4) {\n   if (p_cur->unk_E == i) {\n    found_2 = i;\n    break;\n   }\n   p_cur = (Obj_1_bss_8B3A0 *)((u8 *)p_cur + 0x20);\n   j++;\n  }\n  if (found_2 != -1) {\n   fn_1_80058((s8)found_2, (u8 *)&loc_8);\n   loc_8.unk_8 = 0;\n   loc_8.unk_8 = (u8)v1;\n   tmp = (u8 *)arg0 + found_2 * 1088;\n   fzgx_value = v2;\n   loc_8.unk_4 = fzgx_value;\n   tmpv = *(s32 *)((u8 *)tmp + 0x324);\n   if (tmpv != -1) {\n    fn_1_12A2D0(tmpv);\n    fn_1_12A2B8(1);\n   }\n   fn_1_12AB38(p_data + 764);\n   if (lbl_1_bss_6D82C[0] == 0) {\n    lbl_1_bss_6D82C[0] = fn_1_12AC00(p_data + 776);\n   }\n   fn_1_80270(&loc_8, tmp);\n   lab_t0 = p_data + 792;\n   fn_1_12AB38(lab_t0);\n   fn_1_12A2B8(0);\n  }\n  i++;\n }\n p_mgr_2 = &lbl_1_bss_8B3A0;\n if (!(p_mgr_2->unk_94 & 0x2000000)) {\n  Obj_1_bss_8B3A0 *p_cur;\n  s16 j;\n  i_2 = 0;\n  while (i_2 < 41) {\n   found_2_2 = -1;\n   if (p_mgr_2->unk_94 & 0x40000000) {\n    s32 car = p_mgr_2->unk_E;\n    if (car == i_2) {\n     found_2_2 = i_2;\n    }\n    if (car > 40) {\n     s32 idx;\n     idx = fn_1_8623C();\n     if (*(u32 *)((u8 *)t0 + idx * 0x81C0) & 0x80000000) {\n      idx = fn_1_8623C();\n      if (!(*(u32 *)((u8 *)t0 + idx * 0x81C0) & 0x40000000)) {\n       if ((s16)i_2 == *(u8 *)((u8 *)t0 + fn_1_8623C() * 0x81C0 + 0x10000 - 0x7E60)) {\n        found_2_2 = i_2;\n       }\n      }\n     }\n    }\n    p_cur = (Obj_1_bss_8B3A0 *)((u8 *)&lbl_1_bss_8B3A0 + 0x20);\n    j = 1;\n    while (j < 4) {\n     if (p_cur->unk_E == i_2 || (u16)(i_2 - 4) <= 2 || i_2 == 2) {\n      found_2_2 = i_2;\n      break;\n     }\n     p_cur = (Obj_1_bss_8B3A0 *)((u8 *)p_cur + 0x20);\n     j++;\n    }\n   } else {\n    s16 k;\n    s32 id2;\n    id2 = i_2;\n    k = 0;\n    while (k < 4) {\n     s32 car2 = ((Obj_1_bss_8B3A0 *)((u8 *)&lbl_1_bss_8B3A0 + k * 0x20))->unk_E;\n     if (car2 == id2) {\n      found_2_2 = i_2;\n      break;\n     }\n     if (car2 > 40) {\n      u32 w = *(u32 *)((u8 *)t0 + k * 0x81C0);\n      if ((w & 0x80000000) && !(w & 0x40000000)) {\n       if (id2 == *((u8 *)t0 + k * 0x81C0 + 0x81A0)) {\n        found_2_2 = i_2;\n        break;\n       }\n      }\n     }\n     k++;\n    }\n   }\n   if (found_2_2 != -1) {\n    u32 mask0, mask1, mask2;\n    fn_1_80058((s8)found_2_2, (u8 *)&loc_8);\n    loc_8.unk_8 = 0;\n    mask0 = 1u << a1;\n    loc_8.unk_8 = mask0;\n    mask1 = (mask0 & 0xFF) | (1u << (a1 + 1));\n    loc_8.unk_8 = mask1;\n    mask2 = (mask1 & 0xFF) | (1u << (a1 + 2));\n    loc_8.unk_8 = mask2;\n    loc_8.unk_8 = (mask2 & 0xFF) | (1u << (a1 + 3));\n    loc_8.unk_4 = 0;\n    fn_1_12AB38(p_data + 764);\n    fn_1_80270(&loc_8, (u8 *)arg0 + found_2_2 * 1088);\n    fn_1_12AB38(p_data + 792);\n   }\n   i_2++;\n  }\n }\n}\n#pragma opt_propagation reset\n#pragma opt_common_subs reset\n#pragma opt_loop_invariants reset\n",
+  "sha256": "22ff56bd923575ced3aeb3d4476770075150b5863ae3cc8cb4fbbba99aea2614",
+  "mw": "GC/1.3.2",
+  "flags": ""
+ },
+ "fn_1_A1DCC": {
+  "id": "priority-fn_1_A1DCC",
+  "symbol": "fn_1_A1DCC",
+  "kind": "priority_task",
+  "task": {
+   "queue_kind": "residual",
+   "module": "main_rel",
+   "instruction": "Continue from the pinned, freshly compiled saved C. Classify the residual before editing; propose one source-shape hypothesis, do not rerun unchanged flags/source or raise budgets.",
+   "baseline": {
+    "ok": true,
+    "symbol": "fn_1_A1DCC",
+    "unit": "",
+    "percent": 98.930405,
+    "matched": false,
+    "symbols": {
+     "fn_1_A1DCC": 98.930405
+    },
+    "data_sections": {},
+    "diff": [
+     "  0000  stwu r1, -0x20(r1)                 | stwu r1, -0x20(r1)",
+     "  0004  mflr r0                            | mflr r0",
+     "p 0008  lis r4, lbl_1_bss_960@ha           | lis r4, lbl_1_bss_960@ha",
+     "p 000C  lis r5, lbl_1_bss_6EA98@ha         | lis r5, lbl_1_bss_6EA98@ha",
+     "p 0160  lis r3, lbl_1_rodata_42F0@ha       | lis r3, @123@ha",
+     "p 0180  lfd f1, lbl_1_rodata_42F0@l(r3)    | lfd f1, @123@l(r3)",
+     "? 01BC  addi r4, r3, lbl_1_data_2D93C@l    | addi r3, r3, lbl_1_data_2D93C@l",
+     "? 01C0  lhax r0, r4, r0                    | lhax r0, r3, r0",
+     "< 01C4  addi r3, r30, 0x884                | ",
+     "? 01C8  sth r0, 0x2(r3)                    | sth r0, 0x886(r30)",
+     "p 01DC  lis r3, lbl_1_rodata_42F0@ha       | lis r3, @123@ha",
+     "p 01FC  lfd f1, lbl_1_rodata_42F0@l(r3)    | lfd f1, @123@l(r3)",
+     "p 02F8  lis r4, lbl_1_rodata_42F0@ha       | lis r4, @123@ha",
+     "p 0318  lfd f1, lbl_1_rodata_42F0@l(r4)    | lfd f1, @123@l(r4)",
+     "? 0350  clrlslwi r5, r0, 24, 1             | clrlslwi r4, r0, 24, 1",
+     "? 0354  addi r4, r3, lbl_1_data_2D93C@l    | addi r3, r3, lbl_1_data_2D93C@l",
+     "? 0358  lhax r4, r4, r5                    | lhax r3, r3, r4",
+     "< 035C  addi r3, r30, 0x884                | ",
+     "? 0360  sth r4, 0x2(r3)                    | sth r3, 0x886(r30)",
+     "p 0374  lis r4, lbl_1_rodata_42F0@ha       | lis r4, @123@ha",
+     "p 0394  lfd f1, lbl_1_rodata_42F0@l(r4)    | lfd f1, @123@l(r4)"
+    ],
+    "error": "",
+    "missing_in_base": [],
+    "extra_in_base": [],
+    "matched_pool": false,
+    "pool": [
+     "lbl_1_rodata_42F0=initializer[8]",
+     "lbl_1_rodata_42F0=literal pool[8]"
+    ],
+    "pool_map": {},
+    "uncarved": true,
+    "pool_rows": 8,
+    "percent_adjusted": 96.7,
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": "",
+    "instruction_rows": 273,
+    "differing_rows": 9,
+    "value_flow": [],
+    "operand_order": []
+   },
+   "prior_note": "budget exhausted: 16 checks used",
+   "prior_attempt": 22690
+  },
+  "source": "#include \"types.h\"\n#include \"rel/main_rel/globals.h\"\n#include \"rel/main_rel/sound.h\"\n\nextern u32 fn_1_F2F34(void);\nextern u8 lbl_1_rodata_437C[48];\nextern s8 lbl_1_rodata_43AC[8];\nextern const f32 lbl_1_rodata_42E0;\nextern const f32 lbl_1_rodata_42E4;\nextern const f32 lbl_1_rodata_42E8;\nextern void fn_8004D18C(void *, const char *);\nextern u32 fn_8004BF0C(void *, u32);\n\ntypedef struct SoundState {\n    u8 pad0[0x1c];\n    u32 flags;\n    u8 pad20[4];\n    f32 fade0;\n    f32 fade1;\n    u8 track;\n    u8 pad2d[0xb];\n    void **handles;\n    u8 pad3c[0x846];\n    u8 disabled;\n    u8 pad883;\n    s16 volume[2];\n    f32 target[2];\n    u8 cycle;\n} SoundState;\n\nstatic inline s16 * play_read_pointer(SoundState * owner) { return owner->volume; }\nstatic inline f32 * play_read_pointer_(SoundState * owner) { return owner->target; }\nstatic inline void play(SoundState *s, u8 track) {\n    void **handles = s->handles;\n    void *h = handles[0];\n    u32 index;\n    u32 flags;\n    if (s->disabled || !h || h == (void *)-1) return;\n    if (h == handles[0]) {\n        u32 flags = s->flags;\n        s->flags = flags & ~4;\n        if (flags & 1) s->volume[0] = ((s16 *)&lbl_1_data_2D93C)[(u8)track];\n        else {\n            f32 fade = lbl_1_rodata_42E0;\n            f32 volume = (f32)((s16 *)&lbl_1_data_2D93C)[(u8)track];\n            s->fade0 = fade;\n            s->target[0] = volume;\n        }\n    }\n    if (h == handles[1]) {\n        u32 flags = s->flags;\n        s->flags = flags & ~8;\n        if (flags & 2) {\n            s16 *volumes = play_read_pointer(s);\n            volumes[1] = ((s16 *)&lbl_1_data_2D93C)[(u8)track];\n        } else {\n            f32 fade = lbl_1_rodata_42E4;\n            f32 volume = (f32)((s16 *)&lbl_1_data_2D93C)[(u8)track];\n            s->fade1 = fade;\n            s->target[1] = volume;\n        }\n    }\n    index = (u8)track;\n    fn_8004D18C(h, ((const char **)&lbl_1_data_2D7B8)[(u8)track]);\n    flags = s->flags;\n    if (flags & 3) {\n        if (flags & 1) s->target[0] = lbl_1_rodata_42E8;\n        if (flags & 2) play_read_pointer_(s)[1] = lbl_1_rodata_42E8;\n        fn_8004BF0C(h, -400);\n    } else {\n        fn_8004BF0C(h, ((s16 *)&lbl_1_data_2D93C)[index]);\n    }\n    s->track = track;\n}\n#pragma opt_loop_invariants off\n#pragma opt_dead_assignments off\nstatic inline u8 fn_1_A1DCC_array_read(s32 index, u8 *array) { return array[index]; }\n#pragma opt_lifetimes off\nvoid fn_1_A1DCC(u8 arg0) {\n    SoundState *s = (SoundState *)&lbl_1_bss_6EA98;\n    s8 track;\n    /* All guards share the retail epilogue. */\n    if (*(s16 *)&lbl_1_bss_960 == 10 || !s->handles || (s32)fn_1_F2F34() != 0) goto end;\n    s->track = 255;\n    if (arg0 > 45) track = -1;\n    else if (lbl_1_bss_8CA24 || lbl_1_bss_8B5F0) track = 44;\n    else if (lbl_1_bss_8B5F1) track = 43;\n    else track = (s8)fn_1_A1DCC_array_read(arg0, lbl_1_rodata_437C);\n    if (track == -1) {\n        if (++s->cycle > 5) s->cycle = 0;\n        play(s, lbl_1_rodata_43AC[s->cycle]);\n    } else {\n        play(s, (u8)track);\n    }\nend:\n    return;\n}\n#pragma opt_lifetimes reset\n\n#pragma opt_dead_assignments reset\n\n#pragma opt_loop_invariants reset\n\n",
+  "sha256": "58d0d1a14212ba675e4783a34c7a88d58156626acfa558d60d66c270952e457d",
+  "mw": "GC/1.3.2",
+  "flags": ""
+ },
+ "fn_9_AF0": {
+  "id": "priority-fn_9_AF0",
+  "symbol": "fn_9_AF0",
+  "kind": "priority_task",
+  "task": {
+   "queue_kind": "closure",
+   "module": "car_colchg",
+   "instruction": "Close this module using actual C and the sixteen-target verifier. This is not a claimed easy match."
+  }
+ },
+ "colchg_menu_disp": {
+  "id": "priority-colchg_menu_disp",
+  "symbol": "colchg_menu_disp",
+  "kind": "priority_task",
+  "task": {
+   "queue_kind": "closure",
+   "module": "car_colchg",
+   "instruction": "Close this module using actual C and the sixteen-target verifier. This is not a claimed easy match.",
+   "baseline": {
+    "ok": true,
+    "symbol": "colchg_menu_disp",
+    "unit": "",
+    "percent": 90.093025,
+    "matched": false,
+    "symbols": {
+     "colchg_menu_disp": 90.093025
+    },
+    "data_sections": {},
+    "diff": [
+     "  0000  stwu r1, -0x20(r1)                 | stwu r1, -0x20(r1)",
+     "  0004  mflr r0                            | mflr r0",
+     "p 0008  lis r4, lbl_9_rodata_14@ha         | lis r4, lbl_9_rodata_14@ha",
+     "p 000C  lis r3, lbl_9_rodata_18@ha         | lis r3, lbl_9_rodata_18@ha",
+     "< 0020  lfs f2, lbl_9_rodata_18@l(r3)      | ",
+     "> 0030                                     | lfs f2, lbl_9_rodata_18@l(r3)",
+     "? 0054  extsb r5, r29                      | extsb r3, r29",
+     "? 0058  cmpwi r5, 0x73                     | cmpwi r3, 0x73",
+     "? 0068  addi r3, r30, 0xe8                 | addi r4, r30, 0x98",
+     "< 006C  addi r4, r30, 0x98                 | ",
+     "? 0070  cmpw r0, r5                        | cmpw r0, r3",
+     "> 007C                                     | addi r3, r30, 0xe8"
+    ],
+    "error": "",
+    "missing_in_base": [],
+    "extra_in_base": [],
+    "matched_pool": false,
+    "pool": [],
+    "pool_map": {},
+    "uncarved": true,
+    "pool_rows": 0,
+    "percent_adjusted": 82.22,
+    "mw_version": null,
+    "extra_cflags": null,
+    "instruction_rows": 45,
+    "differing_rows": 8,
+    "value_flow": [],
+    "operand_order": []
+   },
+   "prior_note": "plateau: 5 consecutive checks without improvement (best 90.1%)",
+   "prior_attempt": 21748
+  },
+  "source": "#include \"types.h\"\n#include \"rel/car_colchg/globals.h\"\n#include \"rel/car_colchg/car_colchg.h\"\n\nextern const f32 lbl_9_rodata_14;\nextern f32 lbl_9_rodata_18[17];\nextern void fn_1_496FC(f32, f32);\nextern void fn_1_4AE0C(const char *, ...);\nextern struct Struct_lbl_1_bss_970 lbl_1_bss_970;\n\nvoid colchg_menu_disp(void)\n{\n    char *base = (char *)&lbl_9_data_0;\n    u8 *sel;\n    s8 i;\n    char *arg;\n\n    fn_1_496FC(lbl_9_rodata_14, lbl_9_rodata_18[0]);\n    fn_1_4AE0C(base + 0xd8);\n    sel = (u8 *)&lbl_1_bss_970;\n    for (i = 0x72; i < 0x79; i++) {\n        switch (i) {\n        case 0x73:\n            arg = base + 0x98;\n            if (sel[4] == i) {\n                arg = base + 0xfc;\n            }\n            fn_1_4AE0C(base + 0xe8, arg);\n            break;\n        }\n    }\n}\n",
+  "sha256": "c6c08c7fe18f4e8b83d8d9a980b495e2736e6ecd2bc84f2253e239a7c73f4492",
+  "mw": null,
+  "flags": null
+ },
+ "fn_13_3FC": {
+  "id": "priority-fn_13_3FC",
+  "symbol": "fn_13_3FC",
+  "kind": "priority_task",
+  "task": {
+   "queue_kind": "closure",
+   "module": "replay",
+   "instruction": "Close this module using actual C and the sixteen-target verifier. This is not a claimed easy match."
+  }
+ },
+ "sample:_prolog": {
+  "id": "priority-sample:_prolog",
+  "symbol": "sample:_prolog",
+  "kind": "priority_task",
+  "task": {
+   "queue_kind": "closure",
+   "module": "sample",
+   "instruction": "Close this module using actual C and the sixteen-target verifier. This is not a claimed easy match."
+  }
+ },
+ "fn_18_444": {
+  "id": "priority-fn_18_444",
+  "symbol": "fn_18_444",
+  "kind": "priority_task",
+  "task": {
+   "queue_kind": "closure",
+   "module": "sample",
+   "instruction": "Close this module using actual C and the sixteen-target verifier. This is not a claimed easy match.",
+   "baseline": {
+    "ok": true,
+    "symbol": "fn_18_444",
+    "unit": "",
+    "percent": 66.24599,
+    "matched": false,
+    "symbols": {
+     "fn_18_444": 66.24599
+    },
+    "data_sections": {},
+    "diff": [
+     "  0000  stwu r1, -0x1040(r1)               | stwu r1, -0x1040(r1)",
+     "  0004  mflr r0                            | mflr r0",
+     "  0008  stw r0, 0x1044(r1)                 | stw r0, 0x1044(r1)",
+     "  000C  addi r11, r1, 0x1040               | addi r11, r1, 0x1040",
+     "? 0010  bl _savegpr_24                     | bl _savegpr_21",
+     "? 0014  lwz r10, 0x0(r3)                   | lwz r11, 0x0(r3)",
+     "? 0018  lwz r12, 0x8(r3)                   | lwz r6, 0x4(r3)",
+     "? 001C  lwz r4, 0x4(r3)                    | lwz r4, 0x0(r11)",
+     "~ 0020  lwbrx r3, r0, r10                  | lwz r0, 0x4(r11)",
+     "< 0024  li r0, 0x4                         | ",
+     "? 0028  addic. r9, r3, 0x8                 | addic. r30, r4, 0x8",
+     "< 002C  lwbrx r0, r10, r0                  | ",
+     "! 0034  beq 0x40                           | bne 0x38",
+     "> 0038                                     | li r3, 0x0",
+     "> 003C                                     | b 0x2d0",
+     "? 0050  li r5, 0x0                         | li r0, 0x1fd",
+     "< 0054  mr r7, r4                          | ",
+     "< 0058  cmpwi r5, 0xfee                    | ",
+     "< 005C  addi r6, r10, 0x8                  | ",
+     "< 0060  bge 0xc0                           | ",
+     "~ 0064  li r0, 0x1fd                       | addi r5, r1, 0xc",
+     "~ 0068  addi r4, r1, 0xc                   | li r7, 0x0",
+     "? 006C  li r3, 0x0                         | li r4, 0x0",
+     "... 153 more differing rows"
+    ],
+    "error": "",
+    "missing_in_base": [],
+    "extra_in_base": [],
+    "matched_pool": false,
+    "pool": [],
+    "pool_map": {},
+    "uncarved": true,
+    "pool_rows": 0,
+    "percent_adjusted": 66.24599,
+    "mw_version": null,
+    "extra_cflags": null,
+    "instruction_rows": 210,
+    "differing_rows": 172,
+    "value_flow": [],
+    "operand_order": []
+   },
+   "prior_note": "harness crash (rc=1); saved best candidate automatically",
+   "prior_attempt": 20785
+  },
+  "source": "#include \"types.h\"\n\ntypedef struct {\n    void *src;\n    void *dst;\n    u32 flags;\n} LzDecodeArgs;\n\nu32 *fn_18_444(LzDecodeArgs *args) {\n    u8 ring[0x1000];\n    u8 *src = (u8 *)args->src;\n    u8 *dst = (u8 *)args->dst;\n    u8 *p;\n    u8 *out;\n    s32 count;\n    s32 limit;\n    u32 out_size;\n    u32 flags;\n    u32 pos;\n    u32 i;\n    s32 j;\n\n    count = (s32)*(u32 *)src;\n    limit = count + 8;\n    out_size = *(u32 *)(src + 4);\n    if (limit == 0) {\n        return 0;\n    }\n    if (out_size == 0) {\n        return 0;\n    }\n\n    for (i = 0; i < 0xFEE; i++) {\n        ring[i] = 0;\n    }\n    pos = 0xFEE;\n    flags = 0;\n    p = src + 8;\n    out = dst;\n\n    for (;;) {\n        flags >>= 1;\n        if ((flags & 0x100) == 0) {\n            // flag bits exhausted: pull the next group\n            if ((u32)(p - src) >= (u32)limit) {\n                goto done;\n            }\n            flags = (u32)*p++ | 0xFF00;\n        }\n        if (flags & 1) {\n            u8 c;\n            if ((u32)(p - src) >= (u32)limit) {\n                goto done;\n            }\n            c = *p++;\n            *out++ = c;\n            ring[pos] = c;\n            pos = (pos + 1) & 0xFFF;\n        } else {\n            u32 off;\n            s32 len;\n            if ((u32)(p - src) >= (u32)limit) {\n                goto done;\n            }\n            if ((u32)(p + 1 - src) >= (u32)limit) {\n                goto done;\n            }\n            off = (u32)p[0] | ((u32)(p[1] & 0xF0) << 4);\n            len = (s32)((u32)p[1] & 0xF) + 2;\n            p += 2;\n            if (len < 0) {\n                continue;\n            }\n            for (j = 0; j <= len; j++) {\n                u8 c = ring[(off + (u32)j) & 0xFFF];\n                *out++ = c;\n                ring[pos] = c;\n                pos = (pos + 1) & 0xFFF;\n            }\n        }\n    }\n\ndone:\n    if (args->flags) {\n        ((void (*)(u32))args->flags)(out_size);\n    }\n    return &out_size;\n}\n",
+  "sha256": "33a8fce990609380a36668d2894cef7e4be92c8595b0adb6e5b4fd95097c402c",
+  "mw": null,
+  "flags": null
+ },
+ "priority-fn_80043798": {
+  "id": "priority-fn_80043798",
+  "symbol": "fn_80043798",
+  "kind": "priority_task",
+  "source": "#include \"types.h\"\n\ntypedef struct AdxXpndParams {\n    int channel_count;\n    const signed char *input;\n    int num_blocks;\n    short *output_left;\n    short *output_right;\n} AdxXpndParams;\n\ntypedef struct AdxXpnd {\n    int used;\n    int index;\n    int mode;\n    int status;\n    int num_decoded_blocks;\n    AdxXpndParams params;\n    short delay[2][2];\n    short coefficients[2];\n    short random_state;\n    short random_multiplier;\n    short random_increment;\n    short reserved;\n} AdxXpnd;\n\ntypedef struct AdxDecodeParams {\n    const unsigned short *input;\n    int input_blocks;\n    int channel_count;\n    int block_size;\n    int samples_per_block;\n    short *pcm_buffer;\n    int pcm_size;\n    int pcm_distance;\n    int write_position;\n    int room;\n    int loop_samples;\n} AdxDecodeParams;\n\ntypedef void (*AdxGetWriteInfo)(void *, int *, int *, int *);\n\ntypedef void (*AdxAddWriteInfo)(void *, int, int);\n\ntypedef struct AdxBasicDecoder {\n    short used;\n    short header_decoded;\n    int status;\n    AdxXpnd *expander;\n    signed char encoding;\n    signed char bits_per_sample;\n    signed char channel_count;\n    signed char block_length;\n    int samples_per_block;\n    int sample_rate;\n    int total_samples;\n    short coefficient;\n    short field_1E;\n    int loop_insert_samples;\n    short loop_count;\n    short loop_type;\n    int loop_start_sample;\n    int loop_start_offset;\n    int loop_end_sample;\n    int loop_end_offset;\n    int max_channels;\n    short *pcm_buffer;\n    int pcm_size;\n    int pcm_distance;\n    AdxDecodeParams decode;\n    short field_74;\n    short field_76;\n    AdxGetWriteInfo get_write_info;\n    void *get_write_object;\n    AdxAddWriteInfo add_write_info;\n    void *add_write_object;\n    int total_decoded_samples;\n    int current_write_position;\n    int decoded_samples;\n    int decoded_data_length;\n    short format_type;\n    short field_9A;\n    short codec_type;\n} AdxBasicDecoder;\n\nvoid fn_80043798(AdxBasicDecoder *decoder);\n\nint fn_8004E270(AdxXpnd *decoder);\n\nstatic inline AdxXpnd * fn_80043798_read_pointer(AdxBasicDecoder * owner) { return owner->expander; }\n#pragma opt_pointer_analysis off\nstatic inline const unsigned short * fn_80043798_read_pointer_(AdxDecodeParams * owner) { return owner->input; }\n#pragma opt_loop_invariants off\n#pragma opt_dead_assignments off\nvoid fn_80043798(AdxBasicDecoder *decoder) {\n    int fzgx_value;\n    AdxDecodeParams *params;\n    unsigned short *pcm;\n    unsigned short *left;\n    unsigned short *right;\n    const unsigned short *input;\n    unsigned short sample;\n    int i;\n    int count;\n    params = &decoder->decode;\n    input = fn_80043798_read_pointer_(params);\n    if (decoder->status == 1 && fn_8004E270(fn_80043798_read_pointer(decoder)) == 0) {\n        decoder->get_write_info(decoder->get_write_object, &params->write_position, &params->room,\n                                &params->loop_samples);\n        count = params->pcm_size - params->write_position;\n        if (count > params->room) {\n            count = params->room;\n        }\n        if (count > params->input_blocks) {\n            count = params->input_blocks;\n        }\n        pcm = (unsigned short *)params->pcm_buffer;\n        left = &pcm[params->write_position];\n        if (decoder->channel_count == 2) {\n            right = &pcm[params->pcm_distance + params->write_position];\n            for (i = 0; i < count; i++) {\n                left[i] = (*((input) + (i * 2))) >> 8 | ((i * 2)[input]) << 8;\n                right[i] = ((i * 2 + 1)[input]) >> 8 | ((i * 2 + 1)[input]) << 8;\n            }\n        } else {\n            for (i = 0; i < count; i++) {\n                left[i] = ((i)[input]) << 8 | ((i)[input]) >> 8;\n            }\n        }\n        decoder->decoded_samples = count;\n        decoder->decoded_data_length = count * 2 * decoder->channel_count;\n        decoder->status = 2;\n    }\n    if (decoder->status == 2) {\n        decoder->add_write_info(decoder->add_write_object, decoder->decoded_data_length,\n                                decoder->decoded_samples);\n        fzgx_value = 3;\n        decoder->status = fzgx_value;\n    }\n}\n#pragma opt_dead_assignments reset\n\n#pragma opt_loop_invariants reset\n\n#pragma opt_pointer_analysis reset\n",
+  "sha256": "30ce9742de995dd1d922e1d48f8e3ee1437f694c22ab8a4c89f50354b021875c",
+  "task": {
+   "queue_kind": "residual",
+   "module": "main",
+   "instruction": "Classify the residual before editing; propose ONE source-shape hypothesis; do not rerun unchanged flags/source or raise budgets. retail emits \"extrwi r9, r10, 8, 16\" (UNSIGNED extract) where our body emits \"srawi r9, r10, 8\" (SIGNED). The C extracts the wrong field type; fn_800446E4 shares this exact residual, so one type fix likely lands both."
+  }
+ },
+ "priority-fn_800446E4": {
+  "id": "priority-fn_800446E4",
+  "symbol": "fn_800446E4",
+  "kind": "priority_task",
+  "source": "#include \"types.h\"\n\ntypedef struct AdxXpndParams {\n    int channel_count;\n    const signed char *input;\n    int num_blocks;\n    short *output_left;\n    short *output_right;\n} AdxXpndParams;\n\ntypedef struct AdxXpnd {\n    int used;\n    int index;\n    int mode;\n    int status;\n    int num_decoded_blocks;\n    AdxXpndParams params;\n    short delay[2][2];\n    short coefficients[2];\n    short random_state;\n    short random_multiplier;\n    short random_increment;\n    short reserved;\n} AdxXpnd;\n\ntypedef struct AdxDecodeParams {\n    const unsigned short *input;\n    int input_blocks;\n    int channel_count;\n    int block_size;\n    int samples_per_block;\n    short *pcm_buffer;\n    int pcm_size;\n    int pcm_distance;\n    int write_position;\n    int room;\n    int loop_samples;\n} AdxDecodeParams;\n\ntypedef void (*AdxGetWriteInfo)(void *, int *, int *, int *);\n\ntypedef void (*AdxAddWriteInfo)(void *, int, int);\n\ntypedef struct AdxBasicDecoder {\n    short used;\n    short header_decoded;\n    int status;\n    AdxXpnd *expander;\n    signed char encoding;\n    signed char bits_per_sample;\n    signed char channel_count;\n    signed char block_length;\n    int samples_per_block;\n    int sample_rate;\n    int total_samples;\n    short coefficient;\n    short field_1E;\n    int loop_insert_samples;\n    short loop_count;\n    short loop_type;\n    int loop_start_sample;\n    int loop_start_offset;\n    int loop_end_sample;\n    int loop_end_offset;\n    int max_channels;\n    short *pcm_buffer;\n    int pcm_size;\n    int pcm_distance;\n    AdxDecodeParams decode;\n    short field_74;\n    short field_76;\n    AdxGetWriteInfo get_write_info;\n    void *get_write_object;\n    AdxAddWriteInfo add_write_info;\n    void *add_write_object;\n    int total_decoded_samples;\n    int current_write_position;\n    int decoded_samples;\n    int decoded_data_length;\n    short format_type;\n    short field_9A;\n    short codec_type;\n} AdxBasicDecoder;\n\nvoid fn_800446E4(AdxBasicDecoder *decoder);\n\nint fn_8004E270(AdxXpnd *decoder);\n\nvoid fn_800446E4(AdxBasicDecoder *decoder) {\n    AdxDecodeParams *params;\n    unsigned short *pcm;\n    unsigned short *left;\n    unsigned short *right;\n    const unsigned short *input;\n    unsigned short sample;\n    int i;\n    int count;\n    params = &decoder->decode;\n    input = params->input;\n    if (decoder->status == 1 && fn_8004E270(decoder->expander) == 0) {\n        decoder->get_write_info(decoder->get_write_object, &params->write_position, &params->room,\n                                &params->loop_samples);\n        count = params->pcm_size - params->write_position;\n        if (count > params->room) {\n            count = params->room;\n        }\n        if (count > params->input_blocks) {\n            count = params->input_blocks;\n        }\n        pcm = (unsigned short *)params->pcm_buffer;\n        left = &pcm[params->write_position];\n        if (decoder->channel_count == 2) {\n            right = &pcm[params->pcm_distance + params->write_position];\n            for (i = 0; i < count; i++) {\n                left[i] = (input[2 * i] << 8) | (input[2 * i] >> 8);\n                right[i] = (input[2 * i + 1] << 8) | (input[2 * i + 1] >> 8);\n            }\n        } else {\n            for (i = 0; i < count; i++) {\n                left[i] = (input[i] >> 8) | (input[i] << 8);\n            }\n        }\n        decoder->decoded_samples = count;\n        decoder->decoded_data_length = count * 2 * decoder->channel_count;\n        decoder->status = 2;\n    }\n    if (decoder->status == 2) {\n        decoder->add_write_info(decoder->add_write_object, decoder->decoded_data_length,\n                                decoder->decoded_samples);\n        decoder->status = 3;\n    }\n}\n",
+  "sha256": "29f616ae9db7358b041bf8fcb88984b2f92b3bfce46bb46c82da2058b55f9f9c",
+  "task": {
+   "queue_kind": "residual",
+   "module": "main",
+   "instruction": "Classify the residual before editing; propose ONE source-shape hypothesis; do not rerun unchanged flags/source or raise budgets. retail emits \"extrwi r9, r10, 8, 16\" (UNSIGNED) vs our \"srawi r9, r10, 8\" (SIGNED). Same root cause as fn_80043798: the field is typed/extracted as signed when retail treats it as unsigned."
+  }
+ },
+ "priority-movie:_prolog": {
+  "id": "priority-movie:_prolog",
+  "symbol": "movie:_prolog",
+  "kind": "priority_task",
+  "source": "#include \"types.h\"\n#include \"rel/movie/globals.h\"\n\nextern u8 lbl_5_data_0[20];\nextern u32 lbl_5_bss_0[8];\nextern u32 *lbl_801A6410;\nextern s16 lbl_1_bss_964;\nextern char lbl_1_bss_198[];\nextern u32 lbl_1_bss_96A;\nextern u32 lbl_1_bss_8B614[2];\nextern const f32 lbl_5_rodata_0;\nextern void fn_5_200(void);\nextern void fn_5_220(void);\nextern void fn_5_320(void);\nextern void fn_5_3F94(void);\nextern void fn_5_3FF0(void);\nextern s32 fn_1_45D0(u32 *, u32, void *, u32);\nextern void fn_1_3CF0(u32, s32);\nextern void fn_1_157940(void);\nextern void fn_1_479F0(s16);\nextern int fn_80083BCC(const char *, const char *);\nextern void fn_1_A5AA0(void *, void *);\nextern void fn_8006CE1C(f32);\nextern void fn_1_4A00(s32, u8, void *);\nextern u32 fn_800068F4(void (*)(void));\nextern u32 fn_80006904(void (*)(void));\nextern void fn_1_A0680(void);\n\ntypedef void (*fn_void)(void);\nextern fn_void lbl_1_bss_7167C;\nextern fn_void lbl_1_bss_71680;\nextern fn_void lbl_1_bss_71684;\n\nstruct fn_5_200_lbl_1_bss_970 {\n    u32 unk_0;\n    u8 unk_4;\n};\nextern struct fn_5_200_lbl_1_bss_970 lbl_1_bss_970;\n\nstruct prolog_bss {\n    u32 unk_0;\n    u8 pad_4[0x1C];\n    u32 unk_20;\n    u32 unk_24;\n    u32 unk_28;\n    u32 unk_2C;\n    u32 unk_30;\n    u32 unk_34;\n    u8 unk_38[1];\n};\n\nstruct prolog_data {\n    u8 pad_0[0x14];\n    u8 unk_14[8];\n    char unk_1C[12];\n    u8 unk_28[4];\n};\n\n#pragma opt_lifetimes off\n#pragma opt_loop_invariants off\n#pragma opt_common_subs off\nvoid _prolog(void) {\n    char * fzgx_live__;\n    char * fzgx_live_;\n    char * fzgx_live;\n    struct prolog_data *d = (struct prolog_data *)&lbl_5_data_0;\n    struct prolog_bss *p = (struct prolog_bss *)&lbl_5_bss_0;\n    u32 * lab_t0;\n    u32 lab_t3;\n\n    lab_t0 = lbl_801A6410;\n    lab_t3 = 0xF4;\n    p->unk_28 = fn_1_45D0(lab_t0, 0x584, d->unk_14, lab_t3);\n    p->unk_2C = fn_1_45D0(lbl_801A6410, 0x584, d->unk_14, 0xF5);\n    fn_1_3CF0(p->unk_28, 2);\n    fn_1_3CF0(p->unk_2C, 2);\n    p->unk_30 = fn_1_45D0(lbl_801A6410, 0x584, d->unk_14, 0xF8);\n    p->unk_34 = fn_1_45D0(lbl_801A6410, 0x584, d->unk_14, 0xF9);\n    fn_1_3CF0(p->unk_30, 2);\n    fn_1_3CF0(p->unk_34, 2);\n    fn_1_157940();\n    if (lbl_1_bss_964 != 9) {\n        fn_1_479F0(8);\n    }\n    lbl_1_bss_970.unk_0 = 0;\n    lbl_1_bss_970.unk_4 = 0;\n    fzgx_live__ = d->unk_1C;\n    fzgx_live_ = fzgx_live__;\n    fzgx_live = fzgx_live_;\n    lbl_1_bss_96A = 0x82 + (fn_80083BCC(lbl_1_bss_198, fzgx_live) != 0);\n    lbl_1_bss_7167C = fn_5_200;\n    lbl_1_bss_71680 = fn_5_220;\n    lbl_1_bss_71684 = fn_5_320;\n    fn_1_A5AA0(d->unk_28, p->unk_38);\n    if (lbl_1_bss_964 != 15) {\n        fn_8006CE1C(lbl_5_rodata_0);\n    } else {\n        fn_1_4A00(1, 0xF, (void *)p->unk_2C);\n        lbl_1_bss_8B614[1] |= 0x20000000;\n    }\n    p->unk_0 = 0;\n    p->unk_20 = fn_800068F4(fn_5_3F94);\n    p->unk_24 = fn_80006904(fn_5_3FF0);\n    fn_1_A0680();\n}\n#pragma opt_common_subs reset\n\n#pragma opt_loop_invariants reset\n\n#pragma opt_lifetimes reset\n",
+  "sha256": "81da6f7d1e73960f4560b48bd137939adc349f2687cc62ad35892c8f7edbe4e2",
+  "task": {
+   "queue_kind": "residual",
+   "module": "movie",
+   "instruction": "Classify the residual before editing; propose ONE source-shape hypothesis; do not rerun unchanged flags/source or raise budgets. retail emits \"sth r11, 0x0(r10)\" (16-BIT store) vs our \"stw r11, 0x0(r10)\" (32-BIT). The field is a u16 being stored as u32."
+  }
+ },
+ "priority-fn_1_135D7C": {
+  "id": "priority-fn_1_135D7C",
+  "symbol": "fn_1_135D7C",
+  "kind": "priority_task",
+  "source": "#include \"types.h\"\n#include \"font.h\"\n#include \"rel/main_rel/sel_static_disp.h\"\n\nextern const f64 lbl_1_rodata_8600;\nextern f32 lbl_1_rodata_8960;\nextern u16 lbl_1_rodata_8964[164];\nextern f32 lbl_1_rodata_26F8[22];\nextern int fn_1_4F734(FontDrawPacket *);\nextern u32 fn_1_14FEAC(u8, u8, u8, void *, void *);\nextern void* fn_1_36AD0(void);\nextern void fn_1_49410(void);\nextern void fn_1_494DC(int arg0);\nextern void fn_1_4954C(f32);\nextern void fn_1_4955C(f32, f32);\nextern void fn_1_495C8(int);\nextern void fn_1_4962C(void);\nextern void fn_1_496FC(f32, f32);\nextern void fn_1_4CF3C(void *, ...);\n\nstruct Copy24 { f32 f[22]; };\nstruct Copy80 { u32 a[41]; };\n\n#pragma opt_lifetimes off\nstatic inline u32 *fn_1_135D7C_array_read(u32 *array, u32 lab_unused0) { return array; }\n#pragma opt_propagation off\nstatic inline s32 fn_1_135D7C_operand(s32 right, s32 left) { left *= right; return left; }\n#pragma opt_dead_assignments reset\n\n#pragma opt_loop_invariants off\n#pragma scheduling off\nstatic inline u32 * fn_1_135D7C_array_read_(u32 *array, u32 lab_unused0, u32 lab_unused1, s32 lab_unused2) { return array; }\n#pragma scheduling reset\n\nstatic inline u32 fn_1_135D7C_array_read__(u32 *array, s32 index) { return array[index]; }\nstatic inline f32 * fn_1_135D7C_read_pointer(struct Copy24 * owner) { return owner->f; }\nstatic inline u32 * fn_1_135D7C_read_pointer_(struct Copy80 * owner) { return owner->a; }\nvoid fn_1_135D7C(s16 arg0, s16 arg1, int arg2, s16 arg3, void * arg4, s16 arg5,\n                int arg6, f32 arg7, f32 arg8, f32 arg9) {\n    s8 t18;\n    u32 buf[8];\n    struct Copy24 loc_28;\n    struct Copy80 loc_80;\n    s16 v14;\n    s16 v15;\n    struct {\n    u8 lab_pad[4]; s32 value; } v6;\n    struct { u32 value; } v12;\n    struct { u32 value; } v16;\n    struct { u32 value; } t0;\n    u8 * t1;\n    struct { s16 value; } v15_2;\n    struct {\n    u8 lab_pad[8]; const f32 *value; } lab_p;\n\n    loc_80 = *(struct Copy80 *)lbl_1_rodata_8964;\n    lab_p.value = &lbl_1_rodata_8960;\n    if (arg3 >= 0 && arg6 == 0) {\n        if (arg3 >= 41) {\n            t0.value = fn_1_12F118();\n            t1 = fn_1_36AD0();\n            if (t0.value == (u32)t1) {\n                v12.value = t0.value + fn_1_135D7C_operand(33216u, (s16)arg5);\n            } else {\n                v12.value = t0.value;\n                v12.value = v12.value + (arg3 - 41) * 33216u;\n            }\n            if ((((0x40000000) & (*(u32 *)v12.value))) == 0) {\n                v12.value = *(u8 *)((u8 *)v12.value + 0x10000 - 32352);\n                loc_28 = *(struct Copy24 *)lbl_1_rodata_26F8;\n                if ((s16)v12.value < 0) v6.value = 0;\n                else {\n                    v15 = (s16)v12.value;\n                    (void) v15;  /* fzgx: keeps the web at its definition */\n                    v6.value = 40;\n                    if ((u32)v15 <= 40) v6.value = v15;\n                }\n                ((u32 *)&loc_28)[0] = fn_1_135D7C_array_read__(fn_1_135D7C_read_pointer_(&loc_80), v6.value);\n                ((3)[fn_1_135D7C_read_pointer(&loc_28)]) = arg9;\n                ((1)[loc_28.f]) = (f32)arg0;\n                ((2)[loc_28.f]) = (f32)arg1;\n                ((4)[loc_28.f]) = ((4)[loc_28.f]) * arg7;\n                ((5)[loc_28.f]) = ((5)[loc_28.f]) * arg8;\n                ((u32 *)&loc_28)[12] = arg2;\n                fn_1_4F734((FontDrawPacket *)&loc_28);\n                return;\n            }\n            fn_1_49410();\n            v16.value = (u32)arg2 - 5;\n            switch (arg2) {\n            case 5: fn_1_495C8(0); break;\n            case 9: fn_1_495C8(8); break;\n            case 13: fn_1_495C8(16); break;\n            case 6: fn_1_495C8(1); break;\n            case 10: fn_1_495C8(9); break;\n            case 14: fn_1_495C8(17); break;\n            case 7: fn_1_495C8(2); break;\n            case 11: fn_1_495C8(10); break;\n            case 15: fn_1_495C8(18); break;\n            }\n            fn_1_494DC(35);\n            fn_1_496FC((f32)arg0, (f32)arg1);\n            fn_1_4954C(arg9);\n            fn_1_4955C(arg7, arg8);\n            fn_1_4962C();\n            t18 = fn_1_14FEAC(*(u8 *)(((0x10000) + ((u8 *)v12.value)) - 32348),\n                              *(u8 *)((u8 *)v12.value + 0x10000 - 32340),\n                              *(u8 *)((u8 *)v12.value + 0x10000 - 32332), buf, arg4);\n            lab_p.value = &lbl_1_rodata_8960;\n            fn_1_4CF3C(&\"%s\\n\", t18, (*lab_p.value * arg7));\n            return;\n        }\n        loc_28 = *(struct Copy24 *)lbl_1_rodata_26F8;\n        if (arg3 < 0) v6.value = 0;\n        else {\n            v15_2.value = arg3;\n            v6.value = 40;\n            if ((u32)v15_2.value <= 40) v6.value = v15_2.value;\n        }\n        ((u32 *)&loc_28)[0] = fn_1_135D7C_array_read__(fn_1_135D7C_read_pointer_(&loc_80), v6.value);\n        ((3)[fn_1_135D7C_read_pointer(&loc_28)]) = arg9;\n        ((1)[loc_28.f]) = (f32)arg0;\n        ((2)[loc_28.f]) = (f32)arg1;\n        ((4)[loc_28.f]) = ((4)[loc_28.f]) * arg7;\n        ((5)[loc_28.f]) = ((5)[loc_28.f]) * arg8;\n        ((u32 *)&loc_28)[12] = arg2;\n        fn_1_4F734((FontDrawPacket *)&loc_28);\n    }\n}\n#pragma opt_loop_invariants reset\n#pragma opt_propagation reset\n#pragma opt_lifetimes reset\n",
+  "sha256": "b8d57fb07adb6770b7afe1abbf1ce93083d1d7c7982e3caee8fc7c7fc9663305",
+  "task": {
+   "queue_kind": "residual",
+   "module": "main_rel",
+   "instruction": "Classify the residual before editing; propose ONE source-shape hypothesis; do not rerun unchanged flags/source or raise budgets. retail emits \"mr r4, r3\" (plain move) vs our \"extsb r4, r3\" (sign-extend byte). Retail does NOT sign-extend, so the source value is already 32-bit."
+  }
+ },
+ "priority-fn_8008983C": {
+  "id": "priority-fn_8008983C",
+  "symbol": "fn_8008983C",
+  "kind": "priority_task",
+  "source": "#include \"types.h\"\n\nstruct Sig_fn_8008983C_TRKBuffer {\n    u32 mutex;\n    u32 isInUse;\n    u32 length;\n    u32 position;\n    u8 data[(0x800 + 0x80)];\n};\n\nstruct MsgTable {\n    char a[0x20];\n    char b[8];\n    char c[12];\n};\n\nextern s32 fn_8008963C(const char *);\nextern s32 fn_8008D398(u32, u32);\nextern struct MsgTable lbl_80095890;\nextern void * memset(void *, int, u32);\nextern void fn_8008D7C0(u32);\n\ns32 fn_8008983C(struct Sig_fn_8008983C_TRKBuffer * arg0) {\n    struct MsgTable *table;\n    u8 v0;\n    struct { u8 a[64]; } loc_8;\n\n    table = (struct MsgTable *)&lbl_80095890;\n    v0 = arg0->data[12];\n    if (arg0->data[8] == 1) {\n        fn_8008963C(table->a);\n        if (v0 != 0) {\n            fn_8008963C(table->b);\n        } else {\n            fn_8008963C(table->c);\n        }\n        fn_8008D7C0(v0);\n    }\n    memset((void *)&loc_8, 0, 64);\n    loc_8.a[4] = 128;\n    *(u32 *)((u8 *)&loc_8 + 0) = 64;\n    loc_8.a[8] = 0;\n    fn_8008D398((u32)&loc_8, 64);\n    return 0;\n}\n",
+  "sha256": "27a7315e68706bd2b38bc26d11cd6190d383207eb9742442c87e4fae70da2958",
+  "task": {
+   "queue_kind": "residual",
+   "module": "main",
+   "instruction": "Classify the residual before editing; propose ONE source-shape hypothesis; do not rerun unchanged flags/source or raise budgets. retail emits \"addi r3, r31, 0x0\" vs our \"mr r3, r31\" - the inverse of the usual tie-break: retail materialises an explicit +0 immediate. Try an explicit pointer/index expression."
+  }
+ },
+ "priority-fn_17_7728": {
+  "id": "priority-fn_17_7728",
+  "symbol": "fn_17_7728",
+  "kind": "priority_task",
+  "source": "#include \"types.h\"\n#include \"rel/interview/interview.h\"\nstruct fn_17_7728_Arg0 {\n f32 unk_0; u8 pad_4[0x1C]; s16 unk_20; s16 unk_22; s16 unk_24; u8 pad_26[2];\n u32 unk_28,unk_2C,unk_30,unk_34,unk_38,unk_3C;\n s16 unk_40,unk_42,unk_44; u8 pad_46[2]; u32 unk_48,unk_4C,unk_50; f32 unk_54,unk_58;\n};\nstruct Details {u8 pad[6]; s16 unk_6,unk_8; u8 pad_A[0x7A]; s16 unk_84; u8 pad_86[0x10]; s16 unk_96;};\nstruct Group {u32 unk_0; u8 pad[0x10]; struct Details *unk_14;};\nstruct fn_17_7728_lbl_17_bss_0 {\n u8 pad_0[4]; u8 unk_4; u8 pad_5[0x53]; u32 unk_58; u16 unk_5C; u8 pad_5E[2]; struct Group group;\n};\nstruct Triple {u32 x,y,z;};\nstruct Payload {u32 unk_8; struct Triple triple; u32 unk_18,unk_1C,unk_20; f32 unk_24; s16 unk_28; u16 pad;};\nstruct Entry {s32 unk_0; u32 unk_4; struct Payload payload; u8 pad[0x28];};\nextern const f32 lbl_17_rodata_20;\nstatic inline struct Entry *get_entry(s32 mode,s32 kind,s32 index,struct fn_17_7728_lbl_17_bss_0 *state,u32 flags) {\n struct Entry *v3;\n if (flags && state->unk_5C < 5) v3=(void *)&lbl_17_data_63BD0;\n else if (flags && state->unk_5C >= 9) v3=(void *)&lbl_17_data_63D20;\n else v3=*(struct Entry **)(lbl_17_data_63190 + mode*64 + kind*4);\n if (!v3) return 0;\n if(v3->unk_0 == -1) {state->unk_4=1; v3=(void *)&lbl_17_data_0;}\n else state->unk_4=0;\n v3+=index;\n if(!v3) return 0;\n return v3;\n}\n#pragma opt_propagation off\n#pragma opt_strength_reduction off\n#pragma peephole off\nstatic inline struct Details * fn_17_7728_read_pointer(volatile struct Group * volatile owner) { return owner->unk_14; }\n#pragma peephole reset\nstatic inline f32 fn_17_7728_read_pointer_(struct Payload * owner) { return owner->unk_24; }\nvoid fn_17_7728(struct fn_17_7728_Arg0 *arg0, u32 lab_unused0, u32 lab_unused1) {\n struct Payload loc;\n struct Triple triple;\n struct fn_17_7728_lbl_17_bss_0 *base=(void *)&lbl_17_bss_0;\n volatile struct Group *group=(struct Group *)((u32)base + 0x60);\n struct fn_17_7728_lbl_17_bss_0 *state=base;\n struct Details *v0=fn_17_7728_read_pointer(group);\n u32 flags=state->unk_58 & 1;\n struct Entry *v3=get_entry(arg0->unk_44,arg0->unk_42,arg0->unk_40,state,flags);\n struct Entry *v7=get_entry(arg0->unk_44,arg0->unk_42,arg0->unk_40+1,state,flags);\n u32 lab_v;\n loc=v3->payload;\n triple=loc.triple;\n *(struct Triple *)&arg0->unk_48=triple;\n arg0->unk_54=lbl_17_rodata_20; arg0->unk_58=lbl_17_rodata_20;\n if(v7->payload.unk_8==0 || v3->unk_0<0 || !v7) {\n arg0->unk_22=v3->unk_0;\n if(state->unk_4) {\n switch(arg0->unk_40) {\n case 1: {\n s16 v20=v0->unk_8;\n if(v20<0) arg0->unk_22=v0->unk_6-group->unk_0;\n else arg0->unk_22=v20-group->unk_0;\n if(arg0->unk_22<0) arg0->unk_22=v3->unk_0;\n break;\n }\n case 3:\n if(v0->unk_8<0) arg0->unk_22=v0->unk_84-group->unk_0;\n else arg0->unk_22=v0->unk_96-group->unk_0;\n if(arg0->unk_22<0) arg0->unk_22=v3->unk_0;\n break;\n }\n }\n } else arg0->unk_22=v7->payload.unk_8-v3->payload.unk_8;\n arg0->unk_24=arg0->unk_22;\n arg0->unk_28=triple.x; arg0->unk_2C=triple.y; arg0->unk_30=triple.z;\n arg0->unk_34=loc.unk_18;arg0->unk_38=loc.unk_1C;arg0->unk_3C=loc.unk_20;\n lab_v = loc.unk_28;\n arg0->unk_20=lab_v;arg0->unk_0=fn_17_7728_read_pointer_(&loc);arg0->unk_20=lab_v;\n}\n#pragma opt_strength_reduction reset\n#pragma opt_propagation reset\n",
+  "sha256": "a1279cd1d7c12443b30d3ade3eda3faa5b0b6e672b3143496006e993e1cbd271",
+  "task": {
+   "queue_kind": "residual",
+   "module": "interview",
+   "instruction": "Classify the residual before editing; propose ONE source-shape hypothesis; do not rerun unchanged flags/source or raise budgets. retail \"lwz r6, 0x14(r7)\" vs ours \"lwz r6, 0x74(r4)\" - BOTH base register and offset differ, so the WRONG STRUCT is indexed. Run \"fzgx structmap\" before editing."
+  }
+ },
+ "priority-fn_1_2D038": {
+  "id": "priority-fn_1_2D038",
+  "symbol": "fn_1_2D038",
+  "kind": "priority_task",
+  "source": "#include \"types.h\"\n#pragma section code_type \".fzgxpool\"\nstatic const u32 fzgx_pool_table1[1] = {0xFFFFFF00};\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep1(void) { const u32 *volatile cp; cp = fzgx_pool_table1; }\n__declspec(section \".fzgxpool\") static void fzgx_pool_prime2(void) { volatile f32 s; s=0.0f; s=15.0f; s=1.0f; s=10.0f; s=1.25f; s=0.100000001f; s=0.899999976f; s=0.000600000028f; s=0.400000006f; s=0.75f; s=70.0f; s=0.5f; s=36.0f; s=16.0f; s=45.0f; s=0.00079999998f; s=18.0f; s=50.0f; }\nstatic const u32 fzgx_pool_table3[1]={0};\n__declspec(section \".fzgxpool\") static void fzgx_pool_keep3(void) { const u32 *volatile cp; cp=fzgx_pool_table3; }\n__declspec(section \".fzgxpool\") static void fzgx_pool_prime4(void) { volatile f64 d; d=4503599627370496.0; }\n#pragma section code_type \".text\"\nstruct fn_1_2D038_hdr { u32 unk_0; u8 pad_4[1]; u8 unk_5; u8 pad_6[2]; };\nstruct fn_1_2D038_lbl_1_bss_3C00 {\nu8 pad_0[0x2A]; s16 unk_2A; u8 pad_2C[4]; struct fn_1_2D038_hdr unk_30; u8 pad_38[0x15EC];\nu8 unk_1624; u8 pad_1625[3]; u32 unk_1628; u32 unk_162C; u32 unk_1630; u8 unk_1634; u8 pad_1635[3]; u32 unk_1638;\n};\nstruct fn_1_2D038_lbl_1_rodata_BD8 { u8 pad_0[4]; f32 unk_4,unk_8,unk_C,unk_10,unk_14,unk_18,unk_1C,unk_20,unk_24,unk_28,unk_2C,unk_30,unk_34,unk_38,unk_3C,unk_40,unk_44,unk_48; u8 pad_4C[4]; f64 unk_50; };\nextern struct fn_1_2D038_lbl_1_bss_3C00 lbl_1_bss_3C00;\nextern struct fn_1_2D038_lbl_1_rodata_BD8 lbl_1_rodata_BD8;\nextern u32 lbl_1_data_5BF8;\nextern u32 lbl_1_rodata_26F8;\nextern u8 lbl_1_bss_8E51D;\nextern u32 fn_1_F45B4(void);\nextern s32 fn_1_F22D4(void *);\nextern int fn_1_EB248(void);\nextern s32 fn_1_154C84(void);\nextern u32 fn_1_49410(void);\nextern void fn_1_495FC(void);\nextern void fn_1_4954C(f32);\nextern void fn_1_49590(f32);\nextern void fn_1_4955C(f32,f32);\nextern void fn_1_495C8(u8);\nextern void fn_1_495A0(f32);\nextern void fn_1_495B0(u32);\nextern const char *fn_1_15BA78(u32);\nextern f32 fn_1_4B068(const char *);\nextern f32 fn_1_4B090(const char *);\nextern void fn_1_496FC(f32,f32);\nextern void fn_1_4A0D8(const char *);\nextern u32 fn_1_50A90(void *,u32,u32,u32,u32);\nstruct FzgxCopy_88 { u32 words[22]; };\nstatic inline f32 fn_1_2D038_operand(f32 right,f32 left) { left+=right; return left; }\nstatic inline u32 *fn_1_2D038_read_pointer(struct FzgxCopy_88 *owner) { return owner->words; }\n#pragma opt_dead_assignments off\n#pragma opt_propagation off\nvoid fn_1_2D038(void) {\nstruct FzgxCopy_88 loc_8;\nstruct fn_1_2D038_lbl_1_rodata_BD8 *p_rod;\nstruct { struct fn_1_2D038_hdr *value; } hdr;\ns32 var_r29;\nf32 var_f31;\nf32 var_f30;\nf32 var_f29;\nf32 temp_f28;\nf32 temp_f27;\nf32 var_f26;\nf32 temp_f26;\nf32 temp_f7;\nstruct fn_1_2D038_lbl_1_bss_3C00 *p_bss;\ns32 var_r28;\nf32 lab_t1;\nconst char *lab_t0;\np_rod=&lbl_1_rodata_BD8; p_bss=&lbl_1_bss_3C00; var_r29=0; var_r28=-1;\nif (!(p_bss->unk_30.unk_0 & 0x800000) || (((u8)fn_1_F45B4()!=0) && ((u8)p_bss->unk_1624==0))) {\np_bss->unk_1628=0;\n} else {\nif ((u32)p_bss->unk_162C==0) { var_r29=1; p_bss->unk_1628=1; }\nelse if (((s32)p_bss->unk_1628==0) && ((u32)p_bss->unk_162C>=0xB4U)) { p_bss->unk_1628=1; p_bss->unk_162C=0; p_bss->unk_1630=0; }\nif (((u32)p_bss->unk_162C==0) && ((s32)p_bss->unk_1628!=0)) var_r28=1;\n}\nif (((u8)p_bss->unk_1634!=0) || ((hdr.value = &p_bss->unk_30, hdr.value->unk_5 == 2) && fn_1_F22D4(hdr.value)!=0)) {\nif ((u32)p_bss->unk_162C==0) { var_r29+=1; p_bss->unk_1638=1; }\nelse if (((s32)p_bss->unk_1638==0) && ((u32)p_bss->unk_162C>=0xB4U)) { p_bss->unk_1638=1; p_bss->unk_162C=0; p_bss->unk_1630=0; }\nif (var_r29==2) { var_r28=0; p_bss->unk_1630=0; }\nelse if (((u32)p_bss->unk_162C==0) && ((s32)p_bss->unk_1638!=0) && var_r28==-1) var_r28=2;\n} else p_bss->unk_1638=0;\nif (((s32)p_bss->unk_1628==0) && ((s32)p_bss->unk_1638==0)) { p_bss->unk_162C=0; p_bss->unk_1630=0; return; }\nif (fn_1_EB248()!=0 || fn_1_154C84()!=0) {\nif ((u32)p_bss->unk_162C==0) return;\nif ((u32)p_bss->unk_162C>0xFU) p_bss->unk_162C=0xF;\nelse p_bss->unk_162C=(u32)((s32)p_bss->unk_162C-1);\ngoto block_43;\n} else {\nif ((s16)p_bss->unk_2A>=0x2A) {\nif ((u8)lbl_1_bss_8E51D==0xA) {\nif ((u32)p_bss->unk_162C==0) var_r28+=3;\np_bss->unk_162C+=(u32)p_bss->unk_162C<0x3CU;\ngoto block_43;\n}\np_bss->unk_162C=0; return;\n}\np_bss->unk_162C=0; p_bss->unk_1630=0; return;\n}\nblock_43:;\nif ((u32)p_bss->unk_162C<0xFU) var_f31=(f32)p_bss->unk_162C/15.0f;\nelse if ((u32)p_bss->unk_162C>0xA5U) var_f31=1.0f-((f32)(p_bss->unk_162C-0xA5)/15.0f);\nelse var_f31=1.0f;\nvar_f30=10.0f*var_f31; if (var_f30>1.0f) var_f30=1.0f;\nvar_f29=1.25f*(var_f31-0.100000001f); if (var_f29<0.0f) var_f29=0.0f;\nvar_f26=10.0f*(var_f31-0.899999976f); if (var_f26<0.0f) var_f26=0.0f;\nfn_1_49410(); fn_1_495FC(); fn_1_4954C(0.000600000028f); fn_1_49590(0.400000006f); fn_1_4955C(0.75f,0.75f); fn_1_495C8(1); fn_1_495A0(var_f26); fn_1_495B0(0x80000000U);\nif ((u32)p_bss->unk_1630==0) p_bss->unk_1630=(u32)fn_1_15BA78((&lbl_1_data_5BF8)[var_r28]);\nlab_t0=(const char *)p_bss->unk_1630;\ntemp_f27=fn_1_4B068(lab_t0); temp_f28=fn_1_4B090((const char *)p_bss->unk_1630);\ntemp_f26=temp_f27; temp_f26*=0.5f; lab_t1=70.0f; temp_f26=fn_1_2D038_operand(temp_f26,lab_t1);\nfn_1_496FC(temp_f26,36.0f); fn_1_4A0D8((const char *)p_bss->unk_1630);\nloc_8=*(const struct FzgxCopy_88 *)((((s32)(((u8 *)(&lbl_1_rodata_26F8)+-4)))+4));\ntemp_f7=45.0f+temp_f28;\n(*(f32 *)((u8 *)&loc_8+4))=temp_f26;\n(*(f32 *)((u8 *)&loc_8+8))=16.0f+(f32)(0.5f*temp_f7);\n(*(f32 *)((u8 *)&loc_8+12))=0.00079999998f;\nfn_1_2D038_read_pointer(&loc_8)[0xC]=0xA;\n(*(f32 *)((u8 *)&loc_8+44))=var_f31;\nfn_1_2D038_read_pointer(&loc_8)[0]=2;\nfn_1_50A90(&loc_8,(u32)(s32)(18.0f*var_f30),(u32)(s32)(45.0f*var_f30),(u32)(s32)((50.0f+temp_f27)*var_f29),(u32)(s32)(temp_f7*var_f29));\n}\n#pragma opt_propagation reset\n#pragma opt_dead_assignments reset\n",
+  "sha256": "a9dbf57a2de4297789c3d769e81e8be1a845477710a0c08c628b6281d6fc930f",
+  "task": {
+   "queue_kind": "residual",
+   "module": "main_rel",
+   "instruction": "Classify the residual before editing; propose ONE source-shape hypothesis; do not rerun unchanged flags/source or raise budgets. retail \"lbz r0, 0x5(r3)\" vs ours \"lbz r0, 0x35(r31)\" - wrong base AND wrong offset, so the wrong struct/pointer is indexed. Establish the layout first."
+  }
+ },
+ "priority-fn_12_331A8": {
+  "id": "priority-fn_12_331A8",
+  "symbol": "fn_12_331A8",
+  "kind": "priority_task",
+  "source": "#include \"types.h\"\n\nextern char lbl_12_rodata_10A8[49];\n\ntypedef struct MovieEntry {\n    s32 used;\n    u32 arg0;\n    u32 arg1;\n    u32 unk_C;\n} MovieEntry;\n\nu32 lbl_12_bss_1B758;\ns8 lbl_12_bss_1B75C;\nu32 lbl_12_bss_1B75C__fzgx_offset_4;\nu32 lbl_12_bss_1B75C__fzgx_offset_8;\nu32 lbl_12_bss_1B75C__fzgx_offset_C;\nu32 lbl_12_bss_1B75C__fzgx_offset_10;\nu32 lbl_12_bss_1B770[2];\nu32 lbl_12_bss_1B778[2];\nu32 lbl_12_bss_1B780[72];\nu32 lbl_12_bss_1B8A0[64];\n\n#pragma section code_type \".fzgxpool\"\nstatic void fzgx_bss_layout(void) {\n    volatile u8 s;\n    s = *(u8 *)&lbl_12_bss_1B758;\n    s = *(u8 *)&lbl_12_bss_1B75C;\n    s = *(u8 *)&lbl_12_bss_1B75C__fzgx_offset_4;\n    s = *(u8 *)&lbl_12_bss_1B75C__fzgx_offset_8;\n    s = *(u8 *)&lbl_12_bss_1B75C__fzgx_offset_C;\n    s = *(u8 *)&lbl_12_bss_1B75C__fzgx_offset_10;\n    s = *(u8 *)&lbl_12_bss_1B770;\n    s = *(u8 *)&lbl_12_bss_1B778;\n    s = *(u8 *)&lbl_12_bss_1B780;\n    s = *(u8 *)&lbl_12_bss_1B8A0;\n}\n#pragma section code_type \".text\"\n\n#pragma opt_common_subs off\n#pragma opt_dead_assignments off\nvoid fn_12_331A8(s32 arg0, MovieEntry *arg1) {\n    if ((s32)lbl_12_bss_1B758 > 0) {\n        return;\n    }\n    lbl_12_bss_1B758 = lbl_12_bss_1B758 + 1;\n    lbl_12_bss_1B75C__fzgx_offset_C = (u32)lbl_12_rodata_10A8;\n{\n    struct { u8 lab_pad[8]; s32 value; } i;\n    for (i.value = 0; i.value < arg0; i.value++) {\n        ((i.value)[arg1]).used = 0;\n        ((i.value)[arg1]).arg0 = 0;\n        ((i.value)[arg1]).arg1 = 0;\n        ((i.value)[arg1]).unk_C = 0;\n}\n    }\n    {\n        u32 *p;\n        p = (u32 *)&lbl_12_bss_1B75C;\n        p[0] = arg0;\n        p[1] = 0;\n        p[2] = (u32)arg1;\n    }\n}\n#pragma opt_dead_assignments reset\n#pragma opt_common_subs reset\n",
+  "sha256": "a2fd652a767c4ded21a4e9789db4e44b4438245af5a2dee7dfd862da11ca61f3",
+  "task": {
+   "queue_kind": "residual",
+   "module": "movie_module",
+   "instruction": "Classify the residual before editing; propose ONE source-shape hypothesis; do not rerun unchanged flags/source or raise budgets. retail \"stw r3, 0x4(r7)\" vs ours \"stw r3, 0x0(r5)\" - wrong base AND wrong offset. Wrong struct or wrong member; use structmap."
+  }
+ },
+ "priority-fn_80067DE4": {
+  "id": "priority-fn_80067DE4",
+  "symbol": "fn_80067DE4",
+  "kind": "priority_task",
+  "source": "#include \"types.h\"\n#include \"dol/globals.h\"\n\nextern u8 lbl_801932A8[];\n\nextern void fn_8005CBF4(void *);\nextern void fn_800622B0(void);\nextern void fn_80069CE4(s32, void *, u32);\n\nextern u32 lbl_801A6410;\nextern void fn_80008E5C(u32, u32);\n\nextern u32 fn_8001E9BC(u32 *);\n\nextern char lbl_80092C18[29];\nextern int sprintf(char *, const char *, ...);\n\nextern u32 fn_80024DF0(void *);\nextern u32 fn_80024378(void *);\nextern s32 fn_800253F0(void *);\nextern s16 fn_80025C70(void *);\n\nextern void fn_800211E0(u32, u32);\nextern void fn_800211EC(u32, u32);\n\ntypedef struct Base {\n\tu8 pad_000[0x100];\n\tu32 unk_100;\n\tu8 pad_104[0x138];\n\ts32 unk_23c;\n\tu8 pad_240[0x204];\n\tu32 unk_444;\n\tu8 pad_448[0xC];\n\tu32 unk_454;\n\tu8 pad_458[0x18];\n\tu8 unk_470;\n\tu8 unk_471;\n} Base;\n\ntypedef struct Obj {\n\tu8 lab_pad[4];\n\tvoid *p_000;\n\tu8 pad_004[0x58];\n\tvoid *p_060;\n\tu8 pad_064[0x5C];\n\tvoid *p_0C0;\n\tu8 pad_0C4[0x98];\n\tvoid *p_15C;\n\tu8 pad_160[0x98];\n\tvoid *p_1F8;\n\tu8 pad_1FC[0x1DC];\n\tvoid *p_3D8;\n\tu8 pad_3DC[0x1DC];\n\tvoid *p_5B8;\n\tu8 pad_5BC[0x150];\n\tvoid *p_70C;\n} Obj;\n\n#pragma opt_loop_invariants off\nu32 fn_80067DE4(void) {\n\tBase *base;\n\tBase * base_2;\n\tObj *obj;\n\tu32 val;\n\tchar buf[0x404];\n\n\tobj = (Obj *)lbl_801932A8;\n\n\tbase = (Base *)lbl_801A6C80;\n\tbase->unk_444 = 0xA0000110;\n\n\tfn_8005CBF4((void *)0xA0000100);\n\tfn_800622B0();\n\tfn_80069CE4(0x10, (void *)0xA0000500, 0);\n\n\tbase_2 = (Base *)lbl_801A6C80;\n\tif (base_2->unk_454 == 0) {\n\t\tfn_80008E5C(lbl_801A6410, base_2->unk_100);\n\t\tfn_8001E9BC(&val);\n\t\tbase_2 = (Base *)lbl_801A6C80;\n\t\tif (base_2->unk_23c != val) {\n\t\t\tsprintf(buf, lbl_80092C18, val);\n\t\t\treturn val;\n\t\t}\n\t}\n\n\tbase_2 = (Base *)lbl_801A6C80;\n\tswitch ((s32)base_2->unk_470) {\n\tcase 0:\n\t\tfn_80024DF0(&obj->p_70C);\n\t\tbreak;\n\tcase 1:\n\t\tfn_80024378(&obj->p_3D8);\n\t\tbreak;\n\tcase 2:\n\t\tfn_800253F0(&obj->p_15C);\n\t\tbreak;\n\tcase 3:\n\t\tfn_80025C70(&obj->p_060);\n\t\tbreak;\n\t}\n\tfn_800211E0(0, 0);\n\n\tbase_2 = (Base *)lbl_801A6C80;\n\tswitch ((s32)base_2->unk_471) {\n\tcase 0:\n\t\tfn_80024DF0(&obj->p_5B8);\n\t\tbreak;\n\tcase 1:\n\t\tfn_80024378(&obj->p_1F8);\n\t\tbreak;\n\tcase 2:\n\t\tfn_800253F0(&obj->p_0C0);\n\t\tbreak;\n\tcase 3:\n\t\tfn_80025C70(&obj->p_000);\n\t\tbreak;\n\t}\n\tfn_800211EC(0, 0);\n\treturn 0;\n}\n#pragma opt_loop_invariants reset\n",
+  "sha256": "9541d3cf2697d3aa9fb7627f9332e8542ffc9822497afd64208bb064aa8f4c89",
+  "task": {
+   "queue_kind": "residual",
+   "module": "main",
+   "instruction": "Classify the residual before editing; propose ONE source-shape hypothesis; do not rerun unchanged flags/source or raise budgets. retail \"addi r3, r31, 0x0\" vs ours \"addi r3, r31, 0x4\" - off by exactly 4 on the same base. An array-vs-scalar or index-vs-pointer discrepancy."
+  }
+ },
+ "priority-fn_12_72F4": {
+  "id": "priority-fn_12_72F4",
+  "symbol": "fn_12_72F4",
+  "kind": "priority_task",
+  "source": "#include \"types.h\"\n\ntypedef struct MovieModule MovieModule;\ntypedef struct MovieArg MovieArg;\ntypedef u32 (*MovieCallback)(MovieModule *, MovieArg *);\n\nstruct MovieArg {\n    u8 _pad_000[0x1c];\n    void *field_1c;\n};\n\nstruct MovieModule {\n    u8 _pad_000[0x44];\n    MovieArg arg;\n    void *field_64;\n    void *field_68;\n    u8 _pad_06c[0x8];\n    s32 field_74;\n    u8 output[0x28];\n    s32 field_a0;\n    u8 _pad_0a4[0x218];\n    s32 field_2bc;\n    u8 _pad_2c0[0x54];\n    s32 field_314;\n    u8 _pad_318[0xfd4];\n    MovieCallback callback;\n};\n\ntypedef struct Sig_fn_12_4F18_MovieModule {\n    u8 pad_28[0x28];\n    void *field_28;\n} Sig_fn_12_4F18_MovieModule;\nextern void fn_12_4F18(Sig_fn_12_4F18_MovieModule *);\n\n#pragma opt_strength_reduction off\n#pragma opt_lifetimes off\ns32 fn_12_72F4(MovieModule *movie) {\n    MovieCallback fzgx_live_;\n    MovieCallback fzgx_live;\n    struct { u8 * value; } output;\n    u8 *current;\n    u8 * current_2;\n    s32 mask;\n    s32 i;\n    MovieArg *arg;\n    struct { u8 * value; } output_ptr;\n\n    { u8 * __reg_value_output = movie->output; output.value = __reg_value_output; }\n    arg = &movie->arg;\n    current = (u8 *)movie;\n    movie->field_68 = (u8 *)movie->field_2bc;\n    movie->field_64 = (u8 *)movie + 0xc80;\n    movie->field_74 = 1;\n    mask = movie->field_314 << 2;\n    movie->field_a0 = mask;\n    current = (u8 *)arg;\n    current_2 = current;\n    { u8 * __reg_value_output_ptr = output.value; output_ptr.value = __reg_value_output_ptr; }\n    for (i = 0; i < 6; i++) {\n        if (mask < 0) {\n            arg->field_1c = current_2 + 0x640;\n            fzgx_live_ = movie->callback;\n            fzgx_live = fzgx_live_;\n            output_ptr.value[0] = fzgx_live(movie, arg);\n        }\n        mask <<= 1;\n        current_2 += 0x100;\n        output_ptr.value++;\n    }\n    fn_12_4F18((Sig_fn_12_4F18_MovieModule *)output.value);\n    return 0;\n}\n#pragma opt_lifetimes reset\n\n#pragma opt_strength_reduction reset\n",
+  "sha256": "30c4b0e4c24c43b98ffe8d764936d51d6ec12e405f811665ebf0d9e5ca0c4d37",
+  "task": {
+   "queue_kind": "residual",
+   "module": "movie_module",
+   "instruction": "Classify the residual before editing; propose ONE source-shape hypothesis; do not rerun unchanged flags/source or raise budgets. retail \"mr r30, r25\" vs ours \"mr r30, r27\" - a pure register-selection tie-break, the genuine allocator class (finding 301). Spend ONE bounded attempt, then release rather than looping."
+  }
+ }
+}
