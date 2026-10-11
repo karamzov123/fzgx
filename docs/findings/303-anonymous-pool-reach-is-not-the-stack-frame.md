@@ -38,8 +38,16 @@ that register when computing `reach`.
 | `fn_1_15EC40` | 99.15% unmatched | MATCH (pool), 100.0% |
 | `fn_8_2124` | 98.77% unmatched | MATCH (pool), 100.0% |
 
-Project went 5755 -> 5758 matched. A 25-function random regression sample of
-already-matched units shows 0 failures.
+Project went 5755 -> 5758 matched (ledger); objdiff's own counter moved 5751 -> 5754
+functions and 39.604% -> 39.681% of code once `report.json` was regenerated
+(`build/tools/objdiff-cli report generate -o build/GFZE01/report.json` — the checked-in
+copy is a cache and reads stale, so `fzgx report` under-reports until it is rebuilt).
+A 25-function random regression sample of already-matched units shows 0 failures.
+
+All three land as `MATCH (pool)` with `link_state=pool`: the only defect is relocations
+to shared literal-pool constants whose bytes are reproduced, which the tooling retargets
+at submit. That is the repo's own definition of a match, and `unit_fully_matches`
+returns None for each.
 
 ## Rule
 
