@@ -932,10 +932,34 @@ def _pool_rows(project: Project, module: str, left: dict, right: dict,
                 size = max((o['value'] + o['size'] for o in objects.values()
                             if o['shndx'] == own['shndx'] and o['size']), default=section['size']) - own['value']
                 reach = 0
+                # The pool base is the register the `addi rD, rS, sym@l` row materialises, i.e.
+                # the DESTINATION of the LO row that binds this same anonymous symbol. Only
+                # displacements through that register measure the pool's reach: the stack frame
+                # is addressed through r1 with displacements up to 0xf4, and counting those
+                # inflated the reach past retail's pool, so the comparison ran into our unit's
+                # own appended literals and rejected a matching pool.
+                pool_base = None
+                for row in lrows:
+                    rel = (row.get('instruction') or {}).get('relocation') or {}
+                    if rel.get('target_symbol') != lrel.get('target_symbol'):
+                        continue
+                    if rel.get('type') != 4:  # R_PPC_ADDR16_LO
+                        continue
+                    for part in (row.get('instruction') or {}).get('parts', []):
+                        arg = part.get('arg') if isinstance(part, dict) else None
+                        if isinstance(arg, dict) and 'opaque' in arg:
+                            pool_base = arg['opaque']
+                            break
+                    if pool_base:
+                        break
                 for row in lrows:
                     text = (row.get('instruction') or {}).get('formatted') or ''
                     m = re.match(r'(lfs|lfd|lwz|lha|lhz|lbz|stw|stfs|stfd) [rf]\d+, (-?0x[0-9a-f]+|-?\d+)\(r\d+\)$', text)
                     if m and int(m.group(2), 0) >= 0:
+                        if pool_base is not None:
+                            bm = re.search(r'\((r\d+)\)\s*$', text)
+                            if not bm or bm.group(1) != pool_base:
+                                continue
                         width = {'lfd': 8, 'stfd': 8, 'lha': 2, 'lhz': 2, 'lbz': 1}.get(m.group(1), 4)
                         reach = max(reach, int(m.group(2), 0) + width)
                 if reach:

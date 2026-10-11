@@ -30850,9 +30850,10 @@
       "fn_1_9DB04"
     ],
     "status": "nonmatching",
-    "mw_version": null,
+    "mw_version": "GC/1.3.2",
     "extra_cflags": [],
-    "tu": "rel/main_rel/background.c"
+    "tu": "rel/main_rel/background.c",
+    "pool": true
   },
   {
     "module": "main_rel",
@@ -33456,7 +33457,8 @@
     "status": "nonmatching",
     "mw_version": null,
     "extra_cflags": [],
-    "tu": "rel/main_rel/bg_win.c"
+    "tu": "rel/main_rel/bg_win.c",
+    "pool": true
   },
   {
     "module": "main_rel",
@@ -70742,6 +70744,18 @@
     "mw_version": null,
     "extra_cflags": [],
     "tu": "rel/title/title.c"
+  },
+  {
+    "module": "title",
+    "source": "rel/title/title/fn_8_2124.c",
+    "symbols": [
+      "fn_8_2124"
+    ],
+    "status": "nonmatching",
+    "mw_version": "GC/1.3.2",
+    "extra_cflags": [],
+    "tu": "rel/title/title.c",
+    "pool": true
   },
   {
     "module": "title",

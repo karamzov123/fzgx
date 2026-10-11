@@ -184,19 +184,21 @@ def main(argv=None) -> int:
             except Exception:
                 wd = None
             if wd:
-                wd["_flagged"] = wd.get("flagged_rows", 0)
-                scored.append((wd["differing"], wd["words"], symbol, wd["rows"]))
+                # `rows` is empty when the words are byte-identical, so the flagged-row count
+                # (relocation-only defects) has to ride along in the tuple or it is lost.
+                scored.append((wd["differing"], wd["words"], symbol, wd["rows"],
+                               wd.get("flagged_rows", 0)))
         scored.sort(key=lambda t: (t[0], t[2]))
         if a.json:
             print(json.dumps([{"symbol": s, "differing": d, "words": w, "rows": r}
-                              for d, w, s, r in scored], indent=1))
+                              for d, w, s, r, _f in scored], indent=1))
             return 0
         print("ranked by differing words (%d functions)\n" % len(scored))
         print("%-20s %5s %6s %7s  first divergences" % ("symbol", "diff", "rows", "words"))
-        for d, w, s, r in scored[:a.top]:
+        for d, w, s, r, flagged in scored[:a.top]:
             first = "; ".join("w%d %s%s/%s%s" % (x["index"], x["retail"], x["retail_regs"],
                                                 x["ours"], x["our_regs"]) for x in r[:2])
-            print("%-20s %5d %6d %7d  %s" % (s, d, r[0].get("_flagged", 0), w, first[:52]))
+            print("%-20s %5d %6d %7d  %s" % (s, d, flagged, w, first[:52]))
         print()
         print("diff=instruction words differing; rows=objdiff flagged rows.")
         print("A relocation-only defect leaves diff at 0 with rows>0: that is a shared-pool")
